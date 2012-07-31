@@ -42,6 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BiomeEngine.cs" />
+    <Compile Include="Biomes\AlpineSecondaryBiome.cs" />
+    <Compile Include="Biomes\TertiaryBiome.cs" />
+    <Compile Include="Biomes\SecondaryBiome.cs" />
+    <Compile Include="LayerSecondaryBiome.cs" />
     <Compile Include="LayerPerlinMath.cs" />
     <Compile Include="LayerTerrainMixdown.cs" />
     <Compile Include="LayerDeriveTerrain.cs" />

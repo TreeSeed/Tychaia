@@ -32,9 +32,13 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        [Obsolete("This constructor is only for XML serialization / deserialization.", true)]
-        public LayerDeriveTerrain()
+        [DataMember]
+        [DefaultValue(20)]
+        [Description("The maximum height of the terrain in the result map.")]
+        public double MaxTerrain
         {
+            get;
+            set;
         }
 
         public LayerDeriveTerrain(Layer parent, Layer biome)
@@ -42,6 +46,7 @@ namespace Tychaia.ProceduralGeneration
         {
             this.CheckDiagonals = true;
             this.FailLimit = 1.0;
+            this.MaxTerrain = 20;
         }
 
         public override int[] GenerateData(int x, int y, int width, int height)
@@ -81,11 +86,12 @@ namespace Tychaia.ProceduralGeneration
                             if (r.NextDouble() > this.FailLimit && lookFor != 0)
                                 data[i + j * width] = lookFor;
                             else
-                                data[i + j * width] = lookFor + 1;
+                                data[i + j * width] = (int)Math.Min(lookFor + 1, this.MaxTerrain);
                             count++;
                         }
                     }
-                lookFor++;
+                if (lookFor < this.MaxTerrain)
+                    lookFor++;
             }
             while (count != 0);
 

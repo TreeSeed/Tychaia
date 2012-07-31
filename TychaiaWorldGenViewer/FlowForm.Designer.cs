@@ -81,9 +81,12 @@
             this.c_XLabel = new System.Windows.Forms.Label();
             this.c_XNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.c_BiomeAddSecondaryBiomeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.c_DeleteSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_StatusStrip.SuspendLayout();
             this.c_ContextMenuStrip.SuspendLayout();
             this.c_ToolStrip.SuspendLayout();
@@ -128,9 +131,11 @@
             this.c_TemperatureMenuItem,
             this.c_RiversMenuItem,
             this.c_TownsMenuItem,
-            this.c_FamilyTreesMenuItem});
+            this.c_FamilyTreesMenuItem,
+            this.toolStripMenuItem4,
+            this.c_DeleteSelectedMenuItem});
             this.c_ContextMenuStrip.Name = "contextMenuStrip1";
-            this.c_ContextMenuStrip.Size = new System.Drawing.Size(153, 202);
+            this.c_ContextMenuStrip.Size = new System.Drawing.Size(155, 230);
             // 
             // c_GeneralMenuItem
             // 
@@ -150,7 +155,7 @@
             this.c_Seperator2MenuItem,
             this.c_GeneralAddStoreResultMenuItem});
             this.c_GeneralMenuItem.Name = "c_GeneralMenuItem";
-            this.c_GeneralMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_GeneralMenuItem.Size = new System.Drawing.Size(154, 22);
             this.c_GeneralMenuItem.Text = "General";
             // 
             // c_GeneralAddInitialPerlinMenuItem
@@ -243,7 +248,7 @@
             this.c_LandAddDeriveTerrainMenuItem,
             this.c_LandAddMixTerrainWithPerlinMenuItem});
             this.c_LandMenuItem.Name = "c_LandMenuItem";
-            this.c_LandMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_LandMenuItem.Size = new System.Drawing.Size(154, 22);
             this.c_LandMenuItem.Text = "Land";
             // 
             // c_LandAddInitialLandMenuItem
@@ -277,16 +282,17 @@
             // c_BiomeMenuItem
             // 
             this.c_BiomeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.c_BiomeAddScatterBiomeMenuItem});
+            this.c_BiomeAddScatterBiomeMenuItem,
+            this.c_BiomeAddSecondaryBiomeMenuItem});
             this.c_BiomeMenuItem.Name = "c_BiomeMenuItem";
-            this.c_BiomeMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_BiomeMenuItem.Size = new System.Drawing.Size(154, 22);
             this.c_BiomeMenuItem.Text = "Biome";
             // 
             // c_BiomeAddScatterBiomeMenuItem
             // 
             this.c_BiomeAddScatterBiomeMenuItem.Name = "c_BiomeAddScatterBiomeMenuItem";
-            this.c_BiomeAddScatterBiomeMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.c_BiomeAddScatterBiomeMenuItem.Text = "Scatter Biome";
+            this.c_BiomeAddScatterBiomeMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.c_BiomeAddScatterBiomeMenuItem.Text = "Scatter Primary Biomes";
             this.c_BiomeAddScatterBiomeMenuItem.Click += new System.EventHandler(this.c_BiomeAddScatterBiomeMenuItem_Click);
             // 
             // c_RainfallMenuItem
@@ -296,7 +302,7 @@
             this.c_RainfallAddMixRainfallWithBiomeMenuItem});
             this.c_RainfallMenuItem.Enabled = false;
             this.c_RainfallMenuItem.Name = "c_RainfallMenuItem";
-            this.c_RainfallMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_RainfallMenuItem.Size = new System.Drawing.Size(154, 22);
             this.c_RainfallMenuItem.Text = "Rainfall";
             // 
             // c_RainfallAddInitialRainfallMenuItem
@@ -318,7 +324,7 @@
             this.c_TemperatureAddMixTemperatureWithBiomeMenuItem});
             this.c_TemperatureMenuItem.Enabled = false;
             this.c_TemperatureMenuItem.Name = "c_TemperatureMenuItem";
-            this.c_TemperatureMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_TemperatureMenuItem.Size = new System.Drawing.Size(154, 22);
             this.c_TemperatureMenuItem.Text = "Temperature";
             // 
             // c_TemperatureAddInitialTemperature
@@ -341,7 +347,7 @@
             this.c_RiversAddPoolOceanMenuItem});
             this.c_RiversMenuItem.Enabled = false;
             this.c_RiversMenuItem.Name = "c_RiversMenuItem";
-            this.c_RiversMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_RiversMenuItem.Size = new System.Drawing.Size(154, 22);
             this.c_RiversMenuItem.Text = "Rivers";
             // 
             // c_RiversAddSimulateFlowMenuItem
@@ -371,7 +377,7 @@
             this.c_TownsAddSimulateRundownMenuItem});
             this.c_TownsMenuItem.Enabled = false;
             this.c_TownsMenuItem.Name = "c_TownsMenuItem";
-            this.c_TownsMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_TownsMenuItem.Size = new System.Drawing.Size(154, 22);
             this.c_TownsMenuItem.Text = "Towns";
             // 
             // c_TownsAddScatterTownsMenuItem
@@ -402,7 +408,7 @@
             // 
             this.c_FamilyTreesMenuItem.Enabled = false;
             this.c_FamilyTreesMenuItem.Name = "c_FamilyTreesMenuItem";
-            this.c_FamilyTreesMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_FamilyTreesMenuItem.Size = new System.Drawing.Size(154, 22);
             this.c_FamilyTreesMenuItem.Text = "Family Trees";
             // 
             // toolStripMenuItem2
@@ -544,6 +550,23 @@
             this.c_YNumericUpDown.TabIndex = 2;
             this.c_YNumericUpDown.ValueChanged += new System.EventHandler(this.c_YNumericUpDown_ValueChanged);
             // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(178, 6);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(178, 6);
+            // 
+            // c_BiomeAddSecondaryBiomeMenuItem
+            // 
+            this.c_BiomeAddSecondaryBiomeMenuItem.Name = "c_BiomeAddSecondaryBiomeMenuItem";
+            this.c_BiomeAddSecondaryBiomeMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.c_BiomeAddSecondaryBiomeMenuItem.Text = "Form Secondary Biomes";
+            this.c_BiomeAddSecondaryBiomeMenuItem.Click += new System.EventHandler(this.c_BiomeAddSecondaryBiomeMenuItem_Click);
+            // 
             // c_FlowInterfaceControl
             // 
             this.c_FlowInterfaceControl.ContextMenuStrip = this.c_ContextMenuStrip;
@@ -557,15 +580,18 @@
             this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
             this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
             // 
-            // toolStripMenuItem1
+            // toolStripMenuItem4
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(178, 6);
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(151, 6);
             // 
-            // toolStripMenuItem3
+            // c_DeleteSelectedMenuItem
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(178, 6);
+            this.c_DeleteSelectedMenuItem.Enabled = false;
+            this.c_DeleteSelectedMenuItem.Name = "c_DeleteSelectedMenuItem";
+            this.c_DeleteSelectedMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.c_DeleteSelectedMenuItem.Text = "Delete Selected";
+            this.c_DeleteSelectedMenuItem.Click += new System.EventHandler(this.c_DeleteSelectedMenuItem_Click);
             // 
             // FlowForm
             // 
@@ -648,5 +674,8 @@
         private System.Windows.Forms.ToolStripMenuItem c_GeneralAddPerlinMathMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem c_BiomeAddSecondaryBiomeMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem c_DeleteSelectedMenuItem;
     }
 }

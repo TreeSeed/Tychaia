@@ -16,12 +16,11 @@ namespace Tychaia.ProceduralGeneration
 
         public static Dictionary<int, Brush> BiomeBrushes = new Dictionary<int, Brush>
         {
-            { 0  /* water   */, new SolidBrush(Color.FromArgb(0,0,255)) },
-            { 1  /* grass   */, new SolidBrush(Color.FromArgb(0,255,0)) },
-            { 2  /* desert  */, new SolidBrush(Color.FromArgb(255,255,0)) },
-            { 3  /* forest  */, new SolidBrush(Color.FromArgb(0,127,0)) },
-            { 4  /* snow    */, new SolidBrush(Color.FromArgb(255,255,255)) },
-            { 5  /* red     */, new SolidBrush(Color.FromArgb(255,0,0)) }
+            { BiomeEngine.BIOME_OCEAN, new SolidBrush(Color.FromArgb(0,0,255)) },
+            { BiomeEngine.BIOME_PLAINS, new SolidBrush(Color.FromArgb(0,255,0)) },
+            { BiomeEngine.BIOME_DESERT, new SolidBrush(Color.FromArgb(255,255,0)) },
+            { BiomeEngine.BIOME_FOREST, new SolidBrush(Color.FromArgb(0,127,0)) },
+            { BiomeEngine.BIOME_SNOW, new SolidBrush(Color.FromArgb(255,255,255)) }
         };
 
         public static Dictionary<int, Brush> VoronoiBrushes = new Dictionary<int, Brush>

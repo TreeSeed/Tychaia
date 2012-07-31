@@ -32,11 +32,6 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        [Obsolete("This constructor is only for XML serialization / deserialization.", true)]
-        public LayerInitialLand()
-        {
-        }
-
         public LayerInitialLand(int seed)
             : base(seed)
         {

@@ -13,11 +13,6 @@ namespace Tychaia.ProceduralGeneration
     [DataContract()]
     public class LayerExtendLand : Layer
     {
-        [Obsolete("This constructor is only for XML serialization / deserialization.", true)]
-        public LayerExtendLand()
-        {
-        }
-
         public LayerExtendLand(Layer parent)
             : base(parent)
         {

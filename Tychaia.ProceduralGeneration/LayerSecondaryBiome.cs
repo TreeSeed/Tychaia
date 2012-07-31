@@ -1,0 +1,132 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.ComponentModel;
+using System.Runtime.Serialization;
+
+namespace Tychaia.ProceduralGeneration
+{
+    /// <summary>
+    /// Generates secondary biomes based on input data.
+    /// </summary>
+    [DataContract]
+    public class LayerSecondaryBiome : Layer
+    {
+        [DataMember]
+        [DefaultValue(0)]
+        [Description("The minimum integer value in the rainfall map.")]
+        public int MinRainfall
+        {
+            get;
+            set;
+        }
+
+        [DataMember]
+        [DefaultValue(100)]
+        [Description("The maximum integer value in the rainfall map.")]
+        public int MaxRainfall
+        {
+            get;
+            set;
+        }
+
+        [DataMember]
+        [DefaultValue(0)]
+        [Description("The minimum integer value in the temperature map.")]
+        public int MinTemperature
+        {
+            get;
+            set;
+        }
+
+        [DataMember]
+        [DefaultValue(100)]
+        [Description("The maximum integer value in the temperature map.")]
+        public int MaxTemperature
+        {
+            get;
+            set;
+        }
+
+        [DataMember]
+        [DefaultValue(0)]
+        [Description("The minimum integer value in the terrain map.")]
+        public int MinTerrain
+        {
+            get;
+            set;
+        }
+
+        [DataMember]
+        [DefaultValue(20)]
+        [Description("The maximum integer value in the terrain map.")]
+        public int MaxTerrain
+        {
+            get;
+            set;
+        }
+
+        public LayerSecondaryBiome(Layer biome, Layer rainfall, Layer temperature, Layer terrain)
+            : base(new Layer[] { biome, rainfall, temperature, terrain })
+        {
+            this.MinRainfall = 0;
+            this.MaxRainfall = 100;
+            this.MinTemperature = 0;
+            this.MaxTemperature = 100;
+            this.MinTerrain = 0;
+            this.MaxTerrain = 20;
+        }
+
+        public override int[] GenerateData(int x, int y, int width, int height)
+        {
+            if (this.Parents.Length < 4 || this.Parents[0] == null || this.Parents[1] == null || this.Parents[2] == null || this.Parents[3] == null)
+                return new int[width * height];
+
+            int[] biome = this.Parents[0].GenerateData(x, y, width, height);
+            int[] rainfall = this.Parents[1].GenerateData(x, y, width, height);
+            int[] temperature = this.Parents[2].GenerateData(x, y, width, height);
+            int[] terrain = this.Parents[3].GenerateData(x, y, width, height);
+            int[] data = new int[width * height];
+
+            // Write out the secondary biomes.
+            for (int i = 0; i < width; i++)
+                for (int j = 0; j < height; j++)
+                {
+                    try
+                    {
+                        // Normalize values.
+                        int nbiome = biome[x + y * width];
+                        double nrain = (biome[x + y * width] - this.MinRainfall) / (double)(this.MaxRainfall - this.MinRainfall);
+                        double ntemp = (biome[x + y * width] - this.MinTemperature) / (double)(this.MaxTemperature - this.MinTemperature);
+                        double nterrain = (biome[x + y * width] - this.MinTerrain) / (double)(this.MaxTerrain - this.MinTerrain);
+
+                        // Store result.
+                        data[x + y * width] = BiomeEngine.GetSecondaryBiomeForCell(nbiome, nrain, ntemp, nterrain);
+                    }
+                    catch (Exception e)
+                    {
+                        // In case of overflow, underflow or divide by zero.
+                        data[i + j * width] = 0;
+                    }
+                }
+
+            return data;
+        }
+
+        public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
+        {
+            return BiomeEngine.GetSecondaryBiomeBrushes();
+        }
+
+        public override string[] GetParentsRequired()
+        {
+            return new string[] { "Biome", "Rainfall", "Temperature", "Terrain" };
+        }
+
+        public override string ToString()
+        {
+            return "Secondary Biomes";
+        }
+    }
+}

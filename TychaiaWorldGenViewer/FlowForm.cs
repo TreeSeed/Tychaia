@@ -147,15 +147,31 @@ namespace TychaiaWorldGenViewer
         private void c_FlowInterfaceControl_SelectedElementChanged(object sender, EventArgs e)
         {
             if (this.c_FlowInterfaceControl.SelectedElement == null)
+            {
                 this.c_LayerInspector.SelectedObject = null;
+                this.c_DeleteSelectedMenuItem.Enabled = false;
+            }
             else
+            {
                 this.c_LayerInspector.SelectedObject = this.c_FlowInterfaceControl.SelectedElement.GetObjectToInspect();
+                this.c_DeleteSelectedMenuItem.Enabled = true;
+            }
         }
 
         private void c_LayerInspector_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
             if (this.c_FlowInterfaceControl.SelectedElement != null)
                 this.c_FlowInterfaceControl.SelectedElement.ObjectPropertyUpdated();
+        }
+
+        private void c_DeleteSelectedMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.c_FlowInterfaceControl.SelectedElement == null)
+                return;
+
+            FlowElement fe = this.c_FlowInterfaceControl.SelectedElement;
+            this.c_FlowInterfaceControl.SelectedElement = null;
+            this.c_FlowInterfaceControl.Elements.Remove(fe);
         }
 
         private void c_XNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -290,6 +306,16 @@ namespace TychaiaWorldGenViewer
                new LayerFlowElement(
                    this.c_FlowInterfaceControl,
                    new LayerPerlinMath(null, null)
+               )
+            );
+        }
+
+        private void c_BiomeAddSecondaryBiomeMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new LayerSecondaryBiome(null, null, null, null)
                )
             );
         }

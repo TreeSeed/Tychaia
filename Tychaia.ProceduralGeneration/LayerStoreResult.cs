@@ -23,11 +23,6 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        [Obsolete("This constructor is only for XML serialization / deserialization.", true)]
-        public LayerStoreResult()
-        {
-        }
-
         public LayerStoreResult(Layer parent)
             : base(parent)
         {

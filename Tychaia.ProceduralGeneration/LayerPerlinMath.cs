@@ -76,11 +76,6 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        [Obsolete("This constructor is only for XML serialization / deserialization.", true)]
-        public LayerPerlinMath()
-        {
-        }
-
         public LayerPerlinMath(Layer first, Layer second)
             : base(new Layer[] { first, second })
         {

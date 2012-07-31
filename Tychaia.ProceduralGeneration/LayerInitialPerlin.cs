@@ -50,11 +50,6 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        [Obsolete("This constructor is only for XML serialization / deserialization.", true)]
-        public LayerInitialPerlin()
-        {
-        }
-
         public LayerInitialPerlin(int seed)
             : base(seed)
         {

@@ -32,11 +32,6 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        [Obsolete("This constructor is only for XML serialization / deserialization.", true)]
-        public LayerTerrainMixdown()
-        {
-        }
-
         public LayerTerrainMixdown(Layer terrain, Layer perlin)
             : base(new Layer[] { terrain, perlin })
         {

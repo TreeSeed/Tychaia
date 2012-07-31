@@ -95,6 +95,11 @@ namespace Tychaia.ProceduralGeneration
 
         protected Random GetCellRNG(int x, int y)
         {
+            return this.GetCellRNG(x, y, 0);
+        }
+
+        protected Random GetCellRNG(int x, int y, int modifier)
+        {
             /* From: http://stackoverflow.com/questions/2890040/implementing-gethashcode
              * Although we aren't implementing GetHashCode, it's still a good way to generate
              * a unique number given a limited set of fields */
@@ -103,10 +108,12 @@ namespace Tychaia.ProceduralGeneration
                 long seed = x * 3661988493967 + y;
                 seed += x * 2990430311017;
                 seed *= y * 14475080218213;
+                seed += modifier;
                 seed -= y * 28124722524383;
                 seed *= x * 16099760261113;
                 seed += x * this.m_Seed;
                 seed *= y * this.m_Seed;
+                seed += modifier;
                 // Prevents the seed from being 0 along an axis.
                 seed += (x - 199) * (y - 241) * 9018110272013;
 

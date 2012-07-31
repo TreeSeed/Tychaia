@@ -23,11 +23,6 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        [Obsolete("This constructor is only for XML serialization / deserialization.", true)]
-        public LayerVoronoiMixdown()
-        {
-        }
-
         public LayerVoronoiMixdown(Layer voronoi, Layer parent)
             : base(new Layer[] { voronoi, parent })
         {

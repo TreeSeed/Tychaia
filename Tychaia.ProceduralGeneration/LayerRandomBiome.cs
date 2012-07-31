@@ -50,11 +50,6 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        [Obsolete("This constructor is only for XML serialization / deserialization.", true)]
-        public LayerRandomBiome()
-        {
-        }
-
         public LayerRandomBiome(Layer parent)
             : base(parent)
         {
@@ -116,7 +111,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override string ToString()
         {
-            return "Biomize";
+            return "Primary Biomes";
         }
     }
 }

@@ -41,11 +41,6 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        [Obsolete("This constructor is only for XML serialization / deserialization.", true)]
-        public LayerZoom()
-        {
-        }
-
         public LayerZoom(Layer parent)
             : base(parent)
         {

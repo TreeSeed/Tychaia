@@ -69,11 +69,6 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        [Obsolete("This constructor is only for XML serialization / deserialization.", true)]
-        public LayerInitialVoronoi()
-        {
-        }
-
         public LayerInitialVoronoi(int seed)
             : base(seed)
         {
@@ -101,7 +96,7 @@ namespace Tychaia.ProceduralGeneration
             for (int i = -this.EdgeSampling; i < width + this.EdgeSampling; i++)
                 for (int j = -this.EdgeSampling; j < height + this.EdgeSampling; j++)
                 {
-                    Random r = this.GetCellRNG(x + i, y + j);
+                    Random r = this.GetCellRNG(x + i, y + j, (int)this.Modifier);
                     if (r.Next(this.PointValue) == 0)
                     {
                         points.Add(new Vector(new double[] { i, j }));
