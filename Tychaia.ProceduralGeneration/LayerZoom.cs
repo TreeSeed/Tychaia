@@ -32,6 +32,15 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
+        [DataMember]
+        [DefaultValue(1)]
+        [Description("The number of zoom iterations to perform.")]
+        public int Offset
+        {
+            get;
+            set;
+        }
+
         [Obsolete("This constructor is only for XML serialization / deserialization.", true)]
         public LayerZoom()
         {
@@ -48,10 +57,10 @@ namespace Tychaia.ProceduralGeneration
         {
             int ox = 2; // Offsets
             int oy = 2;
-            int rx = (x < 0 ? (x - 1) / 2 : x / 2) + width / 4 - ox; // Location in the parent
-            int ry = (y < 0 ? (y - 1) / 2 : y / 2) + height / 4 - oy;
             int rw = width / 2 + ox * 2;
             int rh = height / 2 + oy * 2;
+            int rx = (x < 0 ? (x - 1) / 2 : x / 2) - ox; // Location in the parent
+            int ry = (y < 0 ? (y - 1) / 2 : y / 2) - oy;
             // For smoothing to work, we need to know the cells that are actually
             // beyond the edge of the center.
             int[] parent = null;

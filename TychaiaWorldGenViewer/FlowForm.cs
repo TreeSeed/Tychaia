@@ -11,6 +11,7 @@ using TychaiaWorldGenViewer.Flow;
 using System.Runtime.Serialization;
 using System.IO;
 using System.Xml;
+using System.Reflection;
 
 namespace TychaiaWorldGenViewer
 {
@@ -25,24 +26,25 @@ namespace TychaiaWorldGenViewer
 
         #region Loading and Saving
 
-        private static Type[] SerializableTypes = new Type[]
+        private static Type[] SerializableTypes = null;
+
+        static FlowForm()
         {
-            // Flow system classes
-            typeof(FlowConnector),
-            typeof(FlowElement),
-            typeof(LayerFlowConnector),
-            typeof(LayerFlowElement),
-            // Layer classes
-            typeof(LayerInitialLand),
-            typeof(LayerInitialPerlin),
-            typeof(LayerInitialVoronoi),
-            typeof(LayerExtendLand),
-            typeof(LayerRandomBiome),
-            typeof(LayerStoreResult),
-            typeof(LayerZoom),
-            typeof(LayerInvert),
-            typeof(LayerVoronoiMixdown),
-        };
+            // Dynamically generate a list of serializable types for the
+            // data contract.
+            List<Type> types = new List<Type> {
+                // Flow system classes
+                typeof(FlowConnector),
+                typeof(FlowElement),
+                typeof(LayerFlowConnector),
+                typeof(LayerFlowElement),
+            };
+            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
+                foreach (Type t in a.GetTypes())
+                    if (typeof(Layer).IsAssignableFrom(t))
+                        types.Add(t);
+            FlowForm.SerializableTypes = types.ToArray();
+        }
 
         private string m_LastSavePath = null;
 
@@ -258,6 +260,36 @@ namespace TychaiaWorldGenViewer
                new LayerFlowElement(
                    this.c_FlowInterfaceControl,
                    new LayerVoronoiMixdown(null, null)
+               )
+            );
+        }
+
+        private void c_LandAddDeriveTerrainMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new LayerDeriveTerrain(null, null)
+               )
+            );
+        }
+
+        private void c_LandAddMixTerrainWithPerlinMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new LayerTerrainMixdown(null, null)
+               )
+            );
+        }
+
+        private void c_GeneralAddPerlinMathMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new LayerPerlinMath(null, null)
                )
             );
         }

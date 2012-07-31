@@ -55,6 +55,8 @@ namespace TychaiaWorldGenViewer.Flow
         {
             get
             {
+                if (this.m_CenterZoomAdjustment == 0)
+                    this.m_CenterZoomAdjustment = 1; // After this was reloaded from disk, need to reset this value.
                 var ax = ((this.IsInput ? -this.InvalidationWidth : this.InvalidationWidth) / this.m_CenterZoomAdjustment);
                 int idx = FlowElement.GetConnectorIndex(this.Owner, this);
                 var xx = (this.IsInput ? this.Owner.X - CONNECTOR_PADDING - CONNECTOR_SIZE : this.Owner.X + this.Owner.Width + CONNECTOR_PADDING + CONNECTOR_SIZE);
@@ -108,7 +110,13 @@ namespace TychaiaWorldGenViewer.Flow
             re.Graphics.DrawRectangle(Pens.Black, xx + (el.IsInput ? -sx : sx), yy, CONNECTOR_SIZE * re.Zoom, CONNECTOR_SIZE * re.Zoom);
             if (el.IsInput && el.ConnectedTo != null)
                 foreach (FlowConnector ct in el.ConnectedTo)
-                    re.Graphics.DrawLine(Pens.Blue, el.Center.Apply(re.Zoom), ct.Center.Apply(re.Zoom));
+                {
+                    try
+                    {
+                        re.Graphics.DrawLine(Pens.Blue, el.Center.Apply(re.Zoom), ct.Center.Apply(re.Zoom));
+                    }
+                    catch (OverflowException) { }
+                }
         }
 
         internal IEnumerable<Rectangle> GetConnectorRegionsToInvalidate()

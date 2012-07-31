@@ -23,6 +23,15 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
+        [DataMember]
+        [DefaultValue(true)]
+        [Description("Whether to guarantee land at the global (0, 0) position.")]
+        public bool GuaranteeStartingPoint
+        {
+            get;
+            set;
+        }
+
         [Obsolete("This constructor is only for XML serialization / deserialization.", true)]
         public LayerInitialLand()
         {
@@ -33,6 +42,7 @@ namespace Tychaia.ProceduralGeneration
         {
             // Set defaults.
             this.LandLimit = 0.9;
+            this.GuaranteeStartingPoint = true;
         }
 
         public override int[] GenerateData(int x, int y, int width, int height)
@@ -48,6 +58,11 @@ namespace Tychaia.ProceduralGeneration
                     else
                         data[a + b * width] = 0;
                 }
+
+            // Guarantee the player a starting point at 0, 0.
+            if (this.GuaranteeStartingPoint)
+                if (0 >= x && 0 >= y && 0 < x + width && 0 < y + height)
+                    data[(0 - x) + (0 - y) * width] = 1;
 
             return data;
         }

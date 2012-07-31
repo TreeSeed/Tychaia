@@ -32,6 +32,15 @@ namespace Tychaia.ProceduralGeneration
             { 3  /* edge     */, new SolidBrush(Color.FromArgb(0, 0, 255)) },
         };
 
+        public static Dictionary<int, Brush> TerrainBrushes = null;
+
+        static LayerColors()
+        {
+            // Generate the terrain brush set.
+            LayerColors.TerrainBrushes = LayerColors.GetGradientBrushes(1, 10);
+            LayerColors.TerrainBrushes.Add(0, new SolidBrush(Color.FromArgb(0, 0, 255)));
+        }
+
         /// <summary>
         /// Returns a list of brushes used as a gradient over between the minValue
         /// and maxValue parameters.
