@@ -32,12 +32,21 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
+        [DataMember]
+        [Description("The seed modifier value to apply to this town map.")]
+        public long Modifier
+        {
+            get;
+            set;
+        }
+
         public LayerInitialTowns(long seed)
             : base(seed)
         {
             // Set defaults.
             this.TownLimit = 0.9;
             this.GuaranteeStartingPoint = true;
+            this.Modifier = new Random().Next();
         }
 
         public override int[] GenerateData(int x, int y, int width, int height)
@@ -47,7 +56,7 @@ namespace Tychaia.ProceduralGeneration
             for (int a = 0; a < width; a++)
                 for (int b = 0; b < height; b++)
                 {
-                    Random r = this.GetCellRNG(x + a, y + b);
+                    Random r = this.GetCellRNG(x + a, y + b, (int)this.Modifier);
                     if (r.NextDouble() > this.TownLimit)
                         data[a + b * width] = 1;
                     else

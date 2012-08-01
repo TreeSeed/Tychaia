@@ -26,7 +26,7 @@ namespace Tychaia.ProceduralGeneration
 
         [DataMember]
         [DefaultValue(VoronoiResult.EdgesAndOriginals)]
-        [Description("The type of data to return from the voronoi calculations.")]
+        [Description("The type of data to return from the Voronoi calculations.")]
         public VoronoiResult Result
         {
             get;
@@ -43,8 +43,7 @@ namespace Tychaia.ProceduralGeneration
         }
 
         [DataMember]
-        [DefaultValue(100)]
-        [Description("The seed modifier value to apply to this perlin map.")]
+        [Description("The seed modifier value to apply to this Voronoi map.")]
         public long Modifier
         {
             get;

@@ -44,8 +44,13 @@
   <ItemGroup>
     <Compile Include="BiomeEngine.cs" />
     <Compile Include="Biomes\AlpineSecondaryBiome.cs" />
+    <Compile Include="Biomes\FlatDesertSecondaryBiome.cs" />
+    <Compile Include="Biomes\ForestSecondaryBiome.cs" />
+    <Compile Include="Biomes\GrasslandSecondaryBiome.cs" />
+    <Compile Include="Biomes\OceanBiome.cs" />
     <Compile Include="Biomes\TertiaryBiome.cs" />
     <Compile Include="Biomes\SecondaryBiome.cs" />
+    <Compile Include="Biomes\TundraSecondaryBiome.cs" />
     <Compile Include="LayerEraseTowns.cs" />
     <Compile Include="LayerInitialTowns.cs" />
     <Compile Include="LayerAutoVoronoiMixdown.cs" />

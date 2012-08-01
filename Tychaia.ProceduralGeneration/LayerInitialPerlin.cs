@@ -24,7 +24,6 @@ namespace Tychaia.ProceduralGeneration
         }
 
         [DataMember]
-        [DefaultValue(0)]
         [Description("The seed modifier value to apply to this perlin map.")]
         public long Modifier
         {
