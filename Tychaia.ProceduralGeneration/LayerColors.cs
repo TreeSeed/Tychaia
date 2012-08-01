@@ -31,6 +31,13 @@ namespace Tychaia.ProceduralGeneration
             { 3  /* edge     */, new SolidBrush(Color.FromArgb(0, 0, 255)) },
         };
 
+        public static Dictionary<int, Brush> TownBrushes = new Dictionary<int, Brush>
+        {
+            { 0  /* none     */, new SolidBrush(Color.FromArgb(0, 0, 0)) },
+            { 1  /* active   */, new SolidBrush(Color.FromArgb(127, 0, 0)) },
+            { 2  /* ruins    */, new SolidBrush(Color.FromArgb(127, 63, 63)) },
+        };
+
         public static Dictionary<int, Brush> GetTerrainBrushes(int maxTerrain)
         {
             Dictionary<int, Brush> v = LayerColors.GetGradientBrushes(1, maxTerrain);

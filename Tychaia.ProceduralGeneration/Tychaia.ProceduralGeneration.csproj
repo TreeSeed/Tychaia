@@ -46,6 +46,8 @@
     <Compile Include="Biomes\AlpineSecondaryBiome.cs" />
     <Compile Include="Biomes\TertiaryBiome.cs" />
     <Compile Include="Biomes\SecondaryBiome.cs" />
+    <Compile Include="LayerEraseTowns.cs" />
+    <Compile Include="LayerInitialTowns.cs" />
     <Compile Include="LayerAutoVoronoiMixdown.cs" />
     <Compile Include="LayerSecondaryBiome.cs" />
     <Compile Include="LayerPerlinMath.cs" />

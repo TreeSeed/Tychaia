@@ -329,5 +329,25 @@ namespace TychaiaWorldGenViewer
                 )
             );
         }
+
+        private void c_TownsAddScatterTownsMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+                new LayerFlowElement(
+                    this.c_FlowInterfaceControl,
+                    new LayerInitialTowns(this.m_Seed)
+                )
+            );
+        }
+
+        private void c_TownsAddEraseTownsOverOceanMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new LayerEraseTowns(null, null)
+               )
+            );
+        }
     }
 }
