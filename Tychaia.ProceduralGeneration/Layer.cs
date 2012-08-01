@@ -63,7 +63,7 @@ namespace Tychaia.ProceduralGeneration
         {
         }
 
-        protected Layer(int seed)
+        protected Layer(long seed)
         {
             this.m_Parents = new Layer[] { };
             this.m_Seed = seed;

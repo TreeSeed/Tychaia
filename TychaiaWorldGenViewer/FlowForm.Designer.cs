@@ -37,8 +37,10 @@
             this.c_GeneralMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_GeneralAddInitialPerlinMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_GeneralAddPerlinMathMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.c_GeneralAddInitialVoronoiMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_GeneralAddMixVoronoiMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.c_GeneralAddZoomMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_GeneralAddSmoothMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_GeneralAddRemapMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,6 +56,7 @@
             this.c_LandAddMixTerrainWithPerlinMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_BiomeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_BiomeAddScatterBiomeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_BiomeAddSecondaryBiomeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_RainfallMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_RainfallAddInitialRainfallMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_RainfallAddMixRainfallWithBiomeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,6 +73,8 @@
             this.c_TownsAddMixTownsWithViabilityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_TownsAddSimulateRundownMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_FamilyTreesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.c_DeleteSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.c_ToolStrip = new System.Windows.Forms.ToolStrip();
             this.c_LoadConfigurationButton = new System.Windows.Forms.ToolStripButton();
@@ -81,12 +86,8 @@
             this.c_XLabel = new System.Windows.Forms.Label();
             this.c_XNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.c_BiomeAddSecondaryBiomeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-            this.c_DeleteSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_GeneralAddAutoMixVoronoiMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_StatusStrip.SuspendLayout();
             this.c_ContextMenuStrip.SuspendLayout();
             this.c_ToolStrip.SuspendLayout();
@@ -145,6 +146,7 @@
             this.toolStripMenuItem1,
             this.c_GeneralAddInitialVoronoiMenuItem,
             this.c_GeneralAddMixVoronoiMenuItem,
+            this.c_GeneralAddAutoMixVoronoiMenuItem,
             this.toolStripMenuItem3,
             this.c_GeneralAddZoomMenuItem,
             this.c_GeneralAddSmoothMenuItem,
@@ -172,6 +174,11 @@
             this.c_GeneralAddPerlinMathMenuItem.Text = "Perform Perlin Math";
             this.c_GeneralAddPerlinMathMenuItem.Click += new System.EventHandler(this.c_GeneralAddPerlinMathMenuItem_Click);
             // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(178, 6);
+            // 
             // c_GeneralAddInitialVoronoiMenuItem
             // 
             this.c_GeneralAddInitialVoronoiMenuItem.Name = "c_GeneralAddInitialVoronoiMenuItem";
@@ -185,6 +192,11 @@
             this.c_GeneralAddMixVoronoiMenuItem.Size = new System.Drawing.Size(181, 22);
             this.c_GeneralAddMixVoronoiMenuItem.Text = "Mix Voronoi";
             this.c_GeneralAddMixVoronoiMenuItem.Click += new System.EventHandler(this.c_GeneralAddMixVoronoiMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(178, 6);
             // 
             // c_GeneralAddZoomMenuItem
             // 
@@ -294,6 +306,13 @@
             this.c_BiomeAddScatterBiomeMenuItem.Size = new System.Drawing.Size(202, 22);
             this.c_BiomeAddScatterBiomeMenuItem.Text = "Scatter Primary Biomes";
             this.c_BiomeAddScatterBiomeMenuItem.Click += new System.EventHandler(this.c_BiomeAddScatterBiomeMenuItem_Click);
+            // 
+            // c_BiomeAddSecondaryBiomeMenuItem
+            // 
+            this.c_BiomeAddSecondaryBiomeMenuItem.Name = "c_BiomeAddSecondaryBiomeMenuItem";
+            this.c_BiomeAddSecondaryBiomeMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.c_BiomeAddSecondaryBiomeMenuItem.Text = "Form Secondary Biomes";
+            this.c_BiomeAddSecondaryBiomeMenuItem.Click += new System.EventHandler(this.c_BiomeAddSecondaryBiomeMenuItem_Click);
             // 
             // c_RainfallMenuItem
             // 
@@ -410,6 +429,19 @@
             this.c_FamilyTreesMenuItem.Name = "c_FamilyTreesMenuItem";
             this.c_FamilyTreesMenuItem.Size = new System.Drawing.Size(154, 22);
             this.c_FamilyTreesMenuItem.Text = "Family Trees";
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(151, 6);
+            // 
+            // c_DeleteSelectedMenuItem
+            // 
+            this.c_DeleteSelectedMenuItem.Enabled = false;
+            this.c_DeleteSelectedMenuItem.Name = "c_DeleteSelectedMenuItem";
+            this.c_DeleteSelectedMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.c_DeleteSelectedMenuItem.Text = "Delete Selected";
+            this.c_DeleteSelectedMenuItem.Click += new System.EventHandler(this.c_DeleteSelectedMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -550,23 +582,6 @@
             this.c_YNumericUpDown.TabIndex = 2;
             this.c_YNumericUpDown.ValueChanged += new System.EventHandler(this.c_YNumericUpDown_ValueChanged);
             // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(178, 6);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(178, 6);
-            // 
-            // c_BiomeAddSecondaryBiomeMenuItem
-            // 
-            this.c_BiomeAddSecondaryBiomeMenuItem.Name = "c_BiomeAddSecondaryBiomeMenuItem";
-            this.c_BiomeAddSecondaryBiomeMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.c_BiomeAddSecondaryBiomeMenuItem.Text = "Form Secondary Biomes";
-            this.c_BiomeAddSecondaryBiomeMenuItem.Click += new System.EventHandler(this.c_BiomeAddSecondaryBiomeMenuItem_Click);
-            // 
             // c_FlowInterfaceControl
             // 
             this.c_FlowInterfaceControl.ContextMenuStrip = this.c_ContextMenuStrip;
@@ -580,18 +595,12 @@
             this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
             this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
             // 
-            // toolStripMenuItem4
+            // c_GeneralAddAutoMixVoronoiMenuItem
             // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(151, 6);
-            // 
-            // c_DeleteSelectedMenuItem
-            // 
-            this.c_DeleteSelectedMenuItem.Enabled = false;
-            this.c_DeleteSelectedMenuItem.Name = "c_DeleteSelectedMenuItem";
-            this.c_DeleteSelectedMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.c_DeleteSelectedMenuItem.Text = "Delete Selected";
-            this.c_DeleteSelectedMenuItem.Click += new System.EventHandler(this.c_DeleteSelectedMenuItem_Click);
+            this.c_GeneralAddAutoMixVoronoiMenuItem.Name = "c_GeneralAddAutoMixVoronoiMenuItem";
+            this.c_GeneralAddAutoMixVoronoiMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.c_GeneralAddAutoMixVoronoiMenuItem.Text = "Auto Mix Voronoi";
+            this.c_GeneralAddAutoMixVoronoiMenuItem.Click += new System.EventHandler(this.c_GeneralAddAutoMixVoronoiMenuItem_Click);
             // 
             // FlowForm
             // 
@@ -677,5 +686,6 @@
         private System.Windows.Forms.ToolStripMenuItem c_BiomeAddSecondaryBiomeMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem c_DeleteSelectedMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem c_GeneralAddAutoMixVoronoiMenuItem;
     }
 }

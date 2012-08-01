@@ -50,7 +50,7 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public LayerInitialPerlin(int seed)
+        public LayerInitialPerlin(long seed)
             : base(seed)
         {
             // Set defaults.

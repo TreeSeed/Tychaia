@@ -69,7 +69,7 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public LayerInitialVoronoi(int seed)
+        public LayerInitialVoronoi(long seed)
             : base(seed)
         {
             // Set defaults.

@@ -319,5 +319,15 @@ namespace TychaiaWorldGenViewer
                )
             );
         }
+
+        private void c_GeneralAddAutoMixVoronoiMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+                new LayerFlowElement(
+                    this.c_FlowInterfaceControl,
+                    new LayerAutoVoronoiMixdown(this.m_Seed)
+                )
+            );
+        }
     }
 }

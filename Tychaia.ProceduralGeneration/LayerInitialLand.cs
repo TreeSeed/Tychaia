@@ -32,7 +32,7 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public LayerInitialLand(int seed)
+        public LayerInitialLand(long seed)
             : base(seed)
         {
             // Set defaults.
