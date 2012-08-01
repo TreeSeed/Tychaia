@@ -31,13 +31,11 @@ namespace Tychaia.ProceduralGeneration
             { 3  /* edge     */, new SolidBrush(Color.FromArgb(0, 0, 255)) },
         };
 
-        public static Dictionary<int, Brush> TerrainBrushes = null;
-
-        static LayerColors()
+        public static Dictionary<int, Brush> GetTerrainBrushes(int maxTerrain)
         {
-            // Generate the terrain brush set.
-            LayerColors.TerrainBrushes = LayerColors.GetGradientBrushes(1, 10);
-            LayerColors.TerrainBrushes.Add(0, new SolidBrush(Color.FromArgb(0, 0, 255)));
+            Dictionary<int, Brush> v = LayerColors.GetGradientBrushes(1, maxTerrain);
+            v.Add(0, new SolidBrush(Color.FromArgb(0, 0, 255)));
+            return v;
         }
 
         /// <summary>

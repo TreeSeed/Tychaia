@@ -53,6 +53,14 @@ namespace Tychaia.ProceduralGeneration
                     terrain >= sb.MinTerrain && terrain < sb.MaxTerrain)
                     return i;
             }
+
+            for (int i = 0; i < BiomeEngine.SecondaryBiomes.Count; i++)
+            {
+                SecondaryBiome sb = BiomeEngine.SecondaryBiomes[i];
+                if (sb.DefaultFor == biome)
+                    return i;
+            }
+
             return -1;
         }
 

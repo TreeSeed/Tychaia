@@ -74,7 +74,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
         {
-            return LayerColors.TerrainBrushes;
+            return LayerColors.GetTerrainBrushes(20);
         }
 
         public override string[] GetParentsRequired()

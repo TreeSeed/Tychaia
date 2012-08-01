@@ -35,7 +35,7 @@ namespace Tychaia.ProceduralGeneration
         [DataMember]
         [DefaultValue(20)]
         [Description("The maximum height of the terrain in the result map.")]
-        public double MaxTerrain
+        public int MaxTerrain
         {
             get;
             set;
@@ -130,7 +130,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
         {
-            return LayerColors.TerrainBrushes;
+            return LayerColors.GetTerrainBrushes(this.MaxTerrain);
         }
 
         public override string[] GetParentsRequired()

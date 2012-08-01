@@ -15,6 +15,7 @@ namespace Tychaia.ProceduralGeneration.Biomes
         public double MinTerrain;
         public double MaxTerrain;
         public int[] SuitableBiomes;
+        public int DefaultFor = -1;
         public Color BrushColor;
     }
 }

@@ -96,13 +96,13 @@ namespace Tychaia.ProceduralGeneration
                     try
                     {
                         // Normalize values.
-                        int nbiome = biome[x + y * width];
-                        double nrain = (biome[x + y * width] - this.MinRainfall) / (double)(this.MaxRainfall - this.MinRainfall);
-                        double ntemp = (biome[x + y * width] - this.MinTemperature) / (double)(this.MaxTemperature - this.MinTemperature);
-                        double nterrain = (biome[x + y * width] - this.MinTerrain) / (double)(this.MaxTerrain - this.MinTerrain);
+                        int nbiome = biome[i + j * width];
+                        double nrain = (biome[i + j * width] - this.MinRainfall) / (double)(this.MaxRainfall - this.MinRainfall);
+                        double ntemp = (biome[i + j * width] - this.MinTemperature) / (double)(this.MaxTemperature - this.MinTemperature);
+                        double nterrain = (biome[i + j * width] - this.MinTerrain) / (double)(this.MaxTerrain - this.MinTerrain);
 
                         // Store result.
-                        data[x + y * width] = BiomeEngine.GetSecondaryBiomeForCell(nbiome, nrain, ntemp, nterrain);
+                        data[i + j * width] = BiomeEngine.GetSecondaryBiomeForCell(nbiome, nrain, ntemp, nterrain);
                     }
                     catch (Exception e)
                     {
