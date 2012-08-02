@@ -15,7 +15,7 @@ namespace TychaiaWorldGenViewer.Flow
         [DataMember]
         private Layer m_Layer;
         private FlowInterfaceControl m_Control;
-        private LayerFlowImageGeneration.ImageTask m_ImageTask = new LayerFlowImageGeneration.ImageTask();
+        private Bitmap m_RealBitmap;
         [DataMember]
         private List<FlowConnector> m_InputConnectors = new List<FlowConnector>();
         [DataMember]
@@ -26,24 +26,12 @@ namespace TychaiaWorldGenViewer.Flow
         {
             get
             {
-                if (this.m_ImageTask == null)
-                    this.m_ImageTask = new LayerFlowImageGeneration.ImageTask();
-                if (!this.m_ImageTask.HasResult)
-                {
-                    if (this.m_CachedBitmap == null)
-                        return null;
-#if FALSE
-                    Graphics g = Graphics.FromImage(this.m_ProgressBitmap);
-                    g.FillRectangle(new SolidBrush(Color.White), new Rectangle(0, 0, this.ImageWidth, this.ImageHeight));
-                    g.FillRectangle(new SolidBrush(Color.Green), new Rectangle(10, 10, (int)((this.ImageWidth - 20) * (this.m_ImageTask.Progress / 100.0)), 10));
-                    g.DrawString("Reprocessing..", SystemFonts.DefaultFont, SystemBrushes.ControlText, new PointF(10, 10));
-#endif
+                if (this.m_RealBitmap == null)
                     return this.m_CachedBitmap;
-                }
                 else
                 {
-                    this.m_CachedBitmap = this.m_ImageTask.Result;
-                    return this.m_ImageTask.Result;
+                    this.m_CachedBitmap = this.m_RealBitmap;
+                    return this.m_RealBitmap;
                 }
             }
             protected set
@@ -57,8 +45,16 @@ namespace TychaiaWorldGenViewer.Flow
             this.m_Control = control;
             this.m_Layer = l;
             this.Name = l.ToString();
-            this.ImageWidth = 128;
-            this.ImageHeight = 128;
+            if (l is Layer2D)
+            {
+                this.ImageWidth = 128;
+                this.ImageHeight = 128;
+            }
+            else
+            {
+                this.ImageWidth = 256;
+                this.ImageHeight = 256;
+            }
             this.ObjectPropertyUpdated();
 
             // Create input / output connectors.
@@ -84,20 +80,21 @@ namespace TychaiaWorldGenViewer.Flow
 
         private void RefreshImageSync()
         {
-            this.m_ImageTask = new LayerFlowImageGeneration.ImageTask();
             this.m_Control.Invalidate(this.Region.Apply(this.m_Control.Zoom));
-            this.m_ImageTask = LayerFlowImageGeneration.RegenerateImageForLayerSync(this.m_Control, this.m_Layer, this.ImageWidth, this.ImageHeight, () =>
-            {
-            });
+            if (this.m_Layer is Layer3D)
+                this.m_RealBitmap = LayerFlowImageGeneration.RegenerateImageForLayer(this.m_Control, this.m_Layer, this.ImageWidth, this.ImageHeight);
+            else
+                this.m_RealBitmap = LayerFlowImageGeneration.RegenerateImageForLayer(this.m_Control, this.m_Layer, this.ImageWidth, this.ImageHeight);
             this.m_Control.Invalidate(this.Region.Apply(this.m_Control.Zoom));
         }
 
-        private int ParentsIndexOf(Layer find)
+        private int[] ParentsIndexOf(Layer find)
         {
+            List<int> result = new List<int>();
             for (int i = 0; i < this.m_Layer.Parents.Length; i++)
                 if (this.m_Layer.Parents[i] == find)
-                    return i;
-            return -1;
+                    result.Add(i);
+            return result.ToArray();
         }
 
         public override void SetDeserializationData(FlowInterfaceControl control)
@@ -112,7 +109,7 @@ namespace TychaiaWorldGenViewer.Flow
                         .Where(v => v is LayerFlowElement)
                         .Select(v => v as LayerFlowElement)
                         .Where(v => this.m_Layer.Parents.Contains(v.m_Layer))
-                        .Where(v => this.m_InputConnectors.IndexOf(connector) == this.ParentsIndexOf(v.m_Layer))
+                        .Where(v => this.ParentsIndexOf(v.m_Layer).Contains(this.m_InputConnectors.IndexOf(connector)))
                         .Select(v => v.m_OutputConnectors[0])
                         .ToArray();
             else

@@ -13,7 +13,7 @@ namespace Tychaia.ProceduralGeneration
     /// Generates a layer from Voronoi tessellation.
     /// </summary>
     [DataContract]
-    public class LayerInitialVoronoi : Layer
+    public class LayerInitialVoronoi : Layer2D
     {
         [DataMember]
         [DefaultValue(100)]

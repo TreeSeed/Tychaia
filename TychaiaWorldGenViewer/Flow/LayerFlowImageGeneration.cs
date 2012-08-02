@@ -13,68 +13,6 @@ namespace TychaiaWorldGenViewer.Flow
     {
         private static SolidBrush m_UnknownAssociation = new SolidBrush(Color.FromArgb(63, 63, 63));
 
-        public class ImageTask
-        {
-#if FALSE
-            public int Progress;
-#endif
-            public bool HasResult;
-            public Bitmap Result;
-
-            public ImageTask()
-            {       
-#if FALSE
-                this.Progress = 0;
-#endif
-                this.HasResult = false;
-                this.Result = null;
-            }
-        }
-
-        public delegate void ProgressCallback(int progress, Bitmap bitmap);
-        
-#if FALSE
-        public static ImageTask RegenerateImageForLayerTask(FlowInterfaceControl fic, Layer l, int width, int height, Action act)
-        {
-            ImageTask it = new ImageTask();
-            Thread t = new Thread(() =>
-                {
-                    ProgressCallback callback = (progress, bitmap) =>
-                        {
-                            it.Progress = progress;
-                            if (bitmap != null)
-                            {
-                                it.HasResult = true;
-                                it.Result = bitmap;
-                            }
-                            act();
-                        };
-                    RegenerateImageForLayer(fic, l, width, height, callback);
-                });
-            t.Start();
-            return it;
-        }
-#endif
-
-        public static ImageTask RegenerateImageForLayerSync(FlowInterfaceControl fic, Layer l, int width, int height, Action act)
-        {
-            ImageTask it = new ImageTask();
-            ProgressCallback callback = (progress, bitmap) =>
-            {
-#if FALSE
-                it.Progress = progress;
-#endif
-                if (bitmap != null)
-                {
-                    it.HasResult = true;
-                    it.Result = bitmap;
-                }
-                act();
-            };
-            RegenerateImageForLayer(fic, l, width, height, callback);
-            return it;
-        }
-
         public static int X
         {
             get;
@@ -87,7 +25,198 @@ namespace TychaiaWorldGenViewer.Flow
             set;
         }
 
-        private static Bitmap RegenerateImageForLayer(FlowInterfaceControl fic, Layer l, int width, int height, ProgressCallback callback)
+        public static Bitmap RegenerateImageForLayer(FlowInterfaceControl fic, Layer l, int width, int height)
+        {
+            if (l is Layer2D)
+                return Regenerate2DImageForLayer(fic, l as Layer2D, width, height);
+            else if (l is Layer3D)
+                return Regenerate3DImageForLayer(fic, l as Layer3D, width, height);
+            else
+                return null;
+        }
+
+        #region 3D Rendering
+
+        #region Cell Render Ordering
+
+        private static int[][] CellRenderOrder = new int[4][] { null, null, null, null };
+        private const int RenderToNE = 0;
+        private const int RenderToNW = 1;
+        private const int RenderToSE = 2;
+        private const int RenderToSW = 3;
+        private const int RenderWidth = 128;
+        private const int RenderHeight = 128;
+
+        private static int[] CalculateCellRenderOrder(int targetDir)
+        {
+            /*               North
+             *        0  1  2  3  4  5  6 
+             *        1  2  3  4  5  6  7 
+             *        2  3  4  5  6  7  8
+             *  East  3  4  5  6  7  8  9  West
+             *        4  5  6  7  8  9  10
+             *        5  6  7  8  9  10 11
+             *        6  7  8  9  10 11 12
+             *               South
+             *  
+             * Start value is always 0.
+             * Last value is (MaxX + MaxY).
+             * This is the AtkValue.
+             * 
+             * We attack from the left side of the render first
+             * with (X: 0, Y: AtkValue) until Y would be less than
+             * half of AtkValue.
+             * 
+             * We then attack from the right side of the render
+             * with (X: AtkValue, Y: 0) until X would be less than
+             * half of AtkValue - 1.
+             * 
+             * If we are attacking from the left, but Y is now
+             * greater than MaxY, then we are over half-way and are
+             * now starting at the bottom of the grid.
+             * 
+             * In this case, we start with (X: AtkValue - MaxY, Y: MaxY)
+             * and continue until we reach the same conditions that
+             * apply normally.  The same method applies to the right hand
+             * side where we start with (X: MaxX, Y: AtkValue - MaxX).
+             *
+             */
+
+            if (targetDir != RenderToNE)
+                throw new InvalidOperationException();
+
+            int[] result = new int[RenderWidth * RenderHeight];
+            int count = 0;
+            int start = 0;
+            int maxx = RenderWidth - 1;
+            int maxy = RenderHeight - 1;
+            int last = maxx + maxy;
+            int x, y;
+
+            for (int atk = start; atk <= last; atk++)
+            {
+                // Attack from the left.
+                if (atk < maxy)
+                { x = 0; y = atk; }
+                else
+                { x = atk - maxy; y = maxy; }
+                while (y > atk / 2)
+                    result[count++] = y-- * RenderWidth + x++;
+
+                // Attack from the right.
+                if (atk < maxx)
+                { x = atk; y = 0; }
+                else
+                { x = maxx; y = atk - maxx; }
+                while (y <= atk / 2)
+                    result[count++] = y++ * RenderWidth + x--;
+            }
+
+            return result;
+        }
+
+        private static int[] GetCellRenderOrder(int cameraDirection)
+        {
+            if (CellRenderOrder[cameraDirection] == null)
+                CellRenderOrder[cameraDirection] = CalculateCellRenderOrder(cameraDirection);
+            return CellRenderOrder[cameraDirection];
+        }
+
+        #endregion
+
+        private static Bitmap Regenerate3DImageForLayer(FlowInterfaceControl fic, Layer3D l, int width, int height)
+        {
+            Bitmap b = new Bitmap(width, height);
+            Graphics g = Graphics.FromImage(b);
+            g.Clear(Color.White);
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+            Dictionary<int, Brush> brushes = l.GetLayerColors();
+            int dataWidth = 128;
+            int dataHeight = 128;
+            int[] data = l.GenerateData(LayerFlowImageGeneration.X, LayerFlowImageGeneration.Y, 0, dataWidth, dataHeight, l.StandardDepth);
+
+            /* Our world is laid out in memory in terms of X / Y, but
+             * we are rendering isometric, which means that the rendering
+             * order for tiles must be like so:
+             * 
+             *               North
+             *        1  3  5  9  13 19 25
+             *        2  6  10 14 20 26 32
+             *        4  8  15 21 27 33 37
+             *  East  7  12 18 28 34 38 42  West
+             *        11 17 24 31 39 43 45
+             *        16 23 30 36 41 46 48
+             *        22 29 35 40 44 47 49
+             *               South
+             *  
+             * We also need to account for situations where the user rotates
+             * the isometric view.
+             */
+
+            /*
+             *                      North
+             *         0    0.5  1     1.5  2    2.5  3
+             *        -0.5  0    0.5   1    1.5  2    2.5
+             *        -1   -0.5  0     0.5  1    1.5  2
+             *  East  -1.5 -1   -0.5   0    0.5  1    1.5  West
+             *        -2   -1.5 -1    -0.5  0    0.5  1
+             *        -2.5 -2   -1.5  -1   -0.5  0    0.5
+             *        -3   -2.5 -2    -1.5 -1   -0.5  0
+             *                      South
+             *                      
+             *  v = (x - y) / 2.0
+             */
+
+            int[] render = GetCellRenderOrder(RenderToNE);
+            int ztop = l.StandardDepth;
+            int zbottom = 0;
+            for (int z = zbottom; z < ztop; z++)
+            {
+                int rcx = width / 2 - 1;
+                int rcy = height / 2 - 127;
+                int rw = 2;
+                int rh = 1;
+                for (int i = 0; i < render.Length; i++)
+                {
+                    // Calculate the X / Y of the tile in the grid.
+                    int x = render[i] % RenderWidth;
+                    int y = render[i] / RenderWidth;
+
+                    // Calculate the render position on screen.
+                    int rx = rcx + (int)((x - y) / 2.0 * rw);// (int)(x / ((RenderWidth + 1) / 2.0) * rw);
+                    int ry = rcy + (x + y) * rh - (rh / 2 * (RenderWidth + RenderHeight)) - (z - zbottom) * 1;
+                    
+                    while (true)
+                    {
+                        try
+                        {
+                            if (brushes != null && brushes.ContainsKey(data[x + y * dataWidth + z * dataWidth * dataHeight]))
+                            {
+                                SolidBrush sb = brushes[data[x + y * dataWidth + z * dataWidth * dataHeight]] as SolidBrush;
+                                //sb.Color = Color.FromArgb(255, sb.Color);
+                                g.FillRectangle(
+                                    sb,
+                                    new Rectangle(rx, ry, rw, rh)
+                                    );
+                            }
+                            break;
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            // Graphics can be in use elsewhere, but we don't care; just try again.
+                        }
+                    }
+                }
+            }
+
+            return b;
+        }
+
+        #endregion
+
+        #region 2D Rendering
+
+        private static Bitmap Regenerate2DImageForLayer(FlowInterfaceControl fic, Layer2D l, int width, int height)
         {
             Bitmap b = new Bitmap(width, height);
             Graphics g = Graphics.FromImage(b);
@@ -111,11 +240,6 @@ namespace TychaiaWorldGenViewer.Flow
                                     m_UnknownAssociation,
                                     new Rectangle(x, y, 1, 1)
                                     );
-#if FALSE
-                            callback((int)((x + y * width) / (double)(width * height) * 100.0), null);
-#else
-                            callback(0, null);
-#endif
                             break;
                         }
                         catch (InvalidOperationException)
@@ -124,8 +248,9 @@ namespace TychaiaWorldGenViewer.Flow
                         }
                     }
                 }
-            callback(100, b);
             return b;
         }
+
+        #endregion
     }
 }

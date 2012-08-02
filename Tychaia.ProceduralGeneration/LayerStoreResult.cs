@@ -12,7 +12,7 @@ namespace Tychaia.ProceduralGeneration
     /// generation of the in-game world.
     /// </summary>
     [DataContract]
-    public class LayerStoreResult : Layer
+    public class LayerStoreResult : Layer2D
     {
         [DataMember]
         [DefaultValue(FinishType.Biome)]

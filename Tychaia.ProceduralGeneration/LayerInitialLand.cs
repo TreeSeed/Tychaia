@@ -12,7 +12,7 @@ namespace Tychaia.ProceduralGeneration
     /// indicates either landmass or ocean.
     /// </summary>
     [DataContract]
-    public class LayerInitialLand : Layer
+    public class LayerInitialLand : Layer2D
     {
         [DataMember]
         [DefaultValue(0.9)]

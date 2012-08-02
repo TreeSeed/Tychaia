@@ -24,6 +24,11 @@ namespace Tychaia.ProceduralGeneration
             }
         }
 
+        public abstract bool Is3D
+        {
+            get;
+        }
+
         private void TransformSeed()
         {
             // Give this layer's seed some variance from the old parent, since otherwise
@@ -56,11 +61,6 @@ namespace Tychaia.ProceduralGeneration
             {
                 return this.m_Seed;
             }
-        }
-        
-        [Obsolete("This constructor is only for XML serialization / deserialization.", true)]
-        public Layer()
-        {
         }
 
         protected Layer(long seed)
@@ -123,6 +123,12 @@ namespace Tychaia.ProceduralGeneration
 
         public abstract int[] GenerateData(int x, int y, int width, int height);
 
+        public virtual int[] GenerateData(int x, int y, int z, int width, int height, int depth)
+        {
+            // FIXME: If the depth != 1, then this is an invalid result.
+            return this.GenerateData(x, y, width, height);
+        }
+
         public abstract Dictionary<int, System.Drawing.Brush> GetLayerColors();
 
         #region Designer Methods
@@ -132,6 +138,9 @@ namespace Tychaia.ProceduralGeneration
         {
             return new string[] { "Parent" };
         }
+
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public abstract bool[] GetParents3DRequired();
 
         public void SetParent(int idx, Layer parent)
         {
@@ -146,6 +155,13 @@ namespace Tychaia.ProceduralGeneration
             }
             else
                 this.m_Parents[idx] = parent;
+
+            // Check to ensure the parent is valid.
+            bool is3D = this.GetParents3DRequired()[idx];
+            if (is3D && parent is Layer2D)
+                this.m_Parents[idx] = null;
+            else if (!is3D && parent is Layer3D)
+                this.m_Parents[idx] = null;
 
             // Adjust seed if needed.
             if (idx == 0)

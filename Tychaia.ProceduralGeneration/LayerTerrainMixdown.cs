@@ -12,7 +12,7 @@ namespace Tychaia.ProceduralGeneration
     /// reduce the number of mountains that exist.
     /// </summary>
     [DataContract]
-    public class LayerTerrainMixdown : Layer
+    public class LayerTerrainMixdown : Layer2D
     {
         [DataMember]
         [DefaultValue(0)]

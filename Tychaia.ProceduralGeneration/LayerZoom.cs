@@ -12,7 +12,7 @@ namespace Tychaia.ProceduralGeneration
     /// values for the data that needs to be filled in (since resolution is being doubled).
     /// </summary>
     [DataContract]
-    public class LayerZoom : Layer
+    public class LayerZoom : Layer2D
     {
         [DataMember]
         [DefaultValue(ZoomType.Smooth)]

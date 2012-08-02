@@ -11,7 +11,7 @@ namespace Tychaia.ProceduralGeneration
     /// Adds land to the existing land in the generator
     /// </summary>
     [DataContract()]
-    public class LayerExtendLand : Layer
+    public class LayerExtendLand : Layer2D
     {
         public LayerExtendLand(Layer parent)
             : base(parent)

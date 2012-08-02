@@ -12,7 +12,7 @@ namespace Tychaia.ProceduralGeneration
     /// integer IDs (where the integers often represent biomes).
     /// </summary>
     [DataContract()]
-    public class LayerRandomBiome : Layer
+    public class LayerRandomBiome : Layer2D
     {
         [DataMember]
         [DefaultValue(1)]

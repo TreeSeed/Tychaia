@@ -51,6 +51,12 @@
     <Compile Include="Biomes\TertiaryBiome.cs" />
     <Compile Include="Biomes\SecondaryBiome.cs" />
     <Compile Include="Biomes\TundraSecondaryBiome.cs" />
+    <Compile Include="LayerDeriveViability.cs" />
+    <Compile Include="LayerCopyResult.cs" />
+    <Compile Include="LayerOreMixdown.cs" />
+    <Compile Include="Layer3DFormTerrain.cs" />
+    <Compile Include="Layer2D.cs" />
+    <Compile Include="Layer3D.cs" />
     <Compile Include="LayerEraseTowns.cs" />
     <Compile Include="LayerInitialTowns.cs" />
     <Compile Include="LayerAutoVoronoiMixdown.cs" />

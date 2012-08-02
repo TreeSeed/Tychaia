@@ -12,7 +12,7 @@ namespace Tychaia.ProceduralGeneration
     /// input land area (0 and 1 value).
     /// </summary>
     [DataContract]
-    public class LayerDeriveTerrain : Layer
+    public class LayerDeriveTerrain : Layer2D
     {
         [DataMember]
         [DefaultValue(true)]

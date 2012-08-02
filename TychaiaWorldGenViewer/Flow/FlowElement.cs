@@ -16,7 +16,7 @@ namespace TychaiaWorldGenViewer.Flow
         public string Name
         {
             get;
-            protected set;
+            set;
         }
 
         [DataMember]

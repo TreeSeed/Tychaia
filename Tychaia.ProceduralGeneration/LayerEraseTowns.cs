@@ -11,7 +11,7 @@ namespace Tychaia.ProceduralGeneration
     /// A layer which erases town cells that exist over ocean or water.
     /// </summary>
     [DataContract]
-    public class LayerEraseTowns : Layer
+    public class LayerEraseTowns : Layer2D
     {
         public LayerEraseTowns(Layer towns, Layer land)
             : base(new Layer[] { towns, land })

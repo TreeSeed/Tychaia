@@ -11,7 +11,7 @@ namespace Tychaia.ProceduralGeneration
     /// Performs mathematical operations on perlin noise maps.
     /// </summary>
     [DataContract]
-    public class LayerPerlinMath : Layer
+    public class LayerPerlinMath : Layer2D
     {
         [DataMember]
         [DefaultValue(MathOp.Add)]

@@ -11,10 +11,10 @@ namespace Tychaia.ProceduralGeneration
     /// Inverts the values in the layer.
     /// </summary>
     [DataContract()]
-    public class LayerInvert : Layer
+    public class LayerInvert : Layer2D
     {
         [DataMember]
-        [DefaultValue(true)]
+        [DefaultValue(0)]
         [Description("The minimum value in the input range.")]
         public int MinRange
         {
@@ -23,22 +23,19 @@ namespace Tychaia.ProceduralGeneration
         }
 
         [DataMember]
-        [DefaultValue(true)]
+        [DefaultValue(100)]
         [Description("The maximum value in the input range.")]
         public int MaxRange
         {
             get;
             set;
         }
-        
-        [Obsolete("This constructor is only for XML serialization / deserialization.", true)]
-        public LayerInvert()
-        {
-        }
 
         public LayerInvert(Layer parent)
             : base(parent)
         {
+            this.MinRange = 0;
+            this.MaxRange = 100;
         }
 
         public override int[] GenerateData(int x, int y, int width, int height)

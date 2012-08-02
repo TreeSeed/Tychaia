@@ -12,7 +12,7 @@ namespace Tychaia.ProceduralGeneration
     /// sections of data.
     /// </summary>
     [DataContract()]
-    public class LayerVoronoiMixdown : Layer
+    public class LayerVoronoiMixdown : Layer2D
     {
         [DataMember]
         [DefaultValue(15)]

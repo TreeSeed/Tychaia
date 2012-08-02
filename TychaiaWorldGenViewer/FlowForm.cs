@@ -150,11 +150,13 @@ namespace TychaiaWorldGenViewer
             {
                 this.c_LayerInspector.SelectedObject = null;
                 this.c_DeleteSelectedMenuItem.Enabled = false;
+                this.c_RenameSelectedMenuItem.Enabled = false;
             }
             else
             {
                 this.c_LayerInspector.SelectedObject = this.c_FlowInterfaceControl.SelectedElement.GetObjectToInspect();
                 this.c_DeleteSelectedMenuItem.Enabled = true;
+                this.c_RenameSelectedMenuItem.Enabled = true;
             }
         }
 
@@ -172,20 +174,40 @@ namespace TychaiaWorldGenViewer
             FlowElement fe = this.c_FlowInterfaceControl.SelectedElement;
             this.c_FlowInterfaceControl.SelectedElement = null;
             this.c_FlowInterfaceControl.Elements.Remove(fe);
+            this.c_FlowInterfaceControl.Invalidate();
+        }
+
+        private void c_RenameSelectedMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.c_FlowInterfaceControl.SelectedElement == null)
+                return;
+
+            RenameDialog re = new RenameDialog(this.c_FlowInterfaceControl.SelectedElement.Name);
+            if (re.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                this.c_FlowInterfaceControl.SelectedElement.Name = re.Name;
+                this.c_FlowInterfaceControl.Invalidate();
+            }
         }
 
         private void c_XNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             LayerFlowImageGeneration.X = (int)this.c_XNumericUpDown.Value;
+            if (this.c_FlowInterfaceControl.SelectedElement != null)
+                this.c_FlowInterfaceControl.PushForReprocessing(this.c_FlowInterfaceControl.SelectedElement);
             foreach (FlowElement el in this.c_FlowInterfaceControl.Elements)
-                this.c_FlowInterfaceControl.PushForReprocessing(el);
+                if (el != this.c_FlowInterfaceControl.SelectedElement)
+                    this.c_FlowInterfaceControl.PushForReprocessing(el);
         }
 
         private void c_YNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             LayerFlowImageGeneration.Y = (int)this.c_YNumericUpDown.Value;
+            if (this.c_FlowInterfaceControl.SelectedElement != null)
+                this.c_FlowInterfaceControl.PushForReprocessing(this.c_FlowInterfaceControl.SelectedElement);
             foreach (FlowElement el in this.c_FlowInterfaceControl.Elements)
-                this.c_FlowInterfaceControl.PushForReprocessing(el);
+                if (el != this.c_FlowInterfaceControl.SelectedElement)
+                    this.c_FlowInterfaceControl.PushForReprocessing(el);
         }
 
         #endregion
@@ -346,6 +368,46 @@ namespace TychaiaWorldGenViewer
                new LayerFlowElement(
                    this.c_FlowInterfaceControl,
                    new LayerEraseTowns(null, null)
+               )
+            );
+        }
+
+        private void c_TerrainAddForm3DTerrainMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new Layer3DFormTerrain(null)
+               )
+            );
+        }
+
+        private void c_LandAddMixOreWithVoronoiMixdownMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new LayerOreMixdown(null, null)
+               )
+            );
+        }
+
+        private void c_GeneralAddCopyResultMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new LayerCopyResult(null)
+               )
+            );
+        }
+
+        private void c_TownsAddDetermineViabilityMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new LayerDeriveViability(null, null, null, null, null)
                )
             );
         }

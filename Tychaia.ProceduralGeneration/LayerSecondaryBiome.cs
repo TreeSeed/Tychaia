@@ -11,7 +11,7 @@ namespace Tychaia.ProceduralGeneration
     /// Generates secondary biomes based on input data.
     /// </summary>
     [DataContract]
-    public class LayerSecondaryBiome : Layer
+    public class LayerSecondaryBiome : Layer2D
     {
         [DataMember]
         [DefaultValue(0)]

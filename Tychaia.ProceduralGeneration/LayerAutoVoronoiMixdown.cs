@@ -11,7 +11,7 @@ namespace Tychaia.ProceduralGeneration
     /// Automatically combines a Perlin and Voronoi map in a mixdown.
     /// </summary>
     [DataContract]
-    public class LayerAutoVoronoiMixdown : Layer
+    public class LayerAutoVoronoiMixdown : Layer2D
     {
         [DataMember]
         public LayerInitialPerlin Perlin

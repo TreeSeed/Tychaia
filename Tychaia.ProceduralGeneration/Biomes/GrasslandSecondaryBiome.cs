@@ -18,6 +18,7 @@ namespace Tychaia.ProceduralGeneration.Biomes
             this.MaxTerrain = 0.4;
             this.BrushColor = Color.Green;
             this.DefaultFor = BiomeEngine.BIOME_PLAINS;
+            this.TownSuitability = 0.5;
             this.SuitableBiomes = new int[]
             {
                 BiomeEngine.BIOME_PLAINS

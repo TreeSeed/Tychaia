@@ -12,7 +12,7 @@ namespace Tychaia.ProceduralGeneration
     /// Generates a layer from perlin noise.
     /// </summary>
     [DataContract]
-    public class LayerInitialPerlin : Layer
+    public class LayerInitialPerlin : Layer2D
     {
         [DataMember]
         [DefaultValue(100)]
