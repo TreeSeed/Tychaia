@@ -6,6 +6,7 @@ using Protogame;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Tychaia.Title;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Tychaia.Generators
 {
@@ -18,34 +19,45 @@ namespace Tychaia.Generators
         public const int Depth = 256;
 
         public Block[,,] m_Blocks = null;
+        private Texture2D m_Texture = null;
         private object m_BlocksLock = new object();
-        private HashSet<IPositionable> m_Uniques = null;
-        private IGenerator[] m_Generators = null;
         private int m_Seed = TitleWorld.m_StaticSeed; // All chunks are generated from the same seed.
         private Chunk m_Left = null;
         private Chunk m_Right = null;
         private Chunk m_Up = null;
         private Chunk m_Down = null;
+        private bool m_IsGenerated = false;
 
-        public Chunk(HashSet<IPositionable> uniques, int x, int y)
+        public Chunk(int x, int y)
         {
-            this.m_Uniques = uniques;
             this.GlobalX = x;
             this.GlobalY = y;
-            this.m_Generators = new IGenerator[]
-            {
-                new WorldGenerator(),
-                //new TemperatureGenerator(),
-                //new RainfallGenerator(),
-                //new StateValidationGenerator(),
-                //new BiomeGenerator()
-            };
             this.m_Blocks = new Block[Chunk.Width, Chunk.Height, Chunk.Depth];
             this.Generate();
         }
 
         public int GlobalX;
         public int GlobalY;
+
+        public bool IsGenerated
+        {
+            get
+            {
+                return this.m_IsGenerated;
+            }
+        }
+
+        public Texture2D Texture
+        {
+            get
+            {
+                if (!this.m_IsGenerated)
+                    return null;
+                if (this.m_Texture == null)
+                    this.m_Texture = ChunkRenderer.RenderTilesToTexture(this, Static.GameContext);
+                return this.m_Texture;
+            }
+        }
 
         public Chunk Left
         {
@@ -58,7 +70,7 @@ namespace Tychaia.Generators
                     else if (this.m_Down != null && this.m_Down.m_Left != null && this.m_Down.m_Left.m_Up != null)
                         this.m_Left = this.m_Down.m_Left.m_Up;
                     else
-                        this.m_Left = new Chunk(this.m_Uniques, this.GlobalX - Chunk.Width, this.GlobalY);
+                        this.m_Left = new Chunk(this.GlobalX - Chunk.Width, this.GlobalY);
                     this.m_Left.m_Right = this;
                 }
                 return this.m_Left;
@@ -76,7 +88,7 @@ namespace Tychaia.Generators
                     else if (this.m_Down != null && this.m_Down.m_Right != null && this.m_Down.m_Right.m_Up != null)
                         this.m_Right = this.m_Down.m_Right.m_Up;
                     else
-                        this.m_Right = new Chunk(this.m_Uniques, this.GlobalX + Chunk.Width, this.GlobalY);
+                        this.m_Right = new Chunk(this.GlobalX + Chunk.Width, this.GlobalY);
                     this.m_Right.m_Left = this;
                 }
                 return this.m_Right;
@@ -94,7 +106,7 @@ namespace Tychaia.Generators
                     else if (this.m_Right != null && this.m_Right.m_Up != null && this.m_Right.m_Up.m_Left != null)
                         this.m_Up = this.m_Right.m_Up.m_Left;
                     else
-                        this.m_Up = new Chunk(this.m_Uniques, this.GlobalX, this.GlobalY - Chunk.Height);
+                        this.m_Up = new Chunk(this.GlobalX, this.GlobalY - Chunk.Height);
                     this.m_Up.m_Down = this;
                 }
                 return this.m_Up;
@@ -112,7 +124,7 @@ namespace Tychaia.Generators
                     else if (this.m_Right != null && this.m_Right.m_Down != null && this.m_Right.m_Down.m_Left != null)
                         this.m_Down = this.m_Right.m_Down.m_Left;
                     else
-                        this.m_Down = new Chunk(this.m_Uniques, this.GlobalX, this.GlobalY + Chunk.Height);
+                        this.m_Down = new Chunk(this.GlobalX, this.GlobalY + Chunk.Height);
                     this.m_Down.m_Up = this;
                 }
                 return this.m_Down;
@@ -123,53 +135,25 @@ namespace Tychaia.Generators
         {
             Thread t = new Thread(() =>
             {
-                ChunkInfo i = new ChunkInfo(this.m_Uniques)
+                ChunkInfo i = new ChunkInfo()
                 {
                     Seed = this.m_Seed,
                     Random = new Random(this.m_Seed),
                     Bounds = new Rectangle(this.GlobalX, this.GlobalY, Chunk.Width, Chunk.Height)
                 };
-                foreach (IGenerator g in this.m_Generators)
-                    g.Generate(this.m_Blocks, i);
-                /*
-                for (int x = 0; x < Chunk.Width; x++)
-                    for (int y = 0; y < Chunk.Height; y++)
-                    {
-                            GeneratedBlock b = g.Generate(i, this.m_GlobalX + x, this.m_GlobalY + y);
-                            if (b != null)
-                                this.m_Blocks[x, y] = b;
-                        }
-                        int percent = (int)((double)(y + (x * Chunk.Height)) / (double)total * 100);
-                        if (lastPercent < percent)
-                        {
-                            Log.WriteLine("... " + percent.ToString() + "% (" + (y + (x * Chunk.Height)).ToString() + "/" + total.ToString() + ") complete.");
-                            lastPercent = percent;
-                        }
-                    }*/
+                ChunkProvider.FillChunk(this.m_Blocks, i);
+                this.m_IsGenerated = true;
             });
             t.IsBackground = true;
             t.Start();
         }
-
-        /*public GeneratedBlock GetBlockAt(int x, int y)
-        {
-            if (this.m_Generating)
-                return null;
-            if (!this.m_Generated)
-            {
-                this.Generate();
-                return null;
-            }
-            return this.m_Blocks[x, y];
-        }*/
     }
 
     public class ChunkInfo
     {
-        public ChunkInfo(HashSet<IPositionable> uniques)
+        public ChunkInfo()
         {
             this.Objects = new List<object>();
-            this.Uniques = uniques;
         }
 
         public int Seed
@@ -191,12 +175,6 @@ namespace Tychaia.Generators
         }
 
         public List<object> Objects
-        {
-            get;
-            private set;
-        }
-
-        public HashSet<IPositionable> Uniques
         {
             get;
             private set;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Protogame;
 using Microsoft.Xna.Framework.Input;
+using Tychaia.Generators;
 
 namespace Tychaia
 {

@@ -10,10 +10,10 @@ About
 
 Imagine a game where the world never ends, the scale is infinite and there's always one more quest.  Where the game starts with nothing and ends with your death.  Welcome to Tychaia.
 
-![A very early screenshot.](http://i.imgur.com/SWItl.png)
+![A very early screenshot.](http://i.imgur.com/BeXfI.png)
 
 There's still a lot of work to be done regarding the game's procedural generation, such as:
-  * Biomes
+  * ~~Biomes~~
   * Dungeons
   * Regions
   * Towns
@@ -23,4 +23,4 @@ There's still a lot of work to be done regarding the game's procedural generatio
   * Backstory Generation
   * Quest Generation
 
-![The world biome generation experimentation tool.](http://i.imgur.com/XINuz.png)
+![The world generation design tool.](http://i.imgur.com/kyd5A.png)

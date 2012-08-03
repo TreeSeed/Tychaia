@@ -22,6 +22,7 @@ namespace Protogame
         public Camera Camera { get; set; }
         public GameWindow Window { get; set; }
         public int FPS { get; internal set; }
+        public Game Game { get; internal set; }
 
         internal GameContext()
         {

@@ -97,6 +97,8 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -112,42 +114,47 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChunkEntity.cs" />
-    <Compile Include="ChunkTileset.cs" />
+    <Compile Include="Generators\ChunkAccess.cs" />
+    <Compile Include="Generators\ChunkManager.cs" />
+    <Compile Include="Generators\ChunkProvider.cs" />
+    <None Include="Disabled\ChunkTileset.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Elements\World.cs" />
-    <Compile Include="Generators\Old\Biomes\Biome.cs" />
-    <Compile Include="Generators\Old\Biomes\SwampBiome.cs" />
-    <Compile Include="Generators\Old\Biomes\WoodsBiome.cs" />
-    <Compile Include="Generators\Old\Biomes\RainforestBiome.cs" />
-    <Compile Include="Generators\Old\Biomes\SeasonalForestBiome.cs" />
-    <Compile Include="Generators\Old\Biomes\GrassDesertBiome.cs" />
-    <Compile Include="Generators\Old\Biomes\TaigaBiome.cs" />
-    <Compile Include="Generators\Old\Biomes\TreeTypes\TaigaTreeType.cs" />
-    <Compile Include="Generators\Old\Biomes\TundraBiome.cs" />
-    <Compile Include="Generators\Old\Biomes\PlainsBiome.cs" />
-    <Compile Include="Generators\Old\Biomes\ForestBiome.cs" />
-    <Compile Include="Generators\Old\Biomes\DesertBiome.cs" />
-    <Compile Include="Generators\Old\Biomes\TreeType.cs" />
-    <Compile Include="Generators\Old\Biomes\TreeTypes\GrassTreeType.cs" />
-    <Compile Include="Generators\Old\Biomes\TreeTypes\ForestTreeType.cs" />
-    <Compile Include="Generators\Old\Chunk.cs" />
-    <Compile Include="Generators\Old\BiomeGenerator.cs" />
-    <Compile Include="Generators\Old\StateValidationGenerator.cs" />
-    <Compile Include="Generators\Old\TemperatureGenerator.cs" />
-    <Compile Include="Generators\Old\RainfallGenerator.cs" />
-    <Compile Include="Generators\Old\Old\ContinentInformation.cs" />
-    <Compile Include="Generators\Old\Old\ContinentPatchGenerator.cs" />
-    <Compile Include="Generators\Old\Old\ContinentVarianceGenerator.cs" />
-    <Compile Include="Generators\Old\Block.cs" />
-    <Compile Include="Generators\Old\Old\ContinentAreaGenerator.cs" />
-    <Compile Include="Generators\Old\Old\InitialWorldGenerator.cs" />
-    <Compile Include="Generators\Old\IGenerator.cs" />
-    <Compile Include="Generators\Old\IPositionable.cs" />
-    <Compile Include="Generators\Old\WorldGenerator.cs" />
+    <Compile Include="Generators\ChunkRenderer.cs" />
+    <None Include="Disabled\Old\Biomes\Biome.cs" />
+    <None Include="Disabled\Old\Biomes\SwampBiome.cs" />
+    <None Include="Disabled\Old\Biomes\WoodsBiome.cs" />
+    <None Include="Disabled\Old\Biomes\RainforestBiome.cs" />
+    <None Include="Disabled\Old\Biomes\SeasonalForestBiome.cs" />
+    <None Include="Disabled\Old\Biomes\GrassDesertBiome.cs" />
+    <None Include="Disabled\Old\Biomes\TaigaBiome.cs" />
+    <None Include="Disabled\Old\Biomes\TreeTypes\TaigaTreeType.cs" />
+    <None Include="Disabled\Old\Biomes\TundraBiome.cs" />
+    <None Include="Disabled\Old\Biomes\PlainsBiome.cs" />
+    <None Include="Disabled\Old\Biomes\ForestBiome.cs" />
+    <None Include="Disabled\Old\Biomes\DesertBiome.cs" />
+    <None Include="Disabled\Old\Biomes\TreeType.cs" />
+    <None Include="Disabled\Old\Biomes\TreeTypes\GrassTreeType.cs" />
+    <None Include="Disabled\Old\Biomes\TreeTypes\ForestTreeType.cs" />
+    <Compile Include="Generators\Chunk.cs" />
+    <None Include="Disabled\Old\BiomeGenerator.cs" />
+    <None Include="Disabled\Old\StateValidationGenerator.cs" />
+    <None Include="Disabled\Old\TemperatureGenerator.cs" />
+    <None Include="Disabled\Old\RainfallGenerator.cs" />
+    <None Include="Disabled\Old\Old\ContinentInformation.cs" />
+    <None Include="Disabled\Old\Old\ContinentPatchGenerator.cs" />
+    <None Include="Disabled\Old\Old\ContinentVarianceGenerator.cs" />
+    <Compile Include="Generators\Block.cs" />
+    <None Include="Disabled\Old\Old\ContinentAreaGenerator.cs" />
+    <None Include="Disabled\Old\Old\InitialWorldGenerator.cs" />
+    <None Include="Disabled\Old\IGenerator.cs" />
+    <None Include="Disabled\Old\IPositionable.cs" />
+    <None Include="Disabled\Old\WorldGenerator.cs" />
     <Compile Include="Elements\Region.cs" />
+    <Compile Include="Generators\TileIsometricifier.cs" />
     <Compile Include="IsometricWorldManager.cs" />
-    <Compile Include="Lighting\FieldOfView.cs" />
-    <Compile Include="Lighting\FieldOfViewRenderer.cs" />
+    <None Include="Disabled\Lighting\FieldOfView.cs" />
+    <None Include="Disabled\Lighting\FieldOfViewRenderer.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -155,7 +162,8 @@
     <Compile Include="RuntimeGame.cs" />
     <Compile Include="RandomExtensions.cs" />
     <Compile Include="RPGWorld.cs" />
-    <Compile Include="TilesetDynamicLoader.cs" />
+    <Compile Include="Static.cs" />
+    <None Include="Disabled\TilesetDynamicLoader.cs" />
     <Compile Include="Tiles\SandGrassTile.cs" />
     <Compile Include="Tiles\SnowTile.cs" />
     <Compile Include="Tiles\LeafGreyTile.cs" />
@@ -171,6 +179,10 @@
     <Compile Include="Title\TitleWorld.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Other\WorldConfig.xml">
+      <Link>WorldConfig.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
@@ -187,6 +199,18 @@
       <Name>Tychaia.Content %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
       <Project>{71CB2FDC-897F-4E08-A793-E4201305B7DD}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.Globals\Tychaia.Globals.csproj">
+      <Project>{58F07D5A-E86E-4561-88E8-F96744D59157}</Project>
+      <Name>Tychaia.Globals</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.ProceduralGeneration\Tychaia.ProceduralGeneration.csproj">
+      <Project>{642D5815-4533-4146-96C1-D932FE1641F9}</Project>
+      <Name>Tychaia.ProceduralGeneration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TychaiaWorldGenViewer\TychaiaWorldGenViewer.csproj">
+      <Project>{EDCFB186-0C67-4771-8033-8572A0744B2C}</Project>
+      <Name>TychaiaWorldGenViewer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

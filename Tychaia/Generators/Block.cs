@@ -52,5 +52,21 @@ namespace Tychaia.Generators
         public static Block SandBlock = new Block { Tile = SandTile, Impassable = false };
         public static Block SandGrassBlock = new Block { Tile = SandGrassTile, Impassable = false };
         public static Block GrassLeafBlock = new Block { Tile = GrassLeafTile, Impassable = false, Transparent = true };
+
+        public static Dictionary<int, Block> BlockIDMapping = new Dictionary<int, Block>
+        {
+            { 0, WaterBlock },
+            { 1, GrassBlock },
+            { 2, SandBlock },
+            { 3, SnowBlock }, 
+            { 4, DirtBlock },
+            { 5, StoneBlock },
+            { 6, TrunkBlock },
+            { 7, LeafBlock },
+            { 8, LeafGreyBlock },
+            { 9, LavaBlock },
+            { 10, SandGrassBlock },
+            { 11, GrassLeafBlock }
+        };
     }
 }
