@@ -77,9 +77,13 @@
             this.c_TownsAddDetermineViabilityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_TownsAddMixTownsWithViabilityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_TownsAddSimulateRundownMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extendTownsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_LandAddZoomTownCentersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_FamilyTreesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
             this.c_3DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_3DGeneralMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_3DGeneralStoreResultMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_3DTerrainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_3DTerrainAddForm3DTerrainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
@@ -97,9 +101,6 @@
             this.c_XNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
-            this.extendTownsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.c_3DGeneralMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.c_3DGeneralStoreResultMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_StatusStrip.SuspendLayout();
             this.c_ContextMenuStrip.SuspendLayout();
             this.c_ToolStrip.SuspendLayout();
@@ -155,142 +156,6 @@
             this.c_DeleteSelectedMenuItem});
             this.c_ContextMenuStrip.Name = "contextMenuStrip1";
             this.c_ContextMenuStrip.Size = new System.Drawing.Size(165, 346);
-            // 
-            // c_2DToolStripMenuItem
-            // 
-            this.c_2DToolStripMenuItem.Enabled = false;
-            this.c_2DToolStripMenuItem.Name = "c_2DToolStripMenuItem";
-            this.c_2DToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.c_2DToolStripMenuItem.Text = "2D:";
-            // 
-            // c_GeneralMenuItem
-            // 
-            this.c_GeneralMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.c_GeneralAddInitialPerlinMenuItem,
-            this.c_GeneralAddPerlinMathMenuItem,
-            this.toolStripMenuItem1,
-            this.c_GeneralAddInitialVoronoiMenuItem,
-            this.c_GeneralAddMixVoronoiMenuItem,
-            this.c_GeneralAddAutoMixVoronoiMenuItem,
-            this.toolStripMenuItem3,
-            this.c_GeneralAddZoomMenuItem,
-            this.c_GeneralAddSmoothMenuItem,
-            this.c_GeneralAddRemapMenuItem,
-            this.c_GeneralAddInvertMenuItem,
-            this.c_GeneralAddNormalizeMenuItem,
-            this.c_GeneralAddDenormalizeMenuItem,
-            this.c_Seperator2MenuItem,
-            this.c_GeneralAddCopyResultMenuItem,
-            this.c_GeneralAddStoreResultMenuItem});
-            this.c_GeneralMenuItem.Name = "c_GeneralMenuItem";
-            this.c_GeneralMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.c_GeneralMenuItem.Text = "General";
-            // 
-            // c_GeneralAddInitialPerlinMenuItem
-            // 
-            this.c_GeneralAddInitialPerlinMenuItem.Name = "c_GeneralAddInitialPerlinMenuItem";
-            this.c_GeneralAddInitialPerlinMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.c_GeneralAddInitialPerlinMenuItem.Text = "Initial Perlin";
-            this.c_GeneralAddInitialPerlinMenuItem.Click += new System.EventHandler(this.c_GeneralAddInitialPerlinMenuItem_Click);
-            // 
-            // c_GeneralAddPerlinMathMenuItem
-            // 
-            this.c_GeneralAddPerlinMathMenuItem.Name = "c_GeneralAddPerlinMathMenuItem";
-            this.c_GeneralAddPerlinMathMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.c_GeneralAddPerlinMathMenuItem.Text = "Perform Perlin Math";
-            this.c_GeneralAddPerlinMathMenuItem.Click += new System.EventHandler(this.c_GeneralAddPerlinMathMenuItem_Click);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(178, 6);
-            // 
-            // c_GeneralAddInitialVoronoiMenuItem
-            // 
-            this.c_GeneralAddInitialVoronoiMenuItem.Name = "c_GeneralAddInitialVoronoiMenuItem";
-            this.c_GeneralAddInitialVoronoiMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.c_GeneralAddInitialVoronoiMenuItem.Text = "Initial Voronoi";
-            this.c_GeneralAddInitialVoronoiMenuItem.Click += new System.EventHandler(this.c_GeneralAddInitialVoronoiMenuItem_Click);
-            // 
-            // c_GeneralAddMixVoronoiMenuItem
-            // 
-            this.c_GeneralAddMixVoronoiMenuItem.Name = "c_GeneralAddMixVoronoiMenuItem";
-            this.c_GeneralAddMixVoronoiMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.c_GeneralAddMixVoronoiMenuItem.Text = "Mix Voronoi";
-            this.c_GeneralAddMixVoronoiMenuItem.Click += new System.EventHandler(this.c_GeneralAddMixVoronoiMenuItem_Click);
-            // 
-            // c_GeneralAddAutoMixVoronoiMenuItem
-            // 
-            this.c_GeneralAddAutoMixVoronoiMenuItem.Name = "c_GeneralAddAutoMixVoronoiMenuItem";
-            this.c_GeneralAddAutoMixVoronoiMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.c_GeneralAddAutoMixVoronoiMenuItem.Text = "Auto Mix Voronoi";
-            this.c_GeneralAddAutoMixVoronoiMenuItem.Click += new System.EventHandler(this.c_GeneralAddAutoMixVoronoiMenuItem_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(178, 6);
-            // 
-            // c_GeneralAddZoomMenuItem
-            // 
-            this.c_GeneralAddZoomMenuItem.Name = "c_GeneralAddZoomMenuItem";
-            this.c_GeneralAddZoomMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.c_GeneralAddZoomMenuItem.Text = "Zoom";
-            this.c_GeneralAddZoomMenuItem.Click += new System.EventHandler(this.c_GeneralAddZoomMenuItem_Click);
-            // 
-            // c_GeneralAddSmoothMenuItem
-            // 
-            this.c_GeneralAddSmoothMenuItem.Enabled = false;
-            this.c_GeneralAddSmoothMenuItem.Name = "c_GeneralAddSmoothMenuItem";
-            this.c_GeneralAddSmoothMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.c_GeneralAddSmoothMenuItem.Text = "Smooth";
-            // 
-            // c_GeneralAddRemapMenuItem
-            // 
-            this.c_GeneralAddRemapMenuItem.Enabled = false;
-            this.c_GeneralAddRemapMenuItem.Name = "c_GeneralAddRemapMenuItem";
-            this.c_GeneralAddRemapMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.c_GeneralAddRemapMenuItem.Text = "Remap";
-            // 
-            // c_GeneralAddInvertMenuItem
-            // 
-            this.c_GeneralAddInvertMenuItem.Name = "c_GeneralAddInvertMenuItem";
-            this.c_GeneralAddInvertMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.c_GeneralAddInvertMenuItem.Text = "Invert";
-            this.c_GeneralAddInvertMenuItem.Click += new System.EventHandler(this.c_GeneralAddInvertMenuItem_Click);
-            // 
-            // c_GeneralAddNormalizeMenuItem
-            // 
-            this.c_GeneralAddNormalizeMenuItem.Enabled = false;
-            this.c_GeneralAddNormalizeMenuItem.Name = "c_GeneralAddNormalizeMenuItem";
-            this.c_GeneralAddNormalizeMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.c_GeneralAddNormalizeMenuItem.Text = "Normalize";
-            // 
-            // c_GeneralAddDenormalizeMenuItem
-            // 
-            this.c_GeneralAddDenormalizeMenuItem.Enabled = false;
-            this.c_GeneralAddDenormalizeMenuItem.Name = "c_GeneralAddDenormalizeMenuItem";
-            this.c_GeneralAddDenormalizeMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.c_GeneralAddDenormalizeMenuItem.Text = "Denormalize";
-            // 
-            // c_Seperator2MenuItem
-            // 
-            this.c_Seperator2MenuItem.Name = "c_Seperator2MenuItem";
-            this.c_Seperator2MenuItem.Size = new System.Drawing.Size(178, 6);
-            // 
-            // c_GeneralAddCopyResultMenuItem
-            // 
-            this.c_GeneralAddCopyResultMenuItem.Name = "c_GeneralAddCopyResultMenuItem";
-            this.c_GeneralAddCopyResultMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.c_GeneralAddCopyResultMenuItem.Text = "Copy Result";
-            this.c_GeneralAddCopyResultMenuItem.Click += new System.EventHandler(this.c_GeneralAddCopyResultMenuItem_Click);
-            // 
-            // c_GeneralAddStoreResultMenuItem
-            // 
-            this.c_GeneralAddStoreResultMenuItem.Name = "c_GeneralAddStoreResultMenuItem";
-            this.c_GeneralAddStoreResultMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.c_GeneralAddStoreResultMenuItem.Text = "Store Result";
-            this.c_GeneralAddStoreResultMenuItem.Click += new System.EventHandler(this.c_GeneralAddStoreResultMenuItem_Click);
             // 
             // c_2DToolStripMenuItem
             // 
@@ -579,7 +444,8 @@
             this.c_TownsAddDetermineViabilityMenuItem,
             this.c_TownsAddMixTownsWithViabilityMenuItem,
             this.c_TownsAddSimulateRundownMenuItem,
-            this.extendTownsToolStripMenuItem});
+            this.extendTownsToolStripMenuItem,
+            this.c_LandAddZoomTownCentersMenuItem});
             this.c_TownsMenuItem.Name = "c_TownsMenuItem";
             this.c_TownsMenuItem.Size = new System.Drawing.Size(164, 22);
             this.c_TownsMenuItem.Text = "Towns";
@@ -618,6 +484,20 @@
             this.c_TownsAddSimulateRundownMenuItem.Size = new System.Drawing.Size(202, 22);
             this.c_TownsAddSimulateRundownMenuItem.Text = "Simulate Rundown";
             // 
+            // extendTownsToolStripMenuItem
+            // 
+            this.extendTownsToolStripMenuItem.Name = "extendTownsToolStripMenuItem";
+            this.extendTownsToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.extendTownsToolStripMenuItem.Text = "Extend Towns";
+            this.extendTownsToolStripMenuItem.Click += new System.EventHandler(this.extendTownsToolStripMenuItem_Click);
+            // 
+            // c_LandAddZoomTownCentersMenuItem
+            // 
+            this.c_LandAddZoomTownCentersMenuItem.Name = "c_LandAddZoomTownCentersMenuItem";
+            this.c_LandAddZoomTownCentersMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.c_LandAddZoomTownCentersMenuItem.Text = "Zoom Town Centers";
+            this.c_LandAddZoomTownCentersMenuItem.Click += new System.EventHandler(this.c_LandAddZoomTownCentersMenuItem_Click);
+            // 
             // c_FamilyTreesMenuItem
             // 
             this.c_FamilyTreesMenuItem.Enabled = false;
@@ -636,6 +516,21 @@
             this.c_3DToolStripMenuItem.Name = "c_3DToolStripMenuItem";
             this.c_3DToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.c_3DToolStripMenuItem.Text = "3D:";
+            // 
+            // c_3DGeneralMenuItem
+            // 
+            this.c_3DGeneralMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.c_3DGeneralStoreResultMenuItem});
+            this.c_3DGeneralMenuItem.Name = "c_3DGeneralMenuItem";
+            this.c_3DGeneralMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.c_3DGeneralMenuItem.Text = "General";
+            // 
+            // c_3DGeneralStoreResultMenuItem
+            // 
+            this.c_3DGeneralStoreResultMenuItem.Name = "c_3DGeneralStoreResultMenuItem";
+            this.c_3DGeneralStoreResultMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.c_3DGeneralStoreResultMenuItem.Text = "Store Result";
+            this.c_3DGeneralStoreResultMenuItem.Click += new System.EventHandler(this.c_3DGeneralStoreResultMenuItem_Click);
             // 
             // c_3DTerrainMenuItem
             // 
@@ -825,27 +720,6 @@
             this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
             this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
             // 
-            // extendTownsToolStripMenuItem
-            // c_3DGeneralMenuItem
-            // 
-            this.extendTownsToolStripMenuItem.Name = "extendTownsToolStripMenuItem";
-            this.extendTownsToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.extendTownsToolStripMenuItem.Text = "Extend Towns";
-            this.extendTownsToolStripMenuItem.Click += new System.EventHandler(this.extendTownsToolStripMenuItem_Click);
-            // 
-            this.c_3DGeneralMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.c_3DGeneralStoreResultMenuItem});
-            this.c_3DGeneralMenuItem.Name = "c_3DGeneralMenuItem";
-            this.c_3DGeneralMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.c_3DGeneralMenuItem.Text = "General";
-            // 
-            // c_3DGeneralStoreResultMenuItem
-            // 
-            this.c_3DGeneralStoreResultMenuItem.Name = "c_3DGeneralStoreResultMenuItem";
-            this.c_3DGeneralStoreResultMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.c_3DGeneralStoreResultMenuItem.Text = "Store Result";
-            this.c_3DGeneralStoreResultMenuItem.Click += new System.EventHandler(this.c_3DGeneralStoreResultMenuItem_Click);
-            // 
             // FlowForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -943,5 +817,6 @@
         private System.Windows.Forms.ToolStripMenuItem extendTownsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_3DGeneralMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_3DGeneralStoreResultMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem c_LandAddZoomTownCentersMenuItem;
     }
 }
