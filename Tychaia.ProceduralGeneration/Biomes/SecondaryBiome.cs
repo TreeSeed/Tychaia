@@ -14,6 +14,7 @@ namespace Tychaia.ProceduralGeneration.Biomes
         public double MaxTemperature;
         public double MinTerrain;
         public double MaxTerrain;
+        public double BuildingMaterial;
         public double TownSuitability = 0;
         public int[] SuitableBiomes;
         public int DefaultFor = -1;

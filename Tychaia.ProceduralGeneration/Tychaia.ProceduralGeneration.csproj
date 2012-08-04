@@ -51,6 +51,9 @@
     <Compile Include="Biomes\TertiaryBiome.cs" />
     <Compile Include="Biomes\SecondaryBiome.cs" />
     <Compile Include="Biomes\TundraSecondaryBiome.cs" />
+    <Compile Include="LayerExtendTowns.cs" />
+    <Compile Include="LayerTownSelection.cs" />
+    <Compile Include="TownEngine.cs" />
     <Compile Include="LayerDeriveViability.cs" />
     <Compile Include="LayerCopyResult.cs" />
     <Compile Include="LayerOreMixdown.cs" />
@@ -76,6 +79,10 @@
     <Compile Include="LayerInitialLand.cs" />
     <Compile Include="LayerZoom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Towns\CapitalTown.cs" />
+    <Compile Include="Towns\MediumTown.cs" />
+    <Compile Include="Towns\SmallTown.cs" />
+    <Compile Include="Towns\Town.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BenTools\FortuneVoronoi.csproj">

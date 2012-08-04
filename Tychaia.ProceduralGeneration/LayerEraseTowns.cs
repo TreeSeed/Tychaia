@@ -32,17 +32,19 @@ namespace Tychaia.ProceduralGeneration
             for (int i = 0; i < width; i++)
                 for (int j = 0; j < height; j++)
                     if (land[i + j * width] == 0)
-                        temp[i + j * width] = 0;
+                        data[i + j * width] = 0;
                     else
-                        temp[i + j * width] = towns[i + j * width];
+                        data[i + j * width] = towns[i + j * width];
 
             // Also erase any cells that do not have at least 4 cells next to them.
+            /*
             for (int i = 0; i < width; i++)
                 for (int j = 0; j < height; j++)
                     if (!this.IsCellSurrounded(temp, i, j, width, height, towns[i + j * width]))
                         data[i + j * width] = 0;
                     else
                         data[i + j * width] = temp[i + j * width];
+            */
 
             return data;
         }

@@ -407,7 +407,17 @@ namespace TychaiaWorldGenViewer
             this.c_FlowInterfaceControl.AddElementAtMouse(
                new LayerFlowElement(
                    this.c_FlowInterfaceControl,
-                   new LayerDeriveViability(null, null, null, null, null)
+                   new LayerTownSelection(null, null, null, null, null)
+               )
+            );
+        }
+
+        private void extendTownsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new LayerExtendTowns(null, null)
                )
             );
         }
