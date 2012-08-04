@@ -40,6 +40,14 @@ namespace TychaiaWorldGenViewer.Flow
             }
         }
 
+        public Layer Layer
+        {
+            get
+            {
+                return this.m_Layer;
+            }
+        }
+
         public LayerFlowElement(FlowInterfaceControl control, Layer l)
         {
             this.m_Control = control;

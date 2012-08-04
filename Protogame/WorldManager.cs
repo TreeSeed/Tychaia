@@ -50,6 +50,9 @@ namespace Protogame
 
         protected virtual void DrawTilesBelow(GameContext context)
         {
+            if (context.World.Tileset == null)
+                return;
+
             // Render tiles.
             int c = 0;
             for (int z = Math.Max((byte)0, context.World.RenderDepthValue); z < Math.Min(context.World.RenderDepthValue + context.World.RenderDepthDownRange, 63); z++)
@@ -85,6 +88,9 @@ namespace Protogame
 
         protected virtual void DrawTilesAbove(GameContext context)
         {
+            if (context.World.Tileset == null)
+                return;
+
             // Render tiles above.
             int c = 0;
             for (int z = Math.Max(context.World.RenderDepthValue - context.World.RenderDepthUpRange, 0); z < context.World.RenderDepthValue; z++)
@@ -124,8 +130,7 @@ namespace Protogame
             context.World.DrawBelow(context);
 
             // Render tiles below.
-            if (context.World.Tileset != null)
-                this.DrawTilesBelow(context);
+            this.DrawTilesBelow(context);
 
             // Render all of the actors.
             foreach (IEntity a in context.World.Entities)
@@ -143,8 +148,7 @@ namespace Protogame
                     a.Draw(context.World, gr);
 
             // Render tiles above.
-            if (context.World.Tileset != null)
-                this.DrawTilesAbove(context);
+            this.DrawTilesAbove(context);
 
             // Draw world above.
             context.World.DrawAbove(context);

@@ -30,7 +30,8 @@ namespace Protogame
             {
                 Content = this.Content,
                 World = new InitialWorld(),
-                Graphics = new GraphicsDeviceManager(this)
+                Graphics = new GraphicsDeviceManager(this),
+                Game = this
             };
             this.m_WorldManager = new WorldManagerType();
             this.World.GameContext = this.m_GameContext;

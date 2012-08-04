@@ -46,12 +46,12 @@ namespace Tychaia
         {
             get
             {
-                Point p = (this.m_World.Tileset as ChunkTileset).GetEntityAdjustmentPoint();
+                Point p = new Point(0, 0); // (this.m_World.Tileset as ChunkTileset).GetEntityAdjustmentPoint();
                 return base.X + p.X;
             }
             set
             {
-                Point p = (this.m_World.Tileset as ChunkTileset).GetEntityAdjustmentPoint();
+                Point p = new Point(0, 0); //(this.m_World.Tileset as ChunkTileset).GetEntityAdjustmentPoint();
                 base.X = value - p.X;
             }
         }
@@ -60,12 +60,12 @@ namespace Tychaia
         {
             get
             {
-                Point p = (this.m_World.Tileset as ChunkTileset).GetEntityAdjustmentPoint();
+                Point p = new Point(0, 0); //(this.m_World.Tileset as ChunkTileset).GetEntityAdjustmentPoint();
                 return base.Y + p.Y;
             }
             set
             {
-                Point p = (this.m_World.Tileset as ChunkTileset).GetEntityAdjustmentPoint();
+                Point p = new Point(0, 0); //(this.m_World.Tileset as ChunkTileset).GetEntityAdjustmentPoint();
                 base.Y = value - p.Y;
             }
         }

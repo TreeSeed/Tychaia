@@ -42,6 +42,21 @@ namespace Protogame
             this.m_Context.SpriteBatch.DrawString(this.m_Context.Fonts[font], text, new Vector2((int)(x - size.X / 2), (int)y), Color.White);
         }
 
+        public void DrawSprite(int x, int y, string image)
+        {
+            this.DrawSprite(x, y, this.m_Context.Textures[image].Width, this.m_Context.Textures[image].Height, image, Color.White);
+        }
+
+        public void DrawSprite(int x, int y, int width, int height, string image)
+        {
+            this.DrawSprite(x, y, width, height, image, Color.White);
+        }
+
+        public void DrawSprite(int x, int y, int width, int height, string image, Color color)
+        {
+            this.DrawSprite(x, y, width, height, image, color, false);
+        }
+
         public void DrawSprite(int x, int y, int width, int height, string image, Color color, bool flipX)
         {
             this.m_Context.SpriteBatch.Draw(

@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Protogame;
 using Tychaia.Title;
+using Tychaia.Generators;
 
 namespace Tychaia
 {
@@ -26,6 +27,8 @@ namespace Tychaia
         {
             this.m_GameContext.Graphics.PreferredBackBufferWidth = 1600;
             this.m_GameContext.Graphics.PreferredBackBufferHeight = 800;
+            Static.GraphicsDevice = this.m_GameContext.Graphics.GraphicsDevice;
+            Static.GameContext = this.m_GameContext;
 
             // Set the Ogmo Editor to focus on this object.
             //OgmoConnect.FocusedObject = new OgmoState(this);
@@ -76,6 +79,20 @@ namespace Tychaia
             this.m_GameContext.LoadTexture("tiles.grassleaf");
             this.m_GameContext.LoadTexture("tiles.sandgrass");
             this.m_GameContext.LoadTexture("chars.player.player");
+
+            // Isometricify tiles.
+            TileIsometricifier.Isometricify("tiles.water", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.grass", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.snow", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.lava", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.stone", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.dirt", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.sand", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.trunk", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.leaf", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.leafgrey", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.grassleaf", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.sandgrass", this.m_GameContext);
         }
 
         /// <summary>
