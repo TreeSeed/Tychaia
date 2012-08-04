@@ -81,6 +81,7 @@
     <Compile Include="LayerInitialLand.cs" />
     <Compile Include="LayerZoom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Towns\Buildings\Building.cs" />
     <Compile Include="Towns\CapitalTown.cs" />
     <Compile Include="Towns\MediumTown.cs" />
     <Compile Include="Towns\SmallTown.cs" />
