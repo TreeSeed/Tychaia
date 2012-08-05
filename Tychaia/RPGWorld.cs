@@ -106,6 +106,8 @@ namespace Tychaia
         }
 #endif
 
+        private bool waspressed = false;
+
         public override bool Update(GameContext context)
         {
             MouseState mouse = Mouse.GetState();
@@ -127,13 +129,35 @@ namespace Tychaia
             // Update player and refocus screen.
             KeyboardState state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.Up))// && this.EntityCanMoveIntoPosition(this.m_Player, this.m_Player.WorldX, this.m_Player.WorldY - 1))
-                this.m_Player.Y -= 16;
+            {
+                if (!waspressed)
+                    (context.WorldManager as IsometricWorldManager).Chunk = (context.WorldManager as IsometricWorldManager).Chunk.Up;
+                waspressed = true;
+                //this.m_Player.Y -= 16;
+            }
             else if (state.IsKeyDown(Keys.Down))// && this.EntityCanMoveIntoPosition(this.m_Player, this.m_Player.WorldX, this.m_Player.WorldY + 1))
-                this.m_Player.Y += 16;
+            {
+                if (!waspressed)
+                    (context.WorldManager as IsometricWorldManager).Chunk = (context.WorldManager as IsometricWorldManager).Chunk.Down;
+                waspressed = true;
+                //this.m_Player.Y += 16;
+            }
             else if (state.IsKeyDown(Keys.Left))// && this.EntityCanMoveIntoPosition(this.m_Player, this.m_Player.WorldX - 1, this.m_Player.WorldY))
-                this.m_Player.X -= 16;
+            {
+                if (!waspressed)
+                    (context.WorldManager as IsometricWorldManager).Chunk = (context.WorldManager as IsometricWorldManager).Chunk.Left;
+                waspressed = true;
+                //this.m_Player.X -= 16;
+            }
             else if (state.IsKeyDown(Keys.Right))// && this.EntityCanMoveIntoPosition(this.m_Player, this.m_Player.WorldX + 1, this.m_Player.WorldY))
-                this.m_Player.X += 16;
+            {
+                if (!waspressed)
+                    (context.WorldManager as IsometricWorldManager).Chunk = (context.WorldManager as IsometricWorldManager).Chunk.Right;
+                waspressed = true;
+                //this.m_Player.X += 16;
+            }
+            else
+                waspressed = false;
             this.Focus(context, this.m_Player.WorldX, this.m_Player.WorldY);
             context.Window.Title = "At " + ((int)Math.Floor(this.m_TargetX / (double)16)) + ", " + ((int)Math.Floor(this.m_TargetY / (double)16) + " depth " + this.RenderDepthValue);
 

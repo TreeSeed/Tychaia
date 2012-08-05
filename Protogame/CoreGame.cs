@@ -34,6 +34,7 @@ namespace Protogame
                 Game = this
             };
             this.m_WorldManager = new WorldManagerType();
+            this.m_GameContext.WorldManager = this.m_WorldManager;
             this.World.GameContext = this.m_GameContext;
             this.World.Game = this;
         }

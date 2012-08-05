@@ -26,7 +26,9 @@ namespace Tychaia.Generators
         private Chunk m_Right = null;
         private Chunk m_Up = null;
         private Chunk m_Down = null;
+        private bool m_IsGenerating = false;
         private bool m_IsGenerated = false;
+        private ChunkRenderer.RenderTask m_RenderTask = null;
 
         public Chunk(int x, int y)
         {
@@ -52,11 +54,24 @@ namespace Tychaia.Generators
             get
             {
                 if (!this.m_IsGenerated)
+                {
+                    this.Generate();
                     return null;
-                if (this.m_Texture == null)
-                    this.m_Texture = ChunkRenderer.RenderTilesToTexture(this, Static.GameContext);
-                return this.m_Texture;
+                }
+                if (this.m_RenderTask == null || (this.m_RenderTask.Result == null && this.m_RenderTask.HasResult))
+                    this.m_RenderTask = ChunkRenderer.PushForRendering(this, Static.GameContext);
+                if (!this.m_RenderTask.HasResult)
+                    return null;
+                return this.m_RenderTask.Result;
             }
+        }
+
+        public void DiscardTexture()
+        {
+            // Force the graphics texture to be discarded.
+            RenderTarget2D target = this.m_RenderTask.Result;
+            this.m_RenderTask = null;
+            target.Dispose();
         }
 
         public Chunk Left
@@ -133,19 +148,23 @@ namespace Tychaia.Generators
 
         private void Generate()
         {
-            Thread t = new Thread(() =>
+            if (this.m_IsGenerated || this.m_IsGenerating)
+                return;
+            this.m_IsGenerating = true;
+            ChunkInfo i = new ChunkInfo()
             {
-                ChunkInfo i = new ChunkInfo()
+                Seed = this.m_Seed,
+                Random = new Random(this.m_Seed),
+                Bounds = new Rectangle(this.GlobalX, this.GlobalY, Chunk.Width, Chunk.Height)
+            };
+            ChunkProvider.FillChunk(this, this.m_Blocks, i, () =>
                 {
-                    Seed = this.m_Seed,
-                    Random = new Random(this.m_Seed),
-                    Bounds = new Rectangle(this.GlobalX, this.GlobalY, Chunk.Width, Chunk.Height)
-                };
-                ChunkProvider.FillChunk(this.m_Blocks, i);
-                this.m_IsGenerated = true;
-            });
-            t.IsBackground = true;
-            t.Start();
+                    this.m_IsGenerating = false;
+                }, () =>
+                {
+                    this.m_IsGenerated = true;
+                    this.m_IsGenerating = false;
+                });
         }
     }
 

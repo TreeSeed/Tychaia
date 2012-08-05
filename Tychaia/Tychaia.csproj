@@ -10,7 +10,8 @@
     <RootNamespace>Tychaia</RootNamespace>
     <AssemblyName>Tychaia</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
     <XnaProfile>HiDef</XnaProfile>
@@ -117,6 +118,7 @@
     <Compile Include="Generators\ChunkAccess.cs" />
     <Compile Include="Generators\ChunkManager.cs" />
     <Compile Include="Generators\ChunkProvider.cs" />
+    <None Include="app.config" />
     <None Include="Disabled\ChunkTileset.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Elements\World.cs" />

@@ -46,8 +46,11 @@ namespace Tychaia
 
             this.Window.Title = "Tychaia";
             this.IsMouseVisible = true;
+            //this.IsFixedTimeStep = false;
             DeviceForStateValidationOutput = this.GraphicsDevice;
             ContextForStateValidationOutput = this.m_GameContext;
+            ChunkRenderer.Initialize(this.m_GameContext.Graphics.GraphicsDevice);
+            ChunkProvider.Initialize();
         }
 
         /// <summary>
@@ -111,6 +114,10 @@ namespace Tychaia
             {
  	            base.Draw(gameTime);
             }
+
+            // Unload unused chunks from memory.
+            ChunkProvider.DiscardUnneededChunks();
+            ChunkRenderer.DiscardUnusedChunks();
         }
     }
 }

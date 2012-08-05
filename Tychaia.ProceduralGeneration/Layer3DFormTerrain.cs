@@ -39,13 +39,15 @@ namespace Tychaia.ProceduralGeneration
                     if (parent[i + j * height] == 0)
                     {
                         // Ocean
-                        data[i + j * width + 0 * width * height] = 0;
+                        if (0 >= z && 0 < z + depth)
+                            data[i + j * width + 0 * width * height] = 0;
                     }
                     else
                     {
                         // Land
-                        for (int k = 0; k < Math.Min(parent[i + j * height], depth); k++)
-                            data[i + j * width + k * width * height] = parent[i + j * height];
+                        for (int k = z; k < z + depth; k++)
+                            if (k < parent[i + j * height])
+                                data[i + j * width + (k - z) * width * height] = parent[i + j * height];
                     }
                 }
 

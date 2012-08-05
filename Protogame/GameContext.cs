@@ -23,6 +23,7 @@ namespace Protogame
         public GameWindow Window { get; set; }
         public int FPS { get; internal set; }
         public Game Game { get; internal set; }
+        public WorldManager WorldManager { get; internal set; }
 
         internal GameContext()
         {

@@ -121,8 +121,14 @@ namespace Protogame
             }
         }
 
+        protected virtual void PreBegin(GameContext context)
+        {
+        }
+
         public void Draw(GameContext context)
         {
+            this.PreBegin(context);
+
             // Clear the screen.
             context.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, context.Camera.GetTransformationMatrix());
 
