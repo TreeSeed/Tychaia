@@ -71,11 +71,5 @@ namespace Tychaia.ProceduralGeneration
                 result.Add(i, new System.Drawing.SolidBrush(BiomeEngine.SecondaryBiomes[i].BrushColor));
             return result;
         }
-
-        public static double GetSecondaryBiomeTownSuitability(int biome)
-        {
-            SecondaryBiome sb = BiomeEngine.SecondaryBiomes[biome];
-            return sb.TownSuitability;
-        }
     }
 }
