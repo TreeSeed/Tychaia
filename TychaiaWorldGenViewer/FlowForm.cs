@@ -455,11 +455,11 @@ namespace TychaiaWorldGenViewer
         private void buildingPlacerPlacerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.c_FlowInterfaceControl.AddElementAtMouse(
-             new LayerFlowElement(
-          this.c_FlowInterfaceControl,
-       new LayerBuildingPlacerPlacer(null, null, null, null, null, null)
-   )
-);
+                new LayerFlowElement(
+                    this.c_FlowInterfaceControl,
+                    new LayerBuildingList(null, null, null, null, null, null)
+                )
+            );
         }
     }
 }

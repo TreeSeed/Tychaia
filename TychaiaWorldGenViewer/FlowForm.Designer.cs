@@ -79,6 +79,7 @@
             this.c_TownsAddSimulateRundownMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extendTownsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_LandAddZoomTownCentersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildingPlacerPlacerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_FamilyTreesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
             this.c_3DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,7 +102,6 @@
             this.c_XNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
-            this.buildingPlacerPlacerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_StatusStrip.SuspendLayout();
             this.c_ContextMenuStrip.SuspendLayout();
             this.c_ToolStrip.SuspendLayout();
@@ -500,6 +500,13 @@
             this.c_LandAddZoomTownCentersMenuItem.Text = "Zoom Town Centers";
             this.c_LandAddZoomTownCentersMenuItem.Click += new System.EventHandler(this.c_LandAddZoomTownCentersMenuItem_Click);
             // 
+            // buildingPlacerPlacerToolStripMenuItem
+            // 
+            this.buildingPlacerPlacerToolStripMenuItem.Name = "buildingPlacerPlacerToolStripMenuItem";
+            this.buildingPlacerPlacerToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.buildingPlacerPlacerToolStripMenuItem.Text = "Building Lister";
+            this.buildingPlacerPlacerToolStripMenuItem.Click += new System.EventHandler(this.buildingPlacerPlacerToolStripMenuItem_Click);
+            // 
             // c_FamilyTreesMenuItem
             // 
             this.c_FamilyTreesMenuItem.Enabled = false;
@@ -721,13 +728,6 @@
             this.c_FlowInterfaceControl.Zoom = 1F;
             this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
             this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
-            // 
-            // buildingPlacerPlacerToolStripMenuItem
-            // 
-            this.buildingPlacerPlacerToolStripMenuItem.Name = "buildingPlacerPlacerToolStripMenuItem";
-            this.buildingPlacerPlacerToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.buildingPlacerPlacerToolStripMenuItem.Text = "Building Placer Placer";
-            this.buildingPlacerPlacerToolStripMenuItem.Click += new System.EventHandler(this.buildingPlacerPlacerToolStripMenuItem_Click);
             // 
             // FlowForm
             // 

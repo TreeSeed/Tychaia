@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-using Tychaia.ProceduralGeneration.Towns;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -12,7 +11,7 @@ namespace Tychaia.ProceduralGeneration
     /// Selects the building locations based on input data.
     /// </summary>
     [DataContract]
-    public class LayerBuildingPlacerPlacer : Layer2D
+    public class LayerBuildingList : Layer2D
     {
         [DataMember]
         [DefaultValue(0)]
@@ -95,7 +94,7 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public LayerBuildingPlacerPlacer(Layer soilfertility, Layer oredensity, Layer rareoredensity, Layer militarystrength, Layer distancefromwater, Layer townscatter)
+        public LayerBuildingList(Layer soilfertility, Layer oredensity, Layer rareoredensity, Layer militarystrength, Layer distancefromwater, Layer townscatter)
             : base(new Layer[] { soilfertility, oredensity, rareoredensity, militarystrength, distancefromwater, townscatter })
         {
             this.MinSoilFertility = 0;
@@ -190,7 +189,7 @@ namespace Tychaia.ProceduralGeneration
                         }
 
                         // Select some random buildings from the list of viable ones (should create really dynamic towns that way)
-                        int selection = r.Next(0, ViableFoodBuildings.Count);
+                        int selection = 0;
                         int o = 0;
                         int p = 0;
                         int q = 0;
@@ -199,54 +198,70 @@ namespace Tychaia.ProceduralGeneration
 
                         while (foodvaluecount < foodproduction)
                         {
+                            selection = r.Next(0, ViableFoodBuildings.Count - o);
                             BuildingsList[o] = ViableFoodBuildings[selection];
                             foodvaluecount = foodvaluecount + BuildingEngine.Buildings[ViableFoodBuildings[selection]].BuildingValue;
-                            selection = r.Next(0, ViableFoodBuildings.Count - o);
                             o++;
                         }
                         while (orevaluecount < oreproduction)
                         {
+                            selection = r.Next(0, ViableOreBuildings.Count - p);
                             BuildingsList[o + p] = ViableOreBuildings[selection];
                             orevaluecount = orevaluecount + BuildingEngine.Buildings[ViableOreBuildings[selection]].BuildingValue;
-                            selection = r.Next(0, ViableOreBuildings.Count - p);
                             p++;
                         }
                         while (militaryvaluecount < militaryvalue)
                         {
+                            selection = r.Next(0, ViableMilitaryBuildings.Count - q);
                             BuildingsList[o + p + q] = ViableMilitaryBuildings[selection];
                             militaryvaluecount = militaryvaluecount + BuildingEngine.Buildings[ViableMilitaryBuildings[selection]].BuildingValue;
-                            selection = r.Next(0, ViableMilitaryBuildings.Count - q);
                             q++;
                         }
                         while (prestiegevaluecount < townprestiege)
                         {
+                            selection = r.Next(0, ViablePrestigeBuildings.Count - s);
                             BuildingsList[o + p + q + s] = ViablePrestigeBuildings[selection];
                             prestiegevaluecount = prestiegevaluecount + BuildingEngine.Buildings[ViablePrestigeBuildings[selection]].BuildingValue;
-                            selection = r.Next(0, ViablePrestigeBuildings.Count - s);
                             s++;
                         }
                         while (watervaluecount < watervalue)
                         {
+                            selection = r.Next(0, ViableWaterBuildings.Count - t);
                             BuildingsList[o + p + q + s + t] = ViableWaterBuildings[selection];
                             watervaluecount = watervaluecount + BuildingEngine.Buildings[ViableWaterBuildings[selection]].BuildingValue;
-                            selection = r.Next(0, ViableWaterBuildings.Count - t);
                             s++;
                         }
 
-                        // By this point there should be a list of all buildings that are going to be placed, we can then place any building placers that have to be placed.
-                        // This has to place all buildings, so we're going to have to place placers for every building anyway. 
-                        // Evaluate all placers in the final step, this will then decide the final position of buildings.
-
-                        // --------------------------
-                        // UP TO HERE - TIME TO DO THE ACTUAL PLACEMENT
-                        // --------------------------
-
-
-
-
-                        // Set the point to be equal to the town that is placed.
-                        //data[i + j * width] = ViableFoodBuildings[i] + 1;
+                        // Will need to store the BuildingsList in the town center location
+                        if (BuildingEngine.Buildings.Count() > 500)
+                        {
+                            throw new IndexOutOfRangeException("You have more than 500 builings in your database! WOW! You should cut that down to 500 so the program works.");
                         }
+                        else
+                        {
+                            if (BuildingsList.Count() > 64)
+                            {
+                                for (int z = 0; z < BuildingsList.Count(); z++)
+                                {
+                                    if (z > 64)
+                                    {
+                                        data[i + j * width] = -BuildingsList[z] - 500 * z;
+                                    }
+                                    else
+                                    {
+                                        data[i + j * width] = BuildingsList[z] + 500 * z;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                for (int z = 0; z < BuildingsList.Count(); z++)
+                                {
+                                    data[i + j * width] = BuildingsList[z] + 500 * z;
+                                }
+                            }
+                        }
+                    }
                 }
 
             return data;
@@ -264,7 +279,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override string ToString()
         {
-            return "Building Placement";
+            return "Building Selection";
         }
     }
 }

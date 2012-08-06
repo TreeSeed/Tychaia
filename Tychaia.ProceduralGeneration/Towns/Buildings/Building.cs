@@ -10,7 +10,7 @@ namespace Tychaia.ProceduralGeneration.Buildings
     {
         // |   |  __   _____  ___
         // |\  | /  \    |   |          NOTE: NEED TO MAKE THESE INTO SUB CLASSES
-        // | \ | |  |    |   |--
+        // | \ | |  |    |   |--             or maybe not..
         // |  \| \__/    |   |___
 
         // Name, allowing you to search
