@@ -233,23 +233,24 @@ namespace Tychaia.ProceduralGeneration
                         }
 
                         // Will need to store the BuildingsList in the town center location
-                        if (BuildingEngine.Buildings.Count() > 500)
+                        int BuildingsListTemp = 0;
+                        if (BuildingEngine.Buildings.Count() > 500 || BuildingsList.Count > 127)
                         {
                             throw new IndexOutOfRangeException("You have more than 500 builings in your database! WOW! You should cut that down to 500 so the program works.");
                         }
                         else
                         {
-                            if (BuildingsList.Count() > 64)
+                            if (BuildingsList.Count() > 63)
                             {
                                 for (int z = 0; z < BuildingsList.Count(); z++)
                                 {
-                                    if (z > 64)
+                                    if (z > 63)
                                     {
-                                        data[i + j * width] = -BuildingsList[z] - 500 * z;
+                                        BuildingsListTemp = BuildingsListTemp - (-BuildingsList[z] - 500);
                                     }
                                     else
                                     {
-                                        data[i + j * width] = BuildingsList[z] + 500 * z;
+                                        BuildingsListTemp = BuildingsListTemp + (BuildingsList[z] + 500);
                                     }
                                 }
                             }
@@ -257,9 +258,28 @@ namespace Tychaia.ProceduralGeneration
                             {
                                 for (int z = 0; z < BuildingsList.Count(); z++)
                                 {
-                                    data[i + j * width] = BuildingsList[z] + 500 * z;
+                                    BuildingsListTemp = BuildingsListTemp + (BuildingsList[z] + 500);
                                 }
                             }
+                        }
+
+                        // Write the number of buildings within the list to the points around the center point (that way no matter where it is located you will be able to check it)
+                        data[i + j * width] = BuildingsListTemp;
+                        if ((i + 1 + (j + 1) * width) != 0)
+                        {
+                            data[i + 1 + (j + 1) * width] = BuildingsList.Count();
+                        }
+                        if ((i - 1 + (j + 1) * width) != 0)
+                        {
+                            data[i - 1 + (j + 1) * width] = BuildingsList.Count();
+                        }
+                        if ((i - 1 + (j - 1) * width) != 0)
+                        {
+                            data[i - 1 + (j - 1) * width] = BuildingsList.Count();
+                        }
+                        if ((i + 1 + (j - 1) * width) != 0)
+                        {
+                            data[i + 1 + (j - 1) * width] = BuildingsList.Count();
                         }
                     }
                 }
