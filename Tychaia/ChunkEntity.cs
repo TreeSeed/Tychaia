@@ -18,56 +18,34 @@ namespace Tychaia
             base.Y = 0;
         }
 
-        public int WorldX
-        {
-            get
-            {
-                return (int)base.X / Tileset.TILESET_CELL_WIDTH;
-            }
-        }
-
-        public int WorldY
-        {
-            get
-            {
-                return (int)base.Y / Tileset.TILESET_CELL_HEIGHT;
-            }
-        }
-
-        public int WorldZ
+        public float ImageOffsetX
         {
             get;
             set;
         }
 
-        // TODO: Use interpolation for smooth movement!
-
-        public override float X
+        public float ImageOffsetY
         {
-            get
-            {
-                Point p = new Point(0, 0); // (this.m_World.Tileset as ChunkTileset).GetEntityAdjustmentPoint();
-                return base.X + p.X;
-            }
-            set
-            {
-                Point p = new Point(0, 0); //(this.m_World.Tileset as ChunkTileset).GetEntityAdjustmentPoint();
-                base.X = value - p.X;
-            }
+            get;
+            set;
         }
 
-        public override float Y
+        public float Z
         {
-            get
-            {
-                Point p = new Point(0, 0); //(this.m_World.Tileset as ChunkTileset).GetEntityAdjustmentPoint();
-                return base.Y + p.Y;
-            }
-            set
-            {
-                Point p = new Point(0, 0); //(this.m_World.Tileset as ChunkTileset).GetEntityAdjustmentPoint();
-                base.Y = value - p.Y;
-            }
+            get;
+            set;
+        }
+
+        public int Depth
+        {
+            get;
+            set;
+        }
+
+        public virtual T CollidesAt<T>(World world, int x, int y) where T : Entity
+        {
+            throw new InvalidOperationException();
+            return Helpers.CollidesAt<T>(this, world, x, y);
         }
     }
 }

@@ -9,4 +9,11 @@ namespace Tychaia.Globals
     {
         public static int ChunkDepth = 128;
     }
+
+    public static class Scale
+    {
+        public const int CUBE_X = 16;
+        public const int CUBE_Y = 16;
+        public const int CUBE_Z = 16;
+    }
 }

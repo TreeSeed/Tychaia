@@ -199,11 +199,14 @@ namespace Tychaia.Generators
                     Tile t = b.Tile;
 
                     if (t.Image == null) continue;
+                    Color col = new Color(1f, 1f, 1f, 1f).ToPremultiplied();
+                    if (task.Chunk.GlobalX == 0 && task.Chunk.GlobalY == 0 && x == 0 && y == 0)
+                        col = new Color(1f, 0f, 0f, 1f).ToPremultiplied();
                     m_CurrentRenderState.SpriteBatch.Draw(
                         task.Textures[t.Image + ".isometric.top"],
                         new Rectangle(rx, ry, TileIsometricifier.TILE_TOP_WIDTH, TileIsometricifier.TILE_TOP_HEIGHT),
                         null,
-                        new Color(1f, 1f, 1f, 1f).ToPremultiplied(),
+                        col,
                         0,
                         new Vector2(0, 0),
                         SpriteEffects.None,
@@ -213,7 +216,7 @@ namespace Tychaia.Generators
                         task.Textures[t.Image + ".isometric.sideL"],
                         new Rectangle(rx, ry + 12, TileIsometricifier.TILE_SIDE_WIDTH, TileIsometricifier.TILE_SIDE_HEIGHT),
                         null,
-                        new Color(1f, 1f, 1f, 1f).ToPremultiplied(),
+                        col,
                         0,
                         new Vector2(0, 0),
                         SpriteEffects.None,
@@ -223,7 +226,7 @@ namespace Tychaia.Generators
                         task.Textures[t.Image + ".isometric.sideR"],
                         new Rectangle(rx + 16, ry + 12, TileIsometricifier.TILE_SIDE_WIDTH, TileIsometricifier.TILE_SIDE_HEIGHT),
                         null,
-                        new Color(1f, 1f, 1f, 1f).ToPremultiplied(),
+                        col,
                         0,
                         new Vector2(0, 0),
                         SpriteEffects.None,
@@ -236,7 +239,7 @@ namespace Tychaia.Generators
                 zcount++;
             }
 
-            Console.WriteLine("Rendered " + zcount + " levels, " + count + " cells to texture target in " + gt.ElapsedGameTime.Milliseconds + "ms.");
+            FilteredConsole.WriteLine(FilterCategory.OptimizationTiming, "Rendered " + zcount + " levels, " + count + " cells to texture target in " + gt.ElapsedGameTime.Milliseconds + "ms.");
             m_CurrentRenderState.SpriteBatch.End();
             m_GraphicsDevice.SetRenderTarget(null);
 
@@ -280,7 +283,7 @@ namespace Tychaia.Generators
 
             if (discarded > 0)
             {
-                Console.WriteLine("SKIPPED RENDERING " + discarded + " UNNEEDED CHUNKS!");
+                FilteredConsole.WriteLine(FilterCategory.Optimization, "SKIPPED RENDERING " + discarded + " UNNEEDED CHUNKS!");
                 discarded = 0;
             }
 
@@ -296,7 +299,7 @@ namespace Tychaia.Generators
             }
 
             if (discarded > 0)
-                Console.WriteLine("DISCARDED " + discarded + " TEXTURES FROM MEMORY!");
+                FilteredConsole.WriteLine(FilterCategory.Optimization, "DISCARDED " + discarded + " TEXTURES FROM MEMORY!");
         }
 
         public static void MarkUsed(Chunk chunk)

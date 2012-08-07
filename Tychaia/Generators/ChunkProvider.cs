@@ -84,7 +84,7 @@ namespace Tychaia.Generators
 
             if (discarded > 0)
             {
-                Console.WriteLine("SKIPPED PROVIDING " + discarded + " UNNEEDED CHUNKS!");
+                FilteredConsole.WriteLine(FilterCategory.Optimization, "SKIPPED PROVIDING " + discarded + " UNNEEDED CHUNKS!");
                 discarded = 0;
             }
         }
@@ -112,7 +112,7 @@ namespace Tychaia.Generators
             int depth = Settings.ChunkDepth;
             int depthPerScan = depth;
             DateTime start = DateTime.Now;
-            Console.WriteLine("Started with 0ms.");
+            FilteredConsole.WriteLine(FilterCategory.OptimizationTiming, "Started with 0ms.");
 
             if (m_CurrentProvideState == null)
             {
@@ -149,7 +149,7 @@ namespace Tychaia.Generators
                 m_CurrentProvideState.Z += depthPerScan;
                 zcount += depthPerScan;
             }
-            Console.WriteLine("Provided " + zcount + " levels to chunk in " + (DateTime.Now - start).TotalMilliseconds + "ms.");
+            FilteredConsole.WriteLine(FilterCategory.OptimizationTiming, "Provided " + zcount + " levels to chunk in " + (DateTime.Now - start).TotalMilliseconds + "ms.");
 
             if (m_CurrentProvideState.Z >= depth)
             {

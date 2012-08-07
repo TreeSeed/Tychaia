@@ -18,13 +18,13 @@ namespace Protogame
             this.m_Height = height;
         }
 
-        public int X
+        public float X
         {
             get;
             set;
         }
 
-        public int Y
+        public float Y
         {
             get;
             set;

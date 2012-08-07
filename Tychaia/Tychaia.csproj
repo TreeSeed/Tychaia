@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChunkEntity.cs" />
+    <Compile Include="FilteredConsole.cs" />
     <Compile Include="Generators\ChunkAccess.cs" />
     <Compile Include="Generators\ChunkManager.cs" />
     <Compile Include="Generators\ChunkProvider.cs" />
@@ -157,7 +158,6 @@
     <Compile Include="IsometricWorldManager.cs" />
     <None Include="Disabled\Lighting\FieldOfView.cs" />
     <None Include="Disabled\Lighting\FieldOfViewRenderer.cs" />
-    <Compile Include="Log.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

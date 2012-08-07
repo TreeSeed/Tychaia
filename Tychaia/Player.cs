@@ -12,18 +12,29 @@ namespace Tychaia
     {
         private double m_RotateCounter = 0;
 
+        public double MovementSpeed
+        {
+            get;
+            private set;
+        }
+
         public Player(World world) : base(world)
         {
             this.Images = this.GetTexture("chars.player.player");
             this.Width = 16;
             this.Height = 16;
+            this.ImageOffsetX = 8;
+            this.ImageOffsetY = 15;
+            this.MovementSpeed = 10;
         }
 
         public override void Update(World world)
         {
-            this.X = (float)(400 + Math.Sin(this.m_RotateCounter) * 300);
-            this.Y = 100;
+            //this.X = 0;// (float)(0 + Math.Sin(this.m_RotateCounter) * 100);
+            //this.Y = 0;
+            this.Z = 64f;
             this.m_RotateCounter += 0.1;
+            FilteredConsole.WriteLine(FilterCategory.Player, "player x/y is " + X + ", " + Y + ".");
 
             base.Update(world);
         }

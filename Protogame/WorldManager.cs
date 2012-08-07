@@ -11,7 +11,7 @@ namespace Protogame
 {
     public class WorldManager
     {
-        private void DrawSpriteAt(GameContext context, float x, float y, int width, int height, string image, Color color, bool flipX)
+        protected void DrawSpriteAt(GameContext context, float x, float y, int width, int height, string image, Color color, bool flipX)
         {
             if (flipX)
                 context.SpriteBatch.Draw(
@@ -32,7 +32,7 @@ namespace Protogame
                     );
         }
 
-        private void HandleRenderOfEntity(GameContext context, IEntity a)
+        protected virtual void HandleRenderOfEntity(GameContext context, IEntity a)
         {
             this.DrawSpriteAt(context, (float)a.X, (float)a.Y, a.Width, a.Height, a.Image, a.Color, a.ImageFlipX);
 
@@ -57,12 +57,12 @@ namespace Protogame
             int c = 0;
             for (int z = Math.Max((byte)0, context.World.RenderDepthValue); z < Math.Min(context.World.RenderDepthValue + context.World.RenderDepthDownRange, 63); z++)
             {
-                for (int x = Math.Min(Math.Max(0, context.Camera.X / Tileset.TILESET_CELL_WIDTH), Tileset.TILESET_WIDTH);
+                for (int x = (int)Math.Min(Math.Max(0, context.Camera.X / Tileset.TILESET_CELL_WIDTH), Tileset.TILESET_WIDTH);
                             x <= Math.Min((context.Camera.X + context.Camera.Width) / Tileset.TILESET_CELL_WIDTH,
                                             Tileset.TILESET_WIDTH);
                             x += 1)
                 {
-                    for (int y = Math.Min(Math.Max(0, context.Camera.Y / Tileset.TILESET_CELL_HEIGHT), Tileset.TILESET_HEIGHT);
+                    for (int y = (int)Math.Min(Math.Max(0, context.Camera.Y / Tileset.TILESET_CELL_HEIGHT), Tileset.TILESET_HEIGHT);
                             y <= Math.Min((context.Camera.Y + context.Camera.Height) / Tileset.TILESET_CELL_HEIGHT,
                                             Tileset.TILESET_HEIGHT);
                             y += 1)
@@ -86,6 +86,23 @@ namespace Protogame
             }
         }
 
+        protected virtual void DrawEntities(GameContext context)
+        {
+            foreach (IEntity a in context.World.Entities)
+                if ((a is ParticleEntity) && (a as ParticleEntity).Definition.RenderMode == ParticleMode.Background)
+                    this.HandleRenderOfEntity(context, a);
+            foreach (IEntity a in context.World.Entities)
+                if (a.Image != null && !(a is ParticleEntity) && (!(a is IDynamicRenderingEntity) || (a as IDynamicRenderingEntity).ShouldRender(context.World)))
+                    this.HandleRenderOfEntity(context, a);
+            foreach (IEntity a in context.World.Entities)
+                if ((a is ParticleEntity) && (a as ParticleEntity).Definition.RenderMode == ParticleMode.Foreground)
+                    this.HandleRenderOfEntity(context, a);
+            XnaGraphics gr = new XnaGraphics(context);
+            foreach (IEntity a in context.World.Entities)
+                if (!(a is IDynamicRenderingEntity) || (a as IDynamicRenderingEntity).ShouldRender(context.World))
+                    a.Draw(context.World, gr);
+        }
+
         protected virtual void DrawTilesAbove(GameContext context)
         {
             if (context.World.Tileset == null)
@@ -95,12 +112,12 @@ namespace Protogame
             int c = 0;
             for (int z = Math.Max(context.World.RenderDepthValue - context.World.RenderDepthUpRange, 0); z < context.World.RenderDepthValue; z++)
             {
-                for (int x = Math.Min(Math.Max(0, context.Camera.X / Tileset.TILESET_CELL_WIDTH), Tileset.TILESET_WIDTH);
+                for (int x = (int)Math.Min(Math.Max(0, context.Camera.X / Tileset.TILESET_CELL_WIDTH), Tileset.TILESET_WIDTH);
                             x <= Math.Min((context.Camera.X + context.Camera.Width) / Tileset.TILESET_CELL_WIDTH,
                                             Tileset.TILESET_WIDTH);
                             x += 1)
                 {
-                    for (int y = Math.Min(Math.Max(0, context.Camera.Y / Tileset.TILESET_CELL_HEIGHT), Tileset.TILESET_HEIGHT);
+                    for (int y = (int)Math.Min(Math.Max(0, context.Camera.Y / Tileset.TILESET_CELL_HEIGHT), Tileset.TILESET_HEIGHT);
                             y <= Math.Min((context.Camera.Y + context.Camera.Height) / Tileset.TILESET_CELL_HEIGHT,
                                             Tileset.TILESET_HEIGHT);
                             y += 1)
@@ -138,20 +155,8 @@ namespace Protogame
             // Render tiles below.
             this.DrawTilesBelow(context);
 
-            // Render all of the actors.
-            foreach (IEntity a in context.World.Entities)
-                if ((a is ParticleEntity) && (a as ParticleEntity).Definition.RenderMode == ParticleMode.Background)
-                    this.HandleRenderOfEntity(context, a);
-            foreach (IEntity a in context.World.Entities)
-                if (a.Image != null && !(a is ParticleEntity) && (!(a is IDynamicRenderingEntity) || (a as IDynamicRenderingEntity).ShouldRender(context.World)))
-                    this.HandleRenderOfEntity(context, a);
-            foreach (IEntity a in context.World.Entities)
-                if ((a is ParticleEntity) && (a as ParticleEntity).Definition.RenderMode == ParticleMode.Foreground)
-                    this.HandleRenderOfEntity(context, a);
-            XnaGraphics gr = new XnaGraphics(context);
-            foreach (IEntity a in context.World.Entities)
-                if (!(a is IDynamicRenderingEntity) || (a as IDynamicRenderingEntity).ShouldRender(context.World))
-                    a.Draw(context.World, gr);
+            // Render all of the entities.
+            this.DrawEntities(context);
 
             // Render tiles above.
             this.DrawTilesAbove(context);

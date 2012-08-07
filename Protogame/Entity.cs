@@ -43,7 +43,7 @@ namespace Protogame
             }
         }
 
-        public T CollidesAt<T>(World world, int x, int y) where T : Entity
+        public virtual T CollidesAt<T>(World world, int x, int y) where T : Entity
         {
             return Helpers.CollidesAt<T>(this, world, x, y);
         }

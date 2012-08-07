@@ -15,6 +15,7 @@ namespace Tychaia.ProceduralGeneration.Biomes
         public double MaxTemperature;
         public double MinTerrain;
         public double MaxTerrain;
+        public double TownSuitability;
 
         // Building assistance
         public double BuildingMaterial; // The building material that the buildings are made out of in this biome

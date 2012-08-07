@@ -7,6 +7,7 @@ using System.Threading;
 using Microsoft.Xna.Framework;
 using Tychaia.Title;
 using Microsoft.Xna.Framework.Graphics;
+using Tychaia.Globals;
 
 namespace Tychaia.Generators
 {
@@ -18,8 +19,8 @@ namespace Tychaia.Generators
         public const int Height = 16;
         public const int Depth = 256;
 
-        public Block[,,] m_Blocks = null;
-        private Texture2D m_Texture = null;
+        public Block[, ,] m_Blocks = null;
+        private static object m_AccessLock = new object();
         private object m_BlocksLock = new object();
         private int m_Seed = TitleWorld.m_StaticSeed; // All chunks are generated from the same seed.
         private Chunk m_Left = null;
@@ -36,6 +37,7 @@ namespace Tychaia.Generators
             this.GlobalY = y;
             this.m_Blocks = new Block[Chunk.Width, Chunk.Height, Chunk.Depth];
             this.Generate();
+            FilteredConsole.WriteLine(FilterCategory.ChunkValidation, "Chunk created for " + x + ", " + y + ".");
         }
 
         public int GlobalX;
@@ -78,17 +80,19 @@ namespace Tychaia.Generators
         {
             get
             {
-                if (this.m_Left == null)
+                lock (m_AccessLock)
                 {
-                    if (this.m_Up != null && this.m_Up.m_Left != null && this.m_Up.m_Left.m_Down != null)
-                        this.m_Left = this.m_Up.m_Left.m_Down;
-                    else if (this.m_Down != null && this.m_Down.m_Left != null && this.m_Down.m_Left.m_Up != null)
-                        this.m_Left = this.m_Down.m_Left.m_Up;
-                    else
-                        this.m_Left = new Chunk(this.GlobalX - Chunk.Width, this.GlobalY);
-                    this.m_Left.m_Right = this;
+                    if (this.m_Left == null)
+                    {
+                        Chunk c = this.FindChunk(this.GlobalX - (Chunk.Width * Scale.CUBE_X), this.GlobalY);
+                        if (c == null)
+                            this.m_Left = new Chunk(this.GlobalX - (Chunk.Width * Scale.CUBE_X), this.GlobalY);
+                        else
+                            this.m_Left = c;
+                        this.m_Left.m_Right = this;
+                    }
+                    return this.m_Left;
                 }
-                return this.m_Left;
             }
         }
 
@@ -96,17 +100,19 @@ namespace Tychaia.Generators
         {
             get
             {
-                if (this.m_Right == null)
+                lock (m_AccessLock)
                 {
-                    if (this.m_Up != null && this.m_Up.m_Right != null && this.m_Up.m_Right.m_Down != null)
-                        this.m_Right = this.m_Up.m_Right.m_Down;
-                    else if (this.m_Down != null && this.m_Down.m_Right != null && this.m_Down.m_Right.m_Up != null)
-                        this.m_Right = this.m_Down.m_Right.m_Up;
-                    else
-                        this.m_Right = new Chunk(this.GlobalX + Chunk.Width, this.GlobalY);
-                    this.m_Right.m_Left = this;
+                    if (this.m_Right == null)
+                    {
+                        Chunk c = this.FindChunk(this.GlobalX + (Chunk.Width * Scale.CUBE_X), this.GlobalY);
+                        if (c == null)
+                            this.m_Right = new Chunk(this.GlobalX + (Chunk.Width * Scale.CUBE_X), this.GlobalY);
+                        else
+                            this.m_Right = c;
+                        this.m_Right.m_Left = this;
+                    }
+                    return this.m_Right;
                 }
-                return this.m_Right;
             }
         }
 
@@ -114,17 +120,19 @@ namespace Tychaia.Generators
         {
             get
             {
-                if (this.m_Up == null)
+                lock (m_AccessLock)
                 {
-                    if (this.m_Left != null && this.m_Left.m_Up != null && this.m_Left.m_Up.m_Right != null)
-                        this.m_Up = this.m_Left.m_Up.m_Right;
-                    else if (this.m_Right != null && this.m_Right.m_Up != null && this.m_Right.m_Up.m_Left != null)
-                        this.m_Up = this.m_Right.m_Up.m_Left;
-                    else
-                        this.m_Up = new Chunk(this.GlobalX, this.GlobalY - Chunk.Height);
-                    this.m_Up.m_Down = this;
+                    if (this.m_Up == null)
+                    {
+                        Chunk c = this.FindChunk(this.GlobalX, this.GlobalY - (Chunk.Height * Scale.CUBE_Y));
+                        if (c == null)
+                            this.m_Up = new Chunk(this.GlobalX, this.GlobalY - (Chunk.Height * Scale.CUBE_Y));
+                        else
+                            this.m_Up = c;
+                        this.m_Up.m_Down = this;
+                    }
+                    return this.m_Up;
                 }
-                return this.m_Up;
             }
         }
 
@@ -132,17 +140,92 @@ namespace Tychaia.Generators
         {
             get
             {
-                if (this.m_Down == null)
+                lock (m_AccessLock)
                 {
-                    if (this.m_Left != null && this.m_Left.m_Down != null && this.m_Left.m_Down.m_Right != null)
-                        this.m_Down = this.m_Left.m_Down.m_Right;
-                    else if (this.m_Right != null && this.m_Right.m_Down != null && this.m_Right.m_Down.m_Left != null)
-                        this.m_Down = this.m_Right.m_Down.m_Left;
-                    else
-                        this.m_Down = new Chunk(this.GlobalX, this.GlobalY + Chunk.Height);
-                    this.m_Down.m_Up = this;
+                    if (this.m_Down == null)
+                    {
+                        Chunk c = this.FindChunk(this.GlobalX, this.GlobalY + (Chunk.Height * Scale.CUBE_Y));
+                        if (c == null)
+                            this.m_Down = new Chunk(this.GlobalX, this.GlobalY + (Chunk.Height * Scale.CUBE_Y));
+                        else
+                            this.m_Down = c;
+                        this.m_Down.m_Up = this;
+                    }
+                    return this.m_Down;
                 }
-                return this.m_Down;
+            }
+        }
+
+        private Chunk FindChunk(int x, int y, List<Chunk> visited = null)
+        {
+            if (visited == null)
+                visited = new List<Chunk>();
+            visited.Add(this);
+            if (this.GlobalX == x && this.GlobalY == y)
+                return this;
+            if (this.m_Down != null)
+                if (!visited.Contains(this.m_Down))
+                {
+                    Chunk c = this.m_Down.FindChunk(x, y, visited);
+                    if (c != null)
+                        return c;
+                }
+            if (this.m_Left != null)
+                if (!visited.Contains(this.m_Left))
+                {
+                    Chunk c = this.m_Left.FindChunk(x, y, visited);
+                    if (c != null)
+                        return c;
+                }
+            if (this.m_Right != null)
+                if (!visited.Contains(this.m_Right))
+                {
+                    Chunk c = this.m_Right.FindChunk(x, y, visited);
+                    if (c != null)
+                        return c;
+                }
+            if (this.m_Up != null)
+                if (!visited.Contains(this.m_Up))
+                {
+                    Chunk c = this.m_Up.FindChunk(x, y, visited);
+                    if (c != null)
+                        return c;
+                }
+            return null;
+        }
+
+        public void Validate(List<Chunk> visited = null)
+        {
+            if (visited == null)
+                visited = new List<Chunk>();
+            visited.Add(this);
+            if (this.m_Down != null)
+            {
+                if (this.m_Down.m_Up != this)
+                    FilteredConsole.WriteLine(FilterCategory.ChunkValidation, "Chunk validation failed for down -> up -> down.");
+                else if (!visited.Contains(this.m_Down))
+                    this.m_Down.Validate(visited);
+            }
+            if (this.m_Left != null)
+            {
+                if (this.m_Left.m_Right != this)
+                    FilteredConsole.WriteLine(FilterCategory.ChunkValidation, "Chunk validation failed for left -> right -> left.");
+                else if (!visited.Contains(this.m_Left))
+                    this.m_Left.Validate(visited);
+            }
+            if (this.m_Right != null)
+            {
+                if (this.m_Right.m_Left != this)
+                    FilteredConsole.WriteLine(FilterCategory.ChunkValidation, "Chunk validation failed for right -> left -> right.");
+                else if (!visited.Contains(this.m_Right))
+                    this.m_Right.Validate(visited);
+            }
+            if (this.m_Up != null)
+            {
+                if (this.m_Up.m_Down != this)
+                    FilteredConsole.WriteLine(FilterCategory.ChunkValidation, "Chunk validation failed for up -> down -> up.");
+                else if (!visited.Contains(this.m_Up))
+                    this.m_Up.Validate(visited);
             }
         }
 
@@ -155,7 +238,7 @@ namespace Tychaia.Generators
             {
                 Seed = this.m_Seed,
                 Random = new Random(this.m_Seed),
-                Bounds = new Rectangle(this.GlobalX, this.GlobalY, Chunk.Width, Chunk.Height)
+                Bounds = new Rectangle(this.GlobalX / Scale.CUBE_X, this.GlobalY / Scale.CUBE_Y, Chunk.Width, Chunk.Height)
             };
             ChunkProvider.FillChunk(this, this.m_Blocks, i, () =>
                 {
