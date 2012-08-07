@@ -67,6 +67,7 @@ namespace Tychaia.ProceduralGeneration
                         points++;
 
                     // Points for suitable secondary biomes.
+                    /*
                     double suitability = BiomeEngine.GetSecondaryBiomeTownSuitability(secondaryBiomes[i + j * width]);
                     if (suitability >= 0.3)
                         points++;
@@ -74,6 +75,7 @@ namespace Tychaia.ProceduralGeneration
                         points++;
                     if (suitability >= 0.9)
                         points++;
+                    */
 
                     // If water, no points.
                     if (terrain[i + j * width] == 0)

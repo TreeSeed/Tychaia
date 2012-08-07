@@ -79,6 +79,7 @@
             this.c_TownsAddSimulateRundownMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extendTownsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_LandAddZoomTownCentersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildingPlacerPlacerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_FamilyTreesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
             this.c_3DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -445,7 +446,8 @@
             this.c_TownsAddMixTownsWithViabilityMenuItem,
             this.c_TownsAddSimulateRundownMenuItem,
             this.extendTownsToolStripMenuItem,
-            this.c_LandAddZoomTownCentersMenuItem});
+            this.c_LandAddZoomTownCentersMenuItem,
+            this.buildingPlacerPlacerToolStripMenuItem});
             this.c_TownsMenuItem.Name = "c_TownsMenuItem";
             this.c_TownsMenuItem.Size = new System.Drawing.Size(164, 22);
             this.c_TownsMenuItem.Text = "Towns";
@@ -497,6 +499,13 @@
             this.c_LandAddZoomTownCentersMenuItem.Size = new System.Drawing.Size(202, 22);
             this.c_LandAddZoomTownCentersMenuItem.Text = "Zoom Town Centers";
             this.c_LandAddZoomTownCentersMenuItem.Click += new System.EventHandler(this.c_LandAddZoomTownCentersMenuItem_Click);
+            // 
+            // buildingPlacerPlacerToolStripMenuItem
+            // 
+            this.buildingPlacerPlacerToolStripMenuItem.Name = "buildingPlacerPlacerToolStripMenuItem";
+            this.buildingPlacerPlacerToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.buildingPlacerPlacerToolStripMenuItem.Text = "Building Lister";
+            this.buildingPlacerPlacerToolStripMenuItem.Click += new System.EventHandler(this.buildingPlacerPlacerToolStripMenuItem_Click);
             // 
             // c_FamilyTreesMenuItem
             // 
@@ -818,5 +827,6 @@
         private System.Windows.Forms.ToolStripMenuItem c_3DGeneralMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_3DGeneralStoreResultMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_LandAddZoomTownCentersMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buildingPlacerPlacerToolStripMenuItem;
     }
 }
