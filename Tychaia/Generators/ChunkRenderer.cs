@@ -16,10 +16,10 @@ namespace Tychaia.Generators
         #region Cell Render Ordering
 
         private static int[][] CellRenderOrder = new int[4][] { null, null, null, null };
-        private const int RenderToNE = 0;
-        private const int RenderToNW = 1;
-        private const int RenderToSE = 2;
-        private const int RenderToSW = 3;
+        public const int RenderToNE = 0;
+        public const int RenderToNW = 1;
+        public const int RenderToSE = 2;
+        public const int RenderToSW = 3;
         private const int RenderWidth = 16;
         private const int RenderHeight = 16;
 
@@ -107,7 +107,10 @@ namespace Tychaia.Generators
             public int CurrentZ;
             public int ZTop;
             public int ZBottom;
+            public int RenderMode;
+            public bool ChunkDepthMapCleared;
             public RenderTarget2D ChunkTarget;
+            public RenderTarget2D ChunkDepthMap;
             public SpriteBatch SpriteBatch;
             public RenderTask RenderTask;
             public int[] CellRenderOrder;
@@ -115,7 +118,7 @@ namespace Tychaia.Generators
 
         private static RenderState m_CurrentRenderState = null;
 
-        private static void RenderTilesToTexture(RenderTask task, GameTime gt)
+        private static void RenderTilesToTexture(RenderTask task, GameTime gt, GameContext context)
         {
             /* Our world is laid out in memory in terms of X / Y, but
              * we are rendering isometric, which means that the rendering
@@ -163,91 +166,205 @@ namespace Tychaia.Generators
                     true,
                     m_GraphicsDevice.DisplayMode.Format,
                     DepthFormat.Depth24);
+                rs.ChunkDepthMap = new RenderTarget2D(
+                    m_GraphicsDevice,
+                    TileIsometricifier.TILE_TOP_WIDTH * Chunk.Width,
+                    TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width + TileIsometricifier.TILE_CUBE_HEIGHT * Settings.ChunkDepth,
+                    true,
+                    m_GraphicsDevice.DisplayMode.Format,
+                    DepthFormat.Depth24);
                 m_GraphicsDevice.SetRenderTarget(rs.ChunkTarget);
                 m_GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
+                rs.ChunkDepthMapCleared = false;
                 rs.SpriteBatch = new SpriteBatch(m_GraphicsDevice);
                 rs.CurrentZ = rs.ZBottom;
                 rs.RenderTask = task;
                 rs.CellRenderOrder = GetCellRenderOrder(RenderToNE);
+                rs.RenderMode = 0;
                 m_CurrentRenderState = rs;
             }
 
-            m_CurrentRenderState.SpriteBatch.Begin(SpriteSortMode.Immediate, null);
-            int count = 0;
-            int zcount = 0;
-            while (m_CurrentRenderState.CurrentZ < m_CurrentRenderState.ZTop && gt.ElapsedGameTime.Milliseconds < 100)
+            if (m_CurrentRenderState.RenderMode == 0 /* chunk texture */)
             {
-                int z = m_CurrentRenderState.CurrentZ;
-
-                int rcx = TileIsometricifier.TILE_TOP_WIDTH * Chunk.Width / 2 - TileIsometricifier.TILE_TOP_WIDTH / 2;
-                int rcy = TileIsometricifier.TILE_CUBE_HEIGHT * Settings.ChunkDepth + TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width / 2 - DEBUG_ZOFFSET;
-                int rw = TileIsometricifier.TILE_TOP_WIDTH;
-                int rh = TileIsometricifier.TILE_TOP_HEIGHT / 2;
-                for (int i = 0; i < m_CurrentRenderState.CellRenderOrder.Length; i++)
+                m_GraphicsDevice.SetRenderTarget(m_CurrentRenderState.ChunkTarget);
+                m_CurrentRenderState.SpriteBatch.Begin(SpriteSortMode.Immediate, null);
+                int count = 0;
+                int zcount = 0;
+                while (m_CurrentRenderState.CurrentZ < m_CurrentRenderState.ZTop && gt.ElapsedGameTime.Milliseconds < 100)
                 {
-                    // Calculate the X / Y of the tile in the grid.
-                    int x = m_CurrentRenderState.CellRenderOrder[i] % RenderWidth;
-                    int y = m_CurrentRenderState.CellRenderOrder[i] / RenderWidth;
+                    int z = m_CurrentRenderState.CurrentZ;
 
-                    // Calculate the render position on screen.
-                    int rx = rcx + (int)((x - y) / 2.0 * rw);
-                    int ry = rcy + (x + y) * rh - (rh / 2 * (RenderWidth + RenderHeight)) - (z * TileIsometricifier.TILE_CUBE_HEIGHT);
+                    int rcx = TileIsometricifier.TILE_TOP_WIDTH * Chunk.Width / 2 - TileIsometricifier.TILE_TOP_WIDTH / 2;
+                    int rcy = TileIsometricifier.TILE_CUBE_HEIGHT * Settings.ChunkDepth + TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width / 2 - DEBUG_ZOFFSET;
+                    int rw = TileIsometricifier.TILE_TOP_WIDTH;
+                    int rh = TileIsometricifier.TILE_TOP_HEIGHT / 2;
+                    for (int i = 0; i < m_CurrentRenderState.CellRenderOrder.Length; i++)
+                    {
+                        // Calculate the X / Y of the tile in the grid.
+                        int x = m_CurrentRenderState.CellRenderOrder[i] % RenderWidth;
+                        int y = m_CurrentRenderState.CellRenderOrder[i] / RenderWidth;
 
-                    Block b = task.Chunk.m_Blocks[x, y, z];
-                    if (b == null)
-                        continue;
-                    Tile t = b.Tile;
+                        // Calculate the render position on screen.
+                        int rx = rcx + (int)((x - y) / 2.0 * rw);
+                        int ry = rcy + (x + y) * rh - (rh / 2 * (RenderWidth + RenderHeight)) - (z * TileIsometricifier.TILE_CUBE_HEIGHT);
 
-                    if (t.Image == null) continue;
-                    Color col = new Color(1f, 1f, 1f, 1f).ToPremultiplied();
-                    if (task.Chunk.GlobalX == 0 && task.Chunk.GlobalY == 0 && x == 0 && y == 0)
-                        col = new Color(1f, 0f, 0f, 1f).ToPremultiplied();
-                    m_CurrentRenderState.SpriteBatch.Draw(
-                        task.Textures[t.Image + ".isometric.top"],
-                        new Rectangle(rx, ry, TileIsometricifier.TILE_TOP_WIDTH, TileIsometricifier.TILE_TOP_HEIGHT),
-                        null,
-                        col,
-                        0,
-                        new Vector2(0, 0),
-                        SpriteEffects.None,
-                        0 // TODO: Use this to correct rendering artifacts.
-                        );
-                    m_CurrentRenderState.SpriteBatch.Draw(
-                        task.Textures[t.Image + ".isometric.sideL"],
-                        new Rectangle(rx, ry + 12, TileIsometricifier.TILE_SIDE_WIDTH, TileIsometricifier.TILE_SIDE_HEIGHT),
-                        null,
-                        col,
-                        0,
-                        new Vector2(0, 0),
-                        SpriteEffects.None,
-                        0 // TODO: Use this to correct rendering artifacts.
-                        );
-                    m_CurrentRenderState.SpriteBatch.Draw(
-                        task.Textures[t.Image + ".isometric.sideR"],
-                        new Rectangle(rx + 16, ry + 12, TileIsometricifier.TILE_SIDE_WIDTH, TileIsometricifier.TILE_SIDE_HEIGHT),
-                        null,
-                        col,
-                        0,
-                        new Vector2(0, 0),
-                        SpriteEffects.None,
-                        0 // TODO: Use this to correct rendering artifacts.
-                        );
-                    count++;
+                        Block b = task.Chunk.m_Blocks[x, y, z];
+                        if (b == null)
+                            continue;
+                        Tile t = b.Tile;
+
+                        if (t.Image == null) continue;
+                        Color col = new Color(1f, 1f, 1f, 1f).ToPremultiplied();
+                        if (task.Chunk.GlobalX == 0 && task.Chunk.GlobalY == 0 && x == 0 && y == 0)
+                            col = new Color(1f, 0f, 0f, 1f).ToPremultiplied();
+                        m_CurrentRenderState.SpriteBatch.Draw(
+                            task.Textures[t.Image + ".isometric.top"],
+                            new Rectangle(rx, ry, TileIsometricifier.TILE_TOP_WIDTH, TileIsometricifier.TILE_TOP_HEIGHT),
+                            null,
+                            col,
+                            0,
+                            new Vector2(0, 0),
+                            SpriteEffects.None,
+                            0 // TODO: Use this to correct rendering artifacts.
+                            );
+                        m_CurrentRenderState.SpriteBatch.Draw(
+                            task.Textures[t.Image + ".isometric.sideL"],
+                            new Rectangle(rx, ry + 12, TileIsometricifier.TILE_SIDE_WIDTH, TileIsometricifier.TILE_SIDE_HEIGHT),
+                            null,
+                            col,
+                            0,
+                            new Vector2(0, 0),
+                            SpriteEffects.None,
+                            0 // TODO: Use this to correct rendering artifacts.
+                            );
+                        m_CurrentRenderState.SpriteBatch.Draw(
+                            task.Textures[t.Image + ".isometric.sideR"],
+                            new Rectangle(rx + 16, ry + 12, TileIsometricifier.TILE_SIDE_WIDTH, TileIsometricifier.TILE_SIDE_HEIGHT),
+                            null,
+                            col,
+                            0,
+                            new Vector2(0, 0),
+                            SpriteEffects.None,
+                            0 // TODO: Use this to correct rendering artifacts.
+                            );
+                        count++;
+                    }
+
+                    m_CurrentRenderState.CurrentZ++;
+                    zcount++;
                 }
 
-                m_CurrentRenderState.CurrentZ++;
-                zcount++;
+                FilteredConsole.WriteLine(FilterCategory.OptimizationTiming, "Rendered " + zcount + " levels, " + count + " cells to texture target in " + gt.ElapsedGameTime.Milliseconds + "ms.");
+                m_CurrentRenderState.SpriteBatch.End();
+                m_GraphicsDevice.SetRenderTarget(null);
             }
+            else if (m_CurrentRenderState.RenderMode == 1 /* depth map */)
+            {
+                m_GraphicsDevice.SetRenderTarget(m_CurrentRenderState.ChunkDepthMap);
+                if (!m_CurrentRenderState.ChunkDepthMapCleared)
+                {
+                    m_CurrentRenderState.SpriteBatch.Begin(SpriteSortMode.Immediate, null);
+                    m_GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
+                    m_CurrentRenderState.SpriteBatch.End();
+                    m_CurrentRenderState.ChunkDepthMapCleared = true;
+                }
+                BlendState bs = new BlendState();
+                bs.AlphaBlendFunction = BlendFunction.Max;
+                bs.AlphaSourceBlend = Blend.One;
+                bs.AlphaDestinationBlend = Blend.One;
+                bs.ColorBlendFunction = BlendFunction.Max;
+                bs.ColorSourceBlend = Blend.One;
+                bs.ColorDestinationBlend = Blend.One;
+                m_CurrentRenderState.SpriteBatch.Begin(SpriteSortMode.Immediate, bs, null, null, null, context.Effects["IsometricDepthMap"]);
+                context.Effects["IsometricDepthMap"].Parameters["RotationMode"].SetValue(RenderToNE);
+                context.Effects["IsometricDepthMap"].CurrentTechnique.Passes[0].Apply();
+                int count = 0;
+                int zcount = 0;
+                while (m_CurrentRenderState.CurrentZ < m_CurrentRenderState.ZTop && gt.ElapsedGameTime.Milliseconds < 100)
+                {
+                    int z = m_CurrentRenderState.CurrentZ;
 
-            FilteredConsole.WriteLine(FilterCategory.OptimizationTiming, "Rendered " + zcount + " levels, " + count + " cells to texture target in " + gt.ElapsedGameTime.Milliseconds + "ms.");
-            m_CurrentRenderState.SpriteBatch.End();
-            m_GraphicsDevice.SetRenderTarget(null);
+                    int rcx = TileIsometricifier.TILE_TOP_WIDTH * Chunk.Width / 2 - TileIsometricifier.TILE_TOP_WIDTH / 2;
+                    int rcy = TileIsometricifier.TILE_CUBE_HEIGHT * Settings.ChunkDepth + TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width / 2 - DEBUG_ZOFFSET;
+                    int rw = TileIsometricifier.TILE_TOP_WIDTH;
+                    int rh = TileIsometricifier.TILE_TOP_HEIGHT / 2;
+                    for (int i = 0; i < m_CurrentRenderState.CellRenderOrder.Length; i++)
+                    {
+                        // Calculate the X / Y of the tile in the grid.
+                        int x = m_CurrentRenderState.CellRenderOrder[i] % RenderWidth;
+                        int y = m_CurrentRenderState.CellRenderOrder[i] / RenderWidth;
+
+                        // Calculate the "depth" of the tile.
+                        int depth = x + y + z;
+
+                        // Calculate the render position on screen.
+                        int rx = rcx + (int)((x - y) / 2.0 * rw);
+                        int ry = rcy + (x + y) * rh - (rh / 2 * (RenderWidth + RenderHeight)) - (z * TileIsometricifier.TILE_CUBE_HEIGHT);
+
+                        Block b = task.Chunk.m_Blocks[x, y, z];
+                        if (b == null)
+                            continue;
+                        Tile t = b.Tile;
+
+                        if (t.Image == null) continue;
+                        context.Effects["IsometricDepthMap"].Parameters["CellDepth"].SetValue((float)Math.Min(depth / 255f, 1.0f));
+                        context.Effects["IsometricDepthMap"].CurrentTechnique.Passes[0].Apply();
+                        m_CurrentRenderState.SpriteBatch.Draw(
+                            task.Textures[t.Image + ".isometric.top"],
+                            new Rectangle(rx, ry, TileIsometricifier.TILE_TOP_WIDTH, TileIsometricifier.TILE_TOP_HEIGHT),
+                            null,
+                            Color.White,
+                            0,
+                            new Vector2(0, 0),
+                            SpriteEffects.None,
+                            0
+                            );
+                        m_CurrentRenderState.SpriteBatch.Draw(
+                            task.Textures[t.Image + ".isometric.sideL"],
+                            new Rectangle(rx, ry + 12, TileIsometricifier.TILE_SIDE_WIDTH, TileIsometricifier.TILE_SIDE_HEIGHT),
+                            null,
+                            Color.White,
+                            0,
+                            new Vector2(0, 0),
+                            SpriteEffects.None,
+                            0
+                            );
+                        m_CurrentRenderState.SpriteBatch.Draw(
+                            task.Textures[t.Image + ".isometric.sideR"],
+                            new Rectangle(rx + 16, ry + 12, TileIsometricifier.TILE_SIDE_WIDTH, TileIsometricifier.TILE_SIDE_HEIGHT),
+                            null,
+                            Color.White,
+                            0,
+                            new Vector2(0, 0),
+                            SpriteEffects.None,
+                            0
+                            );
+                        count++;
+                    }
+
+                    m_CurrentRenderState.CurrentZ++;
+                    zcount++;
+                }
+
+                FilteredConsole.WriteLine(FilterCategory.OptimizationTiming, "Rendered " + zcount + " levels, " + count + " cells to texture target in " + gt.ElapsedGameTime.Milliseconds + "ms.");
+                m_CurrentRenderState.SpriteBatch.End();
+                m_GraphicsDevice.SetRenderTarget(null);
+            }
 
             if (m_CurrentRenderState.CurrentZ == m_CurrentRenderState.ZTop)
             {
-                m_CurrentRenderState.RenderTask.Result = m_CurrentRenderState.ChunkTarget;
-                m_CurrentRenderState.RenderTask.HasResult = true;
-                m_CurrentRenderState = null;
+                if (m_CurrentRenderState.RenderMode < 1)
+                {
+                    m_CurrentRenderState.CurrentZ = m_CurrentRenderState.ZBottom;
+                    m_CurrentRenderState.RenderMode++;
+                }
+                else
+                {
+                    m_CurrentRenderState.RenderTask.Result = m_CurrentRenderState.ChunkTarget;
+                    m_CurrentRenderState.RenderTask.DepthMap = m_CurrentRenderState.ChunkDepthMap;
+                    m_CurrentRenderState.RenderTask.HasResult = true;
+                    m_CurrentRenderState = null;
+                }
             }
         }
 
@@ -271,7 +388,7 @@ namespace Tychaia.Generators
              * to render it to a texture, so discard from there.
              */
 
-            int discarded = 0;
+            /*int discarded = 0;
             foreach (RenderTask rt in m_Tasks.ToArray())
             {
                 if (!m_NeededChunks.Contains(rt.Chunk))
@@ -285,12 +402,13 @@ namespace Tychaia.Generators
             {
                 FilteredConsole.WriteLine(FilterCategory.Optimization, "SKIPPED RENDERING " + discarded + " UNNEEDED CHUNKS!");
                 discarded = 0;
-            }
+            }*/
 
             /* We can't keep every chunk's texture loaded into memory or
              * else we quickly run out of graphics RAM to store everything.
              */
 
+            int discarded = 0;
             while (m_LoadedChunks.Count > LastRenderedCountOnScreen + m_LastRenderedBuffer)
             {
                 m_LoadedChunks[0].DiscardTexture();
@@ -336,6 +454,7 @@ namespace Tychaia.Generators
         {
             public bool HasResult;
             public RenderTarget2D Result;
+            public RenderTarget2D DepthMap;
             public Chunk Chunk;
             public Dictionary<string, Texture2D> Textures;
         }
@@ -350,10 +469,10 @@ namespace Tychaia.Generators
             m_GraphicsDevice = device;
         }
 
-        public static void ProcessSingle(GameTime gt)
+        public static void ProcessSingle(GameTime gt, GameContext context)
         {
             RenderTask rt;
-            if (m_Tasks.Count == 0)
+            if (m_Tasks.Count == 0 && m_CurrentRenderState == null)
                 return;
             if (m_GraphicsDevice == null)
                 return;
@@ -365,7 +484,7 @@ namespace Tychaia.Generators
                 m_Tasks.RemoveAt(0);
             }
 
-            RenderTilesToTexture(rt, gt);
+            RenderTilesToTexture(rt, gt, context);
         }
 
         public static RenderTask PushForRendering(Chunk chunk, GameContext context)

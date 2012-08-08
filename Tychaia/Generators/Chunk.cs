@@ -68,6 +68,23 @@ namespace Tychaia.Generators
             }
         }
 
+        public Texture2D DepthMap
+        {
+            get
+            {
+                if (!this.m_IsGenerated)
+                {
+                    this.Generate();
+                    return null;
+                }
+                if (this.m_RenderTask == null || (this.m_RenderTask.Result == null && this.m_RenderTask.HasResult))
+                    this.m_RenderTask = ChunkRenderer.PushForRendering(this, Static.GameContext);
+                if (!this.m_RenderTask.HasResult)
+                    return null;
+                return this.m_RenderTask.DepthMap;
+            }
+        }
+
         public void DiscardTexture()
         {
             // Force the graphics texture to be discarded.

@@ -11,6 +11,12 @@ namespace Protogame
 {
     public class WorldManager
     {
+        public Effect ActiveEffect
+        {
+            get;
+            set;
+        }
+
         protected void DrawSpriteAt(GameContext context, float x, float y, int width, int height, string image, Color color, bool flipX)
         {
             if (flipX)
@@ -155,8 +161,18 @@ namespace Protogame
             // Render tiles below.
             this.DrawTilesBelow(context);
 
+            // Put the sprite batch back into immediate mode (workaround for
+            // isometric pixel shaders).
+            context.SpriteBatch.End();
+            context.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, this.ActiveEffect, context.Camera.GetTransformationMatrix());
+
             // Render all of the entities.
             this.DrawEntities(context);
+
+            // Put the sprite batch back into deferred mode (workaround for
+            // isometric pixel shaders).
+            context.SpriteBatch.End();
+            context.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, context.Camera.GetTransformationMatrix());
 
             // Render tiles above.
             this.DrawTilesAbove(context);

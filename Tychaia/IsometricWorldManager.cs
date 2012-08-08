@@ -260,6 +260,34 @@ namespace Tychaia
                 ChunkEntity ce = a as ChunkEntity;
                 Vector2 pos = this.TranslatePoint(ce.X, ce.Y, ce.Z);
 
+                // Set depth information.
+                if (this.Chunk.DepthMap != null)
+                {
+                    context.Effects["IsometricMasking"].Parameters["DepthMapTexture"].SetValue(this.Chunk.DepthMap);
+                    context.Effects["IsometricMasking"].Parameters["DepthMapSize"].SetValue(new Vector2(this.Chunk.DepthMap.Width, this.Chunk.DepthMap.Height));
+                    context.Effects["IsometricMasking"].Parameters["RotationMode"].SetValue(ChunkRenderer.RenderToNE);
+                    context.Effects["IsometricMasking"].Parameters["IgnoreDepth"].SetValue(false);
+                    context.Effects["IsometricMasking"].Parameters["EntityDepth"].SetValue((
+                        ((int)((ce.X < 0) ? Chunk.Width : 0) + (ce.X / Scale.CUBE_X) % Chunk.Width) +
+                        ((int)((ce.Y < 0) ? Chunk.Height : 0) + (ce.Y / Scale.CUBE_Y) % Chunk.Height) +
+                        ((int)((ce.Z < 0) ? Chunk.Depth : 0) + ((ce.Z / Scale.CUBE_Z) - 1) % Chunk.Depth)) / 255f);
+                    context.Effects["IsometricMasking"].Parameters["Offset"].SetValue(
+                        new Vector2(
+                            (int)(pos.X - this.m_ChunkCenterX + TileIsometricifier.CHUNK_TOP_WIDTH / 2 - ce.ImageOffsetX),
+                            (int)(pos.Y - this.m_ChunkCenterY - ce.ImageOffsetY + (Settings.ChunkDepth - this.ZLevel) * TileIsometricifier.TILE_CUBE_HEIGHT)
+                        )
+                    );
+                    context.Effects["IsometricMasking"].Parameters["Size"].SetValue(
+                        new Vector2(
+                            ce.Width,
+                            ce.Height
+                        )
+                    );
+                }
+                else
+                    context.Effects["IsometricMasking"].Parameters["IgnoreDepth"].SetValue(true);
+                context.Effects["IsometricMasking"].CurrentTechnique.Passes[0].Apply();
+
                 // Draw image.
                 this.DrawSpriteAt(
                     context,
@@ -272,7 +300,13 @@ namespace Tychaia
                     false);
             }
             else
+            {
+                // Set the entity depth such that the effect doesn't apply, then render
+                // using the default settings.
+                context.Effects["IsometricMasking"].Parameters["IgnoreDepth"].SetValue(true);
+                context.Effects["IsometricMasking"].CurrentTechnique.Passes[0].Apply();
                 base.HandleRenderOfEntity(context, a);
+            }
         }
 
         protected override void PreBegin(GameContext context)
@@ -281,7 +315,7 @@ namespace Tychaia
             if (context.GameTime.ElapsedGameTime.Milliseconds < 100)
             {
                 ChunkProvider.ProcessSingle();
-                ChunkRenderer.ProcessSingle(context.GameTime);
+                ChunkRenderer.ProcessSingle(context.GameTime, context);
             }
         }
 
@@ -295,6 +329,10 @@ namespace Tychaia
                 return;
             if (this.Chunk == null)
                 this.Chunk = cm.ZerothChunk;
+
+            // Reset rendering effects.
+            context.Effects["IsometricMasking"].Parameters["IgnoreDepth"].SetValue(true);
+            context.Effects["IsometricMasking"].CurrentTechnique.Passes[0].Apply();
 
             // Validate chunk connectivity.
             this.Chunk.Validate();

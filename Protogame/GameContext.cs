@@ -18,6 +18,7 @@ namespace Protogame
         public Dictionary<string, Texture2D> Textures { get; set; }
         public Dictionary<string, SpriteFont> Fonts { get; set; }
         public Dictionary<string, SoundEffect> Sounds { get; set; }
+        public Dictionary<string, Effect> Effects { get; set; }
         public GameTime GameTime { get; set; }
         public Camera Camera { get; set; }
         public GameWindow Window { get; set; }
@@ -30,6 +31,7 @@ namespace Protogame
             this.Textures = new Dictionary<string, Texture2D>();
             this.Sounds = new Dictionary<string, SoundEffect>();
             this.Fonts = new Dictionary<string, SpriteFont>();
+            this.Effects = new Dictionary<string, Effect>();
         }
 
         public void LoadFont(string name)
@@ -51,6 +53,11 @@ namespace Protogame
         public void LoadAudio(string name)
         {
             this.Sounds.Add(name, this.Content.Load<SoundEffect>(name.Replace('.', '/')));
+        }
+
+        public void LoadEffect(string name)
+        {
+            this.Effects.Add(name, this.Content.Load<Effect>(name.Replace('.', '/')));
         }
     }
 }

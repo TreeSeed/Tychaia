@@ -38,21 +38,18 @@ namespace Tychaia.Generators
                 DepthFormat.Depth24);
             context.Graphics.GraphicsDevice.SetRenderTarget(rotatedTarget);
             context.Graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
-            using (SpriteBatch sprite = new SpriteBatch(context.Graphics.GraphicsDevice))
-            {
-                sprite.Begin();
-                sprite.Draw(
-                    original,
-                    new Rectangle(0, 0, rotSize, rotSize),
-                    new Rectangle(0, 0, 16, 16),
-                    Color.White,
-                    MathHelper.ToRadians(45),
-                    //new Vector2(TILE_LEFT, TILE_TOP),
-                    new Vector2(-8, 8),
-                    SpriteEffects.None,
-                    0);
-                sprite.End();
-            }
+            context.SpriteBatch.Begin();
+            context.SpriteBatch.Draw(
+                original,
+                new Rectangle(0, 0, rotSize, rotSize),
+                new Rectangle(0, 0, 16, 16),
+                Color.White,
+                MathHelper.ToRadians(45),
+                //new Vector2(TILE_LEFT, TILE_TOP),
+                new Vector2(-8, 8),
+                SpriteEffects.None,
+                0);
+            context.SpriteBatch.End();
 
             // Then squash.
             RenderTarget2D squashedTarget = new RenderTarget2D(
@@ -64,17 +61,14 @@ namespace Tychaia.Generators
                 DepthFormat.Depth24);
             context.Graphics.GraphicsDevice.SetRenderTarget(squashedTarget);
             context.Graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
-            using (SpriteBatch sprite = new SpriteBatch(context.Graphics.GraphicsDevice))
-            {
-                sprite.Begin();
-                sprite.Draw(
-                    rotatedTarget,
-                    new Rectangle(0, 0, TILE_TOP_WIDTH, TILE_TOP_HEIGHT),
-                    new Rectangle(0, 0, rotatedTarget.Width, rotatedTarget.Height),
-                    Color.White
-                    );
-                sprite.End();
-            }
+            context.SpriteBatch.Begin();
+            context.SpriteBatch.Draw(
+                rotatedTarget,
+                new Rectangle(0, 0, TILE_TOP_WIDTH, TILE_TOP_HEIGHT),
+                new Rectangle(0, 0, rotatedTarget.Width, rotatedTarget.Height),
+                Color.White
+                );
+            context.SpriteBatch.End();
             context.Graphics.GraphicsDevice.SetRenderTarget(null);
 
             #endregion
@@ -94,17 +88,14 @@ namespace Tychaia.Generators
                 DepthFormat.Depth24);
             context.Graphics.GraphicsDevice.SetRenderTarget(shearedLeftTarget);
             context.Graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
-            using (SpriteBatch sprite = new SpriteBatch(context.Graphics.GraphicsDevice))
-            {
-                sprite.Begin(SpriteSortMode.Immediate, null, null, null, null, null, m);
-                sprite.Draw(
-                    original,
-                    new Rectangle(0, 0, original.Width, original.Height),
-                    null,
-                    new Color(63, 63, 63)
-                    );
-                sprite.End();
-            }
+            context.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, m);
+            context.SpriteBatch.Draw(
+                original,
+                new Rectangle(0, 0, original.Width, original.Height),
+                null,
+                new Color(63, 63, 63)
+                );
+            context.SpriteBatch.End();
             context.Graphics.GraphicsDevice.SetRenderTarget(null);
 
             // Skew with matrix.
@@ -120,17 +111,14 @@ namespace Tychaia.Generators
                 DepthFormat.Depth24);
             context.Graphics.GraphicsDevice.SetRenderTarget(shearedRightTarget);
             context.Graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
-            using (SpriteBatch sprite = new SpriteBatch(context.Graphics.GraphicsDevice))
-            {
-                sprite.Begin(SpriteSortMode.Immediate, null, null, null, null, null, m);
-                sprite.Draw(
-                    original,
-                    new Rectangle(0, (int)(original.Height * 0.7), original.Width, original.Height),
-                    null,
-                    new Color(127, 127, 127)
-                    );
-                sprite.End();
-            }
+            context.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, m);
+            context.SpriteBatch.Draw(
+                original,
+                new Rectangle(0, (int)(original.Height * 0.7), original.Width, original.Height),
+                null,
+                new Color(127, 127, 127)
+                );
+            context.SpriteBatch.End();
             context.Graphics.GraphicsDevice.SetRenderTarget(null);
 
             #endregion

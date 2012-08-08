@@ -25,14 +25,14 @@ namespace Tychaia
             this.Height = 16;
             this.ImageOffsetX = 8;
             this.ImageOffsetY = 15;
-            this.MovementSpeed = 10;
+            this.MovementSpeed = 2;
         }
 
         public override void Update(World world)
         {
             //this.X = 0;// (float)(0 + Math.Sin(this.m_RotateCounter) * 100);
             //this.Y = 0;
-            this.Z = 64f;
+            this.Z = 32f;
             this.m_RotateCounter += 0.1;
             FilteredConsole.WriteLine(FilterCategory.Player, "player x/y is " + X + ", " + Y + ".");
 
