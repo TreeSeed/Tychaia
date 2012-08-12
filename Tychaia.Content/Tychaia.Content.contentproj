@@ -28,9 +28,6 @@
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.FBXImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.TextureImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.XImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
@@ -51,38 +48,38 @@
   <ItemGroup>
     <Compile Include="tiles\lava.png">
       <Name>lava</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="tiles\grass.png">
       <Name>grass</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="tiles\water.png">
       <Name>water</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="tiles\dirt.png">
       <Name>dirt</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="tiles\stone.png">
       <Name>stone</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="chars\player\player.png">
       <Name>player</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
@@ -96,43 +93,43 @@
   <ItemGroup>
     <Compile Include="tiles\leaf.png">
       <Name>leaf</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="tiles\sand.png">
       <Name>sand</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="tiles\trunk.png">
       <Name>trunk</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="tiles\grassleaf.png">
       <Name>grassleaf</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="tiles\leafgrey.png">
       <Name>leafgrey</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="tiles\snow.png">
       <Name>snow</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="tiles\sandgrass.png">
       <Name>sandgrass</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
@@ -160,7 +157,7 @@
   <ItemGroup>
     <Compile Include="tiles\grass_back.png">
       <Name>grass_back</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
@@ -181,6 +178,12 @@
       <ProcessorParameters_DebugMode>Debug</ProcessorParameters_DebugMode>
       <ProcessorParameters_Defines>D3DXSHADER_DEBUG</ProcessorParameters_Defines>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tychaia.Content.Extensions\Tychaia.Content.Extensions.csproj">
+      <Project>{8ABBB640-E22B-4D70-87EF-FABC143F586A}</Project>
+      <Name>Tychaia.Content.Extensions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

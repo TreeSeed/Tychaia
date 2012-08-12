@@ -263,9 +263,6 @@ namespace Tychaia
                 // Set depth information.
                 if (this.Chunk.DepthMap != null)
                 {
-                    context.Effects["IsometricMasking"].Parameters["DepthMapTexture"].SetValue(this.Chunk.DepthMap);
-                    context.Effects["IsometricMasking"].Parameters["DepthMapSize"].SetValue(new Vector2(this.Chunk.DepthMap.Width, this.Chunk.DepthMap.Height));
-                    context.Effects["IsometricMasking"].Parameters["RotationMode"].SetValue(ChunkRenderer.RenderToNE);
                     context.Effects["IsometricMasking"].Parameters["IgnoreDepth"].SetValue(false);
                     context.Effects["IsometricMasking"].Parameters["EntityDepth"].SetValue((
                         ((int)((ce.X < 0) ? Chunk.Width : 0) + (ce.X / Scale.CUBE_X) % Chunk.Width) +
@@ -361,6 +358,21 @@ namespace Tychaia
                     FilteredConsole.WriteLine(FilterCategory.Rendering, "No texture yet for chunk to render at " + ri.X + ", " + ri.Y + ".");
             }
             ChunkRenderer.LastRenderedCountOnScreen = renders.Count();
+        }
+
+        protected override void DrawEntities(GameContext context)
+        {
+            // Set main shader effects (no need to apply them since that'll be done on the first
+            // entity render).
+            if (this.Chunk != null && this.Chunk.DepthMap != null)
+            {
+                context.Effects["IsometricMasking"].Parameters["DepthMapTexture"].SetValue(this.Chunk.DepthMap);
+                context.Effects["IsometricMasking"].Parameters["DepthMapSize"].SetValue(new Vector2(this.Chunk.DepthMap.Width, this.Chunk.DepthMap.Height));
+                context.Effects["IsometricMasking"].Parameters["RotationMode"].SetValue(ChunkRenderer.RenderToNE);
+            }
+
+            // Call the parent implementation.
+            base.DrawEntities(context);
         }
 
         protected override void DrawTilesAbove(GameContext context)
