@@ -8,11 +8,6 @@ namespace Tychaia.ProceduralGeneration.Buildings
 {
     public abstract class Building
     {
-        // |   |  __   _____  ___
-        // |\  | /  \    |   |          NOTE: NEED TO MAKE THESE INTO SUB CLASSES
-        // | \ | |  |    |   |--             or maybe not..
-        // |  \| \__/    |   |___
-
         // Name, allowing you to search
         public string Name;       // The name of the building
 
@@ -26,29 +21,24 @@ namespace Tychaia.ProceduralGeneration.Buildings
                                      // All buildings are placed as placers then evaluated at the end, however this signifies that this is purely a placer.
 
         //Building Requirements
-        public int MaxDistanceFromWater;         // Value of how far this is from water, used for fishing and docks.
-        public int MinPopulation;                // Value for the minimum population required for making this building
-        public double MinSoilFertility;          // Out of 1.00 (Used for placing food generation and sometimes water generation)
-        public double MinOreDensity;             // Out of 1.00 (Used for placing mines)
-        public double MinRareOreDensity;         // Out of 1.00 (Used for placing prestiege style buildings, such as castles and festival grounds)
-        public double MinMilitaryStrength;       // Out of 1.00 (Used for placing military area such as barrcks and training grounds)
-        public int BuildingValue;                // The value that this gives towards its building type.
-        public int BuildingType;                 // 1: Food Generation, 2: Ore Generation, 3: Military, 4: Prestige, 5: Water Generation
-                                                 // 1: Farms (animals, fruit, vegrables), 2: Mines, 3: Barracks, training grounds, ect, 4: Castles, large marketplaces, tournament grounds,
-                                                 // This is so that the generator knows what style of builing is being generated, so that it can limit the number of generators in each city
-                                                 // This value can be used when placing normal living areas to determing what buildings are to be placed (or possibly leave to just search name?)
-        public int BuildingTier;                 // 1: Caused by cities (farms, mining camps, castles, ect), these should always be BuilingPlacers 
-                                                 // 2: Caused by cities after outlying generation
-                                                 // 3: Caused by cities later (tavers, churches, ect). These are buildings that will be placed at certain popultaion limits
-                                                 // 4: Caused by other buildings (farm pieces, mining camp ares, castle lookouts, ect)
-                                                 // 5: Basic houses shapes list (just a list of all the different accomodation sizes that will be randomly assigned)
-                                                 // 6: Walls
+        public int MaxDistanceFromWater;             // Value of how far this is from water, used for fishing and docks.
+        public int MinPopulation;                    // Value for the minimum population required for making this building
+        public double MinSoilFertility = 0;          // Out of 1.00 (Used for placing food generation and sometimes water generation)
+        public double MinOreDensity = 0;             // Out of 1.00 (Used for placing mines)
+        public double MinRareOreDensity = 0;         // Out of 1.00 (Used for placing prestiege style buildings, such as castles and festival grounds)
+        public double MinMilitaryStrength = 0;       // Out of 1.00 (Used for placing military area such as barrcks and training grounds)
+        public int GenerationType;                   // 1: Food, 2: Ore, 3: Millitary, 4: Prestige, 5: Water, etc
+                                                     // 1: Any building that generates food, 2: Mining buildings, 3: castles, other things that are taken from being a rich city, 4: water generation (wells, etc)
+                                                     // 5: Barracks, outposts ect
+                                                     // Use this genertaion type to filter what things you want (you can use it for walls, houses, castile pieces, farm pieces ect)
+        public int BuildingValue = 1;                // The value that this gives towards its building type.
+                                                     // Set to 1 so it doesn't cause infinite loops.
 
         // Secondary Biome Requirements
-        public double MinWaterValue;            // Required water value from the secondary biome for this building to be placed.
-        public double MaxWaterValue;            // Out of 1.00
-        public double MinHeatValue;             // Required heat value from the secondary biome for this building to be placed. 
-        public double MaxHeatValue;             // Out of 1.00
+        public double MinWaterValue = 0.0;            // Required water value from the secondary biome for this building to be placed.
+        public double MaxWaterValue = 1.0;            // Out of 1.00
+        public double MinHeatValue = 0.0;             // Required heat value from the secondary biome for this building to be placed. 
+        public double MaxHeatValue = 1.0;             // Out of 1.00
 
         // Building Production
         public int Population;      // Lists the number of people that work at the building.

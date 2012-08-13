@@ -18,9 +18,9 @@ namespace Tychaia.ProceduralGeneration.Biomes
         public double TownSuitability;
 
         // Building assistance
-        public double BuildingMaterial; // The building material that the buildings are made out of in this biome
-        public double HeatValue;        // The amount of heat that is in this biome
-        public double WaterValue;       // The amount of water that is in this biome
+        public double BuildingMaterial;       // The building material that the buildings are made out of in this biome
+        public double HeatValue = 0.5;        // The amount of heat that is in this biome
+        public double WaterValue = 0.5;       // The amount of water that is in this biome
         
         // Primary to Secondary biomes
         public int[] SuitableBiomes;
