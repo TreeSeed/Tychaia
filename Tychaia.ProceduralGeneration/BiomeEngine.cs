@@ -9,8 +9,8 @@ namespace Tychaia.ProceduralGeneration
 {
     public static class BiomeEngine
     {
-        private static List<SecondaryBiome> SecondaryBiomes = null;
-        private static List<TertiaryBiome> TertiaryBiomes = null;
+        public static List<SecondaryBiome> SecondaryBiomes = null;
+        public static List<TertiaryBiome> TertiaryBiomes = null;
 
         public const int BIOME_OCEAN = 0;
         public const int BIOME_PLAINS = 1;

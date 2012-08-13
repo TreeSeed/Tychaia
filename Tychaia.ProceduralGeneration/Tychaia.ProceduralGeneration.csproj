@@ -52,6 +52,7 @@
     <Compile Include="Biomes\SecondaryBiome.cs" />
     <Compile Include="Biomes\TundraSecondaryBiome.cs" />
     <Compile Include="BuildingEngine.cs" />
+    <Compile Include="LayerBuildingPlacer.cs" />
     <Compile Include="LayerBuildingList.cs" />
     <Compile Include="LayerZoomTownCenters.cs" />
     <Compile Include="LayerExtendTowns.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="LayerZoom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Towns\Buildings\Building.cs" />
+    <Compile Include="Towns\Buildings\FarmPlacer.cs" />
     <Compile Include="Towns\CapitalTown.cs" />
     <Compile Include="Towns\MediumTown.cs" />
     <Compile Include="Towns\SmallTown.cs" />

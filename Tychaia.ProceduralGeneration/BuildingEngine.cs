@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using Tychaia.ProceduralGeneration.Buildings;
+using Tychaia.ProceduralGeneration.Biomes;
 using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration
@@ -26,22 +27,26 @@ namespace Tychaia.ProceduralGeneration
             return t.GetConstructor(Type.EmptyTypes).Invoke(null) as Building;
         }
 
-        public static List<int> GetBuildingsForCell(double soilfertility, double oredensity, double rareoredensity, double militarystrength, double distancefromwater, int generationtype)
+        public static List<int> GetBuildingsForCell(double soilfertility, double oredensity, double rareoredensity, double militarystrength, int secondarybiome, int generationtype)
         {
             List<int> ViableBuildings = new List<int>();
+            SecondaryBiome biome = BiomeEngine.SecondaryBiomes[secondarybiome]; 
+
             for (int i = 0; i < BuildingEngine.Buildings.Count; i++)
             {
                 Building b = BuildingEngine.Buildings[i];
-                if (generationtype == b.BuildingType)
+                if (soilfertility >= b.MinSoilFertility &&
+                    oredensity >= b.MinOreDensity &&
+                    rareoredensity >= b.MinRareOreDensity &&
+                    militarystrength >= b.MinMilitaryStrength &&
+                    generationtype == b.GenerationType &&
+                    biome.HeatValue > b.MinHeatValue &&
+                    biome.HeatValue < b.MaxHeatValue &&
+                    biome.WaterValue > b.MinWaterValue &&
+                    biome.WaterValue < b.MaxWaterValue)
                 {
-                    if (soilfertility >= b.MinSoilFertility &&
-                        oredensity >= b.MinOreDensity &&
-                        rareoredensity >= b.MinRareOreDensity &&
-                        militarystrength >= b.MinMilitaryStrength)
-                    {
-                       
-                        ViableBuildings.Add(i);
-                    }
+
+                    ViableBuildings.Add(i);
                 }
             }
 
@@ -51,9 +56,11 @@ namespace Tychaia.ProceduralGeneration
         public static Dictionary<int, System.Drawing.Brush> GetBuildingBrushes()
         {
             Dictionary<int, System.Drawing.Brush> result = new Dictionary<int, System.Drawing.Brush>();
-            for (int i = 0; i < BuildingEngine.Buildings.Count; i++)
-                result.Add(i + 1, new System.Drawing.SolidBrush(BuildingEngine.Buildings[i].BrushColor));
             result.Add(0, new System.Drawing.SolidBrush(Color.Black));
+            result.Add(1, new System.Drawing.SolidBrush(Color.Red));
+            result.Add(-1, new System.Drawing.SolidBrush(Color.Transparent));
+            for (int i = 0; i < BuildingEngine.Buildings.Count; i++)
+                result.Add(i + 2, new System.Drawing.SolidBrush(BuildingEngine.Buildings[i].BrushColor));
             return result;
         }
     }
