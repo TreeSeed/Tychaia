@@ -377,7 +377,7 @@ namespace TychaiaWorldGenViewer
             this.c_FlowInterfaceControl.AddElementAtMouse(
                new LayerFlowElement(
                    this.c_FlowInterfaceControl,
-                   new Layer3DFormTerrain(null)
+                   new Layer3DFormTerrain(null, null)
                )
             );
         }

@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Tychaia.Generators;
 using Tychaia.Title;
+using Tychaia.Globals;
 
 namespace Tychaia
 {
@@ -76,9 +77,22 @@ namespace Tychaia
                 this.m_Player.Y -= mv;
                 this.m_Player.X += mv;
             }
+            this.m_Player.Z = this.GetSurfaceZ(context, this.m_Player.X, this.m_Player.Y) * Scale.CUBE_Z;
             (context.WorldManager as IsometricWorldManager).Focus(this.m_Player.X, this.m_Player.Y, this.m_Player.Z);
 
             return true; // Update entities.
+        }
+
+        private float GetSurfaceZ(GameContext context, float xx, float yy)
+        {
+            int x = (int)((xx < 0 ? xx + 1 : xx) % (Chunk.Width * Scale.CUBE_X) / Scale.CUBE_X);
+            int y = (int)((yy < 0 ? yy + 1 : yy) % (Chunk.Height * Scale.CUBE_Y) / Scale.CUBE_Y);
+            if (x < 0) x = 0;
+            if (y < 0) y = 0;
+            for (int z = 0; z < Chunk.Depth; z++)
+                if ((context.WorldManager as IsometricWorldManager).Chunk.m_Blocks[x, y, z] != null)
+                    return z - 1;
+            return 0;
         }
     }
 }
