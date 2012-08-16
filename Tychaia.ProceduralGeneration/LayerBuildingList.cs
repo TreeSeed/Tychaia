@@ -102,7 +102,7 @@ namespace Tychaia.ProceduralGeneration
         public override int[] GenerateData(int x, int y, int z, int width, int height, int depth)
         {
             if (this.Parents.Length < 6 || this.Parents[0] == null || this.Parents[1] == null || this.Parents[2] == null || this.Parents[3] == null || this.Parents[4] == null || this.Parents[5] == null)
-                return new int[width * height];
+                return new int[width * height * depth];
 
             int[] soilfertility = this.Parents[0].GenerateData(x, y, width, height);
             int[] oredensity = this.Parents[1].GenerateData(x, y, width, height);
@@ -129,7 +129,6 @@ namespace Tychaia.ProceduralGeneration
                         List<int> ViableMilitaryBuildings = new List<int>();
                         List<int> ViablePrestigeBuildings = new List<int>();
                         List<int> ViableWaterBuildings = new List<int>();
-                        List<int> BuildingsList = new List<int>();
 
                         // Normalize values.
                         double nsoilfertility = (soilfertility[i + j * width] - this.MinSoilFertility) / (double)(this.MaxSoilFertility - this.MinSoilFertility);
@@ -142,12 +141,6 @@ namespace Tychaia.ProceduralGeneration
                         Random r = this.GetCellRNG(x + i, y + j);
                         int townsize = r.Next(0, 100);
 
-                        double townprestiege = (townsize + (nrareoredensity * 3) + nsoilfertility + nmilitarystrength) / 6;
-                        double foodproduction = (townsize + nsoilfertility) / 2;
-                        double oreproduction = (townsize + (noredensity + nrareoredensity) / 2) / 2;
-                        double militaryvalue = (townsize + nmilitarystrength) / 2;
-                        double watervalue = (townsize + nrareoredensity / 2 + nsoilfertility / 2) / 2;
-
                         // Store result. Gets all the viable buildings for the town generation.
                         // Need to be able to store this within each town cell
                         ViableFoodBuildings = BuildingEngine.GetBuildingsForCell(nsoilfertility, noredensity, nrareoredensity, nmilitarystrength, nsecondarybiome, 1);
@@ -156,56 +149,73 @@ namespace Tychaia.ProceduralGeneration
                         ViablePrestigeBuildings = BuildingEngine.GetBuildingsForCell(nsoilfertility, noredensity, nrareoredensity, nmilitarystrength, nsecondarybiome, 4);
                         ViableWaterBuildings = BuildingEngine.GetBuildingsForCell(nsoilfertility, noredensity, nrareoredensity, nmilitarystrength, nsecondarybiome, 5);
 
-                        // Place all building placers, will have to place close range buildings really close.
-                        // Make sure that each of the viable food, ore and military buildings add up to the variables above.
-                        int foodvaluecount = 0;
-                        int orevaluecount = 0;
-                        int militaryvaluecount = 0;
-                        int prestiegevaluecount = 0;
-                        int watervaluecount = 0;
-
                         // Select some random buildings from the list of viable ones (should create really dynamic towns that way)
                         int selection = 0;
-
-                        selection = r.Next(0, ViableFoodBuildings.Count);
-                        while (foodvaluecount < foodproduction && ViableFoodBuildings.Count != 0)
+                        int u = 1;
+                        if (ViableFoodBuildings.Count != 0)
                         {
-                            BuildingsList.Add(ViableFoodBuildings[selection]);
-                            foodvaluecount = foodvaluecount + BuildingEngine.Buildings[ViableFoodBuildings[selection]].BuildingValue;
+                            double foodproduction = (townsize + nsoilfertility) / 2;
+                            int foodvaluecount = 0;
                             selection = r.Next(0, ViableFoodBuildings.Count);
+                            while (foodvaluecount < foodproduction)
+                            {
+                                data[i + j * width + u * width * height] = ViableFoodBuildings[selection] + 2;
+                                foodvaluecount = foodvaluecount + BuildingEngine.Buildings[ViableFoodBuildings[selection]].BuildingValue;
+                                selection = r.Next(0, ViableFoodBuildings.Count);
+                                u++;
+                            }
                         }
-                        selection = r.Next(0, ViableOreBuildings.Count);
-                        while (orevaluecount < oreproduction && ViableOreBuildings.Count != 0)
+                        if (ViableOreBuildings.Count != 0)
                         {
-                            BuildingsList.Add(ViableOreBuildings[selection]);
-                            orevaluecount = orevaluecount + BuildingEngine.Buildings[ViableOreBuildings[selection]].BuildingValue;
+                            double oreproduction = (townsize + (noredensity + nrareoredensity) / 2) / 2;
+                            int orevaluecount = 0;
                             selection = r.Next(0, ViableOreBuildings.Count);
+                            while (orevaluecount < oreproduction)
+                            {
+                                data[i + j * width + u * width * height] = ViableOreBuildings[selection] + 2;
+                                orevaluecount = orevaluecount + BuildingEngine.Buildings[ViableOreBuildings[selection]].BuildingValue;
+                                selection = r.Next(0, ViableOreBuildings.Count);
+                                u++;
+                            }
                         }
-                        selection = r.Next(0, ViableMilitaryBuildings.Count);
-                        while (militaryvaluecount < militaryvalue && ViableMilitaryBuildings.Count != 0)
+                        if (ViableMilitaryBuildings.Count != 0)
                         {
-                            BuildingsList.Add(ViableMilitaryBuildings[selection]);
-                            militaryvaluecount = militaryvaluecount + BuildingEngine.Buildings[ViableMilitaryBuildings[selection]].BuildingValue;
+                            double militaryvalue = (townsize + nmilitarystrength) / 2;
+                            int militaryvaluecount = 0;
                             selection = r.Next(0, ViableMilitaryBuildings.Count);
+                            while (militaryvaluecount < militaryvalue)
+                            {
+                                data[i + j * width + u * width * height] = ViableMilitaryBuildings[selection] + 2;
+                                militaryvaluecount = militaryvaluecount + BuildingEngine.Buildings[ViableMilitaryBuildings[selection]].BuildingValue;
+                                selection = r.Next(0, ViableMilitaryBuildings.Count);
+                                u++;
+                            }
                         }
-                        selection = r.Next(0, ViablePrestigeBuildings.Count);
-                        while (prestiegevaluecount < townprestiege && ViablePrestigeBuildings.Count != 0)
+                        if (ViablePrestigeBuildings.Count != 0)
                         {
-                            BuildingsList.Add(ViablePrestigeBuildings[selection]);
-                            prestiegevaluecount = prestiegevaluecount + BuildingEngine.Buildings[ViablePrestigeBuildings[selection]].BuildingValue;
+                            double townprestiege = (townsize + (nrareoredensity * 3) + nsoilfertility + nmilitarystrength) / 6;
+                            int prestiegevaluecount = 0;
                             selection = r.Next(0, ViablePrestigeBuildings.Count);
+                            while (prestiegevaluecount < townprestiege)
+                            {
+                                data[i + j * width + u * width * height] = ViablePrestigeBuildings[selection] + 2;
+                                prestiegevaluecount = prestiegevaluecount + BuildingEngine.Buildings[ViablePrestigeBuildings[selection]].BuildingValue;
+                                selection = r.Next(0, ViablePrestigeBuildings.Count);
+                                u++;
+                            }
                         }
-                        selection = r.Next(0, ViableWaterBuildings.Count);
-                        while (watervaluecount < watervalue && ViableWaterBuildings.Count != 0)
+                        if (ViableWaterBuildings.Count != 0)
                         {
-                            BuildingsList.Add(ViableWaterBuildings[selection]);
-                            watervaluecount = watervaluecount + BuildingEngine.Buildings[ViableWaterBuildings[selection]].BuildingValue;
+                            double watervalue = (townsize + nrareoredensity / 2 + nsoilfertility / 2) / 2;
+                            int watervaluecount = 0;
                             selection = r.Next(0, ViableWaterBuildings.Count);
-                        }
-                        
-                        for (int u = 0; u < BuildingsList.Count(); u++)
-                        {
-                            data[i + j * width + (u + 1) * width * height] = BuildingsList[u] + 2;
+                            while (watervaluecount < watervalue)
+                            {
+                                data[i + j * width + u * width * height] = ViableWaterBuildings[selection] + 2;
+                                watervaluecount = watervaluecount + BuildingEngine.Buildings[ViableWaterBuildings[selection]].BuildingValue;
+                                selection = r.Next(0, ViableWaterBuildings.Count);
+                                u++;
+                            }
                         }
 
                         // This signifies to the next layer that they generation is going to have to move placements that are on this point

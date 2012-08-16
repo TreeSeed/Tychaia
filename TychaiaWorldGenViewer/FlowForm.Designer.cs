@@ -102,6 +102,7 @@
             this.c_XNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
+            this.buildingPlacerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_StatusStrip.SuspendLayout();
             this.c_ContextMenuStrip.SuspendLayout();
             this.c_ToolStrip.SuspendLayout();
@@ -447,7 +448,8 @@
             this.c_TownsAddSimulateRundownMenuItem,
             this.extendTownsToolStripMenuItem,
             this.c_LandAddZoomTownCentersMenuItem,
-            this.buildingPlacerPlacerToolStripMenuItem});
+            this.buildingPlacerPlacerToolStripMenuItem,
+            this.buildingPlacerToolStripMenuItem});
             this.c_TownsMenuItem.Name = "c_TownsMenuItem";
             this.c_TownsMenuItem.Size = new System.Drawing.Size(164, 22);
             this.c_TownsMenuItem.Text = "Towns";
@@ -729,6 +731,13 @@
             this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
             this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
             // 
+            // buildingPlacerToolStripMenuItem
+            // 
+            this.buildingPlacerToolStripMenuItem.Name = "buildingPlacerToolStripMenuItem";
+            this.buildingPlacerToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.buildingPlacerToolStripMenuItem.Text = "Building Placer";
+            this.buildingPlacerToolStripMenuItem.Click += new System.EventHandler(this.buildingPlacerToolStripMenuItem_Click);
+            // 
             // FlowForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -828,5 +837,6 @@
         private System.Windows.Forms.ToolStripMenuItem c_3DGeneralStoreResultMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_LandAddZoomTownCentersMenuItem;
         private System.Windows.Forms.ToolStripMenuItem buildingPlacerPlacerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buildingPlacerToolStripMenuItem;
     }
 }

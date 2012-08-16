@@ -18,7 +18,8 @@ namespace Tychaia.ProceduralGeneration.Buildings
         public int MaxTownLocation;  // The higher this value the further away from the town it will be
         public int MinTownLocation;  // The minimum distance from town center (used for farms ect that wouldn't be in center)
         public bool BuildingPlacer;  // Signifies if this is a building that is only used to place other buildings
-                                     // All buildings are placed as placers then evaluated at the end, however this signifies that this is purely a placer.
+        public int BuildingPlacerID; // All buildings are placed as placers then evaluated at the end, however this signifies that this is purely a placer.
+        public int BuildingPlacerValue;
 
         //Building Requirements
         public int MaxDistanceFromWater;             // Value of how far this is from water, used for fishing and docks.

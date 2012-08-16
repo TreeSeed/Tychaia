@@ -53,11 +53,34 @@ namespace Tychaia.ProceduralGeneration
             return ViableBuildings;
         }
 
+        public static List<int> GetPlacerBuildingsForCell(int secondarybiome, int generationtype)
+        {
+            List<int> ViableBuildings = new List<int>();
+            SecondaryBiome biome = BiomeEngine.SecondaryBiomes[secondarybiome];
+
+            for (int i = 0; i < BuildingEngine.Buildings.Count; i++)
+            {
+                Building b = BuildingEngine.Buildings[i];
+                if (generationtype == b.GenerationType &&
+                    biome.HeatValue > b.MinHeatValue &&
+                    biome.HeatValue < b.MaxHeatValue &&
+                    biome.WaterValue > b.MinWaterValue &&
+                    biome.WaterValue < b.MaxWaterValue)
+                {
+
+                    ViableBuildings.Add(i);
+                }
+            }
+
+            return ViableBuildings;
+        }
         public static Dictionary<int, System.Drawing.Brush> GetBuildingBrushes()
         {
             Dictionary<int, System.Drawing.Brush> result = new Dictionary<int, System.Drawing.Brush>();
             result.Add(0, new System.Drawing.SolidBrush(Color.Black));
             result.Add(1, new System.Drawing.SolidBrush(Color.Red));
+            result.Add(-2, new System.Drawing.SolidBrush(Color.Blue));
+            result.Add(-3, new System.Drawing.SolidBrush(Color.Green));
             result.Add(-1, new System.Drawing.SolidBrush(Color.Transparent));
             for (int i = 0; i < BuildingEngine.Buildings.Count; i++)
                 result.Add(i + 2, new System.Drawing.SolidBrush(BuildingEngine.Buildings[i].BrushColor));
