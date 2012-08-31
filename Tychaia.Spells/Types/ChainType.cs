@@ -7,6 +7,8 @@ namespace Tychaia.Spells.Types
 {
     public class ChainType : SpellType
     {
+        public const double Weight = 0.25;
+
         public override string ToString()
         {
             return "Chain of";

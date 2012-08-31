@@ -7,6 +7,8 @@ namespace Tychaia.Spells.Modifiers
 {
     public class SpeedModifier : SpellModifier
     {
+        public const double Weight = 0.04;
+
         public override string ToString()
         {
             // TODO: Make it "Slow" if the effect is negative.

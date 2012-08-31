@@ -7,6 +7,8 @@ namespace Tychaia.Spells.Elements
 {
     public class EarthElement : SpellElement
     {
+        public const double Weight = 1;
+
         public override string ToString()
         {
             return "Earth";

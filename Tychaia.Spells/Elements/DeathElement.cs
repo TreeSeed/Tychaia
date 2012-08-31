@@ -7,6 +7,8 @@ namespace Tychaia.Spells.Elements
 {
     public class DeathElement : SpellElement
     {
+        public const double Weight = 0.5;
+
         public override string ToString()
         {
             return "Death";

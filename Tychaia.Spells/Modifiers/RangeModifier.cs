@@ -7,6 +7,8 @@ namespace Tychaia.Spells.Modifiers
 {
     public class RangeModifier : SpellModifier
     {
+        public const double Weight = 0.03;
+
         public override string ToString()
         {
             // TODO: Make it "Dampened" if the effect is negative.
