@@ -1,21 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{F2683D9D-E141-490E-B2AA-53461910AC9D}</ProjectGuid>
+    <ProjectGuid>{498EC3C2-4030-4418-8CEC-484B4CBD798A}</ProjectGuid>
     <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tychaia</RootNamespace>
-    <AssemblyName>Tychaia</AssemblyName>
+    <RootNamespace>DepthBufferTest</RootNamespace>
+    <AssemblyName>DepthBufferTest</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
     <XnaProfile>HiDef</XnaProfile>
-    <XnaCrossPlatformGroupID>0dcdec89-a33b-43ad-ab53-02df860dee24</XnaCrossPlatformGroupID>
+    <XnaCrossPlatformGroupID>293c6396-7e76-435b-9565-c1bbe8ba1ae3</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>Game.ico</ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
@@ -60,11 +59,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
@@ -98,8 +93,6 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -114,110 +107,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChunkEntity.cs" />
-    <Compile Include="FilteredConsole.cs" />
-    <Compile Include="Generators\ChunkAccess.cs" />
-    <Compile Include="Generators\ChunkManager.cs" />
-    <Compile Include="Generators\ChunkProvider.cs" />
-    <None Include="app.config" />
-    <None Include="Disabled\ChunkTileset.cs" />
-    <Compile Include="Direction.cs" />
-    <Compile Include="Elements\World.cs" />
-    <Compile Include="Generators\ChunkRenderer.cs" />
-    <None Include="Disabled\Old\Biomes\Biome.cs" />
-    <None Include="Disabled\Old\Biomes\SwampBiome.cs" />
-    <None Include="Disabled\Old\Biomes\WoodsBiome.cs" />
-    <None Include="Disabled\Old\Biomes\RainforestBiome.cs" />
-    <None Include="Disabled\Old\Biomes\SeasonalForestBiome.cs" />
-    <None Include="Disabled\Old\Biomes\GrassDesertBiome.cs" />
-    <None Include="Disabled\Old\Biomes\TaigaBiome.cs" />
-    <None Include="Disabled\Old\Biomes\TreeTypes\TaigaTreeType.cs" />
-    <None Include="Disabled\Old\Biomes\TundraBiome.cs" />
-    <None Include="Disabled\Old\Biomes\PlainsBiome.cs" />
-    <None Include="Disabled\Old\Biomes\ForestBiome.cs" />
-    <None Include="Disabled\Old\Biomes\DesertBiome.cs" />
-    <None Include="Disabled\Old\Biomes\TreeType.cs" />
-    <None Include="Disabled\Old\Biomes\TreeTypes\GrassTreeType.cs" />
-    <None Include="Disabled\Old\Biomes\TreeTypes\ForestTreeType.cs" />
-    <Compile Include="Generators\Chunk.cs" />
-    <None Include="Disabled\Old\BiomeGenerator.cs" />
-    <None Include="Disabled\Old\StateValidationGenerator.cs" />
-    <None Include="Disabled\Old\TemperatureGenerator.cs" />
-    <None Include="Disabled\Old\RainfallGenerator.cs" />
-    <None Include="Disabled\Old\Old\ContinentInformation.cs" />
-    <None Include="Disabled\Old\Old\ContinentPatchGenerator.cs" />
-    <None Include="Disabled\Old\Old\ContinentVarianceGenerator.cs" />
-    <Compile Include="Generators\Block.cs" />
-    <None Include="Disabled\Old\Old\ContinentAreaGenerator.cs" />
-    <None Include="Disabled\Old\Old\InitialWorldGenerator.cs" />
-    <None Include="Disabled\Old\IGenerator.cs" />
-    <None Include="Disabled\Old\IPositionable.cs" />
-    <None Include="Disabled\Old\WorldGenerator.cs" />
-    <Compile Include="Elements\Region.cs" />
-    <Compile Include="Generators\RenderingBuffers.cs" />
-    <Compile Include="Generators\TileIsometricifier.cs" />
-    <Compile Include="IsometricWorldManager.cs" />
-    <None Include="Disabled\Lighting\FieldOfView.cs" />
-    <None Include="Disabled\Lighting\FieldOfViewRenderer.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="IsometricSpriteBatch.cs" />
+    <Compile Include="MySpriteBatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="RuntimeGame.cs" />
-    <Compile Include="RandomExtensions.cs" />
-    <Compile Include="RPGWorld.cs" />
-    <Compile Include="Static.cs" />
-    <None Include="Disabled\TilesetDynamicLoader.cs" />
-    <Compile Include="Tiles\SandGrassTile.cs" />
-    <Compile Include="Tiles\SnowTile.cs" />
-    <Compile Include="Tiles\LeafGreyTile.cs" />
-    <Compile Include="Tiles\GrassLeafTile.cs" />
-    <Compile Include="Tiles\TrunkTile.cs" />
-    <Compile Include="Tiles\SandTile.cs" />
-    <Compile Include="Tiles\LeafTile.cs" />
-    <Compile Include="Tiles\StoneTile.cs" />
-    <Compile Include="Tiles\DirtTile.cs" />
-    <Compile Include="Tiles\LavaTile.cs" />
-    <Compile Include="Tiles\GrassTile.cs" />
-    <Compile Include="Tiles\WaterTile.cs" />
-    <Compile Include="Title\TitleWorld.cs" />
+    <Compile Include="Game1.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SpriteEffect.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Other\WorldConfig.xml">
-      <Link>WorldConfig.xml</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Protogame.Efficiency\Protogame.Efficiency.csproj">
+    <ProjectReference Include="..\..\Protogame.Efficiency\Protogame.Efficiency.csproj">
       <Project>{27F018D3-7C1B-4B2C-ADE7-C04C3C47A30C}</Project>
       <Name>Protogame.Efficiency</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Protogame.Noise\Protogame.Noise.csproj">
-      <Project>{FE9A9DF1-16D8-4A24-8978-D4F2E540F039}</Project>
-      <Name>Protogame.Noise</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Protogame\Protogame.csproj">
-      <Project>{DF7D4601-0061-4329-9803-6917AF416B70}</Project>
-      <Name>Protogame</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Tychaia.Content\Tychaia.Content.contentproj">
-      <Name>Tychaia.Content %28Content%29</Name>
+    <ProjectReference Include="..\DepthBufferTestContent\DepthBufferTestContent.contentproj">
+      <Name>DepthBufferTestContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
-      <Project>{71CB2FDC-897F-4E08-A793-E4201305B7DD}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Tychaia.Globals\Tychaia.Globals.csproj">
-      <Project>{58F07D5A-E86E-4561-88E8-F96744D59157}</Project>
-      <Name>Tychaia.Globals</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Tychaia.ProceduralGeneration\Tychaia.ProceduralGeneration.csproj">
-      <Project>{642D5815-4533-4146-96C1-D932FE1641F9}</Project>
-      <Name>Tychaia.ProceduralGeneration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TychaiaWorldGenViewer\TychaiaWorldGenViewer.csproj">
-      <Project>{EDCFB186-0C67-4771-8033-8572A0744B2C}</Project>
-      <Name>TychaiaWorldGenViewer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -247,7 +160,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--
