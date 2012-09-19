@@ -29,7 +29,7 @@ namespace Tychaia.Generators
 
             // First rotate.
             int rotSize = (int)Math.Sqrt(Math.Pow(original.Width, 2) + Math.Pow(original.Height, 2));
-            RenderTarget2D rotatedTarget = new RenderTarget2D(
+            RenderTarget2D rotatedTarget = RenderTargetFactory.Create(
                 context.Graphics.GraphicsDevice,
                 31,
                 31,
@@ -52,7 +52,7 @@ namespace Tychaia.Generators
             context.SpriteBatch.End();
 
             // Then squash.
-            RenderTarget2D squashedTarget = new RenderTarget2D(
+            RenderTarget2D squashedTarget = RenderTargetFactory.Create(
                 context.Graphics.GraphicsDevice,
                 TILE_TOP_WIDTH,
                 TILE_TOP_HEIGHT,
@@ -79,7 +79,7 @@ namespace Tychaia.Generators
             Matrix m = Matrix.Identity;
             m.M11 = 1.0f; m.M12 = 0.7f;
             m.M21 = 0.0f; m.M22 = 1.0f;
-            RenderTarget2D shearedLeftTarget = new RenderTarget2D(
+            RenderTarget2D shearedLeftTarget = RenderTargetFactory.Create(
                 context.Graphics.GraphicsDevice,
                 TILE_SIDE_WIDTH,
                 TILE_SIDE_HEIGHT,
@@ -102,7 +102,7 @@ namespace Tychaia.Generators
             m = Matrix.Identity;
             m.M11 = 1.0f; m.M12 = -0.7f;
             m.M21 = 0.0f; m.M22 = 1.0f;
-            RenderTarget2D shearedRightTarget = new RenderTarget2D(
+            RenderTarget2D shearedRightTarget = RenderTargetFactory.Create(
                 context.Graphics.GraphicsDevice,
                 TILE_SIDE_WIDTH,
                 TILE_SIDE_HEIGHT,

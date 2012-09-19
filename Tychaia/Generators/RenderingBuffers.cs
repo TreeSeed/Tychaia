@@ -14,9 +14,9 @@ namespace Tychaia.Generators
 
         public static void Initialize(GameContext context)
         {
-            ScreenBuffer = new RenderTarget2D(context.Graphics.GraphicsDevice, context.Window.ClientBounds.Width,
+            ScreenBuffer = RenderTargetFactory.Create(context.Graphics.GraphicsDevice, context.Window.ClientBounds.Width,
                 context.Window.ClientBounds.Height);
-            DepthBuffer = new RenderTarget2D(context.Graphics.GraphicsDevice, context.Window.ClientBounds.Width,
+            DepthBuffer = RenderTargetFactory.Create(context.Graphics.GraphicsDevice, context.Window.ClientBounds.Width,
                 context.Window.ClientBounds.Height);
         }
     }

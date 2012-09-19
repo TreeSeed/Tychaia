@@ -61,6 +61,9 @@ namespace Tychaia.Title
                 b.Process(xna, state);
 
             xna.DrawStringCentered(context.Camera.Width / 2, 750, "Using static seed: " + m_StaticSeed.ToString(), "Arial");
+
+            // Draw debug information.
+            DebugTracker.Draw(context);
         }
 
         private class Button

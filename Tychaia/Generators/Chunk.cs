@@ -89,8 +89,11 @@ namespace Tychaia.Generators
         {
             // Force the graphics texture to be discarded.
             RenderTarget2D target = this.m_RenderTask.Result;
+            RenderTarget2D depth = this.m_RenderTask.DepthMap;
             this.m_RenderTask = null;
             target.Dispose();
+            depth.Dispose();
+            FilteredConsole.WriteLine(FilterCategory.GraphicsMemoryUsage, "Textures discarded for chunk " + this.GlobalX + ", " + this.GlobalY + ".");
         }
 
         public Chunk Left

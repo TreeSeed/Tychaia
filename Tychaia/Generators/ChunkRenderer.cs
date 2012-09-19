@@ -160,20 +160,21 @@ namespace Tychaia.Generators
                 RenderState rs = new RenderState();
                 rs.ZTop = Settings.ChunkDepth;
                 rs.ZBottom = 0;
-                rs.ChunkTarget = new RenderTarget2D(
+                rs.ChunkTarget = RenderTargetFactory.Create(
                     m_GraphicsDevice,
                     TileIsometricifier.TILE_TOP_WIDTH * Chunk.Width,
                     TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width + TileIsometricifier.TILE_CUBE_HEIGHT * Settings.ChunkDepth,
                     true,
-                    m_GraphicsDevice.DisplayMode.Format,
-                    DepthFormat.Depth24);
-                rs.ChunkDepthMap = new RenderTarget2D(
+                    SurfaceFormat.Bgra5551,
+                    DepthFormat.None);
+                rs.ChunkDepthMap = RenderTargetFactory.Create(
                     m_GraphicsDevice,
                     TileIsometricifier.TILE_TOP_WIDTH * Chunk.Width,
                     TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width + TileIsometricifier.TILE_CUBE_HEIGHT * Settings.ChunkDepth,
                     true,
-                    m_GraphicsDevice.DisplayMode.Format,
-                    DepthFormat.Depth24);
+                    SurfaceFormat.Bgra5551,
+                    DepthFormat.None);
+                FilteredConsole.WriteLine(FilterCategory.GraphicsMemoryUsage, "Allocated textures for chunk " + task.Chunk.GlobalX + ", " + task.Chunk.GlobalY + ".");
                 m_GraphicsDevice.SetRenderTarget(rs.ChunkTarget);
                 if (FilteredFeatures.IsEnabled(Feature.DebugChunkBackground))
                 {
@@ -182,10 +183,10 @@ namespace Tychaia.Generators
                         (float)m_DebugRandomizer.NextDouble(),
                         (float)m_DebugRandomizer.NextDouble()
                         );
-                    m_GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, c, 1.0f, 0);
+                    m_GraphicsDevice.Clear(ClearOptions.Target, c, 1.0f, 0);
                 }
                 else
-                    m_GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
+                    m_GraphicsDevice.Clear(ClearOptions.Target, Color.Transparent, 1.0f, 0);
                 rs.ChunkDepthMapCleared = false;
                 rs.SpriteBatch = new SpriteBatch(m_GraphicsDevice);
                 rs.CurrentZ = rs.ZBottom;
@@ -299,7 +300,7 @@ namespace Tychaia.Generators
                 if (!m_CurrentRenderState.ChunkDepthMapCleared)
                 {
                     m_CurrentRenderState.SpriteBatch.Begin(SpriteSortMode.Immediate, null);
-                    m_GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
+                    m_GraphicsDevice.Clear(ClearOptions.Target, Color.Transparent, 1.0f, 0);
                     m_CurrentRenderState.SpriteBatch.End();
                     m_CurrentRenderState.ChunkDepthMapCleared = true;
                 }
@@ -407,7 +408,7 @@ namespace Tychaia.Generators
 
         #region Optimization Subsystem
 
-        private const int m_LastRenderedBuffer = 5;
+        private const int m_LastRenderedBuffer = 0;
         private static List<Chunk> m_LoadedChunks = new List<Chunk>();
         private static List<Chunk> m_NeededChunks = new List<Chunk>();
 
@@ -534,6 +535,7 @@ namespace Tychaia.Generators
             {
                 HasResult = false,
                 Result = null,
+                DepthMap = null,
                 Chunk = chunk,
                 Textures = context.Textures
             };

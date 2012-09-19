@@ -14,10 +14,11 @@ namespace Tychaia
             // Change this to effect what is outputted to the console.
             m_PermittedCategories = new FilterCategory[]
             {
-                FilterCategory.Optimization,
-                FilterCategory.Rendering,
-                FilterCategory.RenderingActive,
-                FilterCategory.OptimizationTiming
+                //FilterCategory.Optimization,
+                //FilterCategory.Rendering,
+                //FilterCategory.RenderingActive,
+                //FilterCategory.OptimizationTiming,
+                FilterCategory.GraphicsMemoryUsage
             };
         }
 
@@ -35,6 +36,7 @@ namespace Tychaia
         Rendering,
         RenderingActive,
         Player,
-        ChunkValidation
+        ChunkValidation,
+        GraphicsMemoryUsage,
     }
 }

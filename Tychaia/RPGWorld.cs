@@ -41,6 +41,9 @@ namespace Tychaia
         {
             XnaGraphics xna = new XnaGraphics(context);
             xna.DrawStringLeft(8, 8, "FPS: " + context.FPS, "Arial");
+
+            // Draw debug information.
+            DebugTracker.Draw(context);
         }
 
         public override bool Update(GameContext context)

@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChunkEntity.cs" />
+    <Compile Include="DebugTracker.cs" />
     <Compile Include="FilteredConsole.cs" />
     <Compile Include="FilteredFeatures.cs" />
     <Compile Include="Generators\ChunkAccess.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="RenderTargetFactory.cs" />
     <Compile Include="RuntimeGame.cs" />
     <Compile Include="RandomExtensions.cs" />
     <Compile Include="RPGWorld.cs" />
