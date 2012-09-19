@@ -20,8 +20,8 @@ namespace Tychaia.Generators
         public const int RenderToNW = 1;
         public const int RenderToSE = 2;
         public const int RenderToSW = 3;
-        private const int RenderWidth = 16;
-        private const int RenderHeight = 16;
+        private const int RenderWidth = Chunk.Width;
+        private const int RenderHeight = Chunk.Height;
 
         private static int[] CalculateCellRenderOrder(int targetDir)
         {
@@ -252,36 +252,44 @@ namespace Tychaia.Generators
                                 new Vector2(rx, ry),
                                 col
                                 );
-                        m_CurrentRenderState.SpriteBatch.Draw(
-                            task.Textures[t.Image + ".isometric.top"],
-                            new Rectangle(rx, ry, TileIsometricifier.TILE_TOP_WIDTH, TileIsometricifier.TILE_TOP_HEIGHT),
-                            null,
-                            col,
-                            0,
-                            new Vector2(0, 0),
-                            SpriteEffects.None,
-                            0 // TODO: Use this to correct rendering artifacts.
-                            );
-                        m_CurrentRenderState.SpriteBatch.Draw(
-                            task.Textures[t.Image + ".isometric.sideL"],
-                            new Rectangle(rx, ry + 12, TileIsometricifier.TILE_SIDE_WIDTH, TileIsometricifier.TILE_SIDE_HEIGHT),
-                            null,
-                            col,
-                            0,
-                            new Vector2(0, 0),
-                            SpriteEffects.None,
-                            0 // TODO: Use this to correct rendering artifacts.
-                            );
-                        m_CurrentRenderState.SpriteBatch.Draw(
-                            task.Textures[t.Image + ".isometric.sideR"],
-                            new Rectangle(rx + 16, ry + 12, TileIsometricifier.TILE_SIDE_WIDTH, TileIsometricifier.TILE_SIDE_HEIGHT),
-                            null,
-                            col,
-                            0,
-                            new Vector2(0, 0),
-                            SpriteEffects.None,
-                            0 // TODO: Use this to correct rendering artifacts.
-                            );
+                        if (FilteredFeatures.IsEnabled(Feature.RenderCellTops))
+                        {
+                            m_CurrentRenderState.SpriteBatch.Draw(
+                                task.Textures[t.Image + ".isometric.top"],
+                                new Rectangle(rx, ry, TileIsometricifier.TILE_TOP_WIDTH, TileIsometricifier.TILE_TOP_HEIGHT),
+                                null,
+                                col,
+                                0,
+                                new Vector2(0, 0),
+                                SpriteEffects.None,
+                                0 // TODO: Use this to correct rendering artifacts.
+                                );
+                        }
+                        if (FilteredFeatures.IsEnabled(Feature.RenderCellSides))
+                        {
+                            m_CurrentRenderState.SpriteBatch.Draw(
+                                task.Textures[t.Image + ".isometric.sideL"],
+                                new Rectangle(rx, ry + TileIsometricifier.TILE_TOP_HEIGHT / 2,
+                                    TileIsometricifier.TILE_SIDE_WIDTH, TileIsometricifier.TILE_SIDE_HEIGHT),
+                                null,
+                                col,
+                                0,
+                                new Vector2(0, 0),
+                                SpriteEffects.None,
+                                0 // TODO: Use this to correct rendering artifacts.
+                                );
+                            m_CurrentRenderState.SpriteBatch.Draw(
+                                task.Textures[t.Image + ".isometric.sideR"],
+                                new Rectangle(rx + TileIsometricifier.TILE_TOP_WIDTH / 2, ry + TileIsometricifier.TILE_TOP_HEIGHT / 2,
+                                    TileIsometricifier.TILE_SIDE_WIDTH, TileIsometricifier.TILE_SIDE_HEIGHT),
+                                null,
+                                col,
+                                0,
+                                new Vector2(0, 0),
+                                SpriteEffects.None,
+                                0 // TODO: Use this to correct rendering artifacts.
+                                );
+                        }
 
                         count++;
                     }

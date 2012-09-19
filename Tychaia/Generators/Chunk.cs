@@ -15,8 +15,8 @@ namespace Tychaia.Generators
     {
         public const int CHUNK_SIZE = 16;
 
-        public const int Width = 16;
-        public const int Height = 16;
+        public const int Width = 8;
+        public const int Height = 8;
         public const int Depth = 256;
 
         public Block[, ,] m_Blocks = null;

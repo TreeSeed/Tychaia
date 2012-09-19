@@ -26,6 +26,8 @@ namespace Tychaia
                 //Feature.DebugChunkBackground,
                 //Feature.DebugChunkTiles,
                 //Feature.DebugMovement
+                Feature.RenderCellSides,
+                Feature.RenderCellTops
             };
         }
 
@@ -49,5 +51,7 @@ namespace Tychaia
         DebugChunkBackground,
         DebugChunkTiles,
         DebugMovement,
+        RenderCellSides,
+        RenderCellTops,
     }
 }

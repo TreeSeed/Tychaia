@@ -10,16 +10,18 @@ namespace Tychaia.Generators
 {
     public static class TileIsometricifier
     {
-        public const int TILE_TOP_WIDTH = 32;
-        public const int TILE_TOP_HEIGHT = 24;
-        public const int TILE_SIDE_WIDTH = 16;
-        public const int TILE_SIDE_HEIGHT = 48;
-        public const int TILE_CUBE_HEIGHT = TileIsometricifier.TILE_SIDE_HEIGHT / 2 - 8;
+        public const int TILE_TOP_WIDTH = 32 * 2;
+        public const int TILE_TOP_HEIGHT = 24 * 2;
+        public const int TILE_SIDE_WIDTH = 16 * 2;
+        public const int TILE_SIDE_HEIGHT = 48 * 2;
+        public const int TILE_CUBE_HEIGHT = TileIsometricifier.TILE_SIDE_HEIGHT / 2 - 16;
         public const int CHUNK_TOP_WIDTH = TileIsometricifier.TILE_TOP_WIDTH * Chunk.Width;
         public const int CHUNK_TOP_HEIGHT = TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Height;
+        public const int SKEW_SCALE = 2;
+        public const float SKEW_MAGIC = 1.4f;
 
-        public static int TILE_LEFT = -23;
-        public static int TILE_TOP = 10;
+        public static int TILE_LEFT = -23 * 2;
+        public static int TILE_TOP = 10 * 2;
 
         public static void Isometricify(string name, GameContext context)
         {
@@ -42,7 +44,7 @@ namespace Tychaia.Generators
             context.SpriteBatch.Draw(
                 original,
                 new Rectangle(0, 0, rotSize, rotSize),
-                new Rectangle(0, 0, 16, 16),
+                null,
                 Color.White,
                 MathHelper.ToRadians(45),
                 //new Vector2(TILE_LEFT, TILE_TOP),
@@ -91,7 +93,8 @@ namespace Tychaia.Generators
             context.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, m);
             context.SpriteBatch.Draw(
                 original,
-                new Rectangle(0, 0, original.Width, original.Height),
+                new Rectangle(0, 0,
+                    original.Width * SKEW_SCALE, original.Height * SKEW_SCALE),
                 null,
                 new Color(63, 63, 63)
                 );
@@ -114,7 +117,8 @@ namespace Tychaia.Generators
             context.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, m);
             context.SpriteBatch.Draw(
                 original,
-                new Rectangle(0, (int)(original.Height * 0.7), original.Width, original.Height),
+                new Rectangle(0, (int)(original.Height * SKEW_MAGIC),
+                    original.Width * SKEW_SCALE, original.Height * SKEW_SCALE),
                 null,
                 new Color(127, 127, 127)
                 );

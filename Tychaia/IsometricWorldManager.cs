@@ -56,13 +56,17 @@ namespace Tychaia
              * can be determined by the distance between G - K
              */
 
-            int innerHorizontalChunksToRender = (int)Math.Ceiling(context.Camera.Width / (double)TileIsometricifier.CHUNK_TOP_WIDTH) + 2;
+            int HORIZ_EXTRA = 0;
+            int VERT_EXTRA = 0;
+            int VERT_EXTRA_EXTRA = 0;
+
+            int innerHorizontalChunksToRender = (int)Math.Ceiling(context.Camera.Width / (double)TileIsometricifier.CHUNK_TOP_WIDTH) + HORIZ_EXTRA;
 
             /* The total number of vertical chunks that will need to be rendered
              * can be found using the vertical distance from D - X.
              */
 
-            int innerVerticalChunksToRender = (int)Math.Ceiling(context.Camera.Height / (double)TileIsometricifier.CHUNK_TOP_HEIGHT) + 3;
+            int innerVerticalChunksToRender = (int)Math.Ceiling(context.Camera.Height / (double)TileIsometricifier.CHUNK_TOP_HEIGHT) + VERT_EXTRA;
 
             /* We need to determine the pixel offset from where the chunk needs to
              * be drawn to the focus point.
@@ -132,7 +136,7 @@ namespace Tychaia
 
                 int oldX = x;
                 int oldY = y;
-                for (int i = 0; i < innerVerticalChunksToRender + 2; i++)
+                for (int i = 0; i < innerVerticalChunksToRender + VERT_EXTRA_EXTRA; i++)
                 {
                     /* Now we add the current chunk to the render list */
                     RelativeRenderInformation ri = new RelativeRenderInformation();
