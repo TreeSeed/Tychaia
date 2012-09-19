@@ -158,6 +158,7 @@
     <Compile Include="Elements\Region.cs" />
     <Compile Include="Generators\RenderingBuffers.cs" />
     <Compile Include="Generators\TileIsometricifier.cs" />
+    <Compile Include="Generators\UniqueRenderCache.cs" />
     <Compile Include="IsometricWorldManager.cs" />
     <None Include="Disabled\Lighting\FieldOfView.cs" />
     <None Include="Disabled\Lighting\FieldOfViewRenderer.cs" />

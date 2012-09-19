@@ -100,6 +100,7 @@ namespace Tychaia.Generators
         {
             public int Z;
             public Block[, ,] Blocks;
+            public int[] RawData;
             public ChunkInfo Info;
             public Action OnSkipCallback;
             public Action OnGenerationCallback;
@@ -121,6 +122,7 @@ namespace Tychaia.Generators
             {
                 ProvideState ps = new ProvideState();
                 ps.Blocks = task.Blocks;
+                ps.RawData = task.RawData;
                 ps.Info = task.Info;
                 ps.Z = 0;
                 ps.ProvideTask = task;
@@ -144,6 +146,7 @@ namespace Tychaia.Generators
                         for (int k = 0; k < depthPerScan; k++)
                         {
                             int id = data[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height];
+                            m_CurrentProvideState.RawData[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height] = id;
                             if (id == -1)
                                 m_CurrentProvideState.Blocks[i, j, m_CurrentProvideState.Z + k] = null;
                             else
@@ -169,6 +172,7 @@ namespace Tychaia.Generators
         public class ProvideTask
         {
             public Block[,,] Blocks;
+            public int[] RawData;
             public ChunkInfo Info;
             public Chunk Chunk;
             public Action OnSkipCallback;
@@ -222,13 +226,14 @@ namespace Tychaia.Generators
             ProvideBlocksToChunk(rt);
             */
         }
-        
-        public static ProvideTask FillChunk(Chunk chunk, Block[, ,] blocks, ChunkInfo info, Action onSkip, Action onGeneration)
+
+        public static ProvideTask FillChunk(Chunk chunk, int[] rawdata, Block[, ,] blocks, ChunkInfo info, Action onSkip, Action onGeneration)
         {
             ProvideTask rt = new ProvideTask()
             {
                 Chunk = chunk,
                 Blocks = blocks,
+                RawData = rawdata,
                 Info = info,
                 OnSkipCallback = onSkip,
                 OnGenerationCallback = onGeneration

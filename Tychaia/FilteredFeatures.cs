@@ -25,7 +25,7 @@ namespace Tychaia
                 Feature.RenderingBuffers,
                 //Feature.DebugChunkBackground,
                 //Feature.DebugChunkTiles,
-                Feature.DebugMovement
+                //Feature.DebugMovement
             };
         }
 

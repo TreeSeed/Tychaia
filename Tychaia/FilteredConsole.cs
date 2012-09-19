@@ -18,7 +18,7 @@ namespace Tychaia
                 //FilterCategory.Rendering,
                 //FilterCategory.RenderingActive,
                 //FilterCategory.OptimizationTiming,
-                FilterCategory.GraphicsMemoryUsage
+                FilterCategory.UniqueRendering
             };
         }
 
@@ -38,5 +38,6 @@ namespace Tychaia
         Player,
         ChunkValidation,
         GraphicsMemoryUsage,
+        UniqueRendering,
     }
 }
