@@ -89,7 +89,7 @@ namespace Tychaia.ProceduralGeneration
             this.MaxDistanceFromWater = 7;
         }
 
-        public override int[] GenerateData(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
         {
             if (this.Parents.Length < 5 || this.Parents[0] == null || this.Parents[1] == null || this.Parents[2] == null || this.Parents[3] == null || this.Parents[4] == null)
                 return new int[width * height];
@@ -148,8 +148,7 @@ namespace Tychaia.ProceduralGeneration
                                         }
                                         else if (TownScore[l] == currentbesttownscore)
                                         {
-                                            Random r = this.GetCellRNG(x + i, y + j);
-                                            int selected = r.Next(0, 2);
+                                            int selected = this.GetRandomRange(x + i, y + j, 2);
 
                                             if (selected == 0)
                                             {

@@ -7,11 +7,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Tychaia.Generators;
 using Tychaia.Globals;
+using Protogame.Efficiency;
 
 namespace Tychaia
 {
     public class IsometricWorldManager : WorldManager
     {
+        private OccludingSpriteBatch m_OccludingSpriteBatch = null;
+
         public int ZLevel
         {
             get;
@@ -245,6 +248,9 @@ namespace Tychaia
 
         protected override void HandleRenderOfEntity(GameContext context, IEntity a)
         {
+            if (!FilteredFeatures.IsEnabled(Feature.RenderEntities))
+                return;
+
             if (a is ChunkEntity)
             {
                 // Ensure we have a chunk manager to source chunks from.
@@ -261,49 +267,35 @@ namespace Tychaia
                 Vector2 pos = this.TranslatePoint(ce.X, ce.Y, ce.Z);
 
                 // Set depth information.
-                if (this.Chunk.DepthMap != null)
+                if (RenderingBuffers.DepthBuffer != null)
                 {
-                    context.Effects["IsometricMasking"].Parameters["IgnoreDepth"].SetValue(false);
-                    context.Effects["IsometricMasking"].Parameters["EntityDepth"].SetValue((
+                    // Draw image with depth.
+                    float depth = ((
                         ((int)((ce.X < 0) ? Chunk.Width : 0) + (ce.X / Scale.CUBE_X) % Chunk.Width) +
                         ((int)((ce.Y < 0) ? Chunk.Height : 0) + (ce.Y / Scale.CUBE_Y) % Chunk.Height) +
                         ((int)((ce.Z < 0) ? Chunk.Depth : 0) + ((ce.Z / Scale.CUBE_Z) - 1) % Chunk.Depth)) / 255f);
-                    context.Effects["IsometricMasking"].Parameters["Offset"].SetValue(
-                        new Vector2(
-                            (int)(pos.X - this.m_ChunkCenterX + TileIsometricifier.CHUNK_TOP_WIDTH / 2 - ce.ImageOffsetX),
-                            (int)(pos.Y - this.m_ChunkCenterY - ce.ImageOffsetY + (Settings.ChunkDepth - this.ZLevel) * TileIsometricifier.TILE_CUBE_HEIGHT)
-                        )
-                    );
-                    context.Effects["IsometricMasking"].Parameters["Size"].SetValue(
-                        new Vector2(
-                            ce.Width,
-                            ce.Height
-                        )
-                    );
+                    this.m_OccludingSpriteBatch.DrawOccludable(
+                        context.Textures[ce.Image],
+                        new Rectangle((int)(pos.X - ce.ImageOffsetX), (int)(pos.Y - ce.ImageOffsetY),
+                            context.Textures[ce.Image].Width, context.Textures[ce.Image].Height),
+                        ce.Color.ToPremultiplied(),
+                        depth
+                        );
                 }
                 else
-                    context.Effects["IsometricMasking"].Parameters["IgnoreDepth"].SetValue(true);
-                context.Effects["IsometricMasking"].CurrentTechnique.Passes[0].Apply();
-
-                // Draw image.
-                this.DrawSpriteAt(
-                    context,
-                    pos.X - ce.ImageOffsetX,
-                    pos.Y - ce.ImageOffsetY,
-                    context.Textures[ce.Image].Width,
-                    context.Textures[ce.Image].Height,
-                    ce.Image,
-                    ce.Color,
-                    false);
+                {
+                    // Draw image normally.
+                    context.SpriteBatch.Draw(
+                        context.Textures[ce.Image],
+                        new Rectangle((int)(pos.X - ce.ImageOffsetX), (int)(pos.Y - ce.ImageOffsetY),
+                            context.Textures[ce.Image].Width, context.Textures[ce.Image].Height),
+                        ce.Color.ToPremultiplied()
+                        );
+                }
             }
             else
-            {
-                // Set the entity depth such that the effect doesn't apply, then render
-                // using the default settings.
-                context.Effects["IsometricMasking"].Parameters["IgnoreDepth"].SetValue(true);
-                context.Effects["IsometricMasking"].CurrentTechnique.Passes[0].Apply();
+                // Render using the default settings.
                 base.HandleRenderOfEntity(context, a);
-            }
         }
 
         protected override void PreBegin(GameContext context)
@@ -314,6 +306,11 @@ namespace Tychaia
                 ChunkProvider.ProcessSingle();
                 ChunkRenderer.ProcessSingle(context.GameTime, context);
             }
+
+            // Ensure we have an occluding sprite batch.
+            if (this.m_OccludingSpriteBatch == null)
+                this.m_OccludingSpriteBatch = new OccludingSpriteBatch(context.Graphics.GraphicsDevice);
+            this.m_OccludingSpriteBatch.Begin(true);
         }
 
         protected override void DrawTilesBelow(GameContext context)
@@ -327,19 +324,25 @@ namespace Tychaia
             if (this.Chunk == null)
                 this.Chunk = cm.ZerothChunk;
 
-            // Reset rendering effects.
-            context.Effects["IsometricMasking"].Parameters["IgnoreDepth"].SetValue(true);
-            context.Effects["IsometricMasking"].CurrentTechnique.Passes[0].Apply();
-
             // Validate chunk connectivity.
-            this.Chunk.Validate();
+            if (FilteredFeatures.IsEnabled(Feature.AutomaticChunkValidation))
+                this.Chunk.Validate();
 
             // Determine our Z offset.
             int zoffset = -(Settings.ChunkDepth - this.ZLevel) * TileIsometricifier.TILE_CUBE_HEIGHT;
 
-            // Render chunks.
+            // Get rendering information.
             ChunkRenderer.ResetNeeded();
             IEnumerable<RelativeRenderInformation> renders = this.GetRelativeRenderInformation(context, this.Chunk);
+            ChunkRenderer.LastRenderedCountOnScreen = renders.Count();
+
+            // Render chunks.
+            if (FilteredFeatures.IsEnabled(Feature.DepthBuffer))
+            {
+                context.EndSpriteBatch();
+                context.Graphics.GraphicsDevice.SetRenderTarget(RenderingBuffers.ScreenBuffer);
+                context.StartSpriteBatch();
+            }
             foreach (RelativeRenderInformation ri in renders)
             {
                 if (ri.Target == this.Chunk)
@@ -352,31 +355,67 @@ namespace Tychaia
                 if (tex != null)
                 {
                     ChunkRenderer.MarkUsed(ri.Target);
-                    context.SpriteBatch.Draw(tex, new Vector2(ri.X, ri.Y + zoffset), Color.White);
+                    if (FilteredFeatures.IsEnabled(Feature.DepthBuffer))
+                        context.SpriteBatch.Draw(tex, new Vector2(ri.X, ri.Y + zoffset), Color.White);
+                    else
+                    {
+                        if (FilteredFeatures.IsEnabled(Feature.RenderingBuffers))
+                            context.Graphics.GraphicsDevice.SetRenderTarget(RenderingBuffers.ScreenBuffer);
+                        context.SpriteBatch.Draw(tex, new Vector2(ri.X, ri.Y + zoffset), Color.White);
+                    }
+                    FilteredConsole.WriteLine(FilterCategory.RenderingActive, "Rendering chunk at " + ri.X + ", " + ri.Y + ".");
                 }
                 else
                     FilteredConsole.WriteLine(FilterCategory.Rendering, "No texture yet for chunk to render at " + ri.X + ", " + ri.Y + ".");
             }
-            ChunkRenderer.LastRenderedCountOnScreen = renders.Count();
-        }
 
-        protected override void DrawEntities(GameContext context)
-        {
-            // Set main shader effects (no need to apply them since that'll be done on the first
-            // entity render).
-            if (this.Chunk != null && this.Chunk.DepthMap != null)
+            // Render depth maps.
+            if (FilteredFeatures.IsEnabled(Feature.DepthBuffer))
             {
-                context.Effects["IsometricMasking"].Parameters["DepthMapTexture"].SetValue(this.Chunk.DepthMap);
-                context.Effects["IsometricMasking"].Parameters["DepthMapSize"].SetValue(new Vector2(this.Chunk.DepthMap.Width, this.Chunk.DepthMap.Height));
-                context.Effects["IsometricMasking"].Parameters["RotationMode"].SetValue(ChunkRenderer.RenderToNE);
+                context.EndSpriteBatch();
+                context.Graphics.GraphicsDevice.SetRenderTarget(RenderingBuffers.DepthBuffer);
+                context.StartSpriteBatch();
+                foreach (RelativeRenderInformation ri in renders)
+                {
+                    Texture2D depth = ri.Target.DepthMap;
+                    if (depth != null)
+                    {
+                        ChunkRenderer.MarkUsed(ri.Target);
+                        if (FilteredFeatures.IsEnabled(Feature.DepthBuffer))
+                        {
+                            context.SpriteBatch.Draw(depth, new Vector2(ri.X, ri.Y + zoffset), Color.White);
+                        }
+                    }
+                }
             }
 
-            // Call the parent implementation.
-            base.DrawEntities(context);
+            // Finish drawing.
+            context.EndSpriteBatch();
+            context.Graphics.GraphicsDevice.SetRenderTarget(null);
+            context.StartSpriteBatch();
         }
 
         protected override void DrawTilesAbove(GameContext context)
         {
+            // Draw the current rendering buffers.
+            if (FilteredFeatures.IsEnabled(Feature.IsometricOcclusion))
+            {
+                if (this.m_OccludingSpriteBatch.DepthTexture != RenderingBuffers.DepthBuffer &&
+                    RenderingBuffers.DepthBuffer != null)
+                    this.m_OccludingSpriteBatch.DepthTexture = RenderingBuffers.DepthBuffer;
+                if (RenderingBuffers.ScreenBuffer != null &&
+                    FilteredFeatures.IsEnabled(Feature.RenderWorld))
+                    this.m_OccludingSpriteBatch.DrawOccluding(RenderingBuffers.ScreenBuffer, Vector2.Zero, Color.White);
+                this.m_OccludingSpriteBatch.End();
+            }
+            else
+            {
+                if (FilteredFeatures.IsEnabled(Feature.RenderWorld))
+                {
+                    if (FilteredFeatures.IsEnabled(Feature.RenderingBuffers))
+                        context.SpriteBatch.Draw(RenderingBuffers.ScreenBuffer, Vector2.Zero, Color.White);
+                }
+            }
         }
 
         #endregion

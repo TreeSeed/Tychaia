@@ -49,15 +49,14 @@ namespace Tychaia.ProceduralGeneration
             this.Modifier = new Random().Next();
         }
 
-        public override int[] GenerateData(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
         {
             int[] data = new int[width * height];
 
             for (int a = 0; a < width; a++)
                 for (int b = 0; b < height; b++)
                 {
-                    Random r = this.GetCellRNG(x + a, y + b, (int)this.Modifier);
-                    if (r.NextDouble() > this.LandLimit)
+                    if (this.GetRandomDouble(x + a, y + b, (int)this.Modifier) > this.LandLimit)
                         data[a + b * width] = 1;
                     else
                         data[a + b * width] = 0;

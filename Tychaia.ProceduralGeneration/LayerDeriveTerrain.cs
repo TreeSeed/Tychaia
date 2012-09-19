@@ -49,7 +49,7 @@ namespace Tychaia.ProceduralGeneration
             this.MaxTerrain = 20;
         }
 
-        public override int[] GenerateData(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
         {
             if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
                 return new int[width * height];
@@ -82,8 +82,7 @@ namespace Tychaia.ProceduralGeneration
                         bool isSurrounded = this.IsCellSurrounded(data, i, j, width, height, lookFor);
                         if (isSurrounded)
                         {
-                            Random r = this.GetCellRNG(x + i, y + j);
-                            if (r.NextDouble() > this.FailLimit && lookFor != 0)
+                            if (this.GetRandomDouble(x + i, y + j) > this.FailLimit && lookFor != 0)
                                 data[i + j * width] = lookFor;
                             else
                                 data[i + j * width] = (int)Math.Min(lookFor + 1, this.MaxTerrain);

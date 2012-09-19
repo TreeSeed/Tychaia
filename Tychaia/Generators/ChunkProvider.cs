@@ -72,20 +72,23 @@ namespace Tychaia.Generators
              * rendered onto the screen.
              */
 
-            int discarded = 0;
-            foreach (ProvideTask rt in m_Tasks.ToArray())
+            if (FilteredFeatures.IsEnabled(Feature.OptimizeChunkProviding))
             {
-                if (!ChunkRenderer.HasNeeded(rt.Chunk))
+                int discarded = 0;
+                foreach (ProvideTask rt in m_Tasks.ToArray())
                 {
-                    m_Skip.Add(rt);
-                    discarded++;
+                    if (!ChunkRenderer.HasNeeded(rt.Chunk))
+                    {
+                        m_Skip.Add(rt);
+                        discarded++;
+                    }
                 }
-            }
 
-            if (discarded > 0)
-            {
-                FilteredConsole.WriteLine(FilterCategory.Optimization, "SKIPPED PROVIDING " + discarded + " UNNEEDED CHUNKS!");
-                discarded = 0;
+                if (discarded > 0)
+                {
+                    FilteredConsole.WriteLine(FilterCategory.Optimization, "SKIPPED PROVIDING " + discarded + " UNNEEDED CHUNKS!");
+                    discarded = 0;
+                }
             }
         }
 

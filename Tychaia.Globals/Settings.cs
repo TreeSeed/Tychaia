@@ -16,4 +16,9 @@ namespace Tychaia.Globals
         public const int CUBE_Y = 16;
         public const int CUBE_Z = 16;
     }
+
+    public static class Performance
+    {
+        public const int RENDERING_MILLISECONDS = 100;
+    }
 }

@@ -16,6 +16,9 @@ namespace Tychaia.ProceduralGeneration
         [DataMember]
         private Layer[] m_Parents;
 
+        // Runtime only.
+        private Dictionary<long, int> m_RandomNumberIndexCache = new Dictionary<long, int>();
+
         public Layer[] Parents
         {
             get
@@ -93,12 +96,65 @@ namespace Tychaia.ProceduralGeneration
             }
         }
 
-        protected Random GetCellRNG(int x, int y)
+        /// <summary>
+        /// Returns a random positive integer between the specified 0 and
+        /// the exclusive end value.
+        /// </summary>
+        protected int GetRandomRange(int x, int y, int end, int modifier = 0)
         {
-            return this.GetCellRNG(x, y, 0);
+            unchecked
+            {
+                int a = this.GetRandomInt(x, y, modifier);
+                if (a < 0) a += int.MaxValue;
+                return a % end;
+            }
         }
 
-        protected Random GetCellRNG(int x, int y, int modifier)
+        /// <summary>
+        /// Returns a random positive integer between the specified inclusive start
+        /// value and the exclusive end value.
+        /// </summary>
+        protected int GetRandomRange(int x, int y, int start, int end, int modifier)
+        {
+            unchecked
+            {
+                int a = this.GetRandomInt(x, y, modifier);
+                if (a < 0) a += int.MaxValue;
+                return a % (end - start) + start;
+            }
+        }
+
+        /// <summary>
+        /// Returns a random integer over the range of valid integers based
+        /// on the provided X and Y position, and the specified modifier.
+        /// </summary>
+        protected int GetRandomInt(int x, int y, int modifier = 0)
+        {
+            unchecked
+            {
+                return (int)this.GetRandomNumber(x, y, modifier);
+            }
+        }
+
+        /// <summary>
+        /// Returns a random long integer over the range of valid long integers based
+        /// on the provided X and Y position, and the specified modifier.
+        /// </summary>
+        protected long GetRandomLong(int x, int y, int modifier = 0)
+        {
+            return this.GetRandomNumber(x, y, modifier);
+        }
+
+        /// <summary>
+        /// Returns a random double between the range of 0.0 and 1.0 based on
+        /// the provided X and Y position, and the specified modifier.
+        /// </summary>
+        protected double GetRandomDouble(int x, int y, int modifier = 0)
+        {
+            return this.GetRandomNumber(x, y, modifier) / (double)long.MaxValue;
+        }
+
+        private long GetRandomNumber(int x, int y, int modifier)
         {
             /* From: http://stackoverflow.com/questions/2890040/implementing-gethashcode
              * Although we aren't implementing GetHashCode, it's still a good way to generate
@@ -117,13 +173,47 @@ namespace Tychaia.ProceduralGeneration
                 // Prevents the seed from being 0 along an axis.
                 seed += (x - 199) * (y - 241) * 9018110272013;
 
-                return new Random((int)seed);
+                if (this.m_RandomNumberIndexCache.Keys.Contains(seed))
+                    this.m_RandomNumberIndexCache[seed] += 1;
+                else
+                    this.m_RandomNumberIndexCache[seed] = 0;
+                int index = this.m_RandomNumberIndexCache[seed];
+
+                long rng = seed * seed;
+                rng += x * 2990430311017;
+                rng *= y * 14475080218213;
+                rng += index;
+                rng -= seed * 28124722524383;
+                rng *= x * 16099760261113;
+                rng += seed * this.m_Seed;
+                rng *= y * this.m_Seed;
+                rng += modifier;
+
+                return rng;
             }
         }
 
-        public abstract int[] GenerateData(int x, int y, int width, int height);
+        public int[] GenerateData(int x, int y, int width, int height)
+        {
+            if (this.m_RandomNumberIndexCache == null)
+                this.m_RandomNumberIndexCache = new Dictionary<long, int>();
+            else
+                this.m_RandomNumberIndexCache.Clear();
+            return this.GenerateDataImpl(x, y, width, height);
+        }
 
-        public virtual int[] GenerateData(int x, int y, int z, int width, int height, int depth)
+        public int[] GenerateData(int x, int y, int z, int width, int height, int depth)
+        {
+            if (this.m_RandomNumberIndexCache == null)
+                this.m_RandomNumberIndexCache = new Dictionary<long, int>();
+            else
+                this.m_RandomNumberIndexCache.Clear();
+            return this.GenerateDataImpl(x, y, z, width, height, depth);
+        }
+
+        protected abstract int[] GenerateDataImpl(int x, int y, int width, int height);
+
+        protected virtual int[] GenerateDataImpl(int x, int y, int z, int width, int height, int depth)
         {
             // FIXME: If the depth != 1, then this is an invalid result.
             return this.GenerateData(x, y, width, height);

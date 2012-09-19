@@ -117,6 +117,7 @@ namespace Tychaia.Generators
         }
 
         private static RenderState m_CurrentRenderState = null;
+        private static Random m_DebugRandomizer = new Random();
 
         private static void RenderTilesToTexture(RenderTask task, GameTime gt, GameContext context)
         {
@@ -174,7 +175,17 @@ namespace Tychaia.Generators
                     m_GraphicsDevice.DisplayMode.Format,
                     DepthFormat.Depth24);
                 m_GraphicsDevice.SetRenderTarget(rs.ChunkTarget);
-                m_GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
+                if (FilteredFeatures.IsEnabled(Feature.DebugChunkBackground))
+                {
+                    Color c = new Color(
+                        (float)m_DebugRandomizer.NextDouble(),
+                        (float)m_DebugRandomizer.NextDouble(),
+                        (float)m_DebugRandomizer.NextDouble()
+                        );
+                    m_GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, c, 1.0f, 0);
+                }
+                else
+                    m_GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
                 rs.ChunkDepthMapCleared = false;
                 rs.SpriteBatch = new SpriteBatch(m_GraphicsDevice);
                 rs.CurrentZ = rs.ZBottom;
@@ -190,7 +201,7 @@ namespace Tychaia.Generators
                 m_CurrentRenderState.SpriteBatch.Begin(SpriteSortMode.Immediate, null);
                 int count = 0;
                 int zcount = 0;
-                while (m_CurrentRenderState.CurrentZ < m_CurrentRenderState.ZTop && gt.ElapsedGameTime.Milliseconds < 100)
+                while (m_CurrentRenderState.CurrentZ < m_CurrentRenderState.ZTop && gt.ElapsedGameTime.TotalMilliseconds < Performance.RENDERING_MILLISECONDS)
                 {
                     int z = m_CurrentRenderState.CurrentZ;
 
@@ -210,13 +221,36 @@ namespace Tychaia.Generators
 
                         Block b = task.Chunk.m_Blocks[x, y, z];
                         if (b == null)
+                        {
+                            if (FilteredFeatures.IsEnabled(Feature.DebugChunkTiles))
+                                m_CurrentRenderState.SpriteBatch.Draw(
+                                    task.Textures["tiles.grass"],
+                                    new Vector2(rx, ry),
+                                    Color.White
+                                    );
                             continue;
+                        }
                         Tile t = b.Tile;
 
-                        if (t.Image == null) continue;
+                        if (t.Image == null)
+                        {
+                            if (FilteredFeatures.IsEnabled(Feature.DebugChunkTiles))
+                                m_CurrentRenderState.SpriteBatch.Draw(
+                                    task.Textures["tiles.dirt"],
+                                    new Vector2(rx, ry),
+                                    Color.White
+                                    );
+                            continue;
+                        }
                         Color col = new Color(1f, 1f, 1f, 1f).ToPremultiplied();
                         if (task.Chunk.GlobalX == 0 && task.Chunk.GlobalY == 0 && x == 0 && y == 0)
                             col = new Color(1f, 0f, 0f, 1f).ToPremultiplied();
+                        if (FilteredFeatures.IsEnabled(Feature.DebugChunkTiles))
+                            m_CurrentRenderState.SpriteBatch.Draw(
+                                task.Textures[t.Image],
+                                new Vector2(rx, ry),
+                                col
+                                );
                         m_CurrentRenderState.SpriteBatch.Draw(
                             task.Textures[t.Image + ".isometric.top"],
                             new Rectangle(rx, ry, TileIsometricifier.TILE_TOP_WIDTH, TileIsometricifier.TILE_TOP_HEIGHT),
@@ -247,6 +281,7 @@ namespace Tychaia.Generators
                             SpriteEffects.None,
                             0 // TODO: Use this to correct rendering artifacts.
                             );
+
                         count++;
                     }
 
@@ -280,7 +315,7 @@ namespace Tychaia.Generators
                 context.Effects["IsometricDepthMap"].CurrentTechnique.Passes[0].Apply();
                 int count = 0;
                 int zcount = 0;
-                while (m_CurrentRenderState.CurrentZ < m_CurrentRenderState.ZTop && gt.ElapsedGameTime.Milliseconds < 100)
+                while (m_CurrentRenderState.CurrentZ < m_CurrentRenderState.ZTop && gt.ElapsedGameTime.TotalMilliseconds < Performance.RENDERING_MILLISECONDS)
                 {
                     int z = m_CurrentRenderState.CurrentZ;
 
@@ -346,7 +381,7 @@ namespace Tychaia.Generators
                     zcount++;
                 }
 
-                FilteredConsole.WriteLine(FilterCategory.OptimizationTiming, "Rendered " + zcount + " levels, " + count + " cells to texture target in " + gt.ElapsedGameTime.Milliseconds + "ms.");
+                FilteredConsole.WriteLine(FilterCategory.OptimizationTiming, "Rendered " + zcount + " levels, " + count + " cells to texture target in " + gt.ElapsedGameTime.TotalMilliseconds + "ms.");
                 m_CurrentRenderState.SpriteBatch.End();
                 m_GraphicsDevice.SetRenderTarget(null);
             }
@@ -388,36 +423,42 @@ namespace Tychaia.Generators
              * to render it to a texture, so discard from there.
              */
 
-            /*int discarded = 0;
-            foreach (RenderTask rt in m_Tasks.ToArray())
+            if (FilteredFeatures.IsEnabled(Feature.OptimizeChunkRendering))
             {
-                if (!m_NeededChunks.Contains(rt.Chunk))
+                int discarded = 0;
+                foreach (RenderTask rt in m_Tasks.ToArray())
                 {
-                    m_Tasks.Remove(rt);
-                    discarded++;
+                    if (!m_NeededChunks.Contains(rt.Chunk))
+                    {
+                        m_Tasks.Remove(rt);
+                        discarded++;
+                    }
+                }
+
+                if (discarded > 0)
+                {
+                    FilteredConsole.WriteLine(FilterCategory.Optimization, "SKIPPED RENDERING " + discarded + " UNNEEDED CHUNKS!");
+                    discarded = 0;
                 }
             }
-
-            if (discarded > 0)
-            {
-                FilteredConsole.WriteLine(FilterCategory.Optimization, "SKIPPED RENDERING " + discarded + " UNNEEDED CHUNKS!");
-                discarded = 0;
-            }*/
 
             /* We can't keep every chunk's texture loaded into memory or
              * else we quickly run out of graphics RAM to store everything.
              */
 
-            int discarded = 0;
-            while (m_LoadedChunks.Count > LastRenderedCountOnScreen + m_LastRenderedBuffer)
+            if (FilteredFeatures.IsEnabled(Feature.DiscardChunkTextures))
             {
-                m_LoadedChunks[0].DiscardTexture();
-                m_LoadedChunks.RemoveAt(0);
-                discarded++;
-            }
+                int discarded = 0;
+                while (m_LoadedChunks.Count > LastRenderedCountOnScreen + m_LastRenderedBuffer)
+                {
+                    m_LoadedChunks[0].DiscardTexture();
+                    m_LoadedChunks.RemoveAt(0);
+                    discarded++;
+                }
 
-            if (discarded > 0)
-                FilteredConsole.WriteLine(FilterCategory.Optimization, "DISCARDED " + discarded + " TEXTURES FROM MEMORY!");
+                if (discarded > 0)
+                    FilteredConsole.WriteLine(FilterCategory.Optimization, "DISCARDED " + discarded + " TEXTURES FROM MEMORY!");
+            }
         }
 
         public static void MarkUsed(Chunk chunk)

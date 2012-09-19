@@ -80,7 +80,7 @@ namespace Tychaia.ProceduralGeneration
             this.Result = VoronoiResult.EdgesAndOriginals;
         }
 
-        public override int[] GenerateData(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
         {
             int[] data = new int[width * height];
 
@@ -95,8 +95,7 @@ namespace Tychaia.ProceduralGeneration
             for (int i = -this.EdgeSampling; i < width + this.EdgeSampling; i++)
                 for (int j = -this.EdgeSampling; j < height + this.EdgeSampling; j++)
                 {
-                    Random r = this.GetCellRNG(x + i, y + j, (int)this.Modifier);
-                    if (r.Next(this.PointValue) == 0)
+                    if (this.GetRandomRange(x + i, y + j, this.PointValue, (int)this.Modifier) == 0)
                     {
                         points.Add(new Vector(new double[] { i, j }));
                         if (i >= 0 && i < width &&

@@ -18,7 +18,7 @@ namespace Tychaia.ProceduralGeneration
         {
         }
 
-        public override int[] GenerateData(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
         {
             if (this.Parents.Length < 1 || this.Parents[0] == null)
                 return new int[width * height];
@@ -34,8 +34,7 @@ namespace Tychaia.ProceduralGeneration
                 {
                     if (parent[(i + ox) + (j + oy) * rw] == 0)
                     {
-                        Random r = this.GetCellRNG(x + i, y + j);
-                        int selected = r.Next(0, 4);
+                        int selected = this.GetRandomRange(x + i, y + j, 4);
 
                         switch (selected)
                         {

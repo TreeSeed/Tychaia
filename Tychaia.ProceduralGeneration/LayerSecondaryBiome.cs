@@ -78,7 +78,7 @@ namespace Tychaia.ProceduralGeneration
             this.MaxTerrain = 20;
         }
 
-        public override int[] GenerateData(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
         {
             if (this.Parents.Length < 4 || this.Parents[0] == null || this.Parents[1] == null || this.Parents[2] == null || this.Parents[3] == null)
                 return new int[width * height];

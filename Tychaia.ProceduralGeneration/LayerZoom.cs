@@ -116,7 +116,7 @@ namespace Tychaia.ProceduralGeneration
                 return this.Parents[0].GetLayerColors();
         }
 
-        public override int[] GenerateData(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
         {
             if (this.Iterations > 0)
                 return this.GenerateDataIterate(1, x, y, width, height);
@@ -129,7 +129,6 @@ namespace Tychaia.ProceduralGeneration
         private int Smooth(int x, int y, int northValue, int southValue, int westValue, int eastValue, int currentValue, int i, int j, int ox, int oy, int rw, int[] parent)
         {
             // Parent-based Smoothing
-            Random r = this.GetCellRNG(x, y);
             int selected = 0;
 
             if (x % 2 == 0)
@@ -140,7 +139,7 @@ namespace Tychaia.ProceduralGeneration
                 }
                 else
                 {
-                    selected = r.Next(0, 2);
+                    selected = this.GetRandomRange(x, y, 2);
                     switch (selected)
                     {
                         case 0:
@@ -154,7 +153,7 @@ namespace Tychaia.ProceduralGeneration
             {
                 if (y % 2 == 0)
                 {
-                    selected = r.Next(0, 2);
+                    selected = this.GetRandomRange(x, y, 2);
                     switch (selected)
                     {
                         case 0:
@@ -167,7 +166,7 @@ namespace Tychaia.ProceduralGeneration
                 {
                     if (this.Mode == ZoomType.Smooth)
                     {
-                        selected = r.Next(0, 3);
+                        selected = this.GetRandomRange(x, y, 3);
                         switch (selected)
                         {
                             case 0:
@@ -180,7 +179,7 @@ namespace Tychaia.ProceduralGeneration
                     }
                     else
                     {
-                        selected = r.Next(0, 4);
+                        selected = this.GetRandomRange(x, y, 4);
                         switch (selected)
                         {
                             case 0:
@@ -198,7 +197,7 @@ namespace Tychaia.ProceduralGeneration
 
             // Select one of the four options if we couldn't otherwise
             // determine a value.
-            selected = r.Next(0, 4);
+            selected = this.GetRandomRange(x, y, 4);
 
             switch (selected)
             {

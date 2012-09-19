@@ -57,7 +57,7 @@ namespace Tychaia
             // Update player and refocus screen.
             KeyboardState state = Keyboard.GetState();
             float mv = (float)Math.Sqrt(this.m_Player.MovementSpeed);
-            if (state.IsKeyDown(Keys.W))
+            if (state.IsKeyDown(Keys.W) || FilteredFeatures.IsEnabled(Feature.DebugMovement))
             {
                 this.m_Player.Y -= mv;
                 this.m_Player.X -= mv;
@@ -89,6 +89,8 @@ namespace Tychaia
             int y = (int)((yy < 0 ? yy + 1 : yy) % (Chunk.Height * Scale.CUBE_Y) / Scale.CUBE_Y);
             if (x < 0) x = 0;
             if (y < 0) y = 0;
+            if ((context.WorldManager as IsometricWorldManager).Chunk == null)
+                return 0;
             for (int z = 0; z < Chunk.Depth; z++)
                 if ((context.WorldManager as IsometricWorldManager).Chunk.m_Blocks[x, y, z] != null)
                     return z - 1;

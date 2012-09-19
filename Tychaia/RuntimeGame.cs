@@ -49,6 +49,7 @@ namespace Tychaia
             //this.IsFixedTimeStep = false;
             DeviceForStateValidationOutput = this.GraphicsDevice;
             ContextForStateValidationOutput = this.m_GameContext;
+            RenderingBuffers.Initialize(this.m_GameContext);
             ChunkRenderer.Initialize(this.m_GameContext.Graphics.GraphicsDevice);
             ChunkProvider.Initialize();
         }
@@ -68,7 +69,6 @@ namespace Tychaia
             this.m_GameContext.LoadFont("TitleFont");
             this.m_GameContext.LoadFont("SubtitleFont");
             this.m_GameContext.LoadFont("ButtonFont");
-            this.m_GameContext.LoadEffect("IsometricMasking");
             this.m_GameContext.LoadEffect("IsometricDepthMap");
             this.m_GameContext.LoadTexture("tiles.water");
             this.m_GameContext.LoadTexture("tiles.grass");
@@ -84,9 +84,6 @@ namespace Tychaia
             this.m_GameContext.LoadTexture("tiles.grassleaf");
             this.m_GameContext.LoadTexture("tiles.sandgrass");
             this.m_GameContext.LoadTexture("chars.player.player");
-            
-            // Set rendering effect.
-            this.m_GameContext.WorldManager.ActiveEffect = this.m_GameContext.Effects["IsometricMasking"];
 
             // Isometricify tiles.
             TileIsometricifier.Isometricify("tiles.water", this.m_GameContext);

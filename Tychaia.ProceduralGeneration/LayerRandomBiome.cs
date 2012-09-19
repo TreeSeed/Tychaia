@@ -68,7 +68,7 @@ namespace Tychaia.ProceduralGeneration
             return values.Select<string, int>(v => Convert.ToInt32(v.Trim())).ToArray();
         }
 
-        public override int[] GenerateData(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
         {
             if (this.Parents.Length < 1 || this.Parents[0] == null)
                 return new int[width * height];
@@ -94,9 +94,8 @@ namespace Tychaia.ProceduralGeneration
             for (int a = 0; a < width; a++)
                 for (int b = 0; b < height; b++)
                 {
-                    Random r = this.GetCellRNG(x + a, y + b);
                     if (parent[a + b * width] == this.BiomeReplace)
-                        data[a + b * width] = favourance[r.Next(0, total)];
+                        data[a + b * width] = favourance[this.GetRandomRange(x + a, y + b, total)];
                     else
                         data[a + b * width] = parent[a + b * width];
                 }

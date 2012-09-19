@@ -59,7 +59,7 @@ namespace Tychaia.ProceduralGeneration
             this.MaxValue = 100;
         }
 
-        public override int[] GenerateData(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
         {
             int[] data = new int[width * height];
             PerlinNoise perlin = new PerlinNoise(this.GetPerlinRNG());

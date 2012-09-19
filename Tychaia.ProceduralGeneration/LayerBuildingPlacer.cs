@@ -37,7 +37,7 @@ namespace Tychaia.ProceduralGeneration
             this.EdgeSampling = 5;
         }
 
-        public override int[] GenerateData(int x, int y, int z, int width, int height, int depth)
+        protected override int[] GenerateDataImpl(int x, int y, int z, int width, int height, int depth)
         {
             if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
                 return new int[width * height * depth];
@@ -65,22 +65,20 @@ namespace Tychaia.ProceduralGeneration
             for (int i = 0; i < rw; i++)
                 for (int j = 0; j < rh; j++)
                 {
-                    if (townscatter[i + j * width] == 1 || townscatter[i + j * width] == -2 || townscatter[i + j * width] == -3)
+                    if (townscatter[i + j * rw] == 1 || townscatter[i + j * rw] == -2 || townscatter[i + j * rw] == -3)
                     {
                         List<int> BuildingsList = new List<int>();
                         int p = 1;
 
-                        Random r = this.GetCellRNG(x + i, y + j);
-
-                        while (townscatter[i + j * width + p * width * height] != -1)
+                        while (townscatter[i + j * rw + p * rw * rh] != -1)
                         {
-                            BuildingsList.Add(townscatter[i + j * width + p * width * height] - 2);
+                            BuildingsList.Add(townscatter[i + j * rw + p * rw * rh] - 2);
                             p++;
                         }
 
                         if (townscatter[i + j * rw] == 1)
                         {
-                            data = PlaceBuildings(width, height, depth, biomes, i, j, rw, ox, oy, BuildingsList, r, data);
+                            data = PlaceBuildings(width, height, depth, biomes, i, j, rw, ox, oy, BuildingsList, x + i, y + j, data);
                         }
                         else if (townscatter[i + j * rw] == -2)
                         {
@@ -96,15 +94,15 @@ namespace Tychaia.ProceduralGeneration
                                     if (NewBuildingsList.Count != 0)
                                     {
                                         int valuecount = 0;
-                                        int selection = r.Next(0, NewBuildingsList.Count);
+                                        int selection = this.GetRandomRange(x + i, y + j, NewBuildingsList.Count);
                                         while (valuecount < BuildingEngine.Buildings[NewBuildingsList[m]].BuildingPlacerValue)
                                         {
                                             TempBuildingsList.Add(NewBuildingsList[selection] + 2);
                                             valuecount = valuecount + BuildingEngine.Buildings[NewBuildingsList[selection]].BuildingValue;
-                                            selection = r.Next(0, NewBuildingsList.Count);
+                                            selection = this.GetRandomRange(x + i, y + j, NewBuildingsList.Count);
                                             m++;
                                         }
-                                        data = PlaceBuildings(width, height, depth, biomes, i, j, rw, ox, oy, TempBuildingsList, r, data);
+                                        data = PlaceBuildings(width, height, depth, biomes, i, j, rw, ox, oy, TempBuildingsList, x + i, y + j, data);
                                     }
                                 }
                                 else
@@ -160,7 +158,7 @@ namespace Tychaia.ProceduralGeneration
             return data;
         }
 
-        public int[] PlaceBuildings(int width, int height, int depth, int[] biomes, int i, int j, int rw, int ox, int oy, List<int> BuildingsList, Random r, int[] data)
+        public int[] PlaceBuildings(int width, int height, int depth, int[] biomes, int i, int j, int rw, int ox, int oy, List<int> BuildingsList, int kx, int ky, int[] data)
         {
             int selection = 0;
             int placementside = 0;
@@ -178,9 +176,9 @@ namespace Tychaia.ProceduralGeneration
                     // Won't place on water                
                     do
                     {
-                        selection = r.Next(minzoom, maxzoom);
-                        placementside = r.Next(1, 4);
-                        placementvalue = r.Next(1, (selection * 2));
+                        selection = this.GetRandomRange(kx, ky, minzoom, maxzoom, 0);
+                        placementside = this.GetRandomRange(kx, ky, 1, 4);
+                        placementvalue = this.GetRandomRange(kx, ky, 1, (selection * 2));
                         switch (placementside)
                         {
                             case 1:

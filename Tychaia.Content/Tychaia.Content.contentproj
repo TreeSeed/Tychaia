@@ -162,15 +162,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IsometricMasking.fx">
-      <Name>IsometricMasking</Name>
-      <Importer>EffectImporter</Importer>
-      <Processor>EffectProcessor</Processor>
-      <ProcessorParameters_DebugMode>Debug</ProcessorParameters_DebugMode>
-      <ProcessorParameters_Defines>D3DXSHADER_DEBUG </ProcessorParameters_Defines>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="IsometricDepthMap.fx">
       <Name>IsometricDepthMap</Name>
       <Importer>EffectImporter</Importer>

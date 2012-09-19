@@ -59,5 +59,15 @@ namespace Protogame
         {
             this.Effects.Add(name, this.Content.Load<Effect>(name.Replace('.', '/')));
         }
+
+        public void EndSpriteBatch()
+        {
+            this.SpriteBatch.End();
+        }
+
+        public void StartSpriteBatch()
+        {
+            this.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, this.Camera.GetTransformationMatrix());
+        }
     }
 }

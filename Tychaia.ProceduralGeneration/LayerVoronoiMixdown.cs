@@ -32,7 +32,7 @@ namespace Tychaia.ProceduralGeneration
 
         private const int MAPPING_OFFSET = 10;
 
-        public override int[] GenerateData(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
         {
             if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
                 return new int[width * height];
@@ -97,8 +97,7 @@ namespace Tychaia.ProceduralGeneration
             int rw = width + this.EdgeSampling * 2;
             int rh = height + this.EdgeSampling * 2;
 
-            Random r = this.GetCellRNG(x + i, y + j);
-            switch (r.Next(4))
+            switch (this.GetRandomRange(x + i, y + j, 4))
             {
                 case 0:
                     if (tracker[(i - 1 + ox) + (j + oy) * rw] >= MAPPING_OFFSET)
@@ -131,8 +130,7 @@ namespace Tychaia.ProceduralGeneration
 
             if (p.Inside(width, height) && tracker[(i + ox) + (j + oy) * rw] != 0)
                 return data[i + j * width];
-            Random r = this.GetCellRNG(x + i, y + j);
-            if (p.Left.Inside(width, height) && (p.Up.Inside(width, height) || r.Next(2) == 0))
+            if (p.Left.Inside(width, height) && (p.Up.Inside(width, height) || this.GetRandomRange(x + i, y + j, 2) == 0))
                 return this.FindValueNear(tracker, data, x, y, i - 1, j, width, height);
             else if (p.Up.Inside(width, height))
                 return this.FindValueNear(tracker, data, x, y, i, j - 1, width, height);
@@ -149,8 +147,7 @@ namespace Tychaia.ProceduralGeneration
 
             if (p.Inside(width, height) && tracker[(i + ox) + (j + oy) * rw] != 0)
                 return data[i + j * width];
-            Random r = this.GetCellRNG(x + i, y + j);
-            if (p.Right.Inside(width, height) && (p.Down.Inside(width, height) || r.Next(2) == 0))
+            if (p.Right.Inside(width, height) && (p.Down.Inside(width, height) || this.GetRandomRange(x + i, y + j, 2) == 0))
                 return this.FindValueNearOpposite(tracker, data, x, y, i + 1, j, width, height);
             else if (p.Down.Inside(width, height))
                 return this.FindValueNearOpposite(tracker, data, x, y, i, j + 1, width, height);
@@ -164,7 +161,8 @@ namespace Tychaia.ProceduralGeneration
             int rw = width + this.EdgeSampling * 2;
             int rh = height + this.EdgeSampling * 2;
 
-            if (p.Inside(-ox, -oy, rw, rh) && voronoi[(p.X + ox) + (p.Y + oy) * rw] != 2 /* edge */ && tracker[(p.X + ox) + (p.Y + oy) * rw] == 0 /* not hit */)
+            if (p.Inside(-ox, -oy, rw, rh) && voronoi[(p.X + ox) + (p.Y + oy) * rw] != 2 /* edge */ &&
+                    tracker[(p.X + ox) + (p.Y + oy) * rw] == 0 /* not hit */)
                 tracker[(p.X + ox) + (p.Y + oy) * rw] = idx + MAPPING_OFFSET;
             else
                 return;

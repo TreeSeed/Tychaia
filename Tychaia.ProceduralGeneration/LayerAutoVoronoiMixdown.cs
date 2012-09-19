@@ -42,7 +42,7 @@ namespace Tychaia.ProceduralGeneration
             this.Mixdown = new LayerVoronoiMixdown(this.Voronoi, this.Perlin);
         }
 
-        public override int[] GenerateData(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
         {
             // If we are deserialized, our Perlin / Voronoi might not be created
             // so we need to recreate them.

@@ -60,9 +60,8 @@ namespace Tychaia.ProceduralGeneration
                         {
                             townsize = TownEngine.Towns[parent[(i) + (j) * rw]].TownSize;
 
-                            Random r = this.GetCellRNG(x + i, y + j, iter);
-                            double selectedchance = r.Next(0, 100);
-                            int selected = r.Next(0, 4);
+                            double selectedchance = this.GetRandomLong(x + i, y + j, iter) % 100;
+                            int selected = this.GetRandomRange(x + i, y + j, 4, iter);
                             double chance = selectedchance / 100;
                             if (chance >= townsize)
                             {
@@ -112,7 +111,7 @@ namespace Tychaia.ProceduralGeneration
             return new string[]{"Towns", "Land"};
         }
 
-        public override int[] GenerateData(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
         {
             if (this.Iterations > 0)
                 return this.GenerateDataIterate(1, x, y, width, height);

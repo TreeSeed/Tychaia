@@ -116,6 +116,7 @@
   <ItemGroup>
     <Compile Include="ChunkEntity.cs" />
     <Compile Include="FilteredConsole.cs" />
+    <Compile Include="FilteredFeatures.cs" />
     <Compile Include="Generators\ChunkAccess.cs" />
     <Compile Include="Generators\ChunkManager.cs" />
     <Compile Include="Generators\ChunkProvider.cs" />
