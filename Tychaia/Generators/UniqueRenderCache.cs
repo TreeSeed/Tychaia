@@ -100,6 +100,18 @@ namespace Tychaia.Generators
                 FilteredConsole.WriteLine(FilterCategory.UniqueRendering, "Releasing render result (ref-1).");
         }
 
+        public static void ReleaseWaiting(int[] data)
+        {
+            long hash = GetHash(data);
+            if (!m_RenderPairs.Keys.Contains(hash))
+                throw new InvalidOperationException();
+            UniqueRenderPair urp = m_RenderPairs[hash];
+            if (urp != null)
+                return;
+            m_RenderPairs.Remove(hash);
+            FilteredConsole.WriteLine(FilterCategory.UniqueRendering, "Releasing waiting result.");
+        }
+
         private static long GetHash(int[] data)
         {
             unchecked

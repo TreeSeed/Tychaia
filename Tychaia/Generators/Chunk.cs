@@ -155,7 +155,7 @@ namespace Tychaia.Generators
                 target.Dispose();
                 depth.Dispose();
             }
-            else
+            else if (this.m_UniqueRender != null && (this.m_UniqueRender.Target != null || this.m_UniqueRender.DepthMap != null))
                 // Release from the unique render cache.
                 UniqueRenderCache.Release(this.m_RawData);
             

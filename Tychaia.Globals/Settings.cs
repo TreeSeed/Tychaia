@@ -7,7 +7,7 @@ namespace Tychaia.Globals
 {
     public static class Settings
     {
-        public static int ChunkDepth = 16;
+        public static int ChunkDepth = 64;
     }
 
     public static class Scale

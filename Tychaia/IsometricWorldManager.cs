@@ -56,9 +56,9 @@ namespace Tychaia
              * can be determined by the distance between G - K
              */
 
-            int HORIZ_EXTRA = 0;
-            int VERT_EXTRA = 0;
-            int VERT_EXTRA_EXTRA = 0;
+            int HORIZ_EXTRA = 2;
+            int VERT_EXTRA = 2;
+            int VERT_EXTRA_EXTRA = 2;
 
             int innerHorizontalChunksToRender = (int)Math.Ceiling(context.Camera.Width / (double)TileIsometricifier.CHUNK_TOP_WIDTH) + HORIZ_EXTRA;
 
