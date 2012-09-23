@@ -7,7 +7,7 @@ namespace Tychaia.Spells.Modifiers
 {
     public class NoneModifier : SpellModifier
     {
-        public const double Weight = 1;
+        public const double Weight = 0.25;
 
         public override string ToString()
         {

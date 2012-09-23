@@ -5,13 +5,14 @@ using System.Text;
 
 namespace Tychaia.Spells.Types
 {
-    public class BallType : SpellType
+    public class RingType : SpellType
     {
-        public const double Weight = 1;
+        // Like fire wall just around you.
+        public const double Weight = 0.05;
 
         public override string ToString()
         {
-            return "Ball";
+            return "Ring";
         }
     }
 }

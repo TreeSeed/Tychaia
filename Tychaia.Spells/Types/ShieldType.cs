@@ -5,13 +5,13 @@ using System.Text;
 
 namespace Tychaia.Spells.Types
 {
-    public class PersonalType : SpellType
+    public class ShieldType : SpellType
     {
         public const double Weight = 1;
 
         public override string ToString()
         {
-            return "Personal";
+            return "Shield";
         }
     }
 }

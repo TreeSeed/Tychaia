@@ -48,6 +48,10 @@
     <Compile Include="Elements\EarthElement.cs" />
     <Compile Include="Elements\WaterElement.cs" />
     <Compile Include="Elements\FireElement.cs" />
+    <Compile Include="Modifiers\BurningModifier.cs" />
+    <Compile Include="Modifiers\BounceModifier.cs" />
+    <Compile Include="Modifiers\DelayModifier.cs" />
+    <Compile Include="Modifiers\ReturnModifier.cs" />
     <Compile Include="Modifiers\MulticastModifier.cs" />
     <Compile Include="Modifiers\WildModifier.cs" />
     <Compile Include="Modifiers\RestoreModifier.cs" />
@@ -65,16 +69,16 @@
     <Compile Include="SpellModifier.cs" />
     <Compile Include="SpellType.cs" />
     <Compile Include="Types\BoltType.cs" />
-    <Compile Include="Types\BouncingBoltType.cs" />
     <Compile Include="Types\ChainType.cs" />
-    <Compile Include="Types\BurstType.cs" />
+    <Compile Include="Types\StarType.cs" />
+    <Compile Include="Types\NovaType.cs" />
     <Compile Include="Types\BallType.cs" />
-    <Compile Include="Types\TurretTotemType.cs" />
-    <Compile Include="Types\TotemType.cs" />
+    <Compile Include="Types\TrailType.cs" />
+    <Compile Include="Types\RingType.cs" />
     <Compile Include="Types\RainType.cs" />
     <Compile Include="Types\WallType.cs" />
     <Compile Include="Types\SprayType.cs" />
-    <Compile Include="Types\PersonalType.cs" />
+    <Compile Include="Types\ShieldType.cs" />
     <Compile Include="Types\RayType.cs" />
   </ItemGroup>
   <ItemGroup />

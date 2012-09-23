@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Tychaia.Spells.Types
+namespace Tychaia.Spells.Modifiers
 {
-    public class TotemType : SpellType
+    public class BounceModifier : SpellModifier
     {
-        public const double Weight = 0.05;
+        public const double Weight = 0.015;
 
         public override string ToString()
         {
-            return "Totem of";
+            return "Bouncing";
         }
     }
 }

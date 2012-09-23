@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Tychaia.Spells.Types
+namespace Tychaia.Spells.Modifiers
 {
-    public class BurstType : SpellType
+    public class ReturnModifier : SpellModifier
     {
-        public const double Weight = 0.5;
+        public const double Weight = 0.015;
 
         public override string ToString()
         {
-            return "Burst of";
+            return "Returning";
         }
     }
 }

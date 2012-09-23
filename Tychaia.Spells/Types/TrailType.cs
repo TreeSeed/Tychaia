@@ -5,13 +5,14 @@ using System.Text;
 
 namespace Tychaia.Spells.Types
 {
-    public class BallType : SpellType
+    public class TrailType : SpellType
     {
-        public const double Weight = 1;
+        // Leaves a trail on the ground as you walk, damages each second.
+        public const double Weight = 0.025;
 
         public override string ToString()
         {
-            return "Ball";
+            return "Trail";
         }
     }
 }

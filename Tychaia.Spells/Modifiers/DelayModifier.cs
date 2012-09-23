@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Tychaia.Spells.Types
+namespace Tychaia.Spells.Modifiers
 {
-    public class BouncingBoltType : SpellType
+    public class DelayModifier : SpellModifier
     {
-        public const double Weight = 0.1;
+        public const double Weight = 0.025;
 
         public override string ToString()
         {
-            return "Bouncing Bolt of";
+            return "Delayed";
         }
     }
 }

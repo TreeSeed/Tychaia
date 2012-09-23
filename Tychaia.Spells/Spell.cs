@@ -34,7 +34,22 @@ namespace Tychaia.Spells
 
         public override string ToString()
         {
-            return (this.Type + " " + this.Modifier + " " + this.Element).Replace("  ", " ");
+            string mod = "";
+            if (this.Modifier.ToString() != "")
+            {
+                mod = this.Modifier.ToString() + " ";
+            }
+
+            Random r = new Random();
+            double rand = r.NextDouble();
+            if (rand >= 0.5)
+            {
+                return (mod + this.Element + " " + this.Type).Replace("  ", " ");
+            }
+            else
+            {
+                return (mod + this.Type + " of " + this.Element).Replace("  ", " ");
+            }
         }
     }
 }

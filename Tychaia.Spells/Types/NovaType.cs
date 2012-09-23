@@ -5,13 +5,14 @@ using System.Text;
 
 namespace Tychaia.Spells.Types
 {
-    public class BallType : SpellType
+    // Replaces Burst
+    public class NovaType : SpellType
     {
-        public const double Weight = 1;
+        public const double Weight = 0.5;
 
         public override string ToString()
         {
-            return "Ball";
+            return "Nova";
         }
     }
 }

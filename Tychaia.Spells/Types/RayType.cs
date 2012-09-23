@@ -11,7 +11,16 @@ namespace Tychaia.Spells.Types
 
         public override string ToString()
         {
-            return "Ray of";
+            Random r = new Random();
+            double rand = r.NextDouble();
+            if (rand >= 0.5)
+            {
+                return "Ray";
+            }
+            else
+            {
+                return "Beam";
+            }
         }
     }
 }

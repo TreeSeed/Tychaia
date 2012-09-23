@@ -11,7 +11,7 @@ namespace Tychaia.Spells.Types
 
         public override string ToString()
         {
-            return "Rain of";
+            return "Rain";
         }
     }
 }
