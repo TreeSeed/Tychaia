@@ -59,6 +59,7 @@ namespace Tychaia
 
             // Update player and refocus screen.
             KeyboardState state = Keyboard.GetState();
+            GamePadState gpstate = GamePad.GetState(PlayerIndex.One);
             float mv = (float)Math.Sqrt(this.m_Player.MovementSpeed);
             if (state.IsKeyDown(Keys.W) || FilteredFeatures.IsEnabled(Feature.DebugMovement))
             {
@@ -80,6 +81,14 @@ namespace Tychaia
                 this.m_Player.Y -= mv;
                 this.m_Player.X += mv;
             }
+            Vector2 v = new Vector2(
+                gpstate.ThumbSticks.Left.X,
+                -gpstate.ThumbSticks.Left.Y
+                );
+            Matrix m = Matrix.CreateRotationZ(MathHelper.ToRadians(-45));
+            v = Vector2.Transform(v, m);
+            this.m_Player.X += v.X * mv * (float)(Math.Sqrt(2) / 1.0);
+            this.m_Player.Y += v.Y * mv * (float)(Math.Sqrt(2) / 1.0);
             this.m_Player.Z = this.GetSurfaceZ(context, this.m_Player.X, this.m_Player.Y) * Scale.CUBE_Z;
             (context.WorldManager as IsometricWorldManager).Focus(this.m_Player.X, this.m_Player.Y, this.m_Player.Z);
 
