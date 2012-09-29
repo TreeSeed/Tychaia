@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Tychaia.Generators;
 using Tychaia.Title;
 using Tychaia.Globals;
+using Tychaia.Game;
 
 namespace Tychaia
 {
@@ -41,6 +42,11 @@ namespace Tychaia
         {
             XnaGraphics xna = new XnaGraphics(context);
             xna.DrawStringLeft(8, 8, "FPS: " + context.FPS, "Arial");
+
+            // Draw UI.
+            xna.DrawSprite(context.Camera.Width / 2 - xna.SpriteWidth("ui.frame") / 2,
+                context.Camera.Height - xna.SpriteHeight("ui.frame"),
+                "ui.frame");
 
             // Draw debug information.
             DebugTracker.Draw(context);

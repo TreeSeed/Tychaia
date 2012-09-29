@@ -115,5 +115,15 @@ namespace Protogame
                        0, Vector2.Zero, new Vector2(width, height),
                        SpriteEffects.None, 0);
         }
+
+        public int SpriteHeight(string image)
+        {
+            return this.m_Context.Textures[image].Height;
+        }
+
+        public int SpriteWidth(string image)
+        {
+            return this.m_Context.Textures[image].Width;
+        }
     }
 }

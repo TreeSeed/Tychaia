@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{58F07D5A-E86E-4561-88E8-F96744D59157}</ProjectGuid>
+    <ProjectGuid>{BD3C4687-9A79-415C-A882-0B7C6248E2AF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tychaia.Globals</RootNamespace>
-    <AssemblyName>Tychaia.Globals</AssemblyName>
+    <RootNamespace>Tychaia.Game</RootNamespace>
+    <AssemblyName>Tychaia.Game</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,10 +41,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FilteredConsole.cs" />
-    <Compile Include="FilteredFeatures.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Being.cs" />
+    <Compile Include="Internals\ChunkEntity.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Protogame\Protogame.csproj">
+      <Project>{DF7D4601-0061-4329-9803-6917AF416B70}</Project>
+      <Name>Protogame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.Globals\Tychaia.Globals.csproj">
+      <Project>{58F07D5A-E86E-4561-88E8-F96744D59157}</Project>
+      <Name>Tychaia.Globals</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

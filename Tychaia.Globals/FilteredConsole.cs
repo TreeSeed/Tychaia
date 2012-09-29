@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Tychaia
+namespace Tychaia.Globals
 {
     public static class FilteredConsole
     {

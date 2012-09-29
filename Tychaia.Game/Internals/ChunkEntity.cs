@@ -5,7 +5,7 @@ using System.Text;
 using Protogame;
 using Microsoft.Xna.Framework;
 
-namespace Tychaia
+namespace Tychaia.Game
 {
     public class ChunkEntity : Entity
     {
@@ -42,10 +42,9 @@ namespace Tychaia
             set;
         }
 
-        public virtual T CollidesAt<T>(World world, int x, int y) where T : Entity
+        public override T CollidesAt<T>(World world, int x, int y)
         {
             throw new InvalidOperationException();
-            return Helpers.CollidesAt<T>(this, world, x, y);
         }
     }
 }

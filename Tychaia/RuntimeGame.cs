@@ -25,8 +25,8 @@ namespace Tychaia
 
         public RuntimeGame()
         {
-            this.m_GameContext.Graphics.PreferredBackBufferWidth = 1600;
-            this.m_GameContext.Graphics.PreferredBackBufferHeight = 800;
+            this.m_GameContext.Graphics.PreferredBackBufferWidth = 800;
+            this.m_GameContext.Graphics.PreferredBackBufferHeight = 600;
             Static.GraphicsDevice = this.m_GameContext.Graphics.GraphicsDevice;
             Static.GameContext = this.m_GameContext;
 
@@ -83,6 +83,9 @@ namespace Tychaia
             this.m_GameContext.LoadTexture("tiles.leafgrey");
             this.m_GameContext.LoadTexture("tiles.grassleaf");
             this.m_GameContext.LoadTexture("tiles.sandgrass");
+            this.m_GameContext.LoadTexture("ui.frame");
+            this.m_GameContext.LoadTexture("ui.health");
+            this.m_GameContext.LoadTexture("ui.mana");
             this.m_GameContext.LoadTexture("chars.player.player");
 
             // Isometricify tiles.

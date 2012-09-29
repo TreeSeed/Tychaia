@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Protogame;
 using Microsoft.Xna.Framework.Input;
-using Tychaia.Generators;
+using Tychaia.Globals;
 
-namespace Tychaia
+namespace Tychaia.Game
 {
     public class Player : ChunkEntity
     {
@@ -18,7 +18,8 @@ namespace Tychaia
             private set;
         }
 
-        public Player(World world) : base(world)
+        public Player(World world)
+            : base(world)
         {
             this.Images = this.GetTexture("chars.player.player");
             this.Width = 16;

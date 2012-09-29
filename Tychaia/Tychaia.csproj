@@ -114,10 +114,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChunkEntity.cs" />
     <Compile Include="DebugTracker.cs" />
-    <Compile Include="FilteredConsole.cs" />
-    <Compile Include="FilteredFeatures.cs" />
     <Compile Include="Generators\ChunkAccess.cs" />
     <Compile Include="Generators\ChunkManager.cs" />
     <Compile Include="Generators\ChunkProvider.cs" />
@@ -162,7 +159,6 @@
     <Compile Include="IsometricWorldManager.cs" />
     <None Include="Disabled\Lighting\FieldOfView.cs" />
     <None Include="Disabled\Lighting\FieldOfViewRenderer.cs" />
-    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="RenderTargetFactory.cs" />
@@ -210,6 +206,10 @@
       <Name>Tychaia.Content %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
       <Project>{71CB2FDC-897F-4E08-A793-E4201305B7DD}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.Game\Tychaia.Game.csproj">
+      <Project>{BD3C4687-9A79-415C-A882-0B7C6248E2AF}</Project>
+      <Name>Tychaia.Game</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tychaia.Globals\Tychaia.Globals.csproj">
       <Project>{58F07D5A-E86E-4561-88E8-F96744D59157}</Project>
