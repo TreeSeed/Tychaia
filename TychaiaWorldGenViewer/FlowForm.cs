@@ -151,12 +151,16 @@ namespace TychaiaWorldGenViewer
                 this.c_LayerInspector.SelectedObject = null;
                 this.c_DeleteSelectedMenuItem.Enabled = false;
                 this.c_RenameSelectedMenuItem.Enabled = false;
+                this.c_DisableProcessingMenuItem.Enabled = false;
+                this.c_DisableProcessingMenuItem.Checked = false;
             }
             else
             {
                 this.c_LayerInspector.SelectedObject = this.c_FlowInterfaceControl.SelectedElement.GetObjectToInspect();
                 this.c_DeleteSelectedMenuItem.Enabled = true;
                 this.c_RenameSelectedMenuItem.Enabled = true;
+                this.c_DisableProcessingMenuItem.Enabled = true;
+                this.c_DisableProcessingMenuItem.Checked = this.c_FlowInterfaceControl.SelectedElement.ProcessingDisabled;
             }
         }
 
@@ -188,6 +192,16 @@ namespace TychaiaWorldGenViewer
                 this.c_FlowInterfaceControl.SelectedElement.Name = re.Name;
                 this.c_FlowInterfaceControl.Invalidate();
             }
+        }
+
+        private void c_DisableProcessingMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.c_FlowInterfaceControl.SelectedElement == null)
+                return;
+
+            this.c_FlowInterfaceControl.SelectedElement.ProcessingDisabled =
+                !this.c_FlowInterfaceControl.SelectedElement.ProcessingDisabled;
+            this.c_FlowInterfaceControl.Invalidate();
         }
 
         private void c_XNumericUpDown_ValueChanged(object sender, EventArgs e)
@@ -468,6 +482,16 @@ namespace TychaiaWorldGenViewer
                 new LayerFlowElement(
                     this.c_FlowInterfaceControl,
                     new LayerBuildingPlacer(null, null)
+                )
+            );
+        }
+
+        private void c_LandAddZoomTerrainMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+                new LayerFlowElement(
+                    this.c_FlowInterfaceControl,
+                    new LayerZoomWaterDistance(null)
                 )
             );
         }

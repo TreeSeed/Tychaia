@@ -58,6 +58,7 @@
             this.c_LandAddDeriveTerrainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_LandAddMixTerrainWithPerlinMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_LandAddMixOreWithVoronoiMixdownMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_LandAddZoomWaterDistanceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_BiomeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_BiomeAddScatterBiomeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_BiomeAddSecondaryBiomeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,6 +81,7 @@
             this.extendTownsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_LandAddZoomTownCentersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buildingPlacerPlacerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildingPlacerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_FamilyTreesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
             this.c_3DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,8 +103,9 @@
             this.c_XLabel = new System.Windows.Forms.Label();
             this.c_XNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.c_DisableProcessingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
-            this.buildingPlacerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_StatusStrip.SuspendLayout();
             this.c_ContextMenuStrip.SuspendLayout();
             this.c_ToolStrip.SuspendLayout();
@@ -154,16 +157,17 @@
             this.c_3DGeneralMenuItem,
             this.c_3DTerrainMenuItem,
             this.toolStripMenuItem4,
+            this.c_DisableProcessingMenuItem,
             this.c_RenameSelectedMenuItem,
             this.c_DeleteSelectedMenuItem});
             this.c_ContextMenuStrip.Name = "contextMenuStrip1";
-            this.c_ContextMenuStrip.Size = new System.Drawing.Size(165, 346);
+            this.c_ContextMenuStrip.Size = new System.Drawing.Size(173, 368);
             // 
             // c_2DToolStripMenuItem
             // 
             this.c_2DToolStripMenuItem.Enabled = false;
             this.c_2DToolStripMenuItem.Name = "c_2DToolStripMenuItem";
-            this.c_2DToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.c_2DToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_2DToolStripMenuItem.Text = "2D:";
             // 
             // c_GeneralMenuItem
@@ -186,7 +190,7 @@
             this.c_GeneralAddCopyResultMenuItem,
             this.c_GeneralAddStoreResultMenuItem});
             this.c_GeneralMenuItem.Name = "c_GeneralMenuItem";
-            this.c_GeneralMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.c_GeneralMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_GeneralMenuItem.Text = "General";
             // 
             // c_GeneralAddInitialPerlinMenuItem
@@ -302,9 +306,11 @@
             this.c_LandAddExtendLandMenuItem,
             this.c_LandAddDeriveTerrainMenuItem,
             this.c_LandAddMixTerrainWithPerlinMenuItem,
-            this.c_LandAddMixOreWithVoronoiMixdownMenuItem});
+            this.c_LandAddMixOreWithVoronoiMixdownMenuItem,
+            this.toolStripMenuItem5,
+            this.c_LandAddZoomWaterDistanceMenuItem});
             this.c_LandMenuItem.Name = "c_LandMenuItem";
-            this.c_LandMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.c_LandMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_LandMenuItem.Text = "Land";
             // 
             // c_LandAddInitialLandMenuItem
@@ -342,13 +348,20 @@
             this.c_LandAddMixOreWithVoronoiMixdownMenuItem.Text = "Mix Ore with Voronoi Mixdown";
             this.c_LandAddMixOreWithVoronoiMixdownMenuItem.Click += new System.EventHandler(this.c_LandAddMixOreWithVoronoiMixdownMenuItem_Click);
             // 
+            // c_LandAddZoomWaterDistanceMenuItem
+            // 
+            this.c_LandAddZoomWaterDistanceMenuItem.Name = "c_LandAddZoomWaterDistanceMenuItem";
+            this.c_LandAddZoomWaterDistanceMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.c_LandAddZoomWaterDistanceMenuItem.Text = "Zoom Water Distance";
+            this.c_LandAddZoomWaterDistanceMenuItem.Click += new System.EventHandler(this.c_LandAddZoomTerrainMenuItem_Click);
+            // 
             // c_BiomeMenuItem
             // 
             this.c_BiomeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.c_BiomeAddScatterBiomeMenuItem,
             this.c_BiomeAddSecondaryBiomeMenuItem});
             this.c_BiomeMenuItem.Name = "c_BiomeMenuItem";
-            this.c_BiomeMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.c_BiomeMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_BiomeMenuItem.Text = "Biome";
             // 
             // c_BiomeAddScatterBiomeMenuItem
@@ -372,7 +385,7 @@
             this.c_RainfallAddMixRainfallWithBiomeMenuItem});
             this.c_RainfallMenuItem.Enabled = false;
             this.c_RainfallMenuItem.Name = "c_RainfallMenuItem";
-            this.c_RainfallMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.c_RainfallMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_RainfallMenuItem.Text = "Rainfall";
             // 
             // c_RainfallAddInitialRainfallMenuItem
@@ -394,7 +407,7 @@
             this.c_TemperatureAddMixTemperatureWithBiomeMenuItem});
             this.c_TemperatureMenuItem.Enabled = false;
             this.c_TemperatureMenuItem.Name = "c_TemperatureMenuItem";
-            this.c_TemperatureMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.c_TemperatureMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_TemperatureMenuItem.Text = "Temperature";
             // 
             // c_TemperatureAddInitialTemperature
@@ -417,7 +430,7 @@
             this.c_RiversAddPoolOceanMenuItem});
             this.c_RiversMenuItem.Enabled = false;
             this.c_RiversMenuItem.Name = "c_RiversMenuItem";
-            this.c_RiversMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.c_RiversMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_RiversMenuItem.Text = "Rivers";
             // 
             // c_RiversAddSimulateFlowMenuItem
@@ -451,7 +464,7 @@
             this.buildingPlacerPlacerToolStripMenuItem,
             this.buildingPlacerToolStripMenuItem});
             this.c_TownsMenuItem.Name = "c_TownsMenuItem";
-            this.c_TownsMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.c_TownsMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_TownsMenuItem.Text = "Towns";
             // 
             // c_TownsAddScatterTownsMenuItem
@@ -509,23 +522,30 @@
             this.buildingPlacerPlacerToolStripMenuItem.Text = "Building Lister";
             this.buildingPlacerPlacerToolStripMenuItem.Click += new System.EventHandler(this.buildingPlacerPlacerToolStripMenuItem_Click);
             // 
+            // buildingPlacerToolStripMenuItem
+            // 
+            this.buildingPlacerToolStripMenuItem.Name = "buildingPlacerToolStripMenuItem";
+            this.buildingPlacerToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.buildingPlacerToolStripMenuItem.Text = "Building Placer";
+            this.buildingPlacerToolStripMenuItem.Click += new System.EventHandler(this.buildingPlacerToolStripMenuItem_Click);
+            // 
             // c_FamilyTreesMenuItem
             // 
             this.c_FamilyTreesMenuItem.Enabled = false;
             this.c_FamilyTreesMenuItem.Name = "c_FamilyTreesMenuItem";
-            this.c_FamilyTreesMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.c_FamilyTreesMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_FamilyTreesMenuItem.Text = "Family Trees";
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(161, 6);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(169, 6);
             // 
             // c_3DToolStripMenuItem
             // 
             this.c_3DToolStripMenuItem.Enabled = false;
             this.c_3DToolStripMenuItem.Name = "c_3DToolStripMenuItem";
-            this.c_3DToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.c_3DToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_3DToolStripMenuItem.Text = "3D:";
             // 
             // c_3DGeneralMenuItem
@@ -533,7 +553,7 @@
             this.c_3DGeneralMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.c_3DGeneralStoreResultMenuItem});
             this.c_3DGeneralMenuItem.Name = "c_3DGeneralMenuItem";
-            this.c_3DGeneralMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.c_3DGeneralMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_3DGeneralMenuItem.Text = "General";
             // 
             // c_3DGeneralStoreResultMenuItem
@@ -548,7 +568,7 @@
             this.c_3DTerrainMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.c_3DTerrainAddForm3DTerrainMenuItem});
             this.c_3DTerrainMenuItem.Name = "c_3DTerrainMenuItem";
-            this.c_3DTerrainMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.c_3DTerrainMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_3DTerrainMenuItem.Text = "Terrain";
             // 
             // c_3DTerrainAddForm3DTerrainMenuItem
@@ -561,13 +581,13 @@
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(161, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(169, 6);
             // 
             // c_RenameSelectedMenuItem
             // 
             this.c_RenameSelectedMenuItem.Enabled = false;
             this.c_RenameSelectedMenuItem.Name = "c_RenameSelectedMenuItem";
-            this.c_RenameSelectedMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.c_RenameSelectedMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_RenameSelectedMenuItem.Text = "Rename Selected";
             this.c_RenameSelectedMenuItem.Click += new System.EventHandler(this.c_RenameSelectedMenuItem_Click);
             // 
@@ -575,7 +595,7 @@
             // 
             this.c_DeleteSelectedMenuItem.Enabled = false;
             this.c_DeleteSelectedMenuItem.Name = "c_DeleteSelectedMenuItem";
-            this.c_DeleteSelectedMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.c_DeleteSelectedMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_DeleteSelectedMenuItem.Text = "Delete Selected";
             this.c_DeleteSelectedMenuItem.Click += new System.EventHandler(this.c_DeleteSelectedMenuItem_Click);
             // 
@@ -718,6 +738,19 @@
             this.c_YNumericUpDown.TabIndex = 2;
             this.c_YNumericUpDown.ValueChanged += new System.EventHandler(this.c_YNumericUpDown_ValueChanged);
             // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(235, 6);
+            // 
+            // c_DisableProcessingMenuItem
+            // 
+            this.c_DisableProcessingMenuItem.Enabled = false;
+            this.c_DisableProcessingMenuItem.Name = "c_DisableProcessingMenuItem";
+            this.c_DisableProcessingMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.c_DisableProcessingMenuItem.Text = "Disable Processing";
+            this.c_DisableProcessingMenuItem.Click += new System.EventHandler(this.c_DisableProcessingMenuItem_Click);
+            // 
             // c_FlowInterfaceControl
             // 
             this.c_FlowInterfaceControl.ContextMenuStrip = this.c_ContextMenuStrip;
@@ -730,13 +763,6 @@
             this.c_FlowInterfaceControl.Zoom = 1F;
             this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
             this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
-            // 
-            // buildingPlacerToolStripMenuItem
-            // 
-            this.buildingPlacerToolStripMenuItem.Name = "buildingPlacerToolStripMenuItem";
-            this.buildingPlacerToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.buildingPlacerToolStripMenuItem.Text = "Building Placer";
-            this.buildingPlacerToolStripMenuItem.Click += new System.EventHandler(this.buildingPlacerToolStripMenuItem_Click);
             // 
             // FlowForm
             // 
@@ -838,5 +864,8 @@
         private System.Windows.Forms.ToolStripMenuItem c_LandAddZoomTownCentersMenuItem;
         private System.Windows.Forms.ToolStripMenuItem buildingPlacerPlacerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem buildingPlacerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem c_LandAddZoomWaterDistanceMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem c_DisableProcessingMenuItem;
     }
 }

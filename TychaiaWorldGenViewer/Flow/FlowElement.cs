@@ -47,6 +47,13 @@ namespace TychaiaWorldGenViewer.Flow
             protected set;
         }
 
+        [DataMember]
+        public bool ProcessingDisabled
+        {
+            get;
+            set;
+        }
+        
         public virtual Bitmap Image
         {
             get;

@@ -76,6 +76,15 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
+        [DataMember]
+        [DefaultValue(0)]
+        [Description("The constant numeric value to use for SetNumber operation.")]
+        public int Constant
+        {
+            get;
+            set;
+        }
+
         public LayerPerlinMath(Layer first, Layer second)
             : base(new Layer[] { first, second })
         {
@@ -86,15 +95,22 @@ namespace Tychaia.ProceduralGeneration
             this.MaxPerlinSecond = 100;
             this.MinPerlinOutput = 0;
             this.MaxPerlinOutput = 100;
+            this.Constant = 0;
         }
 
         protected override int[] GenerateDataImpl(int x, int y, int width, int height)
         {
-            if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
-                return new int[width * height];
+            int[] first = null;
+            int[] second = null;
+            if (!(this.MathOp == ProceduralGeneration.MathOp.SetNumber))
+                if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
+                    return new int[width * height];
 
-            int[] first = this.Parents[0].GenerateData(x, y, width, height);
-            int[] second = this.Parents[1].GenerateData(x, y, width, height);
+            if (!(this.MathOp == ProceduralGeneration.MathOp.SetNumber))
+            {
+                first = this.Parents[0].GenerateData(x, y, width, height);
+                second = this.Parents[1].GenerateData(x, y, width, height);
+            }
             int[] data = new int[width * height];
 
             // Perform the mathematical operation.
@@ -103,9 +119,12 @@ namespace Tychaia.ProceduralGeneration
                     try
                     {
                         // Convert values to doubles.
-                        double a = (first[i + j * width] - this.MinPerlinFirst) / (double)(this.MaxPerlinFirst - this.MinPerlinFirst);
-                        double b = (second[i + j * width] - this.MinPerlinSecond) / (double)(this.MaxPerlinSecond - this.MinPerlinSecond);
-                        double val;
+                        double a = 0, b = 0, val;
+                        if (!(this.MathOp == ProceduralGeneration.MathOp.SetNumber))
+                        {
+                            a = (first[i + j * width] - this.MinPerlinFirst) / (double)(this.MaxPerlinFirst - this.MinPerlinFirst);
+                            b = (second[i + j * width] - this.MinPerlinSecond) / (double)(this.MaxPerlinSecond - this.MinPerlinSecond);
+                        }
 
                         // Do operation.
                         switch (this.MathOp)
@@ -122,6 +141,9 @@ namespace Tychaia.ProceduralGeneration
                             case ProceduralGeneration.MathOp.Divide:
                                 val = a / b;
                                 break;
+                            case ProceduralGeneration.MathOp.SetNumber:
+                                val = this.Constant;
+                                break;
                             default:
                                 val = 0;
                                 break;
@@ -130,7 +152,7 @@ namespace Tychaia.ProceduralGeneration
                         // Store result.
                         data[i + j * width] = (int)(val * (this.MaxPerlinOutput - this.MinPerlinOutput) + this.MinPerlinOutput);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         // In case of overflow, underflow or divide by zero.
                         data[i + j * width] = 0;
@@ -163,6 +185,7 @@ namespace Tychaia.ProceduralGeneration
         Add,
         Subtract,
         Multiply,
-        Divide
+        Divide,
+        SetNumber
     }
 }

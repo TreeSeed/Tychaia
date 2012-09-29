@@ -61,7 +61,10 @@ namespace Tychaia.ProceduralGeneration
 
         public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
         {
-            return LayerColors.BiomeBrushes;
+            if (this.Parents.Length < 1 || this.Parents[0] == null)
+                return LayerColors.BiomeBrushes;
+
+            return this.Parents[0].GetLayerColors();
         }
 
         public override string ToString()

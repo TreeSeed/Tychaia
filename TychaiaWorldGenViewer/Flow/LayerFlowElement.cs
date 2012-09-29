@@ -88,7 +88,17 @@ namespace TychaiaWorldGenViewer.Flow
 
         private void RefreshImageSync()
         {
-            this.m_Control.Invalidate(this.Region.Apply(this.m_Control.Zoom));
+            if (this.ProcessingDisabled)
+            {
+                Bitmap b = new Bitmap(this.ImageWidth, this.ImageHeight);
+                Graphics g = Graphics.FromImage(b);
+                g.Clear(Color.White);
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+                g.DrawString("Disabled", SystemFonts.DefaultFont, SystemBrushes.WindowText, new PointF(0, 0));
+                this.m_RealBitmap = b;
+                this.m_Control.Invalidate(this.Region.Apply(this.m_Control.Zoom));
+                return;
+            }
             if (this.m_Layer is Layer3D)
                 this.m_RealBitmap = LayerFlowImageGeneration.RegenerateImageForLayer(this.m_Control, this.m_Layer, this.ImageWidth, this.ImageHeight);
             else

@@ -249,7 +249,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override int StandardDepth
         {
-            get { return 100; }
+            get { return 16; }
         }
 
         public override bool[] GetParents3DRequired()
