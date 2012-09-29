@@ -28,9 +28,6 @@
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.FBXImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.TextureImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.XImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
@@ -44,21 +41,27 @@
   <ItemGroup>
     <Compile Include="Gradient.png">
       <Name>Gradient</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PersonDepth.png">
       <Name>PersonDepth</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="PersonSprite.png">
       <Name>PersonSprite</Name>
-      <Importer>TextureImporter</Importer>
+      <Importer>FastTextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Tychaia.Content.Extensions\Tychaia.Content.Extensions.csproj">
+      <Project>{8ABBB640-E22B-4D70-87EF-FABC143F586A}</Project>
+      <Name>Tychaia.Content.Extensions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
