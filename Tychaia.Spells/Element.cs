@@ -7,13 +7,15 @@ namespace Tychaia.Spells
 {
     public abstract class Element
     {
+        private static Random r = new Random();
+
         // Used for damage over time effects on spells, elemental weapons and shields.
         virtual public string[] PresentTense
         {
             get { return new string[] { "--- Error: " + this.ToString() + " PresentTense not set ---" }; }
         }
         // Used for item generation - gives resistance to this element.
-        virtual public string[] PastTense
+        virtual public string[] ItemPrefix
         {
             get { return new string[] { "--- Error: " + this.ToString() + " PastTense not set ---" }; }
         }
@@ -25,25 +27,20 @@ namespace Tychaia.Spells
 
         public virtual string GetPresentTense()
         {
-            Random r = new Random();
             int rand = r.Next(PresentTense.Length);
             return PresentTense[rand];
         }
 
-        public virtual string GetPastTense()
+        public virtual string GetItemPrefix()
         {
-            Random r = new Random();
-            int rand = r.Next(PastTense.Length);
-            return PastTense[rand];
+            int rand = r.Next(ItemPrefix.Length);
+            return ItemPrefix[rand];
         }
 
         public virtual string GetElementName()
         {
-            Random r = new Random();
             int rand = r.Next(ElementName.Length);
             return ElementName[rand];
         }
-        // Add for things like "get enchantment" and "get instant damage"
-        // Add list for each element
     }
 }

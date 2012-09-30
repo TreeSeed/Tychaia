@@ -9,6 +9,30 @@ namespace Tychaia.Spells.Elements
     {
         public const double Weight = 0.5;
 
+        public override string[] PresentTense
+        {
+            get
+            {
+                return new string[] { "Healing", "Restoring" };
+            }
+        }
+
+        public override string[] ItemPrefix
+        {
+            get
+            {
+                return new string[] { "Divine", "Holy" };
+            }
+        }
+
+        public override string[] ElementName
+        {
+            get
+            {
+                return new string[] { "Heal", "Life", "Holy", "Divine", "Light" };
+            }
+        }
+
         public override string ToString()
         {
             return "Life";

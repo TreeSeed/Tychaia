@@ -16,7 +16,7 @@ namespace Tychaia.Spells.Elements
             }
         }
 
-        public override string[] PastTense 
+        public override string[] ItemPrefix 
         {
             get
             {
