@@ -8,7 +8,7 @@ namespace Tychaia.Spells
 {
     public static class SpellGenerator
     {
-        internal static Dictionary<SpellElement, double> Elements = new Dictionary<SpellElement, double>();
+        internal static Dictionary<Element, double> Elements = new Dictionary<Element, double>();
         internal static Dictionary<SpellType, double> Types = new Dictionary<SpellType, double>();
         internal static Dictionary<SpellModifier, double> Modifiers = new Dictionary<SpellModifier, double>();
         internal static double TotalWeightingElements = 0;
@@ -19,9 +19,9 @@ namespace Tychaia.Spells
         {
             foreach (Type t in Assembly.GetExecutingAssembly().GetTypes())
             {
-                if (typeof(SpellElement).IsAssignableFrom(t) && !t.IsAbstract)
+                if (typeof(Element).IsAssignableFrom(t) && !t.IsAbstract)
                     Elements.Add(
-                        (SpellElement)t.GetConstructor(Type.EmptyTypes).Invoke(null),
+                        (Element)t.GetConstructor(Type.EmptyTypes).Invoke(null),
                         (double)t.GetField("Weight").GetValue(null)
                     );
                 if (typeof(SpellType).IsAssignableFrom(t) && !t.IsAbstract)
@@ -36,7 +36,7 @@ namespace Tychaia.Spells
                     );
             }
 
-            foreach (KeyValuePair<SpellElement, double> kv in Elements)
+            foreach (KeyValuePair<Element, double> kv in Elements)
                 TotalWeightingElements += kv.Value;
             foreach (KeyValuePair<SpellType, double> kv in Types)
                 TotalWeightingTypes += kv.Value;
@@ -50,7 +50,7 @@ namespace Tychaia.Spells
             double elementSelect = r.NextDouble() * TotalWeightingElements;
             double typeSelect = r.NextDouble() * TotalWeightingTypes;
             double modifierSelect = r.NextDouble() * TotalWeightingModifiers;
-            SpellElement element = Locate<SpellElement>(Elements, elementSelect);
+            Element element = Locate<Element>(Elements, elementSelect);
             SpellType type = Locate<SpellType>(Types, typeSelect);
             SpellModifier modifier = Locate<SpellModifier>(Modifiers, modifierSelect);
             return new Spell(element, type, modifier);

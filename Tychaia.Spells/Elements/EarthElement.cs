@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Tychaia.Spells.Elements
 {
-    public class EarthElement : SpellElement
+    public class EarthElement : Element
     {
         public const double Weight = 1;
 

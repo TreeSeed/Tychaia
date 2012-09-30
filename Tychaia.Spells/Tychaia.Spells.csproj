@@ -62,7 +62,7 @@
     <Compile Include="Modifiers\SpeedModifier.cs" />
     <Compile Include="Modifiers\NoneModifier.cs" />
     <Compile Include="Modifiers\RangeModifier.cs" />
-    <Compile Include="SpellElement.cs" />
+    <Compile Include="Element.cs" />
     <Compile Include="Spell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpellGenerator.cs" />
