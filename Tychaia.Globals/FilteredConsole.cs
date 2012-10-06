@@ -14,11 +14,14 @@ namespace Tychaia.Globals
             // Change this to effect what is outputted to the console.
             m_PermittedCategories = new FilterCategory[]
             {
-                //FilterCategory.Optimization,
+                FilterCategory.Optimization,
                 //FilterCategory.Rendering,
-                //FilterCategory.RenderingActive,
-                //FilterCategory.OptimizationTiming,
-                FilterCategory.UniqueRendering
+                FilterCategory.RenderingActive,
+                FilterCategory.OptimizationTiming,
+                FilterCategory.UniqueRendering,
+                FilterCategory.Player,
+                FilterCategory.GraphicsMemoryUsage,
+                FilterCategory.OptimizationTiming
             };
         }
 

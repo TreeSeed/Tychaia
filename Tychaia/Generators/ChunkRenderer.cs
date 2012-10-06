@@ -104,9 +104,9 @@ namespace Tychaia.Generators
 
         private class RenderState
         {
-            public int CurrentZ;
             public int ZTop;
             public int ZBottom;
+            public int CurrentZ;
             public int RenderMode;
             public bool ChunkDepthMapCleared;
             public RenderTarget2D ChunkTarget;
@@ -158,23 +158,23 @@ namespace Tychaia.Generators
             if (m_CurrentRenderState == null)
             {
                 RenderState rs = new RenderState();
-                rs.ZTop = Settings.ChunkDepth;
+                rs.ZTop = Chunk.Depth;
                 rs.ZBottom = 0;
                 rs.ChunkTarget = RenderTargetFactory.Create(
                     m_GraphicsDevice,
                     TileIsometricifier.TILE_TOP_WIDTH * Chunk.Width,
-                    TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width + TileIsometricifier.TILE_CUBE_HEIGHT * Settings.ChunkDepth,
+                    TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width + TileIsometricifier.TILE_CUBE_HEIGHT * Chunk.Depth + TileIsometricifier.CHUNK_HEIGHT_ALLOWANCE,
                     true,
                     SurfaceFormat.Bgra5551,
                     DepthFormat.None);
                 rs.ChunkDepthMap = RenderTargetFactory.Create(
                     m_GraphicsDevice,
                     TileIsometricifier.TILE_TOP_WIDTH * Chunk.Width,
-                    TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width + TileIsometricifier.TILE_CUBE_HEIGHT * Settings.ChunkDepth,
+                    TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width + TileIsometricifier.TILE_CUBE_HEIGHT * Chunk.Depth + TileIsometricifier.CHUNK_HEIGHT_ALLOWANCE,
                     true,
                     SurfaceFormat.Bgra5551,
                     DepthFormat.None);
-                FilteredConsole.WriteLine(FilterCategory.GraphicsMemoryUsage, "Allocated textures for chunk " + task.Chunk.GlobalX + ", " + task.Chunk.GlobalY + ".");
+                FilteredConsole.WriteLine(FilterCategory.GraphicsMemoryUsage, "Allocated textures for chunk " + task.Chunk.GlobalX + ", " + task.Chunk.GlobalY + ", " + task.Chunk.GlobalZ + ".");
                 m_GraphicsDevice.SetRenderTarget(rs.ChunkTarget);
                 if (FilteredFeatures.IsEnabled(Feature.DebugChunkBackground))
                 {
@@ -207,7 +207,7 @@ namespace Tychaia.Generators
                     int z = m_CurrentRenderState.CurrentZ;
 
                     int rcx = TileIsometricifier.TILE_TOP_WIDTH * Chunk.Width / 2 - TileIsometricifier.TILE_TOP_WIDTH / 2;
-                    int rcy = TileIsometricifier.TILE_CUBE_HEIGHT * Settings.ChunkDepth + TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width / 2 - DEBUG_ZOFFSET;
+                    int rcy = TileIsometricifier.TILE_CUBE_HEIGHT * Chunk.Depth + TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width / 2 - DEBUG_ZOFFSET;
                     int rw = TileIsometricifier.TILE_TOP_WIDTH;
                     int rh = TileIsometricifier.TILE_TOP_HEIGHT / 2;
                     for (int i = 0; i < m_CurrentRenderState.CellRenderOrder.Length; i++)
@@ -329,7 +329,7 @@ namespace Tychaia.Generators
                     int z = m_CurrentRenderState.CurrentZ;
 
                     int rcx = TileIsometricifier.TILE_TOP_WIDTH * Chunk.Width / 2 - TileIsometricifier.TILE_TOP_WIDTH / 2;
-                    int rcy = TileIsometricifier.TILE_CUBE_HEIGHT * Settings.ChunkDepth + TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width / 2 - DEBUG_ZOFFSET;
+                    int rcy = TileIsometricifier.TILE_CUBE_HEIGHT * Chunk.Depth + TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width / 2 - DEBUG_ZOFFSET;
                     int rw = TileIsometricifier.TILE_TOP_WIDTH;
                     int rh = TileIsometricifier.TILE_TOP_HEIGHT / 2;
                     for (int i = 0; i < m_CurrentRenderState.CellRenderOrder.Length; i++)
@@ -424,6 +424,16 @@ namespace Tychaia.Generators
         {
             private get;
             set;
+        }
+
+        public static bool IsTasked(Chunk chunk)
+        {
+            foreach (RenderTask rt in m_Tasks)
+            {
+                if (rt.Chunk == chunk)
+                    return true;
+            }
+            return false;
         }
 
         public static void DiscardUnusedChunks()

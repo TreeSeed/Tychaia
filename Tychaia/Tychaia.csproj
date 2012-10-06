@@ -114,6 +114,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cube.cs" />
     <Compile Include="DebugTracker.cs" />
     <Compile Include="Generators\ChunkAccess.cs" />
     <Compile Include="Generators\ChunkManager.cs" />

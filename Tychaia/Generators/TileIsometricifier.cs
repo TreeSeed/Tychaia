@@ -19,6 +19,7 @@ namespace Tychaia.Generators
         public const int CHUNK_TOP_HEIGHT = TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Height;
         public const int SKEW_SCALE = 2;
         public const float SKEW_MAGIC = 1.4f;
+        public const int CHUNK_HEIGHT_ALLOWANCE = 64;
 
         public static int TILE_LEFT = -23 * 2;
         public static int TILE_TOP = 10 * 2;

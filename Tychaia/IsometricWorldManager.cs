@@ -74,12 +74,14 @@ namespace Tychaia
              */
             int cx = this.Chunk.GlobalX;
             int cy = this.Chunk.GlobalY;
+            int cz = this.Chunk.GlobalZ;
             double ix = 0;
             double iy = 0;
             ix += (this.m_CurrentX - cx);
             iy += (this.m_CurrentX - cx) * 0.75f;
             ix -= (this.m_CurrentY - cy);
             iy += (this.m_CurrentY - cy) * 0.75f;
+            iy -= (this.m_CurrentZ - cz) / 2f;
 
             /* We need to store the position where we're drawing the center chunk so
              * that positions of entities in the isometric world can be resolved
@@ -106,7 +108,7 @@ namespace Tychaia
                     for (int i = innerHorizontalChunksToRender / 2; i > j; i--)
                     {
                         /* We need to go from N -> H -> M which is N.Left.Down */
-                        c = c.Left.Down;
+                        c = c.West.South;
                         x -= TileIsometricifier.CHUNK_TOP_WIDTH;
                     }
                 }
@@ -115,7 +117,7 @@ namespace Tychaia
                     for (int i = innerHorizontalChunksToRender / 2; i < j; i++)
                     {
                         /* We need to go from N -> I -> O which is N.Up.Right */
-                        c = c.Up.Right;
+                        c = c.North.East;
                         x += TileIsometricifier.CHUNK_TOP_WIDTH;
                     }
                 }
@@ -126,7 +128,7 @@ namespace Tychaia
                 for (int i = 0; i < innerVerticalChunksToRender / 2; i++)
                 {
                     /* We need to go from N -> I which is N.Up */
-                    c = c.Up;
+                    c = c.North;
                     x += TileIsometricifier.CHUNK_TOP_WIDTH / 2;
                     y -= TileIsometricifier.CHUNK_TOP_HEIGHT / 2;
                 }
@@ -139,15 +141,25 @@ namespace Tychaia
                 int oldY = y;
                 for (int i = 0; i < innerVerticalChunksToRender + VERT_EXTRA_EXTRA; i++)
                 {
-                    /* Now we add the current chunk to the render list */
-                    RelativeRenderInformation ri = new RelativeRenderInformation();
-                    ri.Target = c;
-                    ri.X = x;
-                    ri.Y = y;
-                    renders.Add(ri);
+                    /* Loop -2 to +2 on the Z axis */
+                    for (int k = -2; k <= 0; k++)
+                    {
+                        Chunk zc = c;
+                        for (int a = 0; a > k; a--)
+                            zc = zc.Down;
+                        for (int a = 0; a < k; a++)
+                            zc = zc.Up;
+
+                        /* Now we add the current chunk to the render list */
+                        RelativeRenderInformation ri = new RelativeRenderInformation();
+                        ri.Target = zc;
+                        ri.X = x;
+                        ri.Y = y - k * (TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width + TileIsometricifier.TILE_CUBE_HEIGHT * Chunk.Depth);
+                        renders.Add(ri);
+                    }
 
                     /* We need to go from D -> I which is D.Down */
-                    c = c.Down;
+                    c = c.South;
                     x -= TileIsometricifier.CHUNK_TOP_WIDTH / 2;
                     y += TileIsometricifier.CHUNK_TOP_HEIGHT / 2;
                 }
@@ -200,13 +212,14 @@ namespace Tychaia
         {
             float cx = this.Chunk.GlobalX;
             float cy = this.Chunk.GlobalY;
+            float cz = this.Chunk.GlobalZ;
             float xx = this.m_ChunkCenterX;
             float yy = this.m_ChunkCenterY;
             xx += (x - cx);
             yy += (x - cx) * 0.75f;
             xx -= (y - cy);
             yy += (y - cy) * 0.75f;
-            yy -= z / 2f;
+            yy -= (z - cz) / 2f;
             return new Vector2(xx, yy);
         }
 
@@ -218,6 +231,7 @@ namespace Tychaia
         {
             double newX = this.m_CurrentX + x;
             double newY = this.m_CurrentY + y;
+            double newZ = this.m_CurrentZ + z;
 
             // Skip if there is no active chunk.
             if (this.Chunk == null)
@@ -225,13 +239,17 @@ namespace Tychaia
 
             // Pan current chunk.
             while (newX < this.Chunk.GlobalX)
-                this.Chunk = this.Chunk.Left;
+                this.Chunk = this.Chunk.West;
             while (newX > this.Chunk.GlobalX + Chunk.Width * Scale.CUBE_X)
-                this.Chunk = this.Chunk.Right;
+                this.Chunk = this.Chunk.East;
             while (newY < this.Chunk.GlobalY)
-                this.Chunk = this.Chunk.Up;
+                this.Chunk = this.Chunk.North;
             while (newY > this.Chunk.GlobalY + Chunk.Height * Scale.CUBE_Y)
+                this.Chunk = this.Chunk.South;
+            while (newZ < this.Chunk.GlobalZ)
                 this.Chunk = this.Chunk.Down;
+            while (newZ > this.Chunk.GlobalZ + Chunk.Depth * Scale.CUBE_Z)
+                this.Chunk = this.Chunk.Up;
 
             this.m_CurrentX += x;
             this.m_CurrentY += y;
@@ -306,11 +324,11 @@ namespace Tychaia
         protected override void PreBegin(GameContext context)
         {
             // Process a single texture block if the FPS is higher than 30.
-            if (context.GameTime.ElapsedGameTime.Milliseconds < 100)
-            {
+            //if (context.GameTime.ElapsedGameTime.Milliseconds < 100)
+            //{
                 ChunkProvider.ProcessSingle();
                 ChunkRenderer.ProcessSingle(context.GameTime, context);
-            }
+            //}
 
             // Ensure we have an occluding sprite batch.
             if (this.m_OccludingSpriteBatch == null)
@@ -334,7 +352,7 @@ namespace Tychaia
                 this.Chunk.Validate();
 
             // Determine our Z offset.
-            int zoffset = -(Settings.ChunkDepth - this.ZLevel) * TileIsometricifier.TILE_CUBE_HEIGHT;
+            int zoffset = -(Chunk.Depth - this.ZLevel) * TileIsometricifier.TILE_CUBE_HEIGHT;
 
             // Get rendering information.
             ChunkRenderer.ResetNeeded();

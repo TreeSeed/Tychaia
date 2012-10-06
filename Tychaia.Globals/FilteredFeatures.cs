@@ -19,7 +19,7 @@ namespace Tychaia.Globals
                 //Feature.AutomaticChunkValidation,
                 Feature.DepthBuffer,
                 Feature.OptimizeChunkProviding,
-                Feature.OptimizeChunkRendering,
+                //Feature.OptimizeChunkRendering,
                 Feature.DiscardChunkTextures,
                 Feature.IsometricOcclusion,
                 Feature.RenderingBuffers,

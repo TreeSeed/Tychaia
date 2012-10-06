@@ -98,7 +98,7 @@ namespace Tychaia.Generators
 
         private class ProvideState
         {
-            public int Z;
+            //public int Z;
             public Block[, ,] Blocks;
             public int[] RawData;
             public ChunkInfo Info;
@@ -113,8 +113,6 @@ namespace Tychaia.Generators
         {
             if (m_ResultLayer == null)
                 throw new InvalidOperationException("No 3D store result layer was found in the world configuration.");
-            int depth = Settings.ChunkDepth;
-            int depthPerScan = depth;
             DateTime start = DateTime.Now;
             FilteredConsole.WriteLine(FilterCategory.OptimizationTiming, "Started with 0ms.");
 
@@ -124,45 +122,45 @@ namespace Tychaia.Generators
                 ps.Blocks = task.Blocks;
                 ps.RawData = task.RawData;
                 ps.Info = task.Info;
-                ps.Z = 0;
+                //ps.Z = task.Chunk.GlobalZ;
                 ps.ProvideTask = task;
                 ps.OnSkipCallback = task.OnSkipCallback;
                 ps.OnGenerationCallback = task.OnGenerationCallback;
                 m_CurrentProvideState = ps;
             }
 
-            int zcount = 0;
-            while (m_CurrentProvideState.Z < depth /*&& (DateTime.Now - start).TotalMilliseconds < 1000 / 120*/)
-            {
+            /*int zcount = 0;
+            while (m_CurrentProvideState.Z < task.Chunk.GlobalZ + Chunk.Depth)
+            {*/
                 int[] data = m_ResultLayer.GenerateData(
                     m_CurrentProvideState.Info.Bounds.X,
                     m_CurrentProvideState.Info.Bounds.Y,
-                    m_CurrentProvideState.Z,
+                    m_CurrentProvideState.Info.Bounds.Z,
                     m_CurrentProvideState.Info.Bounds.Width,
                     m_CurrentProvideState.Info.Bounds.Height,
-                    depthPerScan);
+                    m_CurrentProvideState.Info.Bounds.Depth);
                 for (int i = 0; i < m_CurrentProvideState.Info.Bounds.Width; i++)
                     for (int j = 0; j < m_CurrentProvideState.Info.Bounds.Height; j++)
-                        for (int k = 0; k < depthPerScan; k++)
+                        for (int k = 0; k < m_CurrentProvideState.Info.Bounds.Depth; k++)
                         {
                             int id = data[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height];
                             m_CurrentProvideState.RawData[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height] = id;
                             if (id == -1)
-                                m_CurrentProvideState.Blocks[i, j, m_CurrentProvideState.Z + k] = null;
+                                m_CurrentProvideState.Blocks[i, j, k] = null;
                             else
-                                m_CurrentProvideState.Blocks[i, j, m_CurrentProvideState.Z + k] = Block.BlockIDMapping[data[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height]];
+                                m_CurrentProvideState.Blocks[i, j, k] = Block.BlockIDMapping[data[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height]];
                         }
-                m_CurrentProvideState.Z += depthPerScan;
+                /*m_CurrentProvideState.Z += depthPerScan;
                 zcount += depthPerScan;
-            }
-            FilteredConsole.WriteLine(FilterCategory.OptimizationTiming, "Provided " + zcount + " levels to chunk in " + (DateTime.Now - start).TotalMilliseconds + "ms.");
+            }*/
+            FilteredConsole.WriteLine(FilterCategory.OptimizationTiming, "Provided " + /*zcount +*/ " levels to chunk in " + (DateTime.Now - start).TotalMilliseconds + "ms.");
 
-            if (m_CurrentProvideState.Z >= depth)
-            {
+            /*if (m_CurrentProvideState.Z >= depth)
+            {*/
                 // Signal finish.
                 m_CurrentProvideState.OnGenerationCallback();
                 m_CurrentProvideState = null;
-            }
+            //}
         }
 
         #endregion

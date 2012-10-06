@@ -33,11 +33,19 @@ namespace Tychaia.Game
         {
             //this.X = 0;// (float)(0 + Math.Sin(this.m_RotateCounter) * 100);
             //this.Y = 0;
-            this.Z = 32f;
+            //this.Z = 32f;
+
+            //if (this.SearchForTerrain)
+            //{
+            //this.Z -= 1f;
+            //}
+
             this.m_RotateCounter += 0.1;
-            FilteredConsole.WriteLine(FilterCategory.Player, "player x/y is " + X + ", " + Y + ".");
+            FilteredConsole.WriteLine(FilterCategory.Player, "player x/y/z is " + X + ", " + Y + "," + Z + ".");
 
             base.Update(world);
         }
+
+        public bool SearchForTerrain { get; set; }
     }
 }

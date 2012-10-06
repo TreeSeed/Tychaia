@@ -5,11 +5,6 @@ using System.Text;
 
 namespace Tychaia.Globals
 {
-    public static class Settings
-    {
-        public static int ChunkDepth = 64;
-    }
-
     public static class Scale
     {
         public const int CUBE_X = 32;

@@ -10,6 +10,7 @@ namespace Tychaia.Game
     public class ChunkEntity : Entity
     {
         private World m_World = null;
+        private float m_Z = 0;
 
         protected ChunkEntity(World world)
         {
@@ -32,8 +33,8 @@ namespace Tychaia.Game
 
         public float Z
         {
-            get;
-            set;
+            get { return this.m_Z; }
+            set { this.m_Z = value; }
         }
 
         public int Depth

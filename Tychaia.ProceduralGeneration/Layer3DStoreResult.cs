@@ -54,7 +54,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override int StandardDepth
         {
-            get { return Settings.ChunkDepth; }
+            get { return 16; }
         }
 
         public override string ToString()

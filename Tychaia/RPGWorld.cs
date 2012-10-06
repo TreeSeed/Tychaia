@@ -24,7 +24,7 @@ namespace Tychaia
         {
             this.m_ChunkManager = new ChunkManager();
             this.m_Player = new Player(this);
-            this.m_Player.Z = 0;
+            this.m_Player.SearchForTerrain = true;
             this.Entities.Add(this.m_Player);
         }
 
@@ -87,6 +87,14 @@ namespace Tychaia
                 this.m_Player.Y -= mv;
                 this.m_Player.X += mv;
             }
+            if (state.IsKeyDown(Keys.I))
+            {
+                this.m_Player.Z += 4f;
+            }
+            if (state.IsKeyDown(Keys.K))
+            {
+                this.m_Player.Z -= 4f;
+            }
             Vector2 v = new Vector2(
                 gpstate.ThumbSticks.Left.X,
                 -gpstate.ThumbSticks.Left.Y
@@ -95,7 +103,7 @@ namespace Tychaia
             v = Vector2.Transform(v, m);
             this.m_Player.X += v.X * mv * (float)(Math.Sqrt(2) / 1.0);
             this.m_Player.Y += v.Y * mv * (float)(Math.Sqrt(2) / 1.0);
-            this.m_Player.Z = this.GetSurfaceZ(context, this.m_Player.X, this.m_Player.Y) * Scale.CUBE_Z;
+            //this.m_Player.Z = this.GetSurfaceZ(context, this.m_Player.X, this.m_Player.Y) * Scale.CUBE_Z;
             (context.WorldManager as IsometricWorldManager).Focus(this.m_Player.X, this.m_Player.Y, this.m_Player.Z);
 
             return true; // Update entities.

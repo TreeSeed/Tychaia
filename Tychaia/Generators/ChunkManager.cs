@@ -15,7 +15,7 @@ namespace Tychaia.Generators
 
         public ChunkManager()
         {
-            ZerothChunk = new Chunk(0, 0);
+            ZerothChunk = new Chunk(0, 0, 0);
         }
     }
 }
