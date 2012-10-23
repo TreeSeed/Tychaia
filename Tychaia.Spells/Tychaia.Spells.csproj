@@ -48,7 +48,6 @@
     <Compile Include="Elements\EarthElement.cs" />
     <Compile Include="Elements\WaterElement.cs" />
     <Compile Include="Elements\FireElement.cs" />
-    <Compile Include="Modifiers\BurningModifier.cs" />
     <Compile Include="Modifiers\BounceModifier.cs" />
     <Compile Include="Modifiers\DelayModifier.cs" />
     <Compile Include="Modifiers\ReturnModifier.cs" />

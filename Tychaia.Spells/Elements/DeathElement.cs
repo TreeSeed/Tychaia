@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Tychaia.Spells.Elements
+namespace Tychaia.Elements
 {
     public class DeathElement : Element
     {

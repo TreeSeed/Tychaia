@@ -26,13 +26,24 @@ namespace Tychaia.ProceduralGeneration
 
             int[] parent = this.Parents[0].GenerateData(x, y, z, width, height, depth);
             int[] data = new int[width * height * depth];
+            int ox = 1;
+            int oy = 1;
+            int oz = 1;
+            int rx = x - ox;
+            int ry = y - oy;
+            int rz = z - oz;
+            int rw = width + ox * 2;
+            int rh = height + oy * 2;
+            int rd = depth + oz * 2;
 
+            // Populate with no blocks
             for (int i = 0; i < width; ++i)
                 for (int j = 0; j < height; ++j)
                     for (int k = 0; k < depth; ++k)
-                        data[i + j * width + k * width * height] = 0;
+                        data[i + j * width + k * width * height] = -1;
 
             // Value = Height / Position
+            // V     = Z   / X   / Y
             // 1     = Bot / Bot / Left
             // 2     = Bot / Bot / Mid
             // 4     = Bot / Bot / Right
@@ -50,17 +61,51 @@ namespace Tychaia.ProceduralGeneration
             // 16384 = Mid / Top / Left
             // 32768 = Mid / Mid / Left
             // 65536 = Top / Mid / Mid
-
+            // Last value doesnt' matter - if last value is true then it is set to 0.
 
             // Write out the smoothing value.
-            for (int i = 0; i < width; ++i)
-                for (int j = 0; j < height; ++j)
-                    for (int k = 0; k < depth; ++k)
+            for (int i = 0; i < rw; ++i)
+                for (int j = 0; j < rh; ++j)
+                    for (int k = 0; k < rz; ++k)
                     {
                         int smoothingvalue = 0;
+
+                        // Check if block above is full - if so then set to 0 (normal block).
+                        if (parent[i + j * rh + (k + 1) * rw * rh] == 1)
+                        {
+                            data[i - ox + (j - oy) * width + (k - oz) * width * height] = 0;
+                        }
+                        else
+                        {
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 1, 1, 1, 1);
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 1, 1, 0, 2);
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 1, 1, -1, 4);
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 1, 0, -1, 8);
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 1, -1, -1, 16);
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 1, -1, 0, 32);
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 1, -1, 1, 64);
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 1, 0, 1, 128);
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 0, 1, 1, 256);
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 0, 1, 0, 512);
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 0, 1, -1, 1024);
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 0, 0, -1, 2048);
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 0, -1, -1, 4096);
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 0, -1, 0, 8192);
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 0, -1, 1, 16384);
+                            smoothingvalue += addcheck(parent, i, j, k, rh, rw, 0, 0, 1, 32768);
+                            data[i - ox + (j - oy) * width + (k - oz) * width * height] = smoothingvalue;
+                        }
                     }
 
             return data;
+        }
+
+        public int addcheck(int[] parent, int i, int j, int k, int rh, int rw, int zo, int xo, int yo, int score)
+        {
+            if (parent[(i - xo) + (j - yo) * rh + (k - zo) * rh * rw] == 1)
+            { return score; }
+            else
+            { return 0; }
         }
 
         public override Dictionary<int, System.Drawing.Brush> GetLayerColors()

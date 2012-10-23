@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Tychaia.Elements;
 
 namespace Tychaia.Spells
 {
     public class Spell
     {
+        private static Random r = new Random();
+
         internal Spell(Element element, SpellType type, SpellModifier modifier)
         {
             this.Element = element;
@@ -40,7 +43,16 @@ namespace Tychaia.Spells
                 mod = this.Modifier.ToString() + " ";
             }
 
-            return (mod + this.Element.GetPresentTense() + " " + this.Type).Replace("  ", " ");
+            double rand = r.NextDouble();
+            if (rand >= 0.5)
+            {
+                return (mod + this.Element.GetPresentTense() + " " + this.Type).Replace("  ", " ");
+            }
+            else
+            {
+                return (mod + this.Element.GetElementName() + " " + this.Type).Replace("  ", " ");
+
+            }
         }
     }
 }
