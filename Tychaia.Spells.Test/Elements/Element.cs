@@ -8,6 +8,8 @@ namespace Tychaia.RuntimeGeneration.Elements
     public abstract class Element
     {
         private static Random r = new Random();
+        // Need to remove changes to this so that there is just one or two for each element, removing item names that don't work as well as others.
+
 
         // Used for damage over time effects on spells, elemental weapons and shields.
         virtual public string[] PresentTense
