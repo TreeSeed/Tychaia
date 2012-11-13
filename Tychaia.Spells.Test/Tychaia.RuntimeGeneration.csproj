@@ -95,7 +95,11 @@
     <Compile Include="WeaponModifiers\RestoringModifier.cs" />
     <Compile Include="WeaponModifiers\ShieldingModifier.cs" />
     <Compile Include="WeaponModifiers\SpellInfusedModifier.cs" />
+    <Compile Include="Weapons\WeaponGenerator.cs" />
+    <Compile Include="Weapons\WeaponType.cs" />
+    <Compile Include="Weapons\Weapon.cs" />
     <Compile Include="Weapons\WeaponModifier.cs" />
+    <Compile Include="WeaponTypes\SwordType.cs" />
     <Compile Include="WeightManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

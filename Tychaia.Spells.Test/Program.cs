@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Tychaia.RuntimeGeneration.Spells;
+using Tychaia.RuntimeGeneration.Weapons;
 
 namespace Tychaia.RuntimeGeneration
 {
@@ -53,6 +54,8 @@ namespace Tychaia.RuntimeGeneration
                             Console.WriteLine(" - gen spell [<n>]");
                             Console.WriteLine(" - generate spell [<n>]");
                             Console.WriteLine("     Generate <n> (default: 1) spells.");
+                            Console.WriteLine(" - generate weapon [<n>]");
+                            Console.WriteLine("     Generate <n> (default: 1) weapons.");
                             Console.WriteLine(" - gb");
                             Console.WriteLine(" - gen book");
                             Console.WriteLine(" - generate book");
@@ -96,6 +99,12 @@ namespace Tychaia.RuntimeGeneration
                             else
                                 HandleGenerateSpell(r, Convert.ToInt32(args[1]));
                             break;
+                        case "gw":
+                            if (args.Length < 3)
+                                HandleGenerateWeapon(r);
+                            else
+                                HandleGenerateWeapon(r, Convert.ToInt32(args[2]));
+                            break;
                         case "gb":
                             HandleGenerateSpellbook(r);
                             break;
@@ -111,6 +120,12 @@ namespace Tychaia.RuntimeGeneration
                                     break;
                                 case "book":
                                     HandleGenerateSpellbook(r);
+                                    break;
+                                case "weapon":
+                                    if (args.Length < 3)
+                                        HandleGenerateWeapon(r);
+                                    else
+                                        HandleGenerateWeapon(r, Convert.ToInt32(args[2]));
                                     break;
                                 default:
                                     Console.WriteLine("Unknown generate command.");
@@ -193,6 +208,14 @@ namespace Tychaia.RuntimeGeneration
             for (int i = 0; i < number; i++)
             {
                 Console.WriteLine(SpellGenerator.Generate(r.Next()));
+            }
+        }
+
+        private static void HandleGenerateWeapon(Random r, int number = 1)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                Console.WriteLine(WeaponGenerator.Generate(r.Next()));
             }
         }
 
