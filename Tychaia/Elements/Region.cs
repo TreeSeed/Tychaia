@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Tychaia.Generators;
 
-namespace Tychaia.Elements
+namespace Tychaia.RuntimeGeneration.Elements
 {
     public class Region
     {

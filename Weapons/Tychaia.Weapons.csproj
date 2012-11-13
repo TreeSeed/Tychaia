@@ -34,21 +34,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Modifiers\BurstingModifier.cs" />
-    <Compile Include="Modifiers\CounterattackingModifier.cs" />
-    <Compile Include="Modifiers\DoubleStrikeModifier.cs" />
-    <Compile Include="Modifiers\DuelistModifier.cs" />
-    <Compile Include="Modifiers\EmpoweredModifier.cs" />
-    <Compile Include="Modifiers\EmpoweringModifier.cs" />
-    <Compile Include="Modifiers\EnergeticModifier.cs" />
-    <Compile Include="Modifiers\EnergizingModifier.cs" />
-    <Compile Include="Modifiers\NoneModifier.cs" />
-    <Compile Include="Modifiers\PiercingModifier.cs" />
-    <Compile Include="Modifiers\QuickeningModifier.cs" />
-    <Compile Include="Modifiers\RestoringModifier.cs" />
-    <Compile Include="Modifiers\ShieldingModifier.cs" />
-    <Compile Include="Modifiers\SpellInfusedModifier.cs" />
+    <Compile Include="WeaponModifiers\BurstingModifier.cs" />
+    <Compile Include="WeaponModifiers\CounterattackingModifier.cs" />
+    <Compile Include="WeaponModifiers\DoubleStrikeModifier.cs" />
+    <Compile Include="WeaponModifiers\DuelistModifier.cs" />
+    <Compile Include="WeaponModifiers\EmpoweredModifier.cs" />
+    <Compile Include="WeaponModifiers\EmpoweringModifier.cs" />
+    <Compile Include="WeaponModifiers\EnergeticModifier.cs" />
+    <Compile Include="WeaponModifiers\EnergizingModifier.cs" />
+    <Compile Include="WeaponModifiers\NoneModifier.cs" />
+    <Compile Include="WeaponModifiers\PiercingModifier.cs" />
+    <Compile Include="WeaponModifiers\QuickeningModifier.cs" />
+    <Compile Include="WeaponModifiers\RestoringModifier.cs" />
+    <Compile Include="WeaponModifiers\ShieldingModifier.cs" />
+    <Compile Include="WeaponModifiers\SpellInfusedModifier.cs" />
     <Compile Include="Modifier.cs" />
+    <Compile Include="Program.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

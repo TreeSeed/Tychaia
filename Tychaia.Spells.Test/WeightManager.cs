@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using Tychaia.Elements;
+using Tychaia.RuntimeGeneration.Elements;
+using Tychaia.RuntimeGeneration.Spells;
 
-namespace Tychaia.Spells.Test
+namespace Tychaia.RuntimeGeneration
 {
     public static class WeightManager
     {

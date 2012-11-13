@@ -129,8 +129,9 @@
       <Name>Protogame.Efficiency</Name>
     </ProjectReference>
     <ProjectReference Include="..\DepthBufferTestContent\DepthBufferTestContent.contentproj">
-      <Name>DepthBufferTestContent</Name>
+      <Name>DepthBufferTestContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{34459283-FB15-4812-AB17-6674B1E1615D}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

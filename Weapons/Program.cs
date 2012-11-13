@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Tychaia.RuntimeGeneration.Spells;
 
-namespace Tychaia.RuntimeGeneration
+namespace Tychaia.RuntimeGeneration.Spells.Test
 {
     class Program
     {
         static void Main(string[] pargs)
         {
+            /*
             Random r;
             int seed;
             Console.WriteLine("Tychaia Spell Generation Program");
@@ -175,8 +175,9 @@ namespace Tychaia.RuntimeGeneration
                     Console.WriteLine(e.StackTrace);
                 }
             }
+             */
         }
-
+        /*
         private static void HandleSetSeed(int seed, out int seedOut, out Random r)
         {
             seedOut = seed;
@@ -204,5 +205,6 @@ namespace Tychaia.RuntimeGeneration
                 Console.WriteLine(" - " + SpellGenerator.Generate(r.Next()));
             }
         }
+         */
     }
 }

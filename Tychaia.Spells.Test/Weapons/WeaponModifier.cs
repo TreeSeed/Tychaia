@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Weapons
 {
-    public abstract class Modifier
+    public abstract class WeaponModifier
     {
     }
 }
