@@ -23,8 +23,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Globals", "Tychaia.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Content.Extensions", "Tychaia.Content.Extensions\Tychaia.Content.Extensions.csproj", "{8ABBB640-E22B-4D70-87EF-FABC143F586A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.RuntimeGeneration", "Tychaia.Spells.Test\Tychaia.RuntimeGeneration.csproj", "{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DepthBufferTest", "DepthBufferTest\DepthBufferTest\DepthBufferTest.csproj", "{498EC3C2-4030-4418-8CEC-484B4CBD798A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DepthBufferTestContent", "DepthBufferTest\DepthBufferTestContent\DepthBufferTestContent.contentproj", "{34459283-FB15-4812-AB17-6674B1E1615D}"
@@ -38,6 +36,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protogame.Structure", "Protogame.Structure\Protogame.Structure.csproj", "{49E7D444-F991-41FC-8FD7-499372C5E207}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PositionOctreeTest", "PositionOctreeTest\PositionOctreeTest.csproj", "{A6933395-45D0-40AA-820C-3716746F6141}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.RuntimeGeneration", "Tychaia.RuntimeGeneration\Tychaia.RuntimeGeneration.csproj", "{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -151,16 +151,6 @@ Global
 		{8ABBB640-E22B-4D70-87EF-FABC143F586A}.Release|Mixed Platforms.Build.0 = Debug|x86
 		{8ABBB640-E22B-4D70-87EF-FABC143F586A}.Release|x86.ActiveCfg = Debug|x86
 		{8ABBB640-E22B-4D70-87EF-FABC143F586A}.Release|x86.Build.0 = Debug|x86
-		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Debug|x86.ActiveCfg = Debug|x86
-		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Debug|x86.Build.0 = Debug|x86
-		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Release|Any CPU.ActiveCfg = Release|x86
-		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Release|Mixed Platforms.Build.0 = Release|x86
-		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Release|x86.ActiveCfg = Release|x86
-		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Release|x86.Build.0 = Release|x86
 		{498EC3C2-4030-4418-8CEC-484B4CBD798A}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{498EC3C2-4030-4418-8CEC-484B4CBD798A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{498EC3C2-4030-4418-8CEC-484B4CBD798A}.Debug|Mixed Platforms.Build.0 = Debug|x86
@@ -223,6 +213,16 @@ Global
 		{A6933395-45D0-40AA-820C-3716746F6141}.Release|Mixed Platforms.Build.0 = Release|x86
 		{A6933395-45D0-40AA-820C-3716746F6141}.Release|x86.ActiveCfg = Release|x86
 		{A6933395-45D0-40AA-820C-3716746F6141}.Release|x86.Build.0 = Release|x86
+		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Debug|x86.ActiveCfg = Debug|x86
+		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Debug|x86.Build.0 = Debug|x86
+		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Release|Any CPU.ActiveCfg = Release|x86
+		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Release|Mixed Platforms.Build.0 = Release|x86
+		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Release|x86.ActiveCfg = Release|x86
+		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
