@@ -44,6 +44,12 @@
     <Compile Include="PositionOctreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tychaia.Globals\Tychaia.Globals.csproj">
+      <Project>{58F07D5A-E86E-4561-88E8-F96744D59157}</Project>
+      <Name>Tychaia.Globals</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

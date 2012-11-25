@@ -18,14 +18,16 @@ namespace Tychaia.Globals
                 Feature.RenderWorld,
                 //Feature.AutomaticChunkValidation,
                 Feature.DepthBuffer,
-                //Feature.OptimizeChunkProviding,
-                //Feature.OptimizeChunkRendering,
+                Feature.OptimizeChunkProviding,
+                Feature.OptimizeChunkRendering,
                 Feature.DiscardChunkTextures,
                 Feature.IsometricOcclusion,
                 Feature.RenderingBuffers,
                 //Feature.DebugChunkBackground,
                 //Feature.DebugChunkTiles,
-                //Feature.DebugMovement
+                Feature.DebugMovement,
+                //Feature.DebugOctreeValidation,
+                //Feature.DebugOctreeLookup,
                 Feature.RenderCellSides,
                 Feature.RenderCellTops
             };
@@ -51,6 +53,8 @@ namespace Tychaia.Globals
         DebugChunkBackground,
         DebugChunkTiles,
         DebugMovement,
+        DebugOctreeValidation,
+        DebugOctreeLookup,
         RenderCellSides,
         RenderCellTops,
     }

@@ -20,9 +20,9 @@ namespace Tychaia.Generators
         public const int Height = 8;
         public const int Depth = 8;
 
-        public long X;
-        public long Y;
-        public long Z;
+        public readonly long X;
+        public readonly long Y;
+        public readonly long Z;
         public Block[, ,] m_Blocks = null;
         public int[] m_RawData = null;
         private static object m_AccessLock = new object();
@@ -192,6 +192,8 @@ namespace Tychaia.Generators
                     Chunk c = this.m_Octree.Get(this.X - (Chunk.Width * Scale.CUBE_X), this.Y, this.Z);
                     if (c == null)
                         return new Chunk(this.m_Octree, this.X - (Chunk.Width * Scale.CUBE_X), this.Y, this.Z);
+                    else if (FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
                     else
                         return c;
                 }
@@ -207,6 +209,8 @@ namespace Tychaia.Generators
                     Chunk c = this.m_Octree.Get(this.X + (Chunk.Width * Scale.CUBE_X), this.Y, this.Z);
                     if (c == null)
                         return new Chunk(this.m_Octree, this.X + (Chunk.Width * Scale.CUBE_X), this.Y, this.Z);
+                    else if (FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
                     else
                         return c;
                 }
@@ -219,9 +223,11 @@ namespace Tychaia.Generators
             {
                 lock (m_AccessLock)
                 {
-                    Chunk c = this.m_Octree.Get(this.X, this.Y - (Chunk.Width * Scale.CUBE_X), this.Z);
+                    Chunk c = this.m_Octree.Get(this.X, this.Y - (Chunk.Height * Scale.CUBE_Y), this.Z);
                     if (c == null)
-                        return new Chunk(this.m_Octree, this.X, this.Y - (Chunk.Width * Scale.CUBE_X), this.Z);
+                        return new Chunk(this.m_Octree, this.X, this.Y - (Chunk.Height * Scale.CUBE_Y), this.Z);
+                    else if (FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
                     else
                         return c;
                 }
@@ -234,9 +240,11 @@ namespace Tychaia.Generators
             {
                 lock (m_AccessLock)
                 {
-                    Chunk c = this.m_Octree.Get(this.X, this.Y + (Chunk.Width * Scale.CUBE_X), this.Z);
+                    Chunk c = this.m_Octree.Get(this.X, this.Y + (Chunk.Height * Scale.CUBE_Y), this.Z);
                     if (c == null)
-                        return new Chunk(this.m_Octree, this.X, this.Y + (Chunk.Width * Scale.CUBE_X), this.Z);
+                        return new Chunk(this.m_Octree, this.X, this.Y + (Chunk.Height * Scale.CUBE_Y), this.Z);
+                    else if (FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
                     else
                         return c;
                 }
@@ -249,9 +257,11 @@ namespace Tychaia.Generators
             {
                 lock (m_AccessLock)
                 {
-                    Chunk c = this.m_Octree.Get(this.X, this.Y, this.Z - (Chunk.Width * Scale.CUBE_X));
+                    Chunk c = this.m_Octree.Get(this.X, this.Y, this.Z - (Chunk.Depth * Scale.CUBE_Z));
                     if (c == null)
-                        return new Chunk(this.m_Octree, this.X, this.Y, this.Z - (Chunk.Width * Scale.CUBE_X));
+                        return new Chunk(this.m_Octree, this.X, this.Y, this.Z - (Chunk.Depth * Scale.CUBE_Z));
+                    else if (FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
                     else
                         return c;
                 }
@@ -264,9 +274,11 @@ namespace Tychaia.Generators
             {
                 lock (m_AccessLock)
                 {
-                    Chunk c = this.m_Octree.Get(this.X, this.Y, this.Z + (Chunk.Width * Scale.CUBE_X));
+                    Chunk c = this.m_Octree.Get(this.X, this.Y, this.Z + (Chunk.Depth * Scale.CUBE_Z));
                     if (c == null)
-                        return new Chunk(this.m_Octree, this.X, this.Y, this.Z + (Chunk.Width * Scale.CUBE_X));
+                        return new Chunk(this.m_Octree, this.X, this.Y, this.Z + (Chunk.Depth * Scale.CUBE_Z));
+                    else if (FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
                     else
                         return c;
                 }

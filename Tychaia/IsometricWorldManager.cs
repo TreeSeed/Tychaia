@@ -22,10 +22,16 @@ namespace Tychaia
             set;
         }
 
-        public Chunk Chunk
+        private Chunk Chunk
         {
             get;
             set;
+        }
+
+        public ChunkOctree Octree
+        {
+            get;
+            private set;
         }
 
         #region Relative Rendering System
@@ -233,11 +239,12 @@ namespace Tychaia
             double newY = this.m_CurrentY + y;
             double newZ = this.m_CurrentZ + z;
 
-            // Skip if there is no active chunk.
-            if (this.Chunk == null)
+            // Skip if there is no octree.
+            if (this.Octree == null)
                 return;
 
             // Pan current chunk.
+            //this.Chunk = this.Octree.Get((long)newX, (long)newY, (long)newZ);
             while (newX < this.Chunk.X)
                 this.Chunk = this.Chunk.West;
             while (newX > this.Chunk.X + Chunk.Width * Scale.CUBE_X)
@@ -279,11 +286,11 @@ namespace Tychaia
                 // Ensure we have a chunk manager to source chunks from.
                 if (!(context.World is RPGWorld))
                     return;
-                ChunkOctree co = (context.World as RPGWorld).ChunkOctree;
-                if (co == null)
+                this.Octree = (context.World as RPGWorld).ChunkOctree;
+                if (this.Octree == null)
                     return;
                 if (this.Chunk == null)
-                    this.Chunk = co.Get(0, 0, 0);
+                    this.Chunk = this.Octree.Get(0, 0, 0);
 
                 // Special handling for entities in the 3D world.
                 ChunkEntity ce = a as ChunkEntity;
@@ -341,11 +348,11 @@ namespace Tychaia
             // Ensure we have a chunk manager to source chunks from.
             if (!(context.World is RPGWorld))
                 return;
-            ChunkOctree co = (context.World as RPGWorld).ChunkOctree;
-            if (co == null)
+            this.Octree = (context.World as RPGWorld).ChunkOctree;
+            if (this.Octree == null)
                 return;
             if (this.Chunk == null)
-                this.Chunk = co.Get(0, 0, 0);
+                this.Chunk = this.Octree.Get(0, 0, 0);
 
             // Determine our Z offset.
             int zoffset = -(Chunk.Depth - this.ZLevel) * TileIsometricifier.TILE_CUBE_HEIGHT;

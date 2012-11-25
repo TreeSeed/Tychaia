@@ -23,7 +23,7 @@ namespace Tychaia
             : base()
         {
             this.m_Octree = new ChunkOctree();
-            this.m_Octree.Set(new Chunk(this.m_Octree, 0, 0, 0));
+            new Chunk(this.m_Octree, 0, 0, 0);
             this.m_Player = new Player(this);
             this.m_Player.SearchForTerrain = true;
             this.Entities.Add(this.m_Player);
@@ -68,12 +68,12 @@ namespace Tychaia
             KeyboardState state = Keyboard.GetState();
             GamePadState gpstate = GamePad.GetState(PlayerIndex.One);
             float mv = (float)Math.Sqrt(this.m_Player.MovementSpeed);
-            if (state.IsKeyDown(Keys.W) || FilteredFeatures.IsEnabled(Feature.DebugMovement))
+            if (state.IsKeyDown(Keys.W))
             {
                 this.m_Player.Y -= mv;
                 this.m_Player.X -= mv;
             }
-            if (state.IsKeyDown(Keys.S))
+            if (state.IsKeyDown(Keys.S) || FilteredFeatures.IsEnabled(Feature.DebugMovement))
             {
                 this.m_Player.Y += mv;
                 this.m_Player.X += mv;
@@ -112,7 +112,7 @@ namespace Tychaia
 
         private float GetSurfaceZ(GameContext context, float xx, float yy)
         {
-            int x = (int)((xx < 0 ? xx + 1 : xx) % (Chunk.Width * Scale.CUBE_X) / Scale.CUBE_X);
+            /*int x = (int)((xx < 0 ? xx + 1 : xx) % (Chunk.Width * Scale.CUBE_X) / Scale.CUBE_X);
             int y = (int)((yy < 0 ? yy + 1 : yy) % (Chunk.Height * Scale.CUBE_Y) / Scale.CUBE_Y);
             if (x < 0) x = 0;
             if (y < 0) y = 0;
@@ -120,7 +120,7 @@ namespace Tychaia
                 return 0;
             for (int z = 0; z < Chunk.Depth; z++)
                 if ((context.WorldManager as IsometricWorldManager).Chunk.m_Blocks[x, y, z] != null)
-                    return z - 1;
+                    return z - 1;*/
             return 0;
         }
     }
