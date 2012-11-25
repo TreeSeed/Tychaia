@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Tychaia.Disk.Tychaia
 {
-    public class TychaiaDiskAPI : ILevelAPI
+    public class TychaiaLevelAPI : ILevelAPI
     {
         public List<string> GetAvailableLevels()
         {
@@ -23,12 +23,12 @@ namespace Tychaia.Disk.Tychaia
 
         public ILevel NewLevel(string name)
         {
-            throw new NotImplementedException();
+            return new TychaiaLevel();
         }
 
         public ILevel LoadLevel(string name)
         {
-            throw new NotImplementedException();
+            return new TychaiaLevel();
         }
     }
 }

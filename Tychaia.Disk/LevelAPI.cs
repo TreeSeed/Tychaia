@@ -39,7 +39,7 @@ namespace Tychaia.Disk
         {
             foreach (ILevelAPI api in m_LevelAPIs)
             {
-                if (api.GetType().Name.Contains("Minecraft"))
+                if (api.GetType().Name.Contains("Tychaia"))
                 {
                     api.NewLevel(name);
                     return new LevelReference { Name = name, Source = api };

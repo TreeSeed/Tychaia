@@ -131,7 +131,13 @@ namespace Tychaia.Generators
 
             // Generate or load data.
             int[] data = null;
-            if (m_CurrentProvideState.ProvideTask.Info.LevelDisk == null)
+            if (m_CurrentProvideState.ProvideTask.Info.LevelDisk == null || !m_CurrentProvideState.ProvideTask.Info.LevelDisk.HasRegion(
+                     m_CurrentProvideState.Info.Bounds.X,
+                     m_CurrentProvideState.Info.Bounds.Y,
+                     m_CurrentProvideState.Info.Bounds.Z,
+                     m_CurrentProvideState.Info.Bounds.Width,
+                     m_CurrentProvideState.Info.Bounds.Height,
+                     m_CurrentProvideState.Info.Bounds.Depth))
                 data = m_ResultLayer.GenerateData(
                      m_CurrentProvideState.Info.Bounds.X,
                      m_CurrentProvideState.Info.Bounds.Y,
