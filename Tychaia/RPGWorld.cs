@@ -16,21 +16,22 @@ namespace Tychaia
 {
     public class RPGWorld : World
     {
-        private ChunkManager m_ChunkManager = null;
+        private ChunkOctree m_Octree = null;
         private Player m_Player = null;
 
         public RPGWorld()
             : base()
         {
-            this.m_ChunkManager = new ChunkManager();
+            this.m_Octree = new ChunkOctree();
+            this.m_Octree.Set(new Chunk(this.m_Octree, 0, 0, 0));
             this.m_Player = new Player(this);
             this.m_Player.SearchForTerrain = true;
             this.Entities.Add(this.m_Player);
         }
 
-        public ChunkManager ChunkManager
+        public ChunkOctree ChunkOctree
         {
-            get { return this.m_ChunkManager; }
+            get { return this.m_Octree; }
         }
 
         public override void DrawBelow(GameContext context)

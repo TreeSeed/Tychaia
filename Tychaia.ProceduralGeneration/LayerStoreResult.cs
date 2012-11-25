@@ -30,7 +30,7 @@ namespace Tychaia.ProceduralGeneration
             this.FinishType = FinishType.Biome;
         }
 
-        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(long x, long y, long width, long height)
         {
             if (this.Parents.Length < 1 || this.Parents[0] == null)
                 return new int[width * height];

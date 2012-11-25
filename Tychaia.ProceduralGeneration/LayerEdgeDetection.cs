@@ -19,7 +19,7 @@ namespace Tychaia.ProceduralGeneration
         {
         }
 
-        protected override int[] GenerateDataImpl(int x, int y, int z, int width, int height, int depth)
+        protected override int[] GenerateDataImpl(long x, long y, long z, long width, long height, long depth)
         {
             if (this.Parents.Length < 1 || this.Parents[0] == null)
                 return new int[width * height * depth];
@@ -29,12 +29,12 @@ namespace Tychaia.ProceduralGeneration
             int ox = 1;
             int oy = 1;
             int oz = 1;
-            int rx = x - ox;
-            int ry = y - oy;
-            int rz = z - oz;
-            int rw = width + ox * 2;
-            int rh = height + oy * 2;
-            int rd = depth + oz * 2;
+            long rx = x - ox;
+            long ry = y - oy;
+            long rz = z - oz;
+            long rw = width + ox * 2;
+            long rh = height + oy * 2;
+            long rd = depth + oz * 2;
 
             // Populate with no blocks
             for (int i = 0; i < width; ++i)
@@ -100,7 +100,7 @@ namespace Tychaia.ProceduralGeneration
             return data;
         }
 
-        public int addcheck(int[] parent, int i, int j, int k, int rh, int rw, int zo, int xo, int yo, int score)
+        public int addcheck(int[] parent, long i, long j, long k, long rh, long rw, long zo, long xo, long yo, int score)
         {
             if (parent[(i - xo) + (j - yo) * rh + (k - zo) * rh * rw] == 1)
             { return score; }

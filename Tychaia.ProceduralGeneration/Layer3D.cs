@@ -35,7 +35,7 @@ namespace Tychaia.ProceduralGeneration
             get;
         }
 
-        protected sealed override int[] GenerateDataImpl(int x, int y, int width, int height)
+        protected sealed override int[] GenerateDataImpl(long x, long y, long width, long height)
         {
             return this.GenerateDataImpl(x, y, 0, width, height, 1);
         }

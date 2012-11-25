@@ -48,14 +48,14 @@ namespace Tychaia.ProceduralGeneration
             this.Iterations = 1;
         }
 
-        private int[] GenerateDataIterate(int iter, int x, int y, int width, int height)
+        private int[] GenerateDataIterate(int iter, long x, long y, long width, long height)
         {
             int ox = 2; // Offsets
             int oy = 2;
-            int rw = width / 2 + ox * 2;
-            int rh = height / 2 + oy * 2;
-            int rx = (x < 0 ? (x - 1) / 2 : x / 2) - ox; // Location in the parent
-            int ry = (y < 0 ? (y - 1) / 2 : y / 2) - oy;
+            long rw = width / 2 + ox * 2;
+            long rh = height / 2 + oy * 2;
+            long rx = (x < 0 ? (x - 1) / 2 : x / 2) - ox; // Location in the parent
+            long ry = (y < 0 ? (y - 1) / 2 : y / 2) - oy;
             // For smoothing to work, we need to know the cells that are actually
             // beyond the edge of the center.
             int[] parent = null;
@@ -100,7 +100,7 @@ namespace Tychaia.ProceduralGeneration
             return data;
         }
 
-        private int FindZoomedPoint(int[] parent, int i, int j, int ox, int oy, int x, int y, int rw)
+        private int FindZoomedPoint(int[] parent, long i, long j, long ox, long oy, long x, long y, long rw)
         {
             int ocx = (x % 2 != 0 && i % 2 != 0 ? (i < 0 ? -1 : 1) : 0);
             int ocy = (y % 2 != 0 && j % 2 != 0 ? (j < 0 ? -1 : 1) : 0);
@@ -116,7 +116,7 @@ namespace Tychaia.ProceduralGeneration
                 return this.Parents[0].GetLayerColors();
         }
 
-        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(long x, long y, long width, long height)
         {
             if (this.Iterations > 0)
                 return this.GenerateDataIterate(1, x, y, width, height);
@@ -126,7 +126,7 @@ namespace Tychaia.ProceduralGeneration
                 return this.Parents[0].GenerateData(x, y, width, height);
         }
 
-        private int Smooth(int x, int y, int northValue, int southValue, int westValue, int eastValue, int currentValue, int i, int j, int ox, int oy, int rw, int[] parent)
+        private int Smooth(long x, long y, int northValue, int southValue, int westValue, int eastValue, int currentValue, long i, long j, long ox, long oy, long rw, int[] parent)
         {
             // Parent-based Smoothing
             int selected = 0;

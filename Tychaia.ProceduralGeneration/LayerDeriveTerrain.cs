@@ -49,7 +49,7 @@ namespace Tychaia.ProceduralGeneration
             this.MaxTerrain = 20;
         }
 
-        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(long x, long y, long width, long height)
         {
             if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
                 return new int[width * height];
@@ -59,8 +59,8 @@ namespace Tychaia.ProceduralGeneration
             int[] data = new int[width * height];
 
             // Copy 1-for-1 the water cells.
-            for (int i = 0; i < width; i++)
-                for (int j = 0; j < height; j++)
+            for (long i = 0; i < width; i++)
+                for (long j = 0; j < height; j++)
                     if (parent[i + j * width] == 0)
                         data[i + j * width] = 0;
                     else
@@ -73,8 +73,8 @@ namespace Tychaia.ProceduralGeneration
             do
             {
                 count = 0;
-                for (int i = 0; i < width; i++)
-                    for (int j = 0; j < height; j++)
+                for (long i = 0; i < width; i++)
+                    for (long j = 0; j < height; j++)
                     {
                         if (data[i + j * width] != -1)
                             continue;
@@ -97,7 +97,7 @@ namespace Tychaia.ProceduralGeneration
             return data;
         }
 
-        private bool IsCellSurrounded(int[] parent, int x, int y, int width, int height, int lookFor)
+        private bool IsCellSurrounded(int[] parent, long x, long y, long width, long height, int lookFor)
         {
             int top =           this.GetCellValue(parent, x    , y - 1, width, height);
             int left =          this.GetCellValue(parent, x - 1, y    , width, height);
@@ -118,7 +118,7 @@ namespace Tychaia.ProceduralGeneration
                     bottomLeft == lookFor || bottom == lookFor || bottomRight == lookFor);
         }
 
-        private int GetCellValue(int[] parent, int x, int y, int width, int height)
+        private int GetCellValue(int[] parent, long x, long y, long width, long height)
         {
             if (x < 0 || x >= width ||
                 y < 0 || y >= height)

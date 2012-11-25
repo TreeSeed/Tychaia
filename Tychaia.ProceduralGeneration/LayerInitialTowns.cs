@@ -49,7 +49,7 @@ namespace Tychaia.ProceduralGeneration
             this.Modifier = new Random().Next();
         }
 
-        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(long x, long y, long width, long height)
         {
             int[] data = new int[width * height];
 

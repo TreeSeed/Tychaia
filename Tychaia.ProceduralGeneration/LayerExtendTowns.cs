@@ -28,11 +28,11 @@ namespace Tychaia.ProceduralGeneration
             this.Iterations = 1;
         }
 
-        public int[] GenerateDataIterate(int iter, int x, int y, int width, int height)
+        public int[] GenerateDataIterate(int iter, long x, long y, long width, long height)
         {
-            int ox = 15;
-            int oy = 15;
-            int rw = width + ox * 2;
+            long ox = 15;
+            long oy = 15;
+            long rw = width + ox * 2;
             int[] data = new int[width * height];
             double townsize = 0;
             int[] parent = null;
@@ -111,7 +111,7 @@ namespace Tychaia.ProceduralGeneration
             return new string[]{"Towns", "Land"};
         }
 
-        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(long x, long y, long width, long height)
         {
             if (this.Iterations > 0)
                 return this.GenerateDataIterate(1, x, y, width, height);

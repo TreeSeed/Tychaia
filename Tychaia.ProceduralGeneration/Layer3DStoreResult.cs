@@ -31,7 +31,7 @@ namespace Tychaia.ProceduralGeneration
             this.FinishType = Finish3DType.Chunk;
         }
 
-        protected override int[] GenerateDataImpl(int x, int y, int z, int width, int height, int depth)
+        protected override int[] GenerateDataImpl(long x, long y, long z, long width, long height, long depth)
         {
             if (this.Parents.Length < 1 || this.Parents[0] == null)
                 return new int[width * height];

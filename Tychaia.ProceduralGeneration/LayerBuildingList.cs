@@ -99,7 +99,7 @@ namespace Tychaia.ProceduralGeneration
             this.MaxRareOreDensity = 20;
         }
 
-        protected override int[] GenerateDataImpl(int x, int y, int z, int width, int height, int depth)
+        protected override int[] GenerateDataImpl(long x, long y, long z, long width, long height, long depth)
         {
             if (this.Parents.Length < 6 || this.Parents[0] == null || this.Parents[1] == null || this.Parents[2] == null || this.Parents[3] == null || this.Parents[4] == null || this.Parents[5] == null)
                 return new int[width * height * depth];

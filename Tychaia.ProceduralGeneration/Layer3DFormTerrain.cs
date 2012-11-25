@@ -18,7 +18,7 @@ namespace Tychaia.ProceduralGeneration
         {
         }
 
-        protected override int[] GenerateDataImpl(int x, int y, int z, int width, int height, int depth)
+        protected override int[] GenerateDataImpl(long x, long y, long z, long width, long height, long depth)
         {
             if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
                 return new int[width * height];
@@ -28,14 +28,14 @@ namespace Tychaia.ProceduralGeneration
             int[] data = new int[width * height * depth];
 
             // Fill data with air.
-            for (int i = 0; i < width; i++)
-                for (int j = 0; j < height; j++)
-                    for (int k = 0; k < depth; k++)
+            for (long i = 0; i < width; i++)
+                for (long j = 0; j < height; j++)
+                    for (long k = 0; k < depth; k++)
                         data[i + j * width + k * width * height] = -1;
 
             // Loop over the terrain and fill in the areas.
-            for (int i = 0; i < width; i++)
-                for (int j = 0; j < height; j++)
+            for (long i = 0; i < width; i++)
+                for (long j = 0; j < height; j++)
                 {
                     if (parent[i + j * height] == 0)
                     {
@@ -46,7 +46,7 @@ namespace Tychaia.ProceduralGeneration
                     else
                     {
                         // Land
-                        for (int k = z; k < z + depth; k++)
+                        for (long k = z; k < z + depth; k++)
                             if (k < parent[i + j * height] + 1)
                                 data[i + j * width + (k - z) * width * height] = biomes[i + j * height];
                     }

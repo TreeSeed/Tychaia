@@ -37,17 +37,17 @@ namespace Tychaia.ProceduralGeneration
             this.EdgeSampling = 5;
         }
 
-        protected override int[] GenerateDataImpl(int x, int y, int z, int width, int height, int depth)
+        protected override int[] GenerateDataImpl(long x, long y, long z, long width, long height, long depth)
         {
             if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
                 return new int[width * height * depth];
 
-            int ox = this.EdgeSampling;
-            int oy = this.EdgeSampling;
-            int rx = x - this.EdgeSampling;
-            int ry = y - this.EdgeSampling;
-            int rw = width + this.EdgeSampling * 2;
-            int rh = height + this.EdgeSampling * 2;
+            long ox = this.EdgeSampling;
+            long oy = this.EdgeSampling;
+            long rx = x - this.EdgeSampling;
+            long ry = y - this.EdgeSampling;
+            long rw = width + this.EdgeSampling * 2;
+            long rh = height + this.EdgeSampling * 2;
 
             // Just need to add in offsets for x + y, up to 15
             int[] biomes = this.Parents[0].GenerateData(rx, ry, rw, rh);
@@ -62,8 +62,8 @@ namespace Tychaia.ProceduralGeneration
                         data[i + j * width + k * width * height] = -1;
 
             // Write out the buildings list.
-            for (int i = 0; i < rw; i++)
-                for (int j = 0; j < rh; j++)
+            for (long i = 0; i < rw; i++)
+                for (long j = 0; j < rh; j++)
                 {
                     if (townscatter[i + j * rw] == 1 || townscatter[i + j * rw] == -2 || townscatter[i + j * rw] == -3)
                     {
@@ -158,11 +158,11 @@ namespace Tychaia.ProceduralGeneration
             return data;
         }
 
-        public int[] PlaceBuildings(int width, int height, int depth, int[] biomes, int i, int j, int rw, int ox, int oy, List<int> BuildingsList, int kx, int ky, int[] data)
+        public int[] PlaceBuildings(long width, long height, long depth, int[] biomes, long i, long j, long rw, long ox, long oy, List<int> BuildingsList, long kx, long ky, int[] data)
         {
-            int selection = 0;
-            int placementside = 0;
-            int placementvalue = 0;
+            long selection = 0;
+            long placementside = 0;
+            long placementvalue = 0;
             int trytimeout = 0;
             bool onland = true;
 
