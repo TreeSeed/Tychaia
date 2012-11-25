@@ -129,38 +129,43 @@ namespace Tychaia.Generators
                 m_CurrentProvideState = ps;
             }
 
-            /*int zcount = 0;
-            while (m_CurrentProvideState.Z < task.Chunk.GlobalZ + Chunk.Depth)
-            {*/
-                int[] data = m_ResultLayer.GenerateData(
-                    m_CurrentProvideState.Info.Bounds.X,
-                    m_CurrentProvideState.Info.Bounds.Y,
-                    m_CurrentProvideState.Info.Bounds.Z,
-                    m_CurrentProvideState.Info.Bounds.Width,
-                    m_CurrentProvideState.Info.Bounds.Height,
-                    m_CurrentProvideState.Info.Bounds.Depth);
-                for (int i = 0; i < m_CurrentProvideState.Info.Bounds.Width; i++)
-                    for (int j = 0; j < m_CurrentProvideState.Info.Bounds.Height; j++)
-                        for (int k = 0; k < m_CurrentProvideState.Info.Bounds.Depth; k++)
-                        {
-                            int id = data[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height];
-                            m_CurrentProvideState.RawData[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height] = id;
-                            if (id == -1)
-                                m_CurrentProvideState.Blocks[i, j, k] = null;
-                            else
-                                m_CurrentProvideState.Blocks[i, j, k] = Block.BlockIDMapping[data[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height]];
-                        }
-                /*m_CurrentProvideState.Z += depthPerScan;
-                zcount += depthPerScan;
-            }*/
+            // Generate or load data.
+            int[] data = null;
+            if (m_CurrentProvideState.ProvideTask.Info.LevelDisk == null)
+                data = m_ResultLayer.GenerateData(
+                     m_CurrentProvideState.Info.Bounds.X,
+                     m_CurrentProvideState.Info.Bounds.Y,
+                     m_CurrentProvideState.Info.Bounds.Z,
+                     m_CurrentProvideState.Info.Bounds.Width,
+                     m_CurrentProvideState.Info.Bounds.Height,
+                     m_CurrentProvideState.Info.Bounds.Depth);
+            else
+                data = m_CurrentProvideState.ProvideTask.Info.LevelDisk.ProvideRegion(
+                     m_CurrentProvideState.Info.Bounds.X,
+                     m_CurrentProvideState.Info.Bounds.Y,
+                     m_CurrentProvideState.Info.Bounds.Z,
+                     m_CurrentProvideState.Info.Bounds.Width,
+                     m_CurrentProvideState.Info.Bounds.Height,
+                     m_CurrentProvideState.Info.Bounds.Depth);
+
+            // Set up block mappings.
+            for (int i = 0; i < m_CurrentProvideState.Info.Bounds.Width; i++)
+                for (int j = 0; j < m_CurrentProvideState.Info.Bounds.Height; j++)
+                    for (int k = 0; k < m_CurrentProvideState.Info.Bounds.Depth; k++)
+                    {
+                        int id = data[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height];
+                        m_CurrentProvideState.RawData[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height] = id;
+                        if (id == -1)
+                            m_CurrentProvideState.Blocks[i, j, k] = null;
+                        else
+                            m_CurrentProvideState.Blocks[i, j, k] = Block.BlockIDMapping[data[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height]];
+                    }
+
             FilteredConsole.WriteLine(FilterCategory.OptimizationTiming, "Provided " + /*zcount +*/ " levels to chunk in " + (DateTime.Now - start).TotalMilliseconds + "ms.");
 
-            /*if (m_CurrentProvideState.Z >= depth)
-            {*/
-                // Signal finish.
-                m_CurrentProvideState.OnGenerationCallback();
-                m_CurrentProvideState = null;
-            //}
+            // Signal finish.
+            m_CurrentProvideState.OnGenerationCallback();
+            m_CurrentProvideState = null;
         }
 
         #endregion

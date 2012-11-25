@@ -118,6 +118,8 @@
     <Compile Include="DebugTracker.cs" />
     <Compile Include="Generators\ChunkOctree.cs" />
     <Compile Include="Generators\ChunkProvider.cs" />
+    <Compile Include="Title\TitleWorld.cs" />
+    <Compile Include="UI\TitleButton.cs" />
     <None Include="app.config" />
     <None Include="Disabled\ChunkTileset.cs" />
     <Compile Include="Direction.cs" />
@@ -179,7 +181,8 @@
     <Compile Include="Tiles\LavaTile.cs" />
     <Compile Include="Tiles\GrassTile.cs" />
     <Compile Include="Tiles\WaterTile.cs" />
-    <Compile Include="Title\TitleWorld.cs" />
+    <Compile Include="Title\LoadWorld.cs" />
+    <Compile Include="Title\MenuWorld.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Other\WorldConfig.xml">
@@ -210,6 +213,18 @@
       <Name>Tychaia.Content %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
       <Project>{71CB2FDC-897F-4E08-A793-E4201305B7DD}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.Disk.Minecraft\Tychaia.Disk.Minecraft.csproj">
+      <Project>{CF2ECC59-A2ED-48BF-9F50-5FA88A812D91}</Project>
+      <Name>Tychaia.Disk.Minecraft</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.Disk.Tychaia\Tychaia.Disk.Tychaia.csproj">
+      <Project>{09FF480E-54B1-4A5F-A585-CE74DE399BE1}</Project>
+      <Name>Tychaia.Disk.Tychaia</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.Disk\Tychaia.Disk.csproj">
+      <Project>{C9F2A7E0-D469-4FA2-96FD-9281A60FD5FC}</Project>
+      <Name>Tychaia.Disk</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tychaia.Game\Tychaia.Game.csproj">
       <Project>{BD3C4687-9A79-415C-A882-0B7C6248E2AF}</Project>
@@ -255,7 +270,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Title\UI\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

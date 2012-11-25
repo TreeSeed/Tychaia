@@ -1,0 +1,68 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Protogame;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using Tychaia.UI;
+
+namespace Tychaia.Title
+{
+    public abstract class MenuWorld : World
+    {
+        private List<TitleButton> m_Buttons = new List<TitleButton>();
+        protected static Random m_Random = new Random();
+        public static int m_StaticSeed = 6294563;
+        protected World m_TargetWorld = null;
+        private int m_PreviousX = 800;
+        private int m_MenuItemY = 300;
+
+        public void AddMenuItem(string name, Action handler)
+        {
+            this.m_Buttons.Add(new TitleButton(name, new Rectangle(this.m_PreviousX - 100, this.m_MenuItemY, 200, 30), handler));
+            this.m_MenuItemY += 40;
+        }
+
+        private void AdjustButtons(GameContext context)
+        {
+            // Calculate the difference between button positions.
+            int cx = context.Window.ClientBounds.Width / 2;
+            foreach (TitleButton b in this.m_Buttons)
+                b.X += cx - this.m_PreviousX;
+            this.m_PreviousX = cx;
+        }
+
+        public override bool Update(GameContext context)
+        {
+            this.AdjustButtons(context);
+            if (this.m_TargetWorld != null)
+            {
+                (this.Game as RuntimeGame).SwitchWorld(this.m_TargetWorld);
+                return false;
+            }
+            return true;
+        }
+
+        public override void DrawBelow(GameContext context)
+        {
+            this.AdjustButtons(context);
+        }
+
+        public override void DrawAbove(GameContext context)
+        {
+            XnaGraphics xna = new XnaGraphics(context);
+            xna.DrawStringCentered(context.Camera.Width / 2, 50, "τυχαία", "TitleFont");
+            xna.DrawStringCentered(context.Camera.Width / 2, 200, "(tychaía)", "SubtitleFont");
+
+            MouseState state = Mouse.GetState();
+            foreach (TitleButton b in this.m_Buttons)
+                b.Process(xna, state);
+
+            xna.DrawStringCentered(context.Camera.Width / 2, 750, "Using static seed: " + m_StaticSeed.ToString(), "Arial");
+
+            // Draw debug information.
+            DebugTracker.Draw(context, null);
+        }
+    }
+}

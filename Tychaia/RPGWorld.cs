@@ -11,6 +11,7 @@ using Tychaia.Generators;
 using Tychaia.Title;
 using Tychaia.Globals;
 using Tychaia.Game;
+using Tychaia.Disk;
 
 namespace Tychaia
 {
@@ -18,12 +19,16 @@ namespace Tychaia
     {
         private ChunkOctree m_Octree = null;
         private Player m_Player = null;
+        private ILevel m_DiskLevel = null;
+        public int m_AutoSave = 0;
+        public const int AUTOSAVE_LIMIT = 60 /* frames */ * 60 /* seconds */;
 
-        public RPGWorld()
+        public RPGWorld(LevelReference levelRef)
             : base()
         {
+            this.m_DiskLevel = levelRef.Source.LoadLevel(levelRef.Name);
             this.m_Octree = new ChunkOctree();
-            new Chunk(this.m_Octree, 0, 0, 0);
+            new Chunk(this.m_DiskLevel, this.m_Octree, 0, 0, 0);
             this.m_Player = new Player(this);
             this.m_Player.SearchForTerrain = true;
             this.Entities.Add(this.m_Player);
@@ -50,7 +55,7 @@ namespace Tychaia
                 "ui.frame");
 
             // Draw debug information.
-            DebugTracker.Draw(context);
+            DebugTracker.Draw(context, this);
         }
 
         public override bool Update(GameContext context)
@@ -106,6 +111,15 @@ namespace Tychaia
             this.m_Player.Y += v.Y * mv * (float)(Math.Sqrt(2) / 1.0);
             //this.m_Player.Z = this.GetSurfaceZ(context, this.m_Player.X, this.m_Player.Y) * Scale.CUBE_Z;
             (context.WorldManager as IsometricWorldManager).Focus(this.m_Player.X, this.m_Player.Y, this.m_Player.Z);
+
+            // Update autosave counter.
+            this.m_AutoSave++;
+            if (this.m_AutoSave >= AUTOSAVE_LIMIT)
+            {
+                this.m_AutoSave = 0;
+                if (this.m_DiskLevel != null)
+                    this.m_DiskLevel.Save();
+            }
 
             return true; // Update entities.
         }

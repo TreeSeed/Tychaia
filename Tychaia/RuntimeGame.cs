@@ -25,9 +25,9 @@ namespace Tychaia
 
         public RuntimeGame()
         {
-            this.m_GameContext.Graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            this.m_GameContext.Graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            this.m_GameContext.Graphics.ToggleFullScreen();
+            this.m_GameContext.Graphics.PreferredBackBufferWidth = 1024; // GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            this.m_GameContext.Graphics.PreferredBackBufferHeight = 768; // GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            //this.m_GameContext.Graphics.ToggleFullScreen();
             Static.GraphicsDevice = this.m_GameContext.Graphics.GraphicsDevice;
             Static.GameContext = this.m_GameContext;
 

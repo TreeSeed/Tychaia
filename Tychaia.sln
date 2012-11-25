@@ -39,6 +39,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PositionOctreeTest", "Posit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.RuntimeGeneration", "Tychaia.RuntimeGeneration\Tychaia.RuntimeGeneration.csproj", "{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Disk", "Tychaia.Disk\Tychaia.Disk.csproj", "{C9F2A7E0-D469-4FA2-96FD-9281A60FD5FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Disk.Minecraft", "Tychaia.Disk.Minecraft\Tychaia.Disk.Minecraft.csproj", "{CF2ECC59-A2ED-48BF-9F50-5FA88A812D91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Disk.Tychaia", "Tychaia.Disk.Tychaia\Tychaia.Disk.Tychaia.csproj", "{09FF480E-54B1-4A5F-A585-CE74DE399BE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -223,6 +229,36 @@ Global
 		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Release|Mixed Platforms.Build.0 = Release|x86
 		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Release|x86.ActiveCfg = Release|x86
 		{7BDF74AC-83B5-4A8D-8007-09E51A808B7A}.Release|x86.Build.0 = Release|x86
+		{C9F2A7E0-D469-4FA2-96FD-9281A60FD5FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9F2A7E0-D469-4FA2-96FD-9281A60FD5FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9F2A7E0-D469-4FA2-96FD-9281A60FD5FC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C9F2A7E0-D469-4FA2-96FD-9281A60FD5FC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C9F2A7E0-D469-4FA2-96FD-9281A60FD5FC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C9F2A7E0-D469-4FA2-96FD-9281A60FD5FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9F2A7E0-D469-4FA2-96FD-9281A60FD5FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9F2A7E0-D469-4FA2-96FD-9281A60FD5FC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C9F2A7E0-D469-4FA2-96FD-9281A60FD5FC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C9F2A7E0-D469-4FA2-96FD-9281A60FD5FC}.Release|x86.ActiveCfg = Release|Any CPU
+		{CF2ECC59-A2ED-48BF-9F50-5FA88A812D91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF2ECC59-A2ED-48BF-9F50-5FA88A812D91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF2ECC59-A2ED-48BF-9F50-5FA88A812D91}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{CF2ECC59-A2ED-48BF-9F50-5FA88A812D91}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{CF2ECC59-A2ED-48BF-9F50-5FA88A812D91}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CF2ECC59-A2ED-48BF-9F50-5FA88A812D91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF2ECC59-A2ED-48BF-9F50-5FA88A812D91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF2ECC59-A2ED-48BF-9F50-5FA88A812D91}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CF2ECC59-A2ED-48BF-9F50-5FA88A812D91}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{CF2ECC59-A2ED-48BF-9F50-5FA88A812D91}.Release|x86.ActiveCfg = Release|Any CPU
+		{09FF480E-54B1-4A5F-A585-CE74DE399BE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09FF480E-54B1-4A5F-A585-CE74DE399BE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09FF480E-54B1-4A5F-A585-CE74DE399BE1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{09FF480E-54B1-4A5F-A585-CE74DE399BE1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{09FF480E-54B1-4A5F-A585-CE74DE399BE1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{09FF480E-54B1-4A5F-A585-CE74DE399BE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09FF480E-54B1-4A5F-A585-CE74DE399BE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09FF480E-54B1-4A5F-A585-CE74DE399BE1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{09FF480E-54B1-4A5F-A585-CE74DE399BE1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{09FF480E-54B1-4A5F-A585-CE74DE399BE1}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
