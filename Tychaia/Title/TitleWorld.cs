@@ -15,21 +15,21 @@ namespace Tychaia.Title
         private static Random m_Random = new Random();
         public static int m_StaticSeed = 6294563;
         private World m_TargetWorld = null;
+        private int m_PreviousX = 800;
 
         public TitleWorld()
         {
             // TODO: Make buttons centered during update or w/e...
-            int CX = 800;
             int OY = 300;
-            this.m_Buttons.Add(new Button("Generate World", new Rectangle(CX - 100, OY, 200, 30), () =>
+            this.m_Buttons.Add(new Button("Generate World", new Rectangle(this.m_PreviousX - 100, OY, 200, 30), () =>
             {
                 this.m_TargetWorld = new RPGWorld();
             }));
-            this.m_Buttons.Add(new Button("Randomize Seed", new Rectangle(CX - 100, OY + 40, 200, 30), () =>
+            this.m_Buttons.Add(new Button("Randomize Seed", new Rectangle(this.m_PreviousX - 100, OY + 40, 200, 30), () =>
             {
                 m_StaticSeed = m_Random.Next();
             }));
-            this.m_Buttons.Add(new Button("Exit", new Rectangle(CX - 100, OY + 80, 200, 30), () =>
+            this.m_Buttons.Add(new Button("Exit", new Rectangle(this.m_PreviousX - 100, OY + 80, 200, 30), () =>
             {
                 (this.Game as RuntimeGame).Exit();
             }));
@@ -37,6 +37,13 @@ namespace Tychaia.Title
 
         public override bool Update(GameContext context)
         {
+            // Calculate the difference between button positions.
+            int cx = context.Window.ClientBounds.Width / 2; // context.Graphics.PreferredBackBufferWidth;
+            foreach (Button b in this.m_Buttons)
+                b.X += cx - this.m_PreviousX;
+            this.m_PreviousX = cx;
+
+            // Logic.
             if (this.m_TargetWorld != null)
             {
                 (this.Game as RuntimeGame).SwitchWorld(this.m_TargetWorld);
@@ -80,6 +87,12 @@ namespace Tychaia.Title
                 this.m_Area = area;
                 this.m_OnClick = onClick;
                 this.m_PulseValue = m_Random.NextDouble();
+            }
+
+            public int X
+            {
+                get { return this.m_Area.X; }
+                set { this.m_Area.X = value; }
             }
 
             public void Process(XnaGraphics xna, MouseState mouse)
