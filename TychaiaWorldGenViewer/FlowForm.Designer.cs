@@ -58,6 +58,7 @@
             this.c_LandAddDeriveTerrainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_LandAddMixTerrainWithPerlinMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_LandAddMixOreWithVoronoiMixdownMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.c_LandAddZoomWaterDistanceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_BiomeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_BiomeAddScatterBiomeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,6 +91,7 @@
             this.c_3DTerrainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_3DTerrainAddForm3DTerrainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.c_DisableProcessingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_RenameSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_DeleteSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
@@ -103,9 +105,8 @@
             this.c_XLabel = new System.Windows.Forms.Label();
             this.c_XNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
-            this.c_DisableProcessingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
+            this.cityBiomesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_StatusStrip.SuspendLayout();
             this.c_ContextMenuStrip.SuspendLayout();
             this.c_ToolStrip.SuspendLayout();
@@ -348,6 +349,11 @@
             this.c_LandAddMixOreWithVoronoiMixdownMenuItem.Text = "Mix Ore with Voronoi Mixdown";
             this.c_LandAddMixOreWithVoronoiMixdownMenuItem.Click += new System.EventHandler(this.c_LandAddMixOreWithVoronoiMixdownMenuItem_Click);
             // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(235, 6);
+            // 
             // c_LandAddZoomWaterDistanceMenuItem
             // 
             this.c_LandAddZoomWaterDistanceMenuItem.Name = "c_LandAddZoomWaterDistanceMenuItem";
@@ -462,7 +468,8 @@
             this.extendTownsToolStripMenuItem,
             this.c_LandAddZoomTownCentersMenuItem,
             this.buildingPlacerPlacerToolStripMenuItem,
-            this.buildingPlacerToolStripMenuItem});
+            this.buildingPlacerToolStripMenuItem,
+            this.cityBiomesToolStripMenuItem});
             this.c_TownsMenuItem.Name = "c_TownsMenuItem";
             this.c_TownsMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_TownsMenuItem.Text = "Towns";
@@ -582,6 +589,14 @@
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(169, 6);
+            // 
+            // c_DisableProcessingMenuItem
+            // 
+            this.c_DisableProcessingMenuItem.Enabled = false;
+            this.c_DisableProcessingMenuItem.Name = "c_DisableProcessingMenuItem";
+            this.c_DisableProcessingMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.c_DisableProcessingMenuItem.Text = "Disable Processing";
+            this.c_DisableProcessingMenuItem.Click += new System.EventHandler(this.c_DisableProcessingMenuItem_Click);
             // 
             // c_RenameSelectedMenuItem
             // 
@@ -738,19 +753,6 @@
             this.c_YNumericUpDown.TabIndex = 2;
             this.c_YNumericUpDown.ValueChanged += new System.EventHandler(this.c_YNumericUpDown_ValueChanged);
             // 
-            // toolStripMenuItem5
-            // 
-            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(235, 6);
-            // 
-            // c_DisableProcessingMenuItem
-            // 
-            this.c_DisableProcessingMenuItem.Enabled = false;
-            this.c_DisableProcessingMenuItem.Name = "c_DisableProcessingMenuItem";
-            this.c_DisableProcessingMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.c_DisableProcessingMenuItem.Text = "Disable Processing";
-            this.c_DisableProcessingMenuItem.Click += new System.EventHandler(this.c_DisableProcessingMenuItem_Click);
-            // 
             // c_FlowInterfaceControl
             // 
             this.c_FlowInterfaceControl.ContextMenuStrip = this.c_ContextMenuStrip;
@@ -763,6 +765,13 @@
             this.c_FlowInterfaceControl.Zoom = 1F;
             this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
             this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
+            // 
+            // cityBiomesToolStripMenuItem
+            // 
+            this.cityBiomesToolStripMenuItem.Name = "cityBiomesToolStripMenuItem";
+            this.cityBiomesToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.cityBiomesToolStripMenuItem.Text = "City Biomes";
+            this.cityBiomesToolStripMenuItem.Click += new System.EventHandler(this.cityBiomesToolStripMenuItem_Click);
             // 
             // FlowForm
             // 
@@ -867,5 +876,6 @@
         private System.Windows.Forms.ToolStripMenuItem c_LandAddZoomWaterDistanceMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem c_DisableProcessingMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cityBiomesToolStripMenuItem;
     }
 }

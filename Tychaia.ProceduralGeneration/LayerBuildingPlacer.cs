@@ -15,7 +15,7 @@ namespace Tychaia.ProceduralGeneration
     {
         [DataMember]
         [DefaultValue(1)]
-        [Description("Allows us to use this for multiple iterations (so put this at different zoom levels).")]
+        [Description("Allows us to use this for multiple iterations (so put this at different zoom levels). Zoom level 1 = 1:1 ratio.")]
         public int ZoomLevel
         {
             get;
@@ -207,7 +207,7 @@ namespace Tychaia.ProceduralGeneration
                                 break;
                         }
                         trytimeout++;
-                    } while (onland == true && trytimeout < (selection * 2) + 3);
+                    } while (onland == false && trytimeout < (selection * 2) + 3);
                     if (trytimeout < (selection * 2) + 3)
                     {
                         int o = 1;

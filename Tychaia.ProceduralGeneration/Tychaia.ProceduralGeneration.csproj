@@ -52,6 +52,11 @@
     <Compile Include="Biomes\SecondaryBiome.cs" />
     <Compile Include="Biomes\TundraSecondaryBiome.cs" />
     <Compile Include="BuildingEngine.cs" />
+    <Compile Include="Cities\Building.cs" />
+    <Compile Include="Cities\CityBiome.cs" />
+    <Compile Include="CitiesEngine.cs" />
+    <Compile Include="Cities\TestingCityBiome.cs" />
+    <Compile Include="LayerRandomCities.cs" />
     <Compile Include="LayerEdgeDetection.cs" />
     <Compile Include="LayerZoomWaterDistance.cs" />
     <Compile Include="LayerBuildingPlacer.cs" />

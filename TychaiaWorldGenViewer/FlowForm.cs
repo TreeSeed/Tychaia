@@ -495,5 +495,15 @@ namespace TychaiaWorldGenViewer
                 )
             );
         }
+
+        private void cityBiomesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+                new LayerFlowElement(
+                    this.c_FlowInterfaceControl,
+                    new LayerRandomCities(null, null, null, null, null, null)
+                )
+            );
+        }
     }
 }
