@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Protogame.Structure
 {
-    public class PositionOctree<T> where T : class, IPositionOctreeNode
+    public class PositionOctree<T> where T : SpatialNode
     {
         public PositionOctreeNode<T> m_RootNode = null;
 

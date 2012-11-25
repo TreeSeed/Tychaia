@@ -98,7 +98,7 @@ namespace Tychaia.ProceduralGeneration
             this.Constant = 0;
         }
 
-        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(long x, long y, long width, long height)
         {
             int[] first = null;
             int[] second = null;
@@ -114,8 +114,8 @@ namespace Tychaia.ProceduralGeneration
             int[] data = new int[width * height];
 
             // Perform the mathematical operation.
-            for (int i = 0; i < width; i++)
-                for (int j = 0; j < height; j++)
+            for (long i = 0; i < width; i++)
+                for (long j = 0; j < height; j++)
                     try
                     {
                         // Convert values to doubles.

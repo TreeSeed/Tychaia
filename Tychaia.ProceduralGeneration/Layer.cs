@@ -100,7 +100,7 @@ namespace Tychaia.ProceduralGeneration
         /// Returns a random positive integer between the specified 0 and
         /// the exclusive end value.
         /// </summary>
-        protected int GetRandomRange(int x, int y, int end, int modifier = 0)
+        protected int GetRandomRange(long x, long y, int end, long modifier = 0)
         {
             unchecked
             {
@@ -114,7 +114,7 @@ namespace Tychaia.ProceduralGeneration
         /// Returns a random positive integer between the specified inclusive start
         /// value and the exclusive end value.
         /// </summary>
-        protected int GetRandomRange(int x, int y, int start, int end, int modifier)
+        protected int GetRandomRange(long x, long y, int start, int end, long modifier)
         {
             unchecked
             {
@@ -128,7 +128,7 @@ namespace Tychaia.ProceduralGeneration
         /// Returns a random integer over the range of valid integers based
         /// on the provided X and Y position, and the specified modifier.
         /// </summary>
-        protected int GetRandomInt(int x, int y, int modifier = 0)
+        protected int GetRandomInt(long x, long y, long modifier = 0)
         {
             unchecked
             {
@@ -140,7 +140,7 @@ namespace Tychaia.ProceduralGeneration
         /// Returns a random long integer over the range of valid long integers based
         /// on the provided X and Y position, and the specified modifier.
         /// </summary>
-        protected long GetRandomLong(int x, int y, int modifier = 0)
+        protected long GetRandomLong(long x, long y, long modifier = 0)
         {
             return this.GetRandomNumber(x, y, modifier);
         }
@@ -149,12 +149,12 @@ namespace Tychaia.ProceduralGeneration
         /// Returns a random double between the range of 0.0 and 1.0 based on
         /// the provided X and Y position, and the specified modifier.
         /// </summary>
-        protected double GetRandomDouble(int x, int y, int modifier = 0)
+        protected double GetRandomDouble(long x, long y, long modifier = 0)
         {
             return this.GetRandomNumber(x, y, modifier) / (double)long.MaxValue;
         }
 
-        private long GetRandomNumber(int x, int y, int modifier)
+        private long GetRandomNumber(long x, long y, long modifier)
         {
             /* From: http://stackoverflow.com/questions/2890040/implementing-gethashcode
              * Although we aren't implementing GetHashCode, it's still a good way to generate
@@ -193,7 +193,7 @@ namespace Tychaia.ProceduralGeneration
             }
         }
 
-        public int[] GenerateData(int x, int y, int width, int height)
+        public int[] GenerateData(long x, long y, long width, long height)
         {
             if (this.m_RandomNumberIndexCache == null)
                 this.m_RandomNumberIndexCache = new Dictionary<long, int>();
@@ -202,7 +202,7 @@ namespace Tychaia.ProceduralGeneration
             return this.GenerateDataImpl(x, y, width, height);
         }
 
-        public int[] GenerateData(int x, int y, int z, int width, int height, int depth)
+        public int[] GenerateData(long x, long y, long z, long width, long height, long depth)
         {
             if (this.m_RandomNumberIndexCache == null)
                 this.m_RandomNumberIndexCache = new Dictionary<long, int>();
@@ -211,9 +211,9 @@ namespace Tychaia.ProceduralGeneration
             return this.GenerateDataImpl(x, y, z, width, height, depth);
         }
 
-        protected abstract int[] GenerateDataImpl(int x, int y, int width, int height);
+        protected abstract int[] GenerateDataImpl(long x, long y, long width, long height);
 
-        protected virtual int[] GenerateDataImpl(int x, int y, int z, int width, int height, int depth)
+        protected virtual int[] GenerateDataImpl(long x, long y, long z, long width, long height, long depth)
         {
             // FIXME: If the depth != 1, then this is an invalid result.
             return this.GenerateData(x, y, width, height);

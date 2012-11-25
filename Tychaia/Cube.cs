@@ -10,16 +10,16 @@ namespace Tychaia
     {
         private BoundingBox m_BoundingBox;
 
-        public Cube(int x, int y, int z, int width, int height, int depth)
+        public Cube(long x, long y, long z, long width, long height, long depth)
         {
             this.m_BoundingBox = new BoundingBox(new Vector3(x, y, z), new Vector3(x + width, y + height, z + depth));
         }
 
-        public int X
+        public long X
         {
             get
             {
-                return (int)this.m_BoundingBox.Min.X;
+                return (long)this.m_BoundingBox.Min.X;
             }
             set
             {
@@ -27,11 +27,11 @@ namespace Tychaia
             }
         }
 
-        public int Y
+        public long Y
         {
             get
             {
-                return (int)this.m_BoundingBox.Min.Y;
+                return (long)this.m_BoundingBox.Min.Y;
             }
             set
             {
@@ -39,11 +39,11 @@ namespace Tychaia
             }
         }
 
-        public int Z
+        public long Z
         {
             get
             {
-                return (int)this.m_BoundingBox.Min.Z;
+                return (long)this.m_BoundingBox.Min.Z;
             }
             set
             {
@@ -51,11 +51,11 @@ namespace Tychaia
             }
         }
 
-        public int Width
+        public long Width
         {
             get
             {
-                return (int)this.m_BoundingBox.Max.X - (int)this.m_BoundingBox.Min.X;
+                return (long)this.m_BoundingBox.Max.X - (long)this.m_BoundingBox.Min.X;
             }
             set
             {
@@ -63,11 +63,11 @@ namespace Tychaia
             }
         }
 
-        public int Height
+        public long Height
         {
             get
             {
-                return (int)this.m_BoundingBox.Max.Y - (int)this.m_BoundingBox.Min.Y;
+                return (long)this.m_BoundingBox.Max.Y - (long)this.m_BoundingBox.Min.Y;
             }
             set
             {
@@ -75,11 +75,11 @@ namespace Tychaia
             }
         }
 
-        public int Depth
+        public long Depth
         {
             get
             {
-                return (int)this.m_BoundingBox.Max.Z - (int)this.m_BoundingBox.Min.Z;
+                return (long)this.m_BoundingBox.Max.Z - (long)this.m_BoundingBox.Min.Z;
             }
             set
             {

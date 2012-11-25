@@ -32,17 +32,17 @@ namespace Tychaia.ProceduralGeneration
 
         private const int MAPPING_OFFSET = 10;
 
-        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(long x, long y, long width, long height)
         {
             if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
                 return new int[width * height];
 
             int ox = this.EdgeSampling;
             int oy = this.EdgeSampling;
-            int rx = x - this.EdgeSampling;
-            int ry = y - this.EdgeSampling;
-            int rw = width + this.EdgeSampling * 2;
-            int rh = height + this.EdgeSampling * 2;
+            long rx = x - this.EdgeSampling;
+            long ry = y - this.EdgeSampling;
+            long rw = width + this.EdgeSampling * 2;
+            long rh = height + this.EdgeSampling * 2;
 
             int[] voronoi = this.Parents[0].GenerateData(rx, ry, rw, rh);
             int[] parent = this.Parents[1].GenerateData(rx, ry, rw, rh);
@@ -89,13 +89,13 @@ namespace Tychaia.ProceduralGeneration
             return data;
         }
 
-        private int FindNeighbour(List<int> valueMap, int[] tracker, int[] data, int x, int y, int i, int j, int width, int height)
+        private int FindNeighbour(List<int> valueMap, int[] tracker, int[] data, long x, long y, long i, long j, long width, long height)
         {
             Point p = new Point(i, j);
             int ox = this.EdgeSampling;
             int oy = this.EdgeSampling;
-            int rw = width + this.EdgeSampling * 2;
-            int rh = height + this.EdgeSampling * 2;
+            long rw = width + this.EdgeSampling * 2;
+            long rh = height + this.EdgeSampling * 2;
 
             switch (this.GetRandomRange(x + i, y + j, 4))
             {
@@ -120,13 +120,13 @@ namespace Tychaia.ProceduralGeneration
             return this.FindValueNear(tracker, data, x, y, i, j, width, height);
         }
 
-        private int FindValueNear(int[] tracker, int[] data, int x, int y, int i, int j, int width, int height)
+        private int FindValueNear(int[] tracker, int[] data, long x, long y, long i, long j, long width, long height)
         {
             Point p = new Point(i, j);
             int ox = this.EdgeSampling;
             int oy = this.EdgeSampling;
-            int rw = width + this.EdgeSampling * 2;
-            int rh = height + this.EdgeSampling * 2;
+            long rw = width + this.EdgeSampling * 2;
+            long rh = height + this.EdgeSampling * 2;
 
             if (p.Inside(width, height) && tracker[(i + ox) + (j + oy) * rw] != 0)
                 return data[i + j * width];
@@ -137,13 +137,13 @@ namespace Tychaia.ProceduralGeneration
             return this.FindValueNearOpposite(tracker, data, x, y, i, j, width, height);
         }
 
-        private int FindValueNearOpposite(int[] tracker, int[] data, int x, int y, int i, int j, int width, int height)
+        private int FindValueNearOpposite(int[] tracker, int[] data, long x, long y, long i, long j, long width, long height)
         {
             Point p = new Point(i, j);
             int ox = this.EdgeSampling;
             int oy = this.EdgeSampling;
-            int rw = width + this.EdgeSampling * 2;
-            int rh = height + this.EdgeSampling * 2;
+            long rw = width + this.EdgeSampling * 2;
+            long rh = height + this.EdgeSampling * 2;
 
             if (p.Inside(width, height) && tracker[(i + ox) + (j + oy) * rw] != 0)
                 return data[i + j * width];
@@ -154,12 +154,12 @@ namespace Tychaia.ProceduralGeneration
             return 0;
         }
 
-        private void RecursiveApply(int[] tracker, int[] voronoi, int idx, Point p, int width, int height)
+        private void RecursiveApply(int[] tracker, int[] voronoi, int idx, Point p, long width, long height)
         {
             int ox = this.EdgeSampling;
             int oy = this.EdgeSampling;
-            int rw = width + this.EdgeSampling * 2;
-            int rh = height + this.EdgeSampling * 2;
+            long rw = width + this.EdgeSampling * 2;
+            long rh = height + this.EdgeSampling * 2;
 
             if (p.Inside(-ox, -oy, rw, rh) && voronoi[(p.X + ox) + (p.Y + oy) * rw] != 2 /* edge */ &&
                     tracker[(p.X + ox) + (p.Y + oy) * rw] == 0 /* not hit */)
@@ -194,15 +194,15 @@ namespace Tychaia.ProceduralGeneration
 
         private struct Point
         {
-            public int X;
-            public int Y;
+            public long X;
+            public long Y;
 
-            public int GetIdx(int width)
+            public long GetIdx(int width)
             {
                 return this.X + this.Y * width;
             }
 
-            public Point(int x, int y)
+            public Point(long x, long y)
             {
                 this.X = x;
                 this.Y = y;
@@ -240,13 +240,13 @@ namespace Tychaia.ProceduralGeneration
                 }
             }
 
-            public bool Inside(int width, int height)
+            public bool Inside(long width, long height)
             {
                 return (this.X >= 0 && this.Y >= 0 &&
                         this.X < width && this.Y < height);
             }
 
-            public bool Inside(int x, int y, int width, int height)
+            public bool Inside(long x, long y, long width, long height)
             {
                 return (this.X >= x && this.Y >= y &&
                         this.X < x + width && this.Y < y + height);

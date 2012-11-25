@@ -28,17 +28,17 @@ namespace Tychaia.ProceduralGeneration
             this.SurroundCenter = false;
         }
 
-        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(long x, long y, long width, long height)
         {
             if (this.Parents.Length < 1 || this.Parents[0] == null)
                 return new int[width * height];
-            
-            int ox = 2; // Offsets
-            int oy = 2;
-            int rw = width / 2 + ox * 2;
-            int rh = height / 2 + oy * 2;
-            int rx = (x < 0 ? (x - 1) / 2 : x / 2) - ox; // Location in the parent
-            int ry = (y < 0 ? (y - 1) / 2 : y / 2) - oy;
+
+            long ox = 2; // Offsets
+            long oy = 2;
+            long rw = width / 2 + ox * 2;
+            long rh = height / 2 + oy * 2;
+            long rx = (x < 0 ? (x - 1) / 2 : x / 2) - ox; // Location in the parent
+            long ry = (y < 0 ? (y - 1) / 2 : y / 2) - oy;
             int[] parent = this.Parents[0].GenerateData(rx, ry, rw, rh);
             int[] data = new int[width * height];
 
@@ -73,7 +73,7 @@ namespace Tychaia.ProceduralGeneration
             return data;
         }
 
-        private int FindZoomedPoint(int[] parent, int i, int j, int ox, int oy, int x, int y, int rw)
+        private int FindZoomedPoint(int[] parent, long i, long j, long ox, long oy, long x, long y, long rw)
         {
             int ocx = (x % 2 != 0 && i % 2 != 0 ? (i < 0 ? -1 : 1) : 0);
             int ocy = (y % 2 != 0 && j % 2 != 0 ? (j < 0 ? -1 : 1) : 0);

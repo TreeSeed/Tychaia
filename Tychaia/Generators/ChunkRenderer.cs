@@ -174,7 +174,7 @@ namespace Tychaia.Generators
                     true,
                     SurfaceFormat.Bgra5551,
                     DepthFormat.None);
-                FilteredConsole.WriteLine(FilterCategory.GraphicsMemoryUsage, "Allocated textures for chunk " + task.Chunk.GlobalX + ", " + task.Chunk.GlobalY + ", " + task.Chunk.GlobalZ + ".");
+                FilteredConsole.WriteLine(FilterCategory.GraphicsMemoryUsage, "Allocated textures for chunk " + task.Chunk.X + ", " + task.Chunk.Y + ", " + task.Chunk.Z + ".");
                 m_GraphicsDevice.SetRenderTarget(rs.ChunkTarget);
                 if (FilteredFeatures.IsEnabled(Feature.DebugChunkBackground))
                 {
@@ -244,7 +244,7 @@ namespace Tychaia.Generators
                             continue;
                         }
                         Color col = new Color(1f, 1f, 1f, 1f).ToPremultiplied();
-                        if (task.Chunk.GlobalX == 0 && task.Chunk.GlobalY == 0 && x == 0 && y == 0)
+                        if (task.Chunk.X == 0 && task.Chunk.Y == 0 && x == 0 && y == 0)
                             col = new Color(1f, 0f, 0f, 1f).ToPremultiplied();
                         if (FilteredFeatures.IsEnabled(Feature.DebugChunkTiles))
                             m_CurrentRenderState.SpriteBatch.Draw(

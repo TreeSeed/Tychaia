@@ -38,7 +38,7 @@ namespace Tychaia.Title
         public override bool Update(GameContext context)
         {
             // Calculate the difference between button positions.
-            int cx = context.Window.ClientBounds.Width / 2; // context.Graphics.PreferredBackBufferWidth;
+            int cx = context.Window.ClientBounds.Width / 2;
             foreach (Button b in this.m_Buttons)
                 b.X += cx - this.m_PreviousX;
             this.m_PreviousX = cx;

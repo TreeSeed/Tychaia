@@ -89,7 +89,7 @@ namespace Tychaia.ProceduralGeneration
             this.MaxDistanceFromWater = 7;
         }
 
-        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(long x, long y, long width, long height)
         {
             if (this.Parents.Length < 5 || this.Parents[0] == null || this.Parents[1] == null || this.Parents[2] == null || this.Parents[3] == null || this.Parents[4] == null)
                 return new int[width * height];

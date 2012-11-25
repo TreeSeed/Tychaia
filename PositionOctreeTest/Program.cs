@@ -6,7 +6,7 @@ using Protogame.Structure;
 
 namespace PositionOctreeTest
 {
-    class Value : IPositionOctreeNode
+    class Value : SpatialNode
     {
         public Value(int v, long x, long y, long z)
         {
@@ -17,10 +17,6 @@ namespace PositionOctreeTest
         }
 
         public int Blah;
-
-        public long X { get; set; }
-        public long Y { get; set; }
-        public long Z { get; set; }
     }
 
     class Program

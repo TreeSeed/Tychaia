@@ -116,8 +116,7 @@
   <ItemGroup>
     <Compile Include="Cube.cs" />
     <Compile Include="DebugTracker.cs" />
-    <Compile Include="Generators\ChunkAccess.cs" />
-    <Compile Include="Generators\ChunkManager.cs" />
+    <Compile Include="Generators\ChunkOctree.cs" />
     <Compile Include="Generators\ChunkProvider.cs" />
     <None Include="app.config" />
     <None Include="Disabled\ChunkTileset.cs" />
@@ -198,6 +197,10 @@
     <ProjectReference Include="..\Protogame.Noise\Protogame.Noise.csproj">
       <Project>{FE9A9DF1-16D8-4A24-8978-D4F2E540F039}</Project>
       <Name>Protogame.Noise</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Protogame.Structure\Protogame.Structure.csproj">
+      <Project>{49E7D444-F991-41FC-8FD7-499372C5E207}</Project>
+      <Name>Protogame.Structure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Protogame\Protogame.csproj">
       <Project>{DF7D4601-0061-4329-9803-6917AF416B70}</Project>

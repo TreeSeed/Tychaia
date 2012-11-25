@@ -18,14 +18,14 @@ namespace Tychaia.ProceduralGeneration
         {
         }
 
-        protected override int[] GenerateDataImpl(int x, int y, int width, int height)
+        protected override int[] GenerateDataImpl(long x, long y, long width, long height)
         {
             if (this.Parents.Length < 1 || this.Parents[0] == null)
                 return new int[width * height];
 
             int ox = 1;
             int oy = 1;
-            int rw = width + ox * 2;
+            long rw = width + ox * 2;
             int[] parent = this.Parents[0].GenerateData(x - ox, y - oy, rw, height + oy * 2);
             int[] data = new int[width * height];
 

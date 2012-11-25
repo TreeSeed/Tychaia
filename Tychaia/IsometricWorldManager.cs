@@ -72,9 +72,9 @@ namespace Tychaia
             /* We need to determine the pixel offset from where the chunk needs to
              * be drawn to the focus point.
              */
-            int cx = this.Chunk.GlobalX;
-            int cy = this.Chunk.GlobalY;
-            int cz = this.Chunk.GlobalZ;
+            long cx = this.Chunk.X;
+            long cy = this.Chunk.Y;
+            long cz = this.Chunk.Z;
             double ix = 0;
             double iy = 0;
             ix += (this.m_CurrentX - cx);
@@ -210,9 +210,9 @@ namespace Tychaia
         /// <returns>The position on the screen.</returns>
         public Vector2 TranslatePoint(float x, float y, float z)
         {
-            float cx = this.Chunk.GlobalX;
-            float cy = this.Chunk.GlobalY;
-            float cz = this.Chunk.GlobalZ;
+            float cx = this.Chunk.X;
+            float cy = this.Chunk.Y;
+            float cz = this.Chunk.Z;
             float xx = this.m_ChunkCenterX;
             float yy = this.m_ChunkCenterY;
             xx += (x - cx);
@@ -238,17 +238,17 @@ namespace Tychaia
                 return;
 
             // Pan current chunk.
-            while (newX < this.Chunk.GlobalX)
+            while (newX < this.Chunk.X)
                 this.Chunk = this.Chunk.West;
-            while (newX > this.Chunk.GlobalX + Chunk.Width * Scale.CUBE_X)
+            while (newX > this.Chunk.X + Chunk.Width * Scale.CUBE_X)
                 this.Chunk = this.Chunk.East;
-            while (newY < this.Chunk.GlobalY)
+            while (newY < this.Chunk.Y)
                 this.Chunk = this.Chunk.North;
-            while (newY > this.Chunk.GlobalY + Chunk.Height * Scale.CUBE_Y)
+            while (newY > this.Chunk.Y + Chunk.Height * Scale.CUBE_Y)
                 this.Chunk = this.Chunk.South;
-            while (newZ < this.Chunk.GlobalZ)
+            while (newZ < this.Chunk.Z)
                 this.Chunk = this.Chunk.Down;
-            while (newZ > this.Chunk.GlobalZ + Chunk.Depth * Scale.CUBE_Z)
+            while (newZ > this.Chunk.Z + Chunk.Depth * Scale.CUBE_Z)
                 this.Chunk = this.Chunk.Up;
 
             this.m_CurrentX += x;
@@ -279,11 +279,11 @@ namespace Tychaia
                 // Ensure we have a chunk manager to source chunks from.
                 if (!(context.World is RPGWorld))
                     return;
-                ChunkManager cm = (context.World as RPGWorld).ChunkManager;
-                if (cm == null)
+                ChunkOctree co = (context.World as RPGWorld).ChunkOctree;
+                if (co == null)
                     return;
                 if (this.Chunk == null)
-                    this.Chunk = cm.ZerothChunk;
+                    this.Chunk = co.Get(0, 0, 0);
 
                 // Special handling for entities in the 3D world.
                 ChunkEntity ce = a as ChunkEntity;
@@ -341,15 +341,11 @@ namespace Tychaia
             // Ensure we have a chunk manager to source chunks from.
             if (!(context.World is RPGWorld))
                 return;
-            ChunkManager cm = (context.World as RPGWorld).ChunkManager;
-            if (cm == null)
+            ChunkOctree co = (context.World as RPGWorld).ChunkOctree;
+            if (co == null)
                 return;
             if (this.Chunk == null)
-                this.Chunk = cm.ZerothChunk;
-
-            // Validate chunk connectivity.
-            if (FilteredFeatures.IsEnabled(Feature.AutomaticChunkValidation))
-                this.Chunk.Validate();
+                this.Chunk = co.Get(0, 0, 0);
 
             // Determine our Z offset.
             int zoffset = -(Chunk.Depth - this.ZLevel) * TileIsometricifier.TILE_CUBE_HEIGHT;
