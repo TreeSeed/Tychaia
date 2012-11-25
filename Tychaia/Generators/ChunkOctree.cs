@@ -14,12 +14,12 @@ namespace Tychaia.Generators
 
         public Chunk Get(long x, long y, long z)
         {
-            return this.m_Octree.Find(x, y, z);
+            return this.m_Octree.Find(x / 256, y / 256, z / 256);
         }
 
         public void Set(Chunk chunk)
         {
-            this.m_Octree.Insert(chunk);
+            this.m_Octree.Insert(chunk, chunk.X / 256, chunk.Y / 256, chunk.Z / 256);
         }
 
         #endregion

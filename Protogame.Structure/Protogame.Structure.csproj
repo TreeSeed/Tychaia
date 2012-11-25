@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SpatialNode.cs" />
     <Compile Include="PositionOctree.cs" />
     <Compile Include="PositionOctreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

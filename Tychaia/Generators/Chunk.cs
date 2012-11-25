@@ -12,7 +12,7 @@ using Protogame.Structure;
 
 namespace Tychaia.Generators
 {
-    public class Chunk : SpatialNode
+    public class Chunk
     {
         public const int CHUNK_SIZE = 16;
 
@@ -20,6 +20,9 @@ namespace Tychaia.Generators
         public const int Height = 8;
         public const int Depth = 8;
 
+        public long X;
+        public long Y;
+        public long Z;
         public Block[, ,] m_Blocks = null;
         public int[] m_RawData = null;
         private static object m_AccessLock = new object();
@@ -37,6 +40,7 @@ namespace Tychaia.Generators
             this.X = x;
             this.Y = y;
             this.Z = z;
+            this.m_Octree.Set(this);
             this.m_Blocks = new Block[Chunk.Width, Chunk.Height, Chunk.Depth];
             this.m_RawData = new int[Chunk.Width * Chunk.Height * Chunk.Depth];
             this.Generate();

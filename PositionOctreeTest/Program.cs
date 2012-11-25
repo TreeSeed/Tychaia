@@ -6,14 +6,11 @@ using Protogame.Structure;
 
 namespace PositionOctreeTest
 {
-    class Value : SpatialNode
+    class Value
     {
-        public Value(int v, long x, long y, long z)
+        public Value(int v)
         {
             this.Blah = v;
-            this.X = x;
-            this.Y = y;
-            this.Z = z;
         }
 
         public int Blah;
@@ -24,9 +21,9 @@ namespace PositionOctreeTest
         static void Main(string[] args)
         {
             PositionOctree<Value> octree = new PositionOctree<Value>();
-            octree.Insert(new Value(5, 1, 1, 1));
-            octree.Insert(new Value(24, 1000000, 1000000, 1000000));
-            octree.Insert(new Value(534, 1000000000, 1000000000, 1000000000));
+            octree.Insert(new Value(5), 1, 1, 1);
+            octree.Insert(new Value(24), 1000000, 1000000, 1000000);
+            octree.Insert(new Value(534), 1000000000, 1000000000, 1000000000);
             Value v = octree.Find(1, 1, 1);
             Console.WriteLine(v.Blah);
             v = octree.Find(1000000, 1000000, 1000000);

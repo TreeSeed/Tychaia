@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Protogame.Structure
 {
-    public class PositionOctree<T> where T : SpatialNode
+    public class PositionOctree<T> where T : class
     {
         public PositionOctreeNode<T> m_RootNode = null;
 
@@ -19,9 +19,9 @@ namespace Protogame.Structure
             return this.m_RootNode.Get(x, y, z);
         }
 
-        public void Insert(T value)
+        public void Insert(T value, long x, long y, long z)
         {
-            this.m_RootNode.Set(value);
+            this.m_RootNode.Set(value, x, y, z);
         }
     }
 }

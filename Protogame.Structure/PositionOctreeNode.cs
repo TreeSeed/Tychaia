@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Protogame.Structure
 {
-    public class PositionOctreeNode<T> where T : SpatialNode
+    public class PositionOctreeNode<T> where T : class
     {
         private long m_CenterX;
         private long m_CenterY;
@@ -100,16 +100,16 @@ namespace Protogame.Structure
             return new PositionOctreeNode<T>(x, y, z, this.m_CurrentDepth + 1, this.m_MaximalDepth);
         }
 
-        public void Set(T value)
+        public void Set(T value, long x, long y, long z)
         {
             PositionOctreeNode<T> current = this;
             while (current != null && current.m_CurrentDepth != current.m_MaximalDepth)
             {
-                if (value.X < current.m_CenterX)
+                if (x < current.m_CenterX)
                 {
-                    if (value.Y < current.m_CenterY)
+                    if (y < current.m_CenterY)
                     {
-                        if (value.Z < current.m_CenterZ)
+                        if (z < current.m_CenterZ)
                         {
                             if (current.m_Nodes[0] == null)
                                 current.m_Nodes[0] = current.CreateSubnode(-1, -1, -1);
@@ -124,7 +124,7 @@ namespace Protogame.Structure
                     }
                     else
                     {
-                        if (value.Z < this.m_CenterZ)
+                        if (z < this.m_CenterZ)
                         {
                             if (current.m_Nodes[2] == null)
                                 current.m_Nodes[2] = current.CreateSubnode(-1, 1, -1);
@@ -140,9 +140,9 @@ namespace Protogame.Structure
                 }
                 else
                 {
-                    if (value.Y < this.m_CenterY)
+                    if (y < this.m_CenterY)
                     {
-                        if (value.Z < this.m_CenterZ)
+                        if (z < this.m_CenterZ)
                         {
                             if (current.m_Nodes[4] == null)
                                 current.m_Nodes[4] = current.CreateSubnode(1, -1, -1);
@@ -157,7 +157,7 @@ namespace Protogame.Structure
                     }
                     else
                     {
-                        if (value.Z < this.m_CenterZ)
+                        if (z < this.m_CenterZ)
                         {
                             if (current.m_Nodes[6] == null)
                                 current.m_Nodes[6] = current.CreateSubnode(1, 1, -1);
