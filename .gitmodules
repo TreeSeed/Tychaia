@@ -1,0 +1,6 @@
+[submodule "Libraries/Substrate"]
+	path = Libraries/Substrate
+	url = git://github.com/hach-que/Substrate.git
+[submodule "Libraries/NBTExplorer"]
+	path = Libraries/NBTExplorer
+	url = git://github.com/hach-que/NBTExplorer.git
