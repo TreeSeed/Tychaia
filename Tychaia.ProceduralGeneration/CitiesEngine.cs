@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using Tychaia.ProceduralGeneration.CityBiomes;
+using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -35,17 +36,18 @@ namespace Tychaia.ProceduralGeneration
                     oredensity >= cb.MinOreDensity && oredensity < cb.MaxOreDensity &&
                     rareoredensity >= cb.MinRareOreDensity && rareoredensity < cb.MaxRareOreDensity &&
                     height >= cb.MinHeight && height < cb.MaxHeight)
-                    return i;
+                    return (i + 1);
             }
 
-            return -1;
+            return 0;
         }
 
         public static Dictionary<int, System.Drawing.Brush> GetCityBiomeBrushes()
         {
             Dictionary<int, System.Drawing.Brush> result = new Dictionary<int, System.Drawing.Brush>();
+            result.Add(0, new System.Drawing.SolidBrush(Color.Black));
             for (int i = 0; i < CitiesEngine.CityBiomes.Count; i++)
-                result.Add(i, new System.Drawing.SolidBrush(CitiesEngine.CityBiomes[i].BrushColor));
+                result.Add(i + 1, new System.Drawing.SolidBrush(CitiesEngine.CityBiomes[i].BrushColor));
             return result;
         }
     }

@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace Tychaia.ProceduralGeneration
 {
     /// <summary>
-    /// Generates secondary biomes based on input data.
+    /// Generates city biomes based on input data.
     /// </summary>
     [DataContract]
     public class LayerRandomCities : Layer2D
@@ -120,7 +120,7 @@ namespace Tychaia.ProceduralGeneration
 
         protected override int[] GenerateDataImpl(long x, long y, long width, long height)
         {
-            if (this.Parents.Length < 4 || this.Parents[0] == null || this.Parents[1] == null || this.Parents[2] == null || this.Parents[3] == null || this.Parents[4] == null || this.Parents[5] == null)
+            if (this.Parents.Length < 6 || this.Parents[0] == null || this.Parents[1] == null || this.Parents[2] == null || this.Parents[3] == null || this.Parents[4] == null || this.Parents[5] == null)
                 return new int[width * height];
 
             int[] biome = this.Parents[0].GenerateData(x, y, width, height);
@@ -172,7 +172,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override string[] GetParentsRequired()
         {
-            return new string[] { "Biome", "Soil Fertility", "Ore Density", "Rare Ore Density", "Terrain" };
+            return new string[] { "Biome", "Soil Fertility", "Military Strength", "Ore Density", "Rare Ore Density", "Terrain" };
         }
 
         public override string ToString()
