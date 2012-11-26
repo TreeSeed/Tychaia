@@ -512,7 +512,7 @@ namespace TychaiaWorldGenViewer
             this.c_FlowInterfaceControl.AddElementAtMouse(
                 new LayerFlowElement(
                     this.c_FlowInterfaceControl,
-                    new LayerRandomCities(null, null, null, null, null, null)
+                    new LayerRandomCities(null, null, null, null, null)
                 )
             );
         }

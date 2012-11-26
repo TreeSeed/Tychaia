@@ -26,7 +26,7 @@ namespace Tychaia.ProceduralGeneration
             return t.GetConstructor(Type.EmptyTypes).Invoke(null) as CityBiome;
         }
 
-        public static int GetCityBiomeForCell(double soilfertility, double militarystrength, double oredensity, double rareoredensity, double height)
+        public static int GetCityBiomeForCell(double soilfertility, double militarystrength, double oredensity, double rareoredensity)
         {
             for (int i = 0; i < CitiesEngine.CityBiomes.Count; i++)
             {
@@ -34,8 +34,7 @@ namespace Tychaia.ProceduralGeneration
                 if (soilfertility >= cb.MinSoilFertility && soilfertility < cb.MaxSoilFertility &&
                     militarystrength >= cb.MinMilitaryStrength && militarystrength < cb.MaxMilitaryStrength &&
                     oredensity >= cb.MinOreDensity && oredensity < cb.MaxOreDensity &&
-                    rareoredensity >= cb.MinRareOreDensity && rareoredensity < cb.MaxRareOreDensity &&
-                    height >= cb.MinHeight && height < cb.MaxHeight)
+                    rareoredensity >= cb.MinRareOreDensity && rareoredensity < cb.MaxRareOreDensity)
                     return (i + 1);
             }
 

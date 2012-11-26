@@ -6,12 +6,12 @@ using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration.CityBiomes
 {
-    public class Testing : CityBiome
+    public class Mine : CityBiome
     {
-        public Testing()
+        public Mine()
         {
-            this.BrushColor = Color.Blue;
-            //this.MinSoilFertility = 0.05;
+            this.BrushColor = Color.Brown;
+            this.MinOreDensity = 0.45;
         }
     }
 }

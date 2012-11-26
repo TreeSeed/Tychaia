@@ -59,7 +59,7 @@ namespace Tychaia.ProceduralGeneration
         }
 
         [DataMember]
-        [DefaultValue(20)]
+        [DefaultValue(100)]
         [Description("The maximum integer value in the Ore Density map.")]
         public int MaxOreDensity
         {
@@ -77,7 +77,7 @@ namespace Tychaia.ProceduralGeneration
         }
 
         [DataMember]
-        [DefaultValue(20)]
+        [DefaultValue(100)]
         [Description("The maximum integer value in the rare ore density map.")]
         public int MaxRareOreDensity
         {
@@ -85,26 +85,8 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        [DataMember]
-        [DefaultValue(0)]
-        [Description("The maximum integer value in the height map.")]
-        public int MinHeight
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        [DefaultValue(20)]
-        [Description("The maximum integer value in the height map.")]
-        public int MaxHeight
-        {
-            get;
-            set;
-        }
-
-        public LayerRandomCities(Layer secondarybiome, Layer soilfertility, Layer militarystrength, Layer oredensity, Layer rareoredensity, Layer terrain)
-            : base(new Layer[] { secondarybiome, soilfertility, militarystrength, oredensity, rareoredensity, terrain })
+        public LayerRandomCities(Layer secondarybiome, Layer soilfertility, Layer militarystrength, Layer oredensity, Layer rareoredensity)
+            : base(new Layer[] { secondarybiome, soilfertility, militarystrength, oredensity, rareoredensity })
         {
             this.MinSoilFertility = 0;
             this.MaxSoilFertility = 100;
@@ -114,13 +96,11 @@ namespace Tychaia.ProceduralGeneration
             this.MaxOreDensity = 100;
             this.MinRareOreDensity = 0;
             this.MaxRareOreDensity = 20;
-            this.MinHeight = 0;
-            this.MaxHeight = 20;
         }
 
         protected override int[] GenerateDataImpl(long x, long y, long width, long height)
         {
-            if (this.Parents.Length < 6 || this.Parents[0] == null || this.Parents[1] == null || this.Parents[2] == null || this.Parents[3] == null || this.Parents[4] == null || this.Parents[5] == null)
+            if (this.Parents.Length < 6 || this.Parents[0] == null || this.Parents[1] == null || this.Parents[2] == null || this.Parents[3] == null || this.Parents[4] == null)
                 return new int[width * height];
 
             int[] biome = this.Parents[0].GenerateData(x, y, width, height);
@@ -128,7 +108,6 @@ namespace Tychaia.ProceduralGeneration
             int[] militarystrength = this.Parents[2].GenerateData(x, y, width, height);
             int[] oredensity = this.Parents[3].GenerateData(x, y, width, height);
             int[] rareoredensity = this.Parents[4].GenerateData(x, y, width, height);
-            int[] terrain = this.Parents[5].GenerateData(x, y, width, height);
             int[] data = new int[width * height];
 
             // Write out the secondary biomes.
@@ -149,10 +128,9 @@ namespace Tychaia.ProceduralGeneration
                             double nmilitarystrength = (militarystrength[i + j * width] - this.MinMilitaryStrength) / (double)(this.MaxMilitaryStrength - this.MinMilitaryStrength);
                             double noredensity = (oredensity[i + j * width] - this.MinOreDensity) / (double)(this.MaxOreDensity - this.MinOreDensity);
                             double nrareoredensity = (rareoredensity[i + j * width] - this.MinRareOreDensity) / (double)(this.MaxRareOreDensity - this.MinRareOreDensity);
-                            double nterrain = (terrain[i + j * width] - this.MinHeight) / (double)(this.MaxHeight - this.MinHeight);
 
                             // Store result.
-                            data[i + j * width] = CitiesEngine.GetCityBiomeForCell(nsoilfertility, nmilitarystrength, noredensity, nrareoredensity, nterrain);
+                            data[i + j * width] = CitiesEngine.GetCityBiomeForCell(nsoilfertility, nmilitarystrength, noredensity, nrareoredensity);
                         }
                     }
                     catch (Exception e)
@@ -172,7 +150,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override string[] GetParentsRequired()
         {
-            return new string[] { "Biome", "Soil Fertility", "Military Strength", "Ore Density", "Rare Ore Density", "Terrain" };
+            return new string[] { "Biome", "Soil Fertility", "Military Strength", "Ore Density", "Rare Ore Density"};
         }
 
         public override string ToString()
