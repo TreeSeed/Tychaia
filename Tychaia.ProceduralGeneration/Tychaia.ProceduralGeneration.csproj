@@ -55,7 +55,9 @@
     <Compile Include="Cities\Building.cs" />
     <Compile Include="Cities\CityBiome.cs" />
     <Compile Include="CitiesEngine.cs" />
-    <Compile Include="Cities\TestingCityBiome.cs" />
+    <Compile Include="Cities\RoyaltyCityBiome.cs" />
+    <Compile Include="Cities\MineCityBiome.cs" />
+    <Compile Include="Cities\FarmlandCityBiome.cs" />
     <Compile Include="LayerRandomCities.cs" />
     <Compile Include="LayerEdgeDetection.cs" />
     <Compile Include="LayerZoomWaterDistance.cs" />
