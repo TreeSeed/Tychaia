@@ -23,12 +23,16 @@ namespace Tychaia.Disk.Tychaia
 
         public ILevel NewLevel(string name)
         {
-            return new TychaiaLevel();
+            string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string path = Path.Combine(appdata, ".tychaia", "saves", name);
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            return new TychaiaLevel(name);
         }
 
         public ILevel LoadLevel(string name)
         {
-            return new TychaiaLevel();
+            return new TychaiaLevel(name);
         }
     }
 }

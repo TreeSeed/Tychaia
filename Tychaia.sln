@@ -45,6 +45,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Disk.Minecraft", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Disk.Tychaia", "Tychaia.Disk.Tychaia\Tychaia.Disk.Tychaia.csproj", "{09FF480E-54B1-4A5F-A585-CE74DE399BE1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBTExplorer", "Libraries\NBTExplorer\NBTExplorer.csproj", "{8A458245-8176-4599-95CD-3CA39F2435CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Substrate (NET4)", "Libraries\Substrate\SubstrateCS\Substrate (NET4).csproj", "{7264A1C4-AB4A-4437-B252-7379B98B5509}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftExport", "MinecraftExport\MinecraftExport.csproj", "{934D08FB-35DB-4481-A3C4-64F8AE5C8F51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -259,6 +265,38 @@ Global
 		{09FF480E-54B1-4A5F-A585-CE74DE399BE1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{09FF480E-54B1-4A5F-A585-CE74DE399BE1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{09FF480E-54B1-4A5F-A585-CE74DE399BE1}.Release|x86.ActiveCfg = Release|Any CPU
+		{8A458245-8176-4599-95CD-3CA39F2435CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A458245-8176-4599-95CD-3CA39F2435CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A458245-8176-4599-95CD-3CA39F2435CE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8A458245-8176-4599-95CD-3CA39F2435CE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8A458245-8176-4599-95CD-3CA39F2435CE}.Debug|x86.ActiveCfg = Debug|x86
+		{8A458245-8176-4599-95CD-3CA39F2435CE}.Debug|x86.Build.0 = Debug|x86
+		{8A458245-8176-4599-95CD-3CA39F2435CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A458245-8176-4599-95CD-3CA39F2435CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A458245-8176-4599-95CD-3CA39F2435CE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8A458245-8176-4599-95CD-3CA39F2435CE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8A458245-8176-4599-95CD-3CA39F2435CE}.Release|x86.ActiveCfg = Release|x86
+		{8A458245-8176-4599-95CD-3CA39F2435CE}.Release|x86.Build.0 = Release|x86
+		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Release|x86.ActiveCfg = Release|Any CPU
+		{934D08FB-35DB-4481-A3C4-64F8AE5C8F51}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{934D08FB-35DB-4481-A3C4-64F8AE5C8F51}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{934D08FB-35DB-4481-A3C4-64F8AE5C8F51}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{934D08FB-35DB-4481-A3C4-64F8AE5C8F51}.Debug|x86.ActiveCfg = Debug|x86
+		{934D08FB-35DB-4481-A3C4-64F8AE5C8F51}.Debug|x86.Build.0 = Debug|x86
+		{934D08FB-35DB-4481-A3C4-64F8AE5C8F51}.Release|Any CPU.ActiveCfg = Release|x86
+		{934D08FB-35DB-4481-A3C4-64F8AE5C8F51}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{934D08FB-35DB-4481-A3C4-64F8AE5C8F51}.Release|Mixed Platforms.Build.0 = Release|x86
+		{934D08FB-35DB-4481-A3C4-64F8AE5C8F51}.Release|x86.ActiveCfg = Release|x86
+		{934D08FB-35DB-4481-A3C4-64F8AE5C8F51}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

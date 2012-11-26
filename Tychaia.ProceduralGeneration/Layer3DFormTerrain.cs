@@ -37,7 +37,8 @@ namespace Tychaia.ProceduralGeneration
             for (long i = 0; i < width; i++)
                 for (long j = 0; j < height; j++)
                 {
-                    if (parent[i + j * height] == 0)
+                    int terr = parent[i + j * height];
+                    if (terr == 0)
                     {
                         // Ocean
                         if (0 >= z && 0 < z + depth)
@@ -47,7 +48,7 @@ namespace Tychaia.ProceduralGeneration
                     {
                         // Land
                         for (long k = z; k < z + depth; k++)
-                            if (k < parent[i + j * height] + 1)
+                            if (k < terr + 1)
                                 data[i + j * width + (k - z) * width * height] = biomes[i + j * height];
                     }
                 }

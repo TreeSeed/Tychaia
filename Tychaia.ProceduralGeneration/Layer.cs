@@ -177,7 +177,12 @@ namespace Tychaia.ProceduralGeneration
                     this.m_RandomNumberIndexCache[seed] += 1;
                 else
                     this.m_RandomNumberIndexCache[seed] = 0;
-                int index = this.m_RandomNumberIndexCache[seed];
+                int index = 0;
+                try
+                {
+                    index = this.m_RandomNumberIndexCache[seed];
+                }
+                catch (Exception) { }
 
                 long rng = seed * seed;
                 rng += x * 2990430311017;

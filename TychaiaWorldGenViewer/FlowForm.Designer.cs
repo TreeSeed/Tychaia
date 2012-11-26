@@ -83,6 +83,7 @@
             this.c_LandAddZoomTownCentersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buildingPlacerPlacerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buildingPlacerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cityBiomesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_FamilyTreesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
             this.c_3DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -106,7 +107,7 @@
             this.c_XNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
-            this.cityBiomesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_ExportSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_StatusStrip.SuspendLayout();
             this.c_ContextMenuStrip.SuspendLayout();
             this.c_ToolStrip.SuspendLayout();
@@ -159,10 +160,11 @@
             this.c_3DTerrainMenuItem,
             this.toolStripMenuItem4,
             this.c_DisableProcessingMenuItem,
+            this.c_ExportSelectedMenuItem,
             this.c_RenameSelectedMenuItem,
             this.c_DeleteSelectedMenuItem});
             this.c_ContextMenuStrip.Name = "contextMenuStrip1";
-            this.c_ContextMenuStrip.Size = new System.Drawing.Size(173, 368);
+            this.c_ContextMenuStrip.Size = new System.Drawing.Size(173, 390);
             // 
             // c_2DToolStripMenuItem
             // 
@@ -536,6 +538,13 @@
             this.buildingPlacerToolStripMenuItem.Text = "Building Placer";
             this.buildingPlacerToolStripMenuItem.Click += new System.EventHandler(this.buildingPlacerToolStripMenuItem_Click);
             // 
+            // cityBiomesToolStripMenuItem
+            // 
+            this.cityBiomesToolStripMenuItem.Name = "cityBiomesToolStripMenuItem";
+            this.cityBiomesToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.cityBiomesToolStripMenuItem.Text = "City Biomes";
+            this.cityBiomesToolStripMenuItem.Click += new System.EventHandler(this.cityBiomesToolStripMenuItem_Click);
+            // 
             // c_FamilyTreesMenuItem
             // 
             this.c_FamilyTreesMenuItem.Enabled = false;
@@ -766,12 +775,13 @@
             this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
             this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
             // 
-            // cityBiomesToolStripMenuItem
+            // c_ExportSelectedMenuItem
             // 
-            this.cityBiomesToolStripMenuItem.Name = "cityBiomesToolStripMenuItem";
-            this.cityBiomesToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.cityBiomesToolStripMenuItem.Text = "City Biomes";
-            this.cityBiomesToolStripMenuItem.Click += new System.EventHandler(this.cityBiomesToolStripMenuItem_Click);
+            this.c_ExportSelectedMenuItem.Enabled = false;
+            this.c_ExportSelectedMenuItem.Name = "c_ExportSelectedMenuItem";
+            this.c_ExportSelectedMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.c_ExportSelectedMenuItem.Text = "Export Selected";
+            this.c_ExportSelectedMenuItem.Click += new System.EventHandler(this.c_ExportSelectedMenuItem_Click);
             // 
             // FlowForm
             // 
@@ -877,5 +887,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem c_DisableProcessingMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cityBiomesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem c_ExportSelectedMenuItem;
     }
 }

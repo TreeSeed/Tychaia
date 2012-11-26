@@ -244,8 +244,8 @@ namespace Tychaia
                 return;
 
             // Pan current chunk.
-            //this.Chunk = this.Octree.Get((long)newX, (long)newY, (long)newZ);
-            while (newX < this.Chunk.X)
+            this.Chunk = this.Octree.Get((long)newX, (long)newY, (long)newZ);
+            /*while (newX < this.Chunk.X)
                 this.Chunk = this.Chunk.West;
             while (newX > this.Chunk.X + Chunk.Width * Scale.CUBE_X)
                 this.Chunk = this.Chunk.East;
@@ -256,7 +256,7 @@ namespace Tychaia
             while (newZ < this.Chunk.Z)
                 this.Chunk = this.Chunk.Down;
             while (newZ > this.Chunk.Z + Chunk.Depth * Scale.CUBE_Z)
-                this.Chunk = this.Chunk.Up;
+                this.Chunk = this.Chunk.Up;*/
 
             this.m_CurrentX += x;
             this.m_CurrentY += y;

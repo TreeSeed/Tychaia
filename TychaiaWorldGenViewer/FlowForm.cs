@@ -149,6 +149,7 @@ namespace TychaiaWorldGenViewer
             if (this.c_FlowInterfaceControl.SelectedElement == null)
             {
                 this.c_LayerInspector.SelectedObject = null;
+                this.c_ExportSelectedMenuItem.Enabled = false;
                 this.c_DeleteSelectedMenuItem.Enabled = false;
                 this.c_RenameSelectedMenuItem.Enabled = false;
                 this.c_DisableProcessingMenuItem.Enabled = false;
@@ -157,6 +158,7 @@ namespace TychaiaWorldGenViewer
             else
             {
                 this.c_LayerInspector.SelectedObject = this.c_FlowInterfaceControl.SelectedElement.GetObjectToInspect();
+                this.c_ExportSelectedMenuItem.Enabled = true;
                 this.c_DeleteSelectedMenuItem.Enabled = true;
                 this.c_RenameSelectedMenuItem.Enabled = true;
                 this.c_DisableProcessingMenuItem.Enabled = true;
@@ -168,6 +170,15 @@ namespace TychaiaWorldGenViewer
         {
             if (this.c_FlowInterfaceControl.SelectedElement != null)
                 this.c_FlowInterfaceControl.SelectedElement.ObjectPropertyUpdated();
+        }
+
+        private void c_ExportSelectedMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.c_FlowInterfaceControl.SelectedElement == null)
+                return;
+
+            ExportForm ef = new ExportForm(this.c_FlowInterfaceControl.SelectedElement);
+            ef.Show();
         }
 
         private void c_DeleteSelectedMenuItem_Click(object sender, EventArgs e)

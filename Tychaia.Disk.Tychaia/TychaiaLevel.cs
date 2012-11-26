@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Tychaia.Globals;
+using System.IO;
+using LibNbt;
 
 namespace Tychaia.Disk.Tychaia
 {
@@ -19,6 +22,16 @@ namespace Tychaia.Disk.Tychaia
         // when they're storing temporary or dynamic data).  We could do this
         // by just storing the terrain data in the octree and putting entities
         // in a seperate file with a different structure.
+        
+        private string m_Path = null;
+        private TerrainOctree m_Terrain = null;
+
+        public TychaiaLevel(string name)
+        {
+            // Calculate path to level.
+            string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            this.m_Path = Path.Combine(appdata, ".tychaia", "saves", name);
+        }
 
         public void Save()
         {
@@ -26,12 +39,42 @@ namespace Tychaia.Disk.Tychaia
 
         public bool HasRegion(long x, long y, long z, long width, long height, long depth)
         {
-            return false;
+            // FIXME: Don't rely on this.
+            if (width != ChunkSize.Width || height != ChunkSize.Height || depth != ChunkSize.Depth)
+                return false;
+
+            // See if terrain.oct exists.
+            if (!File.Exists(Path.Combine(this.m_Path, "terrain.oct")))
+                return false;
+
+            // Open the terrain octree.
+            if (this.m_Terrain == null)
+                this.m_Terrain = new TerrainOctree(Path.Combine(this.m_Path, "terrain.oct"));
+
+            return this.m_Terrain.GetChunk(x / ChunkSize.Width, y / ChunkSize.Height, z / ChunkSize.Depth) != null;
         }
 
         public int[] ProvideRegion(long x, long y, long z, long width, long height, long depth)
         {
-            return null;
+            // FIXME: Don't rely on this.
+            if (width != ChunkSize.Width || height != ChunkSize.Height || depth != ChunkSize.Depth)
+                return null;
+
+            // See if terrain.oct exists.
+            if (!File.Exists(Path.Combine(this.m_Path, "terrain.oct")))
+                return null;
+
+            // Open the terrain octree.
+            if (this.m_Terrain == null)
+                this.m_Terrain = new TerrainOctree(Path.Combine(this.m_Path, "terrain.oct"));
+
+            // Open NBT.
+            NbtFile file = this.m_Terrain.GetChunk(x / ChunkSize.Width, y / ChunkSize.Height, z / ChunkSize.Depth);
+            if (file == null)
+                return null;
+
+            // Get the integer array for this chunk.
+            return file.RootTag["RawData"].IntArrayValue;
         }
     }
 }
