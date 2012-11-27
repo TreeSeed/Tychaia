@@ -30,11 +30,6 @@ namespace Tychaia.ProceduralGeneration
             get { return true; }
         }
 
-        public abstract int StandardDepth
-        {
-            get;
-        }
-
         protected sealed override int[] GenerateDataImpl(long x, long y, long width, long height)
         {
             return this.GenerateDataImpl(x, y, 0, width, height, 1);

@@ -44,7 +44,7 @@ namespace Tychaia.ProceduralGeneration
 
         [DataMember]
         [Description("The seed modifier value to apply to this Voronoi map.")]
-        public long Modifier
+        public int Modifier
         {
             get;
             set;
@@ -95,7 +95,12 @@ namespace Tychaia.ProceduralGeneration
             for (int i = -this.EdgeSampling; i < width + this.EdgeSampling; i++)
                 for (int j = -this.EdgeSampling; j < height + this.EdgeSampling; j++)
                 {
-                    if (this.GetRandomRange(x + i, y + j, this.PointValue, (int)this.Modifier) == 0)
+                    int s = this.GetRandomRange(x + i, y + j, this.PointValue, this.Modifier);
+                    //long s = this.GetRandomLong(x + i, y + j) % this.PointValue;
+                    //if (s < 0) s = Math.Abs(s);
+                    //if (s < 0 || s >= this.PointValue)
+                    //    throw new InvalidOperationException();
+                    if (s == 0)
                     {
                         points.Add(new Vector(new double[] { i, j }));
                         if (i >= 0 && i < width &&

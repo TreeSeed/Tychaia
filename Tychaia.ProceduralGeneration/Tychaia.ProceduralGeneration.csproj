@@ -58,11 +58,12 @@
     <Compile Include="Cities\RoyaltyCityBiome.cs" />
     <Compile Include="Cities\MineCityBiome.cs" />
     <Compile Include="Cities\FarmlandCityBiome.cs" />
-    <Compile Include="LayerRandomCities.cs" />
-    <Compile Include="LayerEdgeDetection.cs" />
+    <Compile Include="Layer3DInitialPerlin.cs" />
+    <Compile Include="Layer3DFormCityBiomes.cs" />
+    <Compile Include="Layer3DEdgeDetection.cs" />
     <Compile Include="LayerZoomWaterDistance.cs" />
-    <Compile Include="LayerBuildingPlacer.cs" />
-    <Compile Include="LayerBuildingList.cs" />
+    <Compile Include="Layer3DBuildingPlacer.cs" />
+    <Compile Include="Layer3DBuildingList.cs" />
     <Compile Include="LayerZoomTownCenters.cs" />
     <Compile Include="LayerExtendTowns.cs" />
     <Compile Include="LayerTownSelection.cs" />

@@ -52,16 +52,10 @@ namespace Tychaia.ProceduralGeneration
             return new bool[] { true };
         }
 
-        public override int StandardDepth
-        {
-            get { return 16; }
-        }
-
         public override string ToString()
         {
             return "Store Result 3D";
         }
-
     }
 
     public enum Finish3DType

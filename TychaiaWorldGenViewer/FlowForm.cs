@@ -277,6 +277,16 @@ namespace TychaiaWorldGenViewer
             );
         }
 
+        private void c_3DGeneralAddInitialPerlinMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+                new LayerFlowElement(
+                    this.c_FlowInterfaceControl,
+                    new Layer3DInitialPerlin(this.m_Seed)
+                )
+            );
+        }
+
         private void c_GeneralAddInitialVoronoiMenuItem_Click(object sender, EventArgs e)
         {
             this.c_FlowInterfaceControl.AddElementAtMouse(
@@ -482,7 +492,7 @@ namespace TychaiaWorldGenViewer
             this.c_FlowInterfaceControl.AddElementAtMouse(
                 new LayerFlowElement(
                     this.c_FlowInterfaceControl,
-                    new LayerBuildingList(null, null, null, null, null, null)
+                    new Layer3DBuildingList(null, null, null, null, null, null)
                 )
             );
         }
@@ -492,7 +502,7 @@ namespace TychaiaWorldGenViewer
             this.c_FlowInterfaceControl.AddElementAtMouse(
                 new LayerFlowElement(
                     this.c_FlowInterfaceControl,
-                    new LayerBuildingPlacer(null, null)
+                    new Layer3DBuildingPlacer(null, null)
                 )
             );
         }
@@ -507,13 +517,23 @@ namespace TychaiaWorldGenViewer
             );
         }
 
-        private void cityBiomesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void c_3DTerrainAddEdgeDetectionMenuItem_Click(object sender, EventArgs e)
         {
             this.c_FlowInterfaceControl.AddElementAtMouse(
-                new LayerFlowElement(
-                    this.c_FlowInterfaceControl,
-                    new LayerRandomCities(null, null, null, null, null)
-                )
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new Layer3DEdgeDetection(null)
+               )
+            );
+        }
+
+        private void c_3DTownsAddFormCityBiomesMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new Layer3DFormCityBiomes(null, null, null, null, null)
+               )
             );
         }
     }

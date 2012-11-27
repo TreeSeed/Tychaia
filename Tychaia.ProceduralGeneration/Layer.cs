@@ -132,7 +132,7 @@ namespace Tychaia.ProceduralGeneration
         {
             unchecked
             {
-                return (int)this.GetRandomNumber(x, y, modifier);
+                return (int)(this.GetRandomNumber(x, y, modifier) % int.MaxValue);
             }
         }
 

@@ -74,11 +74,6 @@ namespace Tychaia.ProceduralGeneration
             return "Form 3D Terrain";
         }
 
-        public override int StandardDepth
-        {
-            get { return 16; }
-        }
-
         public override bool[] GetParents3DRequired()
         {
             return new bool[] { false, false };

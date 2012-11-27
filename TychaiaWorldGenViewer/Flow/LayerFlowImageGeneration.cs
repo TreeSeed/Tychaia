@@ -44,8 +44,9 @@ namespace TychaiaWorldGenViewer.Flow
         private const int RenderToNW = 1;
         private const int RenderToSE = 2;
         private const int RenderToSW = 3;
-        private const int RenderWidth = 128;
-        private const int RenderHeight = 128;
+        private const int RenderWidth = 64;
+        private const int RenderHeight = 64;
+        private const int RenderDepth = 64;
 
         private static int[] CalculateCellRenderOrder(int targetDir)
         {
@@ -131,9 +132,7 @@ namespace TychaiaWorldGenViewer.Flow
             g.Clear(Color.White);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
             Dictionary<int, Brush> brushes = l.GetLayerColors();
-            int dataWidth = 128;
-            int dataHeight = 128;
-            int[] data = l.GenerateData(LayerFlowImageGeneration.X, LayerFlowImageGeneration.Y, 0, dataWidth, dataHeight, l.StandardDepth);
+            int[] data = l.GenerateData(LayerFlowImageGeneration.X, LayerFlowImageGeneration.Y, 0, RenderWidth, RenderHeight, RenderDepth);
 
             /* Our world is laid out in memory in terms of X / Y, but
              * we are rendering isometric, which means that the rendering
@@ -168,12 +167,12 @@ namespace TychaiaWorldGenViewer.Flow
              */
 
             int[] render = GetCellRenderOrder(RenderToNE);
-            int ztop = l.StandardDepth;
+            int ztop = RenderDepth;
             int zbottom = 0;
             for (int z = zbottom; z < ztop; z++)
             {
                 int rcx = width / 2 - 1;
-                int rcy = height / 2 - 127;
+                int rcy = height / 2 - 31;
                 int rw = 2;
                 int rh = 1;
                 for (int i = 0; i < render.Length; i++)
@@ -190,9 +189,9 @@ namespace TychaiaWorldGenViewer.Flow
                     {
                         try
                         {
-                            if (brushes != null && brushes.ContainsKey(data[x + y * dataWidth + z * dataWidth * dataHeight]))
+                            if (brushes != null && brushes.ContainsKey(data[x + y * RenderWidth + z * RenderWidth * RenderHeight]))
                             {
-                                SolidBrush sb = brushes[data[x + y * dataWidth + z * dataWidth * dataHeight]] as SolidBrush;
+                                SolidBrush sb = brushes[data[x + y * RenderWidth + z * RenderWidth * RenderHeight]] as SolidBrush;
                                 //sb.Color = Color.FromArgb(255, sb.Color);
                                 g.FillRectangle(
                                     sb,

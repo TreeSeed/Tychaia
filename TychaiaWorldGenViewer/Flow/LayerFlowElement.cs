@@ -60,8 +60,8 @@ namespace TychaiaWorldGenViewer.Flow
             }
             else
             {
-                this.ImageWidth = 256;
-                this.ImageHeight = 256;
+                this.ImageWidth = 128;
+                this.ImageHeight = 192;
             }
             this.ObjectPropertyUpdated();
 
