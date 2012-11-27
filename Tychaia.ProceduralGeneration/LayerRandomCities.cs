@@ -11,7 +11,7 @@ namespace Tychaia.ProceduralGeneration
     /// Generates city biomes based on input data.
     /// </summary>
     [DataContract]
-    public class LayerRandomCities : Layer2D
+    public class LayerRandomCities : Layer3D
     {
         [DataMember]
         [DefaultValue(0)]
@@ -95,33 +95,37 @@ namespace Tychaia.ProceduralGeneration
             this.MinOreDensity = 0;
             this.MaxOreDensity = 100;
             this.MinRareOreDensity = 0;
-            this.MaxRareOreDensity = 20;
+            this.MaxRareOreDensity = 100;
         }
 
-        protected override int[] GenerateDataImpl(long x, long y, long width, long height)
+        protected override int[] GenerateDataImpl(long x, long y, long z, long width, long height, long depth)
         {
-            if (this.Parents.Length < 6 || this.Parents[0] == null || this.Parents[1] == null || this.Parents[2] == null || this.Parents[3] == null || this.Parents[4] == null)
-                return new int[width * height];
+            if (this.Parents.Length < 5 || this.Parents[0] == null || this.Parents[1] == null || this.Parents[2] == null || this.Parents[3] == null || this.Parents[4] == null)
+                return new int[width * height * depth];
 
             int[] biome = this.Parents[0].GenerateData(x, y, width, height);
             int[] soilfertility = this.Parents[1].GenerateData(x, y, width, height);
             int[] militarystrength = this.Parents[2].GenerateData(x, y, width, height);
             int[] oredensity = this.Parents[3].GenerateData(x, y, width, height);
             int[] rareoredensity = this.Parents[4].GenerateData(x, y, width, height);
-            int[] data = new int[width * height];
+            int[] data = new int[width * height * depth];
 
-            // Write out the secondary biomes.
+            for (int i = 0; i < width; i++)
+                for (int j = 0; j < height; j++)
+                    for (int k = 0; k < depth; k++)
+                    {
+                        data[i + j * width + k * width * height] = -1;
+                    }
+
+            // Write out the city biomes.
             for (int i = 0; i < width; i++)
                 for (int j = 0; j < height; j++)
                 {
                     try
                     {
-                        if (biome[i + j * width] == 0)
-                        {
-                            data[1 + j * width] = 0;
-                        }
-                        else
-                        {
+                        data[i + j * width] = 0;
+                        if (biome[i + j * width] != 0)
+                        {                            
                             // Normalize values.
                             // int nbiome = biome[i + j * width];
                             double nsoilfertility = (soilfertility[i + j * width] - this.MinSoilFertility) / (double)(this.MaxSoilFertility - this.MinSoilFertility);
@@ -130,7 +134,21 @@ namespace Tychaia.ProceduralGeneration
                             double nrareoredensity = (rareoredensity[i + j * width] - this.MinRareOreDensity) / (double)(this.MaxRareOreDensity - this.MinRareOreDensity);
 
                             // Store result.
-                            data[i + j * width] = CitiesEngine.GetCityBiomeForCell(nsoilfertility, nmilitarystrength, noredensity, nrareoredensity);
+                            bool endloop = false;
+                            int citybiome = 0;
+                            while (endloop == false)
+                            {
+                                int temp = CitiesEngine.GetCityBiomeForCell(nsoilfertility, nmilitarystrength, noredensity, nrareoredensity, citybiome);
+                                if (temp != 0)
+                                {
+                                    data[i + j * width + citybiome * width * height] = temp;
+                                    citybiome++;
+                                }
+                                else
+                                {
+                                    endloop = true;
+                                }
+                            }
                         }
                     }
                     catch (Exception e)
@@ -156,6 +174,16 @@ namespace Tychaia.ProceduralGeneration
         public override string ToString()
         {
             return "City Biomes";
+        }
+
+        public override bool[] GetParents3DRequired()
+        {
+            return new bool[] { false, false, false, false, false};
+        }
+
+        public override int StandardDepth
+        {
+            get { return 16; }
         }
     }
 }
