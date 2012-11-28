@@ -31,6 +31,14 @@ namespace Tychaia.ProceduralGeneration
             { 3  /* edge     */, new SolidBrush(Color.FromArgb(0, 0, 255)) },
         };
 
+        public static Dictionary<int, Brush> Voronoi3DBrushes = new Dictionary<int, Brush>
+        {
+            { 0  /* none     */, new SolidBrush(Color.FromArgb(0, 63, 63, 63)) },
+            { 1  /* original */, new SolidBrush(Color.FromArgb(255, 0, 0)) },
+            { 2  /* vertex   */, new SolidBrush(Color.FromArgb(0, 255, 0)) },
+            { 3  /* edge     */, new SolidBrush(Color.FromArgb(0, 0, 255)) },
+        };
+
         public static Dictionary<int, Brush> TownBrushes = new Dictionary<int, Brush>
         {
             { 0  /* none     */, new SolidBrush(Color.FromArgb(0, 0, 0)) },

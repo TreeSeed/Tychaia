@@ -60,8 +60,8 @@ namespace Tychaia.ProceduralGeneration
                         {
                             townsize = TownEngine.Towns[parent[(i) + (j) * rw]].TownSize;
 
-                            double selectedchance = this.GetRandomLong(x + i, y + j, iter) % 100;
-                            int selected = this.GetRandomRange(x + i, y + j, 4, iter);
+                            double selectedchance = this.GetRandomLong(x + i, y + j, 0, iter) % 100;
+                            int selected = this.GetRandomRange(x + i, y + j, 0, 4, iter);
                             double chance = selectedchance / 100;
                             if (chance >= townsize)
                             {

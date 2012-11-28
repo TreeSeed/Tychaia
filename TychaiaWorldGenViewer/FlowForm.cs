@@ -235,6 +235,16 @@ namespace TychaiaWorldGenViewer
                     this.c_FlowInterfaceControl.PushForReprocessing(el);
         }
 
+        private void c_ZNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            LayerFlowImageGeneration.Z = (int)this.c_ZNumericUpDown.Value;
+            if (this.c_FlowInterfaceControl.SelectedElement != null)
+                this.c_FlowInterfaceControl.PushForReprocessing(this.c_FlowInterfaceControl.SelectedElement);
+            foreach (FlowElement el in this.c_FlowInterfaceControl.Elements)
+                if (el != this.c_FlowInterfaceControl.SelectedElement)
+                    this.c_FlowInterfaceControl.PushForReprocessing(el);
+        }
+
         #endregion
 
         private void c_GeneralAddZoomMenuItem_Click(object sender, EventArgs e)
@@ -533,6 +543,16 @@ namespace TychaiaWorldGenViewer
                new LayerFlowElement(
                    this.c_FlowInterfaceControl,
                    new Layer3DFormCityBiomes(null, null, null, null, null)
+               )
+            );
+        }
+
+        private void c_3DGeneralAddInitialVoronoiMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new Layer3DInitialVoronoi(this.m_Seed)
                )
             );
         }

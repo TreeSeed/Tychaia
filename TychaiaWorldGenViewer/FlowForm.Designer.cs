@@ -92,6 +92,8 @@
             this.c_3DTerrainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_3DTerrainAddFormTerrainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_3DTerrainAddEdgeDetectionMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_3DTownsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_3DTownsAddFormCityBiomesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.c_DisableProcessingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_ExportSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -108,9 +110,12 @@
             this.c_XLabel = new System.Windows.Forms.Label();
             this.c_XNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.c_3DTownsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.c_3DTownsAddFormCityBiomesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
+            this.c_3DGeneralAddInitialVoronoiMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripSeparator();
             this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
+            this.c_ZLabel = new System.Windows.Forms.Label();
+            this.c_ZNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_StatusStrip.SuspendLayout();
             this.c_ContextMenuStrip.SuspendLayout();
             this.c_ToolStrip.SuspendLayout();
@@ -118,6 +123,7 @@
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.c_XNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.c_YNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.c_ZNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // c_StatusStrip
@@ -168,7 +174,7 @@
             this.c_RenameSelectedMenuItem,
             this.c_DeleteSelectedMenuItem});
             this.c_ContextMenuStrip.Name = "contextMenuStrip1";
-            this.c_ContextMenuStrip.Size = new System.Drawing.Size(173, 412);
+            this.c_ContextMenuStrip.Size = new System.Drawing.Size(173, 390);
             // 
             // c_2DToolStripMenuItem
             // 
@@ -563,8 +569,11 @@
             // c_3DGeneralMenuItem
             // 
             this.c_3DGeneralMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.c_3DGeneralStoreResultMenuItem,
-            this.c_3DGeneralAddInitialPerlinMenuItem});
+            this.c_3DGeneralAddInitialPerlinMenuItem,
+            this.toolStripMenuItem7,
+            this.c_3DGeneralAddInitialVoronoiMenuItem,
+            this.toolStripMenuItem8,
+            this.c_3DGeneralStoreResultMenuItem});
             this.c_3DGeneralMenuItem.Name = "c_3DGeneralMenuItem";
             this.c_3DGeneralMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_3DGeneralMenuItem.Text = "General";
@@ -605,6 +614,21 @@
             this.c_3DTerrainAddEdgeDetectionMenuItem.Size = new System.Drawing.Size(154, 22);
             this.c_3DTerrainAddEdgeDetectionMenuItem.Text = "Edge Detection";
             this.c_3DTerrainAddEdgeDetectionMenuItem.Click += new System.EventHandler(this.c_3DTerrainAddEdgeDetectionMenuItem_Click);
+            // 
+            // c_3DTownsMenuItem
+            // 
+            this.c_3DTownsMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.c_3DTownsAddFormCityBiomesMenuItem});
+            this.c_3DTownsMenuItem.Name = "c_3DTownsMenuItem";
+            this.c_3DTownsMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.c_3DTownsMenuItem.Text = "Towns";
+            // 
+            // c_3DTownsAddFormCityBiomesMenuItem
+            // 
+            this.c_3DTownsAddFormCityBiomesMenuItem.Name = "c_3DTownsAddFormCityBiomesMenuItem";
+            this.c_3DTownsAddFormCityBiomesMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.c_3DTownsAddFormCityBiomesMenuItem.Text = "Form City Biomes";
+            this.c_3DTownsAddFormCityBiomesMenuItem.Click += new System.EventHandler(this.c_3DTownsAddFormCityBiomesMenuItem_Click);
             // 
             // toolStripMenuItem4
             // 
@@ -708,15 +732,19 @@
             // 
             // tableLayoutPanel2
             // 
-            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnCount = 6;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.Controls.Add(this.c_ZNumericUpDown, 5, 0);
             this.tableLayoutPanel2.Controls.Add(this.c_YLabel, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.c_XLabel, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.c_XNumericUpDown, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.c_YNumericUpDown, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.c_ZLabel, 4, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
@@ -729,7 +757,7 @@
             // c_YLabel
             // 
             this.c_YLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.c_YLabel.Location = new System.Drawing.Point(103, 5);
+            this.c_YLabel.Location = new System.Drawing.Point(71, 5);
             this.c_YLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.c_YLabel.Name = "c_YLabel";
             this.c_YLabel.Size = new System.Drawing.Size(19, 19);
@@ -760,13 +788,13 @@
             0,
             -2147483648});
             this.c_XNumericUpDown.Name = "c_XNumericUpDown";
-            this.c_XNumericUpDown.Size = new System.Drawing.Size(69, 20);
+            this.c_XNumericUpDown.Size = new System.Drawing.Size(37, 20);
             this.c_XNumericUpDown.TabIndex = 1;
             this.c_XNumericUpDown.ValueChanged += new System.EventHandler(this.c_XNumericUpDown_ValueChanged);
             // 
             // c_YNumericUpDown
             // 
-            this.c_YNumericUpDown.Location = new System.Drawing.Point(128, 3);
+            this.c_YNumericUpDown.Location = new System.Drawing.Point(96, 3);
             this.c_YNumericUpDown.Maximum = new decimal(new int[] {
             6000,
             0,
@@ -778,24 +806,26 @@
             0,
             -2147483648});
             this.c_YNumericUpDown.Name = "c_YNumericUpDown";
-            this.c_YNumericUpDown.Size = new System.Drawing.Size(69, 20);
+            this.c_YNumericUpDown.Size = new System.Drawing.Size(37, 20);
             this.c_YNumericUpDown.TabIndex = 2;
             this.c_YNumericUpDown.ValueChanged += new System.EventHandler(this.c_YNumericUpDown_ValueChanged);
             // 
-            // c_3DTownsMenuItem
+            // toolStripMenuItem7
             // 
-            this.c_3DTownsMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.c_3DTownsAddFormCityBiomesMenuItem});
-            this.c_3DTownsMenuItem.Name = "c_3DTownsMenuItem";
-            this.c_3DTownsMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.c_3DTownsMenuItem.Text = "Towns";
+            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(149, 6);
             // 
-            // c_3DTownsAddFormCityBiomesMenuItem
+            // c_3DGeneralAddInitialVoronoiMenuItem
             // 
-            this.c_3DTownsAddFormCityBiomesMenuItem.Name = "c_3DTownsAddFormCityBiomesMenuItem";
-            this.c_3DTownsAddFormCityBiomesMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.c_3DTownsAddFormCityBiomesMenuItem.Text = "Form City Biomes";
-            this.c_3DTownsAddFormCityBiomesMenuItem.Click += new System.EventHandler(this.c_3DTownsAddFormCityBiomesMenuItem_Click);
+            this.c_3DGeneralAddInitialVoronoiMenuItem.Name = "c_3DGeneralAddInitialVoronoiMenuItem";
+            this.c_3DGeneralAddInitialVoronoiMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_3DGeneralAddInitialVoronoiMenuItem.Text = "Initial Voronoi";
+            this.c_3DGeneralAddInitialVoronoiMenuItem.Click += new System.EventHandler(this.c_3DGeneralAddInitialVoronoiMenuItem_Click);
+            // 
+            // toolStripMenuItem8
+            // 
+            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(149, 6);
             // 
             // c_FlowInterfaceControl
             // 
@@ -809,6 +839,33 @@
             this.c_FlowInterfaceControl.Zoom = 1F;
             this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
             this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
+            // 
+            // c_ZLabel
+            // 
+            this.c_ZLabel.Location = new System.Drawing.Point(139, 5);
+            this.c_ZLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
+            this.c_ZLabel.Name = "c_ZLabel";
+            this.c_ZLabel.Size = new System.Drawing.Size(14, 19);
+            this.c_ZLabel.TabIndex = 4;
+            this.c_ZLabel.Text = "Z:";
+            // 
+            // c_ZNumericUpDown
+            // 
+            this.c_ZNumericUpDown.Location = new System.Drawing.Point(159, 3);
+            this.c_ZNumericUpDown.Maximum = new decimal(new int[] {
+            6000,
+            0,
+            0,
+            0});
+            this.c_ZNumericUpDown.Minimum = new decimal(new int[] {
+            6000,
+            0,
+            0,
+            -2147483648});
+            this.c_ZNumericUpDown.Name = "c_ZNumericUpDown";
+            this.c_ZNumericUpDown.Size = new System.Drawing.Size(37, 20);
+            this.c_ZNumericUpDown.TabIndex = 5;
+            this.c_ZNumericUpDown.ValueChanged += new System.EventHandler(this.c_ZNumericUpDown_ValueChanged);
             // 
             // FlowForm
             // 
@@ -830,6 +887,7 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.c_XNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.c_YNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.c_ZNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -918,5 +976,10 @@
         private System.Windows.Forms.ToolStripMenuItem c_3DTerrainAddEdgeDetectionMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_3DTownsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_3DTownsAddFormCityBiomesMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
+        private System.Windows.Forms.ToolStripMenuItem c_3DGeneralAddInitialVoronoiMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem8;
+        private System.Windows.Forms.NumericUpDown c_ZNumericUpDown;
+        private System.Windows.Forms.Label c_ZLabel;
     }
 }

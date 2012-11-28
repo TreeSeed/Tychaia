@@ -138,7 +138,7 @@ namespace Tychaia.ProceduralGeneration
                         int nsecondarybiome = secondarybiome[i + j * width];
 
                         // Get the number of buildings that should be placed by this town placer.
-                        int townsize = this.GetRandomRange(x + i, y + j, 100);
+                        int townsize = this.GetRandomRange(x + i, y + j, 0, 100);
 
                         // Store result. Gets all the viable buildings for the town generation.
                         // Need to be able to store this within each town cell
@@ -155,12 +155,12 @@ namespace Tychaia.ProceduralGeneration
                         {
                             double foodproduction = (townsize + nsoilfertility) / 2;
                             int foodvaluecount = 0;
-                            selection = this.GetRandomRange(x + i, y + j, ViableFoodBuildings.Count);
+                            selection = this.GetRandomRange(x + i, y + j, 0, ViableFoodBuildings.Count);
                             while (foodvaluecount < foodproduction)
                             {
                                 data[i + j * width + u * width * height] = ViableFoodBuildings[selection] + 2;
                                 foodvaluecount = foodvaluecount + BuildingEngine.Buildings[ViableFoodBuildings[selection]].BuildingValue;
-                                selection = this.GetRandomRange(x + i, y + j, ViableFoodBuildings.Count);
+                                selection = this.GetRandomRange(x + i, y + j, 0, ViableFoodBuildings.Count);
                                 u++;
                             }
                         }
@@ -168,12 +168,12 @@ namespace Tychaia.ProceduralGeneration
                         {
                             double oreproduction = (townsize + (noredensity + nrareoredensity) / 2) / 2;
                             int orevaluecount = 0;
-                            selection = this.GetRandomRange(x + i, y + j, ViableOreBuildings.Count);
+                            selection = this.GetRandomRange(x + i, y + j, 0, ViableOreBuildings.Count);
                             while (orevaluecount < oreproduction)
                             {
                                 data[i + j * width + u * width * height] = ViableOreBuildings[selection] + 2;
                                 orevaluecount = orevaluecount + BuildingEngine.Buildings[ViableOreBuildings[selection]].BuildingValue;
-                                selection = this.GetRandomRange(x + i, y + j, ViableOreBuildings.Count);
+                                selection = this.GetRandomRange(x + i, y + j, 0, ViableOreBuildings.Count);
                                 u++;
                             }
                         }
@@ -181,12 +181,12 @@ namespace Tychaia.ProceduralGeneration
                         {
                             double militaryvalue = (townsize + nmilitarystrength) / 2;
                             int militaryvaluecount = 0;
-                            selection = this.GetRandomRange(x + i, y + j, ViableMilitaryBuildings.Count);
+                            selection = this.GetRandomRange(x + i, y + j, 0, ViableMilitaryBuildings.Count);
                             while (militaryvaluecount < militaryvalue)
                             {
                                 data[i + j * width + u * width * height] = ViableMilitaryBuildings[selection] + 2;
                                 militaryvaluecount = militaryvaluecount + BuildingEngine.Buildings[ViableMilitaryBuildings[selection]].BuildingValue;
-                                selection = this.GetRandomRange(x + i, y + j, ViableMilitaryBuildings.Count);
+                                selection = this.GetRandomRange(x + i, y + j, 0, ViableMilitaryBuildings.Count);
                                 u++;
                             }
                         }
@@ -194,12 +194,12 @@ namespace Tychaia.ProceduralGeneration
                         {
                             double townprestiege = (townsize + (nrareoredensity * 3) + nsoilfertility + nmilitarystrength) / 6;
                             int prestiegevaluecount = 0;
-                            selection = this.GetRandomRange(x + i, y + j, ViablePrestigeBuildings.Count);
+                            selection = this.GetRandomRange(x + i, y + j, 0, ViablePrestigeBuildings.Count);
                             while (prestiegevaluecount < townprestiege)
                             {
                                 data[i + j * width + u * width * height] = ViablePrestigeBuildings[selection] + 2;
                                 prestiegevaluecount = prestiegevaluecount + BuildingEngine.Buildings[ViablePrestigeBuildings[selection]].BuildingValue;
-                                selection = this.GetRandomRange(x + i, y + j, ViablePrestigeBuildings.Count);
+                                selection = this.GetRandomRange(x + i, y + j, 0, ViablePrestigeBuildings.Count);
                                 u++;
                             }
                         }
@@ -207,12 +207,12 @@ namespace Tychaia.ProceduralGeneration
                         {
                             double watervalue = (townsize + nrareoredensity / 2 + nsoilfertility / 2) / 2;
                             int watervaluecount = 0;
-                            selection = this.GetRandomRange(x + i, y + j, ViableWaterBuildings.Count);
+                            selection = this.GetRandomRange(x + i, y + j, 0, ViableWaterBuildings.Count);
                             while (watervaluecount < watervalue)
                             {
                                 data[i + j * width + u * width * height] = ViableWaterBuildings[selection] + 2;
                                 watervaluecount = watervaluecount + BuildingEngine.Buildings[ViableWaterBuildings[selection]].BuildingValue;
-                                selection = this.GetRandomRange(x + i, y + j, ViableWaterBuildings.Count);
+                                selection = this.GetRandomRange(x + i, y + j, 0, ViableWaterBuildings.Count);
                                 u++;
                             }
                         }

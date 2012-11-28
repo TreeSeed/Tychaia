@@ -25,6 +25,12 @@ namespace TychaiaWorldGenViewer.Flow
             set;
         }
 
+        public static int Z
+        {
+            get;
+            set;
+        }
+
         public static Bitmap RegenerateImageForLayer(FlowInterfaceControl fic, Layer l, int width, int height)
         {
             if (l is Layer2D)
@@ -132,7 +138,7 @@ namespace TychaiaWorldGenViewer.Flow
             g.Clear(Color.White);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
             Dictionary<int, Brush> brushes = l.GetLayerColors();
-            int[] data = l.GenerateData(LayerFlowImageGeneration.X, LayerFlowImageGeneration.Y, 0, RenderWidth, RenderHeight, RenderDepth);
+            int[] data = l.GenerateData(LayerFlowImageGeneration.X, LayerFlowImageGeneration.Y, LayerFlowImageGeneration.Z, RenderWidth, RenderHeight, RenderDepth);
 
             /* Our world is laid out in memory in terms of X / Y, but
              * we are rendering isometric, which means that the rendering

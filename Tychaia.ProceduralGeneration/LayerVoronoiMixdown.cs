@@ -97,7 +97,7 @@ namespace Tychaia.ProceduralGeneration
             long rw = width + this.EdgeSampling * 2;
             long rh = height + this.EdgeSampling * 2;
 
-            switch (this.GetRandomRange(x + i, y + j, 4))
+            switch (this.GetRandomRange(x + i, y + j, 0, 4))
             {
                 case 0:
                     if (tracker[(i - 1 + ox) + (j + oy) * rw] >= MAPPING_OFFSET)
@@ -130,7 +130,7 @@ namespace Tychaia.ProceduralGeneration
 
             if (p.Inside(width, height) && tracker[(i + ox) + (j + oy) * rw] != 0)
                 return data[i + j * width];
-            if (p.Left.Inside(width, height) && (p.Up.Inside(width, height) || this.GetRandomRange(x + i, y + j, 2) == 0))
+            if (p.Left.Inside(width, height) && (p.Up.Inside(width, height) || this.GetRandomRange(x + i, y + j, 0, 2) == 0))
                 return this.FindValueNear(tracker, data, x, y, i - 1, j, width, height);
             else if (p.Up.Inside(width, height))
                 return this.FindValueNear(tracker, data, x, y, i, j - 1, width, height);
@@ -147,7 +147,7 @@ namespace Tychaia.ProceduralGeneration
 
             if (p.Inside(width, height) && tracker[(i + ox) + (j + oy) * rw] != 0)
                 return data[i + j * width];
-            if (p.Right.Inside(width, height) && (p.Down.Inside(width, height) || this.GetRandomRange(x + i, y + j, 2) == 0))
+            if (p.Right.Inside(width, height) && (p.Down.Inside(width, height) || this.GetRandomRange(x + i, y + j, 0, 2) == 0))
                 return this.FindValueNearOpposite(tracker, data, x, y, i + 1, j, width, height);
             else if (p.Down.Inside(width, height))
                 return this.FindValueNearOpposite(tracker, data, x, y, i, j + 1, width, height);

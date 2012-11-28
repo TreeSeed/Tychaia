@@ -82,7 +82,7 @@ namespace Tychaia.ProceduralGeneration
                         bool isSurrounded = this.IsCellSurrounded(data, i, j, width, height, lookFor);
                         if (isSurrounded)
                         {
-                            if (this.GetRandomDouble(x + i, y + j) > this.FailLimit && lookFor != 0)
+                            if (this.GetRandomDouble(x + i, y + j, 0) > this.FailLimit && lookFor != 0)
                                 data[i + j * width] = lookFor;
                             else
                                 data[i + j * width] = (int)Math.Min(lookFor + 1, this.MaxTerrain);

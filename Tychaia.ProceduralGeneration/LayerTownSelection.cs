@@ -148,7 +148,7 @@ namespace Tychaia.ProceduralGeneration
                                         }
                                         else if (TownScore[l] == currentbesttownscore)
                                         {
-                                            int selected = this.GetRandomRange(x + i, y + j, 2);
+                                            int selected = this.GetRandomRange(x + i, y + j, 0, 2);
 
                                             if (selected == 0)
                                             {
