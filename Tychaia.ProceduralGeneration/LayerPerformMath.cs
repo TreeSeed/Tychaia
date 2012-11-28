@@ -8,10 +8,10 @@ using System.Runtime.Serialization;
 namespace Tychaia.ProceduralGeneration
 {
     /// <summary>
-    /// Performs mathematical operations on perlin noise maps.
+    /// Performs mathematical operations on noise maps.
     /// </summary>
     [DataContract]
-    public class LayerPerlinMath : Layer2D
+    public class LayerPerformMath : Layer2D
     {
         [DataMember]
         [DefaultValue(MathOp.Add)]
@@ -24,8 +24,8 @@ namespace Tychaia.ProceduralGeneration
 
         [DataMember]
         [DefaultValue(0)]
-        [Description("The minimum integer value in the first perlin noise map.")]
-        public int MinPerlinFirst
+        [Description("The minimum integer value in the first noise map.")]
+        public int MinInputFirst
         {
             get;
             set;
@@ -33,8 +33,8 @@ namespace Tychaia.ProceduralGeneration
 
         [DataMember]
         [DefaultValue(100)]
-        [Description("The maximum integer value in the first perlin noise map.")]
-        public int MaxPerlinFirst
+        [Description("The maximum integer value in the first noise map.")]
+        public int MaxInputFirst
         {
             get;
             set;
@@ -42,8 +42,8 @@ namespace Tychaia.ProceduralGeneration
 
         [DataMember]
         [DefaultValue(0)]
-        [Description("The minimum integer value in the second perlin noise map.")]
-        public int MinPerlinSecond
+        [Description("The minimum integer value in the second noise map.")]
+        public int MinInputSecond
         {
             get;
             set;
@@ -51,8 +51,8 @@ namespace Tychaia.ProceduralGeneration
 
         [DataMember]
         [DefaultValue(100)]
-        [Description("The maximum integer value in the second perlin noise map.")]
-        public int MaxPerlinSecond
+        [Description("The maximum integer value in the second noise map.")]
+        public int MaxInputSecond
         {
             get;
             set;
@@ -60,8 +60,8 @@ namespace Tychaia.ProceduralGeneration
 
         [DataMember]
         [DefaultValue(0)]
-        [Description("The minimum integer value in the perlin output map.")]
-        public int MinPerlinOutput
+        [Description("The minimum integer value in the output map.")]
+        public int MinOutput
         {
             get;
             set;
@@ -69,8 +69,8 @@ namespace Tychaia.ProceduralGeneration
 
         [DataMember]
         [DefaultValue(100)]
-        [Description("The maximum integer value in the perlin output map.")]
-        public int MaxPerlinOutput
+        [Description("The maximum integer value in the output map.")]
+        public int MaxOutput
         {
             get;
             set;
@@ -85,16 +85,16 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public LayerPerlinMath(Layer first, Layer second)
+        public LayerPerformMath(Layer first, Layer second)
             : base(new Layer[] { first, second })
         {
             this.MathOp = MathOp.Add;
-            this.MinPerlinFirst = 0;
-            this.MaxPerlinFirst = 100;
-            this.MinPerlinSecond = 0;
-            this.MaxPerlinSecond = 100;
-            this.MinPerlinOutput = 0;
-            this.MaxPerlinOutput = 100;
+            this.MinInputFirst = 0;
+            this.MaxInputFirst = 100;
+            this.MinInputSecond = 0;
+            this.MaxInputSecond = 100;
+            this.MinOutput = 0;
+            this.MaxOutput = 100;
             this.Constant = 0;
         }
 
@@ -122,8 +122,8 @@ namespace Tychaia.ProceduralGeneration
                         double a = 0, b = 0, val;
                         if (!(this.MathOp == ProceduralGeneration.MathOp.SetNumber))
                         {
-                            a = (first[i + j * width] - this.MinPerlinFirst) / (double)(this.MaxPerlinFirst - this.MinPerlinFirst);
-                            b = (second[i + j * width] - this.MinPerlinSecond) / (double)(this.MaxPerlinSecond - this.MinPerlinSecond);
+                            a = (first[i + j * width] - this.MinInputFirst) / (double)(this.MaxInputFirst - this.MinInputFirst);
+                            b = (second[i + j * width] - this.MinInputSecond) / (double)(this.MaxInputSecond - this.MinInputSecond);
                         }
 
                         // Do operation.
@@ -150,7 +150,7 @@ namespace Tychaia.ProceduralGeneration
                         }
                         
                         // Store result.
-                        data[i + j * width] = (int)(val * (this.MaxPerlinOutput - this.MinPerlinOutput) + this.MinPerlinOutput);
+                        data[i + j * width] = (int)(val * (this.MaxOutput - this.MinOutput) + this.MinOutput);
                     }
                     catch (Exception)
                     {
@@ -176,7 +176,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override string ToString()
         {
-            return "Perlin Math";
+            return "Perform Math";
         }
     }
 

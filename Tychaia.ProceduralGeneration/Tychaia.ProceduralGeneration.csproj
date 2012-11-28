@@ -79,6 +79,9 @@
     <Compile Include="Cities\RoyaltyCityBiome.cs" />
     <Compile Include="Cities\MineCityBiome.cs" />
     <Compile Include="Cities\FarmlandCityBiome.cs" />
+    <Compile Include="Layer3DPerformMath.cs" />
+    <Compile Include="Layer3DInitialOctave.cs" />
+    <Compile Include="LayerInitialOctave.cs" />
     <Compile Include="Layer3DInitialVoronoi.cs" />
     <Compile Include="Layer3DInitialPerlin.cs" />
     <Compile Include="Layer3DFormCityBiomes.cs" />
@@ -102,7 +105,7 @@
     <Compile Include="LayerInitialTowns.cs" />
     <Compile Include="LayerAutoVoronoiMixdown.cs" />
     <Compile Include="LayerSecondaryBiome.cs" />
-    <Compile Include="LayerPerlinMath.cs" />
+    <Compile Include="LayerPerformMath.cs" />
     <Compile Include="LayerTerrainMixdown.cs" />
     <Compile Include="LayerDeriveTerrain.cs" />
     <Compile Include="LayerVoronoiMixdown.cs" />

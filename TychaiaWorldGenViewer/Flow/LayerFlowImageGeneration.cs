@@ -195,16 +195,43 @@ namespace TychaiaWorldGenViewer.Flow
                     {
                         try
                         {
-                            if (brushes != null && brushes.ContainsKey(data[x + y * RenderWidth + z * RenderWidth * RenderHeight]))
+                            if (l.IsLayerColorsFlags())
                             {
-                                SolidBrush sb = brushes[data[x + y * RenderWidth + z * RenderWidth * RenderHeight]] as SolidBrush;
-                                //sb.Color = Color.FromArgb(255, sb.Color);
+                                Color accum = Color.FromArgb(0, 0, 0, 0);
+                                foreach (KeyValuePair<int, System.Drawing.Brush> kv in brushes)
+                                {
+                                    SolidBrush sb = kv.Value as SolidBrush;
+                                    if ((data[x + y * RenderWidth + z * RenderWidth * RenderHeight] & kv.Key) != 0)
+                                    {
+                                        accum = Color.FromArgb(
+                                            Math.Min(255, accum.A + sb.Color.A),
+                                            Math.Min((byte)255, (byte)(accum.R + sb.Color.R * (sb.Color.A / 255.0) / brushes.Count)),
+                                            Math.Min((byte)255, (byte)(accum.G + sb.Color.G * (sb.Color.A / 255.0) / brushes.Count)),
+                                            Math.Min((byte)255, (byte)(accum.B + sb.Color.B * (sb.Color.A / 255.0) / brushes.Count))
+                                            );
+                                    }
+                                }
+                                if (accum.R == 255 && accum.G == 255 && accum.B == 255)
+                                    accum = Color.FromArgb(63, 0, 0, 0);
                                 g.FillRectangle(
-                                    sb,
+                                    new SolidBrush(accum),
                                     new Rectangle(rx, ry, rw, rh)
                                     );
+                                break;
                             }
-                            break;
+                            else
+                            {
+                                if (brushes != null && brushes.ContainsKey(data[x + y * RenderWidth + z * RenderWidth * RenderHeight]))
+                                {
+                                    SolidBrush sb = brushes[data[x + y * RenderWidth + z * RenderWidth * RenderHeight]] as SolidBrush;
+                                    //sb.Color = Color.FromArgb(255, sb.Color);
+                                    g.FillRectangle(
+                                        sb,
+                                        new Rectangle(rx, ry, rw, rh)
+                                        );
+                                }
+                                break;
+                            }
                         }
                         catch (InvalidOperationException)
                         {

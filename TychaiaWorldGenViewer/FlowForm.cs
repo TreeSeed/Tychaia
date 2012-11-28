@@ -63,7 +63,7 @@ namespace TychaiaWorldGenViewer
                 DataContractSerializer x = new DataContractSerializer(typeof(FlowInterfaceControl.ListFlowElement), SerializableTypes);
                 FlowInterfaceControl.ListFlowElement config = null;
                 using (FileStream fstream = new FileStream(ofd.FileName, FileMode.Open))
-                using (XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fstream, new XmlDictionaryReaderQuotas()))
+                using (XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fstream, new XmlDictionaryReaderQuotas() { MaxDepth = 1000 }))
                     config = x.ReadObject(reader, true) as FlowInterfaceControl.ListFlowElement;
                 if (config == null)
                 {
@@ -367,12 +367,12 @@ namespace TychaiaWorldGenViewer
             );
         }
 
-        private void c_GeneralAddPerlinMathMenuItem_Click(object sender, EventArgs e)
+        private void c_GeneralAddPerformMathMenuItem_Click(object sender, EventArgs e)
         {
             this.c_FlowInterfaceControl.AddElementAtMouse(
                new LayerFlowElement(
                    this.c_FlowInterfaceControl,
-                   new LayerPerlinMath(null, null)
+                   new LayerPerformMath(null, null)
                )
             );
         }
@@ -553,6 +553,36 @@ namespace TychaiaWorldGenViewer
                new LayerFlowElement(
                    this.c_FlowInterfaceControl,
                    new Layer3DInitialVoronoi(this.m_Seed)
+               )
+            );
+        }
+
+        private void c_GeneralAddInitialOctaveMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+                new LayerFlowElement(
+                    this.c_FlowInterfaceControl,
+                    new LayerInitialOctave(this.m_Seed)
+                )
+            );
+        }
+
+        private void c_3DGeneralAddInitialOctaveMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+                new LayerFlowElement(
+                    this.c_FlowInterfaceControl,
+                    new Layer3DInitialOctave(this.m_Seed)
+                )
+            );
+        }
+
+        private void c_3DGeneralAddPerformMathMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new Layer3DPerformMath(null, null)
                )
             );
         }

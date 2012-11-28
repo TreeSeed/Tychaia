@@ -36,8 +36,10 @@
             this.c_ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.c_2DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_GeneralMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_GeneralAddPerformMathMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripSeparator();
             this.c_GeneralAddInitialPerlinMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.c_GeneralAddPerlinMathMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_GeneralAddInitialOctaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.c_GeneralAddInitialVoronoiMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_GeneralAddMixVoronoiMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -87,8 +89,14 @@
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
             this.c_3DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_3DGeneralMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.c_3DGeneralStoreResultMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_3DGeneralAddPerformMathMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripSeparator();
             this.c_3DGeneralAddInitialPerlinMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_3DGeneralAddInitialOctaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
+            this.c_3DGeneralAddInitialVoronoiMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripSeparator();
+            this.c_3DGeneralStoreResultMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_3DTerrainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_3DTerrainAddFormTerrainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_3DTerrainAddEdgeDetectionMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -106,24 +114,21 @@
             this.c_SaveConfigurationAsButton = new System.Windows.Forms.ToolStripButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.c_ZNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_YLabel = new System.Windows.Forms.Label();
             this.c_XLabel = new System.Windows.Forms.Label();
             this.c_XNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
-            this.c_3DGeneralAddInitialVoronoiMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripSeparator();
-            this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
             this.c_ZLabel = new System.Windows.Forms.Label();
-            this.c_ZNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
             this.c_StatusStrip.SuspendLayout();
             this.c_ContextMenuStrip.SuspendLayout();
             this.c_ToolStrip.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.c_ZNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.c_XNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.c_YNumericUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.c_ZNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // c_StatusStrip
@@ -186,8 +191,10 @@
             // c_GeneralMenuItem
             // 
             this.c_GeneralMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.c_GeneralAddPerformMathMenuItem,
+            this.toolStripMenuItem9,
             this.c_GeneralAddInitialPerlinMenuItem,
-            this.c_GeneralAddPerlinMathMenuItem,
+            this.c_GeneralAddInitialOctaveMenuItem,
             this.toolStripMenuItem1,
             this.c_GeneralAddInitialVoronoiMenuItem,
             this.c_GeneralAddMixVoronoiMenuItem,
@@ -206,55 +213,67 @@
             this.c_GeneralMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_GeneralMenuItem.Text = "General";
             // 
+            // c_GeneralAddPerformMathMenuItem
+            // 
+            this.c_GeneralAddPerformMathMenuItem.Name = "c_GeneralAddPerformMathMenuItem";
+            this.c_GeneralAddPerformMathMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.c_GeneralAddPerformMathMenuItem.Text = "Perform Math";
+            this.c_GeneralAddPerformMathMenuItem.Click += new System.EventHandler(this.c_GeneralAddPerformMathMenuItem_Click);
+            // 
+            // toolStripMenuItem9
+            // 
+            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(164, 6);
+            // 
             // c_GeneralAddInitialPerlinMenuItem
             // 
             this.c_GeneralAddInitialPerlinMenuItem.Name = "c_GeneralAddInitialPerlinMenuItem";
-            this.c_GeneralAddInitialPerlinMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.c_GeneralAddInitialPerlinMenuItem.Size = new System.Drawing.Size(167, 22);
             this.c_GeneralAddInitialPerlinMenuItem.Text = "Initial Perlin";
             this.c_GeneralAddInitialPerlinMenuItem.Click += new System.EventHandler(this.c_GeneralAddInitialPerlinMenuItem_Click);
             // 
-            // c_GeneralAddPerlinMathMenuItem
+            // c_GeneralAddInitialOctaveMenuItem
             // 
-            this.c_GeneralAddPerlinMathMenuItem.Name = "c_GeneralAddPerlinMathMenuItem";
-            this.c_GeneralAddPerlinMathMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.c_GeneralAddPerlinMathMenuItem.Text = "Perform Perlin Math";
-            this.c_GeneralAddPerlinMathMenuItem.Click += new System.EventHandler(this.c_GeneralAddPerlinMathMenuItem_Click);
+            this.c_GeneralAddInitialOctaveMenuItem.Name = "c_GeneralAddInitialOctaveMenuItem";
+            this.c_GeneralAddInitialOctaveMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.c_GeneralAddInitialOctaveMenuItem.Text = "Initial Octave";
+            this.c_GeneralAddInitialOctaveMenuItem.Click += new System.EventHandler(this.c_GeneralAddInitialOctaveMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(178, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(164, 6);
             // 
             // c_GeneralAddInitialVoronoiMenuItem
             // 
             this.c_GeneralAddInitialVoronoiMenuItem.Name = "c_GeneralAddInitialVoronoiMenuItem";
-            this.c_GeneralAddInitialVoronoiMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.c_GeneralAddInitialVoronoiMenuItem.Size = new System.Drawing.Size(167, 22);
             this.c_GeneralAddInitialVoronoiMenuItem.Text = "Initial Voronoi";
             this.c_GeneralAddInitialVoronoiMenuItem.Click += new System.EventHandler(this.c_GeneralAddInitialVoronoiMenuItem_Click);
             // 
             // c_GeneralAddMixVoronoiMenuItem
             // 
             this.c_GeneralAddMixVoronoiMenuItem.Name = "c_GeneralAddMixVoronoiMenuItem";
-            this.c_GeneralAddMixVoronoiMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.c_GeneralAddMixVoronoiMenuItem.Size = new System.Drawing.Size(167, 22);
             this.c_GeneralAddMixVoronoiMenuItem.Text = "Mix Voronoi";
             this.c_GeneralAddMixVoronoiMenuItem.Click += new System.EventHandler(this.c_GeneralAddMixVoronoiMenuItem_Click);
             // 
             // c_GeneralAddAutoMixVoronoiMenuItem
             // 
             this.c_GeneralAddAutoMixVoronoiMenuItem.Name = "c_GeneralAddAutoMixVoronoiMenuItem";
-            this.c_GeneralAddAutoMixVoronoiMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.c_GeneralAddAutoMixVoronoiMenuItem.Size = new System.Drawing.Size(167, 22);
             this.c_GeneralAddAutoMixVoronoiMenuItem.Text = "Auto Mix Voronoi";
             this.c_GeneralAddAutoMixVoronoiMenuItem.Click += new System.EventHandler(this.c_GeneralAddAutoMixVoronoiMenuItem_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(178, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(164, 6);
             // 
             // c_GeneralAddZoomMenuItem
             // 
             this.c_GeneralAddZoomMenuItem.Name = "c_GeneralAddZoomMenuItem";
-            this.c_GeneralAddZoomMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.c_GeneralAddZoomMenuItem.Size = new System.Drawing.Size(167, 22);
             this.c_GeneralAddZoomMenuItem.Text = "Zoom";
             this.c_GeneralAddZoomMenuItem.Click += new System.EventHandler(this.c_GeneralAddZoomMenuItem_Click);
             // 
@@ -262,20 +281,20 @@
             // 
             this.c_GeneralAddSmoothMenuItem.Enabled = false;
             this.c_GeneralAddSmoothMenuItem.Name = "c_GeneralAddSmoothMenuItem";
-            this.c_GeneralAddSmoothMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.c_GeneralAddSmoothMenuItem.Size = new System.Drawing.Size(167, 22);
             this.c_GeneralAddSmoothMenuItem.Text = "Smooth";
             // 
             // c_GeneralAddRemapMenuItem
             // 
             this.c_GeneralAddRemapMenuItem.Enabled = false;
             this.c_GeneralAddRemapMenuItem.Name = "c_GeneralAddRemapMenuItem";
-            this.c_GeneralAddRemapMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.c_GeneralAddRemapMenuItem.Size = new System.Drawing.Size(167, 22);
             this.c_GeneralAddRemapMenuItem.Text = "Remap";
             // 
             // c_GeneralAddInvertMenuItem
             // 
             this.c_GeneralAddInvertMenuItem.Name = "c_GeneralAddInvertMenuItem";
-            this.c_GeneralAddInvertMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.c_GeneralAddInvertMenuItem.Size = new System.Drawing.Size(167, 22);
             this.c_GeneralAddInvertMenuItem.Text = "Invert";
             this.c_GeneralAddInvertMenuItem.Click += new System.EventHandler(this.c_GeneralAddInvertMenuItem_Click);
             // 
@@ -283,32 +302,32 @@
             // 
             this.c_GeneralAddNormalizeMenuItem.Enabled = false;
             this.c_GeneralAddNormalizeMenuItem.Name = "c_GeneralAddNormalizeMenuItem";
-            this.c_GeneralAddNormalizeMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.c_GeneralAddNormalizeMenuItem.Size = new System.Drawing.Size(167, 22);
             this.c_GeneralAddNormalizeMenuItem.Text = "Normalize";
             // 
             // c_GeneralAddDenormalizeMenuItem
             // 
             this.c_GeneralAddDenormalizeMenuItem.Enabled = false;
             this.c_GeneralAddDenormalizeMenuItem.Name = "c_GeneralAddDenormalizeMenuItem";
-            this.c_GeneralAddDenormalizeMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.c_GeneralAddDenormalizeMenuItem.Size = new System.Drawing.Size(167, 22);
             this.c_GeneralAddDenormalizeMenuItem.Text = "Denormalize";
             // 
             // c_Seperator2MenuItem
             // 
             this.c_Seperator2MenuItem.Name = "c_Seperator2MenuItem";
-            this.c_Seperator2MenuItem.Size = new System.Drawing.Size(178, 6);
+            this.c_Seperator2MenuItem.Size = new System.Drawing.Size(164, 6);
             // 
             // c_GeneralAddCopyResultMenuItem
             // 
             this.c_GeneralAddCopyResultMenuItem.Name = "c_GeneralAddCopyResultMenuItem";
-            this.c_GeneralAddCopyResultMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.c_GeneralAddCopyResultMenuItem.Size = new System.Drawing.Size(167, 22);
             this.c_GeneralAddCopyResultMenuItem.Text = "Copy Result";
             this.c_GeneralAddCopyResultMenuItem.Click += new System.EventHandler(this.c_GeneralAddCopyResultMenuItem_Click);
             // 
             // c_GeneralAddStoreResultMenuItem
             // 
             this.c_GeneralAddStoreResultMenuItem.Name = "c_GeneralAddStoreResultMenuItem";
-            this.c_GeneralAddStoreResultMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.c_GeneralAddStoreResultMenuItem.Size = new System.Drawing.Size(167, 22);
             this.c_GeneralAddStoreResultMenuItem.Text = "Store Result";
             this.c_GeneralAddStoreResultMenuItem.Click += new System.EventHandler(this.c_GeneralAddStoreResultMenuItem_Click);
             // 
@@ -569,7 +588,10 @@
             // c_3DGeneralMenuItem
             // 
             this.c_3DGeneralMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.c_3DGeneralAddPerformMathMenuItem,
+            this.toolStripMenuItem10,
             this.c_3DGeneralAddInitialPerlinMenuItem,
+            this.c_3DGeneralAddInitialOctaveMenuItem,
             this.toolStripMenuItem7,
             this.c_3DGeneralAddInitialVoronoiMenuItem,
             this.toolStripMenuItem8,
@@ -578,12 +600,17 @@
             this.c_3DGeneralMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_3DGeneralMenuItem.Text = "General";
             // 
-            // c_3DGeneralStoreResultMenuItem
+            // c_3DGeneralAddPerformMathMenuItem
             // 
-            this.c_3DGeneralStoreResultMenuItem.Name = "c_3DGeneralStoreResultMenuItem";
-            this.c_3DGeneralStoreResultMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.c_3DGeneralStoreResultMenuItem.Text = "Store Result";
-            this.c_3DGeneralStoreResultMenuItem.Click += new System.EventHandler(this.c_3DGeneralStoreResultMenuItem_Click);
+            this.c_3DGeneralAddPerformMathMenuItem.Name = "c_3DGeneralAddPerformMathMenuItem";
+            this.c_3DGeneralAddPerformMathMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_3DGeneralAddPerformMathMenuItem.Text = "Perform Math";
+            this.c_3DGeneralAddPerformMathMenuItem.Click += new System.EventHandler(this.c_3DGeneralAddPerformMathMenuItem_Click);
+            // 
+            // toolStripMenuItem10
+            // 
+            this.toolStripMenuItem10.Name = "toolStripMenuItem10";
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(149, 6);
             // 
             // c_3DGeneralAddInitialPerlinMenuItem
             // 
@@ -591,6 +618,37 @@
             this.c_3DGeneralAddInitialPerlinMenuItem.Size = new System.Drawing.Size(152, 22);
             this.c_3DGeneralAddInitialPerlinMenuItem.Text = "Initial Perlin";
             this.c_3DGeneralAddInitialPerlinMenuItem.Click += new System.EventHandler(this.c_3DGeneralAddInitialPerlinMenuItem_Click);
+            // 
+            // c_3DGeneralAddInitialOctaveMenuItem
+            // 
+            this.c_3DGeneralAddInitialOctaveMenuItem.Name = "c_3DGeneralAddInitialOctaveMenuItem";
+            this.c_3DGeneralAddInitialOctaveMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_3DGeneralAddInitialOctaveMenuItem.Text = "Initial Octave";
+            this.c_3DGeneralAddInitialOctaveMenuItem.Click += new System.EventHandler(this.c_3DGeneralAddInitialOctaveMenuItem_Click);
+            // 
+            // toolStripMenuItem7
+            // 
+            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(149, 6);
+            // 
+            // c_3DGeneralAddInitialVoronoiMenuItem
+            // 
+            this.c_3DGeneralAddInitialVoronoiMenuItem.Name = "c_3DGeneralAddInitialVoronoiMenuItem";
+            this.c_3DGeneralAddInitialVoronoiMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_3DGeneralAddInitialVoronoiMenuItem.Text = "Initial Voronoi";
+            this.c_3DGeneralAddInitialVoronoiMenuItem.Click += new System.EventHandler(this.c_3DGeneralAddInitialVoronoiMenuItem_Click);
+            // 
+            // toolStripMenuItem8
+            // 
+            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(149, 6);
+            // 
+            // c_3DGeneralStoreResultMenuItem
+            // 
+            this.c_3DGeneralStoreResultMenuItem.Name = "c_3DGeneralStoreResultMenuItem";
+            this.c_3DGeneralStoreResultMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_3DGeneralStoreResultMenuItem.Text = "Store Result";
+            this.c_3DGeneralStoreResultMenuItem.Click += new System.EventHandler(this.c_3DGeneralStoreResultMenuItem_Click);
             // 
             // c_3DTerrainMenuItem
             // 
@@ -754,6 +812,24 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(200, 27);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
+            // c_ZNumericUpDown
+            // 
+            this.c_ZNumericUpDown.Location = new System.Drawing.Point(159, 3);
+            this.c_ZNumericUpDown.Maximum = new decimal(new int[] {
+            6000,
+            0,
+            0,
+            0});
+            this.c_ZNumericUpDown.Minimum = new decimal(new int[] {
+            6000,
+            0,
+            0,
+            -2147483648});
+            this.c_ZNumericUpDown.Name = "c_ZNumericUpDown";
+            this.c_ZNumericUpDown.Size = new System.Drawing.Size(37, 20);
+            this.c_ZNumericUpDown.TabIndex = 5;
+            this.c_ZNumericUpDown.ValueChanged += new System.EventHandler(this.c_ZNumericUpDown_ValueChanged);
+            // 
             // c_YLabel
             // 
             this.c_YLabel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -810,22 +886,14 @@
             this.c_YNumericUpDown.TabIndex = 2;
             this.c_YNumericUpDown.ValueChanged += new System.EventHandler(this.c_YNumericUpDown_ValueChanged);
             // 
-            // toolStripMenuItem7
+            // c_ZLabel
             // 
-            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(149, 6);
-            // 
-            // c_3DGeneralAddInitialVoronoiMenuItem
-            // 
-            this.c_3DGeneralAddInitialVoronoiMenuItem.Name = "c_3DGeneralAddInitialVoronoiMenuItem";
-            this.c_3DGeneralAddInitialVoronoiMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.c_3DGeneralAddInitialVoronoiMenuItem.Text = "Initial Voronoi";
-            this.c_3DGeneralAddInitialVoronoiMenuItem.Click += new System.EventHandler(this.c_3DGeneralAddInitialVoronoiMenuItem_Click);
-            // 
-            // toolStripMenuItem8
-            // 
-            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(149, 6);
+            this.c_ZLabel.Location = new System.Drawing.Point(139, 5);
+            this.c_ZLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
+            this.c_ZLabel.Name = "c_ZLabel";
+            this.c_ZLabel.Size = new System.Drawing.Size(14, 19);
+            this.c_ZLabel.TabIndex = 4;
+            this.c_ZLabel.Text = "Z:";
             // 
             // c_FlowInterfaceControl
             // 
@@ -839,33 +907,6 @@
             this.c_FlowInterfaceControl.Zoom = 1F;
             this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
             this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
-            // 
-            // c_ZLabel
-            // 
-            this.c_ZLabel.Location = new System.Drawing.Point(139, 5);
-            this.c_ZLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
-            this.c_ZLabel.Name = "c_ZLabel";
-            this.c_ZLabel.Size = new System.Drawing.Size(14, 19);
-            this.c_ZLabel.TabIndex = 4;
-            this.c_ZLabel.Text = "Z:";
-            // 
-            // c_ZNumericUpDown
-            // 
-            this.c_ZNumericUpDown.Location = new System.Drawing.Point(159, 3);
-            this.c_ZNumericUpDown.Maximum = new decimal(new int[] {
-            6000,
-            0,
-            0,
-            0});
-            this.c_ZNumericUpDown.Minimum = new decimal(new int[] {
-            6000,
-            0,
-            0,
-            -2147483648});
-            this.c_ZNumericUpDown.Name = "c_ZNumericUpDown";
-            this.c_ZNumericUpDown.Size = new System.Drawing.Size(37, 20);
-            this.c_ZNumericUpDown.TabIndex = 5;
-            this.c_ZNumericUpDown.ValueChanged += new System.EventHandler(this.c_ZNumericUpDown_ValueChanged);
             // 
             // FlowForm
             // 
@@ -885,9 +926,9 @@
             this.c_ToolStrip.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.c_ZNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.c_XNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.c_YNumericUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.c_ZNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -941,7 +982,7 @@
         private System.Windows.Forms.ToolStripMenuItem c_2DToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_GeneralMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_GeneralAddInitialPerlinMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem c_GeneralAddPerlinMathMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem c_GeneralAddPerformMathMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem c_GeneralAddInitialVoronoiMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_GeneralAddMixVoronoiMenuItem;
@@ -981,5 +1022,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem8;
         private System.Windows.Forms.NumericUpDown c_ZNumericUpDown;
         private System.Windows.Forms.Label c_ZLabel;
+        private System.Windows.Forms.ToolStripMenuItem c_GeneralAddInitialOctaveMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem c_3DGeneralAddInitialOctaveMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem9;
+        private System.Windows.Forms.ToolStripMenuItem c_3DGeneralAddPerformMathMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem10;
     }
 }

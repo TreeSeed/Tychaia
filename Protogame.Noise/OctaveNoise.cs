@@ -7,15 +7,13 @@ namespace Protogame.Noise
 {
     public class OctaveNoise
     {
-        private Random m_Random = null;
         private PerlinNoise[] m_Perlin = null;
 
         public OctaveNoise(int seed, int octaves)
         {
-            this.m_Random = new Random(seed);
             this.m_Perlin = new PerlinNoise[octaves];
             for (int i = 0; i < octaves; i++)
-                this.m_Perlin[i] = new PerlinNoise(this.m_Random);
+                this.m_Perlin[i] = new PerlinNoise(new Random(seed + i));
         }
 
         public double Noise(double x, double y, double z)

@@ -211,7 +211,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
         {
-            return LayerColors.VoronoiBrushes;
+            return LayerColors.Voronoi3DBrushes;
         }
 
         public override bool[] GetParents3DRequired()
