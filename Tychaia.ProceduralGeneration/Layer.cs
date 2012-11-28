@@ -151,7 +151,9 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         protected double GetRandomDouble(long x, long y, long z, long modifier = 0)
         {
-            return this.GetRandomNumber(x, y, z, modifier) / (double)long.MaxValue;
+            long a = this.GetRandomNumber(x, y, z, modifier) / 2;
+            if (a < 0) a += long.MaxValue;
+            return (double)a / (double)long.MaxValue;
         }
 
         private long GetRandomNumber(long x, long y, long z, long modifier)
