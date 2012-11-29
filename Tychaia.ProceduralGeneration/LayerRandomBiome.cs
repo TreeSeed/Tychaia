@@ -95,7 +95,7 @@ namespace Tychaia.ProceduralGeneration
                 for (int b = 0; b < height; b++)
                 {
                     if (parent[a + b * width] == this.BiomeReplace)
-                        data[a + b * width] = favourance[this.GetRandomRange(x + a, y + b, total)];
+                        data[a + b * width] = favourance[this.GetRandomRange(x + a, y + b, 0, total)];
                     else
                         data[a + b * width] = parent[a + b * width];
                 }

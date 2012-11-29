@@ -20,6 +20,7 @@ namespace Tychaia.ProceduralGeneration
             { BiomeEngine.BIOME_PLAINS, new SolidBrush(Color.FromArgb(0,255,0)) },
             { BiomeEngine.BIOME_DESERT, new SolidBrush(Color.FromArgb(255,255,0)) },
             { BiomeEngine.BIOME_FOREST, new SolidBrush(Color.FromArgb(0,127,0)) },
+            { 600, new SolidBrush(Color.FromArgb(63,63,63)) }, // HACK
             { BiomeEngine.BIOME_SNOW, new SolidBrush(Color.FromArgb(255,255,255)) }
         };
 
@@ -29,6 +30,14 @@ namespace Tychaia.ProceduralGeneration
             { 1  /* original */, new SolidBrush(Color.FromArgb(255, 0, 0)) },
             { 2  /* vertex   */, new SolidBrush(Color.FromArgb(0, 255, 0)) },
             { 3  /* edge     */, new SolidBrush(Color.FromArgb(0, 0, 255)) },
+        };
+
+        public static Dictionary<int, Brush> Voronoi3DBrushes = new Dictionary<int, Brush>
+        {
+            { 0  /* none     */, new SolidBrush(Color.FromArgb(0, 63, 63, 63)) },
+            { 1  /* original */, new SolidBrush(Color.FromArgb(15, 255, 0, 0)) },
+            { 2  /* vertex   */, new SolidBrush(Color.FromArgb(15, 0, 255, 0)) },
+            { 3  /* edge     */, new SolidBrush(Color.FromArgb(15, 0, 0, 255)) },
         };
 
         public static Dictionary<int, Brush> TownBrushes = new Dictionary<int, Brush>

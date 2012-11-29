@@ -34,7 +34,7 @@ namespace Tychaia.ProceduralGeneration
                 {
                     if (parent[(i + ox) + (j + oy) * rw] == 0)
                     {
-                        int selected = this.GetRandomRange(x + i, y + j, 4);
+                        int selected = this.GetRandomRange(x + i, y + j, 0, 4);
 
                         switch (selected)
                         {

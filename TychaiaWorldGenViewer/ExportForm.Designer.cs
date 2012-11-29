@@ -56,8 +56,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 986);
             this.Controls.Add(this.c_RenderBox);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximumSize = new System.Drawing.Size(1024, 1024);
+            this.MaximumSize = new System.Drawing.Size(1024, 9000);
             this.Name = "ExportForm";
             this.Text = "Export Layer";
             ((System.ComponentModel.ISupportInitialize)(this.c_RenderBox)).EndInit();

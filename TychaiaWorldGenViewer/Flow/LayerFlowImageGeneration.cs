@@ -25,6 +25,12 @@ namespace TychaiaWorldGenViewer.Flow
             set;
         }
 
+        public static int Z
+        {
+            get;
+            set;
+        }
+
         public static Bitmap RegenerateImageForLayer(FlowInterfaceControl fic, Layer l, int width, int height)
         {
             if (l is Layer2D)
@@ -132,7 +138,7 @@ namespace TychaiaWorldGenViewer.Flow
             g.Clear(Color.White);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
             Dictionary<int, Brush> brushes = l.GetLayerColors();
-            int[] data = l.GenerateData(LayerFlowImageGeneration.X, LayerFlowImageGeneration.Y, 0, RenderWidth, RenderHeight, RenderDepth);
+            int[] data = l.GenerateData(LayerFlowImageGeneration.X, LayerFlowImageGeneration.Y, LayerFlowImageGeneration.Z, RenderWidth, RenderHeight, RenderDepth);
 
             /* Our world is laid out in memory in terms of X / Y, but
              * we are rendering isometric, which means that the rendering
@@ -189,16 +195,43 @@ namespace TychaiaWorldGenViewer.Flow
                     {
                         try
                         {
-                            if (brushes != null && brushes.ContainsKey(data[x + y * RenderWidth + z * RenderWidth * RenderHeight]))
+                            if (l.IsLayerColorsFlags())
                             {
-                                SolidBrush sb = brushes[data[x + y * RenderWidth + z * RenderWidth * RenderHeight]] as SolidBrush;
-                                //sb.Color = Color.FromArgb(255, sb.Color);
+                                Color accum = Color.FromArgb(0, 0, 0, 0);
+                                foreach (KeyValuePair<int, System.Drawing.Brush> kv in brushes)
+                                {
+                                    SolidBrush sb = kv.Value as SolidBrush;
+                                    if ((data[x + y * RenderWidth + z * RenderWidth * RenderHeight] & kv.Key) != 0)
+                                    {
+                                        accum = Color.FromArgb(
+                                            Math.Min(255, accum.A + sb.Color.A),
+                                            Math.Min((byte)255, (byte)(accum.R + sb.Color.R * (sb.Color.A / 255.0) / brushes.Count)),
+                                            Math.Min((byte)255, (byte)(accum.G + sb.Color.G * (sb.Color.A / 255.0) / brushes.Count)),
+                                            Math.Min((byte)255, (byte)(accum.B + sb.Color.B * (sb.Color.A / 255.0) / brushes.Count))
+                                            );
+                                    }
+                                }
+                                if (accum.R == 255 && accum.G == 255 && accum.B == 255)
+                                    accum = Color.FromArgb(63, 0, 0, 0);
                                 g.FillRectangle(
-                                    sb,
+                                    new SolidBrush(accum),
                                     new Rectangle(rx, ry, rw, rh)
                                     );
+                                break;
                             }
-                            break;
+                            else
+                            {
+                                if (brushes != null && brushes.ContainsKey(data[x + y * RenderWidth + z * RenderWidth * RenderHeight]))
+                                {
+                                    SolidBrush sb = brushes[data[x + y * RenderWidth + z * RenderWidth * RenderHeight]] as SolidBrush;
+                                    //sb.Color = Color.FromArgb(255, sb.Color);
+                                    g.FillRectangle(
+                                        sb,
+                                        new Rectangle(rx, ry, rw, rh)
+                                        );
+                                }
+                                break;
+                            }
                         }
                         catch (InvalidOperationException)
                         {

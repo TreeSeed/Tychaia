@@ -139,7 +139,7 @@ namespace Tychaia.ProceduralGeneration
                 }
                 else
                 {
-                    selected = this.GetRandomRange(x, y, 2);
+                    selected = this.GetRandomRange(x, y, 0, 2);
                     switch (selected)
                     {
                         case 0:
@@ -153,7 +153,7 @@ namespace Tychaia.ProceduralGeneration
             {
                 if (y % 2 == 0)
                 {
-                    selected = this.GetRandomRange(x, y, 2);
+                    selected = this.GetRandomRange(x, y, 0, 2);
                     switch (selected)
                     {
                         case 0:
@@ -166,7 +166,7 @@ namespace Tychaia.ProceduralGeneration
                 {
                     if (this.Mode == ZoomType.Smooth)
                     {
-                        selected = this.GetRandomRange(x, y, 3);
+                        selected = this.GetRandomRange(x, y, 0, 3);
                         switch (selected)
                         {
                             case 0:
@@ -179,7 +179,7 @@ namespace Tychaia.ProceduralGeneration
                     }
                     else
                     {
-                        selected = this.GetRandomRange(x, y, 4);
+                        selected = this.GetRandomRange(x, y, 0, 4);
                         switch (selected)
                         {
                             case 0:
@@ -197,7 +197,7 @@ namespace Tychaia.ProceduralGeneration
 
             // Select one of the four options if we couldn't otherwise
             // determine a value.
-            selected = this.GetRandomRange(x, y, 4);
+            selected = this.GetRandomRange(x, y, 0, 4);
 
             switch (selected)
             {

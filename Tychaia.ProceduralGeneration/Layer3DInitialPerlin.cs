@@ -94,7 +94,12 @@ namespace Tychaia.ProceduralGeneration
 
         public override bool[] GetParents3DRequired()
         {
-            return new bool[] { true };
+            return new bool[] { };
+        }
+
+        public override string[] GetParentsRequired()
+        {
+            return new string[] { };
         }
 
         public override string ToString()

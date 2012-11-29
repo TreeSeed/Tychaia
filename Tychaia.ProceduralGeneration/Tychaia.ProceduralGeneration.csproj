@@ -30,6 +30,27 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,6 +82,10 @@
     <Compile Include="Cities\MineCityBiome.cs" />
     <Compile Include="Cities\FarmlandCityBiome.cs" />
     <Compile Include="Layer3DFillSecondaryCityBiomes.cs" />
+    <Compile Include="Layer3DPerformMath.cs" />
+    <Compile Include="Layer3DInitialOctave.cs" />
+    <Compile Include="LayerInitialOctave.cs" />
+    <Compile Include="Layer3DInitialVoronoi.cs" />
     <Compile Include="Layer3DInitialPerlin.cs" />
     <Compile Include="Layer3DFormCityBiomes.cs" />
     <Compile Include="Layer3DEdgeDetection.cs" />
@@ -83,7 +108,7 @@
     <Compile Include="LayerInitialTowns.cs" />
     <Compile Include="LayerAutoVoronoiMixdown.cs" />
     <Compile Include="LayerSecondaryBiome.cs" />
-    <Compile Include="LayerPerlinMath.cs" />
+    <Compile Include="LayerPerformMath.cs" />
     <Compile Include="LayerTerrainMixdown.cs" />
     <Compile Include="LayerDeriveTerrain.cs" />
     <Compile Include="LayerVoronoiMixdown.cs" />
@@ -109,6 +134,14 @@
     <ProjectReference Include="..\BenTools\FortuneVoronoi.csproj">
       <Project>{DDF5D740-6EE1-44BA-9DB9-782BF23E28D6}</Project>
       <Name>FortuneVoronoi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\MIConvexHull\MIConvexHull.csproj">
+      <Project>{2337776D-7D0C-40AA-A439-C26C3CE24FAB}</Project>
+      <Name>MIConvexHull</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Protogame.Math\Protogame.Math.csproj">
+      <Project>{C5966454-0813-47E9-A652-05E3CD35E2E0}</Project>
+      <Name>Protogame.Math</Name>
     </ProjectReference>
     <ProjectReference Include="..\Protogame.Noise\Protogame.Noise.csproj">
       <Project>{FE9A9DF1-16D8-4A24-8978-D4F2E540F039}</Project>

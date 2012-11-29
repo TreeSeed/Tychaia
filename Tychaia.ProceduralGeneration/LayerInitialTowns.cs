@@ -56,7 +56,7 @@ namespace Tychaia.ProceduralGeneration
             for (int a = 0; a < width; a++)
                 for (int b = 0; b < height; b++)
                 {
-                    if (this.GetRandomDouble(x + a, y + b, (int)this.Modifier) > this.TownLimit)
+                    if (this.GetRandomDouble(x + a, y + b, 0, (int)this.Modifier) > this.TownLimit)
                         data[a + b * width] = 1;
                     else
                         data[a + b * width] = 0;

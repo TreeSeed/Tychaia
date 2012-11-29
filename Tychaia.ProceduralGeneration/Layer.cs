@@ -100,11 +100,11 @@ namespace Tychaia.ProceduralGeneration
         /// Returns a random positive integer between the specified 0 and
         /// the exclusive end value.
         /// </summary>
-        protected int GetRandomRange(long x, long y, int end, long modifier = 0)
+        protected int GetRandomRange(long x, long y, long z, int end, long modifier = 0)
         {
             unchecked
             {
-                int a = this.GetRandomInt(x, y, modifier);
+                int a = this.GetRandomInt(x, y, z, modifier);
                 if (a < 0) a += int.MaxValue;
                 return a % end;
             }
@@ -114,11 +114,11 @@ namespace Tychaia.ProceduralGeneration
         /// Returns a random positive integer between the specified inclusive start
         /// value and the exclusive end value.
         /// </summary>
-        protected int GetRandomRange(long x, long y, int start, int end, long modifier)
+        protected int GetRandomRange(long x, long y, long z, int start, int end, long modifier)
         {
             unchecked
             {
-                int a = this.GetRandomInt(x, y, modifier);
+                int a = this.GetRandomInt(x, y, z, modifier);
                 if (a < 0) a += int.MaxValue;
                 return a % (end - start) + start;
             }
@@ -128,11 +128,11 @@ namespace Tychaia.ProceduralGeneration
         /// Returns a random integer over the range of valid integers based
         /// on the provided X and Y position, and the specified modifier.
         /// </summary>
-        protected int GetRandomInt(long x, long y, long modifier = 0)
+        protected int GetRandomInt(long x, long y, long z, long modifier = 0)
         {
             unchecked
             {
-                return (int)(this.GetRandomNumber(x, y, modifier) % int.MaxValue);
+                return (int)(this.GetRandomNumber(x, y, z, modifier) % int.MaxValue);
             }
         }
 
@@ -140,40 +140,43 @@ namespace Tychaia.ProceduralGeneration
         /// Returns a random long integer over the range of valid long integers based
         /// on the provided X and Y position, and the specified modifier.
         /// </summary>
-        protected long GetRandomLong(long x, long y, long modifier = 0)
+        protected long GetRandomLong(long x, long y, long z, long modifier = 0)
         {
-            return this.GetRandomNumber(x, y, modifier);
+            return this.GetRandomNumber(x, y, z, modifier);
         }
 
         /// <summary>
         /// Returns a random double between the range of 0.0 and 1.0 based on
         /// the provided X and Y position, and the specified modifier.
         /// </summary>
-        protected double GetRandomDouble(long x, long y, long modifier = 0)
+        protected double GetRandomDouble(long x, long y, long z, long modifier = 0)
         {
-            long a = this.GetRandomNumber(x, y, modifier) / 2;
+            long a = this.GetRandomNumber(x, y, z, modifier) / 2;
             if (a < 0) a += long.MaxValue;
             return (double)a / (double)long.MaxValue;
         }
 
-        private long GetRandomNumber(long x, long y, long modifier)
+        private long GetRandomNumber(long x, long y, long z, long modifier)
         {
             /* From: http://stackoverflow.com/questions/2890040/implementing-gethashcode
              * Although we aren't implementing GetHashCode, it's still a good way to generate
              * a unique number given a limited set of fields */
             unchecked
             {
-                long seed = x * 3661988493967 + y;
-                seed += x * 2990430311017;
-                seed *= y * 14475080218213;
+                long seed = (x - 1) * 3661988493967 + (y - 1);
+                seed += (x - 2) * 2990430311017;
+                seed *= (y - 3) * 14475080218213;
                 seed += modifier;
-                seed -= y * 28124722524383;
-                seed *= x * 16099760261113;
-                seed += x * this.m_Seed;
-                seed *= y * this.m_Seed;
+                seed += (y - 4) * 28124722524383;
+                seed += (z - 5) * 25905201761893;
+                seed *= (x - 6) * 16099760261113;
+                seed += (x - 7) * this.m_Seed;
+                seed *= (y - 8) * this.m_Seed;
+                seed += (z - 9) * 55497960863;
+                seed *= (z - 10) * 611286883423;
                 seed += modifier;
                 // Prevents the seed from being 0 along an axis.
-                seed += (x - 199) * (y - 241) * 9018110272013;
+                seed += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
 
                 if (this.m_RandomNumberIndexCache.Keys.Contains(seed))
                     this.m_RandomNumberIndexCache[seed] += 1;
@@ -187,14 +190,18 @@ namespace Tychaia.ProceduralGeneration
                 catch (Exception) { }
 
                 long rng = seed * seed;
-                rng += x * 2990430311017;
-                rng *= y * 14475080218213;
+                rng += (x - 11) * 2990430311017;
+                rng *= (y - 12) * 14475080218213;
+                rng *= (z - 13) * 23281823741513;
                 rng += index;
                 rng -= seed * 28124722524383;
-                rng *= x * 16099760261113;
+                rng *= (x - 14) * 16099760261113;
                 rng += seed * this.m_Seed;
-                rng *= y * this.m_Seed;
+                rng *= (y - 15) * this.m_Seed;
+                rng *= (z - 16) * 18193477834921;
+                rng += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
                 rng += modifier;
+                rng += 3661988493967;
 
                 return rng;
             }
@@ -224,6 +231,11 @@ namespace Tychaia.ProceduralGeneration
         {
             // FIXME: If the depth != 1, then this is an invalid result.
             return this.GenerateData(x, y, width, height);
+        }
+
+        public virtual bool IsLayerColorsFlags()
+        {
+            return false;
         }
 
         public abstract Dictionary<int, System.Drawing.Brush> GetLayerColors();

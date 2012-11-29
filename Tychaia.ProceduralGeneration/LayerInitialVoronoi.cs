@@ -95,7 +95,7 @@ namespace Tychaia.ProceduralGeneration
             for (int i = -this.EdgeSampling; i < width + this.EdgeSampling; i++)
                 for (int j = -this.EdgeSampling; j < height + this.EdgeSampling; j++)
                 {
-                    int s = this.GetRandomRange(x + i, y + j, this.PointValue, this.Modifier);
+                    int s = this.GetRandomRange(x + i, y + j, 0, this.PointValue, this.Modifier);
                     //long s = this.GetRandomLong(x + i, y + j) % this.PointValue;
                     //if (s < 0) s = Math.Abs(s);
                     //if (s < 0 || s >= this.PointValue)

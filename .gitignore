@@ -10,3 +10,6 @@ TestResults
 *.suo
 *.cachefile
 Tychaia/Disabled/*
+*.testsettings
+Profiling*.sqlite
+*.vsmdi

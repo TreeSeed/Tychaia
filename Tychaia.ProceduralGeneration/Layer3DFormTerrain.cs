@@ -48,8 +48,12 @@ namespace Tychaia.ProceduralGeneration
                     {
                         // Land
                         for (long k = z; k < z + depth; k++)
-                            if (k < terr + 1)
+                        {
+                            if (k == terr + 1)
                                 data[i + j * width + (k - z) * width * height] = biomes[i + j * height];
+                            else if (k < terr + 1)
+                                data[i + j * width + (k - z) * width * height] = 600 /* hack */;
+                        }
                     }
                 }
 

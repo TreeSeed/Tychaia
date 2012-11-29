@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{642D5815-4533-4146-96C1-D932FE1641F9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Tychaia.ProceduralGeneration</RootNamespace>
+    <AssemblyName>Tychaia.ProceduralGeneration</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BiomeEngine.cs" />
+    <Compile Include="Biomes\AlpineSecondaryBiome.cs" />
+    <Compile Include="Biomes\FlatDesertSecondaryBiome.cs" />
+    <Compile Include="Biomes\ForestSecondaryBiome.cs" />
+    <Compile Include="Biomes\GrasslandSecondaryBiome.cs" />
+    <Compile Include="Biomes\OceanBiome.cs" />
+    <Compile Include="Biomes\TertiaryBiome.cs" />
+    <Compile Include="Biomes\SecondaryBiome.cs" />
+    <Compile Include="Biomes\TundraSecondaryBiome.cs" />
+    <Compile Include="BuildingEngine.cs" />
+    <Compile Include="Cities\Building.cs" />
+    <Compile Include="Cities\CityBiome.cs" />
+    <Compile Include="CitiesEngine.cs" />
+    <Compile Include="Cities\HousingSecondaryCityBiome.cs" />
+    <Compile Include="Cities\SecondaryCityBiome.cs" />
+    <Compile Include="Cities\RoyaltyCityBiome.cs" />
+    <Compile Include="Cities\MineCityBiome.cs" />
+    <Compile Include="Cities\FarmlandCityBiome.cs" />
+<<<<<<< HEAD
+    <Compile Include="Layer3DFillSecondaryCityBiomes.cs" />
+=======
+    <Compile Include="Layer3DPerformMath.cs" />
+    <Compile Include="Layer3DInitialOctave.cs" />
+    <Compile Include="LayerInitialOctave.cs" />
+    <Compile Include="Layer3DInitialVoronoi.cs" />
+>>>>>>> bd5027523c97f7990a3958851190538dfc34a5e1
+    <Compile Include="Layer3DInitialPerlin.cs" />
+    <Compile Include="Layer3DFormCityBiomes.cs" />
+    <Compile Include="Layer3DEdgeDetection.cs" />
+    <Compile Include="LayerZoomWaterDistance.cs" />
+    <Compile Include="Layer3DBuildingPlacer.cs" />
+    <Compile Include="Layer3DBuildingList.cs" />
+    <Compile Include="LayerZoomTownCenters.cs" />
+    <Compile Include="LayerExtendTowns.cs" />
+    <Compile Include="LayerTownSelection.cs" />
+    <Compile Include="Layer3DStoreResult.cs" />
+    <Compile Include="LayerDecayTowns.cs" />
+    <Compile Include="TownEngine.cs" />
+    <Compile Include="LayerDeriveViability.cs" />
+    <Compile Include="LayerCopyResult.cs" />
+    <Compile Include="LayerOreMixdown.cs" />
+    <Compile Include="Layer3DFormTerrain.cs" />
+    <Compile Include="Layer2D.cs" />
+    <Compile Include="Layer3D.cs" />
+    <Compile Include="LayerEraseTowns.cs" />
+    <Compile Include="LayerInitialTowns.cs" />
+    <Compile Include="LayerAutoVoronoiMixdown.cs" />
+    <Compile Include="LayerSecondaryBiome.cs" />
+    <Compile Include="LayerPerformMath.cs" />
+    <Compile Include="LayerTerrainMixdown.cs" />
+    <Compile Include="LayerDeriveTerrain.cs" />
+    <Compile Include="LayerVoronoiMixdown.cs" />
+    <Compile Include="LayerInvert.cs" />
+    <Compile Include="LayerInitialVoronoi.cs" />
+    <Compile Include="LayerInitialPerlin.cs" />
+    <Compile Include="LayerExtendLand.cs" />
+    <Compile Include="LayerColors.cs" />
+    <Compile Include="LayerStoreResult.cs" />
+    <Compile Include="LayerRandomBiome.cs" />
+    <Compile Include="Layer.cs" />
+    <Compile Include="LayerInitialLand.cs" />
+    <Compile Include="LayerZoom.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Towns\Buildings\Building.cs" />
+    <Compile Include="Towns\Buildings\FarmPlacer.cs" />
+    <Compile Include="Towns\CapitalTown.cs" />
+    <Compile Include="Towns\MediumTown.cs" />
+    <Compile Include="Towns\SmallTown.cs" />
+    <Compile Include="Towns\Town.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BenTools\FortuneVoronoi.csproj">
+      <Project>{DDF5D740-6EE1-44BA-9DB9-782BF23E28D6}</Project>
+      <Name>FortuneVoronoi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\MIConvexHull\MIConvexHull.csproj">
+      <Project>{2337776D-7D0C-40AA-A439-C26C3CE24FAB}</Project>
+      <Name>MIConvexHull</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Protogame.Math\Protogame.Math.csproj">
+      <Project>{C5966454-0813-47E9-A652-05E3CD35E2E0}</Project>
+      <Name>Protogame.Math</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Protogame.Noise\Protogame.Noise.csproj">
+      <Project>{FE9A9DF1-16D8-4A24-8978-D4F2E540F039}</Project>
+      <Name>Protogame.Noise</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.Globals\Tychaia.Globals.csproj">
+      <Project>{58F07D5A-E86E-4561-88E8-F96744D59157}</Project>
+      <Name>Tychaia.Globals</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

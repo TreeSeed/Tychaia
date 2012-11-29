@@ -94,12 +94,12 @@ namespace Tychaia.ProceduralGeneration
                                     if (NewBuildingsList.Count != 0)
                                     {
                                         int valuecount = 0;
-                                        int selection = this.GetRandomRange(x + i, y + j, NewBuildingsList.Count);
+                                        int selection = this.GetRandomRange(x + i, y + j, 0, NewBuildingsList.Count);
                                         while (valuecount < BuildingEngine.Buildings[NewBuildingsList[m]].BuildingPlacerValue)
                                         {
                                             TempBuildingsList.Add(NewBuildingsList[selection] + 2);
                                             valuecount = valuecount + BuildingEngine.Buildings[NewBuildingsList[selection]].BuildingValue;
-                                            selection = this.GetRandomRange(x + i, y + j, NewBuildingsList.Count);
+                                            selection = this.GetRandomRange(x + i, y + j, 0, NewBuildingsList.Count);
                                             m++;
                                         }
                                         data = PlaceBuildings(width, height, depth, biomes, i, j, rw, ox, oy, TempBuildingsList, x + i, y + j, data);
@@ -176,9 +176,9 @@ namespace Tychaia.ProceduralGeneration
                     // Won't place on water                
                     do
                     {
-                        selection = this.GetRandomRange(kx, ky, minzoom, maxzoom, 0);
-                        placementside = this.GetRandomRange(kx, ky, 1, 4);
-                        placementvalue = this.GetRandomRange(kx, ky, 1, (selection * 2));
+                        selection = this.GetRandomRange(kx, ky, 0, minzoom, maxzoom, 0);
+                        placementside = this.GetRandomRange(kx, ky, 0, 1, 4);
+                        placementvalue = this.GetRandomRange(kx, ky, 0, 1, (selection * 2));
                         switch (placementside)
                         {
                             case 1:
