@@ -30,6 +30,10 @@ namespace Tychaia.ProceduralGeneration.CityBiomes
         public double CitySpread = 1;                // Spread of this biome - average cells buildings are apart
         public double CitizenWealth = 1;             // Arbitrary value defining how wealthy the poplulation of this biome is.
 
+        // Biome Contents
+        public string FillBorder;                    // Fills the border cells (if there is less than 4 adjacent)
+        public string FillCenter;                    // Fills the center cells
+
         // Color that this biome draws
         public Color BrushColor;
     }

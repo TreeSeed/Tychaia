@@ -119,9 +119,14 @@
             this.c_XLabel = new System.Windows.Forms.Label();
             this.c_XNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.c_YLabel = new System.Windows.Forms.Label();
+            this.c_XLabel = new System.Windows.Forms.Label();
+            this.c_XNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_ZLabel = new System.Windows.Forms.Label();
             this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
             this.c_3DTerrainAddFormTerrainBasicMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fillSecondaryCityBiomesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_StatusStrip.SuspendLayout();
             this.c_ContextMenuStrip.SuspendLayout();
             this.c_ToolStrip.SuspendLayout();
@@ -616,7 +621,7 @@
             // c_3DGeneralAddInitialPerlinMenuItem
             // 
             this.c_3DGeneralAddInitialPerlinMenuItem.Name = "c_3DGeneralAddInitialPerlinMenuItem";
-            this.c_3DGeneralAddInitialPerlinMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_3DGeneralAddInitialPerlinMenuItem.Size = new System.Drawing.Size(136, 22);
             this.c_3DGeneralAddInitialPerlinMenuItem.Text = "Initial Perlin";
             this.c_3DGeneralAddInitialPerlinMenuItem.Click += new System.EventHandler(this.c_3DGeneralAddInitialPerlinMenuItem_Click);
             // 
@@ -689,6 +694,7 @@
             this.c_3DTownsAddFormCityBiomesMenuItem.Size = new System.Drawing.Size(168, 22);
             this.c_3DTownsAddFormCityBiomesMenuItem.Text = "Form City Biomes";
             this.c_3DTownsAddFormCityBiomesMenuItem.Click += new System.EventHandler(this.c_3DTownsAddFormCityBiomesMenuItem_Click);
+            // 
             // 
             // toolStripMenuItem4
             // 
@@ -889,14 +895,12 @@
             this.c_YNumericUpDown.ValueChanged += new System.EventHandler(this.c_YNumericUpDown_ValueChanged);
             // 
             // c_ZLabel
-            // 
             this.c_ZLabel.Location = new System.Drawing.Point(139, 5);
             this.c_ZLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.c_ZLabel.Name = "c_ZLabel";
             this.c_ZLabel.Size = new System.Drawing.Size(14, 19);
             this.c_ZLabel.TabIndex = 4;
             this.c_ZLabel.Text = "Z:";
-            // 
             // c_FlowInterfaceControl
             // 
             this.c_FlowInterfaceControl.ContextMenuStrip = this.c_ContextMenuStrip;
@@ -909,6 +913,13 @@
             this.c_FlowInterfaceControl.Zoom = 1F;
             this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
             this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
+            // 
+            // fillSecondaryCityBiomesToolStripMenuItem
+            // 
+            this.fillSecondaryCityBiomesToolStripMenuItem.Name = "fillSecondaryCityBiomesToolStripMenuItem";
+            this.fillSecondaryCityBiomesToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.fillSecondaryCityBiomesToolStripMenuItem.Text = "Fill Secondary City Biomes";
+            this.fillSecondaryCityBiomesToolStripMenuItem.Click += new System.EventHandler(this.fillSecondaryCityBiomesToolStripMenuItem_Click);
             // 
             // c_3DTerrainAddFormTerrainBasicMenuItem
             // 

@@ -11,19 +11,30 @@ namespace Tychaia.ProceduralGeneration
     public static class CitiesEngine
     {
         public static List<CityBiome> CityBiomes = null;
+        public static List<SecondaryCityBiome> SecondaryCityBiomes = null;
 
         static CitiesEngine()
         {
             CitiesEngine.CityBiomes = new List<CityBiome>();
+            CitiesEngine.SecondaryCityBiomes = new List<SecondaryCityBiome>();
             foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
                 foreach (Type t in a.GetTypes())
                     if (typeof(CityBiome).IsAssignableFrom(t) && !t.IsAbstract)
                         CitiesEngine.CityBiomes.Add(CitiesEngine.NewCity(t));
+            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
+                foreach (Type t in a.GetTypes())
+                    if (typeof(SecondaryCityBiome).IsAssignableFrom(t) && !t.IsAbstract)
+                        CitiesEngine.CityBiomes.Add(CitiesEngine.NewSecondary(t));
         }
 
         private static CityBiome NewCity(Type t)
         {
             return t.GetConstructor(Type.EmptyTypes).Invoke(null) as CityBiome;
+        }
+
+        private static SecondaryCityBiome NewSecondary(Type t)
+        {
+            return t.GetConstructor(Type.EmptyTypes).Invoke(null) as SecondaryCityBiome;
         }
 
         public static int GetCityBiomeForCell(double soilfertility, double animaldensity, double oredensity, double rareoredensity, int citybiome)
@@ -35,6 +46,22 @@ namespace Tychaia.ProceduralGeneration
                     animaldensity >= cb.MinAnimalDensity && animaldensity < cb.MaxAnimalDensity &&
                     oredensity >= cb.MinOreDensity && oredensity < cb.MaxOreDensity &&
                     rareoredensity >= cb.MinRareOreDensity && rareoredensity < cb.MaxRareOreDensity)
+                    return (1);
+            }
+            else
+            {
+                return 0;
+            }
+
+            return -1;
+        }
+
+        public static int GetSecondaryCityBiomeForCell(int citybiome, int citybiomescount)
+        {
+            if (CitiesEngine.SecondaryCityBiomes.Count > citybiome)
+            {
+                SecondaryCityBiome cb = CitiesEngine.SecondaryCityBiomes[citybiome];
+                if (citybiomescount >= cb.RequiredOtherBiomes)
                     return (1);
             }
             else
