@@ -55,9 +55,12 @@
     <Compile Include="Cities\Building.cs" />
     <Compile Include="Cities\CityBiome.cs" />
     <Compile Include="CitiesEngine.cs" />
+    <Compile Include="Cities\HousingSecondaryCityBiome.cs" />
+    <Compile Include="Cities\SecondaryCityBiome.cs" />
     <Compile Include="Cities\RoyaltyCityBiome.cs" />
     <Compile Include="Cities\MineCityBiome.cs" />
     <Compile Include="Cities\FarmlandCityBiome.cs" />
+    <Compile Include="Layer3DFillSecondaryCityBiomes.cs" />
     <Compile Include="Layer3DInitialPerlin.cs" />
     <Compile Include="Layer3DFormCityBiomes.cs" />
     <Compile Include="Layer3DEdgeDetection.cs" />

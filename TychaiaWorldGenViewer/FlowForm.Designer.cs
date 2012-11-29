@@ -92,6 +92,8 @@
             this.c_3DTerrainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_3DTerrainAddFormTerrainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_3DTerrainAddEdgeDetectionMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_3DTownsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_3DTownsAddFormCityBiomesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.c_DisableProcessingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_ExportSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -108,9 +110,8 @@
             this.c_XLabel = new System.Windows.Forms.Label();
             this.c_XNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.c_3DTownsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.c_3DTownsAddFormCityBiomesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
+            this.fillSecondaryCityBiomesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_StatusStrip.SuspendLayout();
             this.c_ContextMenuStrip.SuspendLayout();
             this.c_ToolStrip.SuspendLayout();
@@ -572,14 +573,14 @@
             // c_3DGeneralStoreResultMenuItem
             // 
             this.c_3DGeneralStoreResultMenuItem.Name = "c_3DGeneralStoreResultMenuItem";
-            this.c_3DGeneralStoreResultMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_3DGeneralStoreResultMenuItem.Size = new System.Drawing.Size(136, 22);
             this.c_3DGeneralStoreResultMenuItem.Text = "Store Result";
             this.c_3DGeneralStoreResultMenuItem.Click += new System.EventHandler(this.c_3DGeneralStoreResultMenuItem_Click);
             // 
             // c_3DGeneralAddInitialPerlinMenuItem
             // 
             this.c_3DGeneralAddInitialPerlinMenuItem.Name = "c_3DGeneralAddInitialPerlinMenuItem";
-            this.c_3DGeneralAddInitialPerlinMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.c_3DGeneralAddInitialPerlinMenuItem.Size = new System.Drawing.Size(136, 22);
             this.c_3DGeneralAddInitialPerlinMenuItem.Text = "Initial Perlin";
             this.c_3DGeneralAddInitialPerlinMenuItem.Click += new System.EventHandler(this.c_3DGeneralAddInitialPerlinMenuItem_Click);
             // 
@@ -605,6 +606,22 @@
             this.c_3DTerrainAddEdgeDetectionMenuItem.Size = new System.Drawing.Size(154, 22);
             this.c_3DTerrainAddEdgeDetectionMenuItem.Text = "Edge Detection";
             this.c_3DTerrainAddEdgeDetectionMenuItem.Click += new System.EventHandler(this.c_3DTerrainAddEdgeDetectionMenuItem_Click);
+            // 
+            // c_3DTownsMenuItem
+            // 
+            this.c_3DTownsMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.c_3DTownsAddFormCityBiomesMenuItem,
+            this.fillSecondaryCityBiomesToolStripMenuItem});
+            this.c_3DTownsMenuItem.Name = "c_3DTownsMenuItem";
+            this.c_3DTownsMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.c_3DTownsMenuItem.Text = "Towns";
+            // 
+            // c_3DTownsAddFormCityBiomesMenuItem
+            // 
+            this.c_3DTownsAddFormCityBiomesMenuItem.Name = "c_3DTownsAddFormCityBiomesMenuItem";
+            this.c_3DTownsAddFormCityBiomesMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.c_3DTownsAddFormCityBiomesMenuItem.Text = "Form City Biomes";
+            this.c_3DTownsAddFormCityBiomesMenuItem.Click += new System.EventHandler(this.c_3DTownsAddFormCityBiomesMenuItem_Click);
             // 
             // toolStripMenuItem4
             // 
@@ -782,21 +799,6 @@
             this.c_YNumericUpDown.TabIndex = 2;
             this.c_YNumericUpDown.ValueChanged += new System.EventHandler(this.c_YNumericUpDown_ValueChanged);
             // 
-            // c_3DTownsMenuItem
-            // 
-            this.c_3DTownsMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.c_3DTownsAddFormCityBiomesMenuItem});
-            this.c_3DTownsMenuItem.Name = "c_3DTownsMenuItem";
-            this.c_3DTownsMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.c_3DTownsMenuItem.Text = "Towns";
-            // 
-            // c_3DTownsAddFormCityBiomesMenuItem
-            // 
-            this.c_3DTownsAddFormCityBiomesMenuItem.Name = "c_3DTownsAddFormCityBiomesMenuItem";
-            this.c_3DTownsAddFormCityBiomesMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.c_3DTownsAddFormCityBiomesMenuItem.Text = "Form City Biomes";
-            this.c_3DTownsAddFormCityBiomesMenuItem.Click += new System.EventHandler(this.c_3DTownsAddFormCityBiomesMenuItem_Click);
-            // 
             // c_FlowInterfaceControl
             // 
             this.c_FlowInterfaceControl.ContextMenuStrip = this.c_ContextMenuStrip;
@@ -809,6 +811,13 @@
             this.c_FlowInterfaceControl.Zoom = 1F;
             this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
             this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
+            // 
+            // fillSecondaryCityBiomesToolStripMenuItem
+            // 
+            this.fillSecondaryCityBiomesToolStripMenuItem.Name = "fillSecondaryCityBiomesToolStripMenuItem";
+            this.fillSecondaryCityBiomesToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.fillSecondaryCityBiomesToolStripMenuItem.Text = "Fill Secondary City Biomes";
+            this.fillSecondaryCityBiomesToolStripMenuItem.Click += new System.EventHandler(this.fillSecondaryCityBiomesToolStripMenuItem_Click);
             // 
             // FlowForm
             // 
@@ -918,5 +927,6 @@
         private System.Windows.Forms.ToolStripMenuItem c_3DTerrainAddEdgeDetectionMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_3DTownsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_3DTownsAddFormCityBiomesMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fillSecondaryCityBiomesToolStripMenuItem;
     }
 }

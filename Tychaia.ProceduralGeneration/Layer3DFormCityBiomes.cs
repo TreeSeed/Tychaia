@@ -132,6 +132,7 @@ namespace Tychaia.ProceduralGeneration
                             double nanimaldensity = (animaldensity[i + j * width] - this.MinAnimalDensity) / (double)(this.MaxAnimalDensity - this.MinAnimalDensity);
                             double noredensity = (oredensity[i + j * width] - this.MinOreDensity) / (double)(this.MaxOreDensity - this.MinOreDensity);
                             double nrareoredensity = (rareoredensity[i + j * width] - this.MinRareOreDensity) / (double)(this.MaxRareOreDensity - this.MinRareOreDensity);
+                            double nheat = BiomeEngine.SecondaryBiomes[biome[i + j * width]].HeatValue;
 
                             // Store result.
                             bool endloop = false;
@@ -147,6 +148,7 @@ namespace Tychaia.ProceduralGeneration
                                 }
                                 else
                                 {
+                                    data[i + j * width + citybiome + 1 * width * height] = temp;
                                     endloop = true;
                                 }
                             }
