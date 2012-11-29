@@ -79,6 +79,8 @@
     <Compile Include="Cities\RoyaltyCityBiome.cs" />
     <Compile Include="Cities\MineCityBiome.cs" />
     <Compile Include="Cities\FarmlandCityBiome.cs" />
+    <Compile Include="Layer3DFormTerrainBasic.cs" />
+    <Compile Include="LayerSmooth.cs" />
     <Compile Include="Layer3DPerformMath.cs" />
     <Compile Include="Layer3DInitialOctave.cs" />
     <Compile Include="LayerInitialOctave.cs" />

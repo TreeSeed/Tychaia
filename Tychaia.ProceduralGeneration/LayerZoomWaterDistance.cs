@@ -80,6 +80,12 @@ namespace Tychaia.ProceduralGeneration
                 parent = this.GenerateDataIterate(iter + 1, rx, ry, rw, rh);
             int[] data = new int[width * height];
 
+            // Update all 0 to be -1.
+            for (int i = 0; i < rw; i++)
+                for (int j = 0; j < rh; j++)
+                    if (parent[i + j * rw] == 0)
+                        parent[i + j * rw] = -1;
+
             for(int i = 0; i < width; i++) // i = x in zoomed context
                 for (int j = 0; j < height; j++) // j = y in zoomed context
                 {
@@ -129,9 +135,22 @@ namespace Tychaia.ProceduralGeneration
 
             // v11 is the center value we're zooming in on.
             int mod = 0;
-            if ((v00 < v11 || v20 < v11 || v02 < v11 || v22 < v11) && v11 != 0)
+            if ((v00 < v11 || v20 < v11 || v02 < v11 || v22 < v11) && v11 > 0)
                 mod = 1;
+            else if (v11 < 0 && (v01 > v11 || v10 > v11 || v21 > v11 || v12 > v11))
+                mod = -1;
             return v11 * 2 - mod;
+
+            //if ((v00 < v11 || v20 < v11 || v02 < v11 || v22 < v11) && v11 != 0)
+            //    return v11 * 2 - 1;
+            //else if (v11 != 0)
+            //    return v11 * 2;
+            //else if (v11 == 0 && v00 == 0 && v02 == 0 && v20 == 0 && v22 == 0)
+            //    return -1;
+            //else if (v11 == 0)
+            //    return 0;
+            //else
+            //    throw new InvalidOperationException();
         }
 
         public override Dictionary<int, System.Drawing.Brush> GetLayerColors()

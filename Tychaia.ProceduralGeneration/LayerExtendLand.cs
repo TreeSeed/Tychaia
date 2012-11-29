@@ -32,7 +32,7 @@ namespace Tychaia.ProceduralGeneration
             for (int i =0; i < width; i++)
                 for (int j =0; j <height; j++)
                 {
-                    if (parent[(i + ox) + (j + oy) * rw] == 0)
+                    if (parent[(i + ox) + (j + oy) * rw] <= 0)
                     {
                         int selected = this.GetRandomRange(x + i, y + j, 0, 4);
 

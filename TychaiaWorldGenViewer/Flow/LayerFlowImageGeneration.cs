@@ -11,7 +11,7 @@ namespace TychaiaWorldGenViewer.Flow
 {
     public static class LayerFlowImageGeneration
     {
-        private static SolidBrush m_UnknownAssociation = new SolidBrush(Color.FromArgb(63, 63, 63));
+        private static SolidBrush m_UnknownAssociation = new SolidBrush(Color.FromArgb(255, 0, 0));
 
         public static int X
         {

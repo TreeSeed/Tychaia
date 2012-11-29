@@ -98,7 +98,7 @@
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripSeparator();
             this.c_3DGeneralStoreResultMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_3DTerrainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.c_3DTerrainAddFormTerrainMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_3DTerrainAddFormTerrainAdvancedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_3DTerrainAddEdgeDetectionMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_3DTownsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_3DTownsAddFormCityBiomesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -121,6 +121,7 @@
             this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_ZLabel = new System.Windows.Forms.Label();
             this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
+            this.c_3DTerrainAddFormTerrainBasicMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_StatusStrip.SuspendLayout();
             this.c_ContextMenuStrip.SuspendLayout();
             this.c_ToolStrip.SuspendLayout();
@@ -179,7 +180,7 @@
             this.c_RenameSelectedMenuItem,
             this.c_DeleteSelectedMenuItem});
             this.c_ContextMenuStrip.Name = "contextMenuStrip1";
-            this.c_ContextMenuStrip.Size = new System.Drawing.Size(173, 390);
+            this.c_ContextMenuStrip.Size = new System.Drawing.Size(173, 412);
             // 
             // c_2DToolStripMenuItem
             // 
@@ -279,10 +280,10 @@
             // 
             // c_GeneralAddSmoothMenuItem
             // 
-            this.c_GeneralAddSmoothMenuItem.Enabled = false;
             this.c_GeneralAddSmoothMenuItem.Name = "c_GeneralAddSmoothMenuItem";
             this.c_GeneralAddSmoothMenuItem.Size = new System.Drawing.Size(167, 22);
             this.c_GeneralAddSmoothMenuItem.Text = "Smooth";
+            this.c_GeneralAddSmoothMenuItem.Click += new System.EventHandler(this.c_GeneralAddSmoothMenuItem_Click);
             // 
             // c_GeneralAddRemapMenuItem
             // 
@@ -653,23 +654,24 @@
             // c_3DTerrainMenuItem
             // 
             this.c_3DTerrainMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.c_3DTerrainAddFormTerrainMenuItem,
+            this.c_3DTerrainAddFormTerrainBasicMenuItem,
+            this.c_3DTerrainAddFormTerrainAdvancedMenuItem,
             this.c_3DTerrainAddEdgeDetectionMenuItem});
             this.c_3DTerrainMenuItem.Name = "c_3DTerrainMenuItem";
             this.c_3DTerrainMenuItem.Size = new System.Drawing.Size(172, 22);
             this.c_3DTerrainMenuItem.Text = "Terrain";
             // 
-            // c_3DTerrainAddFormTerrainMenuItem
+            // c_3DTerrainAddFormTerrainAdvancedMenuItem
             // 
-            this.c_3DTerrainAddFormTerrainMenuItem.Name = "c_3DTerrainAddFormTerrainMenuItem";
-            this.c_3DTerrainAddFormTerrainMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.c_3DTerrainAddFormTerrainMenuItem.Text = "Form Terrain";
-            this.c_3DTerrainAddFormTerrainMenuItem.Click += new System.EventHandler(this.c_TerrainAddForm3DTerrainMenuItem_Click);
+            this.c_3DTerrainAddFormTerrainAdvancedMenuItem.Name = "c_3DTerrainAddFormTerrainAdvancedMenuItem";
+            this.c_3DTerrainAddFormTerrainAdvancedMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.c_3DTerrainAddFormTerrainAdvancedMenuItem.Text = "Form Terrain Advanced";
+            this.c_3DTerrainAddFormTerrainAdvancedMenuItem.Click += new System.EventHandler(this.c_TerrainAddForm3DTerrainMenuItem_Click);
             // 
             // c_3DTerrainAddEdgeDetectionMenuItem
             // 
             this.c_3DTerrainAddEdgeDetectionMenuItem.Name = "c_3DTerrainAddEdgeDetectionMenuItem";
-            this.c_3DTerrainAddEdgeDetectionMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.c_3DTerrainAddEdgeDetectionMenuItem.Size = new System.Drawing.Size(198, 22);
             this.c_3DTerrainAddEdgeDetectionMenuItem.Text = "Edge Detection";
             this.c_3DTerrainAddEdgeDetectionMenuItem.Click += new System.EventHandler(this.c_3DTerrainAddEdgeDetectionMenuItem_Click);
             // 
@@ -908,6 +910,13 @@
             this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
             this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
             // 
+            // c_3DTerrainAddFormTerrainBasicMenuItem
+            // 
+            this.c_3DTerrainAddFormTerrainBasicMenuItem.Name = "c_3DTerrainAddFormTerrainBasicMenuItem";
+            this.c_3DTerrainAddFormTerrainBasicMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.c_3DTerrainAddFormTerrainBasicMenuItem.Text = "Form Terrain Basic";
+            this.c_3DTerrainAddFormTerrainBasicMenuItem.Click += new System.EventHandler(this.c_3DTerrainAddFormTerrainBasicMenuItem_Click);
+            // 
             // FlowForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -999,7 +1008,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
         private System.Windows.Forms.ToolStripMenuItem c_3DToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_3DTerrainMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem c_3DTerrainAddFormTerrainMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem c_3DTerrainAddFormTerrainAdvancedMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_RenameSelectedMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_LandAddMixOreWithVoronoiMixdownMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_GeneralAddCopyResultMenuItem;
@@ -1027,5 +1036,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem9;
         private System.Windows.Forms.ToolStripMenuItem c_3DGeneralAddPerformMathMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem10;
+        private System.Windows.Forms.ToolStripMenuItem c_3DTerrainAddFormTerrainBasicMenuItem;
     }
 }

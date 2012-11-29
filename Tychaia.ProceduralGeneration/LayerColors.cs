@@ -47,11 +47,15 @@ namespace Tychaia.ProceduralGeneration
             { 2  /* ruins    */, new SolidBrush(Color.FromArgb(127, 63, 63)) },
         };
 
+        public static Dictionary<int, Brush> TerrainBrushes = new Dictionary<int, Brush>
+        {
+            { 0  /* water   */, new SolidBrush(Color.FromArgb(2, 0, 0, 255)) },
+            { 1  /* stone   */, new SolidBrush(Color.FromArgb(2, 127, 127, 127)) }
+        };
+
         public static Dictionary<int, Brush> GetTerrainBrushes(int maxTerrain)
         {
-            Dictionary<int, Brush> v = LayerColors.GetGradientBrushes(1, maxTerrain);
-            v.Add(0, new SolidBrush(Color.FromArgb(0, 0, 255)));
-            return v;
+            return LayerColors.GetGradientBrushesWater(-maxTerrain, maxTerrain);
         }
 
         /// <summary>
@@ -68,6 +72,24 @@ namespace Tychaia.ProceduralGeneration
             {
                 int a = (int)(256 * (i / (double)(maxValue - minValue)));
                 brushes.Add(i + minValue, new SolidBrush(Color.FromArgb(a, a, a)));
+            }
+            return brushes;
+        }
+
+        /// <summary>
+        /// Returns a list of brushes used as a gradient over between the minValue
+        /// and maxValue parameters showing negative values as water.
+        /// </summary>
+        /// <param name="minValue">The minimum value in the integer field.</param>
+        /// <param name="maxValue">The maximum value in the integer field.</param>
+        /// <returns></returns>
+        public static Dictionary<int, Brush> GetGradientBrushesWater(int minValue, int maxValue)
+        {
+            Dictionary<int, Brush> brushes = new Dictionary<int, Brush>();
+            for (int i = 0; i < maxValue - minValue; i++)
+            {
+                int a = (int)(256 * (i / (double)(maxValue - minValue)));
+                brushes.Add(i + minValue, new SolidBrush(Color.FromArgb(i + minValue < 0 ? 0 : a, i + minValue < 0 ? 0 : a, a)));
             }
             return brushes;
         }

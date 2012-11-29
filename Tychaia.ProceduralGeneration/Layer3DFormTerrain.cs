@@ -21,7 +21,7 @@ namespace Tychaia.ProceduralGeneration
         protected override int[] GenerateDataImpl(long x, long y, long z, long width, long height, long depth)
         {
             if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
-                return new int[width * height];
+                return new int[width * height * depth];
 
             int[] parent = this.Parents[0].GenerateData(x, y, width, height);
             int[] biomes = this.Parents[1].GenerateData(x, y, width, height);
