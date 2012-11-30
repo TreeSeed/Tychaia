@@ -23,18 +23,21 @@ namespace Tychaia.ProceduralGeneration
         }
 
         [DataMember]
-        [DefaultValue(5)]
+        [DefaultValue(10)]
         [Description("Edge check range.")]
         public int EdgeSampling
         {
             get;
             set;
         }
-        public Layer3DBuildingPlacer(Layer biomes, Layer townscatter)
-            : base(new Layer[] {biomes, townscatter })
+
+        // Cityareavoronoi basically creates areas and then asks if the area has a steep slope, if so don't build there.
+        // Other ways to attempt to prevent cities from building both above a below a massive cliff?
+        public Layer3DBuildingPlacer(Layer terrain, Layer citybiomes, Layer cityareavoronoi)
+            : base(new Layer[] { terrain, citybiomes, cityareavoronoi })
         {
             this.ZoomLevel = 1;
-            this.EdgeSampling = 5;
+            this.EdgeSampling = 10;
         }
 
         protected override int[] GenerateDataImpl(long x, long y, long z, long width, long height, long depth)
@@ -50,8 +53,8 @@ namespace Tychaia.ProceduralGeneration
             long rh = height + this.EdgeSampling * 2;
 
             // Just need to add in offsets for x + y, up to 15
-            int[] biomes = this.Parents[0].GenerateData(rx, ry, rw, rh);
-            int[] townscatter = this.Parents[1].GenerateData(rx, ry, z, rw, rh, depth);
+            int[] terrain = this.Parents[0].GenerateData(rx, ry, rw, rh);
+            int[] citybiomes = this.Parents[1].GenerateData(rx, ry, z, rw, rh, depth);
             int[] data = new int[width * height * depth];
             int[] tempdata = new int[width * height * depth];
 
@@ -65,94 +68,9 @@ namespace Tychaia.ProceduralGeneration
             for (long i = 0; i < rw; i++)
                 for (long j = 0; j < rh; j++)
                 {
-                    if (townscatter[i + j * rw] == 1 || townscatter[i + j * rw] == -2 || townscatter[i + j * rw] == -3)
+                    //for (int k = 0; k < !!!!!citybiomes depth count (how many there are)!!!!!!!!; k++)
                     {
-                        List<int> BuildingsList = new List<int>();
-                        int p = 1;
-
-                        while (townscatter[i + j * rw + p * rw * rh] != -1)
-                        {
-                            BuildingsList.Add(townscatter[i + j * rw + p * rw * rh] - 2);
-                            p++;
-                        }
-
-                        if (townscatter[i + j * rw] == 1)
-                        {
-                            data = PlaceBuildings(width, height, depth, biomes, i, j, rw, ox, oy, BuildingsList, x + i, y + j, data);
-                        }
-                        else if (townscatter[i + j * rw] == -2)
-                        {
-                            List<int> NewBuildingsList = new List<int>();
-                            List<int> TempBuildingsList = new List<int>();
-                            // Add possible evaluate placers
-                            for (int k = 0; k < BuildingsList.Count; k++)
-                            {
-                                if (BuildingEngine.Buildings[BuildingsList[k]].BuildingPlacer == true)
-                                {
-                                    NewBuildingsList = BuildingEngine.GetPlacerBuildingsForCell(biomes[i + j * rw], BuildingEngine.Buildings[BuildingsList[k]].BuildingPlacerID);
-                                    int m = 0;
-                                    if (NewBuildingsList.Count != 0)
-                                    {
-                                        int valuecount = 0;
-                                        int selection = this.GetRandomRange(x + i, y + j, 0, NewBuildingsList.Count);
-                                        while (valuecount < BuildingEngine.Buildings[NewBuildingsList[m]].BuildingPlacerValue)
-                                        {
-                                            TempBuildingsList.Add(NewBuildingsList[selection] + 2);
-                                            valuecount = valuecount + BuildingEngine.Buildings[NewBuildingsList[selection]].BuildingValue;
-                                            selection = this.GetRandomRange(x + i, y + j, 0, NewBuildingsList.Count);
-                                            m++;
-                                        }
-                                        data = PlaceBuildings(width, height, depth, biomes, i, j, rw, ox, oy, TempBuildingsList, x + i, y + j, data);
-                                    }
-                                }
-                                else
-                                {
-                                    if (i >= ox && i <= (rw - ox) && j >= oy && j <= (rh - oy))
-                                    {
-                                        int o = 1;
-                                        while (data[i - ox + (j - oy) * width + o * width * height] != -1)
-                                        {
-                                            o++;
-                                        }
-                                        data[i - ox + (j - oy) * width + o * width * height] = BuildingsList[k] + 2;
-                                    }
-                                }
-                            }
-                        }
-                        else if (townscatter[i + j * rw] == -3)
-                        {
-                            // Just adds the single building in that cell to its list. Passes to the next layer.
-                            if (i >= ox && i <= (rw - ox) && j >= oy && j <= (rh - oy))
-                            {
-                                int o = 1;
-                                while (data[i - ox + (j - oy) * width + o * width * height] != -1)
-                                {
-                                    o++;
-                                }
-                                data[i - ox + (j - oy) * width + o * width * height] = BuildingsList[0] + 2;
-                            }
-                        }
-                    }
-                }
-
-            // Means that if there is more than 1 building placed then it will not place any more.
-            for (int i = 0; i < rw; i++)
-                for (int j = 0; j < rh; j++)
-                {
-                    if (i >= ox && i <= (rw - ox) && j >= oy && j <= (rh - oy))
-                    {
-                        if (data[i - ox + (j - oy) * width + 2 * width * height] != -1 && data[i - ox + (j - oy) * width] != -2)
-                        {
-                            data[i - ox + (j - oy) * width] = 1;
-                        }
-                        else if (data[i - ox + (j - oy) * width] != 2 && data[i - ox + (j - oy) * width + 1 * width * height] != -1)
-                        {
-                            data[i - ox + (j - oy) * width] = -3;
-                        }
-                        else
-                        {
-                            data[i - ox + (j - oy) * width] = 0;
-                        }
+                        
                     }
                 }
             return data;

@@ -10,6 +10,8 @@ using Protogame.Math;
 
 namespace Tychaia.ProceduralGeneration
 {
+    // To-Do: Create a layer that takes a 2d voronoi mixdown of ore densities and places ore based off of these values at random heights.
+    // This will allow cities to be placed at certain X/Y coords and then build out the mine tunnels to X/Y/Z locations.
     /// <summary>
     /// Generates a layer from 3D Voronoi tessellation.
     /// </summary>
