@@ -616,5 +616,25 @@ namespace TychaiaWorldGenViewer
                )
             );
         }
+
+        private void c_GeneralAddReplaceMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new LayerReplace(null, null)
+               )
+            );
+        }
+
+        private void c_3DGeneralAddReplaceMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new Layer3DReplace(null, null)
+               )
+            );
+        }
     }
 }

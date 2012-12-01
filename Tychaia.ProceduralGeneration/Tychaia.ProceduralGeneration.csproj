@@ -81,6 +81,8 @@
     <Compile Include="Cities\RoyaltyCityBiome.cs" />
     <Compile Include="Cities\MineCityBiome.cs" />
     <Compile Include="Cities\FarmlandCityBiome.cs" />
+    <Compile Include="LayerReplace.cs" />
+    <Compile Include="Layer3DReplace.cs" />
     <Compile Include="Layer3DFormTerrainBasic.cs" />
     <Compile Include="Layer3DFillSecondaryCityBiomes.cs" />
     <Compile Include="LayerSmooth.cs" />
