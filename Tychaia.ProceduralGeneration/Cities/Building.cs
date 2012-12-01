@@ -13,11 +13,17 @@ namespace Tychaia.ProceduralGeneration.CityBiomes.Buildings
 
         // Building Size and Location
         public int Height;              // How tall the building is
-        public int Size;                // How big the building is (1 = small, 2 = medium, 3 = large)
-        public string CityBiomes;       // What city biomes this is located in.
+        public int Length;              // Between 4 and 100 cells.
+        public int Width;
+        public int VarianceLength;
+        public int VarianceWidth;
+        public double PlaceLimit = 1.0;  // Chance that this will spawn in any single cell, also known as the density (higher number results in less buildings spawning, more spread) 
+        public CityBiome[] CityBiomes;       // What city biomes this is located in.
 
-        // Stuff for contents etc.
-
+        // Building Rooms
+        public int[] RoomLength;
+        public int[] RoomWidth;
+        public Room[] RoomType;
 
         public Color BrushColor;
     }

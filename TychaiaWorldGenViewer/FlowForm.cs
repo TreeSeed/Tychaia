@@ -496,23 +496,13 @@ namespace TychaiaWorldGenViewer
                )
             );
         }
-
-        private void buildingPlacerPlacerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.c_FlowInterfaceControl.AddElementAtMouse(
-                new LayerFlowElement(
-                    this.c_FlowInterfaceControl,
-                    new Layer3DBuildingList(null, null, null, null, null, null)
-                )
-            );
-        }
-
+        
         private void buildingPlacerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.c_FlowInterfaceControl.AddElementAtMouse(
                 new LayerFlowElement(
                     this.c_FlowInterfaceControl,
-                    new Layer3DBuildingPlacer(null, null)
+                    new Layer3DBuildingPlacer(null, null, null)
                 )
             );
         }

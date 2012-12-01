@@ -564,13 +564,6 @@
             this.c_LandAddZoomTownCentersMenuItem.Text = "Zoom Town Centers";
             this.c_LandAddZoomTownCentersMenuItem.Click += new System.EventHandler(this.c_LandAddZoomTownCentersMenuItem_Click);
             // 
-            // buildingPlacerPlacerToolStripMenuItem
-            // 
-            this.buildingPlacerPlacerToolStripMenuItem.Name = "buildingPlacerPlacerToolStripMenuItem";
-            this.buildingPlacerPlacerToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.buildingPlacerPlacerToolStripMenuItem.Text = "Building Lister";
-            this.buildingPlacerPlacerToolStripMenuItem.Click += new System.EventHandler(this.buildingPlacerPlacerToolStripMenuItem_Click);
-            // 
             // buildingPlacerToolStripMenuItem
             // 
             this.buildingPlacerToolStripMenuItem.Name = "buildingPlacerToolStripMenuItem";
