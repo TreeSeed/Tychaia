@@ -17,7 +17,8 @@ namespace Tychaia.ProceduralGeneration.CityBiomes.Buildings
         public int Width;
         public int VarianceLength;
         public int VarianceWidth;
-        public string CityBiomes;       // What city biomes this is located in.
+        public double PlaceLimit = 1.0;  // Chance that this will spawn in any single cell, also known as the density (higher number results in less buildings spawning, more spread) 
+        public CityBiome[] CityBiomes;       // What city biomes this is located in.
 
         // Building Rooms
         public int[] RoomLength;
