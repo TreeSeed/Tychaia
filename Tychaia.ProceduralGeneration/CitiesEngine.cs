@@ -56,6 +56,25 @@ namespace Tychaia.ProceduralGeneration
             return -1;
         }
 
+        public static int AddCityBiomeForCell(double soilfertility, double animaldensity, double oredensity, double rareoredensity, int citybiome, int citybiomecount)
+        {
+            if (CitiesEngine.CityBiomes.Count > citybiome)
+            {
+                CityBiome cb = CitiesEngine.CityBiomes[citybiome];
+                if (soilfertility >= (cb.MinSoilFertility - (1 - cb.MinSoilFertility)) && soilfertility < cb.MaxSoilFertility &&
+                    animaldensity >= (cb.MinAnimalDensity - (1 - cb.MinAnimalDensity)) && animaldensity < cb.MaxAnimalDensity &&
+                    oredensity >= (cb.MinOreDensity - (1 - cb.MinOreDensity)) && oredensity < cb.MaxOreDensity &&
+                    rareoredensity >= (cb.MinRareOreDensity - (1 - cb.MinRareOreDensity)) && rareoredensity < cb.MaxRareOreDensity)
+                    return (1);
+            }
+            else
+            {
+                return 0;
+            }
+
+            return -1;
+        }
+
         public static int GetSecondaryCityBiomeForCell(int citybiome, int citybiomescount)
         {
             if (CitiesEngine.SecondaryCityBiomes.Count > citybiome)

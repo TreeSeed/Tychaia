@@ -11,7 +11,7 @@ namespace Tychaia.ProceduralGeneration
     /// Generates city biomes based on input data.
     /// </summary>
     [DataContract]
-    public class Layer3DFormCityBiomes : Layer3D
+    public class Layer3DAddCityBiomes : Layer3D
     {
         [DataMember]
         [DefaultValue(0)]
@@ -85,8 +85,8 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public Layer3DFormCityBiomes(Layer secondarybiome, Layer soilfertility, Layer animaldensity, Layer oredensity, Layer rareoredensity)
-            : base(new Layer[] { secondarybiome, soilfertility, animaldensity, oredensity, rareoredensity })
+        public Layer3DAddCityBiomes(Layer citybiomes, Layer secondarybiome, Layer soilfertility, Layer animaldensity, Layer oredensity, Layer rareoredensity)
+            : base(new Layer[] { citybiomes, secondarybiome, soilfertility, animaldensity, oredensity, rareoredensity })
         {
             this.MinSoilFertility = 0;
             this.MaxSoilFertility = 100;
@@ -100,21 +100,22 @@ namespace Tychaia.ProceduralGeneration
 
         protected override int[] GenerateDataImpl(long x, long y, long z, long width, long height, long depth)
         {
-            if (this.Parents.Length < 5 || this.Parents[0] == null || this.Parents[1] == null || this.Parents[2] == null || this.Parents[3] == null || this.Parents[4] == null)
+            if (this.Parents.Length < 6 || this.Parents[0] == null || this.Parents[1] == null || this.Parents[2] == null || this.Parents[3] == null || this.Parents[4] == null || this.Parents[5] == null)
                 return new int[width * height * depth];
 
-            int[] biome = this.Parents[0].GenerateData(x, y, width, height);
-            int[] soilfertility = this.Parents[1].GenerateData(x, y, width, height);
-            int[] animaldensity = this.Parents[2].GenerateData(x, y, width, height);
-            int[] oredensity = this.Parents[3].GenerateData(x, y, width, height);
-            int[] rareoredensity = this.Parents[4].GenerateData(x, y, width, height);
+            int[] citybiomes = this.Parents[0].GenerateData(x, y, z, width, height, depth);
+            int[] biome = this.Parents[1].GenerateData(x, y, width, height);
+            int[] soilfertility = this.Parents[2].GenerateData(x, y, width, height);
+            int[] animaldensity = this.Parents[3].GenerateData(x, y, width, height);
+            int[] oredensity = this.Parents[4].GenerateData(x, y, width, height);
+            int[] rareoredensity = this.Parents[5].GenerateData(x, y, width, height);
             int[] data = new int[width * height * depth];
 
             for (int i = 0; i < width; i++)
                 for (int j = 0; j < height; j++)
                     for (int k = 0; k < depth; k++)
                     {
-                        data[i + j * width + k * width * height] = -1;
+                        data[i + j * width + k * width * height] = citybiomes[i + j * width + k * width * height];
                     }
 
             // Write out the city biomes.
@@ -124,10 +125,23 @@ namespace Tychaia.ProceduralGeneration
                     try
                     {
                         data[i + j * width] = 0;
-
-                        // Have to remember to change this possibly for 3d placement (assuming that we are going to end up having different biomes at different z levels)
                         if (biome[i + j * width] != 0)
-                        {                            
+                        {
+                            bool endloop = false;
+                            int citybiomecount = 0;
+                            while (endloop == false)
+                            {
+                                int k = 0;
+                                if (citybiomes[i + j * width + k * width * height] == 1)
+                                {
+                                    citybiomecount++;
+                                    k++;
+                                }
+                                else if (citybiomes[i + j * width + k * width * height] == -1)
+                                {
+                                    endloop = true;
+                                }
+                            }
                             // Normalize values.
                             // int nbiome = biome[i + j * width];
                             double nsoilfertility = (soilfertility[i + j * width] - this.MinSoilFertility) / (double)(this.MaxSoilFertility - this.MinSoilFertility);
@@ -137,11 +151,11 @@ namespace Tychaia.ProceduralGeneration
                             double nheat = BiomeEngine.SecondaryBiomes[biome[i + j * width]].HeatValue;
 
                             // Store result.
-                            bool endloop = false;
+                            endloop = false;
                             int citybiome = 0;
                             while (endloop == false)
                             {
-                                int temp = CitiesEngine.GetCityBiomeForCell(nsoilfertility, nanimaldensity, noredensity, nrareoredensity, citybiome);
+                                int temp = CitiesEngine.AddCityBiomeForCell(nsoilfertility, nanimaldensity, noredensity, nrareoredensity, citybiome, citybiomecount);
                                 if (temp != 0)
                                 {
                                     data[i + j * width + citybiome + 1 * width * height] = temp;
@@ -173,7 +187,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override string[] GetParentsRequired()
         {
-            return new string[] { "Biome", "Soil Fertility", "Animal Density", "Ore Density", "Rare Ore Density"};
+            return new string[] { "City Biomes", "Biome", "Soil Fertility", "Animal Density", "Ore Density", "Rare Ore Density"};
         }
 
         public override string ToString()
@@ -183,7 +197,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override bool[] GetParents3DRequired()
         {
-            return new bool[] { false, false, false, false, false};
+            return new bool[] { true, false, false, false, false, false};
         }
     }
 }
