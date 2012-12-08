@@ -46,14 +46,15 @@ namespace Tychaia.ProceduralGeneration
                     animaldensity >= cb.MinAnimalDensity && animaldensity < cb.MaxAnimalDensity &&
                     oredensity >= cb.MinOreDensity && oredensity < cb.MaxOreDensity &&
                     rareoredensity >= cb.MinRareOreDensity && rareoredensity < cb.MaxRareOreDensity)
+                {
                     return (1);
+                }
+                else return 0;
             }
             else
             {
-                return 0;
+                return -1;
             }
-
-            return -1;
         }
 
         public static int AddCityBiomeForCell(double soilfertility, double animaldensity, double oredensity, double rareoredensity, int citybiome, int citybiomecount)
@@ -65,14 +66,15 @@ namespace Tychaia.ProceduralGeneration
                     animaldensity >= (cb.MinAnimalDensity - (1 - cb.MinAnimalDensity)) && animaldensity < cb.MaxAnimalDensity &&
                     oredensity >= (cb.MinOreDensity - (1 - cb.MinOreDensity)) && oredensity < cb.MaxOreDensity &&
                     rareoredensity >= (cb.MinRareOreDensity - (1 - cb.MinRareOreDensity)) && rareoredensity < cb.MaxRareOreDensity)
+                {
                     return (1);
+                }
+                else return 0;
             }
             else
             {
-                return 0;
+                return -1;
             }
-
-            return -1;
         }
 
         public static int GetSecondaryCityBiomeForCell(int citybiome, int citybiomescount)
