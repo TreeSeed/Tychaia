@@ -46,7 +46,7 @@ namespace Tychaia.RuntimeGeneration.Weapons
             double rand = r.NextDouble();
             if (rand >= 0.5)
             {
-                return (mod + this.Element.GetItemPrefix() + " " + this.Type).Replace("  ", " ");
+                return (mod + this.Element.GetItemPrefixResist() + " " + this.Type).Replace("  ", " ");
             }
             else
             {

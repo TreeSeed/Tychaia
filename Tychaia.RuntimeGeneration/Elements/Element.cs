@@ -12,31 +12,33 @@ namespace Tychaia.RuntimeGeneration.Elements
 
 
         // Used for damage over time effects on spells, elemental weapons and shields.
-        virtual public string[] PresentTense
+        virtual public string[] WeaponPrefix
         {
-            get { return new string[] { "--- Error: " + this.ToString() + " PresentTense not set ---" }; }
+            get { return new string[] { "--- Error: " + this.ToString() + " WeaponPrefix not set ---" }; }
         }
+
         // Used for item generation - gives resistance to this element.
-        virtual public string[] ItemPrefix
+        virtual public string[] ItemPrefixDamaged
         {
-            get { return new string[] { "--- Error: " + this.ToString() + " PastTense not set ---" }; }
+            get { return new string[] { "--- Error: " + this.ToString() + " ItemPrefixDamaged not set ---" }; }
         }
+
         // Used for instant damage spells.
         virtual public string[] ElementName
         {
             get { return new string[] { "--- Error: " + this.ToString() + " ElementName not set ---" }; }
         }
 
-        public virtual string GetPresentTense()
+        public virtual string GetWeaponPrefix()
         {
-            int rand = r.Next(PresentTense.Length);
-            return PresentTense[rand];
+            int rand = r.Next(WeaponPrefix.Length);
+            return WeaponPrefix[rand];
         }
 
-        public virtual string GetItemPrefix()
+        public virtual string GetItemPrefixResist()
         {
-            int rand = r.Next(ItemPrefix.Length);
-            return ItemPrefix[rand];
+            int rand = r.Next(ItemPrefixDamaged.Length);
+            return ItemPrefixDamaged[rand];
         }
 
         public virtual string GetElementName()
