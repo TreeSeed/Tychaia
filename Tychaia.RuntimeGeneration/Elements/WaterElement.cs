@@ -9,7 +9,7 @@ namespace Tychaia.RuntimeGeneration.Elements
     {
         public const double Weight = 1;
 
-        public override string[] PresentTense
+        public override string[] WeaponPrefix
         {
             get
             {
@@ -17,7 +17,7 @@ namespace Tychaia.RuntimeGeneration.Elements
             }
         }
 
-        public override string[] ItemPrefix
+        public override string[] ItemPrefixDamaged
         {
             get
             {

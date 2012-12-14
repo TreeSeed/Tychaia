@@ -82,6 +82,7 @@
     <Compile Include="Cities\MineCityBiome.cs" />
     <Compile Include="Cities\FarmlandCityBiome.cs" />
     <Compile Include="LayerColor.cs" />
+    <Compile Include="Layer3DAddCityBiomes.cs" />
     <Compile Include="LayerReplace.cs" />
     <Compile Include="Layer3DReplace.cs" />
     <Compile Include="Layer3DFormTerrainBasic.cs" />

@@ -124,6 +124,8 @@ namespace Tychaia.ProceduralGeneration
                     try
                     {
                         data[i + j * width] = 0;
+
+                        // Have to remember to change this possibly for 3d placement (assuming that we are going to end up having different biomes at different z levels)
                         if (biome[i + j * width] != 0)
                         {                            
                             // Normalize values.
