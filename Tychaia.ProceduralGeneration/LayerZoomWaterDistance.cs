@@ -153,7 +153,7 @@ namespace Tychaia.ProceduralGeneration
             //    throw new InvalidOperationException();
         }
 
-        public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
+        public override Dictionary<int, LayerColor> GetLayerColors()
         {
             return LayerColors.GetTerrainBrushes(1 << this.MaxTerrainBinary);
         }

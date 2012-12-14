@@ -54,7 +54,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -82,6 +81,7 @@
     <Compile Include="Cities\RoyaltyCityBiome.cs" />
     <Compile Include="Cities\MineCityBiome.cs" />
     <Compile Include="Cities\FarmlandCityBiome.cs" />
+    <Compile Include="LayerColor.cs" />
     <Compile Include="LayerReplace.cs" />
     <Compile Include="Layer3DReplace.cs" />
     <Compile Include="Layer3DFormTerrainBasic.cs" />

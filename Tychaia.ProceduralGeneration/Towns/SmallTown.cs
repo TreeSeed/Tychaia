@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration.Towns
 {
@@ -14,7 +13,7 @@ namespace Tychaia.ProceduralGeneration.Towns
             this.MinOreDensity = 0.05;           // Out of 100
             this.MinRareOreDensity = 0.0;       // Out of 100
             this.TownSize = 0.3;
-            this.BrushColor = Color.Red;
+            this.BrushColor = LayerColor.Red;
         }
     }
 }

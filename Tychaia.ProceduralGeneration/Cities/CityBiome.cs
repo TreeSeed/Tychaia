@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration.CityBiomes
 {
@@ -35,6 +34,6 @@ namespace Tychaia.ProceduralGeneration.CityBiomes
         public string FillCenter;                    // Fills the center cells
 
         // Color that this biome draws
-        public Color BrushColor;
+        public LayerColor BrushColor;
     }
 }

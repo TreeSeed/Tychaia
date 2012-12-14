@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration.Biomes
 {
@@ -27,6 +26,6 @@ namespace Tychaia.ProceduralGeneration.Biomes
         public int DefaultFor = -1;
 
         // Color that this biome draws
-        public Color BrushColor;
+        public LayerColor BrushColor;
     }
 }

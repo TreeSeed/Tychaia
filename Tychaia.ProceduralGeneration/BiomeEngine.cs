@@ -64,11 +64,11 @@ namespace Tychaia.ProceduralGeneration
             return -1;
         }
 
-        public static Dictionary<int, System.Drawing.Brush> GetSecondaryBiomeBrushes()
+        public static Dictionary<int, LayerColor> GetSecondaryBiomeBrushes()
         {
-            Dictionary<int, System.Drawing.Brush> result = new Dictionary<int, System.Drawing.Brush>();
+            Dictionary<int, LayerColor> result = new Dictionary<int, LayerColor>();
             for (int i = 0; i < BiomeEngine.SecondaryBiomes.Count; i++)
-                result.Add(i, new System.Drawing.SolidBrush(BiomeEngine.SecondaryBiomes[i].BrushColor));
+                result.Add(i, BiomeEngine.SecondaryBiomes[i].BrushColor);
             return result;
         }
     }

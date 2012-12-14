@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration.CityBiomes.Buildings
 {
@@ -20,6 +19,6 @@ namespace Tychaia.ProceduralGeneration.CityBiomes.Buildings
         // Stuff for contents etc.
         // Object list
 
-        public Color BrushColor;
+        public LayerColor BrushColor;
     }
 }

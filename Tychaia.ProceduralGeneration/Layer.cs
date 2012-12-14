@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
-using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -238,7 +237,7 @@ namespace Tychaia.ProceduralGeneration
             return false;
         }
 
-        public abstract Dictionary<int, System.Drawing.Brush> GetLayerColors();
+        public abstract Dictionary<int, LayerColor> GetLayerColors();
 
         #region Designer Methods
 

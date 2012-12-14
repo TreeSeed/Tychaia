@@ -172,7 +172,7 @@ namespace Tychaia.ProceduralGeneration
             this.RecursiveApply(tracker, voronoi, idx, p.Down, width, height);
         }
 
-        public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
+        public override Dictionary<int, LayerColor> GetLayerColors()
         {
             if (this.Parents.Length < 2 || this.Parents[1] == null)
                 return null;

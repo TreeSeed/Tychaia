@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration.CityBiomes
 {
@@ -10,7 +9,7 @@ namespace Tychaia.ProceduralGeneration.CityBiomes
     {
         public Farmland()
         {
-            this.BrushColor = Color.Green;
+            this.BrushColor = LayerColor.Green;
             this.MinSoilFertility = 0.95;
         }
     }

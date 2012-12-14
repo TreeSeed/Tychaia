@@ -127,7 +127,7 @@ namespace Tychaia.ProceduralGeneration
             return parent[x + y * width];
         } 
 
-        public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
+        public override Dictionary<int, LayerColor> GetLayerColors()
         {
             return LayerColors.GetTerrainBrushes(this.MaxTerrain);
         }

@@ -56,7 +56,7 @@ namespace Tychaia.ProceduralGeneration
             return this.Mixdown.GenerateData(x, y, width, height);
         }
 
-        public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
+        public override Dictionary<int, LayerColor> GetLayerColors()
         {
             // If we are deserialized, our Perlin / Voronoi might not be created
             // so we need to recreate them.

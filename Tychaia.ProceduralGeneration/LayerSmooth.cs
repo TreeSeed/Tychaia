@@ -159,7 +159,7 @@ namespace Tychaia.ProceduralGeneration
             return (int)((double)result / (double)total);
         }
 
-        public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
+        public override Dictionary<int, LayerColor> GetLayerColors()
         {
             if (this.Parents.Length < 1 || this.Parents[0] == null)
                 return null;

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using Tychaia.ProceduralGeneration.CityBiomes.Buildings;
-using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -54,12 +53,12 @@ namespace Tychaia.ProceduralGeneration
             return -1;
         }
 
-        public static Dictionary<int, System.Drawing.Brush> GetBuildingBrushes()
+        public static Dictionary<int, LayerColor> GetBuildingBrushes()
         {
-            Dictionary<int, System.Drawing.Brush> result = new Dictionary<int, System.Drawing.Brush>();
-            result.Add(-1, new System.Drawing.SolidBrush(Color.Transparent));
+            Dictionary<int, LayerColor> result = new Dictionary<int, LayerColor>();
+            result.Add(-1, LayerColor.Transparent);
             for (int i = 0; i < BuildingEngine.Buildings.Count; i++)
-                result.Add(i, new System.Drawing.SolidBrush(BuildingEngine.Buildings[i].BrushColor));
+                result.Add(i, BuildingEngine.Buildings[i].BrushColor);
             return result;
         }
     }
