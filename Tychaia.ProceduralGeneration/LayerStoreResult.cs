@@ -60,6 +60,7 @@ namespace Tychaia.ProceduralGeneration
         Temperature = 2,
         Terrain = 3,
         FamilyTree = 4,
-        Towns = 5
+        Towns = 5,
+        Javascript = 6
     }
 }

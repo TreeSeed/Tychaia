@@ -10,7 +10,7 @@ namespace TychaiaWorldGenWebsite
 {
     public static class LayerGenerationHTML5
     {
-        private static LayerColor m_UnknownColor = new LayerColor(255, 0, 0);
+        private static LayerColor m_UnknownColor = new LayerColor(0, 0, 0, 0);
 
         public static int X
         {
@@ -32,8 +32,10 @@ namespace TychaiaWorldGenWebsite
 
         public static void DrawLayerToImageData(dynamic imageData, Layer l, int width, int height)
         {
+#if SUPPORT_3D
             if (l is Layer2D)
-                DrawLayer2DToImageData(imageData, l as Layer2D, width, height);
+#endif
+                DrawLayer2DToImageData(imageData, l, width, height);
 #if SUPPORT_3D
             else if (l is Layer3D)
                 DrawLayer3DToImageData(l as Layer3D, width, height);
@@ -260,7 +262,7 @@ namespace TychaiaWorldGenWebsite
             imageData.data[index + 3] = c.A;
         }
 
-        private static void DrawLayer2DToImageData(dynamic imageData, Layer2D l, int width, int height)
+        private static void DrawLayer2DToImageData(dynamic imageData, Layer l, int width, int height)
         {
             Dictionary<int, LayerColor> colors = l.GetLayerColors();
             int[] data = l.GenerateData(LayerGenerationHTML5.X, LayerGenerationHTML5.Y, width, height);

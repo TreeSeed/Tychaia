@@ -4,3 +4,6 @@
 [submodule "Libraries/NBTExplorer"]
 	path = Libraries/NBTExplorer
 	url = git://github.com/hach-que/NBTExplorer.git
+[submodule "Libraries/JSIL"]
+	path = Libraries/JSIL
+	url = git://github.com/hach-que/JSIL.git

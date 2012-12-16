@@ -26,7 +26,8 @@ namespace Tychaia
         public RPGWorld(LevelReference levelRef)
             : base()
         {
-            this.m_DiskLevel = levelRef.Source.LoadLevel(levelRef.Name);
+            if (levelRef != null)
+                this.m_DiskLevel = levelRef.Source.LoadLevel(levelRef.Name);
             this.m_Octree = new ChunkOctree();
             new Chunk(this.m_DiskLevel, this.m_Octree, 0, 0, 0);
             this.m_Player = new Player(this);

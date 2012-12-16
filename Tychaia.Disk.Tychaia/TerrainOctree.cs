@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using LibNbt;
 
+#if FALSE
 namespace Tychaia.Disk.Tychaia
 {
     public class TerrainOctree
@@ -133,3 +133,4 @@ namespace Tychaia.Disk.Tychaia
         }
     }
 }
+#endif

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
+#if FALSE
 namespace Tychaia.Disk.Minecraft
 {
     public class MinecraftLevelAPI : ILevelAPI
@@ -32,3 +33,4 @@ namespace Tychaia.Disk.Minecraft
         }
     }
 }
+#endif

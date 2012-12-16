@@ -42,13 +42,13 @@ namespace TychaiaWorldGenViewer
             Bitmap b = new Bitmap(this.c_RenderBox.Width, this.c_RenderBox.Height);
             Graphics g = Graphics.FromImage(b);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-            Dictionary<int, Brush> brushes = l.GetLayerColors();
+            Dictionary<int, LayerColor> brushes = l.GetLayerColors();
             int[] data = l.GenerateData(0, 0, 256, 256);
             for (int x = 0; x < 256; x++)
                 for (int y = 0; y < 256; y++)
                     if (brushes.ContainsKey(data[x + y * 256]))
                         g.FillRectangle(
-                            brushes[data[x + y * 256]],
+                            new SolidBrush(Color.FromArgb(brushes[data[x + y * 256]].A, brushes[data[x + y * 256]].R, brushes[data[x + y * 256]].G, brushes[data[x + y * 256]].B)),
                             new Rectangle(x * 2, y * 2, 2, 2)
                             );
                     else

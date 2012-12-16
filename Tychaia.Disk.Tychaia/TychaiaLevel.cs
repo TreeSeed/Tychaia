@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using Tychaia.Globals;
 using System.IO;
-using LibNbt;
 
+#if FALSE
 namespace Tychaia.Disk.Tychaia
 {
     public class TychaiaLevel : ILevel
@@ -69,12 +69,13 @@ namespace Tychaia.Disk.Tychaia
                 this.m_Terrain = new TerrainOctree(Path.Combine(this.m_Path, "terrain.oct"));
 
             // Open NBT.
-            NbtFile file = this.m_Terrain.GetChunk(x / ChunkSize.Width, y / ChunkSize.Height, z / ChunkSize.Depth);
-            if (file == null)
+            //NbtFile file = this.m_Terrain.GetChunk(x / ChunkSize.Width, y / ChunkSize.Height, z / ChunkSize.Depth);
+            //if (file == null)
                 return null;
 
             // Get the integer array for this chunk.
-            return file.RootTag["RawData"].IntArrayValue;
+            //return file.RootTag["RawData"].IntArrayValue;
         }
     }
 }
+#endif

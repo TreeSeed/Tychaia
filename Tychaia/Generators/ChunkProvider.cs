@@ -44,7 +44,7 @@ namespace Tychaia.Generators
             DataContractSerializer x = new DataContractSerializer(typeof(FlowInterfaceControl.ListFlowElement), m_SerializableTypes);
             FlowInterfaceControl.ListFlowElement config = null;
             using (FileStream fstream = new FileStream(m_WorldConfig, FileMode.Open))
-            using (XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fstream, new XmlDictionaryReaderQuotas()))
+            using (XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fstream, new XmlDictionaryReaderQuotas() { MaxDepth = 1000 }))
                 config = x.ReadObject(reader, true) as FlowInterfaceControl.ListFlowElement;
 
             // Find the result layer.

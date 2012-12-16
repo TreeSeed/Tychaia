@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using LibNbt;
 using System.IO;
 using Tychaia.Globals;
 
+#if FALSE
 namespace Tychaia.Disk.Minecraft
 {
     public class MinecraftLevel : ILevel
@@ -100,3 +100,4 @@ namespace Tychaia.Disk.Minecraft
         }
     }
 }
+#endif
