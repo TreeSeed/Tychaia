@@ -53,14 +53,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Libraries\JSIL\JSIL\JSIL.csproj">
-      <Project>{DA03D241-B70C-44D7-A465-3CEB5A9416AE}</Project>
-      <Name>JSIL %28Libraries\JSIL\JSIL%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libraries\JSIL\Meta\Meta.csproj">
-      <Project>{37C67C73-1F58-49B8-A39E-768AC88C2447}</Project>
-      <Name>Meta</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Tychaia.ProceduralGeneration\Tychaia.ProceduralGeneration.csproj">
       <Project>{642D5815-4533-4146-96C1-D932FE1641F9}</Project>
       <Name>Tychaia.ProceduralGeneration</Name>
