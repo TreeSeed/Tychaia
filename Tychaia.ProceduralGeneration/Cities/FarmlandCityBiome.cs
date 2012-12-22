@@ -11,7 +11,7 @@ namespace Tychaia.ProceduralGeneration.CityBiomes
         public Farmland()
         {
             this.BrushColor = Color.Green;
-            this.MinSoilFertility = 0.95;
+            this.MinSoilFertility = 0.75;
         }
     }
 }

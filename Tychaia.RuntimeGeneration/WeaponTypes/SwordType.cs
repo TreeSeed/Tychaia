@@ -7,7 +7,7 @@ namespace Tychaia.RuntimeGeneration.Weapons.Types
 {
     public class BallType : WeaponType
     {
-        public const double Weight = 1;
+        public override double Rarity = 1;
 
         public override string ToString()
         {

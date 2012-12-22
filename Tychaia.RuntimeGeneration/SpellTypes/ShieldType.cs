@@ -7,7 +7,7 @@ namespace Tychaia.RuntimeGeneration.Spells.Types
 {
     public class ShieldType : SpellType
     {
-        public const double Weight = 1;
+        public override double Rarity = 1;
 
         public override string ToString()
         {

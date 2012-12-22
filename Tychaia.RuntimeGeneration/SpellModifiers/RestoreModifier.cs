@@ -7,7 +7,7 @@ namespace Tychaia.RuntimeGeneration.Spells.Modifiers
 {
     public class RestoreModifier : SpellModifier
     {
-        public const double Weight = 0.015;
+        public override double Rarity = 0.015;
 
         public override string ToString()
         {
