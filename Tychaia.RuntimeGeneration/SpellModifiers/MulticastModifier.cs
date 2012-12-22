@@ -7,7 +7,7 @@ namespace Tychaia.RuntimeGeneration.Spells.Modifiers
 {
     public class MulticastModifier : SpellModifier
     {
-        public const double Weight = 0.001;
+        public override double Rarity = 0.001;
 
         public override string ToString()
         {

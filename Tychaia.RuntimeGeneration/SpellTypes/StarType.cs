@@ -8,7 +8,7 @@ namespace Tychaia.RuntimeGeneration.Spells.Types
     public class StarType : SpellType
     {
         // Makes a star at target location that sends out 5 bolts after a short delay.
-        public const double Weight = 1;
+        public override double Rarity = 1;
 
         public override string ToString()
         {

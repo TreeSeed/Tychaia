@@ -7,7 +7,7 @@ namespace Tychaia.RuntimeGeneration.Weapons.Modifiers
 {
     public class RestoringModifier : WeaponModifier
     {
-        public const double Weight = 0.25;
+        public override double Rarity = 0.25;
 
         public override string ToString()
         {

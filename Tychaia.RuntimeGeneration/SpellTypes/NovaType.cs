@@ -8,7 +8,7 @@ namespace Tychaia.RuntimeGeneration.Spells.Types
     // Replaces Burst
     public class NovaType : SpellType
     {
-        public const double Weight = 0.5;
+        public override double Rarity = 0.5;
 
         public override string ToString()
         {

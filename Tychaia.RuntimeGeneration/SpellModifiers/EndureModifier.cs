@@ -7,7 +7,7 @@ namespace Tychaia.RuntimeGeneration.Spells.Modifiers
 {
     public class EndureModifier : SpellModifier
     {
-        public const double Weight = 0.025;
+        public override double Rarity = 0.025;
 
         public override string ToString()
         {

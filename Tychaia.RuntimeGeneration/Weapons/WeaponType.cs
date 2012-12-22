@@ -7,5 +7,6 @@ namespace Tychaia.RuntimeGeneration.Weapons
 {
     public abstract class WeaponType
     {
+        public abstract double Rarity = 1;
     }
 }

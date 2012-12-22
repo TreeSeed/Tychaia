@@ -7,7 +7,7 @@ namespace Tychaia.RuntimeGeneration.Elements
 {
     public class LifeElement : Element
     {
-        public const double Weight = 0.5;
+        public override double Rarity = 0.5;
 
         public override string[] WeaponPrefix
         {

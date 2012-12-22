@@ -10,7 +10,7 @@ namespace Tychaia.ProceduralGeneration.CityBiomes
         public Mine()
         {
             this.BrushColor = LayerColor.Brown;
-            this.MinOreDensity = 0.25;
+            this.MinOreDensity = 0.55;
         }
     }
 }

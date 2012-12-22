@@ -8,7 +8,7 @@ namespace Tychaia.RuntimeGeneration.Spells.Types
     public class TrailType : SpellType
     {
         // Leaves a trail on the ground as you walk, damages each second.
-        public const double Weight = 0.025;
+        public override double Rarity = 0.025;
 
         public override string ToString()
         {

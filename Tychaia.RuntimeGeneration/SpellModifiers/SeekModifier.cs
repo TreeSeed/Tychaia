@@ -7,7 +7,7 @@ namespace Tychaia.RuntimeGeneration.Spells.Modifiers
 {
     public class SeekModifier : SpellModifier
     {
-        public const double Weight = 0.005;
+        public override double Rarity = 0.005;
 
         public override string ToString()
         {
