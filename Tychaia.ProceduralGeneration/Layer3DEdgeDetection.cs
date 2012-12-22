@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -119,13 +118,13 @@ namespace Tychaia.ProceduralGeneration
             return true;
         }
 
-        public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
+        public override Dictionary<int, LayerColor> GetLayerColors()
         {
             if (this.Parents.Length < 1 || this.Parents[0] == null)
                 return null;
             else
             {
-                Dictionary<int, System.Drawing.Brush> result = new Dictionary<int, System.Drawing.Brush>();
+                Dictionary<int, LayerColor> result = new Dictionary<int, LayerColor>();
                 // V     = Z   / X   / Y
                 // 1     = Bot / Bot / Left
                 // 2     = Bot / Bot / Mid
@@ -144,24 +143,24 @@ namespace Tychaia.ProceduralGeneration
                 // 16384 = Mid / Top / Left
                 // 32768 = Mid / Mid / Left
                 // 65536 = Top / Mid / Mid
-                result.Add(0, new System.Drawing.SolidBrush(Color.Transparent));
-                result.Add(1, new System.Drawing.SolidBrush(Color.FromArgb(63, 63, 63)));
-                result.Add(2, new System.Drawing.SolidBrush(Color.FromArgb(63, 63, 127)));
-                result.Add(4, new System.Drawing.SolidBrush(Color.FromArgb(63, 63, 191)));
-                result.Add(8, new System.Drawing.SolidBrush(Color.FromArgb(63, 127, 191)));
-                result.Add(16, new System.Drawing.SolidBrush(Color.FromArgb(63, 191, 191)));
-                result.Add(32, new System.Drawing.SolidBrush(Color.FromArgb(63, 191, 127)));
-                result.Add(64, new System.Drawing.SolidBrush(Color.FromArgb(63, 191, 63)));
-                result.Add(128, new System.Drawing.SolidBrush(Color.FromArgb(63, 127, 63)));
-                result.Add(256, new System.Drawing.SolidBrush(Color.FromArgb(127, 63, 63)));
-                result.Add(512, new System.Drawing.SolidBrush(Color.FromArgb(127, 63, 127)));
-                result.Add(1024, new System.Drawing.SolidBrush(Color.FromArgb(127, 63, 191)));
-                result.Add(2048, new System.Drawing.SolidBrush(Color.FromArgb(127, 127, 191)));
-                result.Add(4096, new System.Drawing.SolidBrush(Color.FromArgb(127, 191, 191)));
-                result.Add(8192, new System.Drawing.SolidBrush(Color.FromArgb(127, 191, 127)));
-                result.Add(16384, new System.Drawing.SolidBrush(Color.FromArgb(127, 191, 63)));
-                result.Add(32768, new System.Drawing.SolidBrush(Color.FromArgb(127, 127, 63)));
-                result.Add(65536, new System.Drawing.SolidBrush(Color.FromArgb(191, 127, 127)));
+                result.Add(0, LayerColor.Transparent);
+                result.Add(1, LayerColor.FromArgb(63, 63, 63));
+                result.Add(2, LayerColor.FromArgb(63, 63, 127));
+                result.Add(4, LayerColor.FromArgb(63, 63, 191));
+                result.Add(8, LayerColor.FromArgb(63, 127, 191));
+                result.Add(16, LayerColor.FromArgb(63, 191, 191));
+                result.Add(32, LayerColor.FromArgb(63, 191, 127));
+                result.Add(64, LayerColor.FromArgb(63, 191, 63));
+                result.Add(128, LayerColor.FromArgb(63, 127, 63));
+                result.Add(256, LayerColor.FromArgb(127, 63, 63));
+                result.Add(512, LayerColor.FromArgb(127, 63, 127));
+                result.Add(1024, LayerColor.FromArgb(127, 63, 191));
+                result.Add(2048, LayerColor.FromArgb(127, 127, 191));
+                result.Add(4096, LayerColor.FromArgb(127, 191, 191));
+                result.Add(8192, LayerColor.FromArgb(127, 191, 127));
+                result.Add(16384, LayerColor.FromArgb(127, 191, 63));
+                result.Add(32768, LayerColor.FromArgb(127, 127, 63));
+                result.Add(65536, LayerColor.FromArgb(191, 127, 127));
                 return result;
             }
         }

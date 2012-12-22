@@ -183,7 +183,7 @@ namespace Tychaia.ProceduralGeneration
             return (int)seed;
         }
 
-        public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
+        public override Dictionary<int, LayerColor> GetLayerColors()
         {
             return LayerColors.VoronoiBrushes;
         }

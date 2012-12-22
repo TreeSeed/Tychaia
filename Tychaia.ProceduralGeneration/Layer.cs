@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
-using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -178,16 +177,20 @@ namespace Tychaia.ProceduralGeneration
                 // Prevents the seed from being 0 along an axis.
                 seed += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
 
-                if (this.m_RandomNumberIndexCache.Keys.Contains(seed))
-                    this.m_RandomNumberIndexCache[seed] += 1;
-                else
-                    this.m_RandomNumberIndexCache[seed] = 0;
                 int index = 0;
-                try
+                for (int i = 0; i < 10; i++)
                 {
-                    index = this.m_RandomNumberIndexCache[seed];
+                    try
+                    {
+                        if (this.m_RandomNumberIndexCache.Keys.Contains(seed))
+                            this.m_RandomNumberIndexCache[seed] += 1;
+                        else
+                            this.m_RandomNumberIndexCache[seed] = 0;
+                        index = this.m_RandomNumberIndexCache[seed];
+                        break;
+                    }
+                    catch (Exception) { }
                 }
-                catch (Exception) { }
 
                 long rng = seed * seed;
                 rng += (x - 11) * 2990430311017;
@@ -238,7 +241,7 @@ namespace Tychaia.ProceduralGeneration
             return false;
         }
 
-        public abstract Dictionary<int, System.Drawing.Brush> GetLayerColors();
+        public abstract Dictionary<int, LayerColor> GetLayerColors();
 
         #region Designer Methods
 

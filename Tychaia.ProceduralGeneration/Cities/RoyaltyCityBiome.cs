@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration.CityBiomes
 {
@@ -10,7 +9,7 @@ namespace Tychaia.ProceduralGeneration.CityBiomes
     {
         public Royalty()
         {
-            this.BrushColor = Color.Gold;
+            this.BrushColor = LayerColor.Gold;
             this.MinMilitaryStrength = 0.25;
             this.MinSoilFertility = 0.25;
             this.MinRareOreDensity = 0.25;

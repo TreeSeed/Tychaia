@@ -171,7 +171,7 @@ namespace Tychaia.ProceduralGeneration
             return data;
         }
 
-        public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
+        public override Dictionary<int, LayerColor> GetLayerColors()
         {
             return TownEngine.GetTownBrushes();
         }

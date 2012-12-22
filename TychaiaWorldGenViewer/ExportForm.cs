@@ -46,7 +46,7 @@ namespace TychaiaWorldGenViewer
             Bitmap b = new Bitmap(width, height);
             Graphics g = Graphics.FromImage(b);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-            Dictionary<int, Brush> brushes = l.GetLayerColors();
+            Dictionary<int, LayerColor> brushes = l.GetLayerColors();
             int[] data = null;
             try
             {
@@ -60,7 +60,11 @@ namespace TychaiaWorldGenViewer
                             {
                                 if (brushes != null && brushes.ContainsKey(data[x + y * width]))
                                     g.FillRectangle(
-                                        brushes[data[x + y * (width)]],
+                                        new SolidBrush(Color.FromArgb(
+                                            brushes[data[x + y * (width)]].A,
+                                            brushes[data[x + y * (width)]].R,
+                                            brushes[data[x + y * (width)]].G,
+                                            brushes[data[x + y * (width)]].B)),
                                         new Rectangle(x, y, 1, 1)
                                         );
                                 else
@@ -177,7 +181,7 @@ namespace TychaiaWorldGenViewer
             Bitmap b = new Bitmap(width * 2, height * 3);
             Graphics g = Graphics.FromImage(b);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-            Dictionary<int, Brush> brushes = l.GetLayerColors();
+            Dictionary<int, LayerColor> brushes = l.GetLayerColors();
             int[] data = null;
             try
             {
@@ -209,9 +213,13 @@ namespace TychaiaWorldGenViewer
                                 if (l.IsLayerColorsFlags())
                                 {
                                     Color accum = Color.FromArgb(0, 0, 0, 0);
-                                    foreach (KeyValuePair<int, System.Drawing.Brush> kv in brushes)
+                                    foreach (KeyValuePair<int, LayerColor> kv in brushes)
                                     {
-                                        SolidBrush sb = kv.Value as SolidBrush;
+                                        SolidBrush sb = new SolidBrush(Color.FromArgb(
+                                            kv.Value.A,
+                                            kv.Value.R,
+                                            kv.Value.G,
+                                            kv.Value.B));
                                         if ((data[x + y * width + z * width * height] & kv.Key) != 0)
                                         {
                                             accum = Color.FromArgb(
@@ -234,7 +242,8 @@ namespace TychaiaWorldGenViewer
                                 {
                                     if (brushes != null && brushes.ContainsKey(data[x + y * width + z * width * height]))
                                     {
-                                        SolidBrush sb = brushes[data[x + y * width + z * width * height]] as SolidBrush;
+                                        LayerColor lc = brushes[data[x + y * width + z * width * height]];
+                                        SolidBrush sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
                                         //sb.Color = Color.FromArgb(255, sb.Color);
                                         g.FillRectangle(
                                             sb,

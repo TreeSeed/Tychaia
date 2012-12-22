@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LibNbt">
-      <HintPath>..\Libraries\NBT\LibNbt.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,6 +46,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Libraries\Substrate\SubstrateCS\Substrate %28NET4%29.csproj">
+      <Project>{7264A1C4-AB4A-4437-B252-7379B98B5509}</Project>
+      <Name>Substrate %28NET4%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tychaia.Disk\Tychaia.Disk.csproj">
       <Project>{C9F2A7E0-D469-4FA2-96FD-9281A60FD5FC}</Project>
       <Name>Tychaia.Disk</Name>

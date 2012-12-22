@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
+#if FALSE
 namespace Tychaia.Disk.Tychaia
 {
     public class TychaiaLevelAPI : ILevelAPI
@@ -36,3 +37,4 @@ namespace Tychaia.Disk.Tychaia
         }
     }
 }
+#endif

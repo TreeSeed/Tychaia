@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration.Biomes
 {
@@ -16,7 +15,7 @@ namespace Tychaia.ProceduralGeneration.Biomes
             this.MaxTemperature = 0.4;
             this.MinTerrain = 0;
             this.MaxTerrain = 0.4;
-            this.BrushColor = Color.FloralWhite;
+            this.BrushColor = LayerColor.FloralWhite;
             this.DefaultFor = BiomeEngine.BIOME_SNOW;
             this.SuitableBiomes = new int[]
             {

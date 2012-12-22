@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -54,7 +54,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -82,6 +81,8 @@
     <Compile Include="Cities\RoyaltyCityBiome.cs" />
     <Compile Include="Cities\MineCityBiome.cs" />
     <Compile Include="Cities\FarmlandCityBiome.cs" />
+    <Compile Include="Javascript\LinqImplementations.cs" />
+    <Compile Include="LayerColor.cs" />
     <Compile Include="Layer3DAddCityBiomes.cs" />
     <Compile Include="LayerReplace.cs" />
     <Compile Include="Layer3DReplace.cs" />
@@ -137,6 +138,10 @@
     <ProjectReference Include="..\BenTools\FortuneVoronoi.csproj">
       <Project>{DDF5D740-6EE1-44BA-9DB9-782BF23E28D6}</Project>
       <Name>FortuneVoronoi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\JSIL\Meta\Meta.csproj">
+      <Project>{37C67C73-1F58-49B8-A39E-768AC88C2447}</Project>
+      <Name>Meta</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\MIConvexHull\MIConvexHull.csproj">
       <Project>{2337776D-7D0C-40AA-A439-C26C3CE24FAB}</Project>

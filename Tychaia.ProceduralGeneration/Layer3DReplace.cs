@@ -79,7 +79,7 @@ namespace Tychaia.ProceduralGeneration
             }
         } 
 
-        public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
+        public override Dictionary<int, LayerColor> GetLayerColors()
         {
             if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
                 return null;

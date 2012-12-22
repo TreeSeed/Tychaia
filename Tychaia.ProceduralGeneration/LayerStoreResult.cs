@@ -38,7 +38,7 @@ namespace Tychaia.ProceduralGeneration
             return this.Parents[0].GenerateData(x, y, width, height);
         }
 
-        public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
+        public override Dictionary<int, LayerColor> GetLayerColors()
         {
             if (this.Parents.Length < 1 || this.Parents[0] == null)
                 return null;
@@ -60,6 +60,7 @@ namespace Tychaia.ProceduralGeneration
         Temperature = 2,
         Terrain = 3,
         FamilyTree = 4,
-        Towns = 5
+        Towns = 5,
+        Javascript = 6
     }
 }

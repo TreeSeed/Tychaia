@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration.CityBiomes
 {
@@ -10,7 +9,7 @@ namespace Tychaia.ProceduralGeneration.CityBiomes
     {
         public Mine()
         {
-            this.BrushColor = Color.Brown;
+            this.BrushColor = LayerColor.Brown;
             this.MinOreDensity = 0.55;
         }
     }

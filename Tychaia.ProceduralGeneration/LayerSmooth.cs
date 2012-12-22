@@ -90,43 +90,44 @@ namespace Tychaia.ProceduralGeneration
             return source[x + y * rw];
         }
 
+        private static int[,] m_LinearApplier = new int[,]
+        {
+            { 1, 1, 1, 1, 1 },
+            { 1, 1, 1, 1, 1 },
+            { 1, 1, 1, 1, 1 },
+            { 1, 1, 1, 1, 1 },
+            { 1, 1, 1, 1, 1 },
+        };
+        private static int[,] m_ParabolicApplier = new int[,]
+        {
+            { 1, 4, 9, 4, 1 },
+            { 4, 9, 16, 9, 4 },
+            { 9, 16, 25, 16, 9 },
+            { 4, 9, 16, 9, 4 },
+            { 1, 4, 9, 4, 1 }
+        };
+        private static int[,] m_CubicApplier = new int[,]
+        {
+            { 1, 8, 27, 8, 1 },
+            { 8, 27, 64, 27, 8 },
+            { 27, 64, 125, 64, 27 },
+            { 8, 27, 64, 27, 8 },
+            { 1, 8, 27, 8, 1 },
+        };
+
         private int SmoothLinear(int[] parent, int x, int y, long rw)
         {
-            int[,] applier = new int[,]
-            {
-                { 1, 1, 1, 1, 1 },
-                { 1, 1, 1, 1, 1 },
-                { 1, 1, 1, 1, 1 },
-                { 1, 1, 1, 1, 1 },
-                { 1, 1, 1, 1, 1 },
-            };
-            return this.SmoothBase(parent, applier, x, y, rw);
+            return this.SmoothBase(parent, m_LinearApplier, x, y, rw);
         }
 
         private int SmoothParabolic(int[] parent, int x, int y, long rw)
         {
-            int[,] applier = new int[,]
-            {
-                { 1, 4, 9, 4, 1 },
-                { 4, 9, 16, 9, 4 },
-                { 9, 16, 25, 16, 9 },
-                { 4, 9, 16, 9, 4 },
-                { 1, 4, 9, 4, 1 }
-            };
-            return this.SmoothBase(parent, applier, x, y, rw);
+            return this.SmoothBase(parent, m_ParabolicApplier, x, y, rw);
         }
 
         private int SmoothCubic(int[] parent, int x, int y, long rw)
         {
-            int[,] applier = new int[,]
-            {
-                { 1, 8, 27, 8, 1 },
-                { 8, 27, 64, 27, 8 },
-                { 27, 64, 125, 64, 27 },
-                { 8, 27, 64, 27, 8 },
-                { 1, 8, 27, 8, 1 },
-            };
-            return this.SmoothBase(parent, applier, x, y, rw);
+            return this.SmoothBase(parent, m_CubicApplier, x, y, rw);
         }
 
         private int SmoothRandom(int[] parent, int x, int y, long rw)
@@ -138,28 +139,33 @@ namespace Tychaia.ProceduralGeneration
             return this.SmoothBase(parent, applier, x, y, rw);
         }
 
+        private int[,] m_BaseSample = new int[5, 5];
+        private int[,] m_BaseOutput = new int[5, 5];
+
         private int SmoothBase(int[] parent, int[,] applier, int x, int y, long rw)
         {
-            int[,] sample = new int[5, 5];
-            int[,] output = new int[5, 5];
             int result = 0;
             int total = 0;
+            if (m_BaseSample == null)
+                m_BaseSample = new int[5, 5];
+            if (m_BaseOutput == null)
+                m_BaseOutput = new int[5, 5];
 
             for (int i = -2; i <= 2; i++)
                 for (int j = -2; j <= 2; j++)
-                    sample[i + 2, j + 2] = parent[(x + i) + (y + j) * rw];
+                    m_BaseSample[i + 2, j + 2] = parent[(x + i) + (y + j) * rw];
             foreach (int v in applier)
                 total += v;
             for (int i = 0; i < 5; i++)
                 for (int j = 0; j < 5; j++)
-                    output[i, j] = sample[i, j] * applier[i, j];
-            foreach (int v in output)
+                    m_BaseOutput[i, j] = m_BaseSample[i, j] * applier[i, j];
+            foreach (int v in m_BaseOutput)
                 result += v;
 
             return (int)((double)result / (double)total);
         }
 
-        public override Dictionary<int, System.Drawing.Brush> GetLayerColors()
+        public override Dictionary<int, LayerColor> GetLayerColors()
         {
             if (this.Parents.Length < 1 || this.Parents[0] == null)
                 return null;

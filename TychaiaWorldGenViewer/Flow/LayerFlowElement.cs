@@ -100,9 +100,9 @@ namespace TychaiaWorldGenViewer.Flow
                 return;
             }
             if (this.m_Layer is Layer3D)
-                this.m_RealBitmap = LayerFlowImageGeneration.RegenerateImageForLayer(this.m_Control, this.m_Layer, this.ImageWidth, this.ImageHeight);
+                this.m_RealBitmap = LayerFlowImageGeneration.RegenerateImageForLayer(this.m_Layer, this.ImageWidth, this.ImageHeight);
             else
-                this.m_RealBitmap = LayerFlowImageGeneration.RegenerateImageForLayer(this.m_Control, this.m_Layer, this.ImageWidth, this.ImageHeight);
+                this.m_RealBitmap = LayerFlowImageGeneration.RegenerateImageForLayer(this.m_Layer, this.ImageWidth, this.ImageHeight);
             this.m_Control.Invalidate(this.Region.Apply(this.m_Control.Zoom));
         }
 

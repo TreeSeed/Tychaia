@@ -31,12 +31,12 @@ namespace TychaiaWorldGenViewer.Flow
             set;
         }
 
-        public static Bitmap RegenerateImageForLayer(FlowInterfaceControl fic, Layer l, int width, int height)
+        public static Bitmap RegenerateImageForLayer(Layer l, int width, int height)
         {
             if (l is Layer2D)
-                return Regenerate2DImageForLayer(fic, l as Layer2D, width, height);
+                return Regenerate2DImageForLayer(l as Layer2D, width, height);
             else if (l is Layer3D)
-                return Regenerate3DImageForLayer(fic, l as Layer3D, width, height);
+                return Regenerate3DImageForLayer(l as Layer3D, width, height);
             else
                 return null;
         }
@@ -131,13 +131,13 @@ namespace TychaiaWorldGenViewer.Flow
 
         #endregion
 
-        private static Bitmap Regenerate3DImageForLayer(FlowInterfaceControl fic, Layer3D l, int width, int height)
+        private static Bitmap Regenerate3DImageForLayer(Layer3D l, int width, int height)
         {
             Bitmap b = new Bitmap(width, height);
             Graphics g = Graphics.FromImage(b);
             g.Clear(Color.White);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-            Dictionary<int, Brush> brushes = l.GetLayerColors();
+            Dictionary<int, LayerColor> colors = l.GetLayerColors();
             int[] data = l.GenerateData(LayerFlowImageGeneration.X, LayerFlowImageGeneration.Y, LayerFlowImageGeneration.Z, RenderWidth, RenderHeight, RenderDepth);
 
             /* Our world is laid out in memory in terms of X / Y, but
@@ -198,16 +198,17 @@ namespace TychaiaWorldGenViewer.Flow
                             if (l.IsLayerColorsFlags())
                             {
                                 Color accum = Color.FromArgb(0, 0, 0, 0);
-                                foreach (KeyValuePair<int, System.Drawing.Brush> kv in brushes)
+                                foreach (KeyValuePair<int, LayerColor> kv in colors)
                                 {
-                                    SolidBrush sb = kv.Value as SolidBrush;
+                                    LayerColor lc = kv.Value;
+                                    SolidBrush sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
                                     if ((data[x + y * RenderWidth + z * RenderWidth * RenderHeight] & kv.Key) != 0)
                                     {
                                         accum = Color.FromArgb(
                                             Math.Min(255, accum.A + sb.Color.A),
-                                            Math.Min((byte)255, (byte)(accum.R + sb.Color.R * (sb.Color.A / 255.0) / brushes.Count)),
-                                            Math.Min((byte)255, (byte)(accum.G + sb.Color.G * (sb.Color.A / 255.0) / brushes.Count)),
-                                            Math.Min((byte)255, (byte)(accum.B + sb.Color.B * (sb.Color.A / 255.0) / brushes.Count))
+                                            Math.Min((byte)255, (byte)(accum.R + sb.Color.R * (sb.Color.A / 255.0) / colors.Count)),
+                                            Math.Min((byte)255, (byte)(accum.G + sb.Color.G * (sb.Color.A / 255.0) / colors.Count)),
+                                            Math.Min((byte)255, (byte)(accum.B + sb.Color.B * (sb.Color.A / 255.0) / colors.Count))
                                             );
                                     }
                                 }
@@ -221,9 +222,10 @@ namespace TychaiaWorldGenViewer.Flow
                             }
                             else
                             {
-                                if (brushes != null && brushes.ContainsKey(data[x + y * RenderWidth + z * RenderWidth * RenderHeight]))
+                                if (colors != null && colors.ContainsKey(data[x + y * RenderWidth + z * RenderWidth * RenderHeight]))
                                 {
-                                    SolidBrush sb = brushes[data[x + y * RenderWidth + z * RenderWidth * RenderHeight]] as SolidBrush;
+                                    LayerColor lc = colors[data[x + y * RenderWidth + z * RenderWidth * RenderHeight]];
+                                    SolidBrush sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
                                     //sb.Color = Color.FromArgb(255, sb.Color);
                                     g.FillRectangle(
                                         sb,
@@ -248,12 +250,12 @@ namespace TychaiaWorldGenViewer.Flow
 
         #region 2D Rendering
 
-        private static Bitmap Regenerate2DImageForLayer(FlowInterfaceControl fic, Layer2D l, int width, int height)
+        private static Bitmap Regenerate2DImageForLayer(Layer2D l, int width, int height)
         {
             Bitmap b = new Bitmap(width, height);
             Graphics g = Graphics.FromImage(b);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-            Dictionary<int, Brush> brushes = l.GetLayerColors();
+            Dictionary<int, LayerColor> colors = l.GetLayerColors();
             int[] data = l.GenerateData(LayerFlowImageGeneration.X, LayerFlowImageGeneration.Y, width, height);
             for (int x = 0; x < width; x++)
                 for (int y = 0; y < height; y++)
@@ -262,11 +264,15 @@ namespace TychaiaWorldGenViewer.Flow
                     {
                         try
                         {
-                            if (brushes != null && brushes.ContainsKey(data[x + y * width]))
+                            if (colors != null && colors.ContainsKey(data[x + y * width]))
+                            {
+                                LayerColor lc = colors[data[x + y * (width)]];
+                                SolidBrush sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
                                 g.FillRectangle(
-                                    brushes[data[x + y * (width)]],
+                                    sb,
                                     new Rectangle(x, y, 1, 1)
                                     );
+                            }
                             else
                                 g.FillRectangle(
                                     m_UnknownAssociation,
