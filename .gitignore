@@ -13,3 +13,4 @@ Tychaia/Disabled/*
 *.testsettings
 Profiling*.sqlite
 *.vsmdi
+MakeMeAWorld/App_Data/*

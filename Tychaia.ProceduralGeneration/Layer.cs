@@ -9,7 +9,6 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Layer
     {
-        [DataMember]
         private long m_Seed;
 
         [DataMember]
@@ -57,28 +56,36 @@ namespace Tychaia.ProceduralGeneration
         /// <summary>
         /// The world seed.
         /// </summary>
-        protected long Seed
+        public long Seed
         {
             get
             {
                 return this.m_Seed;
             }
+            set
+            {
+                this.m_Seed = value;
+                foreach (Layer l in this.m_Parents)
+                    l.SetSeedAndMutate(value);
+            }
         }
 
-        protected Layer(long seed)
+        private void SetSeedAndMutate(long value)
+        {
+            this.m_Seed = value;
+            this.TransformSeed();
+            foreach (Layer l in this.m_Parents)
+                l.SetSeedAndMutate(value);
+        }
+
+        protected Layer()
         {
             this.m_Parents = new Layer[] { };
-            this.m_Seed = seed;
         }
 
         protected Layer(Layer parent)
         {
             this.m_Parents = new Layer[] { parent };
-            if (parent != null)
-            {
-                this.m_Seed = parent.m_Seed;
-                this.TransformSeed();
-            }
         }
 
         protected Layer(Layer[] parents)
@@ -88,11 +95,6 @@ namespace Tychaia.ProceduralGeneration
             if (parents.Length < 1)
                 throw new ArgumentOutOfRangeException("parents");
             this.m_Parents = parents;
-            if (parents[0] != null)
-            {
-                this.m_Seed = parents[0].m_Seed;
-                this.TransformSeed();
-            }
         }
 
         /// <summary>

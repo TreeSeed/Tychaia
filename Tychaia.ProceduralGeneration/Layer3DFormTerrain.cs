@@ -38,11 +38,16 @@ namespace Tychaia.ProceduralGeneration
                 for (long j = 0; j < height; j++)
                 {
                     int terr = parent[i + j * height];
-                    if (terr == 0)
+                    if (terr <= 0)
                     {
                         // Ocean
-                        if (0 >= z && 0 < z + depth)
-                            data[i + j * width + 0 * width * height] = 0;
+                        for (long k = z; k < z + depth; k++)
+                        {
+                            if (k < terr + 1)
+                                data[i + j * width + (k - z) * width * height] = 600 /* hack */;
+                            else if (k <= 0)
+                                data[i + j * width + (k - z) * width * height] = 0;                           
+                        }
                     }
                     else
                     {

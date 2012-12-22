@@ -9,8 +9,12 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Layer3D : Layer
     {
+        protected Layer3D()
+        {
+        }
+
+        [Obsolete]
         protected Layer3D(long seed)
-            : base(seed)
         {
         }
 
