@@ -28,7 +28,6 @@ namespace Tychaia.ProceduralGeneration
             int[] animal = this.Parents[1].GenerateData(x, y, width, height);
             int[] ore = this.Parents[2].GenerateData(x, y, width, height);
             int[] terrain = this.Parents[3].GenerateData(x, y, width, height);
-            int[] secondaryBiomes = this.Parents[4].GenerateData(x, y, width, height);
             int[] data = new int[width * height];
 
             // Copy 1-for-1 the water cells.

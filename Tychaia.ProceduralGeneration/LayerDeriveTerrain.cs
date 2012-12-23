@@ -55,7 +55,6 @@ namespace Tychaia.ProceduralGeneration
                 return new int[width * height];
 
             int[] parent = this.Parents[0].GenerateData(x, y, width, height);
-            int[] biome = this.Parents[1].GenerateData(x, y, width, height);
             int[] data = new int[width * height];
 
             // Copy 1-for-1 the water cells.

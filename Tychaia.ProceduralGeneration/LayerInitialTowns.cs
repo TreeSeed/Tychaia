@@ -40,8 +40,8 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public LayerInitialTowns(long seed)
-            : base(seed)
+        public LayerInitialTowns()
+            : base()
         {
             // Set defaults.
             this.TownLimit = 0.9;

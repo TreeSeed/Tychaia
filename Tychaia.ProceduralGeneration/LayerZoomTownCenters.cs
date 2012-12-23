@@ -58,13 +58,6 @@ namespace Tychaia.ProceduralGeneration
                      */
 
                     int current = this.FindZoomedPoint(parent, i, j, ox, oy, x, y, rw);
-                    int north = this.FindZoomedPoint(parent, i, j - 1, ox, oy, x, y, rw);
-                    int south = this.FindZoomedPoint(parent, i, j + 1, ox, oy, x, y, rw);
-                    int east = this.FindZoomedPoint(parent, i + 1, j, ox, oy, x, y, rw);
-                    int west = this.FindZoomedPoint(parent, i - 1, j, ox, oy, x, y, rw);
-
-                    int ocx = (x % 2 != 0 && i % 2 != 0 ? (i < 0 ? -1 : 1) : 0);
-                    int ocy = (y % 2 != 0 && j % 2 != 0 ? (j < 0 ? -1 : 1) : 0);
 
                     if (i % 2 - Math.Abs(x) % 2 == 0 && j % 2 - Math.Abs(y) % 2 == 0)
                         data[i + j * width] = current;

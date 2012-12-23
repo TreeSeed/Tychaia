@@ -51,7 +51,7 @@
                         a seed below and our server will generate the cell renders, which are then formed into a complete image by the
                         web browser.
                     </p>
-                    <form class="form-inline" style="margin-bottom: 0px; margin-top: 13px;">
+                    <form id="newRender" class="form-inline" style="margin-bottom: 0px; margin-top: 13px;">
                         <input type="text" id="seedSet" value="" style="width: 395px;" placeholder="Enter seed..." />
                         <input type="button" class="btn" id="randomize" value="Randomize" />
                         <input type="button" class="btn btn-primary" id="loadButton" value="Make me a world!" />

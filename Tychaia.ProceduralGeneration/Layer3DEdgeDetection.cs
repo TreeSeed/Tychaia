@@ -26,9 +26,6 @@ namespace Tychaia.ProceduralGeneration
             int ox = 1;
             int oy = 1;
             int oz = 1;
-            long rx = x - ox;
-            long ry = y - oy;
-            long rz = z - oz;
             long rw = width + ox * 2;
             long rh = height + oy * 2;
             long rd = depth + oz * 2;
@@ -144,23 +141,23 @@ namespace Tychaia.ProceduralGeneration
                 // 32768 = Mid / Mid / Left
                 // 65536 = Top / Mid / Mid
                 result.Add(0, LayerColor.Transparent);
-                result.Add(1, LayerColor.FromArgb(63, 63, 63));
-                result.Add(2, LayerColor.FromArgb(63, 63, 127));
-                result.Add(4, LayerColor.FromArgb(63, 63, 191));
-                result.Add(8, LayerColor.FromArgb(63, 127, 191));
-                result.Add(16, LayerColor.FromArgb(63, 191, 191));
-                result.Add(32, LayerColor.FromArgb(63, 191, 127));
-                result.Add(64, LayerColor.FromArgb(63, 191, 63));
-                result.Add(128, LayerColor.FromArgb(63, 127, 63));
-                result.Add(256, LayerColor.FromArgb(127, 63, 63));
-                result.Add(512, LayerColor.FromArgb(127, 63, 127));
-                result.Add(1024, LayerColor.FromArgb(127, 63, 191));
-                result.Add(2048, LayerColor.FromArgb(127, 127, 191));
-                result.Add(4096, LayerColor.FromArgb(127, 191, 191));
-                result.Add(8192, LayerColor.FromArgb(127, 191, 127));
-                result.Add(16384, LayerColor.FromArgb(127, 191, 63));
-                result.Add(32768, LayerColor.FromArgb(127, 127, 63));
-                result.Add(65536, LayerColor.FromArgb(191, 127, 127));
+                result.Add(1, new LayerColor(63, 63, 63));
+                result.Add(2, new LayerColor(63, 63, 127));
+                result.Add(4, new LayerColor(63, 63, 191));
+                result.Add(8, new LayerColor(63, 127, 191));
+                result.Add(16, new LayerColor(63, 191, 191));
+                result.Add(32, new LayerColor(63, 191, 127));
+                result.Add(64, new LayerColor(63, 191, 63));
+                result.Add(128, new LayerColor(63, 127, 63));
+                result.Add(256, new LayerColor(127, 63, 63));
+                result.Add(512, new LayerColor(127, 63, 127));
+                result.Add(1024, new LayerColor(127, 63, 191));
+                result.Add(2048, new LayerColor(127, 127, 191));
+                result.Add(4096, new LayerColor(127, 191, 191));
+                result.Add(8192, new LayerColor(127, 191, 127));
+                result.Add(16384, new LayerColor(127, 191, 63));
+                result.Add(32768, new LayerColor(127, 127, 63));
+                result.Add(65536, new LayerColor(191, 127, 127));
                 return result;
             }
         }

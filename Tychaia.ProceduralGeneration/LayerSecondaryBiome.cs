@@ -104,7 +104,7 @@ namespace Tychaia.ProceduralGeneration
                         // Store result.
                         data[i + j * width] = BiomeEngine.GetSecondaryBiomeForCell(nbiome, nrain, ntemp, nterrain);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         // In case of overflow, underflow or divide by zero.
                         data[i + j * width] = 0;

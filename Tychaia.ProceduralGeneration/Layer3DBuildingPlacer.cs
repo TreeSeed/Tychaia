@@ -47,18 +47,14 @@ namespace Tychaia.ProceduralGeneration
             if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
                 return new int[width * height * depth];
 
-            long ox = this.EdgeSampling;
-            long oy = this.EdgeSampling;
             long rx = x - this.EdgeSampling;
             long ry = y - this.EdgeSampling;
             long rw = width + this.EdgeSampling * 2;
             long rh = height + this.EdgeSampling * 2;
 
             // Just need to add in offsets for x + y, up to 15
-            int[] terrain = this.Parents[0].GenerateData(rx, ry, rw, rh);
             int[] citybiomes = this.Parents[1].GenerateData(rx, ry, z, rw, rh, depth);
             int[] data = new int[width * height * depth];
-            int[] tempdata = new int[width * height * depth];
 
             // Populate with air
             for (int i = 0; i < width; i++)

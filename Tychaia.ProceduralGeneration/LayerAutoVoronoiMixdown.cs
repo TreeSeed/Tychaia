@@ -34,12 +34,14 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public LayerAutoVoronoiMixdown(long seed)
-            : base(seed)
+        public LayerAutoVoronoiMixdown()
+            : base()
         {
-            this.Perlin = new LayerInitialPerlin(seed);
-            this.Voronoi = new LayerInitialVoronoi(seed);
+            this.Perlin = new LayerInitialPerlin();
+            this.Voronoi = new LayerInitialVoronoi();
             this.Mixdown = new LayerVoronoiMixdown(this.Voronoi, this.Perlin);
+			this.Perlin.Seed = this.Seed;
+			this.Voronoi.Seed = this.Seed;
         }
 
         protected override int[] GenerateDataImpl(long x, long y, long width, long height)
@@ -47,9 +49,15 @@ namespace Tychaia.ProceduralGeneration
             // If we are deserialized, our Perlin / Voronoi might not be created
             // so we need to recreate them.
             if (this.Perlin == null)
-                this.Perlin = new LayerInitialPerlin(this.Seed);
+			{
+                this.Perlin = new LayerInitialPerlin();
+				this.Perlin.Seed = this.Seed;
+			}
             if (this.Voronoi == null)
-                this.Voronoi = new LayerInitialVoronoi(this.Seed);
+			{
+                this.Voronoi = new LayerInitialVoronoi();
+				this.Voronoi.Seed = this.Seed;
+			}
             if (this.Mixdown == null)
                 this.Mixdown = new LayerVoronoiMixdown(this.Voronoi, this.Perlin);
 
@@ -61,9 +69,15 @@ namespace Tychaia.ProceduralGeneration
             // If we are deserialized, our Perlin / Voronoi might not be created
             // so we need to recreate them.
             if (this.Perlin == null)
-                this.Perlin = new LayerInitialPerlin(this.Seed);
+			{
+                this.Perlin = new LayerInitialPerlin();
+				this.Perlin.Seed = this.Seed;
+			}
             if (this.Voronoi == null)
-                this.Voronoi = new LayerInitialVoronoi(this.Seed);
+			{
+                this.Voronoi = new LayerInitialVoronoi();
+				this.Voronoi.Seed = this.Seed;
+			}
             if (this.Mixdown == null)
                 this.Mixdown = new LayerVoronoiMixdown(this.Voronoi, this.Perlin);
 

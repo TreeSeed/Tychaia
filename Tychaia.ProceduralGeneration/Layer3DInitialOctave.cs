@@ -58,8 +58,8 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public Layer3DInitialOctave(long seed)
-            : base(seed)
+        public Layer3DInitialOctave()
+            : base()
         {
             // Set defaults.
             this.Scale = 100;

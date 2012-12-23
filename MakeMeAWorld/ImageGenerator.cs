@@ -105,7 +105,6 @@ namespace MakeMeAWorld
         #region Rendering
 
         private static SolidBrush m_UnknownAssociation2D = new SolidBrush(Color.FromArgb(63, 63, 63));
-        private static SolidBrush m_UnknownAssociation3D = new SolidBrush(Color.FromArgb(0, 0, 0, 0));
 
         public static Bitmap RegenerateImageForLayer(Layer l, long x, long y, long z, int width, int height, int depth)
         {
@@ -125,43 +124,25 @@ namespace MakeMeAWorld
             Graphics g = Graphics.FromImage(b);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
             Dictionary<int, LayerColor> brushes = l.GetLayerColors();
-            int[] data = null;
-            try
-            {
-                data = l.GenerateData(LayerFlowImageGeneration.X + sx, LayerFlowImageGeneration.Y + sy, width, height);
-                for (int x = 0; x < width; x++)
-                    for (int y = 0; y < height; y++)
-                    {
-                        while (true)
-                        {
-                            try
-                            {
-                                if (brushes != null && brushes.ContainsKey(data[x + y * width]))
-                                    g.FillRectangle(
-                                        new SolidBrush(Color.FromArgb(
-                                            brushes[data[x + y * (width)]].A,
-                                            brushes[data[x + y * (width)]].R,
-                                            brushes[data[x + y * (width)]].G,
-                                            brushes[data[x + y * (width)]].B)),
-                                        new Rectangle(x, y, 1, 1)
-                                        );
-                                else
-                                    g.FillRectangle(
-                                        m_UnknownAssociation2D,
-                                        new Rectangle(x, y, 1, 1)
-                                        );
-                                break;
-                            }
-                            catch (InvalidOperationException)
-                            {
-                                // Graphics can be in use elsewhere, but we don't care; just try again.
-                            }
-                        }
-                    }
-            }
-            catch (Exception)
-            {
-            }
+            int[] data = l.GenerateData(LayerFlowImageGeneration.X + sx, LayerFlowImageGeneration.Y + sy, width, height);
+            for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
+                {
+                    if (brushes != null && brushes.ContainsKey(data[x + y * width]))
+                        g.FillRectangle(
+                            new SolidBrush(Color.FromArgb(
+                                brushes[data[x + y * (width)]].A,
+                                brushes[data[x + y * (width)]].R,
+                                brushes[data[x + y * (width)]].G,
+                                brushes[data[x + y * (width)]].B)),
+                            new Rectangle(x, y, 1, 1)
+                            );
+                    else
+                        g.FillRectangle(
+                            m_UnknownAssociation2D,
+                            new Rectangle(x, y, 1, 1)
+                            );
+                }
             return b;
         }
 
@@ -260,89 +241,70 @@ namespace MakeMeAWorld
             Graphics g = Graphics.FromImage(b);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
             Dictionary<int, LayerColor> brushes = l.GetLayerColors();
-            int[] data = null;
-            try
+            int[] data = l.GenerateData(sx, sy, sz, width, height, depth);
+            if (data.All(v => v == data[0]))
+                return new Bitmap(1, 1);
+
+            int[] render = GetCellRenderOrder(RenderToNE, width, height, depth);
+            int ztop = depth;
+            int zbottom = 0;
+            for (int z = zbottom; z < ztop; z++)
             {
-                data = l.GenerateData(sx, sy, sz, width, height, depth);
-                if (data.All(v => v == data[0]))
-                    return new Bitmap(1, 1);
-
-                int[] render = GetCellRenderOrder(RenderToNE, width, height, depth);
-                int ztop = depth;
-                int zbottom = 0;
-                for (int z = zbottom; z < ztop; z++)
+                int rcx = width / 2 - 1 + 16 + 16;
+                int rcy = height / 2 - 15 + 32 + 16;
+                int rw = 2;
+                int rh = 1;
+                for (int i = 0; i < render.Length; i++)
                 {
-                    int rcx = width / 2 - 1 + 16 + 16;
-                    int rcy = height / 2 - 15 + 32 + 16;
-                    int rw = 2;
-                    int rh = 1;
-                    for (int i = 0; i < render.Length; i++)
+                    // Calculate the X / Y of the tile in the grid.
+                    int x = render[i] % width;
+                    int y = render[i] / width;
+
+                    // Calculate the render position on screen.
+                    int rx = rcx + (int)((x - y) / 2.0 * rw);// (int)(x / ((RenderWidth + 1) / 2.0) * rw);
+                    int ry = rcy + (x + y) * rh - (rh / 2 * (width + height)) - (z - zbottom) * 1;
+
+                    if (l.IsLayerColorsFlags())
                     {
-                        // Calculate the X / Y of the tile in the grid.
-                        int x = render[i] % width;
-                        int y = render[i] / width;
-
-                        // Calculate the render position on screen.
-                        int rx = rcx + (int)((x - y) / 2.0 * rw);// (int)(x / ((RenderWidth + 1) / 2.0) * rw);
-                        int ry = rcy + (x + y) * rh - (rh / 2 * (width + height)) - (z - zbottom) * 1;
-
-                        while (true)
+                        Color accum = Color.FromArgb(0, 0, 0, 0);
+                        foreach (KeyValuePair<int, LayerColor> kv in brushes)
                         {
-                            try
+                            SolidBrush sb = new SolidBrush(Color.FromArgb(
+                                kv.Value.A,
+                                kv.Value.R,
+                                kv.Value.G,
+                                kv.Value.B));
+                            if ((data[x + y * width + z * width * height] & kv.Key) != 0)
                             {
-                                if (l.IsLayerColorsFlags())
-                                {
-                                    Color accum = Color.FromArgb(0, 0, 0, 0);
-                                    foreach (KeyValuePair<int, LayerColor> kv in brushes)
-                                    {
-                                        SolidBrush sb = new SolidBrush(Color.FromArgb(
-                                            kv.Value.A,
-                                            kv.Value.R,
-                                            kv.Value.G,
-                                            kv.Value.B));
-                                        if ((data[x + y * width + z * width * height] & kv.Key) != 0)
-                                        {
-                                            accum = Color.FromArgb(
-                                                Math.Min(255, accum.A + sb.Color.A),
-                                                Math.Min((byte)255, (byte)(accum.R + sb.Color.R * (sb.Color.A / 255.0) / brushes.Count)),
-                                                Math.Min((byte)255, (byte)(accum.G + sb.Color.G * (sb.Color.A / 255.0) / brushes.Count)),
-                                                Math.Min((byte)255, (byte)(accum.B + sb.Color.B * (sb.Color.A / 255.0) / brushes.Count))
-                                                );
-                                        }
-                                    }
-                                    if (accum.R == 255 && accum.G == 255 && accum.B == 255)
-                                        accum = Color.FromArgb(63, 0, 0, 0);
-                                    g.FillRectangle(
-                                        new SolidBrush(accum),
-                                        new Rectangle(rx, ry, rw, rh)
-                                        );
-                                    break;
-                                }
-                                else
-                                {
-                                    if (brushes != null && brushes.ContainsKey(data[x + y * width + z * width * height]))
-                                    {
-                                        LayerColor lc = brushes[data[x + y * width + z * width * height]];
-                                        SolidBrush sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
-                                        //sb.Color = Color.FromArgb(255, sb.Color);
-                                        g.FillRectangle(
-                                            sb,
-                                            new Rectangle(rx, ry, rw, rh)
-                                            );
-                                    }
-                                    break;
-                                }
+                                accum = Color.FromArgb(
+                                    Math.Min(255, accum.A + sb.Color.A),
+                                    Math.Min((byte)255, (byte)(accum.R + sb.Color.R * (sb.Color.A / 255.0) / brushes.Count)),
+                                    Math.Min((byte)255, (byte)(accum.G + sb.Color.G * (sb.Color.A / 255.0) / brushes.Count)),
+                                    Math.Min((byte)255, (byte)(accum.B + sb.Color.B * (sb.Color.A / 255.0) / brushes.Count))
+                                    );
                             }
-                            catch (InvalidOperationException)
-                            {
-                                // Graphics can be in use elsewhere, but we don't care; just try again.
-                            }
+                        }
+                        if (accum.R == 255 && accum.G == 255 && accum.B == 255)
+                            accum = Color.FromArgb(63, 0, 0, 0);
+                        g.FillRectangle(
+                            new SolidBrush(accum),
+                            new Rectangle(rx, ry, rw, rh)
+                            );
+                    }
+                    else
+                    {
+                        if (brushes != null && brushes.ContainsKey(data[x + y * width + z * width * height]))
+                        {
+                            LayerColor lc = brushes[data[x + y * width + z * width * height]];
+                            SolidBrush sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
+                            //sb.Color = Color.FromArgb(255, sb.Color);
+                            g.FillRectangle(
+                                sb,
+                                new Rectangle(rx, ry, rw, rh)
+                                );
                         }
                     }
                 }
-            }
-            catch (Exception)
-            {
             }
 
             return b;

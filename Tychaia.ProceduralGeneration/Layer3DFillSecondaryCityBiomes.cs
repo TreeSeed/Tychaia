@@ -76,7 +76,7 @@ namespace Tychaia.ProceduralGeneration
                             }
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         // In case of overflow, underflow or divide by zero.
                         data[i + j * width] = 0;

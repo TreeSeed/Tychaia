@@ -87,7 +87,7 @@ namespace Protogame.Math
 
         private void Sphere()
         {
-            double r, m11, m12, m13, m14, m15;
+            double m11, m12, m13, m14, m15;
             double[,] a =
                     {
                         { ZERO, ZERO, ZERO, ZERO },

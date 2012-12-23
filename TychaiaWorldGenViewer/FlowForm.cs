@@ -17,8 +17,6 @@ namespace TychaiaWorldGenViewer
 {
     public partial class FlowForm : Form
     {
-        private int m_Seed = 8937457;
-
         public FlowForm()
         {
             InitializeComponent();
@@ -282,7 +280,7 @@ namespace TychaiaWorldGenViewer
             this.c_FlowInterfaceControl.AddElementAtMouse(
                 new LayerFlowElement(
                     this.c_FlowInterfaceControl,
-                    new LayerInitialPerlin(this.m_Seed)
+                    new LayerInitialPerlin()
                 )
             );
         }
@@ -292,7 +290,7 @@ namespace TychaiaWorldGenViewer
             this.c_FlowInterfaceControl.AddElementAtMouse(
                 new LayerFlowElement(
                     this.c_FlowInterfaceControl,
-                    new Layer3DInitialPerlin(this.m_Seed)
+                    new Layer3DInitialPerlin()
                 )
             );
         }
@@ -302,7 +300,7 @@ namespace TychaiaWorldGenViewer
             this.c_FlowInterfaceControl.AddElementAtMouse(
                 new LayerFlowElement(
                     this.c_FlowInterfaceControl,
-                    new LayerInitialVoronoi(this.m_Seed)
+                    new LayerInitialVoronoi()
                 )
             );
         }
@@ -312,7 +310,7 @@ namespace TychaiaWorldGenViewer
             this.c_FlowInterfaceControl.AddElementAtMouse(
                 new LayerFlowElement(
                     this.c_FlowInterfaceControl,
-                    new LayerInitialLand(this.m_Seed)
+                    new LayerInitialLand()
                 )
             );
         }
@@ -392,7 +390,7 @@ namespace TychaiaWorldGenViewer
             this.c_FlowInterfaceControl.AddElementAtMouse(
                 new LayerFlowElement(
                     this.c_FlowInterfaceControl,
-                    new LayerAutoVoronoiMixdown(this.m_Seed)
+                    new LayerAutoVoronoiMixdown()
                 )
             );
         }
@@ -402,7 +400,7 @@ namespace TychaiaWorldGenViewer
             this.c_FlowInterfaceControl.AddElementAtMouse(
                 new LayerFlowElement(
                     this.c_FlowInterfaceControl,
-                    new LayerInitialTowns(this.m_Seed)
+                    new LayerInitialTowns()
                 )
             );
         }
@@ -542,7 +540,7 @@ namespace TychaiaWorldGenViewer
             this.c_FlowInterfaceControl.AddElementAtMouse(
                new LayerFlowElement(
                    this.c_FlowInterfaceControl,
-                   new Layer3DInitialVoronoi(this.m_Seed)
+                   new Layer3DInitialVoronoi()
                )
             );
         }
@@ -552,7 +550,7 @@ namespace TychaiaWorldGenViewer
             this.c_FlowInterfaceControl.AddElementAtMouse(
                 new LayerFlowElement(
                     this.c_FlowInterfaceControl,
-                    new LayerInitialOctave(this.m_Seed)
+                    new LayerInitialOctave()
                 )
             );
         }
@@ -562,7 +560,7 @@ namespace TychaiaWorldGenViewer
             this.c_FlowInterfaceControl.AddElementAtMouse(
                 new LayerFlowElement(
                     this.c_FlowInterfaceControl,
-                    new Layer3DInitialOctave(this.m_Seed)
+                    new Layer3DInitialOctave()
                 )
             );
         }

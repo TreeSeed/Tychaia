@@ -152,6 +152,7 @@ $(document).ready(function () {
             $("#info").hide();
             $("#end").hide();
             $("#watermark").show();
+            $("#newRender").show();
         } else if (stage == "processing") {
             $("#header").show();
             $("#welcomeMessage").hide();
@@ -169,6 +170,7 @@ $(document).ready(function () {
             $("#end").hide();
             $("#watermark").show();
             $("#welcomeMessage")[0].style.top = "350px";
+            $("#newRender").hide();
         } else if (stage == "results") {
             $("#header").show();
             $("#welcomeMessage").hide();
@@ -188,6 +190,7 @@ $(document).ready(function () {
             $("#watermark").hide();
             $("#renderAnother").hide();
             $("#welcomeMessage")[0].style.top = "250px";
+            $("#newRender").show();
         }
     }
 

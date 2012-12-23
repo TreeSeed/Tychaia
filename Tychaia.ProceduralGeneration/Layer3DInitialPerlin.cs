@@ -49,8 +49,8 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public Layer3DInitialPerlin(long seed)
-            : base(seed)
+        public Layer3DInitialPerlin()
+            : base()
         {
             // Set defaults.
             this.Scale = 100;

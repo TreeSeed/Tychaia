@@ -40,8 +40,8 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public LayerInitialLand(long seed)
-            : base(seed)
+        public LayerInitialLand()
+            : base()
         {
             // Set defaults.
             this.LandLimit = 0.9;

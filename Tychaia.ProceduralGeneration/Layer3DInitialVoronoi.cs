@@ -80,8 +80,8 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public Layer3DInitialVoronoi(long seed)
-            : base(seed)
+        public Layer3DInitialVoronoi()
+            : base()
         {
             // Set defaults.
             this.PointValue = 2500;
@@ -148,8 +148,6 @@ namespace Tychaia.ProceduralGeneration
                         double sy = b[0] < a[0] ? b[1] : a[1];
                         double sz = b[0] < a[0] ? b[2] : a[2];
                         double mx = b[0] > a[0] ? b[0] : a[0];
-                        double my = b[0] > a[0] ? b[1] : a[1];
-                        double mz = b[0] > a[0] ? b[2] : a[2];
                         double tx = b[0] > a[0] ? b[0] - a[0] : a[0] - b[0];
                         double ty = b[0] > a[0] ? b[1] - a[1] : a[1] - b[1];
                         double tz = b[0] > a[0] ? b[2] - a[2] : a[2] - b[2];

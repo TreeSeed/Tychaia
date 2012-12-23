@@ -325,7 +325,6 @@
             var index = connector.HashCode % ConnectorTableSize;
             var list = ConnectorTable[index];
 
-            int count = 0;
             for (var current = list.First; current != null; current = current.Next)
             {
                 if (FaceConnector.AreConnectable(connector, current, Dimension))

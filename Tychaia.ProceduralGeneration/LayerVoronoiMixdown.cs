@@ -91,11 +91,9 @@ namespace Tychaia.ProceduralGeneration
 
         private int FindNeighbour(List<int> valueMap, int[] tracker, int[] data, long x, long y, long i, long j, long width, long height)
         {
-            Point p = new Point(i, j);
             int ox = this.EdgeSampling;
             int oy = this.EdgeSampling;
             long rw = width + this.EdgeSampling * 2;
-            long rh = height + this.EdgeSampling * 2;
 
             switch (this.GetRandomRange(x + i, y + j, 0, 4))
             {
@@ -126,7 +124,6 @@ namespace Tychaia.ProceduralGeneration
             int ox = this.EdgeSampling;
             int oy = this.EdgeSampling;
             long rw = width + this.EdgeSampling * 2;
-            long rh = height + this.EdgeSampling * 2;
 
             if (p.Inside(width, height) && tracker[(i + ox) + (j + oy) * rw] != 0)
                 return data[i + j * width];
@@ -143,7 +140,6 @@ namespace Tychaia.ProceduralGeneration
             int ox = this.EdgeSampling;
             int oy = this.EdgeSampling;
             long rw = width + this.EdgeSampling * 2;
-            long rh = height + this.EdgeSampling * 2;
 
             if (p.Inside(width, height) && tracker[(i + ox) + (j + oy) * rw] != 0)
                 return data[i + j * width];

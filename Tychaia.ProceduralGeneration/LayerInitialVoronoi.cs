@@ -68,8 +68,8 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public LayerInitialVoronoi(long seed)
-            : base(seed)
+        public LayerInitialVoronoi()
+            : base()
         {
             // Set defaults.
             this.PointValue = 100;
@@ -134,7 +134,6 @@ namespace Tychaia.ProceduralGeneration
                     double sx = b[0] < a[0] ? b[0] : a[0];
                     double sy = b[0] < a[0] ? b[1] : a[1];
                     double mx = b[0] > a[0] ? b[0] : a[0];
-                    double my = b[0] > a[0] ? b[1] : a[1];
                     double tx = b[0] > a[0] ? b[0] - a[0] : a[0] - b[0];
                     double ty = b[0] > a[0] ? b[1] - a[1] : a[1] - b[1];
                     double length = Math.Sqrt(Math.Pow(tx, 2) + Math.Pow(ty, 2));
