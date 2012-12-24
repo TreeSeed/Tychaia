@@ -3,7 +3,6 @@ using Tychaia.Generators;
 
 namespace Tychaia
 {
-#if WINDOWS || XBOX
     static class Program
     {
         /// <summary>
@@ -17,6 +16,5 @@ namespace Tychaia
             }
         }
     }
-#endif
 }
 

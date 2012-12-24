@@ -21,7 +21,7 @@ namespace MinecraftExport
                 return;
             }
 
-            string dest = args[1];
+            string dest = args [1];
             int xmin = 0;
             int xmax = 1;
             int zmin = -200;
@@ -45,12 +45,19 @@ namespace MinecraftExport
 
             // This will instantly create any necessary directory structure
             NbtWorld world;
-            switch (args[0])
+            switch (args [0])
             {
-                case "alpha": world = AlphaWorld.Create(dest); break;
-                case "beta": world = BetaWorld.Create(dest); break;
-                case "anvil": world = AnvilWorld.Create(dest); break;
-                default: throw new Exception("Invalid world type specified.");
+                case "alpha":
+                    world = AlphaWorld.Create(dest);
+                    break;
+                case "beta":
+                    world = BetaWorld.Create(dest);
+                    break;
+                case "anvil":
+                    world = AnvilWorld.Create(dest);
+                    break;
+                default:
+                    throw new Exception("Invalid world type specified.");
             }
 
             IChunkManager cm = world.GetChunkManager();
@@ -119,36 +126,36 @@ namespace MinecraftExport
                 {
                     for (int z = 0; z < 16; z++)
                     {
-                        int tid = data[x + z * 16 + y * 16 * 16];
+                        int tid = data [x + z * 16 + y * 16 * 16];
                         if (tid == -1)
                         {
                             chunk.Blocks.SetID(x, y, z, (int)BlockType.AIR);
                             continue;
                         }
 
-                        if (Block.BlockIDMapping[tid] == Block.DirtBlock)
+                        if (Block.BlockIDMapping [tid] == Block.DirtBlock)
                             chunk.Blocks.SetID(x, y, z, (int)BlockType.DIRT);
-                        else if (Block.BlockIDMapping[tid] == Block.GrassBlock)
+                        else if (Block.BlockIDMapping [tid] == Block.GrassBlock)
                             chunk.Blocks.SetID(x, y, z, (int)BlockType.GRASS);
-                        else if (Block.BlockIDMapping[tid] == Block.GrassLeafBlock)
+                        else if (Block.BlockIDMapping [tid] == Block.GrassLeafBlock)
                             chunk.Blocks.SetID(x, y, z, (int)BlockType.LEAVES);
-                        else if (Block.BlockIDMapping[tid] == Block.LeafBlock)
+                        else if (Block.BlockIDMapping [tid] == Block.LeafBlock)
                             chunk.Blocks.SetID(x, y, z, (int)BlockType.LEAVES);
-                        else if (Block.BlockIDMapping[tid] == Block.LeafGreyBlock)
+                        else if (Block.BlockIDMapping [tid] == Block.LeafGreyBlock)
                             chunk.Blocks.SetID(x, y, z, (int)BlockType.LEAVES);
-                        else if (Block.BlockIDMapping[tid] == Block.LavaBlock)
+                        else if (Block.BlockIDMapping [tid] == Block.LavaBlock)
                             chunk.Blocks.SetID(x, y, z, (int)BlockType.STATIONARY_LAVA);
-                        else if (Block.BlockIDMapping[tid] == Block.SandBlock)
+                        else if (Block.BlockIDMapping [tid] == Block.SandBlock)
                             chunk.Blocks.SetID(x, y, z, (int)BlockType.SAND);
-                        else if (Block.BlockIDMapping[tid] == Block.SandGrassBlock)
+                        else if (Block.BlockIDMapping [tid] == Block.SandGrassBlock)
                             chunk.Blocks.SetID(x, y, z, (int)BlockType.SANDSTONE);
-                        else if (Block.BlockIDMapping[tid] == Block.SnowBlock)
+                        else if (Block.BlockIDMapping [tid] == Block.SnowBlock)
                             chunk.Blocks.SetID(x, y, z, (int)BlockType.SNOW_BLOCK);
-                        else if (Block.BlockIDMapping[tid] == Block.StoneBlock)
+                        else if (Block.BlockIDMapping [tid] == Block.StoneBlock)
                             chunk.Blocks.SetID(x, y, z, (int)BlockType.STONE);
-                        else if (Block.BlockIDMapping[tid] == Block.TrunkBlock)
+                        else if (Block.BlockIDMapping [tid] == Block.TrunkBlock)
                             chunk.Blocks.SetID(x, y, z, (int)BlockType.WOOD);
-                        else if (Block.BlockIDMapping[tid] == Block.WaterBlock)
+                        else if (Block.BlockIDMapping [tid] == Block.WaterBlock)
                             chunk.Blocks.SetID(x, y, z, (int)BlockType.STATIONARY_WATER);
                         else
                             chunk.Blocks.SetID(x, y, z, (int)BlockType.OBSIDIAN);

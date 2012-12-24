@@ -12,6 +12,8 @@ namespace Tychaia.ProceduralGeneration
     /// Generates a 3D layer from perlin noise.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerName("Initial Perlin")]
     public class Layer3DInitialPerlin : Layer3D
     {
         [DataMember]
@@ -49,8 +51,8 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public Layer3DInitialPerlin(long seed)
-            : base(seed)
+        public Layer3DInitialPerlin()
+            : base()
         {
             // Set defaults.
             this.Scale = 100;

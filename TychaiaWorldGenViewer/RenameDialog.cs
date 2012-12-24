@@ -11,7 +11,7 @@ namespace TychaiaWorldGenViewer
 {
     public partial class RenameDialog : Form
     {
-        public string Name
+        public new string Name
         {
             get
             {

@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Weapons.Modifiers
 {
-    public class CounterattackingModifier : WeaponModifier
+    [Rarity(0.25)]
+    public class CounterAttackingModifier : WeaponModifier
     {
-        public override double Rarity = 0.25;
-
         public override string ToString()
         {
             return "Counterattacking";

@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Selects the building locations based on input data.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Towns)]
+    [FlowDesignerName("Place Buildings")]
     public class Layer3DBuildingPlacer : Layer3D
     {
         public static Random r = new Random();
@@ -35,8 +37,8 @@ namespace Tychaia.ProceduralGeneration
 
         // Cityareavoronoi basically creates areas and then asks if the area has a steep slope, if so don't build there.
         // Other ways to attempt to prevent cities from building both above a below a massive cliff?
-        public Layer3DBuildingPlacer(Layer terrain, Layer citybiomes, Layer cityareavoronoi)
-            : base(new Layer[] { terrain, citybiomes, cityareavoronoi })
+        public Layer3DBuildingPlacer(Layer citybiomes)
+            : base(new Layer[] { citybiomes })
         {
             this.ZoomLevel = 1;
             this.EdgeSampling = 10;
@@ -44,7 +46,7 @@ namespace Tychaia.ProceduralGeneration
 
         protected override int[] GenerateDataImpl(long x, long y, long z, long width, long height, long depth)
         {
-            if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
+            if (this.Parents.Length < 1 || this.Parents[0] == null)
                 return new int[width * height * depth];
 
             long ox = this.EdgeSampling;
@@ -54,23 +56,27 @@ namespace Tychaia.ProceduralGeneration
             long rw = width + this.EdgeSampling * 2;
             long rh = height + this.EdgeSampling * 2;
 
-            // Just need to add in offsets for x + y, up to 15
-            int[] terrain = this.Parents[0].GenerateData(rx, ry, rw, rh);
-            int[] citybiomes = this.Parents[1].GenerateData(rx, ry, z, rw, rh, depth);
+            // Just need to add in offsets for x + y, up to 15;
+            int[] citybiomes = this.Parents[0].GenerateData(rx, ry, z, rw, rh, depth);
             int[] data = new int[width * height * depth];
             int[] tempdata = new int[width * height * depth];
 
             // Populate with air
             for (int i = 0; i < width; i++)
                 for (int j = 0; j < height; j++)
-                    for (int k = 0; k < depth; k++)
-                        data[i + j * width + k * width * height] = -1;
+                    data[i + j * width] = -1;
 
             // Write out the buildings list.
             for (long i = 0; i < rw; i++)
                 for (long j = 0; j < rh; j++)
                 {
-                    data[i + j * width] = BuildingEngine.GetBuildingsForCell(citybiomes, ZoomLevel, r, x, y, width, height);
+                    int BuildingID = BuildingEngine.GetBuildingsForCell(citybiomes, ZoomLevel, r, x, y, width, height);
+
+                    if (i + BuildingEngine.Buildings[BuildingID].Length < rw && j + BuildingEngine.Buildings[BuildingID].Width < rh)
+                        for (int k = 0; k < BuildingEngine.Buildings[BuildingID].Length; k++)
+                            for (int l = 0; l < BuildingEngine.Buildings[BuildingID].Width; l++)
+                                data[i + k + (j + l) * width] = BuildingID;
+                    
                 }
 
             return data;
@@ -78,7 +84,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override Dictionary<int, LayerColor> GetLayerColors()
         {
-            if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
+            if (this.Parents.Length < 1 || this.Parents[0] == null)
                 return null;
             else
                 return BuildingEngine.GetBuildingBrushes();
@@ -86,7 +92,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override string[] GetParentsRequired()
         {
-            return new string[] { "City Biomes", "Terrain" };
+            return new string[] { "City Biomes" };
         }
 
         public override string ToString()
@@ -96,7 +102,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override bool[] GetParents3DRequired()
         {
-            return new bool[] { false, true };
+            return new bool[] { true };
         }
     }
 }

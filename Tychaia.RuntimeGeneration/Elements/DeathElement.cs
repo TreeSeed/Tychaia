@@ -5,15 +5,20 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Elements
 {
+    [Rarity(0.5)]
     public class DeathElement : Element
     {
-        public override double Rarity = 0.5;
-
         public override string[] WeaponPrefix
         {
             get
             {
-                return new string[] { "Decaying", "Cursing", "Plaguing", "Ruining" };
+                return new string[]
+                {
+                    "Decaying",
+                    "Cursing",
+                    "Plaguing",
+                    "Ruining"
+                };
             }
         }
 
@@ -21,7 +26,15 @@ namespace Tychaia.RuntimeGeneration.Elements
         {
             get
             {
-                return new string[] { "Darkened", "Deadly", "Plagued", "Cursed", "Decayed", "Ruined" };
+                return new string[]
+                {
+                    "Darkened",
+                    "Deadly",
+                    "Plagued",
+                    "Cursed",
+                    "Decayed",
+                    "Ruined"
+                };
             }
         }
 
@@ -29,7 +42,15 @@ namespace Tychaia.RuntimeGeneration.Elements
         {
             get
             {
-                return new string[] { "Death", "Darkness", "Plague", "Oblivion", "Extinction", "Ruin" };
+                return new string[]
+                {
+                    "Death",
+                    "Darkness",
+                    "Plague",
+                    "Oblivion",
+                    "Extinction",
+                    "Ruin"
+                };
             }
         }
 

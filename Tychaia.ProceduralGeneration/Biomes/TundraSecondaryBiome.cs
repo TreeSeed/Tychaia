@@ -17,6 +17,7 @@ namespace Tychaia.ProceduralGeneration.Biomes
             this.MaxTerrain = 0.4;
             this.BrushColor = LayerColor.FloralWhite;
             this.DefaultFor = BiomeEngine.BIOME_SNOW;
+            this.TreeChance = 0.001;
             this.SuitableBiomes = new int[]
             {
                 BiomeEngine.BIOME_SNOW

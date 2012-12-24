@@ -5,11 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Spells.Types
 {
+    [Rarity(0.025)]
     public class TrailType : SpellType
     {
-        // Leaves a trail on the ground as you walk, damages each second.
-        public override double Rarity = 0.025;
-
         public override string ToString()
         {
             return "Trail";

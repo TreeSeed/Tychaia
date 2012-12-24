@@ -12,6 +12,8 @@ namespace Tychaia.ProceduralGeneration
     /// create an ore distribution field.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Land)]
+    [FlowDesignerName("Ore Mixdown")]
     public class LayerOreMixdown : Layer2D
     {
         [DataMember]

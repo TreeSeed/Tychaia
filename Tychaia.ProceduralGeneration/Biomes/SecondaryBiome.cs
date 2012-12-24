@@ -27,5 +27,8 @@ namespace Tychaia.ProceduralGeneration.Biomes
 
         // Color that this biome draws
         public LayerColor BrushColor;
+
+        // Chance that a tree will spawn on any given cell.
+        public double TreeChance;
     }
 }

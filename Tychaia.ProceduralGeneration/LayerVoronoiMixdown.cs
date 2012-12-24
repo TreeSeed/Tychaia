@@ -12,6 +12,8 @@ namespace Tychaia.ProceduralGeneration
     /// sections of data.
     /// </summary>
     [DataContract()]
+    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerName("Voronoi Mixdown")]
     public class LayerVoronoiMixdown : Layer2D
     {
         [DataMember]
@@ -91,11 +93,9 @@ namespace Tychaia.ProceduralGeneration
 
         private int FindNeighbour(List<int> valueMap, int[] tracker, int[] data, long x, long y, long i, long j, long width, long height)
         {
-            Point p = new Point(i, j);
             int ox = this.EdgeSampling;
             int oy = this.EdgeSampling;
             long rw = width + this.EdgeSampling * 2;
-            long rh = height + this.EdgeSampling * 2;
 
             switch (this.GetRandomRange(x + i, y + j, 0, 4))
             {
@@ -126,7 +126,6 @@ namespace Tychaia.ProceduralGeneration
             int ox = this.EdgeSampling;
             int oy = this.EdgeSampling;
             long rw = width + this.EdgeSampling * 2;
-            long rh = height + this.EdgeSampling * 2;
 
             if (p.Inside(width, height) && tracker[(i + ox) + (j + oy) * rw] != 0)
                 return data[i + j * width];
@@ -143,7 +142,6 @@ namespace Tychaia.ProceduralGeneration
             int ox = this.EdgeSampling;
             int oy = this.EdgeSampling;
             long rw = width + this.EdgeSampling * 2;
-            long rh = height + this.EdgeSampling * 2;
 
             if (p.Inside(width, height) && tracker[(i + ox) + (j + oy) * rw] != 0)
                 return data[i + j * width];
@@ -162,7 +160,7 @@ namespace Tychaia.ProceduralGeneration
             long rh = height + this.EdgeSampling * 2;
 
             if (p.Inside(-ox, -oy, rw, rh) && voronoi[(p.X + ox) + (p.Y + oy) * rw] != 2 /* edge */ &&
-                    tracker[(p.X + ox) + (p.Y + oy) * rw] == 0 /* not hit */)
+                tracker[(p.X + ox) + (p.Y + oy) * rw] == 0 /* not hit */)
                 tracker[(p.X + ox) + (p.Y + oy) * rw] = idx + MAPPING_OFFSET;
             else
                 return;
@@ -243,13 +241,13 @@ namespace Tychaia.ProceduralGeneration
             public bool Inside(long width, long height)
             {
                 return (this.X >= 0 && this.Y >= 0 &&
-                        this.X < width && this.Y < height);
+                    this.X < width && this.Y < height);
             }
 
             public bool Inside(long x, long y, long width, long height)
             {
                 return (this.X >= x && this.Y >= y &&
-                        this.X < x + width && this.Y < y + height);
+                    this.X < x + width && this.Y < y + height);
             }
 
             public override string ToString()

@@ -14,3 +14,7 @@ Tychaia/Disabled/*
 Profiling*.sqlite
 *.vsmdi
 MakeMeAWorld/App_Data/*
+*/test-results/*
+Tychaia.userprefs
+*.orig
+Thumbs.db

@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// A layer which erases town cells that exist over ocean or water.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Towns)]
+    [FlowDesignerName("Erase Incorrect Towns")]
     public class LayerEraseTowns : Layer2D
     {
         public LayerEraseTowns(Layer towns, Layer land)
@@ -25,7 +27,6 @@ namespace Tychaia.ProceduralGeneration
 
             int[] towns = this.Parents[0].GenerateData(x, y, width, height);
             int[] land = this.Parents[1].GenerateData(x, y, width, height);
-            int[] temp = new int[width * height];
             int[] data = new int[width * height];
 
             // Erase any towns that exist over water.

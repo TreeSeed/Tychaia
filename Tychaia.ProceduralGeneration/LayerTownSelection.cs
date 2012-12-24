@@ -12,6 +12,8 @@ namespace Tychaia.ProceduralGeneration
     /// Selects the town type based on input data.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Towns)]
+    [FlowDesignerName("Select Towns")]
     public class LayerTownSelection : Layer2D
     {
         [DataMember]
@@ -110,62 +112,62 @@ namespace Tychaia.ProceduralGeneration
                     {
                         if (distancefromwater[i + j * width] <= MaxDistanceFromWater)
                         {
-                                // Normalize values.
-                                double nsoilfertility = (soilfertility[i + j * width] - this.MinSoilFertility) / (double)(this.MaxSoilFertility - this.MinSoilFertility);
-                                double noredensity = (oredensity[i + j * width] - this.MinOreDensity) / (double)(this.MaxOreDensity - this.MinOreDensity);
-                                double nrareoredensity = (rareoredensity[i + j * width] - this.MinRareOreDensity) / (double)(this.MaxRareOreDensity - this.MinRareOreDensity);
-                                double ndistancefromwater = (distancefromwater[i + j * width]);
+                            // Normalize values.
+                            double nsoilfertility = (soilfertility[i + j * width] - this.MinSoilFertility) / (double)(this.MaxSoilFertility - this.MinSoilFertility);
+                            double noredensity = (oredensity[i + j * width] - this.MinOreDensity) / (double)(this.MaxOreDensity - this.MinOreDensity);
+                            double nrareoredensity = (rareoredensity[i + j * width] - this.MinRareOreDensity) / (double)(this.MaxRareOreDensity - this.MinRareOreDensity);
+                            double ndistancefromwater = (distancefromwater[i + j * width]);
 
-                                // Store result.
-                                ViableTowns = TownEngine.GetTownsForCell(nsoilfertility, noredensity, nrareoredensity, ndistancefromwater);
+                            // Store result.
+                            ViableTowns = TownEngine.GetTownsForCell(nsoilfertility, noredensity, nrareoredensity, ndistancefromwater);
 
-                                // If no towns are viable then it returns 0
-                                if (ViableTowns.Count == 0)
+                            // If no towns are viable then it returns 0
+                            if (ViableTowns.Count == 0)
+                            {
+                                data[i + j * width] = 0;
+                            }
+                            else
+                            {
+
+                                // Define Variables
+                                double[] TownScore = new double[ViableTowns.Count];
+                                int currentbesttown = 0;
+                                double currentbesttownscore = 0;
+
+                                // Checks the list of viable towns.
+                                for (int k = 0; k < ViableTowns.Count; k++)
                                 {
-                                    data[i + j * width] = 0;
+                                    TownScore[k] = TownEngine.Towns[ViableTowns[k]].MinOreDensity + TownEngine.Towns[ViableTowns[k]].MinRareOreDensity + TownEngine.Towns[ViableTowns[k]].MinSoilFertility;
                                 }
-                                else
+
+                                // Checks each town score to check which is the highest
+                                for (int l = 0; l < ViableTowns.Count; l++)
                                 {
-
-                                    // Define Variables
-                                    double[] TownScore = new double[ViableTowns.Count];
-                                    int currentbesttown = 0;
-                                    double currentbesttownscore = 0;
-
-                                    // Checks the list of viable towns.
-                                    for (int k = 0; k < ViableTowns.Count; k++)
+                                    if (TownScore[l] > currentbesttownscore)
                                     {
-                                        TownScore[k] = TownEngine.Towns[ViableTowns[k]].MinOreDensity + TownEngine.Towns[ViableTowns[k]].MinRareOreDensity + TownEngine.Towns[ViableTowns[k]].MinSoilFertility;
+                                        currentbesttownscore = TownScore[l];
+                                        currentbesttown = l;
                                     }
-
-                                    // Checks each town score to check which is the highest
-                                    for (int l = 0; l < ViableTowns.Count; l++)
+                                    else if (TownScore[l] == currentbesttownscore)
                                     {
-                                        if (TownScore[l] > currentbesttownscore)
+                                        int selected = this.GetRandomRange(x + i, y + j, 0, 2);
+
+                                        if (selected == 0)
                                         {
-                                            currentbesttownscore = TownScore[l];
                                             currentbesttown = l;
                                         }
-                                        else if (TownScore[l] == currentbesttownscore)
-                                        {
-                                            int selected = this.GetRandomRange(x + i, y + j, 0, 2);
-
-                                            if (selected == 0)
-                                            {
-                                                currentbesttown = l;
-                                            }
-                                        }
                                     }
-
-                                    // Set the point to be equal to the town that is placed.
-                                    data[i + j * width] = ViableTowns[currentbesttown] + 1;
                                 }
+
+                                // Set the point to be equal to the town that is placed.
+                                data[i + j * width] = ViableTowns[currentbesttown] + 1;
                             }
                         }
-                        else
-                        {
-                            data[i + j * width] = 0;
-                        }
+                    }
+                    else
+                    {
+                        data[i + j * width] = 0;
+                    }
                 }
 
             return data;
@@ -178,7 +180,14 @@ namespace Tychaia.ProceduralGeneration
 
         public override string[] GetParentsRequired()
         {
-            return new string[] { "Soil Fertility", "Ore Density", "Rare Ore Density", "Distance from water", "Towns Map" };
+            return new string[]
+            {
+                "Soil Fertility",
+                "Ore Density",
+                "Rare Ore Density",
+                "Distance from water",
+                "Towns Map"
+            };
         }
 
         public override string ToString()

@@ -12,6 +12,8 @@ namespace Tychaia.ProceduralGeneration
     /// Generates a layer from octave noise.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerName("Initial Octave")]
     public class LayerInitialOctave : Layer2D
     {
         [DataMember]
@@ -58,8 +60,8 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public LayerInitialOctave(long seed)
-            : base(seed)
+        public LayerInitialOctave()
+            : base()
         {
             // Set defaults.
             this.Scale = 100;

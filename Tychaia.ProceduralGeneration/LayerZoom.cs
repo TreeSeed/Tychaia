@@ -12,6 +12,8 @@ namespace Tychaia.ProceduralGeneration
     /// values for the data that needs to be filled in (since resolution is being doubled).
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerName("Zoom Iterations")]
     public class LayerZoom : Layer2D
     {
         [DataMember]
@@ -70,7 +72,7 @@ namespace Tychaia.ProceduralGeneration
                 parent = this.GenerateDataIterate(iter + 1, rx, ry, rw, rh);
             int[] data = new int[width * height];
 
-            for(int i = 0; i < width; i++) // i = x in zoomed context
+            for (int i = 0; i < width; i++) // i = x in zoomed context
                 for (int j = 0; j < height; j++) // j = y in zoomed context
                 {
                     /*
@@ -92,7 +94,7 @@ namespace Tychaia.ProceduralGeneration
                     int west = this.FindZoomedPoint(parent, i - 1, j, ox, oy, x, y, rw);
 
                     if (this.Mode == ZoomType.Smooth || this.Mode == ZoomType.Fuzzy)
-                        data[i + j * width] = this.Smooth(x + i,y + j, north, south, west, east, current, i, j, ox, oy, rw, parent);
+                        data[i + j * width] = this.Smooth(x + i, y + j, north, south, west, east, current, i, j, ox, oy, rw, parent);
                     else                    
                         data[i + j * width] = current;
                 }
@@ -189,7 +191,7 @@ namespace Tychaia.ProceduralGeneration
                             case 2:
                                 return eastValue;
                             case 3:
-                                return this.FindZoomedPoint(parent, i + 2, j + 2, ox, oy, x - i, y- j, rw);
+                                return this.FindZoomedPoint(parent, i + 2, j + 2, ox, oy, x - i, y - j, rw);
                         }
                     }
                 }

@@ -5,15 +5,20 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Elements
 {
+    [Rarity(1)]
     public class LightningElement : Element
     {
-        public override double Rarity = 1;
-
         public override string[] WeaponPrefix
         {
             get
             {
-                return new string[] { "Shocking", "Sparking", "Jolting", "Thundering" };
+                return new string[]
+                {
+                    "Shocking",
+                    "Sparking",
+                    "Jolting",
+                    "Thundering"
+                };
             }
         }
 
@@ -29,7 +34,14 @@ namespace Tychaia.RuntimeGeneration.Elements
         {
             get
             {
-                return new string[] { "Lightning", "Electric", "Spark", "Shock", "Jolt" };
+                return new string[]
+                {
+                    "Lightning",
+                    "Electric",
+                    "Spark",
+                    "Shock",
+                    "Jolt"
+                };
             }
         }
 

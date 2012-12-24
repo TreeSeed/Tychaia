@@ -12,6 +12,8 @@ namespace Tychaia.ProceduralGeneration
     /// reduce the number of mountains that exist.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Land)]
+    [FlowDesignerName("Terrain Mixdown")]
     public class LayerTerrainMixdown : Layer2D
     {
         [DataMember]

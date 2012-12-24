@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Elements
 {
+    [Rarity(1)]
     public class AcidElement : Element
     {
-        public override double Rarity = 1;
-
         public override string[] WeaponPrefix
         {
             get
@@ -21,7 +20,13 @@ namespace Tychaia.RuntimeGeneration.Elements
         {
             get
             {
-                return new string[] { "Corroded", "Eroded", "Poisoned", "Deteriorated" };
+                return new string[]
+                {
+                    "Corroded",
+                    "Eroded",
+                    "Poisoned",
+                    "Deteriorated"
+                };
             }
         }
 

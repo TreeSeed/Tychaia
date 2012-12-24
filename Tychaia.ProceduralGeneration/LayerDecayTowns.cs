@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Accepts a viability map and a town map and combines them to produce ruins.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Towns)]
+    [FlowDesignerName("Decay Towns")]
     public class LayerDecayTowns : Layer2D
     {
         [DataMember]

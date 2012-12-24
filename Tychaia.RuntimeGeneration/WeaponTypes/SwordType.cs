@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Weapons.Types
 {
+    [Rarity(1)]
     public class BallType : WeaponType
     {
-        public override double Rarity = 1;
-
         public override string ToString()
         {
             return "Sword";

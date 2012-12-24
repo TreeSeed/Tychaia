@@ -28,6 +28,7 @@ namespace Tychaia.ProceduralGeneration
         public static int GetBuildingsForCell(int[] citybiomes, int zoomlevel, Random r, long x, long y, long width, long length)
         {
             List<int> ViableBuildings = new List<int>();
+            int SelectedBuilding = -1;
             
             for (int i = 0; i < BuildingEngine.Buildings.Count; i++)
             {
@@ -35,7 +36,7 @@ namespace Tychaia.ProceduralGeneration
                 if (b.Length < (zoomlevel * 10) || b.Height < (zoomlevel * 10))
                 {
                     double rand = r.NextDouble();
-                    if (rand > b.PlaceLimit)
+                    if (rand > b.PlaceChance)
                         for (int k = 0; citybiomes[x + y * width + k * length * width] != 0; k++)
                             for (int j = 0; j < b.CityBiomes.Length; j++)
                                 if (b.CityBiomes[j] == CitiesEngine.CityBiomes[k])
@@ -46,11 +47,13 @@ namespace Tychaia.ProceduralGeneration
             for (int i = 0; i < ViableBuildings.Count; i++)
             {
                 double rand = r.NextDouble();
-                if ((1 / ViableBuildings.Count) > rand)
-                    return i;
+                if (BuildingEngine.Buildings[ViableBuildings[i]].PlaceChance < BuildingEngine.Buildings[SelectedBuilding].PlaceChance || SelectedBuilding == -1)
+                {
+                    SelectedBuilding = ViableBuildings[i];
+                }
             }
 
-            return -1;
+            return SelectedBuilding;
         }
 
         public static Dictionary<int, LayerColor> GetBuildingBrushes()

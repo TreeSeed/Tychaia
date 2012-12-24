@@ -7,7 +7,7 @@ namespace Tychaia.RuntimeGeneration.Spells.Types
 {
     public class ChainType : SpellType
     {
-        public override double Rarity = 0.25;
+        public override double Rarity { get { return 0.25; } }
 
         public override string ToString()
         {

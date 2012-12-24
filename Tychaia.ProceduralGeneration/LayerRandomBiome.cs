@@ -12,6 +12,8 @@ namespace Tychaia.ProceduralGeneration
     /// integer IDs (where the integers often represent biomes).
     /// </summary>
     [DataContract()]
+    [FlowDesignerCategory(FlowCategory.Biome)]
+    [FlowDesignerName("Scatter Primary Biomes")]
     public class LayerRandomBiome : Layer2D
     {
         [DataMember]

@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Replaces cells in one layer with the input from another layer.
     /// </summary>
     [DataContract()]
+    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerName("Replace Values")]
     public class Layer3DReplace : Layer3D
     {
         [DataMember]

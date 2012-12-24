@@ -6,10 +6,9 @@ using System.Text;
 namespace Tychaia.RuntimeGeneration.Weapons.Modifiers
 {
     // Spell power one
+    [Rarity(0.25)]
     public class EmpoweredModifier : WeaponModifier
     {
-        public override double Rarity = 0.25;
-
         public override string ToString()
         {
             return "Empowered";

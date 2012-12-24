@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Generates city biomes based on input data.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Towns)]
+    [FlowDesignerName("Add City Biomes")]
     public class Layer3DAddCityBiomes : Layer3D
     {
         [DataMember]
@@ -148,7 +150,6 @@ namespace Tychaia.ProceduralGeneration
                             double nanimaldensity = (animaldensity[i + j * width] - this.MinAnimalDensity) / (double)(this.MaxAnimalDensity - this.MinAnimalDensity);
                             double noredensity = (oredensity[i + j * width] - this.MinOreDensity) / (double)(this.MaxOreDensity - this.MinOreDensity);
                             double nrareoredensity = (rareoredensity[i + j * width] - this.MinRareOreDensity) / (double)(this.MaxRareOreDensity - this.MinRareOreDensity);
-                            double nheat = BiomeEngine.SecondaryBiomes[biome[i + j * width]].HeatValue;
 
                             // Store result.
                             endloop = false;
@@ -170,7 +171,7 @@ namespace Tychaia.ProceduralGeneration
                             }
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         // In case of overflow, underflow or divide by zero.
                         data[i + j * width] = 0;
@@ -187,7 +188,15 @@ namespace Tychaia.ProceduralGeneration
 
         public override string[] GetParentsRequired()
         {
-            return new string[] { "City Biomes", "Biome", "Soil Fertility", "Animal Density", "Ore Density", "Rare Ore Density"};
+            return new string[]
+            {
+                "City Biomes",
+                "Biome",
+                "Soil Fertility",
+                "Animal Density",
+                "Ore Density",
+                "Rare Ore Density"
+            };
         }
 
         public override string ToString()

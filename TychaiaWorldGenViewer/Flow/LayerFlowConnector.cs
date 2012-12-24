@@ -22,8 +22,6 @@ namespace TychaiaWorldGenViewer.Flow
             }
         }
 
-        [DataMember]
-        private Layer m_Layer;
 
         [DataMember]
         private LayerFlowElement m_LayerOwner;
@@ -31,7 +29,6 @@ namespace TychaiaWorldGenViewer.Flow
         public LayerFlowConnector(LayerFlowElement owner, string name, bool isInput, Layer layer)
             : base(owner, name, isInput)
         {
-            this.m_Layer = layer;
             this.m_LayerOwner = owner;
         }
     }

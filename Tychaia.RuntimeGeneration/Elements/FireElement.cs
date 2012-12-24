@@ -5,18 +5,18 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Elements
 {
+    [Rarity(1)]
     public class FireElement : Element
     {
-        public override double Rarity = 1;
-
         public override string[] WeaponPrefix
         {
-            get {
+            get
+            {
                 return new string[] { "Burning", "Flaming", "Searing" };
             }
         }
 
-        public override string[] ItemPrefixDamaged 
+        public override string[] ItemPrefixDamaged
         {
             get
             {

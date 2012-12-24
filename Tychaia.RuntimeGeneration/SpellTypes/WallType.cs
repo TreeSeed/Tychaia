@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Spells.Types
 {
+    [Rarity(0.3)]
     public class WallType : SpellType
     {
-        public override double Rarity = 0.3;
-
         public override string ToString()
         {
             return "Wall";

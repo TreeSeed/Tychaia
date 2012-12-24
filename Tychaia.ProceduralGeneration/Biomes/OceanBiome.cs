@@ -17,6 +17,7 @@ namespace Tychaia.ProceduralGeneration.Biomes
             this.MaxTerrain = 0;
             this.BrushColor = LayerColor.Blue;
             this.DefaultFor = BiomeEngine.BIOME_OCEAN;
+            this.TreeChance = 0;
             this.SuitableBiomes = new int[]
             {
                 BiomeEngine.BIOME_OCEAN

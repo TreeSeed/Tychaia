@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Spells.Types
 {
+    [Rarity(1)]
     public class ShieldType : SpellType
     {
-        public override double Rarity = 1;
-
         public override string ToString()
         {
             return "Shield";

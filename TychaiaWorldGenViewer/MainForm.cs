@@ -229,7 +229,7 @@ namespace TychaiaWorldGenViewer
 
         private void c_PushGenerateContinentsMenuItem_Click(object sender, EventArgs e)
         {
-            this.c_LayersListBox.Items.Add(new LayerInitialLand(this.m_Seed));
+            this.c_LayersListBox.Items.Add(new LayerInitialLand());
             this.RegenerateImage();
         }
 

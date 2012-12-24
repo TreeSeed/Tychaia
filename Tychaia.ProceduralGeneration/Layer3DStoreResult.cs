@@ -13,6 +13,8 @@ namespace Tychaia.ProceduralGeneration
     /// generation of the in-game world.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerName("Store Result")]
     public class Layer3DStoreResult : Layer3D
     {
         [DataMember]

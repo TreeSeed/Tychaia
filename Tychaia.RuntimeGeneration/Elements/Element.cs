@@ -32,19 +32,19 @@ namespace Tychaia.RuntimeGeneration.Elements
         public virtual string GetWeaponPrefix()
         {
             int rand = r.Next(WeaponPrefix.Length);
-            return WeaponPrefix[rand];
+            return WeaponPrefix [rand];
         }
 
         public virtual string GetItemPrefixResist()
         {
             int rand = r.Next(ItemPrefixDamaged.Length);
-            return ItemPrefixDamaged[rand];
+            return ItemPrefixDamaged [rand];
         }
 
         public virtual string GetElementName()
         {
             int rand = r.Next(ElementName.Length);
-            return ElementName[rand];
+            return ElementName [rand];
         }
     }
 }

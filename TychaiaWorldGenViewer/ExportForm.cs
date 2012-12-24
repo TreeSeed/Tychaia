@@ -37,7 +37,6 @@ namespace TychaiaWorldGenViewer
         }
 
         private static SolidBrush m_UnknownAssociation2D = new SolidBrush(Color.FromArgb(63, 63, 63));
-        private static SolidBrush m_UnknownAssociation3D = new SolidBrush(Color.FromArgb(0, 0, 0, 0));
 
         #region 2D Rendering
 

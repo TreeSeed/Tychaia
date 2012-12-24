@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Elements
 {
+    [Rarity(0.5)]
     public class LifeElement : Element
     {
-        public override double Rarity = 0.5;
-
         public override string[] WeaponPrefix
         {
             get
@@ -29,7 +28,14 @@ namespace Tychaia.RuntimeGeneration.Elements
         {
             get
             {
-                return new string[] { "Heal", "Life", "Holy", "Divine", "Light" };
+                return new string[]
+                {
+                    "Heal",
+                    "Life",
+                    "Holy",
+                    "Divine",
+                    "Light"
+                };
             }
         }
 

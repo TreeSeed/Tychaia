@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Weapons.Modifiers
 {
+    [Rarity(0.25)]
     public class NoneModifier : WeaponModifier
     {
-        public override double Rarity = 0.25;
-
         public override string ToString()
         {
             return "";

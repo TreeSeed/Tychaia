@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Spells.Modifiers
 {
+    [Rarity(0.015)]
     public class BounceModifier : SpellModifier
     {
-        public override double Rarity = 0.015;
-
         public override string ToString()
         {
             return "Bouncing";

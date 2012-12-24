@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Generates a layer that indicates viability for towns.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Towns)]
+    [FlowDesignerName("Derive Viability")]
     public class LayerDeriveViability : Layer2D
     {
         public LayerDeriveViability(Layer soil, Layer animal, Layer ore, Layer terrain, Layer secondaryBiomes)
@@ -28,7 +30,6 @@ namespace Tychaia.ProceduralGeneration
             int[] animal = this.Parents[1].GenerateData(x, y, width, height);
             int[] ore = this.Parents[2].GenerateData(x, y, width, height);
             int[] terrain = this.Parents[3].GenerateData(x, y, width, height);
-            int[] secondaryBiomes = this.Parents[4].GenerateData(x, y, width, height);
             int[] data = new int[width * height];
 
             // Copy 1-for-1 the water cells.
@@ -95,7 +96,14 @@ namespace Tychaia.ProceduralGeneration
 
         public override string[] GetParentsRequired()
         {
-            return new string[] { "Soil Density", "Animal Density", "Ore Distribution", "Terrain", "Secondary Biomes" };
+            return new string[]
+            {
+                "Soil Density",
+                "Animal Density",
+                "Ore Distribution",
+                "Terrain",
+                "Secondary Biomes"
+            };
         }
 
         public override string ToString()

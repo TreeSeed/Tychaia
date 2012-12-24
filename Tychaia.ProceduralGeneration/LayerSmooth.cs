@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Smooths the input layer.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerName("Smooth")]
     public class LayerSmooth : Layer2D
     {
         [DataMember]
@@ -49,19 +51,16 @@ namespace Tychaia.ProceduralGeneration
             // beyond the edge of the center.
             int[] parent = null;
             if (iter == this.Iterations)
-            {
-                if (this.Parents.Length < 1 || this.Parents[0] == null)
-                    parent = new int[rw * rh];
-                else
-                    parent = this.Parents[0].GenerateData(x - ox, y - oy, rw, rh);
-            }
+            if (this.Parents.Length < 1 || this.Parents[0] == null)
+                parent = new int[rw * rh];
+            else
+                parent = this.Parents[0].GenerateData(x - ox, y - oy, rw, rh);
             else
                 parent = this.GenerateDataIterate(iter + 1, x - ox, y - oy, rw, rh);
             int[] data = new int[width * height];
 
-            for(int i = 0; i < width; i++)
+            for (int i = 0; i < width; i++)
                 for (int j = 0; j < height; j++)
-                {
                     switch (this.Mode)
                     {
                         case SmoothType.None:
@@ -80,7 +79,6 @@ namespace Tychaia.ProceduralGeneration
                             data[i + j * width] = this.SmoothRandom(parent, i + ox, j + oy, rw);
                             break;
                     }
-                }
       
             return data;
         }
@@ -138,10 +136,10 @@ namespace Tychaia.ProceduralGeneration
                     applier[i + 2, j + 2] = this.GetRandomRange(x + i, y + j, 0, 250);
             return this.SmoothBase(parent, applier, x, y, rw);
         }
-
+     
         private int[,] m_BaseSample = new int[5, 5];
         private int[,] m_BaseOutput = new int[5, 5];
-
+     
         private int SmoothBase(int[] parent, int[,] applier, int x, int y, long rw)
         {
             int result = 0;
@@ -150,7 +148,7 @@ namespace Tychaia.ProceduralGeneration
                 m_BaseSample = new int[5, 5];
             if (m_BaseOutput == null)
                 m_BaseOutput = new int[5, 5];
-
+         
             for (int i = -2; i <= 2; i++)
                 for (int j = -2; j <= 2; j++)
                     m_BaseSample[i + 2, j + 2] = parent[(x + i) + (y + j) * rw];
