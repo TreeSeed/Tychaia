@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -261,8 +261,8 @@ namespace MakeMeAWorld
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
             Dictionary<int, LayerColor> brushes = l.GetLayerColors();
             int[] data = null;
-            try
-            {
+            //try
+            //{
                 data = l.GenerateData(sx, sy, sz, width, height, depth);
                 if (data.All(v => v == data[0]))
                     return new Bitmap(1, 1);
@@ -340,10 +340,10 @@ namespace MakeMeAWorld
                         }
                     }
                 }
-            }
-            catch (Exception)
-            {
-            }
+            //}
+            //catch (Exception)
+           // {
+            //}
 
             return b;
         }

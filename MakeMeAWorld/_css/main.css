@@ -55,6 +55,8 @@ a
     position: absolute;
     top: 0px;
     left: 0px;
+    width: 0px;
+    height: 0px;
 }
 a, a:visited, a:active, a:hover
 {

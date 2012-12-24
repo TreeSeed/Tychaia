@@ -122,8 +122,74 @@ $(document).ready(function () {
         stopEarly = true;
     });
 
+    /*var chromeWorkaround = function (dataURI, callback) {
+        // convert base64 to raw binary data held in a string
+        // doesn't handle URLEncoded DataURIs
+        var byteString = atob(dataURI.split(',')[1]);
+
+        // separate out the mime component
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+        // write the bytes of the string to an ArrayBuffer
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        //var abv = new ArrayBufferView(ab);
+
+        // write the ArrayBuffer to a blob, and you're done
+        return new window.Blob([ia], { type: mimeString });//WebKitBlobBuilder(); // or just BlobBuilder() if not using Chrome
+        //bb.append(ab);
+        //return bb.getBlob(mimeString);
+    };*/
     $("#downloadResult").click(function () {
-        window.open($("#canvas")[0].toDataURL("image/png"), "imageDownload");
+        /*if (window.Blob && (window.requestFileSystem || window.webkitRequestFileSystem))
+        {
+            var errorHandler = function() { alert("Unable to save image to HTML5 storage."); };
+            //window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder;
+            window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+            window.requestFileSystem(window.TEMPORARY, 5*1024*1024, function(fs){
+                fs.root.getFile($("#seed").text() + ".png", {create:true}, function(fileEntry) {
+                    fileEntry.createWriter(function(fileWriter) {
+                        fileWriter.write(chromeWorkaround($("#canvas")[0].toDataURL("image/png")));
+                        //alert("file written to HTML5 temporary storage..");
+                        window.open(fileEntry.toURL(), "imageDownload");
+                    }, errorHandler);
+                }, errorHandler);
+            }, errorHandler);
+        }
+        else
+        {
+            try
+            {
+                Canvas2Image.saveAsPNG($("#canvas")[0]);
+            }
+            catch (ex)
+            {
+                window.open($("#canvas")[0].toDataURL("image/png"), "imageDownload");
+            }
+        }*/
+        try
+        {
+            if ($.browser.msie)
+                throw "msie";
+            $("#canvas")[0].toBlob(function(blob) {
+                saveAs(blob, "makemeaworld-" + $("#seed").text() + ".png");
+            });
+        }
+        catch (ex)
+        {
+            $("#ieImgDownload").src = $("#canvas")[0].toDataURL("image/png");
+            $("#ieDownload").modal();
+            /*var img = document.createElement("img");
+            img.style.position = "absolute";
+            img.style.top = "0px";
+            img.style.left = "0px";
+            img.src = $("#canvas")[0].toDataURL("image/png");
+            document.appendElement(img);*/
+            //window.open($("#canvas")[0].toDataURL("image/png"), "imageDownload");
+        }
     });
     $("#renderAnother").click(function () {
         gotoStage("main");
@@ -152,6 +218,7 @@ $(document).ready(function () {
             $("#info").hide();
             $("#end").hide();
             $("#watermark").show();
+            $("#newRender").show();
         } else if (stage == "processing") {
             $("#header").show();
             $("#welcomeMessage").hide();
@@ -169,6 +236,7 @@ $(document).ready(function () {
             $("#end").hide();
             $("#watermark").show();
             $("#welcomeMessage")[0].style.top = "350px";
+            $("#newRender").hide();
         } else if (stage == "results") {
             $("#header").show();
             $("#welcomeMessage").hide();
@@ -188,6 +256,7 @@ $(document).ready(function () {
             $("#watermark").hide();
             $("#renderAnother").hide();
             $("#welcomeMessage")[0].style.top = "250px";
+            $("#newRender").show();
         }
     }
 
