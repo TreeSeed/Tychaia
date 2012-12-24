@@ -180,7 +180,7 @@ $(document).ready(function () {
             return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
         }
         setHashFromSettings();
-        popupwindow("https://twitter.com/intent/tweet?hashtags=Tychaia&related=hachque&text=I%20just%20made%20a%20world%20with%20Tychaia!&tw_p=tweetbutton&url=" + escape("http://makemeaworld.com/#" + window.location.hash),
+        popupwindow("https://twitter.com/intent/tweet?hashtags=Tychaia&related=hachque&text=I%20just%20made%20a%20world%20with%20Tychaia!&tw_p=tweetbutton&url=" + escape("http://makemeaworld.com/" + window.location.hash),
             "tweet", 500, 350);
     });
 
