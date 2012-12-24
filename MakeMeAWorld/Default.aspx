@@ -9,6 +9,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <script src="_js/jquery-1.8.3.min.js" type="text/javascript"></script>
         <script src="_js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="_js/BlobBuilder.js" type="text/javascript"></script>
+        <script src="_js/canvas-toBlob.js" type="text/javascript"></script>
+        <script src="_js/FileSaver.js" type="text/javascript"></script>
         <script src="_js/logic.js" type="text/javascript"></script>
         <link rel="stylesheet" href="_css/main.css" />
     </head>
@@ -38,8 +41,8 @@
                     <div id="welcomeText">
                         <p>
                             <a href="http://tychaia.com">Tychaia</a> is an infinite, procedurally generated RPG set in a medieval world.  It's
-                            set with an isometric view and a play style similar to Diablo, but with a twist; the game ends with your death.
-                            When you die, the entire world is regenerated from scratch and you get to play an entirely new game.
+                        set with an isometric view and a play style similar to Diablo, but with a twist: when you die, the entire world is
+                        regenerated from scratch and you get to play an entirely new game.
                         </p>
                         <p>
                             A large portion of the development of Tychaia is focused on the procedural generation of a world in an almost
@@ -90,5 +93,14 @@
             </div>
         </div>
         <div id="watermark">Powered by <a href="http://tychaia.com/">Tychaia</a>.  Image is 1920x1080 when saved.  Seed is <span id="seed">0</span>.</div>
+        <div id="ieDownload" class="modal hide fade">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>Right-click and save the image</h3>
+            </div>
+            <div class="modal-body">
+                <img id="ieImgDownload" src="" alt="Image Download" />
+            </div>
+        </div>
     </body>
 </html>

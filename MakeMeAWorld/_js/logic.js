@@ -154,7 +154,19 @@ $(document).ready(function () {
     });
 
     $("#downloadResult").click(function () {
-        window.open($("#canvas")[0].toDataURL("image/png"), "imageDownload");
+        try
+        {
+            if ($.browser.msie)
+                throw "msie";
+            $("#canvas")[0].toBlob(function(blob) {
+                saveAs(blob, "makemeaworld-" + $("#seed").text() + ".png");
+            });
+        }
+        catch (ex)
+        {
+            $("#ieImgDownload").src = $("#canvas")[0].toDataURL("image/png");
+            $("#ieDownload").modal();
+        }
     });
     $("#renderAnother").click(function () {
         gotoStage("main");
