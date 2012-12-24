@@ -2,9 +2,19 @@
 {
     background-color: #000;
 }
-a
+#welcomeMessage p a, #watermark a
 {
     text-decoration: underline;
+}
+#welcomeMessage p a, #welcomeMessage p a:visited, #welcomeMessage p a:active, #welcomeMessage p a:hover
+#watermark a, #watermark a:visited, #watermark a:active, #watermark a:hover
+{
+    color: #CCC;
+}
+.dropdown-menu a
+{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
 }
 #canvas
 {
@@ -22,6 +32,9 @@ a
     margin: auto;
     position: relative;
     background: rgba(0, 0, 0, 0.85);
+}
+#welcomeMessage #welcomeText
+{
     text-shadow:
     -1px -1px 0 #000,
     1px -1px 0 #000,
@@ -55,10 +68,12 @@ a
     position: absolute;
     top: 0px;
     left: 0px;
+    width: 0px;
+    height: 0px;
 }
-a, a:visited, a:active, a:hover
+.form-horizontal, .form-horizontal .control-group:last-child, #advancedOptions
 {
-    color: #CCC;
+    margin-bottom: 0px;
 }
 #watermark
 {
@@ -128,4 +143,8 @@ input
 #endMessage
 {
     margin-bottom: 10px;
+}
+#advancedOptions
+{
+    margin-top: 20px;
 }

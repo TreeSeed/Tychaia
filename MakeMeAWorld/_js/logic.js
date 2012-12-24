@@ -77,27 +77,49 @@ function renderWatermark(canvas, seed) {
 
     // Draw rounded rectangle.
     ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-    roundRect(ctx, 10, 10, measureText() - 10, 21, 5, true, false);
+    roundRect(ctx, 10, 1080 - 10 - 21, 1900, 21, 5, true, false);
 
     // Draw drop shadows.
+    var offset = 17;
     ctx.fillStyle = "#000";
-    drawText(13, 13);
-    drawText(14, 13);
-    drawText(15, 13);
-    drawText(13, 12);
-    drawText(15, 12);
-    drawText(13, 11);
-    drawText(14, 11);
-    drawText(15, 11);
+    drawText(13, 1080 - 13 - offset);
+    drawText(14, 1080 - 13 - offset);
+    drawText(15, 1080 - 13 - offset);
+    drawText(13, 1080 - 12 - offset);
+    drawText(15, 1080 - 12 - offset);
+    drawText(13, 1080 - 11 - offset);
+    drawText(14, 1080 - 11 - offset);
+    drawText(15, 1080 - 11 - offset);
 
     // Draw actual text.
     ctx.fillStyle = "#FFF";
-    drawText(14, 12);
+    drawText(14, 1080 - 12 - offset);
+}
+function loadSeedFromHash()
+{
+    var split = window.location.hash.substring(1).split("#", 2);
+    if (split.length == 1)
+    {
+        $("#seedSet")[0].value = decodeURIComponent(split[0]);
+        $("#outputFormat")[0].value = "3D-Game World";
+    }
+    else
+    {
+        $("#seedSet")[0].value = decodeURIComponent(split[1]);
+        $("#outputFormat")[0].value = decodeURIComponent(split[0]);
+    }
+}
+function setHashFromSettings()
+{
+    if ($("#outputFormat")[0].value == "3D-Game World")
+        window.location.hash = encodeURIComponent($("#seed").text());
+    else
+        window.location.hash = encodeURIComponent($("#outputFormat")[0].value) + "#" + encodeURIComponent($("#seed").text());
 }
 var seed = 0;
 $(document).ready(function () {
     if (window.location.hash != "") {
-        $("#seedSet")[0].value = window.location.hash.substring(1);
+        loadSeedFromHash();
     } else {
         $("#seedSet")[0].value = Math.random().toString() * 0xFFFFFFFFFFFFFF;
     }
@@ -106,20 +128,29 @@ $(document).ready(function () {
     $("#seedSet").change(function () {
         $("#seed").text($("#seedSet")[0].value);
         seed = returnNumberOrHash($("#seedSet")[0].value);
-        window.location.hash = $("#seed").text();
+        setHashFromSettings();
     });
     $("#randomize").click(function () {
         $("#seedSet")[0].value = Math.random().toString() * 0xFFFFFFFFFFFFFF;
         $("#seed").text($("#seedSet")[0].value);
         seed = returnNumberOrHash($("#seedSet")[0].value);
-        window.location.hash = $("#seed").text();
+        setHashFromSettings();
     });
     $("#seedSet").focus();
     $("#seedSet").select();
+    $("#outputFormat").change(function () {
+        setHashFromSettings();
+    });
+    $("#showAdvanced").click(function () {
+        $("#advancedOptions").show();
+        return false;
+    });
 
     var stopEarly = false;
+    var stopFailure = false;
     $("#stopEarly").click(function () {
         stopEarly = true;
+        stopFailure = false;
     });
 
     $("#downloadResult").click(function () {
@@ -136,7 +167,8 @@ $(document).ready(function () {
             var top = (screen.height / 2) - (h / 2);
             return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
         }
-        popupwindow("https://twitter.com/intent/tweet?hashtags=Tychaia&related=hachque&text=I%20just%20made%20a%20world%20with%20Tychaia!&tw_p=tweetbutton&url=" + escape("http://makemeaworld.com/#" + $("#seed").text()),
+        setHashFromSettings();
+        popupwindow("https://twitter.com/intent/tweet?hashtags=Tychaia&related=hachque&text=I%20just%20made%20a%20world%20with%20Tychaia!&tw_p=tweetbutton&url=" + escape("http://makemeaworld.com/#" + window.location.hash),
             "tweet", 500, 350);
     });
 
@@ -201,12 +233,25 @@ $(document).ready(function () {
         var ctx = canvas.getContext('2d');
         var SIZE = 64;
         var start = new Date().getTime();
-        ctx.clearRect(0, 0, $("#canvas")[0].width, $("#canvas")[0].height);
+        if ($("#enableRenderDebugging")[0].checked)
+            ctx.fillStyle = "#F00";
+        else
+            ctx.fillStyle = "#000";
+        ctx.fillRect(0, 0, $("#canvas")[0].width, $("#canvas")[0].height);
 
         var x = -canvas.width;
         var y = -canvas.height;
-        var z = -SIZE;
-        var total = ((canvas.width * 2) / SIZE) * ((canvas.height * 2) / SIZE) * 5;
+        var z, total;
+        if ($("#outputFormat")[0].value.substring(0, 2) == "3D")
+        {
+            z = -SIZE;
+            total = ((canvas.width * 2) / SIZE) * ((canvas.height * 2) / SIZE) * 5;
+        }
+        else
+        {
+            z = 0;
+            total = ((canvas.width * 2) / SIZE) * ((canvas.height * 2) / SIZE);
+        }
         var current = 0;
         var rendered = 0;
         var skipped = 0;
@@ -223,17 +268,29 @@ $(document).ready(function () {
                     return;
                 }
                 var img = new Image();
-                img.onload = function () {
-                    if (img.width == 1 && img.height == 1) {
-                        skipped += 1;
-                        call();
-                    } else {
-                        rendered += 1;
-                        ctx.drawImage(img, rx, ry);
-                        call();
+                try
+                {
+                    img.onload = function () {
+                        if (img.width == 1 && img.height == 1) {
+                            skipped += 1;
+                            call();
+                        } else {
+                            rendered += 1;
+                            ctx.drawImage(img, rx, ry);
+                            call();
+                        }
                     }
+                    img.onerror = function () {
+                        stopEarly = true;
+                        stopFailure = true;
+                    }
+                    img.src = "images/map.png?x=" + x + "&y=" + y + "&z=" + z + "&size=" + SIZE + "&seed=" + seed + "&layer=" + $("#outputFormat")[0].value.substring(3);
                 }
-                img.src = "images/map.png?x=" + x + "&y=" + y + "&z=" + z + "&size=" + SIZE + "&seed=" + seed;
+                catch (ex)
+                {
+                    stopEarly = true;
+                    stopFailure = true;
+                }
             };
         }
 
@@ -251,12 +308,16 @@ $(document).ready(function () {
 
         var run = function () {
             if (stopEarly) {
+                if (stopFailure)
+                    $("#endMessage").text("Rendering failed due to a server error!");
+                else
+                    $("#endMessage").text("Rendering was stopped manually.");
                 if (currentStage == "mainAndProcessing")
                     gotoStage("mainAndResults");
                 else
                     gotoStage("results");
-                $("#endMessage").text("Rendering was stopped manually.");
                 stopEarly = false;
+                stopFailure = false;
                 finalize();
                 return;
             }
@@ -268,7 +329,10 @@ $(document).ready(function () {
             if (y > canvas.height) {
                 x = -canvas.width;
                 y = -canvas.height;
-                z += SIZE;
+                if ($("#outputFormat")[0].value.substring(0, 2) == "3D")
+                    z += SIZE;
+                else
+                    z = SIZE * 4 + 1; // Hack so next if statement triggers.
             }
             if (z > SIZE * 4) {
                 if (currentStage == "mainAndProcessing")
@@ -296,6 +360,8 @@ $(document).ready(function () {
             getCallback(canvas, ctx, x, y, z, run)();
         }
         run();
+        
+        return false;
     });
 
     // If the window hash is not empty, simulate pressing the Generate World.

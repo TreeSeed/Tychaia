@@ -131,7 +131,8 @@ Global
 		{642D5815-4533-4146-96C1-D932FE1641F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{642D5815-4533-4146-96C1-D932FE1641F9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{642D5815-4533-4146-96C1-D932FE1641F9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{642D5815-4533-4146-96C1-D932FE1641F9}.Release|x86.ActiveCfg = Release|Any CPU
+		{642D5815-4533-4146-96C1-D932FE1641F9}.Release|x86.ActiveCfg = Release|x86
+		{642D5815-4533-4146-96C1-D932FE1641F9}.Release|x86.Build.0 = Release|x86
 		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -147,7 +148,8 @@ Global
 		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Debug|x86.ActiveCfg = Debug|x86
+		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Debug|x86.Build.0 = Debug|x86
 		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -347,7 +349,7 @@ Global
 		{934D08FB-35DB-4481-A3C4-64F8AE5C8F51} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = TychaiaWorldGenViewer\TychaiaWorldGenViewer.csproj
+		StartupItem = MakeMeAWorld\MakeMeAWorld.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.EolMarker = Unix

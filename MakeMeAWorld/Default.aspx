@@ -35,27 +35,57 @@
             </div>
             <div id="messageContainer">
                 <div id="welcomeMessage">
-                    <p>
-                        <a href="http://tychaia.com">Tychaia</a> is an infinite, procedurally generated RPG set in a medieval world.  It's
-                        set with an isometric view and a play style similar to Diablo, but with a twist; the game ends with your death.
-                        When you die, the entire world is regenerated from scratch and you get to play an entirely new game.
-                    </p>
-                    <p>
-                        A large portion of the development of Tychaia is focused on the procedural generation of a world in an almost
-                        infinite space.  To give an idea of the potential size of a world, the maximum size of a world is 1.8&times;10<sup>18</sup>
-                        times larger than what is rendered here.  Each pixel on the render translates to around about 1cm on your screen when
-                        playing in-game.  For all intents and purposes, the game provides limitless exploration.
-                    </p>
-                    <p>
-                        On this site you can generate a 1920x1080 wallpaper render using the current Tychaia world generator.  You can enter
-                        a seed below and our server will generate the cell renders, which are then formed into a complete image by the
-                        web browser.
-                    </p>
+                    <div id="welcomeText">
+                        <p>
+                            <a href="http://tychaia.com">Tychaia</a> is an infinite, procedurally generated RPG set in a medieval world.  It's
+                            set with an isometric view and a play style similar to Diablo, but with a twist; the game ends with your death.
+                            When you die, the entire world is regenerated from scratch and you get to play an entirely new game.
+                        </p>
+                        <p>
+                            A large portion of the development of Tychaia is focused on the procedural generation of a world in an almost
+                            infinite space.  To give an idea of the potential size of a world, the maximum size of a world is 1.8&times;10<sup>18</sup>
+                            times larger than what is rendered here.  Each pixel on the render translates to around about 1cm on your screen when
+                            playing in-game.  For all intents and purposes, the game provides limitless exploration.
+                        </p>
+                        <p>
+                            On this site you can generate a 1920x1080 wallpaper render using the current Tychaia world generator.  You can enter
+                            a seed below and our server will generate the cell renders, which are then formed into a complete image by the
+                            web browser.
+                        </p>
+                    </div>
                     <form id="newRender" class="form-inline" style="margin-bottom: 0px; margin-top: 13px;">
-                        <input type="text" id="seedSet" value="" style="width: 395px;" placeholder="Enter seed..." />
-                        <input type="button" class="btn" id="randomize" value="Randomize" />
-                        <input type="button" class="btn btn-primary" id="loadButton" value="Make me a world!" />
+                        <div class="input-append">
+                            <input type="text" id="seedSet" value="" style="width: 375px;" placeholder="Enter seed..." />
+                            <div class="btn-group">
+                                <input type="button" class="btn" id="randomize" value="Randomize" />
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary" id="loadButton">Make me a world!</button>
+                            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="showAdvanced">
+                                <span class="caret"></span>
+                            </button>
+                        </div>
                     </form>
+                    <div id="advancedOptions" style="display: none;" class="well">
+                        <form class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label" for="outputFormat">Output Layer</label>
+                                <div class="controls">
+                                    <select id="outputFormat">
+                                        <%=m_HtmlLayerOptions%>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <label class="checkbox">
+                                        <input type="checkbox" id="enableRenderDebugging" /> Enable render debugging
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

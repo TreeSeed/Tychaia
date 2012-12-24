@@ -8,28 +8,24 @@ using System.Runtime.Serialization;
 namespace Tychaia.ProceduralGeneration
 {
     /// <summary>
-    /// Informs the game that this is a layer it can take and use for the actual
-    /// generation of the in-game world.
+    /// Informs MMAW that this is a layer that can be selected from the interface.
     /// </summary>
     [DataContract]
     [FlowDesignerCategory(FlowCategory.General)]
-    [FlowDesignerName("Store Result")]
-    public class LayerStoreResult : Layer2D
+    [FlowDesignerName("Exportable to Make Me a World")]
+    public class LayerMMAWResult : Layer2D
     {
         [DataMember]
-        [DefaultValue(FinishType.Biome)]
-        [Description("The type of result that is used by the game.")]
-        public FinishType FinishType
+        [Description("The name used to identify this export and show in the MMAW interface.")]
+        public string Name
         {
             get;
             set;
         }
 
-        public LayerStoreResult(Layer parent)
+        public LayerMMAWResult(Layer parent)
             : base(parent)
         {
-            // Set defaults.
-            this.FinishType = FinishType.Biome;
         }
 
         protected override int[] GenerateDataImpl(long x, long y, long width, long height)
@@ -50,18 +46,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override string ToString()
         {
-            return "Store Result";
+            return "MMAW Export";
         }
-
-    }
-
-    public enum FinishType
-    {
-        Biome = 0,
-        Rainfall = 1,
-        Temperature = 2,
-        Terrain = 3,
-        FamilyTree = 4,
-        Towns = 5
     }
 }

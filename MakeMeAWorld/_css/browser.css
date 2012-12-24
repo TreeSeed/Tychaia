@@ -42,22 +42,25 @@ h1 {
     margin-bottom: 1em;
 }
 #welcomeMessage {
-	font-family: Calibri, Tahoma, Verdana, sans-serif;
 	background-color: rgba(32, 32, 32, 1);
 	border-color: black;
 	border-width: 0px;
 	border-radius: 16px;
-	color: white;
 	position: absolute;
 	z-index: 80;
 	padding: 48px;
 	margin: -8px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+#welcomeText {
+    color: white;
+    font-family: Calibri, Tahoma, Verdana, sans-serif;
 }
 #welcomeMessage p:first-child {
     margin-top: 0px;
     padding-top: 0px;
 }
-#welcomeMessage a {
+#welcomeMessage p a {
 	color: #BFBFFF;
 }
 #loadButton {

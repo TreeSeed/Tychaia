@@ -25,14 +25,17 @@ namespace MakeMeAWorld
             long z = Convert.ToInt64(context.Request.QueryString["z"]);
             int size = Convert.ToInt32(context.Request.QueryString["size"]);
             long seed = Convert.ToInt64(context.Request.QueryString["seed"]);
-            //if (size <= 0 || size > 1000)
+            string layer = context.Request.QueryString["layer"];
             size = 64;
+            if (string.IsNullOrEmpty(layer))
+                layer = "Game World";
+            layer = layer.Replace("_", "");
 
             string cache = null;
             try
             {
-                string folder = context.Server.MapPath("~/App_Data/cached_" + seed);
-                cache = context.Server.MapPath("~/App_Data/cached_" + seed + "/" + x + "_" + y + "_" + z + "_" + size + ".png");
+                string folder = context.Server.MapPath("~/App_Data/cached_" + layer + "_" + seed);
+                cache = context.Server.MapPath("~/App_Data/cached_" + layer + "_" + seed + "/" + x + "_" + y + "_" + z + "_" + size + ".png");
                 if (!Directory.Exists(folder))
                     Directory.CreateDirectory(folder);
                 if (File.Exists(cache))
@@ -46,7 +49,9 @@ namespace MakeMeAWorld
             {
             }
 
-            Layer l = CreateLayerFromConfig(context.Server.MapPath("~/bin/WorldConfig.xml"));
+            Layer l = CreateLayerFromConfig(context.Server.MapPath("~/bin/WorldConfig.xml"), layer);
+            if (l == null)
+                throw new HttpException(404, "The layer name was invalid");
             l.Seed = seed;
             Bitmap b = RegenerateImageForLayer(l, x, y, z, size, size, size);
             context.Response.ContentType = "image/png";
@@ -66,7 +71,7 @@ namespace MakeMeAWorld
 
         #region Data Loading
 
-        private static Layer CreateLayerFromConfig(string path)
+        private static Layer CreateLayerFromConfig(string path, string name)
         {
             // Dynamically generate a list of serializable types for the
             // data contract.
@@ -93,11 +98,59 @@ namespace MakeMeAWorld
             // Find the result layer.
             foreach (FlowElement fe in config)
             {
-                if (fe is LayerFlowElement)
-                    if ((fe as LayerFlowElement).Layer is Layer3DStoreResult)
-                        return (fe as LayerFlowElement).Layer;
+                if (!(fe is LayerFlowElement))
+                    continue;
+                var lfe = fe as LayerFlowElement;
+                if (lfe.Layer is Layer3DMMAWResult && (lfe.Layer as Layer3DMMAWResult).Name == name)
+                    return lfe.Layer;
+                if (lfe.Layer is LayerMMAWResult && (lfe.Layer as LayerMMAWResult).Name == name)
+                    return lfe.Layer;
             }
             return null;
+        }
+
+        public static List<string> GetListOfAvailableLayers(HttpContext context)
+        {
+            return GetListOfAvailableLayers(context.Server.MapPath("~/bin/WorldConfig.xml"));
+        }
+
+        private static List<string> GetListOfAvailableLayers(string path)
+        {
+            // Dynamically generate a list of serializable types for the
+            // data contract.
+            List<Type> types = new List<Type> {
+                // Flow system classes
+                typeof(FlowConnector),
+                typeof(FlowElement),
+                typeof(LayerFlowConnector),
+                typeof(LayerFlowElement),
+            };
+            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
+                foreach (Type t in a.GetTypes())
+                    if (typeof(Layer).IsAssignableFrom(t))
+                        types.Add(t);
+            Type[] serializableTypes = types.ToArray();
+            
+            // Load configuration.
+            DataContractSerializer x = new DataContractSerializer(typeof(FlowInterfaceControl.ListFlowElement), serializableTypes);
+            FlowInterfaceControl.ListFlowElement config = null;
+            using (FileStream fstream = new FileStream(path, FileMode.Open, FileAccess.Read))
+            using (XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fstream, new XmlDictionaryReaderQuotas() { MaxDepth = 1000 }))
+                config = x.ReadObject(reader, true) as FlowInterfaceControl.ListFlowElement;
+            
+            // Find the result layer.
+            var result = new List<string>();
+            foreach (FlowElement fe in config)
+            {
+                if (!(fe is LayerFlowElement))
+                    continue;
+                var lfe = fe as LayerFlowElement;
+                if (lfe.Layer is Layer3DMMAWResult)
+                    result.Add("3D-" + (lfe.Layer as Layer3DMMAWResult).Name);
+                if (lfe.Layer is LayerMMAWResult)
+                    result.Add("2D-" + (lfe.Layer as LayerMMAWResult).Name);
+            }
+            return result;
         }
 
         #endregion
@@ -109,7 +162,7 @@ namespace MakeMeAWorld
         public static Bitmap RegenerateImageForLayer(Layer l, long x, long y, long z, int width, int height, int depth)
         {
             if (l is Layer2D)
-                return RenderPartial2D(l as Layer2D, x, y, width, height);
+                return RenderPartial3D(l as Layer2D, x, y, z, width, height, 1);
             else if (l is Layer3D)
                 return RenderPartial3D(l as Layer3D, x, y, z, width, height, depth);
             else
@@ -136,12 +189,12 @@ namespace MakeMeAWorld
                                 brushes[data[x + y * (width)]].G,
                                 brushes[data[x + y * (width)]].B)),
                             new Rectangle(x, y, 1, 1)
-                            );
+                        );
                     else
                         g.FillRectangle(
                             m_UnknownAssociation2D,
                             new Rectangle(x, y, 1, 1)
-                            );
+                        );
                 }
             return b;
         }
@@ -152,7 +205,13 @@ namespace MakeMeAWorld
 
         #region Cell Render Ordering
 
-        private static int[][] CellRenderOrder = new int[4][] { null, null, null, null };
+        private static int[][] CellRenderOrder = new int[4][]
+            {
+                null,
+                null,
+                null,
+                null
+            };
         private const int RenderToNE = 0;
         private const int RenderToNW = 1;
         private const int RenderToSE = 2;
@@ -208,17 +267,29 @@ namespace MakeMeAWorld
             {
                 // Attack from the left.
                 if (atk < maxy)
-                { x = 0; y = atk; }
+                {
+                    x = 0;
+                    y = atk;
+                }
                 else
-                { x = atk - maxy; y = maxy; }
+                {
+                    x = atk - maxy;
+                    y = maxy;
+                }
                 while (y > atk / 2)
                     result[count++] = y-- * width + x++;
 
                 // Attack from the right.
                 if (atk < maxx)
-                { x = atk; y = 0; }
+                {
+                    x = atk;
+                    y = 0;
+                }
                 else
-                { x = maxx; y = atk - maxx; }
+                {
+                    x = maxx;
+                    y = atk - maxx;
+                }
                 while (y <= atk / 2)
                     result[count++] = y++ * width + x--;
             }
@@ -242,7 +313,7 @@ namespace MakeMeAWorld
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
             Dictionary<int, LayerColor> brushes = l.GetLayerColors();
             int[] data = l.GenerateData(sx, sy, sz, width, height, depth);
-            if (data.All(v => v == data[0]))
+            if (l is Layer3D && data.All(v => v == data[0]))
                 return new Bitmap(1, 1);
 
             int[] render = GetCellRenderOrder(RenderToNE, width, height, depth);
@@ -281,7 +352,7 @@ namespace MakeMeAWorld
                                     Math.Min((byte)255, (byte)(accum.R + sb.Color.R * (sb.Color.A / 255.0) / brushes.Count)),
                                     Math.Min((byte)255, (byte)(accum.G + sb.Color.G * (sb.Color.A / 255.0) / brushes.Count)),
                                     Math.Min((byte)255, (byte)(accum.B + sb.Color.B * (sb.Color.A / 255.0) / brushes.Count))
-                                    );
+                                );
                             }
                         }
                         if (accum.R == 255 && accum.G == 255 && accum.B == 255)
@@ -289,19 +360,39 @@ namespace MakeMeAWorld
                         g.FillRectangle(
                             new SolidBrush(accum),
                             new Rectangle(rx, ry, rw, rh)
-                            );
+                        );
                     }
                     else
                     {
                         if (brushes != null && brushes.ContainsKey(data[x + y * width + z * width * height]))
                         {
                             LayerColor lc = brushes[data[x + y * width + z * width * height]];
+                            // Get neighbours if possible.
+                            try
+                            {
+                                LayerColor n1 = brushes[data[(x + 1) + y * width + z * width * height]];
+                                LayerColor n2 = brushes[data[x + (y + 1) * width + z * width * height]];
+                                LayerColor n3 = brushes[data[x + y * width + (z + 1) * width * height]];
+                                LayerColor n4 = brushes[data[(x + 1) + (y + 1) * width + (z + 1) * width * height]];
+                                if (lc.A != 0 && (n1.A != 255 || n2.A != 255 || n3.A != 255 || n4.A != 255 ||
+                                    (x + 1) >= width || (y + 1) >= height || (z + 1) >= depth))
+                                {
+                                    b.SetPixel(rx, ry, Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
+                                    b.SetPixel(rx + 1, ry, Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                b.SetPixel(rx, ry, Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
+                                b.SetPixel(rx + 1, ry, Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
+                            }
+                            /*
                             SolidBrush sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
                             //sb.Color = Color.FromArgb(255, sb.Color);
                             g.FillRectangle(
                                 sb,
                                 new Rectangle(rx, ry, rw, rh)
-                                );
+                            );*/
                         }
                     }
                 }

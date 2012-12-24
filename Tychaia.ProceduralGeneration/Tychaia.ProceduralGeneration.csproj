@@ -139,6 +139,8 @@
     <Compile Include="LayerHeightChange.cs" />
     <Compile Include="FlowDesignerNameAttribute.cs" />
     <Compile Include="FlowDesignerCategoryAttribute.cs" />
+    <Compile Include="Layer3DMMAWResult.cs" />
+    <Compile Include="LayerMMAWResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BenTools\FortuneVoronoi.csproj">
