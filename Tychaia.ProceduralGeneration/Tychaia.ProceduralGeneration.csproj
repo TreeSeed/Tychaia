@@ -135,6 +135,7 @@
     <Compile Include="Towns\MediumTown.cs" />
     <Compile Include="Towns\SmallTown.cs" />
     <Compile Include="Towns\Town.cs" />
+    <Compile Include="LayerHeightChange.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BenTools\FortuneVoronoi.csproj">
