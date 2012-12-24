@@ -148,14 +148,30 @@ namespace Tychaia.ProceduralGeneration
                 m_BaseSample = new int[5, 5];
             if (m_BaseOutput == null)
                 m_BaseOutput = new int[5, 5];
-         
-            for (int i = -2; i <= 2; i++)
-                for (int j = -2; j <= 2; j++)
-                    m_BaseSample[i + 2, j + 2] = parent[(x + i) + (y + j) * rw];
+
+            // FIXME: Okay, I don't know what is happening here.  Without the try-catch
+            // the IndexOutOfRangeException will fire when doing the loop.  However, if
+            // we try and expose i / j to the catch, the exception won't occur and if
+            // we try and put the try-catch on the inside of the loop, it won't trigger
+            // either.  It only triggers if the try-catch can't see i and j.  My best
+            // guess is this is caused by some sort of buggy optimization.
+            int i = -100000, j = -100000;
+            try
+            {
+                for (i = -2; i <= 2; i++)
+                    for (j = -2; j <= 2; j++)
+                        m_BaseSample[i + 2, j + 2] = parent[(x + i) + (y + j) * rw];
+            }
+            catch (IndexOutOfRangeException)
+            {
+                throw new Exception("Smooth failure in setting base sample.  Requested sample index was " + (i + 2) + ", " + (j + 2) +
+                    " and requested parent index was " + (x + i) + ", " + (y + j) + ".  Parent index was " + (x + i) + (y + j) * rw +
+                    " with a total of " + parent.Length + " entries.");
+            }
             foreach (int v in applier)
                 total += v;
-            for (int i = 0; i < 5; i++)
-                for (int j = 0; j < 5; j++)
+            for (i = 0; i < 5; i++)
+                for (j = 0; j < 5; j++)
                     m_BaseOutput[i, j] = m_BaseSample[i, j] * applier[i, j];
             foreach (int v in m_BaseOutput)
                 result += v;
