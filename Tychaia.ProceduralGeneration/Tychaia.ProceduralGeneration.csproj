@@ -136,6 +136,7 @@
     <Compile Include="Towns\SmallTown.cs" />
     <Compile Include="Towns\Town.cs" />
     <Compile Include="LayerGenerateTrees.cs" />
+    <Compile Include="LayerHeightChange.cs" />
     <Compile Include="FlowDesignerNameAttribute.cs" />
     <Compile Include="FlowDesignerCategoryAttribute.cs" />
   </ItemGroup>

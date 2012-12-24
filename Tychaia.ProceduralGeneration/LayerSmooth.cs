@@ -51,12 +51,10 @@ namespace Tychaia.ProceduralGeneration
             // beyond the edge of the center.
             int[] parent = null;
             if (iter == this.Iterations)
-            {
-                if (this.Parents.Length < 1 || this.Parents[0] == null)
-                    parent = new int[rw * rh];
-                else
-                    parent = this.Parents[0].GenerateData(x - ox, y - oy, rw, rh);
-            }
+            if (this.Parents.Length < 1 || this.Parents[0] == null)
+                parent = new int[rw * rh];
+            else
+                parent = this.Parents[0].GenerateData(x - ox, y - oy, rw, rh);
             else
                 parent = this.GenerateDataIterate(iter + 1, x - ox, y - oy, rw, rh);
             int[] data = new int[width * height];
