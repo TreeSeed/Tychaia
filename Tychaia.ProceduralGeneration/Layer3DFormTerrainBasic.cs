@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Converts 2D information into a 3D landscape filled with stone and water.
     /// </summary>
     [DataContract()]
+    [FlowDesignerCategory(FlowCategory.Land)]
+    [FlowDesignerName("Form Terrain Basic")]
     public class Layer3DFormTerrainBasic : Layer3D
     {
         public Layer3DFormTerrainBasic(Layer parent)

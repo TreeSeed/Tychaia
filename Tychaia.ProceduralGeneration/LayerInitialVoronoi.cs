@@ -13,6 +13,8 @@ namespace Tychaia.ProceduralGeneration
     /// Generates a layer from Voronoi tessellation.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerName("Initial Voronoi")]
     public class LayerInitialVoronoi : Layer2D
     {
         [DataMember]
@@ -105,10 +107,10 @@ namespace Tychaia.ProceduralGeneration
                         points.Add(new Vector(new double[] { i, j }));
                         if (i >= 0 && i < width &&
                             j >= 0 && j < height)
-                            if (this.Result == VoronoiResult.AllValues ||
-                                this.Result == VoronoiResult.EdgesAndOriginals ||
-                                this.Result == VoronoiResult.OriginalOnly)
-                                data[i + j * width] = originalOutput;
+                        if (this.Result == VoronoiResult.AllValues ||
+                            this.Result == VoronoiResult.EdgesAndOriginals ||
+                            this.Result == VoronoiResult.OriginalOnly)
+                            data[i + j * width] = originalOutput;
                     }
                 }
 

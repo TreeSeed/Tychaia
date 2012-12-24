@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// A simple passthrough layer that returns it's parent's data.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerName("Copy Result")]
     public class LayerCopyResult : Layer2D
     {
         public LayerCopyResult(Layer parent)

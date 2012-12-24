@@ -12,6 +12,8 @@ namespace Tychaia.ProceduralGeneration
     /// input land area (0 and 1 value).
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Land)]
+    [FlowDesignerName("Derive Terrain")]
     public class LayerDeriveTerrain : Layer2D
     {
         [DataMember]
@@ -98,23 +100,23 @@ namespace Tychaia.ProceduralGeneration
 
         private bool IsCellSurrounded(int[] parent, long x, long y, long width, long height, int lookFor)
         {
-            int top =           this.GetCellValue(parent, x    , y - 1, width, height);
-            int left =          this.GetCellValue(parent, x - 1, y    , width, height);
-            int right =         this.GetCellValue(parent, x + 1, y    , width, height);
-            int bottom =        this.GetCellValue(parent, x    , y + 1, width, height);
+            int top = this.GetCellValue(parent, x, y - 1, width, height);
+            int left = this.GetCellValue(parent, x - 1, y, width, height);
+            int right = this.GetCellValue(parent, x + 1, y, width, height);
+            int bottom = this.GetCellValue(parent, x, y + 1, width, height);
 
             if (!this.CheckDiagonals)
                 return (top == lookFor || left == lookFor ||
-                        right == lookFor || bottom == lookFor);
+                    right == lookFor || bottom == lookFor);
 
-            int topLeft =       this.GetCellValue(parent, x - 1, y - 1, width, height);
-            int topRight =      this.GetCellValue(parent, x + 1, y - 1, width, height);
-            int bottomLeft =    this.GetCellValue(parent, x - 1, y + 1, width, height);
-            int bottomRight =   this.GetCellValue(parent, x + 1, y + 1, width, height);
+            int topLeft = this.GetCellValue(parent, x - 1, y - 1, width, height);
+            int topRight = this.GetCellValue(parent, x + 1, y - 1, width, height);
+            int bottomLeft = this.GetCellValue(parent, x - 1, y + 1, width, height);
+            int bottomRight = this.GetCellValue(parent, x + 1, y + 1, width, height);
 
             return (topLeft == lookFor || top == lookFor || topRight == lookFor ||
-                    left == lookFor || right == lookFor ||
-                    bottomLeft == lookFor || bottom == lookFor || bottomRight == lookFor);
+                left == lookFor || right == lookFor ||
+                bottomLeft == lookFor || bottom == lookFor || bottomRight == lookFor);
         }
 
         private int GetCellValue(int[] parent, long x, long y, long width, long height)

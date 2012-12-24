@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Generates city biomes based on input data.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Towns)]
+    [FlowDesignerName("Add City Biomes")]
     public class Layer3DAddCityBiomes : Layer3D
     {
         [DataMember]
@@ -186,7 +188,15 @@ namespace Tychaia.ProceduralGeneration
 
         public override string[] GetParentsRequired()
         {
-            return new string[] { "City Biomes", "Biome", "Soil Fertility", "Animal Density", "Ore Density", "Rare Ore Density"};
+            return new string[]
+            {
+                "City Biomes",
+                "Biome",
+                "Soil Fertility",
+                "Animal Density",
+                "Ore Density",
+                "Rare Ore Density"
+            };
         }
 
         public override string ToString()

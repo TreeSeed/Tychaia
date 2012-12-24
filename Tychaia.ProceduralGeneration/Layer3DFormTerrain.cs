@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Converts 2D information into a 3D landscape.
     /// </summary>
     [DataContract()]
+    [FlowDesignerCategory(FlowCategory.Land)]
+    [FlowDesignerName("Form Terrain Advanced")]
     public class Layer3DFormTerrain : Layer3D
     {
         public Layer3DFormTerrain(Layer parent, Layer biomes)

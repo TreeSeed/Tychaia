@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Provides a smothing value for each cell.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Land)]
+    [FlowDesignerName("Edge Detection")]
     public class Layer3DEdgeDetection : Layer3D
     {
         public Layer3DEdgeDetection(Layer terrain)
@@ -105,9 +107,13 @@ namespace Tychaia.ProceduralGeneration
         public int addcheck(int[] parent, long i, long j, long k, long rh, long rw, long zo, long xo, long yo, int score)
         {
             if (parent[(i - xo) + (j - yo) * rh + (k - zo) * rh * rw] != -1)
-            { return score; }
+            {
+                return score;
+            }
             else
-            { return 0; }
+            {
+                return 0;
+            }
         }
 
         public override bool IsLayerColorsFlags()

@@ -12,6 +12,8 @@ namespace Tychaia.ProceduralGeneration
     /// indicates either landmass or ocean.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Land)]
+    [FlowDesignerName("Initial Land")]
     public class LayerInitialLand : Layer2D
     {
         [DataMember]
@@ -64,8 +66,8 @@ namespace Tychaia.ProceduralGeneration
 
             // Guarantee the player a starting point at 0, 0.
             if (this.GuaranteeStartingPoint)
-                if (0 >= x && 0 >= y && 0 < x + width && 0 < y + height)
-                    data[(0 - x) + (0 - y) * width] = 1;
+            if (0 >= x && 0 >= y && 0 < x + width && 0 < y + height)
+                data[(0 - x) + (0 - y) * width] = 1;
 
             return data;
         }

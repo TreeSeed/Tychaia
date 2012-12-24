@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Performs mathematical operations on noise maps.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerName("Perform Math")]
     public class Layer3DPerformMath : Layer3D
     {
         [DataMember]
@@ -103,8 +105,8 @@ namespace Tychaia.ProceduralGeneration
             int[] first = null;
             int[] second = null;
             if (!(this.MathOp == ProceduralGeneration.MathOp.SetNumber))
-                if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
-                    return new int[width * height * depth];
+            if (this.Parents.Length < 2 || this.Parents[0] == null || this.Parents[1] == null)
+                return new int[width * height * depth];
 
             if (!(this.MathOp == ProceduralGeneration.MathOp.SetNumber))
             {

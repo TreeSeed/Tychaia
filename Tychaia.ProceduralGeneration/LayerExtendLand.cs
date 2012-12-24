@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Adds land to the existing land in the generator
     /// </summary>
     [DataContract()]
+    [FlowDesignerCategory(FlowCategory.Land)]
+    [FlowDesignerName("Extend Land")]
     public class LayerExtendLand : Layer2D
     {
         public LayerExtendLand(Layer parent)

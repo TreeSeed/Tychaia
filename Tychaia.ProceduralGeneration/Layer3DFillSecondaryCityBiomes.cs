@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Generates city biomes based on input data.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Towns)]
+    [FlowDesignerName("Fill Secondary City Biomes")]
     public class Layer3DFillSecondaryCityBiomes : Layer3D
     {
         public Layer3DFillSecondaryCityBiomes(Layer citybiomes)

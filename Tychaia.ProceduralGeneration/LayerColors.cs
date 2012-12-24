@@ -52,6 +52,12 @@ namespace Tychaia.ProceduralGeneration
             { 1  /* stone   */, new LayerColor(2, 127, 127, 127) }
         };
 
+        public static Dictionary<int, LayerColor> TreeBrushes = new Dictionary<int, LayerColor>
+        {
+            { 0  /* no tree */, new LayerColor(0, 0, 0) },
+            { 1  /* tree    */, new LayerColor(255, 0, 0) }
+        };
+
         public static Dictionary<int, LayerColor> GetTerrainBrushes(int maxTerrain)
         {
             return LayerColors.GetGradientBrushesWater(-maxTerrain, maxTerrain);

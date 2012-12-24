@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Inverts the values in the layer.
     /// </summary>
     [DataContract()]
+    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerName("Invert")]
     public class LayerInvert : Layer2D
     {
         [DataMember]

@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Selects the building locations based on input data.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Towns)]
+    [FlowDesignerName("Place Buildings")]
     public class Layer3DBuildingPlacer : Layer3D
     {
         public static Random r = new Random();
@@ -62,7 +64,7 @@ namespace Tychaia.ProceduralGeneration
             // Populate with air
             for (int i = 0; i < width; i++)
                 for (int j = 0; j < height; j++)
-                        data[i + j * width] = -1;
+                    data[i + j * width] = -1;
 
             // Write out the buildings list.
             for (long i = 0; i < rw; i++)

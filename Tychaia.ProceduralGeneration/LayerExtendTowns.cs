@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Adds town size to the existing towns in the generator
     /// </summary>
     [DataContract()]
+    [FlowDesignerCategory(FlowCategory.Towns)]
+    [FlowDesignerName("Extend Towns")]
     public class LayerExtendTowns : Layer2D
     {
         [DataMember]
@@ -45,7 +47,7 @@ namespace Tychaia.ProceduralGeneration
                     parent = this.Parents[0].GenerateData(x - ox, y - oy, rw, height + oy * 2);
             }
             else
-                parent = this.GenerateDataIterate(iter + 1, x - ox, y -oy, rw, rw);
+                parent = this.GenerateDataIterate(iter + 1, x - ox, y - oy, rw, rw);
 
             for (int k = 0; k < width; k++)
                 for (int l = 0; l < height; l++)
@@ -53,56 +55,56 @@ namespace Tychaia.ProceduralGeneration
                     data[k + l * width] = parent[(k + ox) + (l + oy) * rw]; 
                 }
 
-                for (int i = 0; i < rw; i++)
-                    for (int j = 0; j < rw; j++)
+            for (int i = 0; i < rw; i++)
+                for (int j = 0; j < rw; j++)
+                {
+                    if (parent[(i) + (j) * rw] != 0)
                     {
-                        if (parent[(i) + (j) * rw] != 0)
-                        {
-                            townsize = TownEngine.Towns[parent[(i) + (j) * rw]].TownSize;
+                        townsize = TownEngine.Towns[parent[(i) + (j) * rw]].TownSize;
 
-                            double selectedchance = this.GetRandomLong(x + i, y + j, 0, iter) % 100;
-                            int selected = this.GetRandomRange(x + i, y + j, 0, 4, iter);
-                            double chance = selectedchance / 100;
-                            if (chance >= townsize)
+                        double selectedchance = this.GetRandomLong(x + i, y + j, 0, iter) % 100;
+                        int selected = this.GetRandomRange(x + i, y + j, 0, 4, iter);
+                        double chance = selectedchance / 100;
+                        if (chance >= townsize)
+                        {
+                            switch (selected)
                             {
-                                switch (selected)
-                                {
-                                    case 0:
-                                        if ((i + 1) > ox && j > oy && j < (oy + width) && (i + 3) < (ox + width))
-                                        {
-                                            data[i - ox + 1 + (j - oy) * width] = parent[(i) + (j) * rw];
-                                            data[i - ox + 2 + (j - oy) * width] = parent[(i) + (j) * rw];
-                                            data[i - ox + 3 + (j - oy) * width] = parent[(i) + (j) * rw];
-                                        }
-                                        break;
-                                    case 1:
-                                        if ((i - 3) > ox && j > oy && j < (oy + width) && (i - 1) < (ox + width))
-                                        {
-                                            data[i - 1 - ox + (j - oy) * width] = parent[(i) + (j) * rw];
-                                            data[i - 2 - ox + (j - oy) * width] = parent[(i) + (j) * rw];
-                                            data[i - 3 - ox + (j - oy) * width] = parent[(i) + (j) * rw];
-                                        }
-                                        break;
-                                    case 2:
-                                        if (i > ox && (j + 1) > oy && (j + 3) < (oy + width) && i < (ox + width))
-                                        {
-                                            data[i - ox + (j + 1 - oy) * width] = parent[(i) + (j) * rw];
-                                            data[i - ox + (j + 2 - oy) * width] = parent[(i) + (j) * rw];
-                                            data[i - ox + (j + 3 - oy) * width] = parent[(i) + (j) * rw];
-                                        }
-                                        break;
-                                    case 3:
-                                        if (i > ox && (j - 3) > oy && (j - 1) < (oy + width) && i < (ox + width))
-                                        {
-                                            data[i - ox + (j - 1 - oy) * width] = parent[(i) + (j) * rw];
-                                            data[i - ox + (j - 2 - oy) * width] = parent[(i) + (j) * rw];
-                                            data[i - ox + (j - 3 - oy) * width] = parent[(i) + (j) * rw];
-                                        }
-                                        break;
-                                }
+                                case 0:
+                                    if ((i + 1) > ox && j > oy && j < (oy + width) && (i + 3) < (ox + width))
+                                    {
+                                        data[i - ox + 1 + (j - oy) * width] = parent[(i) + (j) * rw];
+                                        data[i - ox + 2 + (j - oy) * width] = parent[(i) + (j) * rw];
+                                        data[i - ox + 3 + (j - oy) * width] = parent[(i) + (j) * rw];
+                                    }
+                                    break;
+                                case 1:
+                                    if ((i - 3) > ox && j > oy && j < (oy + width) && (i - 1) < (ox + width))
+                                    {
+                                        data[i - 1 - ox + (j - oy) * width] = parent[(i) + (j) * rw];
+                                        data[i - 2 - ox + (j - oy) * width] = parent[(i) + (j) * rw];
+                                        data[i - 3 - ox + (j - oy) * width] = parent[(i) + (j) * rw];
+                                    }
+                                    break;
+                                case 2:
+                                    if (i > ox && (j + 1) > oy && (j + 3) < (oy + width) && i < (ox + width))
+                                    {
+                                        data[i - ox + (j + 1 - oy) * width] = parent[(i) + (j) * rw];
+                                        data[i - ox + (j + 2 - oy) * width] = parent[(i) + (j) * rw];
+                                        data[i - ox + (j + 3 - oy) * width] = parent[(i) + (j) * rw];
+                                    }
+                                    break;
+                                case 3:
+                                    if (i > ox && (j - 3) > oy && (j - 1) < (oy + width) && i < (ox + width))
+                                    {
+                                        data[i - ox + (j - 1 - oy) * width] = parent[(i) + (j) * rw];
+                                        data[i - ox + (j - 2 - oy) * width] = parent[(i) + (j) * rw];
+                                        data[i - ox + (j - 3 - oy) * width] = parent[(i) + (j) * rw];
+                                    }
+                                    break;
                             }
                         }
                     }
+                }
             return data;
         }
 

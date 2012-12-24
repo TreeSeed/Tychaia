@@ -12,6 +12,8 @@ namespace Tychaia.ProceduralGeneration
     /// values for the data that needs to be filled in (since resolution is being doubled).
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Land)]
+    [FlowDesignerName("Zoom Water Distance")]
     public class LayerZoomWaterDistance : Layer2D
     {
         [DataMember]
@@ -86,7 +88,7 @@ namespace Tychaia.ProceduralGeneration
                     if (parent[i + j * rw] == 0)
                         parent[i + j * rw] = -1;
 
-            for(int i = 0; i < width; i++) // i = x in zoomed context
+            for (int i = 0; i < width; i++) // i = x in zoomed context
                 for (int j = 0; j < height; j++) // j = y in zoomed context
                 {
                     /*
@@ -109,7 +111,7 @@ namespace Tychaia.ProceduralGeneration
 
                     if (this.Mode == Tychaia.ProceduralGeneration.LayerZoom.ZoomType.Smooth ||
                         this.Mode == Tychaia.ProceduralGeneration.LayerZoom.ZoomType.Fuzzy)
-                        data[i + j * width] = this.Smooth(x + i,y + j, north, south, west, east, current, i, j, ox, oy, rw, parent);
+                        data[i + j * width] = this.Smooth(x + i, y + j, north, south, west, east, current, i, j, ox, oy, rw, parent);
                     else                    
                         data[i + j * width] = current;
                 }
@@ -231,7 +233,7 @@ namespace Tychaia.ProceduralGeneration
                             case 2:
                                 return eastValue;
                             case 3:
-                                return this.FindZoomedPoint(parent, i + 2, j + 2, ox, oy, x - i, y- j, rw);
+                                return this.FindZoomedPoint(parent, i + 2, j + 2, ox, oy, x - i, y - j, rw);
                         }
                     }
                 }

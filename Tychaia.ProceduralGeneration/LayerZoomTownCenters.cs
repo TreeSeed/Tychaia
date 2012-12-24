@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Implements towns by expanding them in size.
     /// </summary>
     [DataContract()]
+    [FlowDesignerCategory(FlowCategory.Towns)]
+    [FlowDesignerName("Zoom Town Centers")]
     public class LayerZoomTownCenters : Layer2D
     {
         [DataMember]

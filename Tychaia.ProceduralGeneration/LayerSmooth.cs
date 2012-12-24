@@ -11,12 +11,15 @@ namespace Tychaia.ProceduralGeneration
     /// Smooths the input layer.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerName("Smooth")]
     public class LayerSmooth : Layer2D
     {
         [DataMember]
         [DefaultValue(SmoothType.Linear)]
         [Description("The smoothing algorithm to use.")]
-        public SmoothType Mode {
+        public SmoothType Mode
+        {
             get;
             set;
         }
@@ -24,7 +27,8 @@ namespace Tychaia.ProceduralGeneration
         [DataMember]
         [DefaultValue(1)]
         [Description("The number of smooth iterations to perform.")]
-        public int Iterations {
+        public int Iterations
+        {
             get;
             set;
         }
@@ -47,10 +51,12 @@ namespace Tychaia.ProceduralGeneration
             // beyond the edge of the center.
             int[] parent = null;
             if (iter == this.Iterations)
-            if (this.Parents.Length < 1 || this.Parents[0] == null)
-                parent = new int[rw * rh];
-            else
-                parent = this.Parents[0].GenerateData(x - ox, y - oy, rw, rh);
+            {
+                if (this.Parents.Length < 1 || this.Parents[0] == null)
+                    parent = new int[rw * rh];
+                else
+                    parent = this.Parents[0].GenerateData(x - ox, y - oy, rw, rh);
+            }
             else
                 parent = this.GenerateDataIterate(iter + 1, x - ox, y - oy, rw, rh);
             int[] data = new int[width * height];
@@ -147,30 +153,12 @@ namespace Tychaia.ProceduralGeneration
          
             for (int i = -2; i <= 2; i++)
                 for (int j = -2; j <= 2; j++)
-                {
-                    try
-                    {
-                        m_BaseSample[i + 2, j + 2] = parent[(x + i) + (y + j) * rw];
-                    }
-                    catch (IndexOutOfRangeException e)
-                    {
-                        throw new Exception("problem assigning base sample when " + (i + 2).ToString() +
-                                     ", " + (j + 2).ToString() + " accessed.  length of base array is " + m_BaseSample.Length, e);
-                    }
-                }
+                    m_BaseSample[i + 2, j + 2] = parent[(x + i) + (y + j) * rw];
             foreach (int v in applier)
                 total += v;
             for (int i = 0; i < 5; i++)
                 for (int j = 0; j < 5; j++)
-                    try
-                    {
-                        m_BaseOutput[i, j] = m_BaseSample[i, j] * applier[i, j];
-                    }
-                    catch (IndexOutOfRangeException e)
-                    {
-                        throw new Exception("problem calculating result when " + (i).ToString() +
-                                     ", " + (j).ToString() + " accessed.  length of applier is " + applier.Length, e);
-                    }
+                    m_BaseOutput[i, j] = m_BaseSample[i, j] * applier[i, j];
             foreach (int v in m_BaseOutput)
                 result += v;
 

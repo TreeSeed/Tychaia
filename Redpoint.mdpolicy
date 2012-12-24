@@ -220,13 +220,4 @@ license on the website apply retroactively.
       </NamingRule>
     </Rules>
   </NameConventionPolicy>
-  <VersionControlPolicy inheritsSet="Mono">
-    <CommitMessageStyle>
-      <IncludeDirectoryPaths>True</IncludeDirectoryPaths>
-    </CommitMessageStyle>
-  </VersionControlPolicy>
-  <ChangeLogPolicy inheritsSet="Mono">
-    <UpdateMode>ProjectRoot</UpdateMode>
-    <VcsIntegration>RequireEntry</VcsIntegration>
-  </ChangeLogPolicy>
 </PolicySet>

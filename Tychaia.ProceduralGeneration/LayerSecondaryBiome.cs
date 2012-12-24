@@ -11,6 +11,8 @@ namespace Tychaia.ProceduralGeneration
     /// Generates secondary biomes based on input data.
     /// </summary>
     [DataContract]
+    [FlowDesignerCategory(FlowCategory.Biome)]
+    [FlowDesignerName("Form Secondary Biomes")]
     public class LayerSecondaryBiome : Layer2D
     {
         [DataMember]
@@ -121,7 +123,13 @@ namespace Tychaia.ProceduralGeneration
 
         public override string[] GetParentsRequired()
         {
-            return new string[] { "Biome", "Rainfall", "Temperature", "Terrain" };
+            return new string[]
+            {
+                "Biome",
+                "Rainfall",
+                "Temperature",
+                "Terrain"
+            };
         }
 
         public override string ToString()
