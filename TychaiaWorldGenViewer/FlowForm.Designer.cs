@@ -129,6 +129,7 @@
             this.c_XNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_ZLabel = new System.Windows.Forms.Label();
+            this.c_FlowInterfaceControl = new TychaiaWorldGenViewer.Flow.FlowInterfaceControl();
             this.fillSecondaryCityBiomesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_StatusStrip.SuspendLayout();
             this.c_ContextMenuStrip.SuspendLayout();
@@ -980,6 +981,19 @@
             this.c_ZLabel.TabIndex = 4;
             this.c_ZLabel.Text = "Z:";
             // 
+            // c_FlowInterfaceControl
+            // 
+            this.c_FlowInterfaceControl.ContextMenuStrip = this.c_ContextMenuStrip;
+            this.c_FlowInterfaceControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.c_FlowInterfaceControl.Location = new System.Drawing.Point(0, 25);
+            this.c_FlowInterfaceControl.Name = "c_FlowInterfaceControl";
+            this.c_FlowInterfaceControl.SelectedElement = null;
+            this.c_FlowInterfaceControl.Size = new System.Drawing.Size(890, 472);
+            this.c_FlowInterfaceControl.TabIndex = 0;
+            this.c_FlowInterfaceControl.Zoom = 1F;
+            this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
+            this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
+            // 
             // fillSecondaryCityBiomesToolStripMenuItem
             // 
             this.fillSecondaryCityBiomesToolStripMenuItem.Name = "fillSecondaryCityBiomesToolStripMenuItem";
@@ -994,6 +1008,7 @@
             this.ClientSize = new System.Drawing.Size(1187, 612);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.c_StatusStrip);
+            this.Controls.Add(this.c_FlowInterfaceControl);
             this.Controls.Add(this.c_ToolStrip);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FlowForm";

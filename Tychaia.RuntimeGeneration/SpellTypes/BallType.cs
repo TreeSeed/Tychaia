@@ -7,7 +7,7 @@ namespace Tychaia.RuntimeGeneration.Spells.Types
 {
     public class BallType : SpellType
     {
-        public override double Rarity = 1;
+        public override double Rarity { get { return 1; } }
 
         public override string ToString()
         {

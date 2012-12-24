@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Spells.Modifiers
 {
+    [Rarity(0.025)]
     public class DelayModifier : SpellModifier
     {
-        public override double Rarity = 0.025;
-
         public override string ToString()
         {
             return "Delayed";

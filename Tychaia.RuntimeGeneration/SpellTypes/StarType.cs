@@ -5,11 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Spells.Types
 {
+    [Rarity(1)]
     public class StarType : SpellType
     {
-        // Makes a star at target location that sends out 5 bolts after a short delay.
-        public override double Rarity = 1;
-
         public override string ToString()
         {
             return "Star";

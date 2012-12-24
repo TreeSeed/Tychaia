@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Spells.Types
 {
+    [Rarity(0.75)]
     public class RayType : SpellType
     {
-        public override double Rarity = 0.75;
-
         public override string ToString()
         {
             Random r = new Random();
@@ -16,8 +15,7 @@ namespace Tychaia.RuntimeGeneration.Spells.Types
             if (rand >= 0.5)
             {
                 return "Ray";
-            }
-            else
+            } else
             {
                 return "Beam";
             }

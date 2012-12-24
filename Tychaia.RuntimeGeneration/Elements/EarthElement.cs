@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Elements
 {
+    [Rarity(1)]
     public class EarthElement : Element
     {
-        public override double Rarity = 1;
-
         public override string[] WeaponPrefix
         {
             get

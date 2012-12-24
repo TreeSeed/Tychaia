@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Spells.Modifiers
 {
+    [Rarity(0.04)]
     public class SpeedModifier : SpellModifier
     {
-        public override double Rarity = 0.04;
-
         public override string ToString()
         {
             // TODO: Make it "Slow" if the effect is negative.

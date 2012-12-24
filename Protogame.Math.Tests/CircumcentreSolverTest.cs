@@ -1,12 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 
 namespace Protogame.Math.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class CircumcentreSolverTest
     {
         private void AssertSphere(double[] a, double[] b, double[] c, double[] d, double[] centre, double radius)
@@ -18,7 +15,7 @@ namespace Protogame.Math.Tests
             Assert.AreEqual(radius, solver.Radius);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSolver()
         {
             this.AssertSphere(

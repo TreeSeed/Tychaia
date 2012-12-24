@@ -117,8 +117,7 @@ namespace Tychaia
                         c = c.West.South;
                         x -= TileIsometricifier.CHUNK_TOP_WIDTH;
                     }
-                }
-                else
+                } else
                 {
                     for (int i = innerHorizontalChunksToRender / 2; i < j; i++)
                     {
@@ -310,9 +309,8 @@ namespace Tychaia
                             context.Textures[ce.Image].Width, context.Textures[ce.Image].Height),
                         ce.Color.ToPremultiplied(),
                         depth
-                        );
-                }
-                else
+                    );
+                } else
                 {
                     // Draw image normally.
                     context.SpriteBatch.Draw(
@@ -320,10 +318,9 @@ namespace Tychaia
                         new Rectangle((int)(pos.X - ce.ImageOffsetX), (int)(pos.Y - ce.ImageOffsetY),
                             context.Textures[ce.Image].Width, context.Textures[ce.Image].Height),
                         ce.Color.ToPremultiplied()
-                        );
+                    );
                 }
-            }
-            else
+            } else
                 // Render using the default settings.
                 base.HandleRenderOfEntity(context, a);
         }
@@ -333,8 +330,8 @@ namespace Tychaia
             // Process a single texture block if the FPS is higher than 30.
             //if (context.GameTime.ElapsedGameTime.Milliseconds < 100)
             //{
-                ChunkProvider.ProcessSingle();
-                ChunkRenderer.ProcessSingle(context.GameTime, context);
+            ChunkProvider.ProcessSingle();
+            ChunkRenderer.ProcessSingle(context.GameTime, context);
             //}
 
             // Ensure we have an occluding sprite batch.
@@ -390,8 +387,7 @@ namespace Tychaia
                         context.SpriteBatch.Draw(tex, new Vector2(ri.X, ri.Y + zoffset), Color.White);
                     }
                     FilteredConsole.WriteLine(FilterCategory.RenderingActive, "Rendering chunk at " + ri.X + ", " + ri.Y + ".");
-                }
-                else
+                } else
                     FilteredConsole.WriteLine(FilterCategory.Rendering, "No texture yet for chunk to render at " + ri.X + ", " + ri.Y + ".");
             }
 
@@ -433,8 +429,7 @@ namespace Tychaia
                     FilteredFeatures.IsEnabled(Feature.RenderWorld))
                     this.m_OccludingSpriteBatch.DrawOccluding(RenderingBuffers.ScreenBuffer, Vector2.Zero, Color.White);
                 this.m_OccludingSpriteBatch.End();
-            }
-            else
+            } else
             {
                 if (FilteredFeatures.IsEnabled(Feature.RenderWorld))
                 {

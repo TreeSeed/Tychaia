@@ -5,15 +5,20 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Elements
 {
+    [Rarity(0.5)]
     public class ForceElement : Element
     {
-        public override double Rarity = 0.5;
-
         public override string[] WeaponPrefix
         {
             get
             {
-                return new string[] { "Battering", "Bleeding", "Shredding", "Hemmorhaging" };
+                return new string[]
+                {
+                    "Battering",
+                    "Bleeding",
+                    "Shredding",
+                    "Hemmorhaging"
+                };
             }
         }
 
@@ -21,7 +26,15 @@ namespace Tychaia.RuntimeGeneration.Elements
         {
             get
             {
-                return new string[] { "Protective", "Padded", "Shielded", "Defended", "Defensive", "Protected" };
+                return new string[]
+                {
+                    "Protective",
+                    "Padded",
+                    "Shielded",
+                    "Defended",
+                    "Defensive",
+                    "Protected"
+                };
             }
         }
 

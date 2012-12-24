@@ -7,6 +7,6 @@ namespace Tychaia.RuntimeGeneration.Spells
 {
     public abstract class SpellType
     {
-        public abstract double Rarity = 1;
+        public virtual double Rarity { get { return 1; } }
     }
 }

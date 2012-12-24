@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Spells.Types
 {
+    [Rarity(0.1)]
     public class RainType : SpellType
     {
-        public override double Rarity = 0.1;
-
         public override string ToString()
         {
             return "Rain";

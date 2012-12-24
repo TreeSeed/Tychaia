@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Elements
 {
+    [Rarity(1)]
     public class WaterElement : Element
     {
-        public override double Rarity = 1;
-
         public override string[] WeaponPrefix
         {
             get
@@ -21,7 +20,14 @@ namespace Tychaia.RuntimeGeneration.Elements
         {
             get
             {
-                return new string[] { "Drenched", "Frozen", "Chilled", "Damp", "Wet" };
+                return new string[]
+                {
+                    "Drenched",
+                    "Frozen",
+                    "Chilled",
+                    "Damp",
+                    "Wet"
+                };
             }
         }
 
@@ -29,7 +35,14 @@ namespace Tychaia.RuntimeGeneration.Elements
         {
             get
             {
-                return new string[] { "Water", "Ice", "Liquid", "Aqua", "Chill" };
+                return new string[]
+                {
+                    "Water",
+                    "Ice",
+                    "Liquid",
+                    "Aqua",
+                    "Chill"
+                };
             }
         }
 
