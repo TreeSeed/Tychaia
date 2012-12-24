@@ -10,11 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.ProceduralGeneration", "Tychaia.ProceduralGeneration\Tychaia.ProceduralGeneration.csproj", "{642D5815-4533-4146-96C1-D932FE1641F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7AEE2A1E-060F-4DBE-B581-B9330379E002}"
-	ProjectSection(SolutionItems) = preProject
-		Local.testsettings = Local.testsettings
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-		Tychaia.vsmdi = Tychaia.vsmdi
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Globals", "Tychaia.Globals\Tychaia.Globals.csproj", "{58F07D5A-E86E-4561-88E8-F96744D59157}"
 EndProject
@@ -44,15 +39,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIConvexHull", "Libraries\M
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools and Tests", "Tools and Tests", "{D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DepthBufferTestContent", "DepthBufferTest\DepthBufferTestContent\DepthBufferTestContent.contentproj", "{34459283-FB15-4812-AB17-6674B1E1615D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PositionOctreeTest", "PositionOctreeTest\PositionOctreeTest.csproj", "{A6933395-45D0-40AA-820C-3716746F6141}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBTExplorer", "Libraries\NBTExplorer\NBTExplorer.csproj", "{8A458245-8176-4599-95CD-3CA39F2435CE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftExport", "MinecraftExport\MinecraftExport.csproj", "{934D08FB-35DB-4481-A3C4-64F8AE5C8F51}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DepthBufferTest", "DepthBufferTest\DepthBufferTest\DepthBufferTest.csproj", "{498EC3C2-4030-4418-8CEC-484B4CBD798A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protogame.Math", "Protogame.Math\Protogame.Math.csproj", "{C5966454-0813-47E9-A652-05E3CD35E2E0}"
 EndProject
@@ -108,22 +99,6 @@ Global
 		{2337776D-7D0C-40AA-A439-C26C3CE24FAB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2337776D-7D0C-40AA-A439-C26C3CE24FAB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2337776D-7D0C-40AA-A439-C26C3CE24FAB}.Release|x86.ActiveCfg = Release|Any CPU
-		{34459283-FB15-4812-AB17-6674B1E1615D}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{34459283-FB15-4812-AB17-6674B1E1615D}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{34459283-FB15-4812-AB17-6674B1E1615D}.Debug|x86.ActiveCfg = Debug|x86
-		{34459283-FB15-4812-AB17-6674B1E1615D}.Release|Any CPU.ActiveCfg = Release|x86
-		{34459283-FB15-4812-AB17-6674B1E1615D}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{34459283-FB15-4812-AB17-6674B1E1615D}.Release|x86.ActiveCfg = Release|x86
-		{498EC3C2-4030-4418-8CEC-484B4CBD798A}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{498EC3C2-4030-4418-8CEC-484B4CBD798A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{498EC3C2-4030-4418-8CEC-484B4CBD798A}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{498EC3C2-4030-4418-8CEC-484B4CBD798A}.Debug|x86.ActiveCfg = Debug|x86
-		{498EC3C2-4030-4418-8CEC-484B4CBD798A}.Debug|x86.Build.0 = Debug|x86
-		{498EC3C2-4030-4418-8CEC-484B4CBD798A}.Release|Any CPU.ActiveCfg = Release|x86
-		{498EC3C2-4030-4418-8CEC-484B4CBD798A}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{498EC3C2-4030-4418-8CEC-484B4CBD798A}.Release|Mixed Platforms.Build.0 = Release|x86
-		{498EC3C2-4030-4418-8CEC-484B4CBD798A}.Release|x86.ActiveCfg = Release|x86
-		{498EC3C2-4030-4418-8CEC-484B4CBD798A}.Release|x86.Build.0 = Release|x86
 		{49E7D444-F991-41FC-8FD7-499372C5E207}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{49E7D444-F991-41FC-8FD7-499372C5E207}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49E7D444-F991-41FC-8FD7-499372C5E207}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -367,11 +342,9 @@ Global
 		{7264A1C4-AB4A-4437-B252-7379B98B5509} = {067C85F0-593F-4A65-A45B-68039284257B}
 		{74FD2B9A-7400-4487-9401-CC78855C739C} = {067C85F0-593F-4A65-A45B-68039284257B}
 		{2337776D-7D0C-40AA-A439-C26C3CE24FAB} = {067C85F0-593F-4A65-A45B-68039284257B}
-		{34459283-FB15-4812-AB17-6674B1E1615D} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
 		{A6933395-45D0-40AA-820C-3716746F6141} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
 		{8A458245-8176-4599-95CD-3CA39F2435CE} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
 		{934D08FB-35DB-4481-A3C4-64F8AE5C8F51} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
-		{498EC3C2-4030-4418-8CEC-484B4CBD798A} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = TychaiaWorldGenViewer\TychaiaWorldGenViewer.csproj
