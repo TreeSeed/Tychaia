@@ -494,16 +494,6 @@ namespace TychaiaWorldGenViewer
                )
             );
         }
-        
-        private void buildingPlacerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.c_FlowInterfaceControl.AddElementAtMouse(
-                new LayerFlowElement(
-                    this.c_FlowInterfaceControl,
-                    new Layer3DBuildingPlacer(null, null, null)
-                )
-            );
-        }
 
         private void c_LandAddZoomTerrainMenuItem_Click(object sender, EventArgs e)
         {
@@ -621,6 +611,16 @@ namespace TychaiaWorldGenViewer
                new LayerFlowElement(
                    this.c_FlowInterfaceControl,
                    new Layer3DReplace(null, null)
+               )
+            );
+        }
+
+        private void placeBuildingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.c_FlowInterfaceControl.AddElementAtMouse(
+               new LayerFlowElement(
+                   this.c_FlowInterfaceControl,
+                   new Layer3DBuildingPlacer(null)
                )
             );
         }
