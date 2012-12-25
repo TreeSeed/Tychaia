@@ -61,7 +61,8 @@ namespace Tychaia
 
         public override bool Update(GameContext context)
         {
-            MouseState mouse = Mouse.GetState();
+            // TODO: Make use of this.
+            //MouseState mouse = Mouse.GetState();
 
             // Go back to title screen if needed.
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))

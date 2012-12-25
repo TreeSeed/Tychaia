@@ -27,7 +27,6 @@ namespace Tychaia.Generators
         public Block[, ,] m_Blocks = null;
         public int[] m_RawData = null;
         private static object m_AccessLock = new object();
-        private object m_BlocksLock = new object();
         private int m_Seed = MenuWorld.m_StaticSeed; // All chunks are generated from the same seed.
         private bool m_IsGenerating = false;
         private bool m_IsGenerated = false;

@@ -31,20 +31,11 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="Lidgren.Network">
-      <HintPath>..\..\..\..\..\..\..\Program Files %28x86%29\MonoGame\v3.0\Assemblies\Lidgren.Network.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoGame.Framework.Windows">
-      <HintPath>..\..\..\..\..\..\..\Program Files %28x86%29\MonoGame\v3.0\Assemblies\MonoGame.Framework.Windows.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenTK">
-      <HintPath>..\..\..\..\..\..\..\Program Files %28x86%29\MonoGame\v3.0\Assemblies\OpenTK.dll</HintPath>
-    </Reference>
-    <Reference Include="Tao.Sdl">
-      <HintPath>..\..\..\..\..\..\..\Program Files %28x86%29\MonoGame\v3.0\Assemblies\Tao.Sdl.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="MonoGame.Framework.Linux">
+      <HintPath>..\Libraries\MonoGame\MonoGame.Framework.Linux.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />

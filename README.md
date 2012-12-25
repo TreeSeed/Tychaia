@@ -24,3 +24,8 @@ There's still a lot of work to be done regarding the game's procedural generatio
   * Quest Generation
 
 ![The world generation design tool.](http://i.imgur.com/kyd5A.png)
+
+Working with MonoGame
+------------------------
+
+Easy installation for MonoGame templates from http://www.infinitespace-studios.co.uk/monodevelop/.  Add this as a repository in the Addin Manager and then install the MonoGame template which will install the appropriate templates for the solution.

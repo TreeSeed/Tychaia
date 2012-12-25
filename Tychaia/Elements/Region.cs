@@ -4,6 +4,11 @@ using System.Linq;
 using System.Text;
 using Tychaia.Generators;
 
+// Currently this class is not fully implemented, so disable the
+// warning about things not being used.  Remove this #pragma
+// when the class is implemented and used.
+#pragma warning disable 0414
+
 namespace Tychaia.RuntimeGeneration.Elements
 {
     public class Region

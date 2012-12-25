@@ -30,8 +30,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="MonoGame.Framework.Windows">
-      <HintPath>..\..\..\..\..\..\..\Program Files %28x86%29\MonoGame\v3.0\Assemblies\MonoGame.Framework.Windows.dll</HintPath>
+    <Reference Include="MonoGame.Framework.Linux">
+      <HintPath>..\Libraries\MonoGame\MonoGame.Framework.Linux.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

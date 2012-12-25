@@ -190,7 +190,6 @@ namespace Tychaia.Generators
 
         private static ConcurrentBag<ProvideTask> m_Tasks = new ConcurrentBag<ProvideTask>();
         private static List<ProvideTask> m_Skip = new List<ProvideTask>();
-        private static object m_SkipLock = new object();
 
         private static void Run()
         {
