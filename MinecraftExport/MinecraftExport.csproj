@@ -73,10 +73,6 @@
       <Project>{7264A1C4-AB4A-4437-B252-7379B98B5509}</Project>
       <Name>Substrate (NET4)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Tychaia.ProceduralGeneration\Tychaia.ProceduralGeneration.csproj">
-      <Project>{642D5815-4533-4146-96C1-D932FE1641F9}</Project>
-      <Name>Tychaia.ProceduralGeneration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TychaiaWorldGenViewer\TychaiaWorldGenViewer.csproj">
       <Project>{EDCFB186-0C67-4771-8033-8572A0744B2C}</Project>
       <Name>TychaiaWorldGenViewer</Name>
@@ -84,6 +80,10 @@
     <ProjectReference Include="..\Tychaia\Tychaia.csproj">
       <Project>{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}</Project>
       <Name>Tychaia</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.ProceduralGeneration.Legacy\Tychaia.ProceduralGeneration.Legacy.csproj">
+      <Project>{642D5815-4533-4146-96C1-D932FE1641F9}</Project>
+      <Name>Tychaia.ProceduralGeneration.Legacy</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

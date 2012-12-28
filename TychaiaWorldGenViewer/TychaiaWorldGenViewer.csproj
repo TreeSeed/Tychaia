@@ -142,12 +142,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Tychaia.ProceduralGeneration\Tychaia.ProceduralGeneration.csproj">
-      <Project>{642D5815-4533-4146-96C1-D932FE1641F9}</Project>
-      <Name>Tychaia.ProceduralGeneration</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
@@ -179,4 +173,10 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <ProjectReference Include="..\Tychaia.ProceduralGeneration.Legacy\Tychaia.ProceduralGeneration.Legacy.csproj">
+      <Project>{642D5815-4533-4146-96C1-D932FE1641F9}</Project>
+      <Name>Tychaia.ProceduralGeneration.Legacy</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
