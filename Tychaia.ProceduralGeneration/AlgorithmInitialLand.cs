@@ -40,14 +40,14 @@ namespace Tychaia.ProceduralGeneration
             }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int width, int height, int depth)
+        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth)
         {
             if (this.GuaranteeStartingPoint && x == 0 && y == 0)
-                output[x + y * width + z * width * height] = 1;
+                output[i + j * width + k * width * height] = 1;
             else if (context.GetRandomDouble(x, y, z, context.Modifier) > this.LandLimit)
-                output[x + y * width + z * width * height] = 1;
+                output[i + j * width + k * width * height] = 1;
             else
-                output[x + y * width + z * width * height] = 0;
+                output[i + j * width + k * width * height] = 0;
         }
     }
 }

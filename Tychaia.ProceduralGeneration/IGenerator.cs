@@ -11,7 +11,6 @@ namespace Tychaia.ProceduralGeneration
     {
         long Seed { get; set; }
 
-        dynamic GenerateData(long x, long y, int width, int height);
         dynamic GenerateData(long x, long y, long z, int width, int height, int depth);
     }
 }

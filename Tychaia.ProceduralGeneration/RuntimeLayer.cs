@@ -23,7 +23,7 @@ namespace Tychaia.ProceduralGeneration
         /// The input layers.
         /// </summary>
         [DataMember]
-        private IAlgorithm[]
+        private RuntimeLayer[]
             m_Inputs;
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Tychaia.ProceduralGeneration
         public RuntimeLayer(IAlgorithm algorithm)
         {
             this.m_Algorithm = algorithm;
-            var inputs = new List<IAlgorithm>();
+            var inputs = new List<RuntimeLayer>();
             for (var i = 0; i < algorithm.InputTypes.Length; i++)
                 inputs.Add(null);
             this.m_Inputs = inputs.ToArray();
@@ -50,21 +50,29 @@ namespace Tychaia.ProceduralGeneration
         /// Determines whether or not the specified input algorithm can be used as an
         /// input for the current algorithm in the specified index slot.
         /// </summary>
-        public bool CanBeInput(int index, IAlgorithm input)
+        public bool CanBeInput(int index, RuntimeLayer input)
         {
             if (index < 0 || index >= this.m_Algorithm.InputTypes.Length)
                 return false;
-            return (input.OutputType == this.m_Algorithm.InputTypes[index]);
+            return (input.m_Algorithm.OutputType == this.m_Algorithm.InputTypes[index]);
         }
 
         /// <summary>
         /// Sets the specified algorithm as the input at the specified index.
         /// </summary>
-        public void SetInput(int index, IAlgorithm input)
+        public void SetInput(int index, RuntimeLayer input)
         {
             if (!this.CanBeInput(index, input))
                 throw new InvalidOperationException("Specified algorithm can not be set as input at this index.");
             this.m_Inputs[index] = input;
+        }
+
+        /// <summary>
+        /// Returns the current list of inputs for this runtime layer.
+        /// </summary>
+        public RuntimeLayer[] GetInputs()
+        {
+            return this.m_Inputs;
         }
 
         /// <summary>
@@ -88,75 +96,25 @@ namespace Tychaia.ProceduralGeneration
                                                      long xTo, long yTo, long zTo,
                                                      int width, int height, int depth)
         {
-            /*
-            var processCell = this.m_Algorithm.GetType().GetMethod("ProcessCell");
-            var parameters = new List<object>();
-            dynamic outputArray = Activator.CreateInstance(
-                this.m_Algorithm.OutputType.MakeArrayType(),
-                (int)(width * height * depth));
-            parameters.Add(this);
-            parameters.Add(outputArray);
-            for (var i = 0; i < this.m_Inputs.Length; i++)
-            {
-                parameters.Add(Activator.CreateInstance(
-                    this.m_Algorithm.InputTypes[i].MakeArrayType(),
-                    (width + this.m_Algorithm.RequiredBorder) *
-                    (height + this.m_Algorithm.RequiredBorder) *
-                    (depth + this.m_Algorithm.RequiredBorder)));
-            }
-            parameters.Add(xFrom);
-            parameters.Add(yFrom);
-            parameters.Add(zFrom);
-            parameters.Add(width);
-            parameters.Add(height);
-            parameters.Add(depth);
-            if (processCell.GetParameters().Length != parameters.Count)
-                throw new InvalidOperationException("parameter count mismatch on performing call");
-            for (var p = 0; p < parameters.Count; p++)
-            {
-                if (!processCell.GetParameters()[p].ParameterType.IsAssignableFrom(parameters[p].GetType()))
-                    throw new InvalidOperationException("parameter '" + processCell.GetParameters()[p].Name + "' can't be assigned to... " +
-                        "expected " + processCell.GetParameters()[p].ParameterType + " " + 
-                        "got " + parameters[p].GetType()); 
-            }
-            for (var i = xFrom; i != xTo; i++)
-                for (var j = yFrom; j != yTo; j++)
-                    for (var k = zFrom; k != zTo; k++)
-                    {
-                        parameters[parameters.Count - 6] = i;
-                        parameters[parameters.Count - 5] = j;
-                        parameters[parameters.Count - 4] = k;
-                        processCell.Invoke(this.m_Algorithm, parameters.ToArray());
-                    }
-            return outputArray as object[];
-            */
             var processCell = this.m_Algorithm.GetType().GetMethod("ProcessCell");
             dynamic outputArray = Activator.CreateInstance(
                 this.m_Algorithm.OutputType.MakeArrayType(),
                 (int)(width * height * depth));
             switch (processCell.GetParameters().Length)
             {
-                case 8:
-                    // context, output, x, y, z, width, height, depth
+                case 11:
+                    // context, output, x, y, z, i, j, k, width, height, depth
                     dynamic algorithm = this.m_Algorithm;
-                    for (var i = xFrom; i != xTo; i++)
-                        for (var j = yFrom; j != yTo; j++)
-                            for (var k = zFrom; k != zTo; k++)
-                                algorithm.ProcessCell(this, outputArray, i, j, k, width, height, depth);
+                    for (int k = 0; k < zTo - zFrom; k++)
+                        for (int i = 0; i < xTo - xFrom; i++)
+                            for (int j = 0; j < yTo - yFrom; j++)
+                                algorithm.ProcessCell(this, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, width, height, depth);
                     break;
                 default:
                     // FIXME!
                     throw new NotImplementedException();
             }
             return outputArray;
-        }
-        
-        /// <summary>
-        /// Generates data using the current algorithm.
-        /// </summary>
-        public dynamic GenerateData(long x, long y, int width, int height)
-        {
-            return this.PerformAlgorithmRuntimeCall(x, y, 0, x + width, y + height, 1, width, height, 1);
         }
 
         /// <summary>

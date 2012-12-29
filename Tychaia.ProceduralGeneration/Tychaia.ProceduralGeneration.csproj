@@ -60,6 +60,7 @@
     <Compile Include="Compiler\LayerCompiler.cs" />
     <Compile Include="IGenerator.cs" />
     <Compile Include="Compiler\ArrayPool.cs" />
+    <Compile Include="Compiler\AlgorithmRefactorer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

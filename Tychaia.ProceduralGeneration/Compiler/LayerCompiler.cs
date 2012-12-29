@@ -29,202 +29,16 @@ namespace Tychaia.ProceduralGeneration.Compiler
             return GenerateType(result);
         }
 
-        private class ProcessingResult
+        private class ProcessedResult
         {
-            public Dictionary<string, string> GlobalArrays = new Dictionary<string, string>();
-            public List<string> UsingStatements = new List<string>();
+            public string ProcessedCode = null;
             public string OutputVariableType = null;
             public string OutputVariableName = null;
-            public string ProcessingCode = null;
+            public string[] InputVariableNames = null;
+
+            public Dictionary<string, string> GlobalArrays = new Dictionary<string, string>();
+            public List<string> UsingStatements = new List<string>();
             public IAlgorithm AlgorithmInstance = null;
-        }
-
-        /// <summary>
-        /// This method accepts code decompiled by ICSharpCode and fixes it to work inline.
-        /// </summary>
-        private static void CleanupCode(ProcessingResult context, string code)
-        {
-            var result = "";
-            var firstLine = true;
-
-            // Add scope brackets.
-            result += "// Starting scope for ProcessCall.\n";
-            result += "{\n";
-
-            // Process the code line-by-line.
-            using (var memory = new MemoryStream(Encoding.ASCII.GetBytes(code)))
-            {
-                using (var reader = new StreamReader(memory))
-                {
-                    string processCallName;
-                    List<KeyValuePair<string, string>> processCallParameters;
-
-                    while (!reader.EndOfStream)
-                    {
-                        var lineUntrimmed = reader.ReadLine();
-                        var line = lineUntrimmed.Trim();
-
-                        // Skip blank lines.
-                        if (line == "")
-                            continue;
-
-                        // Steal using statements.
-                        if (line.StartsWith("using "))
-                        {
-                            context.UsingStatements.Add(line.Substring("using ".Length).TrimEnd(';'));
-                            continue;
-                        }
-
-                        // If this is the first line, it should be a method declaration.
-                        if (firstLine)
-                        {
-                            firstLine = false;
-
-                            // Check and make sure the declaration is valid.
-                            if (!line.StartsWith("public override void "))
-                                throw new InvalidOperationException("Compiled ProcessCell is not declared 'public override void' after decompilation.");
-
-                            // Reparse the process call definition.
-                            ReparseProcessCallDefinition(line, out processCallName, out processCallParameters);
-
-                            // Add the code at the start of this block to declare parameters as variables.
-                            int i = 0;
-                            foreach (var kv in processCallParameters)
-                            {
-                                if (i == 0)
-                                    result += "var " + kv.Value + " = this;\n";
-                                else if (i == 1)
-                                    result += "var " + kv.Value + " = " + context.OutputVariableName + ";\n";
-                                else if (i >= 2 && i < processCallParameters.Count - 6)
-                                    result += "var " + kv.Value + " = /* FIXME */ null;\n";
-                                else if (i == processCallParameters.Count - 6)
-                                    result += "var " + kv.Value + " = __compiled_i;\n";
-                                else if (i == processCallParameters.Count - 5)
-                                    result += "var " + kv.Value + " = __compiled_j;\n";
-                                else if (i == processCallParameters.Count - 4)
-                                    result += "var " + kv.Value + " = __compiled_k;\n";
-                                else if (i == processCallParameters.Count - 3)
-                                    result += "var " + kv.Value + " = __compiled_width;\n";
-                                else if (i == processCallParameters.Count - 2)
-                                    result += "var " + kv.Value + " = __compiled_height;\n";
-                                else if (i == processCallParameters.Count - 1)
-                                    result += "var " + kv.Value + " = __compiled_depth;\n";
-                                else
-                                    throw new InvalidOperationException("Unknown parameter to rewrite as local variable.");
-                                i++;
-                            }
-                        }
-                        else
-                        {
-                            // Replace any algorithm properties with the actual values.
-                            var propertiesToReplace = context.AlgorithmInstance.GetType().GetProperties();
-                            foreach (var p in propertiesToReplace)
-                            {
-                                if (!lineUntrimmed.Contains("this." + p.Name) && 
-                                    !lineUntrimmed.Contains(p.Name))
-                                    continue;
-                                var replacementValue = "";
-                                if (p.PropertyType == typeof(int) || p.PropertyType == typeof(uint) ||
-                                    p.PropertyType == typeof(long) || p.PropertyType == typeof(ulong) ||
-                                    p.PropertyType == typeof(float) || p.PropertyType == typeof(double) ||
-                                    p.PropertyType == typeof(bool))
-                                    replacementValue = p.GetGetMethod().Invoke(context.AlgorithmInstance, null).ToString().ToLower();
-                                else if (p.PropertyType == typeof(string))
-                                    replacementValue = "\"" + p.GetGetMethod().Invoke(context.AlgorithmInstance, null).ToString() + "\"";
-                                else
-                                    throw new NotSupportedException("Unable to compile type '" + p.PropertyType.Name +
-                                        "' for property '" + p.Name +
-                                        "' in runtime algorithm '" + context.AlgorithmInstance.GetType().Name + "'.");
-                                lineUntrimmed = lineUntrimmed.Replace("this." + p.Name, replacementValue);
-                                lineUntrimmed = lineUntrimmed.Replace(p.Name, replacementValue);
-                            }
-
-                            // Replace methods that aren't named correctly.
-                            lineUntrimmed = lineUntrimmed.Replace("context.GetRandom0", "context.GetRandomDouble");
-
-                            // Omit checked / unchecked keywords.
-                            lineUntrimmed = lineUntrimmed.Replace("unchecked", "");
-                            lineUntrimmed = lineUntrimmed.Replace("checked", "");
-
-                            // Change type names.
-                            lineUntrimmed = lineUntrimmed.Replace("System.Int32", "int");
-                            lineUntrimmed = lineUntrimmed.Replace("System.Int64", "long");
-
-                            // Remove stupid casts.
-                            //lineUntrimmed = lineUntrimmed.Replace("(int)(IntPtr)", "");
-
-                            // Add the line onto the result.
-                            result += lineUntrimmed + "\n";
-                        }
-                    }
-                }
-            }
-
-            // Finish scope and return result code.
-            result += "}\n";
-            context.ProcessingCode = result;
-        }
-
-        /// <summary>
-        /// Reparses the process call definition.
-        /// </summary>
-        private static void ReparseProcessCallDefinition(string definition, out string name, out List<KeyValuePair<string, string>> parameters)
-        {
-            // Retrieve the name.
-            name = "";
-            var chars = new Queue<char>(definition.ToCharArray());
-            while (chars.Peek() != '(')
-                name += chars.Dequeue();
-            chars.Dequeue(); // Dequeue '('
-            
-            // Retrieve the parameters.
-            parameters = new List<KeyValuePair<string, string>>();
-            var isLexingType = true;
-            var buffer = "";
-            var bufferType = "";
-            while (chars.Peek() != ')')
-            {
-                if (isLexingType)
-                {
-                    if (chars.Peek() == '<')
-                        throw new NotSupportedException("Unable to reparse ProcessCell declarations containing generics.");
-                    buffer += chars.Dequeue();
-                    var gotSpace = false;
-                    var gotBrackets = false;
-                    while (chars.Peek() == ' ')
-                    {
-                        chars.Dequeue();
-                        gotSpace = true;
-                    }
-                    if (chars.Peek() == '[')
-                    {
-                        while (chars.Peek() != ']')
-                            chars.Dequeue();
-                        chars.Dequeue();
-                        buffer += "[]";
-                        gotBrackets = true;
-                    }
-                    if (gotSpace || gotBrackets)
-                    {
-                        isLexingType = false;
-                        bufferType = buffer;
-                        buffer = "";
-                    }
-                }
-                else
-                {
-                    while (chars.Peek() != ',' && chars.Peek() != ')')
-                        buffer += chars.Dequeue();
-                    if (chars.Peek() == ',')
-                        chars.Dequeue();
-                    while (chars.Peek() == ' ')
-                        chars.Dequeue();
-                    parameters.Add(new KeyValuePair<string, string>(bufferType, buffer));
-                    bufferType = "";
-                    buffer = "";
-                    isLexingType = true;
-                }
-            }
         }
 
         private static Random m_Random = new Random();
@@ -240,8 +54,28 @@ namespace Tychaia.ProceduralGeneration.Compiler
         /// Processes a runtime layer, returning the processing context so that the resulting
         /// code replicates and inlines the functionality of the algorithm.
         /// </summary>
-        private static ProcessingResult ProcessRuntimeLayer(RuntimeLayer layer)
+        private static ProcessedResult ProcessRuntimeLayer(RuntimeLayer layer)
         {
+            // Create our own processed result; a copy of our own state plus
+            // somewhere to accumulate code.
+            var result = new ProcessedResult();
+            result.ProcessedCode = "";
+
+            // If the runtime layer has inputs, we need to process them first.
+            if (layer.Algorithm.InputTypes.Length > 0)
+            {
+                var inputs = layer.GetInputs();
+                result.InputVariableNames = new string[inputs.Length];
+                for (var i = 0; i < inputs.Length; i++)
+                {
+                    var inputResult = ProcessRuntimeLayer(inputs[i]);
+                    result.ProcessedCode += inputResult.ProcessedCode;
+                    result.InputVariableNames[i] = inputResult.OutputVariableName;
+                    foreach (var kv in result.GlobalArrays)
+                        result.GlobalArrays.Add(kv.Key, kv.Value);
+                }
+            }
+
             // Get a reference to the algorithm that the runtime layer is using.
             var algorithm = layer.Algorithm;
             if (algorithm == null)
@@ -249,11 +83,9 @@ namespace Tychaia.ProceduralGeneration.Compiler
             var algorithmType = algorithm.GetType();
 
             // Create an output variable definition.
-            var processingResult = new ProcessingResult();
-            processingResult.ProcessingCode = "";
-            processingResult.OutputVariableName = GenerateRandomIdentifier();
-            processingResult.OutputVariableType = algorithm.OutputType.FullName;
-            processingResult.AlgorithmInstance = algorithm;
+            result.OutputVariableName = GenerateRandomIdentifier();
+            result.OutputVariableType = algorithm.OutputType.FullName;
+            result.GlobalArrays.Add(result.OutputVariableName, result.OutputVariableType);
 
             // Load Tychaia.ProceduralGeneration into Mono.Cecil.
             var module = AssemblyDefinition.ReadAssembly("Tychaia.ProceduralGeneration.dll").MainModule;
@@ -265,30 +97,24 @@ namespace Tychaia.ProceduralGeneration.Compiler
             var decompilerSettings = new DecompilerSettings();
             var astBuilder = new AstBuilder(new DecompilerContext(module) { CurrentType = cecilType, Settings = decompilerSettings });
             astBuilder.AddMethod(processCell);
-            using (var writer = new StringWriter())
+
+            // Refactor the method.
+            var method = astBuilder.CompilationUnit.Members.First() as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
+            AlgorithmRefactorer.InlineMethod(algorithm, method, result.OutputVariableName, result.InputVariableNames);
+            //AlgorithmRefactorer.RemoveUsingStatements(astBuilder.CompilationUnit, result.UsingStatements);
+            astBuilder.RunTransformations();
+            /*using (var writer = new StringWriter())
             {
                 astBuilder.GenerateCode(new PlainTextOutput(writer));
-                var code = writer.ToString();
+                Console.WriteLine(writer.ToString());
+            }*/
+            var code = method.Body.GetText();
 
-                // We need to make some modifications to the code before we return it.
-                CleanupCode(processingResult, code);
-                
-                // Prefix the looping constructs.
-                processingResult.ProcessingCode = @"for (var __compiled_i = __compiled_x; __compiled_i < __compiled_x + __compiled_width; __compiled_i++)
-for (var __compiled_j = __compiled_y; __compiled_j < __compiled_y + __compiled_height; __compiled_j++)
-for (var __compiled_k = __compiled_z; __compiled_k < __compiled_z + __compiled_depth; __compiled_k++)
-{" + "\n" + processingResult.ProcessingCode;
+            // Add the code to our processing result.
+            result.ProcessedCode += code;
 
-                // Prefix the array declarations.
-                processingResult.ProcessingCode = processingResult.OutputVariableType + "[] " + processingResult.OutputVariableName + " = new " +
-                    processingResult.OutputVariableType + "[__compiled_width * __compiled_height * __compiled_depth];\n" + processingResult.ProcessingCode;
-
-                // Postfix the final result.
-                processingResult.ProcessingCode = processingResult.ProcessingCode + "\n}\nreturn " + processingResult.OutputVariableName + ";\n";
-
-                // Return the processing result.
-                return processingResult;
-            }
+            // Return the processed result.
+            return result;
         }
 
         /// <summary>
@@ -320,39 +146,26 @@ for (var __compiled_k = __compiled_z; __compiled_k < __compiled_z + __compiled_d
         /// <summary>
         /// Generates the compiled type.
         /// </summary>
-        private static IGenerator GenerateType(ProcessingResult result)
+        private static IGenerator GenerateType(ProcessedResult result)
         {
             // Create the code using the template file.
             string template = null;
             using (var reader = new StreamReader("Compiler/CompiledLayerTemplate.cs"))
                 template = reader.ReadToEnd();
-            var test = 
-                @"
-            IRuntimeContext context = this;
-
-            int[] output = new int[__compiled_width * __compiled_height * __compiled_depth];
-
-            // Loop.
-            for (var i = __compiled_x; i < __compiled_x + __compiled_width; i++)
-                for (var j = __compiled_y; j < __compiled_y + __compiled_height; j++)
-                    for (var k = __compiled_z; k < __compiled_z + __compiled_depth; k++)
-                    {
-                        if (true && i == 0 && j == 0)
-                            output[i + j * __compiled_width + k * __compiled_width * __compiled_height] = 1;
-                        else if (context.GetRandomDouble(i, j, k, context.Modifier) > 0.9)
-                            output[i + j * __compiled_width + k * __compiled_width * __compiled_height] = 1;
-                        else
-                            output[i + j * __compiled_width + k * __compiled_width * __compiled_height] = 0;
-                    }
-
-            return output;";
-            var final = template.Replace("/****** %CODE% ******/", test)//result.ProcessingCode)
+            var final = template
+                .Replace("/****** %CODE% ******/", result.ProcessedCode)
+                .Replace("/****** %RETURN% ******/", "return " + result.OutputVariableName + ";")
+                .Replace("/****** %DECLS% ******/",
+                     result.GlobalArrays
+                        .Select(kv => kv.Value + "[] " + kv.Key + " = new " + kv.Value + "[width * height * depth];")
+                        .DefaultIfEmpty("")
+                        .Aggregate((a, b) => a + "\n" + b))
                 .Replace("/****** %USING% ******/",
-                         result.UsingStatements
-                            .Where(v => v != "System" && v != "Tychaia.ProceduralGeneration")
-                            .Select(v => "using " + v + ";")
-                            .DefaultIfEmpty("")
-                            .Aggregate((a, b) => a + "\n" + b));
+                     result.UsingStatements
+                        .Where(v => v != "System" && v != "Tychaia.ProceduralGeneration")
+                        .Select(v => "using " + v + ";")
+                        .DefaultIfEmpty("")
+                        .Aggregate((a, b) => a + "\n" + b));
 
             // Create the type.
             var parameters = new CompilerParameters(new string[]

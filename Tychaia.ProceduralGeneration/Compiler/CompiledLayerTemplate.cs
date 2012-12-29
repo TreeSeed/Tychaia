@@ -21,12 +21,7 @@ public class CompiledLayer : IRuntimeContext, IGenerator
 
     #region AUTO-GENERATED CODE
 
-    public dynamic GenerateData(long x, long y, int width, int height)
-    {
-        return this.GenerateData(x, y, 0, width, height, 1);
-    }
-
-    public dynamic GenerateData(long __compiled_x, long __compiled_y, long __compiled_z, int __compiled_width, int __compiled_height, int __compiled_depth)
+    public dynamic GenerateData(long x, long y, long z, int width, int height, int depth)
     {
         //
         // This is auto-generated code.  Things to observe:
@@ -37,7 +32,16 @@ public class CompiledLayer : IRuntimeContext, IGenerator
         //     quickly inlining of code and reduction in the array creation.
         //
 
-        /****** %CODE% ******/
+        /****** %DECLS% ******/
+
+        for (var k = 0; k < depth; k++)
+            for (var i = 0; i < width; i++)
+                for (var j = 0; j < height; j++)
+                {
+                    /****** %CODE% ******/
+                }
+
+        /****** %RETURN% ******/
     }
 
     #endregion

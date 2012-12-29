@@ -29,12 +29,12 @@ namespace ProceduralGenPerformance
                 Console.WriteLine("Starting Test #" + x + " (algorithm runtime)");
                 var algorithmRuntimeStartTime = DateTime.Now;
                 for (int i = 0; i < 1000; i++)
-                    initialLandAlgorithmRuntime.GenerateData(0, 0, 128, 128);
+                    initialLandAlgorithmRuntime.GenerateData(0, 0, 0, 128, 128, 1);
                 var algorithmRuntimeEndTime = DateTime.Now;
                 Console.WriteLine("Starting Test #" + x + " (algorithm compiled)");
                 var algorithmCompiledStartTime = DateTime.Now;
                 for (int i = 0; i < 1000; i++)
-                    initialLandAlgorithmCompiled.GenerateData(0, 0, 128, 128);
+                    initialLandAlgorithmCompiled.GenerateData(0, 0, 0, 128, 128, 1);
                 var algorithmCompiledEndTime = DateTime.Now;
                 // Because there are 1000 tests, and 1000 microseconds in a millisecond..
                 Console.WriteLine("Test #" + x + " LEGACY: " + (legacyEndTime - legacyStartTime).TotalMilliseconds + "µs " + 
