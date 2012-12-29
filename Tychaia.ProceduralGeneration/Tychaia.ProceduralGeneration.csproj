@@ -69,20 +69,11 @@
     <Compile Include="Biomes\FlatDesertSecondaryBiome.cs" />
     <Compile Include="Biomes\ForestSecondaryBiome.cs" />
     <Compile Include="Biomes\GrasslandSecondaryBiome.cs" />
-    <Compile Include="Biomes\OceanBiome.cs" />
     <Compile Include="Biomes\TertiaryBiome.cs" />
     <Compile Include="Biomes\SecondaryBiome.cs" />
     <Compile Include="Biomes\TundraSecondaryBiome.cs" />
     <Compile Include="BuildingEngine.cs" />
-    <Compile Include="Cities\Building.cs" />
-    <Compile Include="Cities\CityBiome.cs" />
     <Compile Include="CitiesEngine.cs" />
-    <Compile Include="Cities\Room.cs" />
-    <Compile Include="Cities\HousingSecondaryCityBiome.cs" />
-    <Compile Include="Cities\SecondaryCityBiome.cs" />
-    <Compile Include="Cities\RoyaltyCityBiome.cs" />
-    <Compile Include="Cities\MineCityBiome.cs" />
-    <Compile Include="Cities\FarmlandCityBiome.cs" />
     <Compile Include="Javascript\LinqImplementations.cs" />
     <Compile Include="LayerColor.cs" />
     <Compile Include="Layer3DAddCityBiomes.cs" />
@@ -141,6 +132,15 @@
     <Compile Include="FlowDesignerCategoryAttribute.cs" />
     <Compile Include="Layer3DMMAWResult.cs" />
     <Compile Include="LayerMMAWResult.cs" />
+    <Compile Include="Cities\Buildings\Building.cs" />
+    <Compile Include="Cities\Rooms\Room.cs" />
+    <Compile Include="Cities\Biomes Old\CityBiome.cs" />
+    <Compile Include="Cities\Biomes Old\FarmlandCityBiome.cs" />
+    <Compile Include="Cities\Biomes Old\HousingSecondaryCityBiome.cs" />
+    <Compile Include="Cities\Biomes Old\MineCityBiome.cs" />
+    <Compile Include="Cities\Biomes Old\RoyaltyCityBiome.cs" />
+    <Compile Include="Cities\Biomes Old\SecondaryCityBiome.cs" />
+    <Compile Include="Biomes\OceanBiome.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BenTools\FortuneVoronoi.csproj">
@@ -189,4 +189,9 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <Folder Include="Cities\Buildings\" />
+    <Folder Include="Cities\Rooms\" />
+    <Folder Include="Cities\Biomes Old\" />
+  </ItemGroup>
 </Project>
