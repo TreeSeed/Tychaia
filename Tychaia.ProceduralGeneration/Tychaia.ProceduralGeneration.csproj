@@ -61,6 +61,7 @@
     <Compile Include="IGenerator.cs" />
     <Compile Include="Compiler\ArrayPool.cs" />
     <Compile Include="Compiler\AlgorithmRefactorer.cs" />
+    <Compile Include="AlgorithmZoom.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

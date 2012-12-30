@@ -44,6 +44,9 @@ namespace Tychaia.ProceduralGeneration
         /// the provided X and Y position, and the specified modifier.
         /// </summary>
         double GetRandomDouble(long x, long y, long z, long modifier = 0);
+
+        int FindZoomedPoint(int[] parent, long i, long j, long ox, long oy, long x, long y, long rw);
+        int Smooth(long x, long y, int northValue, int southValue, int westValue, int eastValue, int currentValue, long i, long j, long ox, long oy, long rw, int[] parent);
     }
 }
 

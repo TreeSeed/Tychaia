@@ -10,10 +10,22 @@ namespace Tychaia.ProceduralGeneration
     public interface IAlgorithm
     {
         /// <summary>
-        /// The required amount of border data that this algorithm
+        /// The required amount of X border data that this algorithm
         /// needs in order to complete it's operation.
         /// </summary>
-        int RequiredBorder { get; }
+        int RequiredXBorder { get; }
+
+        /// <summary>
+        /// The required amount of Y border data that this algorithm
+        /// needs in order to complete it's operation.
+        /// </summary>
+        int RequiredYBorder { get; }
+        
+        /// <summary>
+        /// The required amount of Z border data that this algorithm
+        /// needs in order to complete it's operation.
+        /// </summary>
+        int RequiredZBorder { get; }
 
         /// <summary>
         /// The data types that input algorithms should output for
@@ -25,6 +37,21 @@ namespace Tychaia.ProceduralGeneration
         /// The data type of the output of this algorithm.
         /// </summary>
         Type OutputType { get; }
+
+        /// <summary>
+        /// Whether this algorithm only requires half the width in it's inputs.
+        /// </summary>
+        bool InputWidthAtHalfSize { get; }
+
+        /// <summary>
+        /// Whether this algorithm only requires half the height in it's inputs.
+        /// </summary>
+        bool InputHeightAtHalfSize { get; }
+
+        /// <summary>
+        /// Whether this algorithm only requires half the depth in it's inputs.
+        /// </summary>
+        bool InputDepthAtHalfSize { get; }
     }
 
     /// 
@@ -51,7 +78,20 @@ namespace Tychaia.ProceduralGeneration
 
     #region Abstract Algorithm Classes
 
-    public abstract class Algorithm<TOutput> : IAlgorithm
+    public abstract class Algorithm : IAlgorithm
+    {
+        public virtual int RequiredXBorder { get { return 0; } }
+        public virtual int RequiredYBorder { get { return 0; } }
+        public virtual int RequiredZBorder { get { return 0; } }
+        public virtual bool InputWidthAtHalfSize { get { return false; } }
+        public virtual bool InputHeightAtHalfSize { get { return false; } }
+        public virtual bool InputDepthAtHalfSize { get { return false; } }
+
+        public abstract Type[] InputTypes { get; }
+        public abstract Type OutputType { get; }
+    }
+
+    public abstract class Algorithm<TOutput> : Algorithm
     {
         public abstract void ProcessCell(IRuntimeContext context,
                                          TOutput[] output,
@@ -65,20 +105,18 @@ namespace Tychaia.ProceduralGeneration
                                          int height,
                                          int depth);
 
-        public abstract int RequiredBorder { get; }
-
-        public Type[] InputTypes
+        public sealed override Type[] InputTypes
         {
             get { return new Type[] { }; }
         }
 
-        public Type OutputType
+        public sealed override Type OutputType
         {
             get { return typeof(TOutput); }
         }
     }
 
-    public abstract class Algorithm<TInput, TOutput>
+    public abstract class Algorithm<TInput, TOutput> : Algorithm
     {
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInput[] input,
@@ -92,21 +130,19 @@ namespace Tychaia.ProceduralGeneration
                                          int width,
                                          int height,
                                          int depth);
-        
-        public abstract int RequiredBorder { get; }
 
-        public Type[] InputTypes
+        public sealed override Type[] InputTypes
         {
             get { return new Type[] { typeof(TInput) }; }
         }
         
-        public Type OutputType
+        public sealed override Type OutputType
         {
             get { return typeof(TOutput); }
         }
     }
     
-    public abstract class Algorithm<TInputA, TInputB, TOutput>
+    public abstract class Algorithm<TInputA, TInputB, TOutput> : Algorithm
     {
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,
@@ -122,20 +158,18 @@ namespace Tychaia.ProceduralGeneration
                                          int height,
                                          int depth);
 
-        public abstract int RequiredBorder { get; }
-
-        public Type[] InputTypes
+        public sealed override Type[] InputTypes
         {
             get { return new Type[] { typeof(TInputA), typeof(TInputB) }; }
         }
         
-        public Type OutputType
+        public sealed override Type OutputType
         {
             get { return typeof(TOutput); }
         }
     }
     
-    public abstract class Algorithm<TInputA, TInputB, TInputC, TOutput>
+    public abstract class Algorithm<TInputA, TInputB, TInputC, TOutput> : Algorithm
     {
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,
@@ -152,9 +186,7 @@ namespace Tychaia.ProceduralGeneration
                                          int height,
                                          int depth);
         
-        public abstract int RequiredBorder { get; }
-        
-        public Type[] InputTypes
+        public sealed override Type[] InputTypes
         {
             get
             {
@@ -167,13 +199,13 @@ namespace Tychaia.ProceduralGeneration
             }
         }
         
-        public Type OutputType
+        public sealed override Type OutputType
         {
             get { return typeof(TOutput); }
         }
     }
     
-    public abstract class Algorithm<TInputA, TInputB, TInputC, TInputD, TOutput>
+    public abstract class Algorithm<TInputA, TInputB, TInputC, TInputD, TOutput> : Algorithm
     {
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,
@@ -191,9 +223,7 @@ namespace Tychaia.ProceduralGeneration
                                          int height,
                                          int depth);
         
-        public abstract int RequiredBorder { get; }
-        
-        public Type[] InputTypes
+        public sealed override Type[] InputTypes
         {
             get
             {
@@ -207,13 +237,13 @@ namespace Tychaia.ProceduralGeneration
             }
         }
         
-        public Type OutputType
+        public sealed override Type OutputType
         {
             get { return typeof(TOutput); }
         }
     }
     
-    public abstract class Algorithm<TInputA, TInputB, TInputC, TInputD, TInputE, TOutput>
+    public abstract class Algorithm<TInputA, TInputB, TInputC, TInputD, TInputE, TOutput> : Algorithm
     {
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,
@@ -232,9 +262,7 @@ namespace Tychaia.ProceduralGeneration
                                          int height,
                                          int depth);
         
-        public abstract int RequiredBorder { get; }
-        
-        public Type[] InputTypes
+        public sealed override Type[] InputTypes
         {
             get
             {
@@ -249,7 +277,7 @@ namespace Tychaia.ProceduralGeneration
             }
         }
         
-        public Type OutputType
+        public sealed override Type OutputType
         {
             get { return typeof(TOutput); }
         }

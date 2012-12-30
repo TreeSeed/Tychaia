@@ -104,8 +104,12 @@ namespace Tychaia.ProceduralGeneration
 
         private int FindZoomedPoint(int[] parent, long i, long j, long ox, long oy, long x, long y, long rw)
         {
-            int ocx = (x % 2 != 0 && i % 2 != 0 ? (i < 0 ? -1 : 1) : 0);
-            int ocy = (y % 2 != 0 && j % 2 != 0 ? (j < 0 ? -1 : 1) : 0);
+            //int ocx = (x % 2 != 0 && i % 2 != 0 ? (i < 0 ? -1 : 1) : 0);
+            //int ocy = (y % 2 != 0 && j % 2 != 0 ? (j < 0 ? -1 : 1) : 0);
+            //int ocx = (x % 2 != 0 && i % 2 != 0 ? (int)(i % 2) : 0);
+            //int ocy = (y % 2 != 0 && j % 2 != 0 ? (int)(j % 2) : 0);
+            int ocx = (x % 2 != 0) ? (int)(i % 2) : 0;
+            int ocy = (y % 2 != 0) ? (int)(j % 2) : 0;
 
             return parent[(i / 2 + ox + ocx) + (j / 2 + oy + ocy) * rw];
         }

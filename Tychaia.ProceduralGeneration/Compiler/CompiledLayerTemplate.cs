@@ -34,12 +34,12 @@ public class CompiledLayer : IRuntimeContext, IGenerator
 
         /****** %DECLS% ******/
 
-        for (var k = 0; k < depth; k++)
-            for (var i = 0; i < width; i++)
-                for (var j = 0; j < height; j++)
-                {
-                    /****** %CODE% ******/
-                }
+        //for (var k = 0; k < depth; k++)
+        //    for (var i = 0; i < width; i++)
+        //        for (var j = 0; j < height; j++)
+        //        {
+        /****** %CODE% ******/
+        //        }
 
         /****** %RETURN% ******/
     }
@@ -152,6 +152,105 @@ public class CompiledLayer : IRuntimeContext, IGenerator
     }
     
     #endregion
-
+    
+    #region TESTING EXTRA
+    
+    public int FindZoomedPoint(int[] parent, long i, long j, long ox, long oy, long x, long y, long rw)
+    {
+        int ocx = (x % 2 != 0 && i % 2 != 0 ? (i < 0 ? -1 : 1) : 0);
+        int ocy = (y % 2 != 0 && j % 2 != 0 ? (j < 0 ? -1 : 1) : 0);
+        
+        return parent[(i / 2 + ox + ocx) + (j / 2 + oy + ocy) * rw];
+    }
+    
+    public int Smooth(long x, long y, int northValue, int southValue, int westValue, int eastValue, int currentValue, long i, long j, long ox, long oy, long rw, int[] parent)
+    {
+        // Parent-based Smoothing
+        int selected = 0;
+        
+        if (x % 2 == 0)
+        {
+            if (y % 2 == 0)
+            {
+                return currentValue;
+            }
+            else
+            {
+                selected = this.GetRandomRange(x, y, 0, 2);
+                switch (selected)
+                {
+                    case 0:
+                        return currentValue;
+                    case 1:
+                        return southValue;
+                }
+            }
+        }
+        else
+        {
+            if (y % 2 == 0)
+            {
+                selected = this.GetRandomRange(x, y, 0, 2);
+                switch (selected)
+                {
+                    case 0:
+                        return currentValue;
+                    case 1:
+                        return eastValue;
+                }
+            }
+            else
+            {
+                if (true)//mode == AlgorithmZoom.ZoomType.Smooth)
+                {
+                    selected = this.GetRandomRange(x, y, 0, 3);
+                    switch (selected)
+                    {
+                        case 0:
+                            return currentValue;
+                        case 1:
+                            return southValue;
+                        case 2:
+                            return eastValue;
+                    }
+                }
+                else
+                {
+                    selected = this.GetRandomRange(x, y, 0, 4);
+                    switch (selected)
+                    {
+                        case 0:
+                            return currentValue;
+                        case 1:
+                            return southValue;
+                        case 2:
+                            return eastValue;
+                        case 3:
+                            return this.FindZoomedPoint(parent, i + 2, j + 2, ox, oy, x - i, y - j, rw);
+                    }
+                }
+            }
+        }
+        
+        // Select one of the four options if we couldn't otherwise
+        // determine a value.
+        selected = this.GetRandomRange(x, y, 0, 4);
+        
+        switch (selected)
+        {
+            case 0:
+                return northValue;
+            case 1:
+                return southValue;
+            case 2:
+                return eastValue;
+            case 3:
+                return westValue;
+        }
+        
+        throw new InvalidOperationException();
+    }
+    
+#endregion
 }
 

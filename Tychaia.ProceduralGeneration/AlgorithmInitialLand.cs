@@ -31,13 +31,11 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-
-        public override int RequiredBorder
+        
+        public AlgorithmInitialLand()
         {
-            get
-            {
-                return 0;
-            }
+            this.LandLimit = 0.9;
+            this.GuaranteeStartingPoint = true;
         }
 
         public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth)

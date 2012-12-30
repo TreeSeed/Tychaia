@@ -14,6 +14,7 @@ using ICSharpCode.Decompiler.Ast;
 using Mono.Cecil;
 using System.Text;
 using System.Linq;
+using ICSharpCode.NRefactory.CSharp;
 
 namespace Tychaia.ProceduralGeneration.Compiler
 {
@@ -35,8 +36,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
             public string OutputVariableType = null;
             public string OutputVariableName = null;
             public string[] InputVariableNames = null;
+            public string Declarations = null;
 
-            public Dictionary<string, string> GlobalArrays = new Dictionary<string, string>();
             public List<string> UsingStatements = new List<string>();
             public IAlgorithm AlgorithmInstance = null;
         }
@@ -54,12 +55,58 @@ namespace Tychaia.ProceduralGeneration.Compiler
         /// Processes a runtime layer, returning the processing context so that the resulting
         /// code replicates and inlines the functionality of the algorithm.
         /// </summary>
-        private static ProcessedResult ProcessRuntimeLayer(RuntimeLayer layer)
+        private static ProcessedResult ProcessRuntimeLayer(RuntimeLayer layer, IAlgorithm parent = null,
+                                                           string width = "width", string height = "height", string depth = "depth")
         {
             // Create our own processed result; a copy of our own state plus
             // somewhere to accumulate code.
             var result = new ProcessedResult();
             result.ProcessedCode = "";
+            
+            // Get a reference to the algorithm that the runtime layer is using.
+            var algorithm = layer.Algorithm;
+            if (algorithm == null)
+                throw new InvalidOperationException("Attempted to compile null runtime layer!");
+            var algorithmType = algorithm.GetType();
+            
+            // Determine offsets for this loop.
+            var xStartOffset = parent == null ? 0 : -parent.RequiredXBorder;
+            var xEndOffset = parent == null ? 0 : (parent.RequiredXBorder) * 2;
+            var yStartOffset = parent == null ? 0 : -parent.RequiredYBorder;
+            var yEndOffset = parent == null ? 0 : (parent.RequiredYBorder) * 2;
+            var zStartOffset = parent == null ? 0 : -parent.RequiredZBorder;
+            var zEndOffset = parent == null ? 0 : (parent.RequiredZBorder) * 2;
+            var halfWidth = parent == null ? 1 : (parent.InputWidthAtHalfSize ? 2 : 1);
+            var halfHeight = parent == null ? 1 : (parent.InputHeightAtHalfSize ? 2 : 1);
+            var halfDepth = parent == null ? 1 : (parent.InputDepthAtHalfSize ? 2 : 1);
+            string newWidth = width, newHeight = height, newDepth = depth;
+            if (halfWidth != 1)
+                newWidth = "(" + newWidth + " / " + halfWidth + ")";
+            if (xEndOffset != 0)
+                newWidth = "(" + newWidth + " + " + xEndOffset + ")";
+            if (halfHeight != 1)
+                newHeight = "(" + newHeight + " / " + halfHeight + ")";
+            if (yEndOffset != 0)
+                newHeight = "(" + newHeight + " + " + yEndOffset + ")";
+            if (halfDepth != 1)
+                newDepth = "(" + newDepth + " / " + halfDepth + ")";
+            if (zEndOffset != 0)
+                newDepth = "(" + newDepth + " + " + zEndOffset + ")";
+            if (newWidth != width)
+            {
+                width = "width_" + GenerateRandomIdentifier();
+                result.Declarations += "int " + width + " = " + newWidth + ";\n";
+            }
+            if (newHeight != height)
+            {
+                height = "height_" + GenerateRandomIdentifier();
+                result.Declarations += "int " + height + " = " + newHeight + ";\n";
+            }
+            if (newDepth != depth)
+            {
+                depth = "depth_" + GenerateRandomIdentifier();
+                result.Declarations += "int " + depth + " = " + newDepth + ";\n";
+            }
 
             // If the runtime layer has inputs, we need to process them first.
             if (layer.Algorithm.InputTypes.Length > 0)
@@ -68,24 +115,19 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 result.InputVariableNames = new string[inputs.Length];
                 for (var i = 0; i < inputs.Length; i++)
                 {
-                    var inputResult = ProcessRuntimeLayer(inputs[i]);
+                    var inputResult = ProcessRuntimeLayer(inputs[i], layer.Algorithm,
+                                                          width, height, depth);
                     result.ProcessedCode += inputResult.ProcessedCode;
                     result.InputVariableNames[i] = inputResult.OutputVariableName;
-                    foreach (var kv in result.GlobalArrays)
-                        result.GlobalArrays.Add(kv.Key, kv.Value);
+                    result.Declarations += inputResult.Declarations;
                 }
             }
-
-            // Get a reference to the algorithm that the runtime layer is using.
-            var algorithm = layer.Algorithm;
-            if (algorithm == null)
-                throw new InvalidOperationException("Attempted to compile null runtime layer!");
-            var algorithmType = algorithm.GetType();
 
             // Create an output variable definition.
             result.OutputVariableName = GenerateRandomIdentifier();
             result.OutputVariableType = algorithm.OutputType.FullName;
-            result.GlobalArrays.Add(result.OutputVariableName, result.OutputVariableType);
+            result.Declarations += result.OutputVariableType + "[] " + result.OutputVariableName +
+                " = new " + result.OutputVariableType + "[" + width + " * " + height + " * " + depth + "];\n";
 
             // Load Tychaia.ProceduralGeneration into Mono.Cecil.
             var module = AssemblyDefinition.ReadAssembly("Tychaia.ProceduralGeneration.dll").MainModule;
@@ -97,18 +139,25 @@ namespace Tychaia.ProceduralGeneration.Compiler
             var decompilerSettings = new DecompilerSettings();
             var astBuilder = new AstBuilder(new DecompilerContext(module) { CurrentType = cecilType, Settings = decompilerSettings });
             astBuilder.AddMethod(processCell);
+            astBuilder.RunTransformations();
+            astBuilder.CompilationUnit.AcceptVisitor(new InsertParenthesesVisitor {
+                InsertParenthesesForReadability = true
+            });
 
             // Refactor the method.
-            var method = astBuilder.CompilationUnit.Members.First() as ICSharpCode.NRefactory.CSharp.MethodDeclaration;
-            AlgorithmRefactorer.InlineMethod(algorithm, method, result.OutputVariableName, result.InputVariableNames);
-            //AlgorithmRefactorer.RemoveUsingStatements(astBuilder.CompilationUnit, result.UsingStatements);
-            astBuilder.RunTransformations();
-            /*using (var writer = new StringWriter())
-            {
-                astBuilder.GenerateCode(new PlainTextOutput(writer));
-                Console.WriteLine(writer.ToString());
-            }*/
+            var method = astBuilder.CompilationUnit.Members.Where(v => v is MethodDeclaration).Cast<MethodDeclaration>().First();
+            AlgorithmRefactorer.InlineMethod(algorithm, method, result.OutputVariableName, result.InputVariableNames,
+                                             -xStartOffset, -yStartOffset, -zStartOffset,
+                                             width, height, depth);
+            AlgorithmRefactorer.RemoveUsingStatements(astBuilder.CompilationUnit, result.UsingStatements);
             var code = method.Body.GetText();
+
+            // Surround the code with for loops.
+            var forLoop = @"for (var k = 0; k < " + depth + @"; k++)
+for (var i = 0; i < " + width + @"; i++)
+for (var j = 0; j < " + height + @"; j++)
+";
+            code = forLoop + code;
 
             // Add the code to our processing result.
             result.ProcessedCode += code;
@@ -155,11 +204,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             var final = template
                 .Replace("/****** %CODE% ******/", result.ProcessedCode)
                 .Replace("/****** %RETURN% ******/", "return " + result.OutputVariableName + ";")
-                .Replace("/****** %DECLS% ******/",
-                     result.GlobalArrays
-                        .Select(kv => kv.Value + "[] " + kv.Key + " = new " + kv.Value + "[width * height * depth];")
-                        .DefaultIfEmpty("")
-                        .Aggregate((a, b) => a + "\n" + b))
+                .Replace("/****** %DECLS% ******/", result.Declarations)
                 .Replace("/****** %USING% ******/",
                      result.UsingStatements
                         .Where(v => v != "System" && v != "Tychaia.ProceduralGeneration")
@@ -179,10 +224,15 @@ namespace Tychaia.ProceduralGeneration.Compiler
             parameters.CompilerOptions = "/optimize";
             var compiler = CSharpCodeProvider.CreateProvider("CSharp");
             var results = compiler.CompileAssemblyFromSource(parameters, final);
+            using (var writer = new StreamWriter("code.tmp.cs"))
+            {
+                //int i = 1;
+                foreach (var line in final.Split('\n'))
+                    //i++.ToString().PadLeft(4) + ":  " + 
+                    writer.WriteLine(line);
+            }
             if (results.Errors.HasErrors)
             {
-                Console.WriteLine(final);
-                Console.WriteLine();
                 foreach (var error in results.Errors)
                     Console.WriteLine(error);
                 Console.WriteLine();
