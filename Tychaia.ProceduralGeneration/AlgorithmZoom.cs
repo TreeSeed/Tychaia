@@ -49,25 +49,6 @@ namespace Tychaia.ProceduralGeneration
             int ocx_e = xmod ? (int)((i + 1) % 2) : 0;
             int ocy_n = ymod ? (int)((j - 1) % 2) : 0;
             int ocy_s = ymod ? (int)((j + 1) % 2) : 0;
-            int v_ocx = (xmod && i % 2 != 0 ? (i < 0 ? -1 : 1) : 0);
-            int v_ocy = (ymod && j % 2 != 0 ? (j < 0 ? -1 : 1) : 0);
-            int v_ocy_n = (ymod && (j - 1) % 2 != 0 ? ((j - 1) < 0 ? -1 : 1) : 0);
-            int v_ocy_s = (ymod && (j + 1) % 2 != 0 ? ((j + 1) < 0 ? -1 : 1) : 0);
-            int v_ocx_e = (xmod && (i + 1) % 2 != 0 ? ((i + 1) < 0 ? -1 : 1) : 0);
-            int v_ocx_w = (xmod && (i - 1) % 2 != 0 ? ((i - 1) < 0 ? -1 : 1) : 0);
-            if (ocx != v_ocx)
-                throw new InvalidOperationException("ocx != v_ocx");
-            if (ocy != v_ocy)
-                throw new InvalidOperationException("ocy != v_ocy");
-            if (ocx_w != v_ocx_w)
-                throw new InvalidOperationException("ocx_w != v_ocx_w");
-            if (ocx_e != v_ocx_e)
-                throw new InvalidOperationException("ocx_e != v_ocx_e");
-            if (ocy_n != v_ocy_n)
-                throw new InvalidOperationException("ocy_n != v_ocy_n");
-            if (ocy_s != v_ocy_s)
-                throw new InvalidOperationException("ocy_s != v_ocy_s -- " + ocy_s + " != " + v_ocy_s + " -- j: " + j + " j+1: " + (j + 1));
-
 
             int current = input[(i / 2 + ox + ocx) + (j / 2 + oy + ocy) * rw];
             int north = input[(i / 2 + ox + ocx) + ((j - 1) / 2 + oy + ocy_n) * rw];

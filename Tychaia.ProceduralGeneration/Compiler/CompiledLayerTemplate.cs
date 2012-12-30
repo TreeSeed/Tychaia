@@ -133,6 +133,39 @@ public class CompiledLayer : IRuntimeContext, IGenerator
         /* From: http://stackoverflow.com/questions/2890040/implementing-gethashcode
          * Although we aren't implementing GetHashCode, it's still a good way to generate
          * a unique number given a limited set of fields */
+        unchecked
+        {
+            long seed = (x - 1) * 3661988493967 + (y - 1);
+            seed += (x - 2) * 2990430311017;
+            seed *= (y - 3) * 14475080218213;
+            seed += modifier;
+            seed += (y - 4) * 28124722524383;
+            seed += (z - 5) * 25905201761893;
+            seed *= (x - 6) * 16099760261113;
+            seed += (x - 7) * this.m_Seed;
+            seed *= (y - 8) * this.m_Seed;
+            seed += (z - 9) * 55497960863;
+            seed *= (z - 10) * 611286883423;
+            seed += modifier;
+            // Prevents the seed from being 0 along an axis.
+            seed += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
+            
+            long rng = seed * seed;
+            rng += (x - 11) * 2990430311017;
+            rng *= (y - 12) * 14475080218213;
+            rng *= (z - 13) * 23281823741513;
+            rng -= seed * 28124722524383;
+            rng *= (x - 14) * 16099760261113;
+            rng += seed * this.m_Seed;
+            rng *= (y - 15) * this.m_Seed;
+            rng *= (z - 16) * 18193477834921;
+            rng += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
+            rng += modifier;
+            rng += 3661988493967;
+            
+            return rng;
+        }
+        /*
         long seed = (x - 1) * 3661988493967 + (y - 1);
         seed += (x - 2) * 2990430311017;
         seed *= (y - 3) * 14475080218213;
@@ -149,6 +182,7 @@ public class CompiledLayer : IRuntimeContext, IGenerator
         seed += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
             
         return seed;
+        */
     }
     
     #endregion

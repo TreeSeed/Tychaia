@@ -66,6 +66,70 @@ namespace ProceduralGenPerformance
                 return;
             }
 
+            #region Verification
+
+            // Verify integrity between algorithms.
+            int[] legacyData = legacy.GenerateData(0, 0, 128, 128);
+            int[] runtimeData = algorithmRuntime.GenerateData(0, 0, 0, 128, 128, 1);
+            int[] compiledData = algorithmCompiled.GenerateData(0, 0, 0, 128, 128, 1);
+            if (runtimeData.Length != legacyData.Length)
+            {
+                Console.WriteLine("STOP: Runtime data evaluation results in a different array size than the legacy system.");
+                return;
+            }
+            if (compiledData.Length != legacyData.Length)
+            {
+                Console.WriteLine("STOP: Runtime data evaluation results in a different array size than the legacy system.");
+                return;
+            }
+            for (var i = 0; i < legacyData.Length; i++)
+            {
+                if (runtimeData[i] != legacyData[i])
+                {
+                    Console.WriteLine("WARNING: Runtime algorithm results in different data to legacy system.");
+                    break;
+                }
+            }
+            for (var i = 0; i < legacyData.Length; i++)
+            {
+                if (compiledData[i] != legacyData[i])
+                {
+                    Console.WriteLine("WARNING: Runtime algorithm results in different data to legacy system.");
+                    break;
+                }
+            }
+            for (var i = 0; i < legacyData.Length; i++)
+            {
+                if (runtimeData[i] != compiledData[i])
+                {
+                    Console.WriteLine("STOP: Runtime algorithm results in different data to compiled algorithm.");
+                    for (var x = 0; x < 128; x++)
+                    {
+                        for (var y = 0; y < 128; y++)
+                        {
+                            if (runtimeData[x + y * 128] != compiledData[x + y * 128])
+                                Console.Write(compiledData[x + y * 128]);
+                            else
+                                Console.Write(" ");
+                        }
+                        Console.WriteLine();
+                    }
+                    return;
+                }
+            }
+            Console.WriteLine("=== SAMPLE FROM ALGORITHM ===");
+            for (var x = 0; x < 128; x++)
+            {
+                for (var y = 0; y < 128; y++)
+                {
+                    Console.Write(runtimeData[x + y * 128]);
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("=============================");
+
+            #endregion
+
             // Run tests to see how fast they are.
             for (int x = 0; x < 300; x++)
             {

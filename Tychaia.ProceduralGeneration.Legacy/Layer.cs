@@ -12,7 +12,8 @@ namespace Tychaia.ProceduralGeneration
         private long m_Seed;
 
         [DataMember]
-        private Layer[] m_Parents;
+        private Layer[]
+            m_Parents;
 
         // Runtime only.
         private Dictionary<long, int> m_RandomNumberIndexCache = new Dictionary<long, int>();
@@ -106,7 +107,8 @@ namespace Tychaia.ProceduralGeneration
             unchecked
             {
                 int a = this.GetRandomInt(x, y, z, modifier);
-                if (a < 0) a += int.MaxValue;
+                if (a < 0)
+                    a += int.MaxValue;
                 return a % end;
             }
         }
@@ -120,7 +122,8 @@ namespace Tychaia.ProceduralGeneration
             unchecked
             {
                 int a = this.GetRandomInt(x, y, z, modifier);
-                if (a < 0) a += int.MaxValue;
+                if (a < 0)
+                    a += int.MaxValue;
                 return a % (end - start) + start;
             }
         }
@@ -153,7 +156,8 @@ namespace Tychaia.ProceduralGeneration
         protected double GetRandomDouble(long x, long y, long z, long modifier = 0)
         {
             long a = this.GetRandomNumber(x, y, z, modifier) / 2;
-            if (a < 0) a += long.MaxValue;
+            if (a < 0)
+                a += long.MaxValue;
             return (double)a / (double)long.MaxValue;
         }
 
@@ -191,7 +195,9 @@ namespace Tychaia.ProceduralGeneration
                         index = this.m_RandomNumberIndexCache[seed];
                         break;
                     }
-                    catch (Exception) { }
+                    catch (Exception)
+                    {
+                    }
                 }
 
                 long rng = seed * seed;
