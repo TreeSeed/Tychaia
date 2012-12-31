@@ -267,17 +267,14 @@ namespace Tychaia.ProceduralGeneration
 
         #endregion
 
-        #region TESTING EXTRA
-
-        public int FindZoomedPoint(int[] parent, long i, long j, long ox, long oy, long x, long y, long rw)
-        {
-            int ocx = (x % 2 != 0 && i % 2 != 0 ? (i < 0 ? -1 : 1) : 0);
-            int ocy = (y % 2 != 0 && j % 2 != 0 ? (j < 0 ? -1 : 1) : 0);
-            
-            return parent[(i / 2 + ox + ocx) + (j / 2 + oy + ocy) * rw];
-        }
+        #region Other
         
-        public int Smooth(long x, long y, int northValue, int southValue, int westValue, int eastValue, int currentValue, long i, long j, long ox, long oy, long rw, int[] parent)
+        /// <summary>
+        /// Smoothes the specified data according to smoothing logic.  Apparently
+        /// inlining this functionality causes the algorithms to run slower, so we
+        /// leave this function on it's own.
+        /// </summary>
+        public int Smooth(bool isFuzzy, long x, long y, int northValue, int southValue, int westValue, int eastValue, int southEastValue, int currentValue, long i, long j, long ox, long oy, long rw, int[] parent)
         {
             // Parent-based Smoothing
             int selected = 0;
@@ -315,7 +312,7 @@ namespace Tychaia.ProceduralGeneration
                 }
                 else
                 {
-                    if (true)//mode == AlgorithmZoom.ZoomType.Smooth)
+                    if (!isFuzzy)
                     {
                         selected = this.GetRandomRange(x, y, 0, 3);
                         switch (selected)
@@ -340,7 +337,7 @@ namespace Tychaia.ProceduralGeneration
                             case 2:
                                 return eastValue;
                             case 3:
-                                return this.FindZoomedPoint(parent, i + 2, j + 2, ox, oy, x - i, y - j, rw);
+                                return southEastValue;
                         }
                     }
                 }
@@ -364,8 +361,9 @@ namespace Tychaia.ProceduralGeneration
             
             throw new InvalidOperationException();
         }
-
+        
         #endregion
+
     }
 }
 

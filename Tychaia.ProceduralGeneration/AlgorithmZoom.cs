@@ -55,9 +55,10 @@ namespace Tychaia.ProceduralGeneration
             int south = input[(i / 2 + ox + ocx) + ((j + 1) / 2 + oy + ocy_s) * rw];
             int east = input[((i + 1) / 2 + ox + ocx_e) + (j / 2 + oy + ocy) * rw];
             int west = input[((i - 1) / 2 + ox + ocx_w) + (j / 2 + oy + ocy) * rw];
+            int southEast = input[((i + 2) / 2 + ox + ocx) + ((j + 2) / 2 + oy + ocy) * rw];
             
             if (this.Mode == ZoomType.Smooth || this.Mode == ZoomType.Fuzzy)
-                output[i + j * width] = context.Smooth(x + i, y + j, north, south, west, east, current, i, j, ox, oy, rw, input);
+                output[i + j * width] = context.Smooth(this.Mode == ZoomType.Fuzzy, x + i, y + j, north, south, west, east, southEast, current, i, j, ox, oy, rw, input);
             else                    
                 output[i + j * width] = current;
         }

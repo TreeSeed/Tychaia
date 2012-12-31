@@ -24,10 +24,10 @@ namespace Tychaia.ProceduralGeneration.Compiler
             public override void VisitVariableDeclarationStatement(VariableDeclarationStatement v)
             {
                 // Visit variable initializers.
-                /*foreach (var vv in v.Variables)
+                foreach (var vv in v.Variables)
                 {
                     vv.Initializer.AcceptVisitor(new FindPropertiesVisitor { Algorithm = Algorithm, ParameterContextName = ParameterContextName });
-                }*/
+                }
             }
 
             public override void VisitAnonymousMethodExpression(AnonymousMethodExpression a)
@@ -41,22 +41,15 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 // Check to see whether this is on the owner of the ProcessCell method.
                 if (p.Target is ThisReferenceExpression)
                 {
-                    // Check to see whether it is a property or method call.
-                    if (p.Parent is InvocationExpression)
-                    {
-                        // This is a method call.
+                    // Replace the AST node with the current value.
+                    var prop = this.Algorithm.GetType().GetProperties().Where(v => v.Name == p.MemberName).DefaultIfEmpty(null).First();
+                    if (prop == null)
                         throw new NotSupportedException("Unable to inline ProcessCell methods that invoke other methods on this algorithm.");
-                    }
+                    var value = prop.GetGetMethod().Invoke(this.Algorithm, null);
+                    if (value is Enum)
+                        p.ReplaceWith(new PrimitiveExpression(value, value.GetType().FullName.Replace("+", ".") + "." + value));
                     else
-                    {
-                        // Replace the AST node with the current value.
-                        var prop = this.Algorithm.GetType().GetProperties().Where(v => v.Name == p.MemberName).First();
-                        var value = prop.GetGetMethod().Invoke(this.Algorithm, null);
-                        if (value is Enum)
-                            p.ReplaceWith(new PrimitiveExpression(value, value.GetType().FullName.Replace("+", ".") + "." + value));
-                        else
-                            p.ReplaceWith(new PrimitiveExpression(value));
-                    }
+                        p.ReplaceWith(new PrimitiveExpression(value));
                 }
                 else if (p.Target is IdentifierExpression && (p.Target as IdentifierExpression).Identifier == ParameterContextName)
                 {
@@ -144,6 +137,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
                     i.Identifier = outputName;
                 else if (parameterInputs.Count(v => v.Name == i.Identifier) > 0)
                     i.Identifier = inputNames.ElementAt(Array.FindIndex(parameterInputs, v => v.Name == i.Identifier));
+                else if (i.Identifier == "context")
+                    i.ReplaceWith(new ThisReferenceExpression());
             }
         }
 

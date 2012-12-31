@@ -45,8 +45,12 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         double GetRandomDouble(long x, long y, long z, long modifier = 0);
 
-        int FindZoomedPoint(int[] parent, long i, long j, long ox, long oy, long x, long y, long rw);
-        int Smooth(long x, long y, int northValue, int southValue, int westValue, int eastValue, int currentValue, long i, long j, long ox, long oy, long rw, int[] parent);
+        /// <summary>
+        /// Smoothes the specified data according to smoothing logic.  Apparently
+        /// inlining this functionality causes the algorithms to run slower, so we
+        /// leave this function on it's own.
+        /// </summary>
+        int Smooth(bool isFuzzy, long x, long y, int northValue, int southValue, int westValue, int eastValue, int southEastValue, int currentValue, long i, long j, long ox, long oy, long rw, int[] parent);
     }
 }
 

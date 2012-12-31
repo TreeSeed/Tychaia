@@ -3,6 +3,10 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
 //
+
+//#define MODULO_SPEED_TEST
+//#define VERIFICATION
+
 using System;
 using Tychaia.ProceduralGeneration;
 using Tychaia.ProceduralGeneration.Compiler;
@@ -16,6 +20,7 @@ namespace ProceduralGenPerformance
             Layer legacy;
             RuntimeLayer algorithmRuntime;
             IGenerator algorithmCompiled;
+            IGenerator algorithmCompiledBuiltin = null;
             string mode = "quadzoom";
             if (args.Length > 0)
                 mode = args[0];
@@ -35,6 +40,7 @@ namespace ProceduralGenPerformance
                 algorithmZoom1.SetInput(0, algorithmZoom2);
                 algorithmRuntime = algorithmZoom1;
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
+                algorithmCompiledBuiltin = new CompiledLayerBuiltin();
             }
             else if (mode == "doublezoom")
             {
@@ -65,6 +71,33 @@ namespace ProceduralGenPerformance
                 Console.WriteLine("usage: ProceduralGenPerformance.exe [doublezoom|zoom|land]");
                 return;
             }
+
+#if MODULO_SPEED_TEST
+
+            for (int i = 0; i <= 10000000; i += 1)
+            {
+                if ((i & 71) < 0 || (i & 71) >= 10000000)
+                    Console.WriteLine("AND DOES NOT WORK FOR " + i + ".");
+            }
+            int a = 0;
+            var andStartTime = DateTime.Now;
+            for (int i = 0; i < 10000000; i += 1)
+            {
+                a = i & 71;
+            }
+            var andEndTime = DateTime.Now;
+            var modStartTime = DateTime.Now;
+            for (int i = 0; i < 10000000; i += 1)
+            {
+                a = i % 71;
+            }
+            var modEndTime = DateTime.Now;
+            Console.WriteLine("BITAND OPERATION TOOK: " + (andEndTime - andStartTime).TotalMilliseconds + "ms");
+            Console.WriteLine("MODULO OPERATION TOOK: " + (modEndTime - modStartTime).TotalMilliseconds + "ms");
+
+#endif
+
+#if VERIFICATION
 
             #region Verification
 
@@ -114,7 +147,7 @@ namespace ProceduralGenPerformance
                         }
                         Console.WriteLine();
                     }
-                    return;
+                    break;
                 }
             }
             Console.WriteLine("=== SAMPLE FROM ALGORITHM ===");
@@ -129,6 +162,8 @@ namespace ProceduralGenPerformance
             Console.WriteLine("=============================");
 
             #endregion
+
+#endif
 
             // Run tests to see how fast they are.
             for (int x = 0; x < 300; x++)
@@ -148,12 +183,23 @@ namespace ProceduralGenPerformance
                 for (int i = 0; i < 1000; i++)
                     algorithmCompiled.GenerateData(0, 0, 0, 128, 128, 1);
                 var algorithmCompiledEndTime = DateTime.Now;
+                var algorithmCompiledBuiltinStartTime = DateTime.Now;
+                var algorithmCompiledBuiltinEndTime = DateTime.Now;
+                if (algorithmCompiledBuiltin != null)
+                {
+                    Console.WriteLine("Starting Test #" + x + " (algorithm compiled builtin)");
+                    algorithmCompiledBuiltinStartTime = DateTime.Now;
+                    for (int i = 0; i < 1000; i++)
+                        algorithmCompiled.GenerateData(0, 0, 0, 128, 128, 1);
+                    algorithmCompiledBuiltinEndTime = DateTime.Now;
+                }
                 // Because there are 1000 tests, and 1000 microseconds in a millisecond..
                 Console.WriteLine(
                     "Test #" + x + " "
                     + "LEGACY: " + (legacyEndTime - legacyStartTime).TotalMilliseconds + "µs "
                     + "ALGORITHM RUNTIME: " + (algorithmRuntimeEndTime - algorithmRuntimeStartTime).TotalMilliseconds + "µs "
                     + "ALGORITHM COMPILED: " + (algorithmCompiledEndTime - algorithmCompiledStartTime).TotalMilliseconds + "µs "
+                    + ((algorithmCompiledBuiltin != null) ? ("ALGORITHM COMPILED BUILTIN: " + (algorithmCompiledBuiltinEndTime - algorithmCompiledBuiltinStartTime).TotalMilliseconds + "µs ") : "")
                     + "LC%: " + ((legacyEndTime - legacyStartTime).TotalMilliseconds / (algorithmCompiledEndTime - algorithmCompiledStartTime).TotalMilliseconds) * 100 + "% "
                 );
             }
