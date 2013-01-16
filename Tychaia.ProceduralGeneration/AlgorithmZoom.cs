@@ -56,9 +56,38 @@ namespace Tychaia.ProceduralGeneration
             int east = input[((i + 1) / 2 + ox + ocx_e) + (j / 2 + oy + ocy) * rw];
             int west = input[((i - 1) / 2 + ox + ocx_w) + (j / 2 + oy + ocy) * rw];
             int southEast = input[((i + 2) / 2 + ox + ocx) + ((j + 2) / 2 + oy + ocy) * rw];
-            
+
+            /*  Template for new Smooth system, have to fix/solve the Fuzzy Problem.
+            int selected = 0;
+
+            if (x % 2 == 0 && y % 2 == 0)
+                if (ZoomType == ZoomType.Fuzzy)
+                    selected = this.GetRandomRange(x, y, 0, 4);
+                else
+                    selected = this.GetRandomRange(x, y, 0, 3);
+            else
+                selected = this.GetRandomRange(x, y, 0, 2);
+
+            switch (selected)
+            {
+                case 0:
+                    output[i + j * width] = current;
+                case 1:
+                    if (x % 2 == 0)
+                        output[i + j * width] = south;
+                    else if (y % 2 == 0)
+                        output[i + j * width] = east;
+                    else
+                        output[i + j * width] = current;
+                case 2:
+                    output[i + j * width] = east;
+                case 3:
+                    output[i + j * width] = southEast;
+            }
+            */
+
             if (this.Mode == ZoomType.Smooth || this.Mode == ZoomType.Fuzzy)
-                output[i + j * width] = context.Smooth(this.Mode == ZoomType.Fuzzy, x + i, y + j, north, south, west, east, southEast, current, i, j, ox, oy, rw, input);
+                output[i + j * width] = context.Smooth(this.Mode == ZoomType.Fuzzy, x, y, north, south, west, east, southEast, current, i, j, ox, oy, rw, input);
             else                    
                 output[i + j * width] = current;
         }
