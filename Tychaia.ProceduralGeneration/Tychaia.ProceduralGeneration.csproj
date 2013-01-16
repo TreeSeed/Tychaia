@@ -62,6 +62,9 @@
     <Compile Include="Compiler\ArrayPool.cs" />
     <Compile Include="Compiler\AlgorithmRefactorer.cs" />
     <Compile Include="AlgorithmZoom.cs" />
+    <Compile Include="AlgorithmTest.cs" />
+    <Compile Include="AlgorithmConstant.cs" />
+    <Compile Include="AlgorithmUtility.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

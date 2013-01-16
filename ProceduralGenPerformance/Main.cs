@@ -17,9 +17,9 @@ namespace ProceduralGenPerformance
     {
         public static void Main(string[] args)
         {
-            Layer legacy;
-            RuntimeLayer algorithmRuntime;
-            IGenerator algorithmCompiled;
+            Layer legacy = null;
+            RuntimeLayer algorithmRuntime = null;
+            IGenerator algorithmCompiled = null;
             IGenerator algorithmCompiledBuiltin = null;
             string mode = "quadzoom";
             if (args.Length > 0)
@@ -40,7 +40,7 @@ namespace ProceduralGenPerformance
                 algorithmZoom1.SetInput(0, algorithmZoom2);
                 algorithmRuntime = algorithmZoom1;
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
-                algorithmCompiledBuiltin = new CompiledLayerBuiltin();
+                //algorithmCompiledBuiltin = new CompiledLayerBuiltin();
             }
             else if (mode == "doublezoom")
             {
@@ -60,6 +60,16 @@ namespace ProceduralGenPerformance
                 algorithmRuntime.SetInput(0, new RuntimeLayer(new AlgorithmInitialLand()));
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
             }
+            else if (mode == "test")
+            {
+                var algorithmTest1 = new RuntimeLayer(new AlgorithmTest());
+                var algorithmTest2 = new RuntimeLayer(new AlgorithmTest());
+                var algorithmConstant = new RuntimeLayer(new AlgorithmConstant { Constant = 5 });
+                algorithmTest2.SetInput(0, algorithmConstant);
+                algorithmTest1.SetInput(0, algorithmTest2);
+                algorithmRuntime = algorithmTest1;
+                algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
+            }
             else if (mode == "land")
             {
                 legacy = new LayerInitialLand();
@@ -71,6 +81,12 @@ namespace ProceduralGenPerformance
                 Console.WriteLine("usage: ProceduralGenPerformance.exe [doublezoom|zoom|land]");
                 return;
             }
+
+            /*dynamic de = algorithmCompiled;
+            Console.WriteLine(de.Modifier);
+            Console.WriteLine(algorithmRuntime.Modifier);
+            algorithmCompiled.Seed = 100;
+            algorithmRuntime.Seed = 100;*/
 
 #if MODULO_SPEED_TEST
 
@@ -102,9 +118,9 @@ namespace ProceduralGenPerformance
             #region Verification
 
             // Verify integrity between algorithms.
-            int[] legacyData = legacy.GenerateData(0, 0, 128, 128);
-            int[] runtimeData = algorithmRuntime.GenerateData(0, 0, 0, 128, 128, 1);
-            int[] compiledData = algorithmCompiled.GenerateData(0, 0, 0, 128, 128, 1);
+            int[] legacyData = legacy.GenerateData(0, 0, 16, 16);
+            int[] runtimeData = algorithmRuntime.GenerateData(0, 0, 0, 16, 16, 1);
+            int[] compiledData = algorithmCompiled.GenerateData(0, 0, 0, 16, 16, 1);
             if (runtimeData.Length != legacyData.Length)
             {
                 Console.WriteLine("STOP: Runtime data evaluation results in a different array size than the legacy system.");
@@ -136,12 +152,12 @@ namespace ProceduralGenPerformance
                 if (runtimeData[i] != compiledData[i])
                 {
                     Console.WriteLine("STOP: Runtime algorithm results in different data to compiled algorithm.");
-                    for (var x = 0; x < 128; x++)
+                    for (var x = 0; x < 16; x++)
                     {
-                        for (var y = 0; y < 128; y++)
+                        for (var y = 0; y < 16; y++)
                         {
-                            if (runtimeData[x + y * 128] != compiledData[x + y * 128])
-                                Console.Write(compiledData[x + y * 128]);
+                            if (runtimeData[x + y * 16] != compiledData[x + y * 16])
+                                Console.Write(compiledData[x + y * 16]);
                             else
                                 Console.Write(" ");
                         }
@@ -150,12 +166,21 @@ namespace ProceduralGenPerformance
                     break;
                 }
             }
-            Console.WriteLine("=== SAMPLE FROM ALGORITHM ===");
-            for (var x = 0; x < 128; x++)
+            Console.WriteLine("=== SAMPLE FROM RUNTIME =====");
+            for (var x = 0; x < 16; x++)
             {
-                for (var y = 0; y < 128; y++)
+                for (var y = 0; y < 16; y++)
                 {
-                    Console.Write(runtimeData[x + y * 128]);
+                    Console.Write(runtimeData[x + y * 16]);
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("=== SAMPLE FROM COMPILED ====");
+            for (var x = 0; x < 16; x++)
+            {
+                for (var y = 0; y < 16; y++)
+                {
+                    Console.Write(compiledData[x + y * 16]);
                 }
                 Console.WriteLine();
             }
@@ -169,9 +194,12 @@ namespace ProceduralGenPerformance
             for (int x = 0; x < 300; x++)
             {
                 var legacyStartTime = DateTime.Now;
-                Console.WriteLine("Starting Test #" + x + " (legacy)");
-                for (int i = 0; i < 1000; i++)
-                    legacy.GenerateData(0, 0, 128, 128);
+                if (legacy != null)
+                {
+                    Console.WriteLine("Starting Test #" + x + " (legacy)");
+                    for (int i = 0; i < 1000; i++)
+                        legacy.GenerateData(0, 0, 128, 128);
+                }
                 var legacyEndTime = DateTime.Now;
                 Console.WriteLine("Starting Test #" + x + " (algorithm runtime)");
                 var algorithmRuntimeStartTime = DateTime.Now;

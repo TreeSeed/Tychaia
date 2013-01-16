@@ -44,6 +44,9 @@ namespace Tychaia.ProceduralGeneration
             for (var i = 0; i < algorithm.InputTypes.Length; i++)
                 inputs.Add(null);
             this.m_Inputs = inputs.ToArray();
+
+            this.Seed = 100;
+            this.Modifier = 0;
         }
 
         /// <summary>
@@ -144,10 +147,11 @@ namespace Tychaia.ProceduralGeneration
             return this.PerformAlgorithmRuntimeCall(x, y, z, x + width, y + height, z + depth, width, height, depth);
         }
 
+        
         #region Randomness
         
         private long m_Seed;
-
+        
         /// <summary>
         /// The world seed.
         /// </summary>
@@ -162,7 +166,7 @@ namespace Tychaia.ProceduralGeneration
                 this.m_Seed = value;
             }
         }
-
+        
         /// <summary>
         /// Returns a random positive integer between the specified 0 and
         /// the exclusive end value.
@@ -247,7 +251,7 @@ namespace Tychaia.ProceduralGeneration
                 seed += modifier;
                 // Prevents the seed from being 0 along an axis.
                 seed += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
-
+                
                 long rng = seed * seed;
                 rng += (x - 11) * 2990430311017;
                 rng *= (y - 12) * 14475080218213;
@@ -264,8 +268,8 @@ namespace Tychaia.ProceduralGeneration
                 return rng;
             }
         }
-
-        #endregion
+        
+#endregion
 
         #region Other
         

@@ -19,6 +19,12 @@ public class CompiledLayer : IRuntimeContext, IGenerator
         set;
     }
 
+    public CompiledLayer()
+    {
+        this.Seed = 100;
+        this.Modifier = 0;
+    }
+
     #region AUTO-GENERATED CODE
 
     public dynamic GenerateData(long x, long y, long z, int width, int height, int depth)

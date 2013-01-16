@@ -122,11 +122,29 @@ namespace Tychaia.ProceduralGeneration.Compiler
                         new PrimitiveExpression(zStartOffset)
                     ))));
                 else if (i.Identifier == parameterI.Name)
-                    i.Identifier = "i";
+                    i.ReplaceWith(
+                        new ParenthesizedExpression(
+                        new BinaryOperatorExpression(
+                        new IdentifierExpression("i"),
+                        BinaryOperatorType.Subtract,
+                        new PrimitiveExpression(xStartOffset)
+                    )));
                 else if (i.Identifier == parameterJ.Name)
-                    i.Identifier = "j";
+                    i.ReplaceWith(
+                        new ParenthesizedExpression(
+                        new BinaryOperatorExpression(
+                        new IdentifierExpression("j"),
+                        BinaryOperatorType.Subtract,
+                        new PrimitiveExpression(yStartOffset)
+                    )));
                 else if (i.Identifier == parameterK.Name)
-                    i.Identifier = "k";
+                    i.ReplaceWith(
+                        new ParenthesizedExpression(
+                        new BinaryOperatorExpression(
+                        new IdentifierExpression("k"),
+                        BinaryOperatorType.Subtract,
+                        new PrimitiveExpression(zStartOffset)
+                    )));
                 else if (i.Identifier == parameterWidth.Name)
                     i.Identifier = width;
                 else if (i.Identifier == parameterHeight.Name)
