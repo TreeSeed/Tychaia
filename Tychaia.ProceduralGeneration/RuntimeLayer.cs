@@ -173,13 +173,7 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public int GetRandomRange(long x, long y, long z, int end, long modifier = 0)
         {
-            unchecked
-            {
-                int a = this.GetRandomInt(x, y, z, modifier);
-                if (a < 0)
-                    a += int.MaxValue;
-                return a % end;
-            }
+            return AlgorithmUtility.GetRandomRange(this.Seed, x, y, z, end, modifier);
         }
         
         /// <summary>
@@ -188,13 +182,7 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public int GetRandomRange(long x, long y, long z, int start, int end, long modifier)
         {
-            unchecked
-            {
-                int a = this.GetRandomInt(x, y, z, modifier);
-                if (a < 0)
-                    a += int.MaxValue;
-                return a % (end - start) + start;
-            }
+            return AlgorithmUtility.GetRandomRange(this.Seed, x, y, z, start, end, modifier);
         }
         
         /// <summary>
@@ -203,10 +191,7 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public int GetRandomInt(long x, long y, long z, long modifier = 0)
         {
-            unchecked
-            {
-                return (int)(this.GetRandomNumber(x, y, z, modifier) % int.MaxValue);
-            }
+            return AlgorithmUtility.GetRandomInt(this.Seed, x, y, z, modifier);
         }
         
         /// <summary>
@@ -215,7 +200,7 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public long GetRandomLong(long x, long y, long z, long modifier = 0)
         {
-            return this.GetRandomNumber(x, y, z, modifier);
+            return AlgorithmUtility.GetRandomLong(this.Seed, x, y, z, modifier);
         }
         
         /// <summary>
@@ -224,52 +209,10 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public double GetRandomDouble(long x, long y, long z, long modifier = 0)
         {
-            long a = this.GetRandomNumber(x, y, z, modifier) / 2;
-            if (a < 0)
-                a += long.MaxValue;
-            return (double)a / (double)long.MaxValue;
+            return AlgorithmUtility.GetRandomDouble(this.Seed, x, y, z, modifier);
         }
         
-        private long GetRandomNumber(long x, long y, long z, long modifier)
-        {
-            /* From: http://stackoverflow.com/questions/2890040/implementing-gethashcode
-             * Although we aren't implementing GetHashCode, it's still a good way to generate
-             * a unique number given a limited set of fields */
-            unchecked
-            {
-                long seed = (x - 1) * 3661988493967 + (y - 1);
-                seed += (x - 2) * 2990430311017;
-                seed *= (y - 3) * 14475080218213;
-                seed += modifier;
-                seed += (y - 4) * 28124722524383;
-                seed += (z - 5) * 25905201761893;
-                seed *= (x - 6) * 16099760261113;
-                seed += (x - 7) * this.m_Seed;
-                seed *= (y - 8) * this.m_Seed;
-                seed += (z - 9) * 55497960863;
-                seed *= (z - 10) * 611286883423;
-                seed += modifier;
-                // Prevents the seed from being 0 along an axis.
-                seed += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
-                
-                long rng = seed * seed;
-                rng += (x - 11) * 2990430311017;
-                rng *= (y - 12) * 14475080218213;
-                rng *= (z - 13) * 23281823741513;
-                rng -= seed * 28124722524383;
-                rng *= (x - 14) * 16099760261113;
-                rng += seed * this.m_Seed;
-                rng *= (y - 15) * this.m_Seed;
-                rng *= (z - 16) * 18193477834921;
-                rng += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
-                rng += modifier;
-                rng += 3661988493967;
-                
-                return rng;
-            }
-        }
-        
-#endregion
+        #endregion
 
         #region Other
         

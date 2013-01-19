@@ -17,7 +17,7 @@ namespace Tychaia.ProceduralGeneration
         {
             unchecked
             {
-                int a = this.GetRandomInt(seed, x, y, z, modifier);
+                int a = AlgorithmUtility.GetRandomInt(seed, x, y, z, modifier);
                 if (a < 0)
                     a += int.MaxValue;
                 return a % end;
@@ -32,7 +32,7 @@ namespace Tychaia.ProceduralGeneration
         {
             unchecked
             {
-                int a = this.GetRandomInt(seed, x, y, z, modifier);
+                int a = AlgorithmUtility.GetRandomInt(seed, x, y, z, modifier);
                 if (a < 0)
                     a += int.MaxValue;
                 return a % (end - start) + start;
@@ -47,7 +47,7 @@ namespace Tychaia.ProceduralGeneration
         {
             unchecked
             {
-                return (int)(this.GetRandomNumber(seed, x, y, z, modifier) % int.MaxValue);
+                return (int)(AlgorithmUtility.GetRandomNumber(seed, x, y, z, modifier) % int.MaxValue);
             }
         }
         
@@ -57,7 +57,7 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public static long GetRandomLong(long seed, long x, long y, long z, long modifier = 0)
         {
-            return this.GetRandomNumber(seed, x, y, z, modifier);
+            return AlgorithmUtility.GetRandomNumber(seed, x, y, z, modifier);
         }
         
         /// <summary>
@@ -66,7 +66,7 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public static double GetRandomDouble(long seed, long x, long y, long z, long modifier = 0)
         {
-            long a = this.GetRandomNumber(seed, x, y, z, modifier) / 2;
+            long a = AlgorithmUtility.GetRandomNumber(seed, x, y, z, modifier) / 2;
             if (a < 0)
                 a += long.MaxValue;
             return (double)a / (double)long.MaxValue;

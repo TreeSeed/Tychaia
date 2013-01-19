@@ -128,7 +128,7 @@ namespace ProceduralGenPerformance
             }
             if (compiledData.Length != legacyData.Length)
             {
-                Console.WriteLine("STOP: Runtime data evaluation results in a different array size than the legacy system.");
+                Console.WriteLine("STOP: Compiled data evaluation results in a different array size than the legacy system.");
                 return;
             }
             for (var i = 0; i < legacyData.Length; i++)
@@ -143,7 +143,7 @@ namespace ProceduralGenPerformance
             {
                 if (compiledData[i] != legacyData[i])
                 {
-                    Console.WriteLine("WARNING: Runtime algorithm results in different data to legacy system.");
+                    Console.WriteLine("WARNING: Compiled algorithm results in different data to legacy system.");
                     break;
                 }
             }
