@@ -10,7 +10,7 @@ using System.ComponentModel;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerCategory(FlowCategory.Land)]
+    [FlowDesignerCategory(FlowCategory.InitialGeneration)]
     [FlowDesignerName("Initial")]
     public class AlgorithmInitial : Algorithm<int>
     {

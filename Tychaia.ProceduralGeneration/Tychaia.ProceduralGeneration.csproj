@@ -66,6 +66,7 @@
     <Compile Include="AlgorithmConstant.cs" />
     <Compile Include="AlgorithmUtility.cs" />
     <Compile Include="Compiler\LayerMetrics.cs" />
+    <Compile Include="AlgorithmExtend.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

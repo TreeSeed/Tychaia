@@ -7,9 +7,12 @@ using System;
 
 namespace Tychaia.ProceduralGeneration
 {
+    // Going to have to re-think categories - currently in the process of making layers more dynamic (so we can use them for multiple things that are simmilar)
     public enum FlowCategory
     {
         General,
+        InitialGeneration,
+        ZoomTools,
         Land,
         Biome,
         Rainfall,
