@@ -53,7 +53,6 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="IAlgorithm.cs" />
     <Compile Include="IRuntimeContext.cs" />
-    <Compile Include="AlgorithmInitialLand.cs" />
     <Compile Include="RuntimeLayer.cs" />
     <Compile Include="FlowDesignerCategoryAttribute.cs" />
     <Compile Include="FlowDesignerNameAttribute.cs" />
@@ -62,6 +61,7 @@
     <Compile Include="Compiler\ArrayPool.cs" />
     <Compile Include="Compiler\AlgorithmRefactorer.cs" />
     <Compile Include="AlgorithmZoom.cs" />
+    <Compile Include="AlgorithmInitial.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
