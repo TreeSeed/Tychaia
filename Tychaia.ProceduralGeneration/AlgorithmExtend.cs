@@ -50,6 +50,15 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
+        [DataMember]
+        [DefaultValue(false)]
+        [Description("Can choose to make the cells only expand when there are less neighbors. Can be either NeighborChancing or defaults to 1 neighbor.")]
+        public bool AddPoints
+        {
+            get;
+            set;
+        }
+
         public override int RequiredXBorder { get { return 1; } }
         public override int RequiredYBorder { get { return 1; } }
 
@@ -61,6 +70,12 @@ namespace Tychaia.ProceduralGeneration
             this.NeighborExpanding = false;
         }
 
+        // Will be able to use this algorithm for:
+        // Land - This is the equivelent of ExtendLand
+        // Towns - This is the equivelent of ExtendTowns
+        // Landmarks/Terrain - We can spread landmarks over the world, we can create mountain landmarks by spreading their size out then modifying the terrain.
+        // Monsters - We can spread monster villages out, simmilar to towns. 
+        // Dungeons - We can use this to smooth dungeons out, so that there are less or more pointy bits.
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth)
         {
             int ox = RequiredXBorder;
@@ -68,10 +83,14 @@ namespace Tychaia.ProceduralGeneration
             long rw = RequiredYBorder * 2 + width;
 
             // Does this if statement work?
+            // Nevermind have to remake this entire section anyway, too many || && and its getting confusing and over extended.
             if ((input[(i + ox) + (j + oy) * rw] == Value && ExcludeValue == true) || (input[(i + ox) + (j + oy) * rw] != Value && ExcludeValue == false))
             {
                 if (NeighborChancing == false || context.GetRandomRange(x, y, 1, 100, context.Modifier) < (input[(i + ox + 1) + (j + oy + 1) * rw] + input[(i + ox - 1) + (j + oy - 1) * rw] + input[(i + ox - 1) + (j + oy + 1) * rw] + input[(i + ox + 1) + (j + oy - 1) * rw]))
                 {
+                    if (AddPoints == false || (AddPoints == true && (NeighborChancing == false || (NeighborChancing == true && context.GetRandomRange(x, y, 1, 100, context.Modifier) > (input[(i + ox + 1) + (j + oy + 1) * rw] + input[(i + ox - 1) + (j + oy - 1) * rw] + input[(i + ox - 1) + (j + oy + 1) * rw] + input[(i + ox + 1) + (j + oy - 1) * rw])))))
+                    {
+
                     int selected = context.GetRandomRange(x, y, 1, 4, context.Modifier);
                 
                     switch (selected)
@@ -124,6 +143,7 @@ namespace Tychaia.ProceduralGeneration
                                     output[(i + ox + 1) + (j + oy - 1) * rw] = input[(i + ox - 1) + (j + oy + 1) * rw];
                             }
                             break;
+                    }
                     }
                 }
             }
