@@ -25,7 +25,7 @@ namespace Tychaia.ProceduralGeneration
 
         [DataMember]
         [DefaultValue(true)]
-        [Description("If true extend all except for the given value else extend only the given value.")]
+        [Description("If true extend extend all other values into given value. If false extend all values into anything except for the given value.")]
         public bool ExcludeValue
         {
             get;
@@ -68,6 +68,7 @@ namespace Tychaia.ProceduralGeneration
             this.ExcludeValue = true;
             this.NeighborChancing = true;
             this.NeighborExpanding = false;
+            this.AddPoints = false;
         }
 
         // Will be able to use this algorithm for:
@@ -75,7 +76,8 @@ namespace Tychaia.ProceduralGeneration
         // Towns - This is the equivelent of ExtendTowns
         // Landmarks/Terrain - We can spread landmarks over the world, we can create mountain landmarks by spreading their size out then modifying the terrain.
         // Monsters - We can spread monster villages out, simmilar to towns. 
-        // Dungeons - We can use this to smooth dungeons out, so that there are less or more pointy bits.
+        // Dungeons - We can use this to smooth dungeons out, so that there are less or more pointy bits. Alternatively we can also use this to spread out some side sections.
+        // Anything else?
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth)
         {
             int ox = RequiredXBorder;
@@ -84,6 +86,8 @@ namespace Tychaia.ProceduralGeneration
 
             // Does this if statement work?
             // Nevermind have to remake this entire section anyway, too many || && and its getting confusing and over extended.
+            // Wondering exactly how to do that - something about having setting checks at the start (then setting booleans) I think, then utilize that throughtout (rather than having multiple checks).
+            // Also any other features you can think of?
             if ((input[(i + ox) + (j + oy) * rw] == Value && ExcludeValue == true) || (input[(i + ox) + (j + oy) * rw] != Value && ExcludeValue == false))
             {
                 if (NeighborChancing == false || context.GetRandomRange(x, y, 1, 100, context.Modifier) < (input[(i + ox + 1) + (j + oy + 1) * rw] + input[(i + ox - 1) + (j + oy - 1) * rw] + input[(i + ox - 1) + (j + oy + 1) * rw] + input[(i + ox + 1) + (j + oy - 1) * rw]))
