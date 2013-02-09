@@ -33,7 +33,7 @@ namespace ProceduralGenPerformance
                 var algorithmZoom2 = new RuntimeLayer(new AlgorithmZoom());
                 var algorithmZoom3 = new RuntimeLayer(new AlgorithmZoom());
                 var algorithmZoom4 = new RuntimeLayer(new AlgorithmZoom());
-                var algorithmInitialLand = new RuntimeLayer(new AlgorithmInitialLand());
+                var algorithmInitialLand = new RuntimeLayer(new AlgorithmInitial());
                 algorithmZoom4.SetInput(0, algorithmInitialLand);
                 algorithmZoom3.SetInput(0, algorithmZoom4);
                 algorithmZoom2.SetInput(0, algorithmZoom3);
@@ -47,7 +47,7 @@ namespace ProceduralGenPerformance
                 legacy = new LayerZoom(new LayerZoom(new LayerInitialLand()));
                 var algorithmZoom1 = new RuntimeLayer(new AlgorithmZoom());
                 var algorithmZoom2 = new RuntimeLayer(new AlgorithmZoom());
-                var algorithmInitialLand = new RuntimeLayer(new AlgorithmInitialLand());
+                var algorithmInitialLand = new RuntimeLayer(new AlgorithmInitial());
                 algorithmZoom2.SetInput(0, algorithmInitialLand);
                 algorithmZoom1.SetInput(0, algorithmZoom2);
                 algorithmRuntime = algorithmZoom1;
@@ -57,7 +57,7 @@ namespace ProceduralGenPerformance
             {
                 legacy = new LayerZoom(new LayerInitialLand());
                 algorithmRuntime = new RuntimeLayer(new AlgorithmZoom());
-                algorithmRuntime.SetInput(0, new RuntimeLayer(new AlgorithmInitialLand()));
+                algorithmRuntime.SetInput(0, new RuntimeLayer(new AlgorithmInitial()));
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
             }
             else if (mode == "test")
@@ -73,7 +73,7 @@ namespace ProceduralGenPerformance
             else if (mode == "land")
             {
                 legacy = new LayerInitialLand();
-                algorithmRuntime = new RuntimeLayer(new AlgorithmInitialLand());
+                algorithmRuntime = new RuntimeLayer(new AlgorithmInitial());
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
             }
             else

@@ -48,6 +48,7 @@
       <HintPath>..\Libraries\ICSharpCode\Mono.Cecil.Pdb.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -67,14 +68,31 @@
     <Compile Include="AlgorithmUtility.cs" />
     <Compile Include="Compiler\LayerMetrics.cs" />
     <Compile Include="AlgorithmExtend.cs" />
+    <Compile Include="StorageLayer.cs" />
+    <Compile Include="StorageAccess.cs" />
+    <Compile Include="Flow\AlgorithmFlowConnector.cs" />
+    <Compile Include="Flow\AlgorithmFlowElement.cs" />
+    <Compile Include="Flow\AlgorithmFlowImageGeneration.cs" />
+    <Compile Include="AlgorithmColors.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Compiler\" />
+    <Folder Include="Flow\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compiler\CompiledLayerTemplate.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Libraries\Redpoint.FlowGraph\Redpoint.FlowGraph.csproj">
+      <Project>{996097C6-F59B-4395-A3C5-BECDCE904690}</Project>
+      <Name>Redpoint.FlowGraph</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.Globals\Tychaia.Globals.csproj">
+      <Project>{58F07D5A-E86E-4561-88E8-F96744D59157}</Project>
+      <Name>Tychaia.Globals</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

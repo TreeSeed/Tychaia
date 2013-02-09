@@ -4,6 +4,9 @@
 // license on the website apply retroactively.
 //
 using System;
+using System.Runtime.Serialization;
+using System.Drawing;
+using System.ComponentModel;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -34,6 +37,12 @@ namespace Tychaia.ProceduralGeneration
         Type[] InputTypes { get; }
 
         /// <summary>
+        /// The names of the input layers; for human-readable
+        /// representation.
+        /// </summary>
+        string[] InputNames { get; }
+
+        /// <summary>
         /// The data type of the output of this algorithm.
         /// </summary>
         Type OutputType { get; }
@@ -52,6 +61,12 @@ namespace Tychaia.ProceduralGeneration
         /// Whether this algorithm only requires half the depth in it's inputs.
         /// </summary>
         bool InputDepthAtHalfSize { get; }
+
+        /// <summary>
+        /// The function handler that resolves colors for
+        /// values when displayed in the editor.
+        /// </summary>
+        Color GetColorForValue(StorageLayer parent, dynamic value);
     }
 
     /// 
@@ -78,19 +93,32 @@ namespace Tychaia.ProceduralGeneration
 
     #region Abstract Algorithm Classes
 
+    [DataContract]
     public abstract class Algorithm : IAlgorithm
     {
+        [Category("Base")]
         public virtual int RequiredXBorder { get { return 0; } }
+        [Category("Base")]
         public virtual int RequiredYBorder { get { return 0; } }
+        [Category("Base")]
         public virtual int RequiredZBorder { get { return 0; } }
+        [Category("Base")]
         public virtual bool InputWidthAtHalfSize { get { return false; } }
+        [Category("Base")]
         public virtual bool InputHeightAtHalfSize { get { return false; } }
+        [Category("Base")]
         public virtual bool InputDepthAtHalfSize { get { return false; } }
 
+        [Category("Base")]
         public abstract Type[] InputTypes { get; }
+        [Category("Base")]
+        public abstract string[] InputNames { get; }
+        [Category("Base")]
         public abstract Type OutputType { get; }
+        public abstract Color GetColorForValue(StorageLayer parent, dynamic value);
     }
 
+    [DataContract]
     public abstract class Algorithm<TOutput> : Algorithm
     {
         public abstract void ProcessCell(IRuntimeContext context,
@@ -110,12 +138,19 @@ namespace Tychaia.ProceduralGeneration
             get { return new Type[] { }; }
         }
 
+        [ReadOnly(true)]
+        public sealed override string[] InputNames
+        {
+            get { return new string[] { }; }
+        }
+
         public sealed override Type OutputType
         {
             get { return typeof(TOutput); }
         }
     }
 
+    [DataContract]
     public abstract class Algorithm<TInput, TOutput> : Algorithm
     {
         public abstract void ProcessCell(IRuntimeContext context,
@@ -141,7 +176,8 @@ namespace Tychaia.ProceduralGeneration
             get { return typeof(TOutput); }
         }
     }
-    
+
+    [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TOutput> : Algorithm
     {
         public abstract void ProcessCell(IRuntimeContext context,
@@ -168,7 +204,8 @@ namespace Tychaia.ProceduralGeneration
             get { return typeof(TOutput); }
         }
     }
-    
+
+    [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TInputC, TOutput> : Algorithm
     {
         public abstract void ProcessCell(IRuntimeContext context,
@@ -204,7 +241,8 @@ namespace Tychaia.ProceduralGeneration
             get { return typeof(TOutput); }
         }
     }
-    
+
+    [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TInputC, TInputD, TOutput> : Algorithm
     {
         public abstract void ProcessCell(IRuntimeContext context,
@@ -242,7 +280,8 @@ namespace Tychaia.ProceduralGeneration
             get { return typeof(TOutput); }
         }
     }
-    
+
+    [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TInputC, TInputD, TInputE, TOutput> : Algorithm
     {
         public abstract void ProcessCell(IRuntimeContext context,

@@ -144,13 +144,13 @@
   </Target>
   -->
   <ItemGroup>
-    <ProjectReference Include="..\TychaiaWorldGenViewer\TychaiaWorldGenViewer.csproj">
-      <Project>{EDCFB186-0C67-4771-8033-8572A0744B2C}</Project>
-      <Name>TychaiaWorldGenViewer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Tychaia.ProceduralGeneration.Legacy\Tychaia.ProceduralGeneration.Legacy.csproj">
       <Project>{642D5815-4533-4146-96C1-D932FE1641F9}</Project>
       <Name>Tychaia.ProceduralGeneration.Legacy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.Globals\Tychaia.Globals.csproj">
+      <Project>{58F07D5A-E86E-4561-88E8-F96744D59157}</Project>
+      <Name>Tychaia.Globals</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

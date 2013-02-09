@@ -29,7 +29,7 @@ namespace Tychaia.ProceduralGeneration
         /// <summary>
         /// The current algorithm that this runtime layer is using.
         /// </summary>
-        internal IAlgorithm Algorithm
+        public IAlgorithm Algorithm
         {
             get { return this.m_Algorithm; }
         }
@@ -75,6 +75,8 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public RuntimeLayer[] GetInputs()
         {
+            if (this.m_Inputs == null)
+                return new RuntimeLayer[] { };
             return this.m_Inputs;
         }
 
@@ -119,17 +121,20 @@ namespace Tychaia.ProceduralGeneration
                     {
                         // context, input, output, x, y, z, i, j, k, width, height, depth
                         dynamic algorithm = this.m_Algorithm;
-                        dynamic inputArray = this.m_Inputs[0].GenerateData(
-                        xFrom - algorithm.RequiredXBorder, 
-                        yFrom - algorithm.RequiredYBorder, 
-                        zFrom - algorithm.RequiredZBorder, 
-                        width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                        height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                        depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                        for (int k = 0; k < zTo - zFrom; k++)
-                            for (int i = 0; i < xTo - xFrom; i++)
-                                for (int j = 0; j < yTo - yFrom; j++)
-                                    algorithm.ProcessCell(this, inputArray, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, width, height, depth);
+                        if (this.m_Inputs[0] != null)
+                        {
+                            dynamic inputArray = this.m_Inputs[0].GenerateData(
+                                xFrom - algorithm.RequiredXBorder, 
+                                yFrom - algorithm.RequiredYBorder, 
+                                zFrom - algorithm.RequiredZBorder, 
+                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
+                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                            for (int k = 0; k < zTo - zFrom; k++)
+                                for (int i = 0; i < xTo - xFrom; i++)
+                                    for (int j = 0; j < yTo - yFrom; j++)
+                                        algorithm.ProcessCell(this, inputArray, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, width, height, depth);
+                        }
                         break;
                     }
                 default:

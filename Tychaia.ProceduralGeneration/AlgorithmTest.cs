@@ -17,10 +17,23 @@ namespace Tychaia.ProceduralGeneration
         public override int RequiredXBorder { get { return 2; } }
         public override int RequiredYBorder { get { return 2; } }
 
+        public override string[] InputNames
+        {
+            get { return new string[] { "Input" }; }
+        }
+
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth)
         {
             output[i + j * width + k * width * height] =
                 input[(i + 1) + (j + 1) * width + k * width * height];
+        }
+        
+        public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
+        {
+            if (parent != null && parent.Inputs != null && parent.Inputs[0] != null)
+                return parent.Algorithm.GetColorForValue(parent.Inputs[0], value);
+            else
+                return System.Drawing.Color.Gray;
         }
     }
 }

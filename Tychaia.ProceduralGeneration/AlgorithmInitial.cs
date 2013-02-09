@@ -6,6 +6,7 @@
 using System;
 using System.Runtime.Serialization;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -72,6 +73,14 @@ namespace Tychaia.ProceduralGeneration
                 output[i + j * width + k * width * height] = context.GetRandomRange(x, y, this.MinimumValue, this.MaximumValue, context.Modifier);
             else
                 output[i + j * width + k * width * height] = 0;
+        }
+        
+        public override Color GetColorForValue(StorageLayer parent, dynamic value)
+        {
+            if (value == 0)
+                return Color.Blue;
+            else
+                return Color.FromArgb(0, (int)(255 * (value / 100f)), 0);
         }
     }
 }

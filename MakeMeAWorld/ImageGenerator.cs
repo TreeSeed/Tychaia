@@ -7,12 +7,12 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using Tychaia.ProceduralGeneration;
-using TychaiaWorldGenViewer.Flow;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.IO;
 using System.Xml;
 using System.Web.UI;
+using Tychaia.Globals;
 
 namespace MakeMeAWorld
 {
@@ -73,40 +73,9 @@ namespace MakeMeAWorld
 
         private static Layer CreateLayerFromConfig(string path, string name)
         {
-            // Dynamically generate a list of serializable types for the
-            // data contract.
-            List<Type> types = new List<Type> {
-                // Flow system classes
-                typeof(FlowConnector),
-                typeof(FlowElement),
-                typeof(LayerFlowConnector),
-                typeof(LayerFlowElement),
-            };
-            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
-                foreach (Type t in a.GetTypes())
-                    if (typeof(Layer).IsAssignableFrom(t))
-                        types.Add(t);
-            Type[] serializableTypes = types.ToArray();
-
-            // Load configuration.
-            DataContractSerializer x = new DataContractSerializer(typeof(FlowInterfaceControl.ListFlowElement), serializableTypes);
-            FlowInterfaceControl.ListFlowElement config = null;
-            using (FileStream fstream = new FileStream(path, FileMode.Open, FileAccess.Read))
-            using (XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fstream, new XmlDictionaryReaderQuotas() { MaxDepth = 1000 }))
-                config = x.ReadObject(reader, true) as FlowInterfaceControl.ListFlowElement;
-
-            // Find the result layer.
-            foreach (FlowElement fe in config)
-            {
-                if (!(fe is LayerFlowElement))
-                    continue;
-                var lfe = fe as LayerFlowElement;
-                if (lfe.Layer is Layer3DMMAWResult && (lfe.Layer as Layer3DMMAWResult).Name == name)
-                    return lfe.Layer;
-                if (lfe.Layer is LayerMMAWResult && (lfe.Layer as LayerMMAWResult).Name == name)
-                    return lfe.Layer;
-            }
-            return null;
+            // FIXME: Use StorageAccess to load reference
+            // to world generation.
+            throw new NotImplementedException();
         }
 
         public static List<string> GetListOfAvailableLayers(HttpContext context)
@@ -116,41 +85,9 @@ namespace MakeMeAWorld
 
         private static List<string> GetListOfAvailableLayers(string path)
         {
-            // Dynamically generate a list of serializable types for the
-            // data contract.
-            List<Type> types = new List<Type> {
-                // Flow system classes
-                typeof(FlowConnector),
-                typeof(FlowElement),
-                typeof(LayerFlowConnector),
-                typeof(LayerFlowElement),
-            };
-            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
-                foreach (Type t in a.GetTypes())
-                    if (typeof(Layer).IsAssignableFrom(t))
-                        types.Add(t);
-            Type[] serializableTypes = types.ToArray();
-            
-            // Load configuration.
-            DataContractSerializer x = new DataContractSerializer(typeof(FlowInterfaceControl.ListFlowElement), serializableTypes);
-            FlowInterfaceControl.ListFlowElement config = null;
-            using (FileStream fstream = new FileStream(path, FileMode.Open, FileAccess.Read))
-            using (XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fstream, new XmlDictionaryReaderQuotas() { MaxDepth = 1000 }))
-                config = x.ReadObject(reader, true) as FlowInterfaceControl.ListFlowElement;
-            
-            // Find the result layer.
-            var result = new List<string>();
-            foreach (FlowElement fe in config)
-            {
-                if (!(fe is LayerFlowElement))
-                    continue;
-                var lfe = fe as LayerFlowElement;
-                if (lfe.Layer is Layer3DMMAWResult)
-                    result.Add("3D-" + (lfe.Layer as Layer3DMMAWResult).Name);
-                if (lfe.Layer is LayerMMAWResult)
-                    result.Add("2D-" + (lfe.Layer as LayerMMAWResult).Name);
-            }
-            return result;
+            // FIXME: Use StorageAccess to load reference
+            // to world generation.
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -177,7 +114,7 @@ namespace MakeMeAWorld
             Graphics g = Graphics.FromImage(b);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
             Dictionary<int, LayerColor> brushes = l.GetLayerColors();
-            int[] data = l.GenerateData(LayerFlowImageGeneration.X + sx, LayerFlowImageGeneration.Y + sy, width, height);
+            int[] data = l.GenerateData(TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.X + sx, TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.Y + sy, width, height);
             for (int x = 0; x < width; x++)
                 for (int y = 0; y < height; y++)
                 {

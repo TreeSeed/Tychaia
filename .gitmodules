@@ -5,3 +5,6 @@
 	path = Libraries/NBTExplorer
 	url = git://github.com/hach-que/NBTExplorer.git
 
+[submodule "Libraries/Redpoint.FlowGraph"]
+	path = Libraries/Redpoint.FlowGraph
+	url = git://github.com/hach-que/Redpoint.FlowGraph.git

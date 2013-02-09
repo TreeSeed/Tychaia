@@ -27,6 +27,11 @@ namespace Tychaia.ProceduralGeneration
         {
             output[i + j * width + k * width * height] = this.Constant;
         }
+        
+        public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
+        {
+            return System.Drawing.Color.Gray;
+        }
     }
 }
 

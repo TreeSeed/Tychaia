@@ -115,11 +115,13 @@ namespace TychaiaWorldGenViewer.Flow
                     {
                         re.Graphics.DrawLine(Pens.Blue, el.Center.Apply(re.Zoom), ct.Center.Apply(re.Zoom));
                     }
-                    catch (OverflowException) { }
+                    catch (OverflowException)
+                    {
+                    }
                 }
         }
 
-        internal IEnumerable<Rectangle> GetConnectorRegionsToInvalidate()
+        public IEnumerable<Rectangle> GetConnectorRegionsToInvalidate()
         {
             foreach (FlowConnector ct in this.ConnectedTo)
             {
