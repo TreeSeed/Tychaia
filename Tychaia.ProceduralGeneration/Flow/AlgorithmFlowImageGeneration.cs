@@ -140,6 +140,8 @@ namespace Tychaia.ProceduralGeneration.Flow
 
         #endregion
 
+        #if BROKEN
+
         private static Bitmap Regenerate3DImageForLayer(RuntimeLayer layer, long ox, long oy, long oz, int width, int height, int depth)
         {
             var bitmap = new Bitmap(width, height);
@@ -179,6 +181,12 @@ namespace Tychaia.ProceduralGeneration.Flow
              *                      
              *  v = (x - y) / 2.0
              */
+            
+            StorageLayer parent;
+            if (layer.GetInputs().Length == 0)
+                parent = null;
+            else
+                parent = StorageAccess.FromRuntime(layer.GetInputs()[0]);
 
             int[] render = GetCellRenderOrder(RenderToNE, width, height);
             int ztop = depth;
@@ -203,11 +211,6 @@ namespace Tychaia.ProceduralGeneration.Flow
                     {
                         try
                         {
-                            StorageLayer parent;
-                            if (layer.GetInputs().Length == 0)
-                                parent = null;
-                            else
-                                parent = StorageAccess.FromRuntime(layer.GetInputs()[0]);
                             Color lc = layer.Algorithm.GetColorForValue(
                                 parent,
                                 data[x + y * width + z * width * height]);
@@ -216,6 +219,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                                 sb,
                                 new Rectangle(rx, ry, rw, rh)
                             );
+                            break;
                         }
                         catch (InvalidOperationException)
                         {
@@ -227,5 +231,111 @@ namespace Tychaia.ProceduralGeneration.Flow
 
             return bitmap;
         }
+
+#else
+        
+        private const int RenderWidth = 64;
+        private const int RenderHeight = 64;
+        private const int RenderDepth = 64;
+        
+        private static Bitmap Regenerate3DImageForLayer(RuntimeLayer l, long ox, long oy, long oz, int width, int height, int depth)
+        {
+            int owidth = width;
+            int oheight = height;
+            int odepth = depth;
+            width = 128;
+            height = 192; // this affects bitmaps and rendering and stuff :(
+            depth = 128;
+
+            // ARGHGHG FIXME
+            Bitmap b = new Bitmap(width, height);
+            Graphics g = Graphics.FromImage(b);
+            g.Clear(Color.White);
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+            int[] data = l.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth);
+            
+            /* Our world is laid out in memory in terms of X / Y, but
+                 * we are rendering isometric, which means that the rendering
+                 * order for tiles must be like so:
+                 * 
+                 *               North
+                 *        1  3  5  9  13 19 25
+                 *        2  6  10 14 20 26 32
+                 *        4  8  15 21 27 33 37
+                 *  East  7  12 18 28 34 38 42  West
+                 *        11 17 24 31 39 43 45
+                 *        16 23 30 36 41 46 48
+                 *        22 29 35 40 44 47 49
+                 *               South
+                 *  
+                 * We also need to account for situations where the user rotates
+                 * the isometric view.
+                 */
+            
+            /*
+                 *                      North
+                 *         0    0.5  1     1.5  2    2.5  3
+                 *        -0.5  0    0.5   1    1.5  2    2.5
+                 *        -1   -0.5  0     0.5  1    1.5  2
+                 *  East  -1.5 -1   -0.5   0    0.5  1    1.5  West
+                 *        -2   -1.5 -1    -0.5  0    0.5  1
+                 *        -2.5 -2   -1.5  -1   -0.5  0    0.5
+                 *        -3   -2.5 -2    -1.5 -1   -0.5  0
+                 *                      South
+                 *                      
+                 *  v = (x - y) / 2.0
+                 */
+            
+            StorageLayer parent;
+            if (l.GetInputs().Length == 0)
+                parent = null;
+            else
+                parent = StorageAccess.FromRuntime(l.GetInputs()[0]);
+
+            int[] render = GetCellRenderOrder(RenderToNE, RenderWidth, RenderHeight);
+            int ztop = RenderDepth;
+            int zbottom = 0;
+            for (int z = zbottom; z < ztop; z++)
+            {
+                int rcx = width / 2 - 1;
+                int rcy = height / 2 - 31;
+                int rw = 2;
+                int rh = 1;
+                for (int i = 0; i < render.Length; i++)
+                {
+                    // Calculate the X / Y of the tile in the grid.
+                    int x = render[i] % RenderWidth;
+                    int y = render[i] / RenderWidth;
+                    
+                    // Calculate the render position on screen.
+                    int rx = rcx + (int)((x - y) / 2.0 * rw);// (int)(x / ((RenderWidth + 1) / 2.0) * rw);
+                    int ry = rcy + (x + y) * rh - (rh / 2 * (RenderWidth + RenderHeight)) - (z - zbottom) * 1;
+                    
+                    while (true)
+                    {
+                        try
+                        {
+                            Color lc = l.Algorithm.GetColorForValue(
+                                parent,
+                                data[x + y * owidth + z * owidth * oheight]);
+                            SolidBrush sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
+                            g.FillRectangle(
+                                sb,
+                                new Rectangle(rx, ry, rw, rh)
+                            );
+                            break;
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            // Graphics can be in use elsewhere, but we don't care; just try again.
+                        }
+                    }
+                }
+            }
+            
+            return b;
+        }
+
+        #endif
     }
 }

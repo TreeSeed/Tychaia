@@ -75,6 +75,11 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return new string[] { "Input" }; }
         }
+        
+        public override bool Is2DOnly
+        {
+            get { return true; }
+        }
 
         // Will be able to use this algorithm for:
         // Land - This is the equivelent of ExtendLand
@@ -162,7 +167,10 @@ namespace Tychaia.ProceduralGeneration
         
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            return parent.Algorithm.GetColorForValue(parent.Inputs[0], value);
+            if (parent != null && parent.Inputs != null && parent.Inputs[0] != null)
+                return parent.Algorithm.GetColorForValue(parent.Inputs[0], value);
+            else
+                return System.Drawing.Color.Gray;
         }
     }
 }

@@ -67,6 +67,12 @@ namespace Tychaia.ProceduralGeneration
         /// values when displayed in the editor.
         /// </summary>
         Color GetColorForValue(StorageLayer parent, dynamic value);
+
+        /// <summary>
+        /// Whether this algorithm only makes sense to be represented
+        /// in two-dimensions.
+        /// </summary>
+        bool Is2DOnly { get; }
     }
 
     /// 
@@ -115,6 +121,9 @@ namespace Tychaia.ProceduralGeneration
         public abstract string[] InputNames { get; }
         [Category("Base")]
         public abstract Type OutputType { get; }
+        [Category("Base")]
+        public abstract bool Is2DOnly { get; }
+
         public abstract Color GetColorForValue(StorageLayer parent, dynamic value);
     }
 

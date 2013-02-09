@@ -50,6 +50,11 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
+
+        public override bool Is2DOnly
+        {
+            get { return true; }
+        }
         
         public AlgorithmInitial()
         {

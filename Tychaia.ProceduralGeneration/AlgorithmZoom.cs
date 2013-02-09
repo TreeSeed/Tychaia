@@ -40,6 +40,11 @@ namespace Tychaia.ProceduralGeneration
             get { return new string[] { "Input" }; }
         }
 
+        public override bool Is2DOnly
+        {
+            get { return false; }
+        }
+
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth)
         {
             int ox = 2; // Offsets
@@ -109,7 +114,10 @@ namespace Tychaia.ProceduralGeneration
 
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            return parent.Algorithm.GetColorForValue(parent.Inputs[0], value);
+            if (parent != null && parent.Inputs != null && parent.Inputs[0] != null)
+                return parent.Algorithm.GetColorForValue(parent.Inputs[0], value);
+            else
+                return System.Drawing.Color.Gray;
         }
     }
 }

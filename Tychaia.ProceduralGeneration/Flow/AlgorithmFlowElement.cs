@@ -91,7 +91,8 @@ namespace Tychaia.ProceduralGeneration.Flow
             this.m_RealBitmap = AlgorithmFlowImageGeneration.RegenerateImageForLayer(this.m_Layer,
                 TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.X,
                 TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.Y,
-                TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.Z, 64, 64, 64);
+                TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.Z,
+                64, 64, 64);
             this.m_Control.Invalidate(this.Region.Apply(this.m_Control.Zoom));
         }
 

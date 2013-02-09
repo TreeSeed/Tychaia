@@ -180,6 +180,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                                     sb,
                                     new Rectangle(rx, ry, rw, rh)
                                 );
+                                break;
                             }
                             catch (InvalidOperationException)
                             {

@@ -21,6 +21,11 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return new string[] { "Input" }; }
         }
+        
+        public override bool Is2DOnly
+        {
+            get { return false; }
+        }
 
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth)
         {
