@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using Tychaia.Globals;
+using System.Threading;
 
 namespace Tychaia.ProceduralGeneration.Flow
 {
@@ -78,6 +79,14 @@ namespace Tychaia.ProceduralGeneration.Flow
         
         private void RefreshImageSync()
         {
+            try
+            {
+                if (this.m_PerformanceThread != null)
+                    this.m_PerformanceThread.Abort();
+            }
+            catch (Exception e)
+            {
+            }
             if (this.ProcessingDisabled)
             {
                 Bitmap b = new Bitmap(this.ImageWidth, this.ImageHeight);
@@ -94,7 +103,83 @@ namespace Tychaia.ProceduralGeneration.Flow
                 TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.Y,
                 TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.Z,
                 64, 64, 64);
-            this.m_Control.Invalidate(this.Region.Apply(this.m_Control.Zoom));
+            this.m_Control.Invalidate(this.InvalidatingRegion.Apply(this.m_Control.Zoom));
+            this.m_PerformanceThread = new Thread(() =>
+                {
+                    Thread.Sleep(1000);
+                    this.PerformMeasurements();
+                    this.m_Control.Invoke(new Action(() =>
+                        {
+                            this.m_Control.Invalidate(this.InvalidatingRegion.Apply(this.m_Control.Zoom));
+                        }));
+                });
+            this.m_PerformanceThread.Start();
+        }
+
+        private Thread m_PerformanceThread = null;
+
+        private void PerformMeasurements()
+        {
+            // Settings.
+            var iterations = 1000;
+            var warningLimit = 100000; // 0.1s
+            var badLimit = 300000; // 0.3s
+
+            // Perform conversions.
+            var runtime = StorageAccess.ToRuntime(this.m_Layer);
+            IGenerator compiled = null;
+            try
+            {
+                compiled = StorageAccess.ToCompiled(runtime);
+            }
+            catch (Exception)
+            {
+                // Failed to compile layer.
+            }
+
+            // First check how long it takes for the runtime layer to do 1000 operations of 8x8x8.
+            var runtimeStart = DateTime.Now;
+            for (var i = 0; i < iterations; i++)
+                runtime.GenerateData(0, 0, 0, 8, 8, 8);
+            var runtimeEnd = DateTime.Now;
+
+            // Now check how long it takes the compiled layer to do 1000 operations of 8x8x8.
+            var compiledStart = DateTime.Now;
+            if (compiled != null)
+                for (var i = 0; i < iterations; i++)
+                    compiled.GenerateData(0, 0, 0, 8, 8, 8);
+            var compiledEnd = DateTime.Now;
+
+            // Determine the per-operation cost.
+            var runtimeCost = runtimeEnd - runtimeStart;
+            var compiledCost = compiledEnd - compiledStart;
+            var runtime탎 = Math.Round((runtimeCost.TotalMilliseconds / iterations) * 1000, 0); // Microseconds.
+            var compiled탎 = Math.Round((compiledCost.TotalMilliseconds / iterations) * 1000, 0);
+
+            // Define colors and determine values.
+            var okay = new SolidBrush(Color.LightGreen);
+            var warning = new SolidBrush(Color.Orange);
+            var bad = new SolidBrush(Color.IndianRed);
+            var runtimeColor = okay;
+            var compiledColor = okay;
+            if (runtime탎 > warningLimit) runtimeColor = warning;
+            if (compiled탎 > warningLimit) compiledColor = warning;
+            if (runtime탎 > badLimit) runtimeColor = bad;
+            if (compiled탎 > badLimit) compiledColor = bad;
+
+            // Draw performance measurements.
+            var bitmap = new Bitmap(128, 32);
+            var graphics = Graphics.FromImage(bitmap);
+            var font = new Font(SystemFonts.DefaultFont, FontStyle.Bold);
+            graphics.Clear(Color.Black);
+            graphics.DrawString("Runtime: " + runtime탎 + "탎", font, runtimeColor, new PointF(0, 0));
+            if (compiled != null)
+                graphics.DrawString("Compiled: " + compiled탎 + "탎", font, compiledColor, new PointF(0, 16));
+            else
+                graphics.DrawString("Unable to compile.", font, bad, new PointF(0, 16));
+            if (this.m_AdditionalInformation != null)
+                this.m_AdditionalInformation.Dispose();
+            this.m_AdditionalInformation = bitmap;
         }
 
         private int[] ParentsIndexOf(StorageLayer find)
@@ -181,7 +266,7 @@ namespace Tychaia.ProceduralGeneration.Flow
         {
             return this.m_Layer.Algorithm;
         }
-        
+
         public override void ObjectPropertyUpdated()
         {
             this.m_Control.PushForReprocessing(this);
