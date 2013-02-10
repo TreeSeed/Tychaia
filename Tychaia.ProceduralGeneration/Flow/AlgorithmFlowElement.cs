@@ -59,7 +59,8 @@ namespace Tychaia.ProceduralGeneration.Flow
         {
             this.m_Control = control;
             this.m_Layer = l;
-            this.Name = l.ToString();
+            var attrs = l.Algorithm.GetType().GetCustomAttributes(typeof(FlowDesignerNameAttribute), true);
+            this.Name = attrs.Length > 0 ? (attrs[0] as FlowDesignerNameAttribute).Name : l.Algorithm.ToString();
             this.ImageWidth = 128;
             this.ImageHeight = 192;
             this.ObjectPropertyUpdated();
@@ -151,6 +152,8 @@ namespace Tychaia.ProceduralGeneration.Flow
                 // parent and set it to the new value.
                 if (targets.Length != 1)
                     throw new InvalidOperationException("An input can not be connected to more than one output.");
+                if (this.m_Layer.Inputs == null)
+                    throw new InvalidOperationException("Input array for an algorithm can not be null.");
                 this.m_Layer.Inputs[
                     this.m_InputConnectors.IndexOf(connector)] =
                     (targets[0].Owner as AlgorithmFlowElement).m_Layer;

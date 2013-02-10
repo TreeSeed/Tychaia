@@ -11,8 +11,8 @@ using System.Drawing;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerCategory(FlowCategory.InitialGeneration)]
-    [FlowDesignerName("Initial")]
+    [FlowDesignerCategory(FlowCategory.Land)]
+    [FlowDesignerName("Initial Land")]
     public class AlgorithmInitial : Algorithm<int>
     {
         [DataMember]
@@ -75,7 +75,7 @@ namespace Tychaia.ProceduralGeneration
             if (this.GuaranteeStartingPoint && x == 0 && y == 0)
                 output[i + j * width + k * width * height] = this.MaximumValue;
             else if (context.GetRandomDouble(x, y, z, context.Modifier) > this.Limit)
-                output[i + j * width + k * width * height] = context.GetRandomRange(x, y, this.MinimumValue, this.MaximumValue, context.Modifier);
+                output[i + j * width + k * width * height] = context.GetRandomRange(x, y, z, this.MinimumValue, this.MaximumValue, context.Modifier);
             else
                 output[i + j * width + k * width * height] = 0;
         }

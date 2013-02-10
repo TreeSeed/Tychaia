@@ -10,8 +10,8 @@ using System.ComponentModel;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerCategory(FlowCategory.ZoomTools)]
-    [FlowDesignerName("Extend")]
+    [FlowDesignerCategory(FlowCategory.Land)]
+    [FlowDesignerName("Extend Land")]
     public class AlgorithmExtend : Algorithm<int, int>
     {
         [DataMember]
@@ -167,10 +167,7 @@ namespace Tychaia.ProceduralGeneration
         
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            if (parent != null && parent.Inputs != null && parent.Inputs[0] != null)
-                return parent.Algorithm.GetColorForValue(parent.Inputs[0], value);
-            else
-                return System.Drawing.Color.Gray;
+            return this.DelegateColorForValueToParent(parent, value);
         }
     }
 }

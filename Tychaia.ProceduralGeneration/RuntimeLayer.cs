@@ -39,6 +39,8 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public RuntimeLayer(IAlgorithm algorithm)
         {
+            if (algorithm == null)
+                throw new ArgumentNullException("algorithm");
             this.m_Algorithm = algorithm;
             var inputs = new List<RuntimeLayer>();
             for (var i = 0; i < algorithm.InputTypes.Length; i++)
@@ -55,6 +57,8 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public bool CanBeInput(int index, RuntimeLayer input)
         {
+            if (input == null)
+                return true;
             if (index < 0 || index >= this.m_Algorithm.InputTypes.Length)
                 return false;
             return (input.m_Algorithm.OutputType == this.m_Algorithm.InputTypes[index]);
@@ -76,7 +80,12 @@ namespace Tychaia.ProceduralGeneration
         public RuntimeLayer[] GetInputs()
         {
             if (this.m_Inputs == null)
-                return new RuntimeLayer[] { };
+            {
+                var inputs = new List<RuntimeLayer>();
+                for (var i = 0; i < this.m_Algorithm.InputTypes.Length; i++)
+                    inputs.Add(null);
+                this.m_Inputs = inputs.ToArray();
+            }
             return this.m_Inputs;
         }
 
@@ -151,7 +160,6 @@ namespace Tychaia.ProceduralGeneration
         {
             return this.PerformAlgorithmRuntimeCall(x, y, z, x + width, y + height, z + depth, width, height, depth);
         }
-
         
         #region Randomness
         

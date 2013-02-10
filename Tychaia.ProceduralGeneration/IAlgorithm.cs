@@ -125,6 +125,20 @@ namespace Tychaia.ProceduralGeneration
         public abstract bool Is2DOnly { get; }
 
         public abstract Color GetColorForValue(StorageLayer parent, dynamic value);
+
+        /// <summary>
+        /// Delegates the color logic to the primary input of this algorithm.
+        /// </summary>
+        /// <param name="parent">The primary input.</param>
+        /// <param name="value">The value to determine.</param>
+        /// <returns>The color determined by the parent.</returns>
+        public Color DelegateColorForValueToParent(StorageLayer parent, dynamic value)
+        {
+            if (parent != null)
+                return parent.Algorithm.GetColorForValue(parent.Inputs.Length >= 1 ? parent.Inputs[0] : null, value);
+            else
+                return System.Drawing.Color.Gray;
+        }
     }
 
     [DataContract]

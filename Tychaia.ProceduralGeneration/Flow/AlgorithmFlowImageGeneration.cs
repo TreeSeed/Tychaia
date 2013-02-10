@@ -293,7 +293,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                 parent = StorageAccess.FromRuntime(l.GetInputs()[0]);
 
             int[] render = GetCellRenderOrder(RenderToNE, RenderWidth, RenderHeight);
-            int ztop = RenderDepth;
+            int ztop = l.Algorithm.Is2DOnly ? 1 : RenderDepth;
             int zbottom = 0;
             for (int z = zbottom; z < ztop; z++)
             {

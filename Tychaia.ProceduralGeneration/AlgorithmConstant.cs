@@ -6,6 +6,7 @@
 using System;
 using System.Runtime.Serialization;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -18,6 +19,14 @@ namespace Tychaia.ProceduralGeneration
         [DefaultValue(true)]
         [Description("The constant value to return.")]
         public int Constant
+        {
+            get;
+            set;
+        }
+
+        [DataMember]
+        [Description("The color to use when representing this value in the flow editor.")]
+        public Color Color
         {
             get;
             set;
@@ -35,7 +44,7 @@ namespace Tychaia.ProceduralGeneration
         
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            return System.Drawing.Color.Gray;
+            return this.Color;
         }
     }
 }

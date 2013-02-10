@@ -12,6 +12,7 @@ using System.Xml;
 using System.Linq;
 using Redpoint.FlowGraph;
 using Tychaia.ProceduralGeneration.Flow;
+using Tychaia.ProceduralGeneration.Compiler;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -36,10 +37,8 @@ namespace Tychaia.ProceduralGeneration
             };
 
             // Convert inputs.
-            var inputs = new List<StorageLayer>();
-            foreach (var input in layer.GetInputs())
-                inputs.Add(StorageAccess.FromRuntime(input));
-            storage.Inputs = inputs.ToArray();
+            for (int i = 0; i < layer.GetInputs().Length; i++)
+                storage.Inputs[i] = StorageAccess.FromRuntime(layer.GetInputs()[i]);
 
             // Return storage.
             return storage;
@@ -60,6 +59,22 @@ namespace Tychaia.ProceduralGeneration
                 for (var i = 0; i < layer.Inputs.Length; i++)
                     runtime.SetInput(i, StorageAccess.ToRuntime(layer.Inputs[i]));
             return runtime;
+        }
+
+        /// <summary>
+        /// Compiles the storage layer.
+        /// </summary>
+        public static IGenerator ToCompiled(StorageLayer layer)
+        {
+            return ToCompiled(ToRuntime(layer));
+        }
+
+        /// <summary>
+        /// Compiles the runtime layer.
+        /// </summary>
+        public static IGenerator ToCompiled(RuntimeLayer layer)
+        {
+            return LayerCompiler.Compile(layer);
         }
 
         #endregion
