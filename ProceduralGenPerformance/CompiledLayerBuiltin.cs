@@ -6,6 +6,9 @@
 using System;
 using Tychaia.ProceduralGeneration;
 
+// Disable specific warnings since this is generated code.
+#pragma warning disable 0162
+#pragma warning disable 0429
 
 public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
 {

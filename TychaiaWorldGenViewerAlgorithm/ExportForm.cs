@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -31,8 +31,6 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.c_RenderBox.Image = this.m_Bitmap;
             this.c_Timer.Start();
         }
-
-        private static SolidBrush m_UnknownAssociation2D = new SolidBrush(Color.FromArgb(63, 63, 63));
 
         #region 3D Rendering
 
@@ -147,7 +145,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             int[] data = null;
             try
             {
-                data = layer.GenerateData(TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.X + sx, TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.Y + sy, TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.Z + sz, width, height, depth);
+                data = layer.GenerateData(TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.X + sx, TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Y + sy, TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Z + sz, width, height, depth);
 
                 int[] render = GetCellRenderOrder(RenderToNE, width, height, depth);
                 int ztop = depth;

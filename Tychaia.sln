@@ -408,7 +408,7 @@ Global
 		{42123AD1-FDB9-4562-A51F-F7C13354FD22} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = TychaiaWorldGenViewerAlgorithm\TychaiaWorldGenViewerAlgorithm.csproj
+		StartupItem = ProceduralGenPerformance\ProceduralGenPerformance.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.EolMarker = Unix

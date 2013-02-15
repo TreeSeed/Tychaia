@@ -11,8 +11,6 @@ namespace Tychaia.ProceduralGeneration.Flow
 {
     public static class AlgorithmFlowImageGeneration
     {
-        private static SolidBrush m_UnknownAssociation = new SolidBrush(Color.FromArgb(255, 0, 0));
-
         public static int X
         {
             get;
@@ -242,7 +240,7 @@ namespace Tychaia.ProceduralGeneration.Flow
         {
             int owidth = width;
             int oheight = height;
-            int odepth = depth;
+            //int odepth = depth;
             width = 128;
             height = 192; // this affects bitmaps and rendering and stuff :(
             depth = 128;

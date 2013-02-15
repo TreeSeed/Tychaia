@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -114,7 +114,7 @@ namespace MakeMeAWorld
             Graphics g = Graphics.FromImage(b);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
             Dictionary<int, LayerColor> brushes = l.GetLayerColors();
-            int[] data = l.GenerateData(TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.X + sx, TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.Y + sy, width, height);
+            int[] data = l.GenerateData(TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.X + sx, TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Y + sy, width, height);
             for (int x = 0; x < width; x++)
                 for (int y = 0; y < height; y++)
                 {
