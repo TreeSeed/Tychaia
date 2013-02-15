@@ -76,6 +76,7 @@
     <Compile Include="Flow\AlgorithmFlowElement.cs" />
     <Compile Include="Flow\AlgorithmFlowImageGeneration.cs" />
     <Compile Include="AlgorithmColors.cs" />
+    <Compile Include="Compiler\RangedLayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

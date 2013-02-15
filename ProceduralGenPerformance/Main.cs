@@ -6,6 +6,7 @@
 
 //#define MODULO_SPEED_TEST
 //#define VERIFICATION
+#define RANGED_LOGIC_TEST
 
 using System;
 using Tychaia.ProceduralGeneration;
@@ -39,7 +40,9 @@ namespace ProceduralGenPerformance
                 algorithmZoom2.SetInput(0, algorithmZoom3);
                 algorithmZoom1.SetInput(0, algorithmZoom2);
                 algorithmRuntime = algorithmZoom1;
+#if !RANGED_LOGIC_TEST
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
+#endif
                 //algorithmCompiledBuiltin = new CompiledLayerBuiltin();
             }
             else if (mode == "doublezoom")
@@ -51,14 +54,18 @@ namespace ProceduralGenPerformance
                 algorithmZoom2.SetInput(0, algorithmInitialLand);
                 algorithmZoom1.SetInput(0, algorithmZoom2);
                 algorithmRuntime = algorithmZoom1;
+#if !RANGED_LOGIC_TEST
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
+#endif
             }
             else if (mode == "zoom")
             {
                 legacy = new LayerZoom(new LayerInitialLand());
                 algorithmRuntime = new RuntimeLayer(new AlgorithmZoom());
                 algorithmRuntime.SetInput(0, new RuntimeLayer(new AlgorithmInitial()));
+#if !RANGED_LOGIC_TEST
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
+#endif
             }
             else if (mode == "test")
             {
@@ -68,13 +75,17 @@ namespace ProceduralGenPerformance
                 algorithmTest2.SetInput(0, algorithmConstant);
                 algorithmTest1.SetInput(0, algorithmTest2);
                 algorithmRuntime = algorithmTest1;
+#if !RANGED_LOGIC_TEST
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
+#endif
             }
             else if (mode == "land")
             {
                 legacy = new LayerInitialLand();
                 algorithmRuntime = new RuntimeLayer(new AlgorithmInitial());
+#if !RANGED_LOGIC_TEST
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
+#endif
             }
             else
             {
@@ -187,6 +198,14 @@ namespace ProceduralGenPerformance
             Console.WriteLine("=============================");
 
             #endregion
+
+#endif
+
+#if RANGED_LOGIC_TEST
+
+            var ranged = new RangedLayer(algorithmRuntime);
+            Console.WriteLine(ranged.GetPrintableStructure());
+            return;
 
 #endif
 
