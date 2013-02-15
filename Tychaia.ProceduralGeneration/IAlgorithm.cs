@@ -158,7 +158,7 @@ namespace Tychaia.ProceduralGeneration
 
         public sealed override Type[] InputTypes
         {
-            get { return new Type[] { }; }
+            get { return Type.EmptyTypes; }
         }
 
         [ReadOnly(true)]

@@ -84,7 +84,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                 if (this.m_PerformanceThread != null)
                     this.m_PerformanceThread.Abort();
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
             if (this.ProcessingDisabled)
@@ -99,20 +99,20 @@ namespace Tychaia.ProceduralGeneration.Flow
                 return;
             }
             this.m_RealBitmap = AlgorithmFlowImageGeneration.RegenerateImageForLayer(this.m_Layer,
-                TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.X,
-                TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.Y,
-                TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.Z,
+                TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.X,
+                TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Y,
+                TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Z,
                 64, 64, 64);
             this.m_Control.Invalidate(this.InvalidatingRegion.Apply(this.m_Control.Zoom));
             this.m_PerformanceThread = new Thread(() =>
+            {
+                Thread.Sleep(1000);
+                this.PerformMeasurements();
+                this.m_Control.Invoke(new Action(() =>
                 {
-                    Thread.Sleep(1000);
-                    this.PerformMeasurements();
-                    this.m_Control.Invoke(new Action(() =>
-                        {
-                            this.m_Control.Invalidate(this.InvalidatingRegion.Apply(this.m_Control.Zoom));
-                        }));
-                });
+                    this.m_Control.Invalidate(this.InvalidatingRegion.Apply(this.m_Control.Zoom));
+                }));
+            });
             this.m_PerformanceThread.Start();
         }
 
@@ -153,8 +153,8 @@ namespace Tychaia.ProceduralGeneration.Flow
             // Determine the per-operation cost.
             var runtimeCost = runtimeEnd - runtimeStart;
             var compiledCost = compiledEnd - compiledStart;
-            var runtime탎 = Math.Round((runtimeCost.TotalMilliseconds / iterations) * 1000, 0); // Microseconds.
-            var compiled탎 = Math.Round((compiledCost.TotalMilliseconds / iterations) * 1000, 0);
+            var runtimeus = Math.Round((runtimeCost.TotalMilliseconds / iterations) * 1000, 0); // Microseconds.
+            var compiledus = Math.Round((compiledCost.TotalMilliseconds / iterations) * 1000, 0);
 
             // Define colors and determine values.
             var okay = new SolidBrush(Color.LightGreen);
@@ -162,19 +162,23 @@ namespace Tychaia.ProceduralGeneration.Flow
             var bad = new SolidBrush(Color.IndianRed);
             var runtimeColor = okay;
             var compiledColor = okay;
-            if (runtime탎 > warningLimit) runtimeColor = warning;
-            if (compiled탎 > warningLimit) compiledColor = warning;
-            if (runtime탎 > badLimit) runtimeColor = bad;
-            if (compiled탎 > badLimit) compiledColor = bad;
+            if (runtimeus > warningLimit)
+                runtimeColor = warning;
+            if (compiledus > warningLimit)
+                compiledColor = warning;
+            if (runtimeus > badLimit)
+                runtimeColor = bad;
+            if (compiledus > badLimit)
+                compiledColor = bad;
 
             // Draw performance measurements.
             var bitmap = new Bitmap(128, 32);
             var graphics = Graphics.FromImage(bitmap);
             var font = new Font(SystemFonts.DefaultFont, FontStyle.Bold);
             graphics.Clear(Color.Black);
-            graphics.DrawString("Runtime: " + runtime탎 + "탎", font, runtimeColor, new PointF(0, 0));
+            graphics.DrawString("Runtime: " + runtimeus + "탎", font, runtimeColor, new PointF(0, 0));
             if (compiled != null)
-                graphics.DrawString("Compiled: " + compiled탎 + "탎", font, compiledColor, new PointF(0, 16));
+                graphics.DrawString("Compiled: " + compiledus + "탎", font, compiledColor, new PointF(0, 16));
             else
                 graphics.DrawString("Unable to compile.", font, bad, new PointF(0, 16));
             if (this.m_AdditionalInformation != null)

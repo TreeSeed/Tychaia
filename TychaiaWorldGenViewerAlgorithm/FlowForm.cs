@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -202,7 +202,7 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         private void c_XNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.X = (int)this.c_XNumericUpDown.Value;
+            TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.X = (int)this.c_XNumericUpDown.Value;
             if (this.c_FlowInterfaceControl.SelectedElement != null)
                 this.c_FlowInterfaceControl.PushForReprocessing(this.c_FlowInterfaceControl.SelectedElement);
             foreach (var el in this.c_FlowInterfaceControl.Elements)
@@ -212,7 +212,7 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         private void c_YNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.Y = (int)this.c_YNumericUpDown.Value;
+            TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Y = (int)this.c_YNumericUpDown.Value;
             if (this.c_FlowInterfaceControl.SelectedElement != null)
                 this.c_FlowInterfaceControl.PushForReprocessing(this.c_FlowInterfaceControl.SelectedElement);
             foreach (var el in this.c_FlowInterfaceControl.Elements)
@@ -222,7 +222,7 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         private void c_ZNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell.Z = (int)this.c_ZNumericUpDown.Value;
+            TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Z = (int)this.c_ZNumericUpDown.Value;
             if (this.c_FlowInterfaceControl.SelectedElement != null)
                 this.c_FlowInterfaceControl.PushForReprocessing(this.c_FlowInterfaceControl.SelectedElement);
             foreach (var el in this.c_FlowInterfaceControl.Elements)

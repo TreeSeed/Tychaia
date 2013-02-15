@@ -8,7 +8,7 @@ using System;
 namespace Tychaia.Globals
 {
     [Obsolete("this is badly designed.")]
-    public static class TemporaryCrapBecauseIDidntReallyDesignThingsVeryWell
+    public static class TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell
     {
         public static long X;
         public static long Y;
