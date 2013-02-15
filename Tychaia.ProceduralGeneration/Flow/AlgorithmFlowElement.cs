@@ -176,9 +176,9 @@ namespace Tychaia.ProceduralGeneration.Flow
             var graphics = Graphics.FromImage(bitmap);
             var font = new Font(SystemFonts.DefaultFont, FontStyle.Bold);
             graphics.Clear(Color.Black);
-            graphics.DrawString("Runtime: " + runtimeus + "µs", font, runtimeColor, new PointF(0, 0));
+            graphics.DrawString("Runtime: " + runtimeus + "\xB5s", font, runtimeColor, new PointF(0, 0));
             if (compiled != null)
-                graphics.DrawString("Compiled: " + compiledus + "µs", font, compiledColor, new PointF(0, 16));
+                graphics.DrawString("Compiled: " + compiledus + "\xB5s", font, compiledColor, new PointF(0, 16));
             else
                 graphics.DrawString("Unable to compile.", font, bad, new PointF(0, 16));
             if (this.m_AdditionalInformation != null)
