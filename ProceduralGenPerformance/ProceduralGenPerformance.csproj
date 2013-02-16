@@ -32,6 +32,12 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="ICSharpCode.NRefactory.CSharp">
+      <HintPath>..\Libraries\ICSharpCode\ICSharpCode.NRefactory.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>..\Libraries\ICSharpCode\ICSharpCode.NRefactory.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />

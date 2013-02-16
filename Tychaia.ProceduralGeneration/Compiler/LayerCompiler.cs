@@ -150,9 +150,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
 
 #endif
 
-#if FALSE
-
-        private static ProcessedResult CompileRuntimeLayer(RuntimeLayer layer, IAlgorithm parent)
+        private static ProcessedResult CompileRuntimeLayer(RuntimeLayer layer, RangedLayer ranged, IAlgorithm parent)
         {
             // Create our own processed result; a copy of our own state plus
             // somewhere to accumulate code.
@@ -172,16 +170,12 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 result.InputVariableNames = new string[inputs.Length];
                 for (var i = 0; i < inputs.Length; i++)
                 {
-                    var inputResult = CompileRuntimeLayer(inputs[i], layer.Algorithm);
+                    var inputResult = CompileRuntimeLayer(inputs[i], ranged.Inputs[i], layer.Algorithm);
                     result.ProcessedCode += inputResult.ProcessedCode;
                     result.InputVariableNames[i] = inputResult.OutputVariableName;
                     result.Declarations += inputResult.Declarations;
                 }
             }
-
-            // Find the starting point for this layer.
-            Console.WriteLine(absoluteX + " " + absoluteY + " " + absoluteZ + " " +
-                absoluteWidth + " " + absoluteHeight + " " + absoluteDepth);
 
             // Create the storage array.
             result.OutputVariableName = GenerateRandomIdentifier();
@@ -189,9 +183,13 @@ namespace Tychaia.ProceduralGeneration.Compiler
             result.Declarations += result.OutputVariableType + "[] " + result.OutputVariableName +
                 " = new " + result.OutputVariableType + "[__cwidth * __cheight * __cdepth];\n";
 
+            // Work out bounds.
+            ICSharpCode.NRefactory.CSharp.Expression ix, iy, iz, iwidth, iheight, idepth;
+            RangedLayer.FindMaximumBounds(ranged, out ix, out iy, out iz, out iwidth, out iheight, out idepth);
+
             // Add the conditional container.
-            string code = "if (k >= " + absoluteZ + " && i >= " + absoluteX + " && j >= " + absoluteY +
-                " && k < " + absoluteDepth + " && i < " + absoluteWidth + " && j < " + absoluteHeight + @")
+            string code = "if (k >= (int)((" + iz + ") - z) && i >= (int)((" + ix + ") - x) && j >= (int)((" + iy + ") - y)" + 
+                " && k < " + idepth + " && i < " + iwidth + " && j < " + iheight + @")
 {
 ";
 
@@ -213,7 +211,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             // Refactor the method.
             var method = astBuilder.CompilationUnit.Members.Where(v => v is MethodDeclaration).Cast<MethodDeclaration>().First();
             AlgorithmRefactorer.InlineMethod(algorithm, method, result.OutputVariableName, result.InputVariableNames,
-                                            0, 0, 0, // FIXME: absoluteX, absoluteY, absoluteZ,
+                                             "__cx", "__cy", "__cz",
                                              "__cwidth", "__cheight", "__cdepth");
             AlgorithmRefactorer.RemoveUsingStatements(astBuilder.CompilationUnit, result.UsingStatements);
             code += method.Body.GetText();
@@ -223,8 +221,6 @@ namespace Tychaia.ProceduralGeneration.Compiler
             result.ProcessedCode += code;
             return result;
         }
-
-#endif
 
         private static ProcessedResult ProcessRuntimeLayer(RuntimeLayer layer)
         {
@@ -238,37 +234,32 @@ namespace Tychaia.ProceduralGeneration.Compiler
             if (algorithm == null)
                 throw new InvalidOperationException("Attempted to compile null runtime layer!");
 
-            // Determine the maximum loop expressions.
-            Expression xOffset = new PrimitiveExpression(0);
-            Expression yOffset = new PrimitiveExpression(0);
-            Expression zOffset = new PrimitiveExpression(0);
-            Expression width = new IdentifierExpression("width");
-            Expression height = new IdentifierExpression("height");
-            Expression depth = new IdentifierExpression("depth");
-            LayerMetrics.DetermineMaximumLoopRequired(layer, ref xOffset, ref yOffset, ref zOffset, ref width, ref height, ref depth);
-            Console.WriteLine(xOffset);
-            Console.WriteLine(yOffset);
-            Console.WriteLine(zOffset);
-            Console.WriteLine(width);
-            Console.WriteLine(height);
-            Console.WriteLine(depth);
+            // Use RangedLayer to work out the metrics.
+            var ranged = new RangedLayer(layer);
+            ICSharpCode.NRefactory.CSharp.Expression ix, iy, iz, iwidth, iheight, idepth;
+            RangedLayer.FindMaximumBounds(ranged, out ix, out iy, out iz, out iwidth, out iheight, out idepth);
+
+            // Add __cwidth, __cheight and __cdepth declarations.
+            result.Declarations += "int __cx = (int)(x - (" + ix + "));\n";
+            result.Declarations += "int __cy = (int)(y - (" + iy + "));\n";
+            result.Declarations += "int __cz = (int)(z - (" + iz + "));\n";
+            result.Declarations += "int __cwidth = (int)(x - (" + ix + ")) + " + iwidth + ";\n";
+            result.Declarations += "int __cheight = (int)(y - (" + iy + ")) + " + iheight + ";\n";
+            result.Declarations += "int __cdepth = (int)(z - (" + iz + ")) + " + idepth + ";\n";
 
             // Create the for loop that our calculations are done within.
-            result.ProcessedCode += @"for (var k = 0; k < " + depth + @"; k++)
-for (var i = 0; i < " + width + @"; i++)
-for (var j = 0; j < " + height + @"; j++)
+            result.ProcessedCode += @"for (var k = (int)((" + iz + ") - z); k < " + idepth + @"; k++)
+for (var i = (int)((" + ix + ") - x); i < " + iwidth + @"; i++)
+for (var j = (int)((" + iy + ") - y); j < " + iheight + @"; j++)
 {
 ";
-#if FALSE
 
             // Now add the code for the layer.
-            var inputResult = CompileRuntimeLayer(layer, null);
+            var inputResult = CompileRuntimeLayer(layer, ranged, null);
             result.ProcessedCode += inputResult.ProcessedCode;
             result.OutputVariableName = inputResult.OutputVariableName;
             result.OutputVariableType = inputResult.OutputVariableType;
             result.Declarations += inputResult.Declarations;
-
-#endif
 
             // Terminate the for loop and return the result.
             result.ProcessedCode += "}";

@@ -47,6 +47,95 @@ namespace Tychaia.ProceduralGeneration.Compiler
         }
 
         /// <summary>
+        /// Given the specified ranged layer, find expressions which determine the total
+        /// extent of the main loop for the compilation process.
+        /// </summary>
+        public static void FindMaximumBounds(
+            RangedLayer layer,
+            out Expression x,
+            out Expression y,
+            out Expression z,
+            out Expression width,
+            out Expression height,
+            out Expression depth)
+        {
+            // Set initial values.
+            x = layer.X;
+            y = layer.Y;
+            z = layer.Z;
+            width = layer.Width;
+            height = layer.Height;
+            depth = layer.Depth;
+
+            // For each of the inputs, evaluate which is the appropriate
+            // expression.
+            foreach (var input in layer.Inputs)
+            {
+                Expression ix, iy, iz, iwidth, iheight, idepth;
+                FindMaximumBounds(input, out ix, out iy, out iz, out iwidth, out iheight, out idepth);
+
+                x = GetSmallestOrLargestExpression(x, ix, false);
+                y = GetSmallestOrLargestExpression(y, iy, false);
+                z = GetSmallestOrLargestExpression(z, iz, false);
+                width = GetSmallestOrLargestExpression(width, iwidth, true);
+                height = GetSmallestOrLargestExpression(height, iheight, true);
+                depth = GetSmallestOrLargestExpression(depth, idepth, true);
+            }
+        }
+
+        /// <summary>
+        /// Returns one expression based on whether to return the smallest
+        /// or largest logical expression.
+        /// </summary>
+        private static Expression GetSmallestOrLargestExpression(Expression a, Expression b, bool largest)
+        {
+            // Use the visitor to replace the identifiers with numeric values.
+            var aEvaluated = EvaluateExpression(a);
+            var bEvaluated = EvaluateExpression(b);
+            var aValue = (int)(aEvaluated as PrimitiveExpression).Value;
+            var bValue = (int)(bEvaluated as PrimitiveExpression).Value;
+            if ((!largest && aValue < bValue) ||
+                (largest && aValue > bValue))
+                return a;
+            else
+                return b;
+        }
+
+        /// <summary>
+        /// Evaluates the given expression down to just a PrimitiveExpression.
+        /// </summary>
+        private static PrimitiveExpression EvaluateExpression(Expression expr)
+        {
+            if (expr is BinaryOperatorExpression)
+            {
+                var a = EvaluateExpression((expr as BinaryOperatorExpression).Left);
+                var b = EvaluateExpression((expr as BinaryOperatorExpression).Right);
+                var op = (expr as BinaryOperatorExpression).Operator;
+                switch (op)
+                {
+                    case BinaryOperatorType.Add:
+                        return new PrimitiveExpression((int)a.Value + (int)b.Value);
+                    case BinaryOperatorType.Subtract:
+                        return new PrimitiveExpression((int)a.Value - (int)b.Value);
+                    case BinaryOperatorType.Divide:
+                        return new PrimitiveExpression((int)a.Value / (int)b.Value);
+                    case BinaryOperatorType.Multiply:
+                        return new PrimitiveExpression((int)a.Value * (int)b.Value);
+                    default:
+                        throw new NotSupportedException(op.ToString());
+                }
+            }
+            else if (expr is ParenthesizedExpression)
+                return EvaluateExpression((expr as ParenthesizedExpression).Expression);
+            else if (expr is IdentifierExpression)
+                return new PrimitiveExpression(100);
+            else if (expr is PrimitiveExpression)
+                return expr as PrimitiveExpression;
+            else
+                throw new NotSupportedException(expr.GetType().FullName);
+        }
+
+        /// <summary>
         /// Initializes the ranged layer from a runtime layer.
         /// </summary>
         private static void InitializeFromRuntime(RangedLayer ranged, RuntimeLayer layer)

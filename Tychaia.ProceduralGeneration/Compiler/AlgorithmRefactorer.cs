@@ -64,7 +64,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
         /// method body can be copied directly into the output.
         /// </summary>
         public static void InlineMethod(IAlgorithm algorithm, MethodDeclaration method, string outputName, string[] inputNames,
-                                        int xStartOffset, int yStartOffset, int zStartOffset,
+                                        string xStartOffset, string yStartOffset, string zStartOffset,
                                         string width, string height, string depth)
         {
             var parameterContext = method.Parameters.ElementAt(0);
@@ -96,8 +96,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
                         BinaryOperatorType.Add,
                         new BinaryOperatorExpression(
                         new IdentifierExpression("i"),
-                        BinaryOperatorType.Subtract,
-                        new PrimitiveExpression(xStartOffset)
+                        BinaryOperatorType.Add,
+                        new IdentifierExpression(xStartOffset)
                     ))));
                 else if (i.Identifier == parameterY.Name)
                     i.ReplaceWith(
@@ -107,8 +107,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
                         BinaryOperatorType.Add,
                         new BinaryOperatorExpression(
                         new IdentifierExpression("j"),
-                        BinaryOperatorType.Subtract,
-                        new PrimitiveExpression(yStartOffset)
+                        BinaryOperatorType.Add,
+                        new IdentifierExpression(yStartOffset)
                     ))));
                 else if (i.Identifier == parameterZ.Name)
                     i.ReplaceWith(
@@ -118,32 +118,32 @@ namespace Tychaia.ProceduralGeneration.Compiler
                         BinaryOperatorType.Add,
                         new BinaryOperatorExpression(
                         new IdentifierExpression("k"),
-                        BinaryOperatorType.Subtract,
-                        new PrimitiveExpression(zStartOffset)
+                        BinaryOperatorType.Add,
+                        new IdentifierExpression(zStartOffset)
                     ))));
                 else if (i.Identifier == parameterI.Name)
                     i.ReplaceWith(
                         new ParenthesizedExpression(
                         new BinaryOperatorExpression(
                         new IdentifierExpression("i"),
-                        BinaryOperatorType.Subtract,
-                        new PrimitiveExpression(xStartOffset)
+                        BinaryOperatorType.Add,
+                        new IdentifierExpression(xStartOffset)
                     )));
                 else if (i.Identifier == parameterJ.Name)
                     i.ReplaceWith(
                         new ParenthesizedExpression(
                         new BinaryOperatorExpression(
                         new IdentifierExpression("j"),
-                        BinaryOperatorType.Subtract,
-                        new PrimitiveExpression(yStartOffset)
+                        BinaryOperatorType.Add,
+                        new IdentifierExpression(yStartOffset)
                     )));
                 else if (i.Identifier == parameterK.Name)
                     i.ReplaceWith(
                         new ParenthesizedExpression(
                         new BinaryOperatorExpression(
                         new IdentifierExpression("k"),
-                        BinaryOperatorType.Subtract,
-                        new PrimitiveExpression(zStartOffset)
+                        BinaryOperatorType.Add,
+                        new IdentifierExpression(zStartOffset)
                     )));
                 else if (i.Identifier == parameterWidth.Name)
                     i.Identifier = width;

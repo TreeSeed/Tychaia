@@ -6,7 +6,7 @@
 
 //#define MODULO_SPEED_TEST
 //#define VERIFICATION
-#define RANGED_LOGIC_TEST
+//#define RANGED_LOGIC_TEST
 
 using System;
 using Tychaia.ProceduralGeneration;
@@ -75,6 +75,15 @@ namespace ProceduralGenPerformance
                 algorithmTest2.SetInput(0, algorithmConstant);
                 algorithmTest1.SetInput(0, algorithmTest2);
                 algorithmRuntime = algorithmTest1;
+#if !RANGED_LOGIC_TEST
+                algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
+#endif
+            }
+            else if (mode == "extend")
+            {
+                legacy = null;
+                algorithmRuntime = new RuntimeLayer(new AlgorithmExtend());
+                algorithmRuntime.SetInput(0, new RuntimeLayer(new AlgorithmInitial()));
 #if !RANGED_LOGIC_TEST
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
 #endif
@@ -205,6 +214,15 @@ namespace ProceduralGenPerformance
 
             var ranged = new RangedLayer(algorithmRuntime);
             Console.WriteLine(ranged.GetPrintableStructure());
+            
+            ICSharpCode.NRefactory.CSharp.Expression ix, iy, iz, iwidth, iheight, idepth;
+            RangedLayer.FindMaximumBounds(ranged, out ix, out iy, out iz, out iwidth, out iheight, out idepth);
+            Console.WriteLine("The X expression is: " + ix.ToString());
+            Console.WriteLine("The Y expression is: " + iy.ToString());
+            Console.WriteLine("The Z expression is: " + iz.ToString());
+            Console.WriteLine("The W expression is: " + iwidth.ToString());
+            Console.WriteLine("The H expression is: " + iheight.ToString());
+            Console.WriteLine("The D expression is: " + idepth.ToString());
             return;
 
 #endif

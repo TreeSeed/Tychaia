@@ -249,7 +249,7 @@ namespace Tychaia.ProceduralGeneration
                         }
                         break;
                     }
-                case 15:
+                case 16:
                     {
                         // context, inputA, inputB, inputC, inputD, inputE, output, x, y, z, i, j, k, width, height, depth
                         dynamic algorithm = this.m_Algorithm;
