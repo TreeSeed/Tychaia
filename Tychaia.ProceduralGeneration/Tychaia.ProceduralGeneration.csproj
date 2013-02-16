@@ -76,11 +76,15 @@
     <Compile Include="Flow\AlgorithmFlowImageGeneration.cs" />
     <Compile Include="AlgorithmColors.cs" />
     <Compile Include="Compiler\RangedLayer.cs" />
+    <Compile Include="Biomes\Biome.cs" />
+    <Compile Include="AlgorithmBiomes.cs" />
+    <Compile Include="Biomes\GrasslandBiome.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Compiler\" />
     <Folder Include="Flow\" />
+    <Folder Include="Biomes\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compiler\CompiledLayerTemplate.cs">
