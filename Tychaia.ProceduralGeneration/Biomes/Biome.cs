@@ -12,7 +12,7 @@ namespace Tychaia.ProceduralGeneration.Biomes
         // Requirements for biome placement
         public double Rainfall;
         public double Temperature;
-        public int Terrain;
+        public int Terrain = 0;
         public double RainfallSelectionVariance = 1;
         public double TemperatureSelectionVariance = 1;
         public double TerrainSelectionVariance = 1;
@@ -73,7 +73,8 @@ namespace Tychaia.ProceduralGeneration.Biomes
 
                 score[i] += Math.Abs(biome.Rainfall - rainfall) * biome.RainfallSelectionVariance;
                 score[i] += Math.Abs(biome.Temperature - temperature) * biome.TemperatureSelectionVariance;
-                score[i] += Math.Abs(biome.Terrain - terrain) * biome.TerrainSelectionVariance;
+				if (biome.Terrain != 0)
+                	score[i] += Math.Abs(biome.Terrain - terrain) * biome.TerrainSelectionVariance;
             }
 
             int hold = 0;
