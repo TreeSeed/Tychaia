@@ -26,6 +26,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
             // TODO: Determine the actual code to generate by using Mono.Cecil on the assemblies.
             // TODO: Generate the code and return the type for use.
 
+            Console.WriteLine("Tracing compilation...");
+
             var result = ProcessRuntimeLayer(layer);
             return GenerateType(result);
         }
@@ -50,105 +52,6 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 result += (char)((int)'a' + m_Random.Next(0, 26));
             return result;
         }
-
-        //
-        //
-        //     need to have one function to calculate maximum loop required from "store result" -> first layer
-        //
-        //     need to have another function (or passing parameters into each CompileLayer call) for calculating
-        //     x, y, z, width, height, depth of current layer if statement.
-        //
-        //     could pass in x, y, z, width, height, depth into each CompileLayer with the starting values for
-        //     "store result" set to the offset x, y, z in the array (so that as it goes up layers, it subtracts
-        //     from that position just as offsets do logically) and width, height, depth is divided by two or 
-        //     subtracted by border * 2 where needed.
-        //
-        //     also can grab the same width / height / depth logic from the non-single loop version and just keep
-        //     AddBorderEdgesRecursive around for figuring out the initial array maximum size
-        //
-        //
-
-#if FALSE
-
-        /// <summary>
-        /// Works out the main loop bounds that we need to use in order to calculate
-        /// the entire layer system.
-        /// </summary>
-        private static void AddBorderEdgesRecursive(RuntimeLayer layer, IAlgorithm current,
-                                                    ref string absoluteX, ref string absoluteY, ref string absoluteZ,
-                                                    ref string absoluteWidth, ref string absoluteHeight, ref string absoluteDepth)
-        {
-            // Handle parent layers.
-            if (layer.GetInputs().Length > 0)
-            {
-                var l = layer.GetInputs()[0];
-                AddBorderEdgesRecursive(l, layer.Algorithm,
-                                        ref absoluteX, ref absoluteY, ref absoluteZ,
-                                        ref absoluteWidth, ref absoluteHeight, ref absoluteDepth);
-            }
-            // Handle current.
-            if (current != null)
-            {
-                if (current.RequiredXBorder != 0) 
-                    absoluteX = "(" + absoluteX + " + " + current.RequiredXBorder + ")";
-                if (current.RequiredYBorder != 0)
-                    absoluteY = "(" + absoluteY + " + " + current.RequiredYBorder + ")";
-                if (current.RequiredZBorder != 0)
-                    absoluteZ = "(" + absoluteZ + " + " + current.RequiredZBorder + ")";
-                if (!current.InputWidthAtHalfSize)
-                {
-                    if (current.RequiredXBorder != 0)
-                        absoluteWidth = "(" + absoluteWidth + " + " + current.RequiredXBorder * 2 + ")";
-                }
-                else
-                    absoluteWidth = "(" + absoluteWidth + " / 2)";
-                if (!current.InputHeightAtHalfSize)
-                {
-                    if (current.RequiredYBorder != 0)
-                        absoluteHeight = "(" + absoluteHeight + " + " + current.RequiredYBorder * 2 + ")";
-                }
-                else
-                    absoluteHeight = "(" + absoluteHeight + " / 2)";
-                if (!current.InputDepthAtHalfSize)
-                {
-                    if (current.RequiredZBorder != 0)
-                        absoluteDepth = "(" + absoluteDepth + " + " + current.RequiredZBorder * 2 + ")";
-                }
-                else
-                    absoluteDepth = "(" + absoluteDepth + " / 2)";
-            }
-
-            /* FIXME: Work for multiple layers.
-            int temporaryX = 0, temporaryY = 0, temporaryZ = 0, temporaryWidth = 0, temporaryHeight = 0, temporaryDepth = 0;
-            int maximumX = 0, maximumY = 0, maximumZ = 0, maximumWidth = 0, maximumHeight = 0, maximumDepth = 0;
-            foreach (var l in layer.GetInputs())
-            {
-                AddBorderEdgesRecursive(l, layer.Algorithm,
-                                        ref temporaryX, ref temporaryY, ref temporaryZ,
-                                        ref temporaryWidth, ref temporaryHeight, ref temporaryDepth);
-                if (temporaryX < maximumX)
-                    maximumX = temporaryX;
-                if (temporaryY < maximumY)
-                    maximumY = temporaryY;
-                if (temporaryZ < maximumZ)
-                    maximumZ = temporaryZ;
-                if (temporaryWidth > maximumWidth)
-                    maximumWidth = temporaryWidth;
-                if (temporaryHeight > maximumHeight)
-                    maximumHeight = temporaryHeight;
-                if (temporaryDepth > maximumDepth)
-                    maximumDepth = temporaryDepth;
-            }
-            absoluteX += maximumX;
-            absoluteY += maximumY;
-            absoluteZ += maximumZ;
-            absoluteWidth += maximumWidth;
-            absoluteHeight += maximumHeight;
-            absoluteDepth += maximumDepth;
-            */
-        }
-
-#endif
 
         private static ProcessedResult CompileRuntimeLayer(RuntimeLayer layer, RangedLayer ranged, IAlgorithm parent)
         {
@@ -183,13 +86,11 @@ namespace Tychaia.ProceduralGeneration.Compiler
             result.Declarations += result.OutputVariableType + "[] " + result.OutputVariableName +
                 " = new " + result.OutputVariableType + "[__cwidth * __cheight * __cdepth];\n";
 
-            // Work out bounds.
-            ICSharpCode.NRefactory.CSharp.Expression ix, iy, iz, iwidth, iheight, idepth;
-            RangedLayer.FindMaximumBounds(ranged, out ix, out iy, out iz, out iwidth, out iheight, out idepth);
+            Console.WriteLine(ranged.ToString());
 
             // Add the conditional container.
-            string code = "if (k >= (int)((" + iz + ") - z) && i >= (int)((" + ix + ") - x) && j >= (int)((" + iy + ") - y)" + 
-                " && k < " + idepth + " && i < " + iwidth + " && j < " + iheight + @")
+            string code = "if (k >= (int)((" + ranged.Z + ") - z) && i >= (int)((" + ranged.X + ") - x) && j >= (int)((" + ranged.Y + ") - y)" + 
+                " && k < " + ranged.Depth + " && i < " + ranged.Width + " && j < " + ranged.Height + @")
 {
 ";
 
@@ -217,6 +118,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             code += method.Body.GetText();
 
             // Terminate the conditional container and return.
+            code += "computations += 1;";
             code += "}\n";
             result.ProcessedCode += code;
             return result;

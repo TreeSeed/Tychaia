@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{642D5815-4533-4146-96C1-D932FE1641F9}</ProjectGuid>
+    <ProjectGuid>{641D5815-4533-4146-96C1-D932FE1641F9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Tychaia.ProceduralGeneration</RootNamespace>

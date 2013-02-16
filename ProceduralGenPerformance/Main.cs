@@ -102,12 +102,6 @@ namespace ProceduralGenPerformance
                 return;
             }
 
-            /*dynamic de = algorithmCompiled;
-            Console.WriteLine(de.Modifier);
-            Console.WriteLine(algorithmRuntime.Modifier);
-            algorithmCompiled.Seed = 100;
-            algorithmRuntime.Seed = 100;*/
-
 #if MODULO_SPEED_TEST
 
             for (int i = 0; i <= 10000000; i += 1)
@@ -230,6 +224,7 @@ namespace ProceduralGenPerformance
             // Run tests to see how fast they are.
             for (int x = 0; x < 300; x++)
             {
+                int computations = 0;
                 var legacyStartTime = DateTime.Now;
                 if (legacy != null)
                 {
@@ -241,12 +236,12 @@ namespace ProceduralGenPerformance
                 Console.WriteLine("Starting Test #" + x + " (algorithm runtime)");
                 var algorithmRuntimeStartTime = DateTime.Now;
                 for (int i = 0; i < 1000; i++)
-                    algorithmRuntime.GenerateData(0, 0, 0, 128, 128, 1);
+                    algorithmRuntime.GenerateData(0, 0, 0, 128, 128, 1, out computations);
                 var algorithmRuntimeEndTime = DateTime.Now;
                 Console.WriteLine("Starting Test #" + x + " (algorithm compiled)");
                 var algorithmCompiledStartTime = DateTime.Now;
                 for (int i = 0; i < 1000; i++)
-                    algorithmCompiled.GenerateData(0, 0, 0, 128, 128, 1);
+                    algorithmCompiled.GenerateData(0, 0, 0, 128, 128, 1, out computations);
                 var algorithmCompiledEndTime = DateTime.Now;
                 var algorithmCompiledBuiltinStartTime = DateTime.Now;
                 var algorithmCompiledBuiltinEndTime = DateTime.Now;
@@ -255,7 +250,7 @@ namespace ProceduralGenPerformance
                     Console.WriteLine("Starting Test #" + x + " (algorithm compiled builtin)");
                     algorithmCompiledBuiltinStartTime = DateTime.Now;
                     for (int i = 0; i < 1000; i++)
-                        algorithmCompiled.GenerateData(0, 0, 0, 128, 128, 1);
+                        algorithmCompiled.GenerateData(0, 0, 0, 128, 128, 1, out computations);
                     algorithmCompiledBuiltinEndTime = DateTime.Now;
                 }
                 // Because there are 1000 tests, and 1000 microseconds in a millisecond..

@@ -107,8 +107,9 @@ namespace Tychaia.ProceduralGeneration
         /// release mode (in-game and MMAW).
         /// </summary>
         private dynamic PerformAlgorithmRuntimeCall(long xFrom, long yFrom, long zFrom,
-                                                     long xTo, long yTo, long zTo,
-                                                     int width, int height, int depth)
+                                                    long xTo, long yTo, long zTo,
+                                                    int width, int height, int depth,
+                                                    ref int computations)
         {
             var processCell = this.m_Algorithm.GetType().GetMethod("ProcessCell");
             dynamic outputArray = Activator.CreateInstance(
@@ -123,7 +124,10 @@ namespace Tychaia.ProceduralGeneration
                         for (int k = 0; k < zTo - zFrom; k++)
                             for (int i = 0; i < xTo - xFrom; i++)
                                 for (int j = 0; j < yTo - yFrom; j++)
+                                {
                                     algorithm.ProcessCell(this, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, width, height, depth);
+                                    computations += 1;
+                                }
                         break;
                     }
                 case 12:
@@ -138,11 +142,15 @@ namespace Tychaia.ProceduralGeneration
                                 zFrom - algorithm.RequiredZBorder, 
                                 width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
                                 height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2,
+                                out computations);
                             for (int k = 0; k < zTo - zFrom; k++)
                                 for (int i = 0; i < xTo - xFrom; i++)
                                     for (int j = 0; j < yTo - yFrom; j++)
+                                    {
                                         algorithm.ProcessCell(this, inputArray, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, width, height, depth);
+                                        computations += 1;
+                                    }
                         }
                         break;
                     }
@@ -158,18 +166,23 @@ namespace Tychaia.ProceduralGeneration
                                 zFrom - algorithm.RequiredZBorder, 
                                 width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
                                 height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2,
+                                out computations);
                             dynamic inputBArray = this.m_Inputs[1].GenerateData(
                                 xFrom - algorithm.RequiredXBorder, 
                                 yFrom - algorithm.RequiredYBorder, 
                                 zFrom - algorithm.RequiredZBorder, 
                                 width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
                                 height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2,
+                                out computations);
                             for (int k = 0; k < zTo - zFrom; k++)
                                 for (int i = 0; i < xTo - xFrom; i++)
                                     for (int j = 0; j < yTo - yFrom; j++)
+                                    {
                                         algorithm.ProcessCell(this, inputAArray, inputBArray, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, width, height, depth);
+                                        computations += 1;
+                                    }
                         }
                         break;
                     }
@@ -185,25 +198,31 @@ namespace Tychaia.ProceduralGeneration
                                 zFrom - algorithm.RequiredZBorder, 
                                 width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
                                 height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2,
+                                out computations);
                             dynamic inputBArray = this.m_Inputs[1].GenerateData(
                                 xFrom - algorithm.RequiredXBorder, 
                                 yFrom - algorithm.RequiredYBorder, 
                                 zFrom - algorithm.RequiredZBorder, 
                                 width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
                                 height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2,
+                                out computations);
                             dynamic inputCArray = this.m_Inputs[2].GenerateData(
                                 xFrom - algorithm.RequiredXBorder, 
                                 yFrom - algorithm.RequiredYBorder, 
                                 zFrom - algorithm.RequiredZBorder, 
                                 width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
                                 height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2,
+                                out computations);
                             for (int k = 0; k < zTo - zFrom; k++)
                                 for (int i = 0; i < xTo - xFrom; i++)
                                     for (int j = 0; j < yTo - yFrom; j++)
+                                    {
                                         algorithm.ProcessCell(this, inputAArray, inputBArray, inputCArray, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, width, height, depth);
+                                        computations += 1;
+                                    }
                         }
                         break;
                     }
@@ -220,32 +239,39 @@ namespace Tychaia.ProceduralGeneration
                                 zFrom - algorithm.RequiredZBorder, 
                                 width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
                                 height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2,
+                                out computations);
                             dynamic inputBArray = this.m_Inputs[1].GenerateData(
                                 xFrom - algorithm.RequiredXBorder, 
                                 yFrom - algorithm.RequiredYBorder, 
                                 zFrom - algorithm.RequiredZBorder, 
                                 width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
                                 height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2,
+                                out computations);
                             dynamic inputCArray = this.m_Inputs[2].GenerateData(
                                 xFrom - algorithm.RequiredXBorder, 
                                 yFrom - algorithm.RequiredYBorder, 
                                 zFrom - algorithm.RequiredZBorder, 
                                 width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
                                 height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2,
+                                out computations);
                             dynamic inputDArray = this.m_Inputs[3].GenerateData(
                                 xFrom - algorithm.RequiredXBorder, 
                                 yFrom - algorithm.RequiredYBorder, 
                                 zFrom - algorithm.RequiredZBorder, 
                                 width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
                                 height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2,
+                                out computations);
                             for (int k = 0; k < zTo - zFrom; k++)
                                 for (int i = 0; i < xTo - xFrom; i++)
                                     for (int j = 0; j < yTo - yFrom; j++)
+                                    {
                                         algorithm.ProcessCell(this, inputAArray, inputBArray, inputCArray, inputDArray, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, width, height, depth);
+                                        computations += 1;
+                                    }
                         }
                         break;
                     }
@@ -262,39 +288,47 @@ namespace Tychaia.ProceduralGeneration
                                 zFrom - algorithm.RequiredZBorder, 
                                 width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
                                 height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2,
+                                out computations);
                             dynamic inputBArray = this.m_Inputs[1].GenerateData(
                                 xFrom - algorithm.RequiredXBorder, 
                                 yFrom - algorithm.RequiredYBorder, 
                                 zFrom - algorithm.RequiredZBorder, 
                                 width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
                                 height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2,
+                                out computations);
                             dynamic inputCArray = this.m_Inputs[2].GenerateData(
                                 xFrom - algorithm.RequiredXBorder, 
                                 yFrom - algorithm.RequiredYBorder, 
                                 zFrom - algorithm.RequiredZBorder, 
                                 width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
                                 height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2,
+                                out computations);
                             dynamic inputDArray = this.m_Inputs[3].GenerateData(
                                 xFrom - algorithm.RequiredXBorder, 
                                 yFrom - algorithm.RequiredYBorder, 
                                 zFrom - algorithm.RequiredZBorder, 
                                 width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
                                 height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2,
+                                out computations);
                             dynamic inputEArray = this.m_Inputs[4].GenerateData(
                                 xFrom - algorithm.RequiredXBorder, 
                                 yFrom - algorithm.RequiredYBorder, 
                                 zFrom - algorithm.RequiredZBorder, 
                                 width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
                                 height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
+                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2,
+                                out computations);
                             for (int k = 0; k < zTo - zFrom; k++)
                                 for (int i = 0; i < xTo - xFrom; i++)
                                     for (int j = 0; j < yTo - yFrom; j++)
+                                    {
                                         algorithm.ProcessCell(this, inputAArray, inputBArray, inputCArray, inputDArray, inputEArray, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, width, height, depth);
+                                        computations += 1;
+                                    }
                         }
                         break;
                     }
@@ -308,9 +342,10 @@ namespace Tychaia.ProceduralGeneration
         /// <summary>
         /// Generates data using the current algorithm.
         /// </summary>
-        public dynamic GenerateData(long x, long y, long z, int width, int height, int depth)
+        public dynamic GenerateData(long x, long y, long z, int width, int height, int depth, out int computations)
         {
-            return this.PerformAlgorithmRuntimeCall(x, y, z, x + width, y + height, z + depth, width, height, depth);
+            computations = 0;
+            return this.PerformAlgorithmRuntimeCall(x, y, z, x + width, y + height, z + depth, width, height, depth, ref computations);
         }
         
         #region Randomness

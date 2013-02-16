@@ -139,15 +139,17 @@ namespace Tychaia.ProceduralGeneration.Flow
 
             // First check how long it takes for the runtime layer to do 1000 operations of 8x8x8.
             var runtimeStart = DateTime.Now;
+            var runtimeComputations = 0;
             for (var i = 0; i < iterations; i++)
-                runtime.GenerateData(0, 0, 0, 8, 8, 8);
+                runtime.GenerateData(0, 0, 0, 8, 8, 8, out runtimeComputations);
             var runtimeEnd = DateTime.Now;
 
             // Now check how long it takes the compiled layer to do 1000 operations of 8x8x8.
             var compiledStart = DateTime.Now;
+            var compiledComputations = 0;
             if (compiled != null)
                 for (var i = 0; i < iterations; i++)
-                    compiled.GenerateData(0, 0, 0, 8, 8, 8);
+                    compiled.GenerateData(0, 0, 0, 8, 8, 8, out compiledComputations);
             var compiledEnd = DateTime.Now;
 
             // Determine the per-operation cost.
@@ -172,15 +174,39 @@ namespace Tychaia.ProceduralGeneration.Flow
                 compiledColor = bad;
 
             // Draw performance measurements.
-            var bitmap = new Bitmap(128, 32);
+            Bitmap bitmap;
+            if (runtimeComputations != compiledComputations)
+                bitmap = new Bitmap(128, 48);
+            else
+                bitmap = new Bitmap(128, 32);
             var graphics = Graphics.FromImage(bitmap);
             var font = new Font(SystemFonts.DefaultFont, FontStyle.Bold);
             graphics.Clear(Color.Black);
-            graphics.DrawString("Runtime: " + runtimeus + "\xB5s", font, runtimeColor, new PointF(0, 0));
-            if (compiled != null)
-                graphics.DrawString("Compiled: " + compiledus + "\xB5s", font, compiledColor, new PointF(0, 16));
+            if (runtimeComputations != compiledComputations)
+            {
+                graphics.DrawString("Computation mismatch!", font, bad, new PointF(0, 0));
+                graphics.DrawString("Runtime:", font, runtimeColor, new PointF(0, 16));
+                graphics.DrawString(runtimeComputations + "c", font, runtimeColor, new PointF(70, 16));
+                if (compiled != null)
+                {
+                    graphics.DrawString("Compiled:", font, compiledColor, new PointF(0, 32));
+                    graphics.DrawString(compiledComputations + "c", font, compiledColor, new PointF(70, 32));
+                }
+                else
+                    graphics.DrawString("Unable to compile.", font, bad, new PointF(0, 32));
+            }
             else
-                graphics.DrawString("Unable to compile.", font, bad, new PointF(0, 16));
+            {
+                graphics.DrawString("Runtime:", font, runtimeColor, new PointF(0, 0));
+                graphics.DrawString(runtimeus + "\xB5s", font, runtimeColor, new PointF(70, 0));
+                if (compiled != null)
+                {
+                    graphics.DrawString("Compiled:", font, compiledColor, new PointF(0, 16));
+                    graphics.DrawString(compiledus + "\xB5s", font, compiledColor, new PointF(70, 16));
+                }
+                else
+                    graphics.DrawString("Unable to compile.", font, bad, new PointF(0, 16));
+            }
             if (this.m_AdditionalInformation != null)
                 this.m_AdditionalInformation.Dispose();
             this.m_AdditionalInformation = bitmap;

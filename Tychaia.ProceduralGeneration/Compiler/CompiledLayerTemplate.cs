@@ -27,7 +27,7 @@ public class CompiledLayer : IRuntimeContext, IGenerator
 
     #region AUTO-GENERATED CODE
 
-    public dynamic GenerateData(long x, long y, long z, int width, int height, int depth)
+    public dynamic GenerateData(long x, long y, long z, int width, int height, int depth, out int computations)
     {
         //
         // This is auto-generated code.  Things to observe:
@@ -37,6 +37,7 @@ public class CompiledLayer : IRuntimeContext, IGenerator
         //   * Auto-detection of required arrays and their types to support
         //     quickly inlining of code and reduction in the array creation.
         //
+        computations = 0;
 
         /****** %DECLS% ******/
 

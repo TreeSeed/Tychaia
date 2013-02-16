@@ -250,7 +250,8 @@ namespace Tychaia.ProceduralGeneration.Flow
             Graphics g = Graphics.FromImage(b);
             g.Clear(Color.White);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-            int[] data = l.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth);
+            int computations = 0;
+            int[] data = l.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth, out computations);
             
             /* Our world is laid out in memory in terms of X / Y, but
                  * we are rendering isometric, which means that the rendering
