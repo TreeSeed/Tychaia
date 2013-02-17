@@ -55,7 +55,12 @@ namespace Tychaia.ProceduralGeneration.Flow
                 return this.m_Layer;
             }
         }
-        
+
+        private Thread m_CompiledViewToggleThread = null;
+        private Thread m_PerformanceThread = null;
+        private Bitmap m_RuntimeBitmap = null;
+        private Bitmap m_CompiledBitmap = null;
+
         public AlgorithmFlowElement(FlowInterfaceControl control, StorageLayer l)
         {
             this.m_Control = control;
@@ -70,6 +75,35 @@ namespace Tychaia.ProceduralGeneration.Flow
             foreach (string s in this.m_Layer.Algorithm.InputNames)
                 this.m_InputConnectors.Add(new AlgorithmFlowConnector(this, s, true, l));
             this.m_OutputConnectors.Add(new AlgorithmFlowConnector(this, "Output", false, l));
+
+            this.m_CompiledViewToggleThread = new Thread(() =>
+            {
+                while (this.m_CompiledViewToggleThread.ThreadState != ThreadState.AbortRequested)
+                {
+                    Thread.Sleep(100);
+                    if (this.m_RealBitmap == this.m_RuntimeBitmap)
+                        this.m_RealBitmap = this.m_CompiledBitmap;
+                    else
+                        this.m_RealBitmap = this.m_RuntimeBitmap;
+                    try
+                    {
+                        this.m_Control.Invoke(new Action(() =>
+                        {
+                            this.m_Control.Invalidate(this.InvalidatingRegion.Apply(this.m_Control.Zoom));
+                        }));
+                    }
+                    catch
+                    {
+                        break;
+                    }
+                }
+            });
+            this.m_CompiledViewToggleThread.Start();
+        }
+
+        ~AlgorithmFlowElement()
+        {
+            this.m_CompiledViewToggleThread.Abort();
         }
 
         public AlgorithmFlowElement(FlowInterfaceControl control, IAlgorithm algorithm)
@@ -94,11 +128,11 @@ namespace Tychaia.ProceduralGeneration.Flow
                 g.Clear(Color.White);
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
                 g.DrawString("Disabled", SystemFonts.DefaultFont, SystemBrushes.WindowText, new PointF(0, 0));
-                this.m_RealBitmap = b;
+                this.m_RuntimeBitmap = b;
                 this.m_Control.Invalidate(this.Region.Apply(this.m_Control.Zoom));
                 return;
             }
-            this.m_RealBitmap = AlgorithmFlowImageGeneration.RegenerateImageForLayer(this.m_Layer,
+            this.m_RuntimeBitmap = AlgorithmFlowImageGeneration.RegenerateImageForLayer(this.m_Layer,
                 TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.X,
                 TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Y,
                 TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Z,
@@ -115,8 +149,6 @@ namespace Tychaia.ProceduralGeneration.Flow
             });
             this.m_PerformanceThread.Start();
         }
-
-        private Thread m_PerformanceThread = null;
 
         private void PerformMeasurements()
         {
@@ -148,8 +180,17 @@ namespace Tychaia.ProceduralGeneration.Flow
             var compiledStart = DateTime.Now;
             var compiledComputations = 0;
             if (compiled != null)
-                for (var i = 0; i < iterations; i++)
-                    compiled.GenerateData(0, 0, 0, 8, 8, 8, out compiledComputations);
+            {
+                try
+                {
+                    for (var i = 0; i < iterations; i++)
+                        compiled.GenerateData(0, 0, 0, 8, 8, 8, out compiledComputations);
+                }
+                catch
+                {
+                    compiled = null;
+                }
+            }
             var compiledEnd = DateTime.Now;
 
             // Determine the per-operation cost.
@@ -175,14 +216,14 @@ namespace Tychaia.ProceduralGeneration.Flow
 
             // Draw performance measurements.
             Bitmap bitmap;
-            if (runtimeComputations != compiledComputations)
+            if (runtimeComputations != compiledComputations && compiled != null)
                 bitmap = new Bitmap(128, 48);
             else
                 bitmap = new Bitmap(128, 32);
             var graphics = Graphics.FromImage(bitmap);
             var font = new Font(SystemFonts.DefaultFont, FontStyle.Bold);
             graphics.Clear(Color.Black);
-            if (runtimeComputations != compiledComputations)
+            if (runtimeComputations != compiledComputations && compiled != null)
             {
                 graphics.DrawString("Computation mismatch!", font, bad, new PointF(0, 0));
                 graphics.DrawString("Runtime:", font, runtimeColor, new PointF(0, 16));
@@ -210,6 +251,16 @@ namespace Tychaia.ProceduralGeneration.Flow
             if (this.m_AdditionalInformation != null)
                 this.m_AdditionalInformation.Dispose();
             this.m_AdditionalInformation = bitmap;
+
+            // TEMPORARY: Use the compiled layer to re-render the output.
+            if (compiled != null)
+            {
+                this.m_CompiledBitmap = AlgorithmFlowImageGeneration.RegenerateImageForLayer(this.m_Layer,
+                                                                                     TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.X,
+                                                                                     TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Y,
+                                                                                     TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Z,
+                                                                                     64, 64, 64, true);
+            }
         }
 
         private int[] ParentsIndexOf(StorageLayer find)

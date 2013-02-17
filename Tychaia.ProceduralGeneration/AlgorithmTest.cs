@@ -15,7 +15,7 @@ namespace Tychaia.ProceduralGeneration
     public class AlgorithmTest : Algorithm<int, int>
     {
         public override int RequiredXBorder { get { return 2; } }
-        public override int RequiredYBorder { get { return 2; } }
+        public override int RequiredYBorder { get { return 0; } }
 
         public override string[] InputNames
         {
@@ -24,13 +24,13 @@ namespace Tychaia.ProceduralGeneration
         
         public override bool Is2DOnly
         {
-            get { return false; }
+            get { return true; }
         }
 
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth)
         {
             output[i + j * width + k * width * height] =
-                input[(i + 1) + (j + 1) * width + k * width * height];
+                input[i + j * width + k * width * height];
         }
         
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)

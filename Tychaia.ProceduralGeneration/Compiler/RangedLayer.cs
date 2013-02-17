@@ -23,6 +23,57 @@ namespace Tychaia.ProceduralGeneration.Compiler
         public RuntimeLayer Layer { get; set; }
         public RangedLayer[] Inputs { get; set; }
 
+        public Expression OuterX
+        {
+            get
+            {
+                return new ParenthesizedExpression(
+                    new BinaryOperatorExpression(
+                    new ParenthesizedExpression(this.Width.Clone()),
+                    BinaryOperatorType.Subtract,
+                    new ParenthesizedExpression(
+                    new BinaryOperatorExpression(
+                    new IdentifierExpression("x"),
+                    BinaryOperatorType.Subtract,
+                    new ParenthesizedExpression(this.X.Clone())
+                ))));
+            }
+        }
+
+        public Expression OuterY
+        {
+            get
+            {
+                return new ParenthesizedExpression(
+                    new BinaryOperatorExpression(
+                    new ParenthesizedExpression(this.Height.Clone()),
+                    BinaryOperatorType.Subtract,
+                    new ParenthesizedExpression(
+                    new BinaryOperatorExpression(
+                    new IdentifierExpression("y"),
+                    BinaryOperatorType.Subtract,
+                    new ParenthesizedExpression(this.Y.Clone())
+                ))));
+            }
+        }
+        
+        public Expression OuterZ
+        {
+            get
+            {
+                return new ParenthesizedExpression(
+                    new BinaryOperatorExpression(
+                    new ParenthesizedExpression(this.Depth.Clone()),
+                    BinaryOperatorType.Subtract,
+                    new ParenthesizedExpression(
+                    new BinaryOperatorExpression(
+                    new IdentifierExpression("z"),
+                    BinaryOperatorType.Subtract,
+                    new ParenthesizedExpression(this.Z.Clone())
+                ))));
+            }
+        }
+
         public RangedLayer(RuntimeLayer layer)
         {
             InitializeFromRuntime(this, layer);
@@ -57,7 +108,10 @@ namespace Tychaia.ProceduralGeneration.Compiler
             out Expression z,
             out Expression width,
             out Expression height,
-            out Expression depth)
+            out Expression depth,
+            out Expression outerx,
+            out Expression outery,
+            out Expression outerz)
         {
             // Set initial values.
             x = layer.X;
@@ -66,13 +120,16 @@ namespace Tychaia.ProceduralGeneration.Compiler
             width = layer.Width;
             height = layer.Height;
             depth = layer.Depth;
+            outerx = layer.OuterX;
+            outery = layer.OuterY;
+            outerz = layer.OuterZ;
 
             // For each of the inputs, evaluate which is the appropriate
             // expression.
             foreach (var input in layer.Inputs)
             {
-                Expression ix, iy, iz, iwidth, iheight, idepth;
-                FindMaximumBounds(input, out ix, out iy, out iz, out iwidth, out iheight, out idepth);
+                Expression ix, iy, iz, iwidth, iheight, idepth, iouterx, ioutery, iouterz;
+                FindMaximumBounds(input, out ix, out iy, out iz, out iwidth, out iheight, out idepth, out iouterx, out ioutery, out iouterz);
 
                 x = GetSmallestOrLargestExpression(x, ix, false);
                 y = GetSmallestOrLargestExpression(y, iy, false);
@@ -80,6 +137,9 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 width = GetSmallestOrLargestExpression(width, iwidth, true);
                 height = GetSmallestOrLargestExpression(height, iheight, true);
                 depth = GetSmallestOrLargestExpression(depth, idepth, true);
+                outerx = GetSmallestOrLargestExpression(outerx, iouterx, true);
+                outery = GetSmallestOrLargestExpression(outery, ioutery, true);
+                outerz = GetSmallestOrLargestExpression(outerz, iouterz, true);
             }
         }
 
@@ -188,17 +248,17 @@ namespace Tychaia.ProceduralGeneration.Compiler
             if (currentRuntime.Algorithm.RequiredXBorder > 0)
             {
                 inputRanged.X = CreateSubtraction(inputRanged.X, currentRuntime.Algorithm.RequiredXBorder);
-                inputRanged.Width = CreateAddition(inputRanged.Width, currentRuntime.Algorithm.RequiredXBorder);
+                inputRanged.Width = CreateAddition(inputRanged.Width, currentRuntime.Algorithm.RequiredXBorder * 2);
             }
             if (currentRuntime.Algorithm.RequiredYBorder > 0)
             {
                 inputRanged.Y = CreateSubtraction(inputRanged.Y, currentRuntime.Algorithm.RequiredYBorder);
-                inputRanged.Height = CreateAddition(inputRanged.Height, currentRuntime.Algorithm.RequiredYBorder);
+                inputRanged.Height = CreateAddition(inputRanged.Height, currentRuntime.Algorithm.RequiredYBorder * 2);
             }
             if (currentRuntime.Algorithm.RequiredZBorder > 0)
             {
                 inputRanged.Z = CreateSubtraction(inputRanged.Z, currentRuntime.Algorithm.RequiredZBorder);
-                inputRanged.Depth = CreateAddition(inputRanged.Depth, currentRuntime.Algorithm.RequiredZBorder);
+                inputRanged.Depth = CreateAddition(inputRanged.Depth, currentRuntime.Algorithm.RequiredZBorder * 2);
             }
 
             // Process inputs recursively.

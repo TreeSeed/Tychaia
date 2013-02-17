@@ -26,7 +26,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             // TODO: Determine the actual code to generate by using Mono.Cecil on the assemblies.
             // TODO: Generate the code and return the type for use.
 
-            Console.WriteLine("Tracing compilation...");
+            //Console.WriteLine("Tracing compilation...");
 
             var result = ProcessRuntimeLayer(layer);
             return GenerateType(result);
@@ -89,10 +89,18 @@ namespace Tychaia.ProceduralGeneration.Compiler
             Console.WriteLine(ranged.ToString());
 
             // Add the conditional container.
-            string code = "if (k >= (int)((" + ranged.Z + ") - z) && i >= (int)((" + ranged.X + ") - x) && j >= (int)((" + ranged.Y + ") - y)" + 
-                " && k < " + ranged.Depth + " && i < " + ranged.Width + " && j < " + ranged.Height + @")
+            string code = "if (k >= (int)((" + ranged.Z.GetText(null) + ") - z) && i >= (int)((" + ranged.X.GetText(null) + ") - x) && j >= (int)((" + ranged.Y.GetText(null) + ") - y)" + 
+                " && k < " + ranged.OuterZ.GetText(null) + " && i < " + ranged.OuterX.GetText(null) + " && j < " + ranged.OuterY.GetText(null) + @")
 {
 ";
+
+            /*result.Declarations += "Console.WriteLine(\"COMPILED: \" + " +
+                "" + ranged.X + " + \" \" + " +
+                "" + ranged.Y + " + \" \" + " +
+                "" + ranged.Z + " + \" \" + " +
+                "" + ranged.Width + " + \" \" + " +
+                "" + ranged.Height + " + \" \" + " +
+                "" + ranged.Depth + ");";*/
 
             // Load Tychaia.ProceduralGeneration into Mono.Cecil.
             var module = AssemblyDefinition.ReadAssembly("Tychaia.ProceduralGeneration.dll").MainModule;
@@ -138,21 +146,21 @@ namespace Tychaia.ProceduralGeneration.Compiler
 
             // Use RangedLayer to work out the metrics.
             var ranged = new RangedLayer(layer);
-            ICSharpCode.NRefactory.CSharp.Expression ix, iy, iz, iwidth, iheight, idepth;
-            RangedLayer.FindMaximumBounds(ranged, out ix, out iy, out iz, out iwidth, out iheight, out idepth);
+            Expression ix, iy, iz, iwidth, iheight, idepth, iouterx, ioutery, iouterz;
+            RangedLayer.FindMaximumBounds(ranged, out ix, out iy, out iz, out iwidth, out iheight, out idepth, out iouterx, out ioutery, out iouterz);
 
             // Add __cwidth, __cheight and __cdepth declarations.
-            result.Declarations += "int __cx = (int)(x - (" + ix + "));\n";
-            result.Declarations += "int __cy = (int)(y - (" + iy + "));\n";
-            result.Declarations += "int __cz = (int)(z - (" + iz + "));\n";
-            result.Declarations += "int __cwidth = (int)(x - (" + ix + ")) + " + iwidth + ";\n";
-            result.Declarations += "int __cheight = (int)(y - (" + iy + ")) + " + iheight + ";\n";
-            result.Declarations += "int __cdepth = (int)(z - (" + iz + ")) + " + idepth + ";\n";
+            result.Declarations += "int __cx = (int)((x - (" + ix.GetText(null) + ")));\n";
+            result.Declarations += "int __cy = (int)((y - (" + iy.GetText(null) + ")));\n";
+            result.Declarations += "int __cz = (int)((z - (" + iz.GetText(null) + ")));\n";
+            result.Declarations += "int __cwidth = " + iwidth.GetText(null) + ";\n";
+            result.Declarations += "int __cheight = " + iheight.GetText(null) + ";\n";
+            result.Declarations += "int __cdepth = " + idepth.GetText(null) + ";\n";
 
             // Create the for loop that our calculations are done within.
-            result.ProcessedCode += @"for (var k = (int)((" + iz + ") - z); k < " + idepth + @"; k++)
-for (var i = (int)((" + ix + ") - x); i < " + iwidth + @"; i++)
-for (var j = (int)((" + iy + ") - y); j < " + iheight + @"; j++)
+            result.ProcessedCode += @"for (var k = (int)((" + iz.GetText(null) + ") - z); k < " + iouterz.GetText(null) + @"; k++)
+for (var i = (int)((" + ix.GetText(null) + ") - x); i < " + iouterx.GetText(null) + @"; i++)
+for (var j = (int)((" + iy.GetText(null) + ") - y); j < " + ioutery.GetText(null) + @"; j++)
 {
 ";
 
