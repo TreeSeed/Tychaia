@@ -41,24 +41,6 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        [DataMember]
-        [DefaultValue(false)]
-        [Description("When setting this cell also sets neighbor cells. Makes each iteration expand more.")]
-        public bool NeighborExpanding
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        [DefaultValue(false)]
-        [Description("Can choose to make the cells only expand when there are less neighbors. Can be either NeighborChancing or defaults to 1 neighbor.")]
-        public bool AddPoints
-        {
-            get;
-            set;
-        }
-
         public override int RequiredXBorder { get { return 1; } }
         public override int RequiredYBorder { get { return 1; } }
 
@@ -66,9 +48,7 @@ namespace Tychaia.ProceduralGeneration
         {
             this.Value = 0;
             this.ExcludeValue = true;
-            this.NeighborChancing = true;
-            this.NeighborExpanding = false;
-            this.AddPoints = false;
+            this.NeighborChancing = false;
         }
 
         public override string[] InputNames
@@ -100,64 +80,36 @@ namespace Tychaia.ProceduralGeneration
             // Also any other features you can think of?
             if ((input[(i + ox) + (j + oy) * rw] == Value && ExcludeValue == true) || (input[(i + ox) + (j + oy) * rw] != Value && ExcludeValue == false))
             {
-                if (NeighborChancing == false || context.GetRandomRange(x, y, 1, 100, context.Modifier) < (input[(i + ox + 1) + (j + oy + 1) * rw] + input[(i + ox - 1) + (j + oy - 1) * rw] + input[(i + ox - 1) + (j + oy + 1) * rw] + input[(i + ox + 1) + (j + oy - 1) * rw]))
+                if (NeighborChancing == false || context.GetRandomRange(x, y, 1, 200, context.Modifier) < (input[(i + ox + 1) + (j + oy + 1) * rw] + input[(i + ox - 1) + (j + oy - 1) * rw] + input[(i + ox - 1) + (j + oy + 1) * rw] + input[(i + ox + 1) + (j + oy - 1) * rw] + input[(i + ox + 0) + (j + oy - 1) * rw] + input[(i + ox + 1) + (j + oy - 0) * rw] + input[(i + ox + 0) + (j + oy + 1) * rw] + input[(i + ox - 1) + (j + oy - 0) * rw]))
                 {
-                    if (AddPoints == false || (AddPoints == true && (NeighborChancing == false || (NeighborChancing == true && context.GetRandomRange(x, y, 1, 100, context.Modifier) > (input[(i + ox + 1) + (j + oy + 1) * rw] + input[(i + ox - 1) + (j + oy - 1) * rw] + input[(i + ox - 1) + (j + oy + 1) * rw] + input[(i + ox + 1) + (j + oy - 1) * rw])))))
+                    int selected = context.GetRandomRange(x, y, 0, 8, context.Modifier);
+            
+                    switch (selected)
                     {
-
-                        int selected = context.GetRandomRange(x, y, 1, 4, context.Modifier);
-                
-                        switch (selected)
-                        {
-                            case 0:
-                                output[i + j * width] = input[(i + ox + 1) + (j + oy + 1) * rw];
-                                if (NeighborExpanding == true)
-                                {
-                                    if ((input[(i + ox - 1) + (j + oy - 1) * rw] == Value && ExcludeValue == true) || (input[(i + ox - 1) + (j + oy - 1) * rw] != Value && ExcludeValue == false))
-                                        output[(i + ox + 1) + (j + oy + 1) * rw] = input[(i + ox - 1) + (j + oy - 1) * rw];
-                                    if ((input[(i + ox - 1) + (j + oy + 1) * rw] == Value && ExcludeValue == true) || (input[(i + ox - 1) + (j + oy + 1) * rw] != Value && ExcludeValue == false))
-                                        output[(i + ox + 1) + (j + oy + 1) * rw] = input[(i + ox - 1) + (j + oy + 1) * rw];
-                                    if ((input[(i + ox + 1) + (j + oy - 1) * rw] == Value && ExcludeValue == true) || (input[(i + ox + 1) + (j + oy - 1) * rw] != Value && ExcludeValue == false))
-                                        output[(i + ox + 1) + (j + oy + 1) * rw] = input[(i + ox + 1) + (j + oy - 1) * rw];
-                                }
-                                break;
-                            case 1:
-                                output[i + j * width] = input[(i + ox - 1) + (j + oy - 1) * rw];
-                                if (NeighborExpanding == true)
-                                {
-                                    if ((input[(i + ox + 1) + (j + oy + 1) * rw] == Value && ExcludeValue == true) || (input[(i + ox + 1) + (j + oy + 1) * rw] != Value && ExcludeValue == false))
-                                        output[(i + ox - 1) + (j + oy - 1) * rw] = input[(i + ox + 1) + (j + oy + 1) * rw];
-                                    if ((input[(i + ox - 1) + (j + oy + 1) * rw] == Value && ExcludeValue == true) || (input[(i + ox - 1) + (j + oy + 1) * rw] != Value && ExcludeValue == false))
-                                        output[(i + ox - 1) + (j + oy - 1) * rw] = input[(i + ox - 1) + (j + oy + 1) * rw];
-                                    if ((input[(i + ox + 1) + (j + oy - 1) * rw] == Value && ExcludeValue == true) || (input[(i + ox + 1) + (j + oy - 1) * rw] != Value && ExcludeValue == false))
-                                        output[(i + ox - 1) + (j + oy - 1) * rw] = input[(i + ox + 1) + (j + oy - 1) * rw];
-                                }
-                                break;
-                            case 2:
-                                output[i + j * width] = input[(i + ox - 1) + (j + oy + 1) * rw]; 
-                                if (NeighborExpanding == true)
-                                {
-                                    if ((input[(i + ox + 1) + (j + oy + 1) * rw] == Value && ExcludeValue == true) || (input[(i + ox + 1) + (j + oy + 1) * rw] != Value && ExcludeValue == false))
-                                        output[(i + ox - 1) + (j + oy + 1) * rw] = input[(i + ox + 1) + (j + oy + 1) * rw];
-                                    if ((input[(i + ox - 1) + (j + oy - 1) * rw] == Value && ExcludeValue == true) || (input[(i + ox - 1) + (j + oy - 1) * rw] != Value && ExcludeValue == false))
-                                        output[(i + ox - 1) + (j + oy + 1) * rw] = input[(i + ox - 1) + (j + oy - 1) * rw];
-                                    if ((input[(i + ox + 1) + (j + oy - 1) * rw] == Value && ExcludeValue == true) || (input[(i + ox + 1) + (j + oy - 1) * rw] != Value && ExcludeValue == false))
-                                        output[(i + ox - 1) + (j + oy + 1) * rw] = input[(i + ox + 1) + (j + oy - 1) * rw];
-                                }
-                                break;
-                            case 3:
-                                output[i + j * width] = input[(i + ox + 1) + (j + oy - 1) * rw];
-                                if (NeighborExpanding == true)
-                                {
-                                    if ((input[(i + ox + 1) + (j + oy + 1) * rw] == Value && ExcludeValue == true) || (input[(i + ox + 1) + (j + oy + 1) * rw] != Value && ExcludeValue == false))
-                                        output[(i + ox + 1) + (j + oy - 1) * rw] = input[(i + ox + 1) + (j + oy + 1) * rw];
-                                    if ((input[(i + ox - 1) + (j + oy - 1) * rw] == Value && ExcludeValue == true) || (input[(i + ox - 1) + (j + oy - 1) * rw] != Value && ExcludeValue == false))
-                                        output[(i + ox + 1) + (j + oy - 1) * rw] = input[(i + ox - 1) + (j + oy - 1) * rw];
-                                    if ((input[(i + ox - 1) + (j + oy + 1) * rw] == Value && ExcludeValue == true) || (input[(i + ox - 1) + (j + oy + 1) * rw] != Value && ExcludeValue == false))
-                                        output[(i + ox + 1) + (j + oy - 1) * rw] = input[(i + ox - 1) + (j + oy + 1) * rw];
-                                }
-                                break;
-                        }
+                        case 0:
+                            output[i + j * width] = input[(i + ox + 1) + (j + oy + 1) * rw];
+                            break;
+                        case 1:
+                            output[i + j * width] = input[(i + ox - 1) + (j + oy - 1) * rw];
+                            break;
+                        case 2:
+                            output[i + j * width] = input[(i + ox - 1) + (j + oy + 1) * rw]; 
+                            break;
+                        case 3:
+                            output[i + j * width] = input[(i + ox + 1) + (j + oy - 1) * rw];
+                            break;
+                        case 4:
+                            output[i + j * width] = input[(i + ox + 0) + (j + oy + 1) * rw];
+                            break;
+                        case 5:
+                            output[i + j * width] = input[(i + ox + 1) + (j + oy + 0) * rw];
+                            break;
+                        case 6:
+                            output[i + j * width] = input[(i + ox + 0) + (j + oy - 1) * rw];
+                            break;
+                        case 7:
+                            output[i + j * width] = input[(i + ox - 1) + (j + oy + 0) * rw];
+                            break;
                     }
                 }
             }
