@@ -137,15 +137,22 @@ namespace Tychaia.ProceduralGeneration.Flow
                 TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Y,
                 TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Z,
                 64, 64, 64);
+            this.m_CompiledBitmap = this.m_RuntimeBitmap;
             this.m_Control.Invalidate(this.InvalidatingRegion.Apply(this.m_Control.Zoom));
             this.m_PerformanceThread = new Thread(() =>
             {
                 Thread.Sleep(1000);
                 this.PerformMeasurements();
-                this.m_Control.Invoke(new Action(() =>
+                try
                 {
-                    this.m_Control.Invalidate(this.InvalidatingRegion.Apply(this.m_Control.Zoom));
-                }));
+                    this.m_Control.Invoke(new Action(() =>
+                    {
+                        this.m_Control.Invalidate(this.InvalidatingRegion.Apply(this.m_Control.Zoom));
+                    }));
+                }
+                catch
+                {
+                }
             });
             this.m_PerformanceThread.Start();
         }

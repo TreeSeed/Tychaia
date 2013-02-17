@@ -5,6 +5,7 @@
 //
 using System;
 using ICSharpCode.NRefactory.CSharp;
+using System.Collections.Generic;
 
 namespace Tychaia.ProceduralGeneration.Compiler
 {
@@ -76,6 +77,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
 
         public RangedLayer(RuntimeLayer layer)
         {
+            if (layer == null)
+                throw new ArgumentNullException("layer");
             InitializeFromRuntime(this, layer);
         }
 
@@ -92,7 +95,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
         {
             var str = "";
             foreach (var input in this.Inputs)
-                str += input.GetPrintableStructure() + Environment.NewLine;
+                if (input != null)
+                    str += input.GetPrintableStructure() + Environment.NewLine;
             str += this.ToString();
             return str;
         }
@@ -113,6 +117,9 @@ namespace Tychaia.ProceduralGeneration.Compiler
             out Expression outery,
             out Expression outerz)
         {
+            if (layer == null)
+                throw new ArgumentNullException("layer");
+
             // Set initial values.
             x = layer.X;
             y = layer.Y;
@@ -128,6 +135,9 @@ namespace Tychaia.ProceduralGeneration.Compiler
             // expression.
             foreach (var input in layer.Inputs)
             {
+                if (input == null)
+                    continue;
+
                 Expression ix, iy, iz, iwidth, iheight, idepth, iouterx, ioutery, iouterz;
                 FindMaximumBounds(input, out ix, out iy, out iz, out iwidth, out iheight, out idepth, out iouterx, out ioutery, out iouterz);
 
@@ -161,34 +171,60 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 return b;
         }
 
+        private static int SanitizeValue(object value)
+        {
+            try
+            {
+                return (int)value;
+            }
+            catch
+            {
+            }
+            try
+            {
+                return (int)(long)value;
+            }
+            catch
+            {
+            }
+            throw new InvalidOperationException(value.GetType().FullName.ToString());
+        }
+
         /// <summary>
         /// Evaluates the given expression down to just a PrimitiveExpression.
         /// </summary>
-        private static PrimitiveExpression EvaluateExpression(Expression expr)
+        public static PrimitiveExpression EvaluateExpression(Expression expr, Dictionary<string, object> values = null)
         {
             if (expr is BinaryOperatorExpression)
             {
-                var a = EvaluateExpression((expr as BinaryOperatorExpression).Left);
-                var b = EvaluateExpression((expr as BinaryOperatorExpression).Right);
+                var a = EvaluateExpression((expr as BinaryOperatorExpression).Left, values);
+                var b = EvaluateExpression((expr as BinaryOperatorExpression).Right, values);
                 var op = (expr as BinaryOperatorExpression).Operator;
+                int aValue = SanitizeValue(a.Value);
+                int bValue = SanitizeValue(b.Value);
                 switch (op)
                 {
                     case BinaryOperatorType.Add:
-                        return new PrimitiveExpression((int)a.Value + (int)b.Value);
+                        return new PrimitiveExpression(SanitizeValue(aValue + bValue));
                     case BinaryOperatorType.Subtract:
-                        return new PrimitiveExpression((int)a.Value - (int)b.Value);
+                        return new PrimitiveExpression(SanitizeValue(aValue - bValue));
                     case BinaryOperatorType.Divide:
-                        return new PrimitiveExpression((int)a.Value / (int)b.Value);
+                        return new PrimitiveExpression(SanitizeValue(aValue / bValue));
                     case BinaryOperatorType.Multiply:
-                        return new PrimitiveExpression((int)a.Value * (int)b.Value);
+                        return new PrimitiveExpression(SanitizeValue(aValue * bValue));
                     default:
                         throw new NotSupportedException(op.ToString());
                 }
             }
             else if (expr is ParenthesizedExpression)
-                return EvaluateExpression((expr as ParenthesizedExpression).Expression);
+                return EvaluateExpression((expr as ParenthesizedExpression).Expression, values);
             else if (expr is IdentifierExpression)
-                return new PrimitiveExpression(100);
+            {
+                if (values != null)
+                    return new PrimitiveExpression(SanitizeValue(values[(expr as IdentifierExpression).Identifier]));
+                else
+                    return new PrimitiveExpression(SanitizeValue(100));
+            }
             else if (expr is PrimitiveExpression)
                 return expr as PrimitiveExpression;
             else
@@ -213,7 +249,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             ranged.Inputs = new RangedLayer[inputs.Length];
             for (var i = 0; i < inputs.Length; i++)
             {
-                ranged.Inputs[i] = ProcessInput(ranged, layer, inputs[i]);
+                ranged.Inputs[i] = inputs[i] == null ? null : ProcessInput(ranged, layer, inputs[i]);
             }
         }
 
@@ -266,7 +302,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             inputRanged.Inputs = new RangedLayer[inputs.Length];
             for (var i = 0; i < inputs.Length; i++)
             {
-                inputRanged.Inputs[i] = ProcessInput(inputRanged, inputRuntime, inputs[i]);
+                inputRanged.Inputs[i] = inputs[i] == null ? null : ProcessInput(inputRanged, inputRuntime, inputs[i]);
             }
 
             // Return the new layer.

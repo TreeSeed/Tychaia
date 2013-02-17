@@ -79,6 +79,8 @@
     <Compile Include="Biomes\Biome.cs" />
     <Compile Include="AlgorithmBiomes.cs" />
     <Compile Include="Biomes\GrasslandBiome.cs" />
+    <Compile Include="AlgorithmGradientInitial.cs" />
+    <Compile Include="RuntimeLayerBroken.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
