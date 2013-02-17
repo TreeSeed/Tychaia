@@ -145,7 +145,8 @@ namespace TychaiaWorldGenViewerAlgorithm
             int[] data = null;
             try
             {
-                data = layer.GenerateData(TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.X + sx, TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Y + sy, TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Z + sz, width, height, depth);
+                int computations = 0;
+                data = layer.GenerateData(TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.X + sx, TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Y + sy, TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Z + sz, width, height, depth, out computations);
 
                 int[] render = GetCellRenderOrder(RenderToNE, width, height, depth);
                 int ztop = depth;

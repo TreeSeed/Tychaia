@@ -24,7 +24,7 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
 
     #region AUTO-GENERATED CODE
 
-    public dynamic GenerateData(long x, long y, long z, int width, int height, int depth)
+    public dynamic GenerateData(long x, long y, long z, int width, int height, int depth, out int computations)
     {
         //
         // This is auto-generated code.  Things to observe:
@@ -35,6 +35,7 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
         //     quickly inlining of code and reduction in the array creation.
         //
 
+        computations = 0;
         int width_dtpcbivq = ((width / 2) + 4);
         int height_woolstkv = ((height / 2) + 4);
         int width_hwyhgeun = ((width_dtpcbivq / 2) + 4);

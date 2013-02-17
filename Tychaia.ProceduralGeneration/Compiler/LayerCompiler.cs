@@ -26,6 +26,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
             // TODO: Determine the actual code to generate by using Mono.Cecil on the assemblies.
             // TODO: Generate the code and return the type for use.
 
+            //Console.WriteLine("Tracing compilation...");
+
             var result = ProcessRuntimeLayer(layer);
             return GenerateType(result);
         }
@@ -51,108 +53,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             return result;
         }
 
-        //
-        //
-        //     need to have one function to calculate maximum loop required from "store result" -> first layer
-        //
-        //     need to have another function (or passing parameters into each CompileLayer call) for calculating
-        //     x, y, z, width, height, depth of current layer if statement.
-        //
-        //     could pass in x, y, z, width, height, depth into each CompileLayer with the starting values for
-        //     "store result" set to the offset x, y, z in the array (so that as it goes up layers, it subtracts
-        //     from that position just as offsets do logically) and width, height, depth is divided by two or 
-        //     subtracted by border * 2 where needed.
-        //
-        //     also can grab the same width / height / depth logic from the non-single loop version and just keep
-        //     AddBorderEdgesRecursive around for figuring out the initial array maximum size
-        //
-        //
-
-#if FALSE
-
-        /// <summary>
-        /// Works out the main loop bounds that we need to use in order to calculate
-        /// the entire layer system.
-        /// </summary>
-        private static void AddBorderEdgesRecursive(RuntimeLayer layer, IAlgorithm current,
-                                                    ref string absoluteX, ref string absoluteY, ref string absoluteZ,
-                                                    ref string absoluteWidth, ref string absoluteHeight, ref string absoluteDepth)
-        {
-            // Handle parent layers.
-            if (layer.GetInputs().Length > 0)
-            {
-                var l = layer.GetInputs()[0];
-                AddBorderEdgesRecursive(l, layer.Algorithm,
-                                        ref absoluteX, ref absoluteY, ref absoluteZ,
-                                        ref absoluteWidth, ref absoluteHeight, ref absoluteDepth);
-            }
-            // Handle current.
-            if (current != null)
-            {
-                if (current.RequiredXBorder != 0) 
-                    absoluteX = "(" + absoluteX + " + " + current.RequiredXBorder + ")";
-                if (current.RequiredYBorder != 0)
-                    absoluteY = "(" + absoluteY + " + " + current.RequiredYBorder + ")";
-                if (current.RequiredZBorder != 0)
-                    absoluteZ = "(" + absoluteZ + " + " + current.RequiredZBorder + ")";
-                if (!current.InputWidthAtHalfSize)
-                {
-                    if (current.RequiredXBorder != 0)
-                        absoluteWidth = "(" + absoluteWidth + " + " + current.RequiredXBorder * 2 + ")";
-                }
-                else
-                    absoluteWidth = "(" + absoluteWidth + " / 2)";
-                if (!current.InputHeightAtHalfSize)
-                {
-                    if (current.RequiredYBorder != 0)
-                        absoluteHeight = "(" + absoluteHeight + " + " + current.RequiredYBorder * 2 + ")";
-                }
-                else
-                    absoluteHeight = "(" + absoluteHeight + " / 2)";
-                if (!current.InputDepthAtHalfSize)
-                {
-                    if (current.RequiredZBorder != 0)
-                        absoluteDepth = "(" + absoluteDepth + " + " + current.RequiredZBorder * 2 + ")";
-                }
-                else
-                    absoluteDepth = "(" + absoluteDepth + " / 2)";
-            }
-
-            /* FIXME: Work for multiple layers.
-            int temporaryX = 0, temporaryY = 0, temporaryZ = 0, temporaryWidth = 0, temporaryHeight = 0, temporaryDepth = 0;
-            int maximumX = 0, maximumY = 0, maximumZ = 0, maximumWidth = 0, maximumHeight = 0, maximumDepth = 0;
-            foreach (var l in layer.GetInputs())
-            {
-                AddBorderEdgesRecursive(l, layer.Algorithm,
-                                        ref temporaryX, ref temporaryY, ref temporaryZ,
-                                        ref temporaryWidth, ref temporaryHeight, ref temporaryDepth);
-                if (temporaryX < maximumX)
-                    maximumX = temporaryX;
-                if (temporaryY < maximumY)
-                    maximumY = temporaryY;
-                if (temporaryZ < maximumZ)
-                    maximumZ = temporaryZ;
-                if (temporaryWidth > maximumWidth)
-                    maximumWidth = temporaryWidth;
-                if (temporaryHeight > maximumHeight)
-                    maximumHeight = temporaryHeight;
-                if (temporaryDepth > maximumDepth)
-                    maximumDepth = temporaryDepth;
-            }
-            absoluteX += maximumX;
-            absoluteY += maximumY;
-            absoluteZ += maximumZ;
-            absoluteWidth += maximumWidth;
-            absoluteHeight += maximumHeight;
-            absoluteDepth += maximumDepth;
-            */
-        }
-
-#endif
-
-#if FALSE
-
-        private static ProcessedResult CompileRuntimeLayer(RuntimeLayer layer, IAlgorithm parent)
+        private static ProcessedResult CompileRuntimeLayer(RuntimeLayer layer, RangedLayer ranged, IAlgorithm parent)
         {
             // Create our own processed result; a copy of our own state plus
             // somewhere to accumulate code.
@@ -172,16 +73,12 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 result.InputVariableNames = new string[inputs.Length];
                 for (var i = 0; i < inputs.Length; i++)
                 {
-                    var inputResult = CompileRuntimeLayer(inputs[i], layer.Algorithm);
+                    var inputResult = CompileRuntimeLayer(inputs[i], ranged.Inputs[i], layer.Algorithm);
                     result.ProcessedCode += inputResult.ProcessedCode;
                     result.InputVariableNames[i] = inputResult.OutputVariableName;
                     result.Declarations += inputResult.Declarations;
                 }
             }
-
-            // Find the starting point for this layer.
-            Console.WriteLine(absoluteX + " " + absoluteY + " " + absoluteZ + " " +
-                absoluteWidth + " " + absoluteHeight + " " + absoluteDepth);
 
             // Create the storage array.
             result.OutputVariableName = GenerateRandomIdentifier();
@@ -189,11 +86,21 @@ namespace Tychaia.ProceduralGeneration.Compiler
             result.Declarations += result.OutputVariableType + "[] " + result.OutputVariableName +
                 " = new " + result.OutputVariableType + "[__cwidth * __cheight * __cdepth];\n";
 
+            Console.WriteLine(ranged.ToString());
+
             // Add the conditional container.
-            string code = "if (k >= " + absoluteZ + " && i >= " + absoluteX + " && j >= " + absoluteY +
-                " && k < " + absoluteDepth + " && i < " + absoluteWidth + " && j < " + absoluteHeight + @")
+            string code = "if (k >= (int)((" + ranged.Z.GetText(null) + ") - z) && i >= (int)((" + ranged.X.GetText(null) + ") - x) && j >= (int)((" + ranged.Y.GetText(null) + ") - y)" + 
+                " && k < " + ranged.OuterZ.GetText(null) + " && i < " + ranged.OuterX.GetText(null) + " && j < " + ranged.OuterY.GetText(null) + @")
 {
 ";
+
+            /*result.Declarations += "Console.WriteLine(\"COMPILED: \" + " +
+                "" + ranged.X + " + \" \" + " +
+                "" + ranged.Y + " + \" \" + " +
+                "" + ranged.Z + " + \" \" + " +
+                "" + ranged.Width + " + \" \" + " +
+                "" + ranged.Height + " + \" \" + " +
+                "" + ranged.Depth + ");";*/
 
             // Load Tychaia.ProceduralGeneration into Mono.Cecil.
             var module = AssemblyDefinition.ReadAssembly("Tychaia.ProceduralGeneration.dll").MainModule;
@@ -213,18 +120,17 @@ namespace Tychaia.ProceduralGeneration.Compiler
             // Refactor the method.
             var method = astBuilder.CompilationUnit.Members.Where(v => v is MethodDeclaration).Cast<MethodDeclaration>().First();
             AlgorithmRefactorer.InlineMethod(algorithm, method, result.OutputVariableName, result.InputVariableNames,
-                                            0, 0, 0, // FIXME: absoluteX, absoluteY, absoluteZ,
+                                             "__cx", "__cy", "__cz",
                                              "__cwidth", "__cheight", "__cdepth");
             AlgorithmRefactorer.RemoveUsingStatements(astBuilder.CompilationUnit, result.UsingStatements);
             code += method.Body.GetText();
 
             // Terminate the conditional container and return.
+            code += "computations += 1;";
             code += "}\n";
             result.ProcessedCode += code;
             return result;
         }
-
-#endif
 
         private static ProcessedResult ProcessRuntimeLayer(RuntimeLayer layer)
         {
@@ -238,37 +144,32 @@ namespace Tychaia.ProceduralGeneration.Compiler
             if (algorithm == null)
                 throw new InvalidOperationException("Attempted to compile null runtime layer!");
 
-            // Determine the maximum loop expressions.
-            Expression xOffset = new PrimitiveExpression(0);
-            Expression yOffset = new PrimitiveExpression(0);
-            Expression zOffset = new PrimitiveExpression(0);
-            Expression width = new IdentifierExpression("width");
-            Expression height = new IdentifierExpression("height");
-            Expression depth = new IdentifierExpression("depth");
-            LayerMetrics.DetermineMaximumLoopRequired(layer, ref xOffset, ref yOffset, ref zOffset, ref width, ref height, ref depth);
-            Console.WriteLine(xOffset);
-            Console.WriteLine(yOffset);
-            Console.WriteLine(zOffset);
-            Console.WriteLine(width);
-            Console.WriteLine(height);
-            Console.WriteLine(depth);
+            // Use RangedLayer to work out the metrics.
+            var ranged = new RangedLayer(layer);
+            Expression ix, iy, iz, iwidth, iheight, idepth, iouterx, ioutery, iouterz;
+            RangedLayer.FindMaximumBounds(ranged, out ix, out iy, out iz, out iwidth, out iheight, out idepth, out iouterx, out ioutery, out iouterz);
+
+            // Add __cwidth, __cheight and __cdepth declarations.
+            result.Declarations += "int __cx = (int)((x - (" + ix.GetText(null) + ")));\n";
+            result.Declarations += "int __cy = (int)((y - (" + iy.GetText(null) + ")));\n";
+            result.Declarations += "int __cz = (int)((z - (" + iz.GetText(null) + ")));\n";
+            result.Declarations += "int __cwidth = " + iwidth.GetText(null) + ";\n";
+            result.Declarations += "int __cheight = " + iheight.GetText(null) + ";\n";
+            result.Declarations += "int __cdepth = " + idepth.GetText(null) + ";\n";
 
             // Create the for loop that our calculations are done within.
-            result.ProcessedCode += @"for (var k = 0; k < " + depth + @"; k++)
-for (var i = 0; i < " + width + @"; i++)
-for (var j = 0; j < " + height + @"; j++)
+            result.ProcessedCode += @"for (var k = (int)((" + iz.GetText(null) + ") - z); k < " + iouterz.GetText(null) + @"; k++)
+for (var i = (int)((" + ix.GetText(null) + ") - x); i < " + iouterx.GetText(null) + @"; i++)
+for (var j = (int)((" + iy.GetText(null) + ") - y); j < " + ioutery.GetText(null) + @"; j++)
 {
 ";
-#if FALSE
 
             // Now add the code for the layer.
-            var inputResult = CompileRuntimeLayer(layer, null);
+            var inputResult = CompileRuntimeLayer(layer, ranged, null);
             result.ProcessedCode += inputResult.ProcessedCode;
             result.OutputVariableName = inputResult.OutputVariableName;
             result.OutputVariableType = inputResult.OutputVariableType;
             result.Declarations += inputResult.Declarations;
-
-#endif
 
             // Terminate the for loop and return the result.
             result.ProcessedCode += "}";

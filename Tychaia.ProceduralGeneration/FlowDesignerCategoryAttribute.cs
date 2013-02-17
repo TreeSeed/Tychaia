@@ -20,7 +20,8 @@ namespace Tychaia.ProceduralGeneration
         Rivers,
         Trees,
         Towns,
-        FamilyTrees
+        FamilyTrees,
+        Debugging
     }
 
     public class FlowDesignerCategoryAttribute : Attribute

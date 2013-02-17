@@ -32,6 +32,12 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="ICSharpCode.NRefactory.CSharp">
+      <HintPath>..\Libraries\ICSharpCode\ICSharpCode.NRefactory.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>..\Libraries\ICSharpCode\ICSharpCode.NRefactory.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -45,7 +51,7 @@
       <Name>Tychaia.ProceduralGeneration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tychaia.ProceduralGeneration.Legacy\Tychaia.ProceduralGeneration.Legacy.csproj">
-      <Project>{642D5815-4533-4146-96C1-D932FE1641F9}</Project>
+      <Project>{641D5815-4533-4146-96C1-D932FE1641F9}</Project>
       <Name>Tychaia.ProceduralGeneration.Legacy</Name>
     </ProjectReference>
   </ItemGroup>

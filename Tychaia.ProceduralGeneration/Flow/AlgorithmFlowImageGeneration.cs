@@ -29,10 +29,13 @@ namespace Tychaia.ProceduralGeneration.Flow
             set;
         }
 
-        public static Bitmap RegenerateImageForLayer(StorageLayer layer, long ox, long oy, long oz, int width, int height, int depth)
+        public static Bitmap RegenerateImageForLayer(StorageLayer layer, long ox, long oy, long oz, int width, int height, int depth, bool compiled = false)
         {
             var runtime = StorageAccess.ToRuntime(layer);
-            return Regenerate3DImageForLayer(runtime, ox, oy, oz, width, height, depth);
+            if (compiled)
+                return Regenerate3DImageForLayer(runtime, ox, oy, oz, width, height, depth, StorageAccess.ToCompiled(layer));
+            else
+                return Regenerate3DImageForLayer(runtime, ox, oy, oz, width, height, depth);
         }
 
         #region Cell Render Ordering
@@ -236,7 +239,7 @@ namespace Tychaia.ProceduralGeneration.Flow
         private const int RenderHeight = 64;
         private const int RenderDepth = 64;
         
-        private static Bitmap Regenerate3DImageForLayer(RuntimeLayer l, long ox, long oy, long oz, int width, int height, int depth)
+        private static Bitmap Regenerate3DImageForLayer(RuntimeLayer runtimeLayer, long ox, long oy, long oz, int width, int height, int depth, IGenerator compiledLayer = null)
         {
             int owidth = width;
             int oheight = height;
@@ -250,8 +253,12 @@ namespace Tychaia.ProceduralGeneration.Flow
             Graphics g = Graphics.FromImage(b);
             g.Clear(Color.White);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-            dynamic data = l.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth);
-            
+            int computations = 0;
+            dynamic data;
+            if (compiledLayer != null)
+                data = compiledLayer.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth, out computations);
+            else
+                data = runtimeLayer.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth, out computations); 
             /* Our world is laid out in memory in terms of X / Y, but
                  * we are rendering isometric, which means that the rendering
                  * order for tiles must be like so:
@@ -285,13 +292,13 @@ namespace Tychaia.ProceduralGeneration.Flow
                  */
             
             StorageLayer parent;
-            if (l.GetInputs().Length == 0)
+            if (runtimeLayer.GetInputs().Length == 0)
                 parent = null;
             else
-                parent = StorageAccess.FromRuntime(l.GetInputs()[0]);
+                parent = StorageAccess.FromRuntime(runtimeLayer.GetInputs()[0]);
 
             int[] render = GetCellRenderOrder(RenderToNE, RenderWidth, RenderHeight);
-            int ztop = l.Algorithm.Is2DOnly ? 1 : RenderDepth;
+            int ztop = runtimeLayer.Algorithm.Is2DOnly ? 1 : RenderDepth;
             int zbottom = 0;
             for (int z = zbottom; z < ztop; z++)
             {
@@ -313,7 +320,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                     {
                         try
                         {
-                            Color lc = l.Algorithm.GetColorForValue(
+                            Color lc = runtimeLayer.Algorithm.GetColorForValue(
                                 parent,
                                 data[x + y * owidth + z * owidth * oheight]);
                             SolidBrush sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));

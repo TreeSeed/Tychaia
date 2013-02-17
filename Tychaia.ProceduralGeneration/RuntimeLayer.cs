@@ -7,6 +7,8 @@ using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Collections.Generic;
+using Tychaia.ProceduralGeneration.Compiler;
+using ICSharpCode.NRefactory.CSharp;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -106,195 +108,106 @@ namespace Tychaia.ProceduralGeneration
         /// so we should use a static compiler to prepare world configurations for
         /// release mode (in-game and MMAW).
         /// </summary>
+        /// <param name="xFrom">The minimum X value.</param>
+        /// <param name="yFrom">The minimum Y value.</param>
+        /// <param name="zFrom">The minimum Z value.</param>
+        /// <param name="xTo">The maximum X value.</param>
+        /// <param name="yTo">The maximum Y value.</param>
+        /// <param name="zTo">The maximum Z value.</param>
+        /// <param name="generateWidth">The width to generate inside the array.</param>
+        /// <param name="generateHeight">The height to generate inside the array.</param>
+        /// <param name="generateDepth">The depth to generate inside the array.</param>
+        /// <param name="generateOffsetX">The X offset to generate inside the array.</param>
+        /// <param name="generateOffsetY">The Y offset to generate inside the array.</param>
+        /// <param name="generateOffsetZ">The Z offset to generate inside the array.</param>
+        /// <param name="arrayWidth">The array width.</param>
+        /// <param name="arrayHeight">The array height.</param>
+        /// <param name="arrayDepth">The array depth.</param>
         private dynamic PerformAlgorithmRuntimeCall(long xFrom, long yFrom, long zFrom,
-                                                     long xTo, long yTo, long zTo,
-                                                     int width, int height, int depth)
+                                                    long xTo, long yTo, long zTo,
+                                                    int generateWidth, int generateHeight, int generateDepth,
+                                                    int generateOffsetX, int generateOffsetY, int generateOffsetZ,
+                                                    int arrayWidth, int arrayHeight, int arrayDepth,
+                                                    ref int computations)
         {
+            // Check the generate width, height and depth.
+            if (generateWidth != (int)(xTo - xFrom) ||
+                generateHeight != (int)(yTo - yFrom) ||
+                generateDepth != (int)(zTo - zFrom))
+                throw new InvalidOperationException("Size generation is out of sync!");
+
+            // Get the method for processing cells.
+            dynamic algorithm = this.m_Algorithm;
             var processCell = this.m_Algorithm.GetType().GetMethod("ProcessCell");
+
+            // Create a new array of the specified array width / height / depth.
             dynamic outputArray = Activator.CreateInstance(
                 this.m_Algorithm.OutputType.MakeArrayType(),
-                (int)(width * height * depth));
+                (int)(arrayWidth * arrayHeight * arrayDepth));
+
+            // Depending on the argument count, invoke the method appropriately.
             switch (processCell.GetParameters().Length)
             {
                 case 11:
                     {
                         // context, output, x, y, z, i, j, k, width, height, depth
-                        dynamic algorithm = this.m_Algorithm;
                         for (int k = 0; k < zTo - zFrom; k++)
                             for (int i = 0; i < xTo - xFrom; i++)
                                 for (int j = 0; j < yTo - yFrom; j++)
-                                    algorithm.ProcessCell(this, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, width, height, depth);
+                                {
+                                    algorithm.ProcessCell(this, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, arrayWidth, arrayHeight, arrayDepth);
+                                    computations += 1;
+                                }
                         break;
                     }
                 case 12:
                     {
                         // context, input, output, x, y, z, i, j, k, width, height, depth
-                        dynamic algorithm = this.m_Algorithm;
                         if (this.m_Inputs[0] != null)
                         {
-                            dynamic inputArray = this.m_Inputs[0].GenerateData(
-                                xFrom - algorithm.RequiredXBorder, 
-                                yFrom - algorithm.RequiredYBorder, 
-                                zFrom - algorithm.RequiredZBorder, 
-                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                            for (int k = 0; k < zTo - zFrom; k++)
-                                for (int i = 0; i < xTo - xFrom; i++)
-                                    for (int j = 0; j < yTo - yFrom; j++)
-                                        algorithm.ProcessCell(this, inputArray, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, width, height, depth);
-                        }
-                        break;
-                    }
-                case 13:
-                    {
-                        // context, inputA, inputB, output, x, y, z, i, j, k, width, height, depth
-                        dynamic algorithm = this.m_Algorithm;
-                        if (this.m_Inputs[0] != null && this.m_Inputs[1] != null)
-                        {
-                            dynamic inputAArray = this.m_Inputs[0].GenerateData(
-                                xFrom - algorithm.RequiredXBorder, 
-                                yFrom - algorithm.RequiredYBorder, 
-                                zFrom - algorithm.RequiredZBorder, 
-                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                            dynamic inputBArray = this.m_Inputs[1].GenerateData(
-                                xFrom - algorithm.RequiredXBorder, 
-                                yFrom - algorithm.RequiredYBorder, 
-                                zFrom - algorithm.RequiredZBorder, 
-                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                            for (int k = 0; k < zTo - zFrom; k++)
-                                for (int i = 0; i < xTo - xFrom; i++)
-                                    for (int j = 0; j < yTo - yFrom; j++)
-                                        algorithm.ProcessCell(this, inputAArray, inputBArray, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, width, height, depth);
-                        }
-                        break;
-                    }
-                case 14:
-                    {
-                        // context, inputA, inputB, inputC, output, x, y, z, i, j, k, width, height, depth
-                        dynamic algorithm = this.m_Algorithm;
-                        if (this.m_Inputs[0] != null && this.m_Inputs[1] != null && this.m_Inputs[2] != null)
-                        {
-                            dynamic inputAArray = this.m_Inputs[0].GenerateData(
-                                xFrom - algorithm.RequiredXBorder, 
-                                yFrom - algorithm.RequiredYBorder, 
-                                zFrom - algorithm.RequiredZBorder, 
-                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                            dynamic inputBArray = this.m_Inputs[1].GenerateData(
-                                xFrom - algorithm.RequiredXBorder, 
-                                yFrom - algorithm.RequiredYBorder, 
-                                zFrom - algorithm.RequiredZBorder, 
-                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                            dynamic inputCArray = this.m_Inputs[2].GenerateData(
-                                xFrom - algorithm.RequiredXBorder, 
-                                yFrom - algorithm.RequiredYBorder, 
-                                zFrom - algorithm.RequiredZBorder, 
-                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                            for (int k = 0; k < zTo - zFrom; k++)
-                                for (int i = 0; i < xTo - xFrom; i++)
-                                    for (int j = 0; j < yTo - yFrom; j++)
-                                        algorithm.ProcessCell(this, inputAArray, inputBArray, inputCArray, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, width, height, depth);
-                        }
-                        break;
-                    }
-                case 15:
-                    {
-                        // context, inputA, inputB, inputC, inputD, output, x, y, z, i, j, k, width, height, depth
-                        dynamic algorithm = this.m_Algorithm;
-                        if (this.m_Inputs[0] != null && this.m_Inputs[1] != null && this.m_Inputs[2] != null &&
-                            this.m_Inputs[3] != null)
-                        {
-                            dynamic inputAArray = this.m_Inputs[0].GenerateData(
-                                xFrom - algorithm.RequiredXBorder, 
-                                yFrom - algorithm.RequiredYBorder, 
-                                zFrom - algorithm.RequiredZBorder, 
-                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                            dynamic inputBArray = this.m_Inputs[1].GenerateData(
-                                xFrom - algorithm.RequiredXBorder, 
-                                yFrom - algorithm.RequiredYBorder, 
-                                zFrom - algorithm.RequiredZBorder, 
-                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                            dynamic inputCArray = this.m_Inputs[2].GenerateData(
-                                xFrom - algorithm.RequiredXBorder, 
-                                yFrom - algorithm.RequiredYBorder, 
-                                zFrom - algorithm.RequiredZBorder, 
-                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                            dynamic inputDArray = this.m_Inputs[3].GenerateData(
-                                xFrom - algorithm.RequiredXBorder, 
-                                yFrom - algorithm.RequiredYBorder, 
-                                zFrom - algorithm.RequiredZBorder, 
-                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                            for (int k = 0; k < zTo - zFrom; k++)
-                                for (int i = 0; i < xTo - xFrom; i++)
-                                    for (int j = 0; j < yTo - yFrom; j++)
-                                        algorithm.ProcessCell(this, inputAArray, inputBArray, inputCArray, inputDArray, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, width, height, depth);
-                        }
-                        break;
-                    }
-                case 16:
-                    {
-                        // context, inputA, inputB, inputC, inputD, inputE, output, x, y, z, i, j, k, width, height, depth
-                        dynamic algorithm = this.m_Algorithm;
-                        if (this.m_Inputs[0] != null && this.m_Inputs[1] != null && this.m_Inputs[2] != null &&
-                            this.m_Inputs[3] != null && this.m_Inputs[4] != null)
-                        {
-                            dynamic inputAArray = this.m_Inputs[0].GenerateData(
-                                xFrom - algorithm.RequiredXBorder, 
-                                yFrom - algorithm.RequiredYBorder, 
-                                zFrom - algorithm.RequiredZBorder, 
-                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                            dynamic inputBArray = this.m_Inputs[1].GenerateData(
-                                xFrom - algorithm.RequiredXBorder, 
-                                yFrom - algorithm.RequiredYBorder, 
-                                zFrom - algorithm.RequiredZBorder, 
-                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                            dynamic inputCArray = this.m_Inputs[2].GenerateData(
-                                xFrom - algorithm.RequiredXBorder, 
-                                yFrom - algorithm.RequiredYBorder, 
-                                zFrom - algorithm.RequiredZBorder, 
-                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                            dynamic inputDArray = this.m_Inputs[3].GenerateData(
-                                xFrom - algorithm.RequiredXBorder, 
-                                yFrom - algorithm.RequiredYBorder, 
-                                zFrom - algorithm.RequiredZBorder, 
-                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                            dynamic inputEArray = this.m_Inputs[4].GenerateData(
-                                xFrom - algorithm.RequiredXBorder, 
-                                yFrom - algorithm.RequiredYBorder, 
-                                zFrom - algorithm.RequiredZBorder, 
-                                width / (algorithm.InputWidthAtHalfSize ? 2 : 1) + algorithm.RequiredXBorder * 2, 
-                                height / (algorithm.InputHeightAtHalfSize ? 2 : 1) + algorithm.RequiredYBorder * 2, 
-                                depth / (algorithm.InputDepthAtHalfSize ? 2 : 1) + algorithm.RequiredZBorder * 2);
-                            for (int k = 0; k < zTo - zFrom; k++)
-                                for (int i = 0; i < xTo - xFrom; i++)
-                                    for (int j = 0; j < yTo - yFrom; j++)
-                                        algorithm.ProcessCell(this, inputAArray, inputBArray, inputCArray, inputDArray, inputEArray, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, width, height, depth);
+                            dynamic inputArray = this.m_Inputs[0].PerformAlgorithmRuntimeCall(
+                                xFrom - this.m_Algorithm.RequiredXBorder,
+                                yFrom - this.m_Algorithm.RequiredYBorder,
+                                zFrom - this.m_Algorithm.RequiredZBorder,
+                            generateWidth / (this.m_Algorithm.InputWidthAtHalfSize ? 2 : 1) + this.m_Algorithm.RequiredXBorder,
+                            generateHeight / (this.m_Algorithm.InputHeightAtHalfSize ? 2 : 1) + this.m_Algorithm.RequiredYBorder,
+                            generateDepth / (this.m_Algorithm.InputDepthAtHalfSize ? 2 : 1) + this.m_Algorithm.RequiredZBorder,
+                                generateWidth / (this.m_Algorithm.InputWidthAtHalfSize ? 2 : 1) + this.m_Algorithm.RequiredXBorder * 2, 
+                                generateHeight / (this.m_Algorithm.InputHeightAtHalfSize ? 2 : 1) + this.m_Algorithm.RequiredYBorder * 2, 
+                                generateDepth / (this.m_Algorithm.InputDepthAtHalfSize ? 2 : 1) + this.m_Algorithm.RequiredZBorder * 2,
+                                generateOffsetX - this.m_Algorithm.RequiredXBorder,
+                                generateOffsetY - this.m_Algorithm.RequiredYBorder,
+                                generateOffsetZ - this.m_Algorithm.RequiredZBorder,
+                                arrayWidth,
+                                arrayHeight,
+                                arrayDepth,
+                                ref computations);
+                            for (var k = 0; k < generateDepth; k++)
+                                for (var i = 0; i < generateWidth; i++)
+                                    for (var j = 0; j < generateHeight; j++)
+                                    {
+                                        var absoluteX = xFrom + i;
+                                        var absoluteY = yFrom + j;
+                                        var absoluteZ = zFrom + k;
+                                        var relativeX = i;
+                                        var relativeY = j;
+                                        var relativeZ = k;
+
+                                        algorithm.ProcessCell(
+                                            this,
+                                            inputArray,
+                                            outputArray,
+                                            absoluteX,
+                                            absoluteY,
+                                            absoluteZ,
+                                            relativeX,
+                                            relativeY,
+                                            relativeZ,
+                                            arrayWidth,
+                                            arrayHeight,
+                                            arrayDepth);
+                                        computations += 1;
+                                    }
                         }
                         break;
                     }
@@ -308,9 +221,58 @@ namespace Tychaia.ProceduralGeneration
         /// <summary>
         /// Generates data using the current algorithm.
         /// </summary>
-        public dynamic GenerateData(long x, long y, long z, int width, int height, int depth)
+        public dynamic GenerateData(long x, long y, long z, int width, int height, int depth, out int computations)
         {
-            return this.PerformAlgorithmRuntimeCall(x, y, z, x + width, y + height, z + depth, width, height, depth);
+            // Initialize the computation count.
+            computations = 0;
+
+            // Work out the maximum bounds of the array.
+            var ranged = new RangedLayer(this);
+            Expression ix, iy, iz, iwidth, iheight, idepth, iouterx, ioutery, iouterz;
+            RangedLayer.FindMaximumBounds(ranged, out ix, out iy, out iz, out iwidth, out iheight, out idepth, out iouterx, out ioutery, out iouterz);
+
+            // Perform the algorithm calculations.
+            int resultOffsetX = (int)RangedLayer.EvaluateExpression(ix, new Dictionary<string, object> { { "x", x } }).Value;
+            int resultOffsetY = (int)RangedLayer.EvaluateExpression(iy, new Dictionary<string, object> { { "y", y } }).Value;
+            int resultOffsetZ = (int)RangedLayer.EvaluateExpression(iz, new Dictionary<string, object> { { "z", z } }).Value;
+            int resultWidth = (int)RangedLayer.EvaluateExpression(iwidth, new Dictionary<string, object> { { "x", x }, { "width", width } }).Value;
+            int resultHeight = (int)RangedLayer.EvaluateExpression(iheight, new Dictionary<string, object> { { "y", y }, { "height", height } }).Value;
+            int resultDepth = (int)RangedLayer.EvaluateExpression(idepth, new Dictionary<string, object> { { "z", z }, { "depth", depth } }).Value;
+            resultWidth -= resultOffsetX;  // Sometimes the width doesn't encapsulate the whole region we need
+            resultHeight -= resultOffsetY; // since the upper layers require the lower layers to be filled in
+            resultDepth -= resultOffsetZ;  // the offset areas.
+            dynamic resultArray = this.PerformAlgorithmRuntimeCall(
+                x,
+                y,
+                z,
+                x + width,
+                y + height,
+                z + depth,
+                width,
+                height,
+                depth,
+                resultOffsetX,
+                resultOffsetY,
+                resultOffsetZ,
+                resultWidth,
+                resultHeight,
+                resultDepth,
+                ref computations);
+
+            // Copy the result into a properly sized array.
+            dynamic correctArray = Activator.CreateInstance(
+                this.m_Algorithm.OutputType.MakeArrayType(),
+                (int)(width * height * depth));
+            for (var k = 0; k < depth; k++)
+                for (var i = 0; i < width; i++)
+                    for (var j = 0; j < height; j++)
+                        correctArray[i + j * width + k * width * height] =
+                            resultArray[(i + -resultOffsetX) +
+                            (j + -resultOffsetY) * resultWidth +
+                            (k + -resultOffsetZ) * resultWidth * resultDepth];
+
+            // Return the result.
+            return correctArray;
         }
         
         #region Randomness

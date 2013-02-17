@@ -8,3 +8,6 @@
 [submodule "Libraries/Redpoint.FlowGraph"]
 	path = Libraries/Redpoint.FlowGraph
 	url = git://github.com/hach-que/Redpoint.FlowGraph.git
+[submodule "Libraries/MonoGame"]
+	path = Libraries/MonoGame
+	url = git@github.com:hach-que/MonoGame.git
