@@ -11,8 +11,8 @@ namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
     [FlowDesignerCategory(FlowCategory.Debugging)]
-    [FlowDesignerName("Passthrough")]
-    public class AlgorithmTest : Algorithm<int, int>
+    [FlowDesignerName("Passthrough 2")]
+    public class AlgorithmTest2 : Algorithm<int, int>
     {
         public override int RequiredXBorder { get { return this.XBorder; } }
         public override int RequiredYBorder { get { return this.YBorder; } }
