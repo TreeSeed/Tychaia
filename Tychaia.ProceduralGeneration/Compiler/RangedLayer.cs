@@ -284,17 +284,17 @@ namespace Tychaia.ProceduralGeneration.Compiler
             if (currentRuntime.Algorithm.RequiredXBorder > 0)
             {
                 inputRanged.X = CreateSubtraction(inputRanged.X, currentRuntime.Algorithm.RequiredXBorder);
-                inputRanged.Width = CreateAddition(inputRanged.Width, currentRuntime.Algorithm.RequiredXBorder * 2);
+                //inputRanged.Width = CreateAddition(inputRanged.Width, currentRuntime.Algorithm.RequiredXBorder * 2);
             }
             if (currentRuntime.Algorithm.RequiredYBorder > 0)
             {
                 inputRanged.Y = CreateSubtraction(inputRanged.Y, currentRuntime.Algorithm.RequiredYBorder);
-                inputRanged.Height = CreateAddition(inputRanged.Height, currentRuntime.Algorithm.RequiredYBorder * 2);
+                //inputRanged.Height = CreateAddition(inputRanged.Height, currentRuntime.Algorithm.RequiredYBorder * 2);
             }
             if (currentRuntime.Algorithm.RequiredZBorder > 0)
             {
                 inputRanged.Z = CreateSubtraction(inputRanged.Z, currentRuntime.Algorithm.RequiredZBorder);
-                inputRanged.Depth = CreateAddition(inputRanged.Depth, currentRuntime.Algorithm.RequiredZBorder * 2);
+                //inputRanged.Depth = CreateAddition(inputRanged.Depth, currentRuntime.Algorithm.RequiredZBorder * 2);
             }
 
             // Process inputs recursively.
