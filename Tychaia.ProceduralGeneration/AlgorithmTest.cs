@@ -16,9 +16,13 @@ namespace Tychaia.ProceduralGeneration
     {
         public override int RequiredXBorder { get { return this.XBorder; } }
         public override int RequiredYBorder { get { return this.YBorder; } }
+        public override bool InputWidthAtHalfSize { get { return WidthHalf; } }
+        public override bool InputHeightAtHalfSize { get { return HeightHalf; } }
 
         public int XBorder { get; set; }
         public int YBorder { get; set; }
+        public bool WidthHalf { get; set; }
+        public bool HeightHalf { get; set; }
 
         public override string[] InputNames
         {

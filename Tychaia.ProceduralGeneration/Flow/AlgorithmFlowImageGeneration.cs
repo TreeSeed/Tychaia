@@ -32,9 +32,9 @@ namespace Tychaia.ProceduralGeneration.Flow
         public static Bitmap RegenerateImageForLayer(StorageLayer layer, long ox, long oy, long oz, int width, int height, int depth, bool compiled = false)
         {
             var runtime = StorageAccess.ToRuntime(layer);
-            if (compiled)
-                return Regenerate3DImageForLayer(runtime, ox, oy, oz, width, height, depth, StorageAccess.ToCompiled(layer));
-            else
+            //if (compiled)
+            //    return Regenerate3DImageForLayer(runtime, ox, oy, oz, width, height, depth, StorageAccess.ToCompiled(layer));
+            //else
                 return Regenerate3DImageForLayer(runtime, ox, oy, oz, width, height, depth);
         }
 

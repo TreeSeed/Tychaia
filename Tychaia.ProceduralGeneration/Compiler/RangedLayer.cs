@@ -24,6 +24,11 @@ namespace Tychaia.ProceduralGeneration.Compiler
         public RuntimeLayer Layer { get; set; }
         public RangedLayer[] Inputs { get; set; }
 
+        // Just calculating offsets
+        public Expression OffsetX { get; set; }
+        public Expression OffsetY { get; set; }
+        public Expression OffsetZ { get; set; }
+
         public Expression OuterX
         {
             get
@@ -99,6 +104,34 @@ namespace Tychaia.ProceduralGeneration.Compiler
                     str += input.GetPrintableStructure() + Environment.NewLine;
             str += this.ToString();
             return str;
+        }
+
+        // Just finding offsets, then use them to determine max width, start X location, etc.
+        public static void FindMaximumOffsets(
+            RangedLayer layer, 
+            out Expression OffsetX,
+            out Expression OffsetY,
+            out Expression OffsetZ)
+        {
+            if (layer == null)
+                throw new ArgumentNullException("layer");
+
+            OffsetX = layer.OffsetX;
+            OffsetY = layer.OffsetY;
+            OffsetZ = layer.OffsetZ;
+
+            foreach (var input in layer.Inputs)
+            {
+                if (input == null)
+                    continue;
+                
+                Expression iOffsetX, iOffsetY, iOffsetZ;
+                FindMaximumOffsets(input, out iOffsetX, out iOffsetY, out iOffsetZ);
+
+                OffsetX = GetSmallestOrLargestExpression(OffsetX, iOffsetX, true);
+                OffsetY = GetSmallestOrLargestExpression(OffsetY, iOffsetY, true);
+                OffsetZ = GetSmallestOrLargestExpression(OffsetZ, iOffsetZ, true);
+            }
         }
 
         /// <summary>
