@@ -125,7 +125,9 @@ namespace Tychaia.ProceduralGeneration
         /// <param name="arrayDepth">The array depth.</param>
         private dynamic PerformAlgorithmRuntimeCall(long xFrom, long yFrom, long zFrom,
                                                     long xTo, long yTo, long zTo,
-                                                    int generateWidth, int generateHeight, int generateDepth,
+                                                    ref int generateWidth, ref int generateHeight, ref int generateDepth,
+                                                    ref int generateOffsetX, ref int generateOffsetY, ref int generateOffsetZ,
+                                                    bool halfgenerateWidth, bool halfgenerateHeight, bool halfgenerateDepth,
                                                     ref int computations)
         {
             // Check the generate width, height and depth.
@@ -138,11 +140,6 @@ namespace Tychaia.ProceduralGeneration
             dynamic algorithm = this.m_Algorithm;
             var processCell = this.m_Algorithm.GetType().GetMethod("ProcessCell");
 
-            int width = generateWidth;
-            int height = generateHeight;
-            int depth = generateDepth;
-
-            // Create a new array of the specified array width / height / depth.
             dynamic outputArray = Activator.CreateInstance(
                 this.m_Algorithm.OutputType.MakeArrayType(),
                 (int)(generateWidth * generateHeight * generateDepth));
@@ -153,28 +150,42 @@ namespace Tychaia.ProceduralGeneration
                 case 11: // 0 inputs
                     {
                         // context, output, x, y, z, i, j, k, width, height, depth
-                    for (int k = 0; k < generateDepth; k++)
-                        for (int i = 0; i < generateWidth; i++)
-                            for (int j = 0; j < generateHeight; j++)
+                    for (var k = 0; k < zTo - zFrom; k++)
+                        for (var i = 0; i < xTo - xFrom; i++)
+                            for (var j = 0; j < yTo - yFrom; j++)
                                 {
-                                    algorithm.ProcessCell(this, outputArray, i + xFrom, j + yFrom, k + zFrom, i, j, k, generateWidth, generateHeight, generateDepth);
+
+                                    var relativeX = i;
+                                    var relativeY = j;
+                                    var relativeZ = k;
+                                    var absoluteX = xFrom + relativeX;
+                                    var absoluteY = yFrom + relativeY;
+                                    var absoluteZ = zFrom + relativeZ;
+
+                                    algorithm.ProcessCell(this, outputArray, absoluteX, absoluteY, absoluteZ, relativeX, relativeY, relativeZ, generateWidth, generateHeight, generateDepth);
                                     computations += 1;
                                 }
 
                         break;
                     }
-                case 18: // 1 input
+                case 12: // 1 input
                     {
-                        // context, input, output, x, y, z, i, j, k, width, height, depth, oi, oj, ok, owidth, oheight, odepth
+                        // context, input, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz
                         if (this.m_Inputs[0] != null)
                         {
-                            generateWidth /= (this.m_Algorithm.InputWidthAtHalfSize ? 2 : 1);
+                            int pregenOffsetX = generateOffsetX;
+                            int pregenOffsetY = generateOffsetY;
+                            int pregenOffsetZ = generateOffsetZ;
+                            generateOffsetX += this.m_Algorithm.RequiredXBorder;
+                            generateOffsetY += this.m_Algorithm.RequiredYBorder;
+                            generateOffsetZ += this.m_Algorithm.RequiredZBorder;
                             generateWidth += this.m_Algorithm.RequiredXBorder * 2;
-                            generateHeight /= (this.m_Algorithm.InputHeightAtHalfSize ? 2 : 1);
                             generateHeight += this.m_Algorithm.RequiredYBorder * 2; 
-                            generateDepth /= (this.m_Algorithm.InputDepthAtHalfSize ? 2 : 1);
                             generateDepth += this.m_Algorithm.RequiredZBorder * 2;
 
+                            //generateWidth /= (this.m_Algorithm.InputWidthAtHalfSize ? 2 : 1);
+                            //generateHeight /= (this.m_Algorithm.InputHeightAtHalfSize ? 2 : 1);
+                            //generateDepth /= (this.m_Algorithm.InputDepthAtHalfSize ? 2 : 1);
                             dynamic inputArray = this.m_Inputs[0].PerformAlgorithmRuntimeCall(
                                 xFrom - this.m_Algorithm.RequiredXBorder,
                                 yFrom - this.m_Algorithm.RequiredYBorder,
@@ -182,24 +193,32 @@ namespace Tychaia.ProceduralGeneration
                                 xTo + this.m_Algorithm.RequiredXBorder,
                                 yTo + this.m_Algorithm.RequiredYBorder,
                                 zTo + this.m_Algorithm.RequiredZBorder,
-                                generateWidth, 
-                                generateHeight, 
-                                generateDepth,
+                                ref generateWidth, 
+                                ref generateHeight, 
+                                ref generateDepth,
+                                ref generateOffsetX,
+                                ref generateOffsetY,
+                                ref generateOffsetZ,
+                                this.m_Algorithm.InputWidthAtHalfSize,
+                                this.m_Algorithm.InputHeightAtHalfSize,
+                                this.m_Algorithm.InputDepthAtHalfSize,
                                 ref computations);
 
-                            for (var k = 0; k < depth; k++)
-                                for (var i = 0; i < width; i++)
-                                    for (var j = 0; j < height; j++)
+                        // Create a new array of the specified array width / height / depth.
+                        outputArray = Activator.CreateInstance(
+                            this.m_Algorithm.OutputType.MakeArrayType(),
+                            (int)(generateWidth * generateHeight * generateDepth));
+
+                        for (var k = 0; k < zTo - zFrom; k++)
+                            for (var i = 0; i < xTo - xFrom; i++)
+                                for (var j = 0; j < yTo - yFrom; j++)
                                     {
-                                        var absoluteX = xFrom + i;
-                                        var absoluteY = yFrom + j;
-                                        var absoluteZ = zFrom + k;
-                                        var relativeX = i;
-                                        var relativeY = j;
-                                        var relativeZ = k;
-                                        var oi = i + this.m_Algorithm.RequiredXBorder;
-                                        var oj = j + this.m_Algorithm.RequiredYBorder;
-                                        var ok = k + this.m_Algorithm.RequiredZBorder;
+                                        var relativeX = i + generateOffsetX - pregenOffsetX;
+                                        var relativeY = j + this.m_Inputs[0].m_Algorithm.RequiredYBorder;
+                                        var relativeZ = k + this.m_Inputs[0].m_Algorithm.RequiredZBorder;
+                                        var absoluteX = xFrom + relativeX;
+                                        var absoluteY = yFrom + relativeY;
+                                        var absoluteZ = zFrom + relativeZ;
 
                                         algorithm.ProcessCell(
                                             this,
@@ -211,18 +230,11 @@ namespace Tychaia.ProceduralGeneration
                                             relativeX,
                                             relativeY,
                                             relativeZ,
-                                            width,
-                                            height,
-                                            depth,
-                                            oi,
-                                            oj,
-                                            ok, 
-                                            generateWidth, 
-                                            generateHeight, 
+                                            generateWidth,
+                                            generateHeight,
                                             generateDepth);
-                                        computations += 1;
+                                            computations += 1;
                                     }
-
                         }
                         break;
                     }
@@ -258,6 +270,12 @@ namespace Tychaia.ProceduralGeneration
             resultHeight -= resultOffsetY; // since the upper layers require the lower layers to be filled in
             resultDepth -= resultOffsetZ;  // the offset areas.
             */
+            int resultWidth = width;
+            int resultHeight = height;
+            int resultDepth = depth;
+            int OffsetX = 0;
+            int OffsetY = 0;
+            int OffsetZ = 0;
 
             dynamic resultArray = this.PerformAlgorithmRuntimeCall(
                 x,
@@ -266,26 +284,31 @@ namespace Tychaia.ProceduralGeneration
                 x + width,
                 y + height,
                 z + depth,
-                width,
-                height,
-                depth,
+                ref resultWidth,
+                ref resultHeight,
+                ref resultDepth,
+                ref OffsetX, 
+                ref OffsetY, 
+                ref OffsetZ,
+                false, false, false,
                 ref computations);
 
             // Copy the result into a properly sized array.
-            /*
+
             dynamic correctArray = Activator.CreateInstance(
                 this.m_Algorithm.OutputType.MakeArrayType(),
                 (int)(width * height * depth));
+
             for (var k = 0; k < depth; k++)
                 for (var i = 0; i < width; i++)
                     for (var j = 0; j < height; j++)
                         correctArray[i + j * width + k * width * height] =
-                            resultArray[(i - resultOffsetX) +
-                                        (j - resultOffsetY) * (width - resultOffsetX * 2)  +
-                                        (k - resultOffsetZ) * (width - resultOffsetX * 2) * (height - resultOffsetY * 2)];
-*/
+                            resultArray[(i + OffsetX) +
+                                        (j + OffsetY) * resultWidth  +
+                                        (k + OffsetZ) * resultWidth * resultHeight];
+
             // Return the result.
-            return resultArray;
+            return correctArray;
         }
         
         #region Randomness

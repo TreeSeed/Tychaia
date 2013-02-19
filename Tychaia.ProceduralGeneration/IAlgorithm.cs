@@ -187,13 +187,7 @@ namespace Tychaia.ProceduralGeneration
                                          int k,
                                          int width,
                                          int height,
-                                         int depth,
-                                         int oi,
-                                         int oj,
-                                         int ok,
-                                         int owidth, 
-                                         int oheight,
-                                         int odepth);
+                                         int depth);
 
         public sealed override Type[] InputTypes
         {

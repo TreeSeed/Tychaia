@@ -30,9 +30,9 @@ namespace Tychaia.ProceduralGeneration
             get { return false; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int oi, int oj, int ok, int owidth, int oheight, int odepth)
+        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth)
         {
-            output[i + j * width + k * width * height] = input[oi + oj * owidth + ok * owidth * oheight];
+            output[i + j * width + k * width * height] = input[i + j * width + k * width * height];
         }
         
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
