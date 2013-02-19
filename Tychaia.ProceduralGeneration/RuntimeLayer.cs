@@ -151,7 +151,7 @@ namespace Tychaia.ProceduralGeneration
                                                     int arrayWidth, int arrayHeight, int arrayDepth,
                                                     int MaxOffsetX, int MaxOffsetY, int MaxOffsetZ,
                                                     int childOffsetX, int childOffsetY, int childOffsetZ,
-                                                    bool halfInputWidth, bool halfInputHeight, bool halfInputDepth,
+                                                    int halfInputWidth, int halfInputHeight, int halfInputDepth,
                                                     ref int computations)
         {
             // Check the generate width, height and depth. This actually doesn't work with this system anyway
@@ -176,33 +176,26 @@ namespace Tychaia.ProceduralGeneration
                 case 11: // 0 inputs
                     {
                         // context, output, x, y, z, i, j, k, width, height, depth
-                        var khalf = 0;
+
+                        var jhalf = (halfInputHeight > 0 ? (int)(Math.Pow(2, halfInputHeight)) : 1);
+                        var ihalf = (halfInputWidth > 0 ? (int)(Math.Pow(2, halfInputWidth)) : 1);
+                        var khalf = (halfInputDepth > 0 ? (int)(Math.Pow(2, halfInputDepth)) : 1);
+
                         for (var k = 0; k < arrayDepth; k++)
-                        {
-                            var ihalf = 0;
                             for (var i = 0; i < arrayWidth; i++)
-                            {
-                                var jhalf = 0;
                                 for (var j = 0; j < arrayHeight; j++)
                                 {
                                     var relativeX = i;
                                     var relativeY = j;
                                     var relativeZ = k;
-                                    var absoluteX = X + relativeX - ihalf; 
-                                    var absoluteY = Y + relativeY - jhalf;
-                                    var absoluteZ = Z + relativeZ - khalf;
+                                    var absoluteX = X + (relativeX / ihalf); 
+                                    var absoluteY = Y + (relativeY / jhalf);
+                                    var absoluteZ = Z + (relativeZ / khalf);
 
                                     algorithm.ProcessCell(this, outputArray, absoluteX, absoluteY, absoluteZ, relativeX, relativeY, relativeZ, arrayWidth, arrayHeight, arrayDepth);
                                     computations += 1;
-                                    if (halfInputHeight == true && j % 2 == 1)
-                                        jhalf++;
                                 }
-                                if (halfInputWidth == true && i % 2 == 1)
-                                    ihalf++;
-                            }
-                            if (halfInputDepth == true && k % 2 == 1)
-                                khalf++;
-                        }
+                        
                         break;
                     }
                 case 12: // 1 input
@@ -223,27 +216,25 @@ namespace Tychaia.ProceduralGeneration
                                 childOffsetX + this.m_Algorithm.RequiredXBorder,
                                 childOffsetY + this.m_Algorithm.RequiredYBorder,
                                 childOffsetZ + this.m_Algorithm.RequiredZBorder,
-                                this.m_Algorithm.InputWidthAtHalfSize,
-                                this.m_Algorithm.InputHeightAtHalfSize,
-                                this.m_Algorithm.InputDepthAtHalfSize,
+                                halfInputWidth + (this.m_Algorithm.InputWidthAtHalfSize ? 1 : 0),
+                                halfInputHeight + (this.m_Algorithm.InputHeightAtHalfSize ? 1 : 0),
+                                halfInputDepth + (this.m_Algorithm.InputDepthAtHalfSize ? 1: 0),
                                 ref computations);
 
-                        // need to multiply khalf, ihalf, jhalf by the number of halves before it
-                            var khalf = 0;
+                        var jhalf = (halfInputHeight > 0 ? (int)(Math.Pow(2, halfInputHeight)) : 1);
+                        var ihalf = (halfInputWidth > 0 ? (int)(Math.Pow(2, halfInputWidth)) : 1);
+                        var khalf = (halfInputDepth > 0 ? (int)(Math.Pow(2, halfInputDepth)) : 1);
+
                             for (int k = 0; k < arrayDepth - (MaxOffsetZ - childOffsetZ) * 2; k++)
-                            {                        
-                                var ihalf = 0;
                                 for (int i = 0; i < arrayWidth - (MaxOffsetX - childOffsetX) * 2; i++)
-                                {
-                                    var jhalf = 0;
                                     for (int j = 0; j < arrayHeight - (MaxOffsetY - childOffsetY) * 2; j++)
                                     {
                                         var relativeX = i + (MaxOffsetX - childOffsetX);
                                         var relativeY = j + (MaxOffsetY - childOffsetY);
                                         var relativeZ = k + (MaxOffsetZ - childOffsetZ);
-                                        var absoluteX = X + relativeX - ihalf;
-                                        var absoluteY = Y + relativeY - jhalf;
-                                        var absoluteZ = Z + relativeZ - khalf;
+                                        var absoluteX = X + (relativeX / ihalf);
+                                        var absoluteY = Y + (relativeY / jhalf);
+                                        var absoluteZ = Z + (relativeZ / khalf);
 
                                         algorithm.ProcessCell(
                                             this,
@@ -259,16 +250,6 @@ namespace Tychaia.ProceduralGeneration
                                             arrayHeight,
                                             arrayDepth);
                                         computations += 1;
-                                        if (halfInputHeight == true && j % 2 == 1)
-                                            jhalf++;
-                                    }
-                                    if (halfInputWidth == true && i % 2 == 1)
-                                        ihalf++;
-
-                                }
-                                if (halfInputDepth == true && k % 2 == 1)
-                                    khalf++;
-
                             }
                         }
                         break;
@@ -364,7 +345,7 @@ namespace Tychaia.ProceduralGeneration
                 MaxOffsetY, 
                 MaxOffsetZ,
                 0, 0, 0,
-                false, false, false,
+                0, 0, 0,
                 ref computations);
 
             // Copy the result into a properly sized array.
