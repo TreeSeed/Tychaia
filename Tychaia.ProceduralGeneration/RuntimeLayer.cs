@@ -324,11 +324,22 @@ namespace Tychaia.ProceduralGeneration
             // to be within the algorithms
             // can't do it from this side otherwise
             // changes the x value, rather than how much you generate
+            // This shouldn't be a problem since it isn't used much anyway.
+            // Can make this calculated by finding the total then subtracting its parents
+            // for the compiled layer.
 
             // ix, etc = input of input layer
             // ix = x - offset (relativeX) = xFrom
             // iwidth = width * offsetX * 2.
             // iouterx = xTo
+
+            //TODO: Optimization list:
+            // 1) Offsets and Input at half size: Make unique to each input
+            // 2) Make an offset input by some value
+            //    This means that we can use the same inputs to provide different results
+            //    Useful for the designer if we have a complex way to generate something that has to be done the same way multiple times
+            //    Simmilar to the grouping inserting that we were going to do
+            //    This can be done by a modification of the seed?
 
             int arrayWidth = width + MaxOffsetX * 2;
             int arrayHeight = height + MaxOffsetY * 2;
