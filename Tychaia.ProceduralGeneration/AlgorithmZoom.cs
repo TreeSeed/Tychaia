@@ -25,10 +25,10 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
         
-        public override int RequiredXBorder { get { return 2; } }
-        public override int RequiredYBorder { get { return 2; } }
-        public override bool InputWidthAtHalfSize { get { return true; } }
-        public override bool InputHeightAtHalfSize { get { return true; } }
+        public override int[] RequiredXBorder { get { return new int[] {2}; } }
+        public override int[] RequiredYBorder { get { return new int[] {2}; } }
+        public override bool[] InputWidthAtHalfSize { get { return new bool[] {true}; } }
+        public override bool[] InputHeightAtHalfSize { get { return new bool[] {true}; } }
 
         public AlgorithmZoom()
         {

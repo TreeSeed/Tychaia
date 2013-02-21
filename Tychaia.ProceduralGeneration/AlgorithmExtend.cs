@@ -41,8 +41,8 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public override int RequiredXBorder { get { return 1; } }
-        public override int RequiredYBorder { get { return 1; } }
+        public override int[] RequiredXBorder { get { return new int[] {1}; } }
+        public override int[] RequiredYBorder { get { return new int[] {1}; } }
 
         public AlgorithmExtend()
         {
@@ -70,9 +70,9 @@ namespace Tychaia.ProceduralGeneration
         // Anything else?
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth)
         {
-            int ox = RequiredXBorder;
-            int oy = RequiredYBorder;
-            long rw = RequiredYBorder * 2 + width;
+            int ox = RequiredXBorder[0];
+            int oy = RequiredYBorder[0];
+            long rw = RequiredYBorder[0] * 2 + width;
 
             // Does this if statement work?
             // Nevermind have to remake this entire section anyway, too many || && and its getting confusing and over extended.

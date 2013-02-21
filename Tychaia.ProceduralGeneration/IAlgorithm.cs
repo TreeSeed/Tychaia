@@ -16,19 +16,19 @@ namespace Tychaia.ProceduralGeneration
         /// The required amount of X border data that this algorithm
         /// needs in order to complete it's operation.
         /// </summary>
-        int RequiredXBorder { get; }
+        int[] RequiredXBorder { get; }
 
         /// <summary>
         /// The required amount of Y border data that this algorithm
         /// needs in order to complete it's operation.
         /// </summary>
-        int RequiredYBorder { get; }
+        int[] RequiredYBorder { get; }
         
         /// <summary>
         /// The required amount of Z border data that this algorithm
         /// needs in order to complete it's operation.
         /// </summary>
-        int RequiredZBorder { get; }
+        int[] RequiredZBorder { get; }
 
         /// <summary>
         /// The data types that input algorithms should output for
@@ -50,17 +50,17 @@ namespace Tychaia.ProceduralGeneration
         /// <summary>
         /// Whether this algorithm only requires half the width in it's inputs.
         /// </summary>
-        bool InputWidthAtHalfSize { get; }
+        bool[] InputWidthAtHalfSize { get; }
 
         /// <summary>
         /// Whether this algorithm only requires half the height in it's inputs.
         /// </summary>
-        bool InputHeightAtHalfSize { get; }
+        bool[] InputHeightAtHalfSize { get; }
 
         /// <summary>
         /// Whether this algorithm only requires half the depth in it's inputs.
         /// </summary>
-        bool InputDepthAtHalfSize { get; }
+        bool[] InputDepthAtHalfSize { get; }
 
         /// <summary>
         /// The function handler that resolves colors for
@@ -103,17 +103,17 @@ namespace Tychaia.ProceduralGeneration
     public abstract class Algorithm : IAlgorithm
     {
         [Category("Base")]
-        public virtual int RequiredXBorder { get { return 0; } }
+        public virtual int[] RequiredXBorder { get { return new int[] {0, 0, 0, 0, 0, 0}; } }
         [Category("Base")]
-        public virtual int RequiredYBorder { get { return 0; } }
+        public virtual int[] RequiredYBorder { get { return new int[] {0, 0, 0, 0, 0, 0}; } }
         [Category("Base")]
-        public virtual int RequiredZBorder { get { return 0; } }
+        public virtual int[] RequiredZBorder { get { return new int[] {0, 0, 0, 0, 0, 0}; } }
         [Category("Base")]
-        public virtual bool InputWidthAtHalfSize { get { return false; } }
+        public virtual bool[] InputWidthAtHalfSize { get { return new bool[] {false, false, false, false, false, false}; } }
         [Category("Base")]
-        public virtual bool InputHeightAtHalfSize { get { return false; } }
+        public virtual bool[] InputHeightAtHalfSize { get { return new bool[] {false, false, false, false, false, false}; } }
         [Category("Base")]
-        public virtual bool InputDepthAtHalfSize { get { return false; } }
+        public virtual bool[] InputDepthAtHalfSize { get { return new bool[] {false, false, false, false, false, false}; } }
 
         [Category("Base")]
         public abstract Type[] InputTypes { get; }

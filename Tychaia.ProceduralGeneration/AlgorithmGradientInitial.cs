@@ -14,10 +14,6 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Initial Gradient")]
     public class AlgorithmGradientInitial : Algorithm<int>
     {
-        public override int RequiredXBorder { get { return this.XBorder; } }
-        
-        public int XBorder { get; set; }
-
         public override bool Is2DOnly
         {
             get { return false; }

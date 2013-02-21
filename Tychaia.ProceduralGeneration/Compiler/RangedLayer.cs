@@ -306,27 +306,27 @@ namespace Tychaia.ProceduralGeneration.Compiler
             inputRanged.Layer = inputRuntime;
 
             // Determine if we need to adjust the width, height and depth.
-            if (currentRuntime.Algorithm.InputWidthAtHalfSize)
+            if (currentRuntime.Algorithm.InputWidthAtHalfSize[0])
                 inputRanged.Width = CreateDivideByTwo(inputRanged.Width);
-            if (currentRuntime.Algorithm.InputHeightAtHalfSize)
+            if (currentRuntime.Algorithm.InputHeightAtHalfSize[0])
                 inputRanged.Height = CreateDivideByTwo(inputRanged.Height);
-            if (currentRuntime.Algorithm.InputDepthAtHalfSize)
+            if (currentRuntime.Algorithm.InputDepthAtHalfSize[0])
                 inputRanged.Depth = CreateDivideByTwo(inputRanged.Depth);
 
             // Determine if we need to adjust the X, Y or Z offsets.
-            if (currentRuntime.Algorithm.RequiredXBorder > 0)
+            if (currentRuntime.Algorithm.RequiredXBorder[0] > 0)
             {
-                inputRanged.X = CreateSubtraction(inputRanged.X, currentRuntime.Algorithm.RequiredXBorder);
+                inputRanged.X = CreateSubtraction(inputRanged.X, currentRuntime.Algorithm.RequiredXBorder[0]);
                 //inputRanged.Width = CreateAddition(inputRanged.Width, currentRuntime.Algorithm.RequiredXBorder * 2);
             }
-            if (currentRuntime.Algorithm.RequiredYBorder > 0)
+            if (currentRuntime.Algorithm.RequiredYBorder[0] > 0)
             {
-                inputRanged.Y = CreateSubtraction(inputRanged.Y, currentRuntime.Algorithm.RequiredYBorder);
+                inputRanged.Y = CreateSubtraction(inputRanged.Y, currentRuntime.Algorithm.RequiredYBorder[0]);
                 //inputRanged.Height = CreateAddition(inputRanged.Height, currentRuntime.Algorithm.RequiredYBorder * 2);
             }
-            if (currentRuntime.Algorithm.RequiredZBorder > 0)
+            if (currentRuntime.Algorithm.RequiredZBorder[0] > 0)
             {
-                inputRanged.Z = CreateSubtraction(inputRanged.Z, currentRuntime.Algorithm.RequiredZBorder);
+                inputRanged.Z = CreateSubtraction(inputRanged.Z, currentRuntime.Algorithm.RequiredZBorder[0]);
                 //inputRanged.Depth = CreateAddition(inputRanged.Depth, currentRuntime.Algorithm.RequiredZBorder * 2);
             }
 
