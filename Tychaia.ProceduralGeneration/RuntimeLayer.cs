@@ -207,16 +207,16 @@ namespace Tychaia.ProceduralGeneration
                         var ihalf = (halfInputWidth > 0 ? (int)(Math.Pow(2, halfInputWidth)) : 1);
                         var khalf = (halfInputDepth > 0 ? (int)(Math.Pow(2, halfInputDepth)) : 1);
 
-                        for (int k = 0; k < arrayDepth - (MaxOffsetZ - childOffsetZ) * 2; k++)
-                            for (int i = 0; i < arrayWidth - (MaxOffsetX - childOffsetX) * 2; i++)
-                                for (int j = 0; j < arrayHeight - (MaxOffsetY - childOffsetY) * 2; j++)
+                    for (int k = 0; k < (arrayDepth - (MaxOffsetZ - childOffsetZ) * 2) / khalf; k++)
+                        for (int i = 0; i < (arrayWidth - (MaxOffsetX - childOffsetX) * 2) / ihalf; i++)
+                            for (int j = 0; j < (arrayHeight - (MaxOffsetY - childOffsetY) * 2) / jhalf; j++)
                                 {
                                     var relativeX = i + (MaxOffsetX - childOffsetX);
                                     var relativeY = j + (MaxOffsetY - childOffsetY);
                                     var relativeZ = k + (MaxOffsetZ - childOffsetZ);
-                                    var absoluteX = X + (relativeX / ihalf); 
-                                    var absoluteY = Y + (relativeY / jhalf);
-                                    var absoluteZ = Z + (relativeZ / khalf);
+                                    var absoluteX = X + relativeX; 
+                                    var absoluteY = Y + relativeY;
+                                    var absoluteZ = Z + relativeZ;
 
                                     algorithm.ProcessCell(this, outputArray, absoluteX, absoluteY, absoluteZ, relativeX, relativeY, relativeZ, arrayWidth, arrayHeight, arrayDepth);
                                     computations += 1;
@@ -251,16 +251,16 @@ namespace Tychaia.ProceduralGeneration
                             var ihalf = (halfInputWidth > 0 ? (int)(Math.Pow(2, halfInputWidth)) : 1);
                             var khalf = (halfInputDepth > 0 ? (int)(Math.Pow(2, halfInputDepth)) : 1);
 
-                            for (int k = 0; k < arrayDepth - (MaxOffsetZ - childOffsetZ) * 2; k++)
-                                for (int i = 0; i < arrayWidth - (MaxOffsetX - childOffsetX) * 2; i++)
-                                    for (int j = 0; j < arrayHeight - (MaxOffsetY - childOffsetY) * 2; j++)
+                        for (int k = 0; k < (arrayDepth - (MaxOffsetZ - childOffsetZ) * 2) / khalf; k++)
+                            for (int i = 0; i < (arrayWidth - (MaxOffsetX - childOffsetX) * 2) / ihalf; i++)
+                                for (int j = 0; j < (arrayHeight - (MaxOffsetY - childOffsetY) * 2) / jhalf; j++)
                                     {
                                         var relativeX = i + (MaxOffsetX - childOffsetX);
                                         var relativeY = j + (MaxOffsetY - childOffsetY);
                                         var relativeZ = k + (MaxOffsetZ - childOffsetZ);
-                                        var absoluteX = X + (relativeX / ihalf);
-                                        var absoluteY = Y + (relativeY / jhalf);
-                                        var absoluteZ = Z + (relativeZ / khalf);
+                                        var absoluteX = X + relativeX;
+                                        var absoluteY = Y + relativeY;
+                                        var absoluteZ = Z + relativeZ;
 
                                         algorithm.ProcessCell(
                                             this,
@@ -280,100 +280,6 @@ namespace Tychaia.ProceduralGeneration
                         }
                         break;
                     }
-                case 14: // 3 inputs
-                {
-                    // context, input, output, x, y, z, i, j, k, width, height, depth
-                    if (this.m_Inputs[0] != null && this.m_Inputs[1] != null && this.m_Inputs[2] != null)
-                    {
-                        dynamic input0Array = this.m_Inputs[0].PerformAlgorithmRuntimeCall(
-                            X,
-                            Y,
-                            Z,
-                            arrayWidth, 
-                            arrayHeight, 
-                            arrayDepth,
-                            MaxOffsetX,
-                            MaxOffsetY,
-                            MaxOffsetZ,
-                            childOffsetX + this.m_Algorithm.RequiredXBorder[0],
-                            childOffsetY + this.m_Algorithm.RequiredYBorder[0],
-                            childOffsetZ + this.m_Algorithm.RequiredZBorder[0],
-                            halfInputWidth + (this.m_Algorithm.InputWidthAtHalfSize[0] ? 1 : 0),
-                            halfInputHeight + (this.m_Algorithm.InputHeightAtHalfSize[0] ? 1 : 0),
-                            halfInputDepth + (this.m_Algorithm.InputDepthAtHalfSize[0] ? 1 : 0),
-                            ref computations);
-
-                        dynamic input1Array = this.m_Inputs[1].PerformAlgorithmRuntimeCall(
-                            X,
-                            Y,
-                            Z,
-                            arrayWidth, 
-                            arrayHeight, 
-                            arrayDepth,
-                            MaxOffsetX,
-                            MaxOffsetY,
-                            MaxOffsetZ,
-                            childOffsetX + this.m_Algorithm.RequiredXBorder[1],
-                            childOffsetY + this.m_Algorithm.RequiredYBorder[1],
-                            childOffsetZ + this.m_Algorithm.RequiredZBorder[1],
-                            halfInputWidth + (this.m_Algorithm.InputWidthAtHalfSize[1] ? 1 : 0),
-                            halfInputHeight + (this.m_Algorithm.InputHeightAtHalfSize[1] ? 1 : 0),
-                            halfInputDepth + (this.m_Algorithm.InputDepthAtHalfSize[1] ? 1 : 0),
-                            ref computations);
-
-                        dynamic input2Array = this.m_Inputs[2].PerformAlgorithmRuntimeCall(
-                            X,
-                            Y,
-                            Z,
-                            arrayWidth, 
-                            arrayHeight, 
-                            arrayDepth,
-                            MaxOffsetX,
-                            MaxOffsetY,
-                            MaxOffsetZ,
-                            childOffsetX + this.m_Algorithm.RequiredXBorder[2],
-                            childOffsetY + this.m_Algorithm.RequiredYBorder[2],
-                            childOffsetZ + this.m_Algorithm.RequiredZBorder[2],
-                            halfInputWidth + (this.m_Algorithm.InputWidthAtHalfSize[2] ? 1 : 0),
-                            halfInputHeight + (this.m_Algorithm.InputHeightAtHalfSize[2] ? 1 : 0),
-                            halfInputDepth + (this.m_Algorithm.InputDepthAtHalfSize[2] ? 1 : 0),
-                            ref computations);
-
-                        var jhalf = (halfInputHeight > 0 ? (int)(Math.Pow(2, halfInputHeight)) : 1);
-                        var ihalf = (halfInputWidth > 0 ? (int)(Math.Pow(2, halfInputWidth)) : 1);
-                        var khalf = (halfInputDepth > 0 ? (int)(Math.Pow(2, halfInputDepth)) : 1);
-                        
-                        for (int k = 0; k < arrayDepth - (MaxOffsetZ - childOffsetZ) * 2; k++)
-                            for (int i = 0; i < arrayWidth - (MaxOffsetX - childOffsetX) * 2; i++)
-                                for (int j = 0; j < arrayHeight - (MaxOffsetY - childOffsetY) * 2; j++)
-                            {
-                                var relativeX = i + (MaxOffsetX - childOffsetX);
-                                var relativeY = j + (MaxOffsetY - childOffsetY);
-                                var relativeZ = k + (MaxOffsetZ - childOffsetZ);
-                                var absoluteX = X + (relativeX / ihalf);
-                                var absoluteY = Y + (relativeY / jhalf);
-                                var absoluteZ = Z + (relativeZ / khalf);
-                                
-                                algorithm.ProcessCell(
-                                    this,
-                                    input0Array,
-                                    input1Array,
-                                    input2Array,
-                                    outputArray,
-                                    absoluteX,
-                                    absoluteY,
-                                    absoluteZ,
-                                    relativeX,
-                                    relativeY,
-                                    relativeZ,
-                                    arrayWidth,
-                                    arrayHeight,
-                                    arrayDepth);
-                                computations += 1;
-                            }
-                    }
-                    break;
-                }
                 default:
                     // FIXME!
                     throw new NotImplementedException();
@@ -456,7 +362,7 @@ namespace Tychaia.ProceduralGeneration
             // iouterx = xTo
 
             //TODO: Optimization list:
-            // 1) Offsets and Input at half size: Make unique to each input
+            // 1) Offsets and Input at half size: Make unique to each input - done
             // 2) Make an offset input by some value
             //    This means that we can use the same inputs to provide different results
             //    Useful for the designer if we have a complex way to generate something that has to be done the same way multiple times
