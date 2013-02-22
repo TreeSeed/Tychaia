@@ -70,51 +70,56 @@ namespace Tychaia.ProceduralGeneration
         // Anything else?
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth)
         {
-            int ox = RequiredXBorder[0];
-            int oy = RequiredYBorder[0];
-            long rw = RequiredYBorder[0] * 2 + width;
-
             // Does this if statement work?
             // Nevermind have to remake this entire section anyway, too many || && and its getting confusing and over extended.
             // Wondering exactly how to do that - something about having setting checks at the start (then setting booleans) I think, then utilize that throughtout (rather than having multiple checks).
             // Also any other features you can think of?
-            if ((input[(i + ox) + (j + oy) * rw] == Value && ExcludeValue == true) || (input[(i + ox) + (j + oy) * rw] != Value && ExcludeValue == false))
+            if ((input[(i) + (j) * width] == Value && ExcludeValue == true) || (input[(i) + (j) * width] != Value && ExcludeValue == false))
             {
-                if (NeighborChancing == false || context.GetRandomRange(x, y, 1, 200, context.Modifier) < (input[(i + ox + 1) + (j + oy + 1) * rw] + input[(i + ox - 1) + (j + oy - 1) * rw] + input[(i + ox - 1) + (j + oy + 1) * rw] + input[(i + ox + 1) + (j + oy - 1) * rw] + input[(i + ox + 0) + (j + oy - 1) * rw] + input[(i + ox + 1) + (j + oy - 0) * rw] + input[(i + ox + 0) + (j + oy + 1) * rw] + input[(i + ox - 1) + (j + oy - 0) * rw]))
-                {
-                    int selected = context.GetRandomRange(x, y, 0, 8, context.Modifier);
-            
-                    switch (selected)
+                int checkvalue = 50;
+
+                    for (int a = 0; a < 1; a++)
                     {
-                        case 0:
-                            output[i + j * width] = input[(i + ox + 1) + (j + oy + 1) * rw];
-                            break;
-                        case 1:
-                            output[i + j * width] = input[(i + ox - 1) + (j + oy - 1) * rw];
-                            break;
-                        case 2:
-                            output[i + j * width] = input[(i + ox - 1) + (j + oy + 1) * rw]; 
-                            break;
-                        case 3:
-                            output[i + j * width] = input[(i + ox + 1) + (j + oy - 1) * rw];
-                            break;
-                        case 4:
-                            output[i + j * width] = input[(i + ox + 0) + (j + oy + 1) * rw];
-                            break;
-                        case 5:
-                            output[i + j * width] = input[(i + ox + 1) + (j + oy + 0) * rw];
-                            break;
-                        case 6:
-                            output[i + j * width] = input[(i + ox + 0) + (j + oy - 1) * rw];
-                            break;
-                        case 7:
-                            output[i + j * width] = input[(i + ox - 1) + (j + oy + 0) * rw];
-                            break;
-                    }
+                        int selected = context.GetRandomRange(x, y, 0, 8, context.Modifier + checkvalue);
+                
+                        switch (selected)
+                        {
+                            case 0:
+                                output[i + j * width] = input[(i + 1) + (j + 1) * width];
+                                break;
+                            case 1:
+                                output[i + j * width] = input[(i - 1) + (j - 1) * width];
+                                break;
+                            case 2:
+                                output[i + j * width] = input[(i - 1) + (j + 1) * width]; 
+                                break;
+                            case 3:
+                                output[i + j * width] = input[(i + 1) + (j - 1) * width];
+                                break;
+                            case 4:
+                                output[i + j * width] = input[(i + 0) + (j + 1) * width];
+                                break;
+                            case 5:
+                                output[i + j * width] = input[(i + 1) + (j + 0) * width];
+                                break;
+                            case 6:
+                                output[i + j * width] = input[(i + 0) + (j - 1) * width];
+                                break;
+                            case 7:
+                                output[i + j * width] = input[(i - 1) + (j + 0) * width];
+                                break;
+                        }
+
+                        if (this.NeighborChancing == true && checkvalue < (input[(i + 1) + (j + 1) * width] + input[(i - 1) + (j - 1) * width] + input[(i - 1) + (j + 1) * width] + input[(i + 1) + (j - 1) * width] + input[(i + 0) + (j - 1) * width] + input[(i + 1) + (j - 0) * width] + input[(i + 0) + (j + 1) * width] + input[(i - 1) + (j - 0) * width]))
+                            if ((output[(i) + (j) * width] == Value && ExcludeValue == true) || (output[(i) + (j) * width] != Value && ExcludeValue == false))
+                        {
+                            checkvalue += 50;
+                            a--;
+                        }
                 }
             }
             else 
-                output[i + j * width] = input[(i + ox) + (j + oy) * rw];
+                output[i + j * width] = input[(i) + (j) * width];
         }
         
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
