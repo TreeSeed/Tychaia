@@ -65,7 +65,6 @@
     <Compile Include="Compiler\AlgorithmRefactorer.cs" />
     <Compile Include="AlgorithmZoom.cs" />
     <Compile Include="AlgorithmInitial.cs" />
-    <Compile Include="AlgorithmTest.cs" />
     <Compile Include="AlgorithmConstant.cs" />
     <Compile Include="AlgorithmUtility.cs" />
     <Compile Include="AlgorithmExtend.cs" />
@@ -81,6 +80,7 @@
     <Compile Include="Biomes\GrasslandBiome.cs" />
     <Compile Include="AlgorithmGradientInitial.cs" />
     <Compile Include="RuntimeLayerBroken.cs" />
+    <Compile Include="AlgorithmPassthrough.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

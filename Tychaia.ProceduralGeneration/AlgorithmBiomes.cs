@@ -25,17 +25,14 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return true; }
         }
-        
-        public AlgorithmBiomes()
-        {
-        }
+
         public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] inputC, Biome[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth)
         {
-			if (inputC[i + j * width + k * width * height] != 0)
-            	output[i + j * width + k * width * height] = Biomes.BiomeEngine.GetBiomeForCell(inputA[i + j * width + k * width * height], inputB[i + j * width + k * width * height], inputC[i + j * width + k * width * height]);
-        	else
-				output[i + j * width + k * width * height] = null;
-		}
+            if (inputC[i + j * width + k * width * height] != 0)
+                output[i + j * width + k * width * height] = Biomes.BiomeEngine.GetBiomeForCell(inputA[i + j * width + k * width * height], inputB[i + j * width + k * width * height], inputC[i + j * width + k * width * height]);
+            else
+                output[i + j * width + k * width * height] = null;
+        }
         
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
