@@ -129,9 +129,9 @@ namespace Tychaia.ProceduralGeneration
                     if (input == null)
                         continue;
                     
-                    TempOffsetX[inputs] += layer.m_Algorithm.RequiredXBorder[inputs];
-                    TempOffsetY[inputs] += layer.m_Algorithm.RequiredYBorder[inputs];
-                    TempOffsetZ[inputs] += layer.m_Algorithm.RequiredZBorder[inputs];
+                    TempOffsetX[inputs] += Math.Abs(layer.m_Algorithm.RequiredXBorder[inputs]);
+                    TempOffsetY[inputs] += Math.Abs(layer.m_Algorithm.RequiredYBorder[inputs]);
+                    TempOffsetZ[inputs] += Math.Abs(layer.m_Algorithm.RequiredZBorder[inputs]);
 
                     FindMaximumOffsets(input, out OffsetX, out OffsetY, out OffsetZ);
 
@@ -224,9 +224,9 @@ namespace Tychaia.ProceduralGeneration
                                 }
                         break;
                     }
-                case 12: // 1 input
+                case 15: // 1 input
                     {
-                        // context, input, output, x, y, z, i, j, k, width, height, depth
+                        // context, input, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz
                         if (this.m_Inputs[0] != null)
                         {
                             dynamic inputArray = this.m_Inputs[0].PerformAlgorithmRuntimeCall(
@@ -251,16 +251,20 @@ namespace Tychaia.ProceduralGeneration
                             var ihalf = (halfInputWidth > 0 ? (int)(Math.Pow(2, halfInputWidth)) : 1);
                             var khalf = (halfInputDepth > 0 ? (int)(Math.Pow(2, halfInputDepth)) : 1);
 
-                            for (int k = 0; k < (arrayDepth - (MaxOffsetZ - childOffsetZ) * 2) / khalf; k++)
-                                for (int i = 0; i < (arrayWidth - (MaxOffsetX - childOffsetX) * 2) / ihalf; i++)
-                                    for (int j = 0; j < (arrayHeight - (MaxOffsetY - childOffsetY) * 2) / jhalf; j++)
+                        var OffsetX = (MaxOffsetX - childOffsetX);
+                        var OffsetY = (MaxOffsetY - childOffsetY);
+                        var OffsetZ = (MaxOffsetZ - childOffsetZ);
+
+                        for (int k = 0; k < (arrayDepth - OffsetZ * 2) / khalf; k++)
+                            for (int i = 0; i < (arrayWidth - OffsetX * 2) / ihalf; i++)
+                                for (int j = 0; j < (arrayHeight - OffsetY * 2) / jhalf; j++)
                                     {
-                                        var relativeX = i + (MaxOffsetX - childOffsetX);
-                                        var relativeY = j + (MaxOffsetY - childOffsetY);
-                                        var relativeZ = k + (MaxOffsetZ - childOffsetZ);
-                                        var absoluteX = X + relativeX;
-                                        var absoluteY = Y + relativeY;
-                                        var absoluteZ = Z + relativeZ;
+                                        var relativeX = i;
+                                        var relativeY = j;
+                                        var relativeZ = k;
+                                        var absoluteX = X + relativeX + OffsetX;
+                                        var absoluteY = Y + relativeY + OffsetY;
+                                        var absoluteZ = Z + relativeZ + OffsetZ;
 
                                         algorithm.ProcessCell(
                                             this,
@@ -274,7 +278,10 @@ namespace Tychaia.ProceduralGeneration
                                             relativeZ,
                                             arrayWidth,
                                             arrayHeight,
-                                            arrayDepth);
+                                            arrayDepth,
+                                            OffsetX,
+                                            OffsetY,
+                                            OffsetZ);
                                         computations += 1;
                                     }
                         }

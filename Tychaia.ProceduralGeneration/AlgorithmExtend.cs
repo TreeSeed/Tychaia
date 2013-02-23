@@ -68,13 +68,13 @@ namespace Tychaia.ProceduralGeneration
         // Monsters - We can spread monster villages out, simmilar to towns. 
         // Dungeons - We can use this to smooth dungeons out, so that there are less or more pointy bits. Alternatively we can also use this to spread out some side sections.
         // Anything else?
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth)
+        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             // Does this if statement work?
             // Nevermind have to remake this entire section anyway, too many || && and its getting confusing and over extended.
             // Wondering exactly how to do that - something about having setting checks at the start (then setting booleans) I think, then utilize that throughtout (rather than having multiple checks).
             // Also any other features you can think of?
-            if ((input[(i) + (j) * width] == Value && ExcludeValue == true) || (input[(i) + (j) * width] != Value && ExcludeValue == false))
+            if ((input[(i + ox) + (j + oy) * width] == Value && ExcludeValue == true) || (input[(i + ox) + (j + oy) * width] != Value && ExcludeValue == false))
             {
                 int checkvalue = 50;
 
@@ -85,32 +85,32 @@ namespace Tychaia.ProceduralGeneration
                         switch (selected)
                         {
                             case 0:
-                                output[i + j * width] = input[(i + 1) + (j + 1) * width];
+                                output[(i + ox) + (j + oy) * width] = input[((i + ox) + 1) + ((j + oy) + 1) * width];
                                 break;
                             case 1:
-                                output[i + j * width] = input[(i - 1) + (j - 1) * width];
+                                output[(i + ox) + (j + oy) * width] = input[((i + ox) - 1) + ((j + oy) - 1) * width];
                                 break;
                             case 2:
-                                output[i + j * width] = input[(i - 1) + (j + 1) * width]; 
+                                output[(i + ox) + (j + oy) * width] = input[((i + ox) - 1) + ((j + oy) + 1) * width]; 
                                 break;
                             case 3:
-                                output[i + j * width] = input[(i + 1) + (j - 1) * width];
+                                output[(i + ox) + (j + oy) * width] = input[((i + ox) + 1) + ((j + oy) - 1) * width];
                                 break;
                             case 4:
-                                output[i + j * width] = input[(i + 0) + (j + 1) * width];
+                                output[(i + ox) + (j + oy) * width] = input[((i + ox) + 0) + ((j + oy) + 1) * width];
                                 break;
                             case 5:
-                                output[i + j * width] = input[(i + 1) + (j + 0) * width];
+                                output[(i + ox) + (j + oy) * width] = input[((i + ox) + 1) + ((j + oy) + 0) * width];
                                 break;
                             case 6:
-                                output[i + j * width] = input[(i + 0) + (j - 1) * width];
+                                output[(i + ox) + (j + oy) * width] = input[((i + ox) + 0) + ((j + oy) - 1) * width];
                                 break;
                             case 7:
-                                output[i + j * width] = input[(i - 1) + (j + 0) * width];
+                                output[(i + ox) + (j + oy) * width] = input[((i + ox) - 1) + ((j + oy) + 0) * width];
                                 break;
                         }
 
-                        if (this.NeighborChancing == true && checkvalue < (input[(i + 1) + (j + 1) * width] + input[(i - 1) + (j - 1) * width] + input[(i - 1) + (j + 1) * width] + input[(i + 1) + (j - 1) * width] + input[(i + 0) + (j - 1) * width] + input[(i + 1) + (j - 0) * width] + input[(i + 0) + (j + 1) * width] + input[(i - 1) + (j - 0) * width]))
+                        if (this.NeighborChancing == true && checkvalue < (input[((i + ox) + 1) + ((j + oy) + 1) * width] + input[((i + ox) - 1) + ((j + oy) - 1) * width] + input[((i + ox) - 1) + ((j + oy) + 1) * width] + input[((i + ox) + 1) + ((j + oy) - 1) * width] + input[((i + ox) + 0) + ((j + oy) - 1) * width] + input[((i + ox) + 1) + ((j + oy) - 0) * width] + input[((i + ox) + 0) + ((j + oy) + 1) * width] + input[((i + ox) - 1) + ((j + oy) - 0) * width]))
                             if ((output[(i) + (j) * width] == Value && ExcludeValue == true) || (output[(i) + (j) * width] != Value && ExcludeValue == false))
                         {
                             checkvalue += 50;
@@ -119,7 +119,7 @@ namespace Tychaia.ProceduralGeneration
                 }
             }
             else 
-                output[i + j * width] = input[(i) + (j) * width];
+                output[(i + ox) + (j + oy) * width] = input[(i + ox) + (j + oy) * width];
         }
         
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
