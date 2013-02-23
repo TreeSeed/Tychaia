@@ -45,12 +45,8 @@ namespace Tychaia.ProceduralGeneration
             get { return true; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth)
+        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            int ox = 2; // Offsets
-            int oy = 2;
-            long rw = width / 2 + ox * 2;
-
             bool xmod = x % 2 != 0;
             bool ymod = y % 2 != 0;
             int ocx = xmod ? (int)(i % 2) : 0;
@@ -60,13 +56,14 @@ namespace Tychaia.ProceduralGeneration
             int ocy_n = ymod ? (int)((j - 1) % 2) : 0;
             int ocy_s = ymod ? (int)((j + 1) % 2) : 0;
 
-            int current = input[(i / 2 + ox + ocx) + (j / 2 + oy + ocy) * rw];
-            int north = input[(i / 2 + ox + ocx) + ((j - 1) / 2 + oy + ocy_n) * rw];
-            int south = input[(i / 2 + ox + ocx) + ((j + 1) / 2 + oy + ocy_s) * rw];
-            int east = input[((i + 1) / 2 + ox + ocx_e) + (j / 2 + oy + ocy) * rw];
-            int west = input[((i - 1) / 2 + ox + ocx_w) + (j / 2 + oy + ocy) * rw];
-            int southEast = input[((i + 2) / 2 + ox + ocx) + ((j + 2) / 2 + oy + ocy) * rw];
-
+            int current = input[(i / 2) + ox + ((j / 2) + oy) * width];
+            /*
+            int north = input[(i / 2 + ocx) + ((j - 1) / 2 + ocy_n) * width];
+            int south = input[(i / 2 + ocx) + ((j + 1) / 2 + ocy_s) * width];
+            int east = input[((i + 1) / 2 + ocx_e) + (j / 2 + ocy) * width];
+            int west = input[((i - 1) / 2 + ocx_w) + (j / 2 + ocy) * width];
+            int southEast = input[((i + 2) / 2 + ocx) + ((j + 2) / 2 + ocy) * width];
+*/
             /*  Template for new Smooth system, have to fix/solve the Fuzzy Problem.
             int selected = 0;
 
@@ -96,10 +93,10 @@ namespace Tychaia.ProceduralGeneration
             }
             */
 
-            if (this.Mode == ZoomType.Smooth || this.Mode == ZoomType.Fuzzy)
-                output[i + j * width] = context.Smooth(this.Mode == ZoomType.Fuzzy, x, y, north, south, west, east, southEast, current, i, j, ox, oy, rw, input);
-            else                    
-                output[i + j * width] = current;
+//            if (this.Mode == ZoomType.Smooth || this.Mode == ZoomType.Fuzzy)
+//                output[i + j * width] = context.Smooth(this.Mode == ZoomType.Fuzzy, x, y, north, south, west, east, southEast, current, i, j, 0, 0, width, input);
+//            else                    
+                output[i + ox + (j + oy) * width] = current;
         }
 
         /// <summary>
