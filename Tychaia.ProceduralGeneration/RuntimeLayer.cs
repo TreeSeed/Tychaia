@@ -207,9 +207,9 @@ namespace Tychaia.ProceduralGeneration
                         var ihalf = (halfInputWidth > 0 ? (int)(Math.Pow(2, halfInputWidth)) : 1);
                         var khalf = (halfInputDepth > 0 ? (int)(Math.Pow(2, halfInputDepth)) : 1);
 
-                    for (int k = 0; k < (arrayDepth - (MaxOffsetZ - childOffsetZ) * 2) / khalf; k++)
-                        for (int i = 0; i < (arrayWidth - (MaxOffsetX - childOffsetX) * 2) / ihalf; i++)
-                            for (int j = 0; j < (arrayHeight - (MaxOffsetY - childOffsetY) * 2) / jhalf; j++)
+                        for (int k = 0; k < (arrayDepth - (MaxOffsetZ - childOffsetZ) * 2) / khalf; k++)
+                            for (int i = 0; i < (arrayWidth - (MaxOffsetX - childOffsetX) * 2) / ihalf; i++)
+                                for (int j = 0; j < (arrayHeight - (MaxOffsetY - childOffsetY) * 2) / jhalf; j++)
                                 {
                                     var relativeX = i + (MaxOffsetX - childOffsetX);
                                     var relativeY = j + (MaxOffsetY - childOffsetY);
@@ -251,9 +251,9 @@ namespace Tychaia.ProceduralGeneration
                             var ihalf = (halfInputWidth > 0 ? (int)(Math.Pow(2, halfInputWidth)) : 1);
                             var khalf = (halfInputDepth > 0 ? (int)(Math.Pow(2, halfInputDepth)) : 1);
 
-                        for (int k = 0; k < (arrayDepth - (MaxOffsetZ - childOffsetZ) * 2) / khalf; k++)
-                            for (int i = 0; i < (arrayWidth - (MaxOffsetX - childOffsetX) * 2) / ihalf; i++)
-                                for (int j = 0; j < (arrayHeight - (MaxOffsetY - childOffsetY) * 2) / jhalf; j++)
+                            for (int k = 0; k < (arrayDepth - (MaxOffsetZ - childOffsetZ) * 2) / khalf; k++)
+                                for (int i = 0; i < (arrayWidth - (MaxOffsetX - childOffsetX) * 2) / ihalf; i++)
+                                    for (int j = 0; j < (arrayHeight - (MaxOffsetY - childOffsetY) * 2) / jhalf; j++)
                                     {
                                         var relativeX = i + (MaxOffsetX - childOffsetX);
                                         var relativeY = j + (MaxOffsetY - childOffsetY);
@@ -295,7 +295,6 @@ namespace Tychaia.ProceduralGeneration
         {
             // Initialize the computation count.
             computations = 0;
-
 
             // Just replicate this into the CompiledLayer system
             int MaxOffsetX = 0;
@@ -388,7 +387,6 @@ namespace Tychaia.ProceduralGeneration
                 ref computations);
 
             // Copy the result into a properly sized array.
-
             dynamic correctArray = Activator.CreateInstance(
                 this.m_Algorithm.OutputType.MakeArrayType(),
                 (int)(width * height * depth));
