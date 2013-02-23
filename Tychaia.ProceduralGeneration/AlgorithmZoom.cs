@@ -27,8 +27,10 @@ namespace Tychaia.ProceduralGeneration
         
         public override int[] RequiredXBorder { get { return new int[] {2}; } }
         public override int[] RequiredYBorder { get { return new int[] {2}; } }
+        public override int[] RequiredZBorder { get { return new int[] {2}; } }
         public override bool[] InputWidthAtHalfSize { get { return new bool[] {true}; } }
         public override bool[] InputHeightAtHalfSize { get { return new bool[] {true}; } }
+        public override bool[] InputDepthAtHalfSize { get { return new bool[] {true}; } }
 
         public AlgorithmZoom()
         {
@@ -56,7 +58,7 @@ namespace Tychaia.ProceduralGeneration
             int ocy_n = ymod ? (int)((j - 1) % 2) : 0;
             int ocy_s = ymod ? (int)((j + 1) % 2) : 0;
 
-            int current = input[(i / 2) + ox + ((j / 2) + oy) * width];
+            int current = input[(i / 2) + ox + ((j / 2) + oy) * width + ((k / 2) + oz) * width * height];
             /*
             int north = input[(i / 2 + ocx) + ((j - 1) / 2 + ocy_n) * width];
             int south = input[(i / 2 + ocx) + ((j + 1) / 2 + ocy_s) * width];
@@ -96,7 +98,7 @@ namespace Tychaia.ProceduralGeneration
 //            if (this.Mode == ZoomType.Smooth || this.Mode == ZoomType.Fuzzy)
 //                output[i + j * width] = context.Smooth(this.Mode == ZoomType.Fuzzy, x, y, north, south, west, east, southEast, current, i, j, 0, 0, width, input);
 //            else                    
-                output[i + ox + (j + oy) * width] = current;
+                output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
         }
 
         /// <summary>
