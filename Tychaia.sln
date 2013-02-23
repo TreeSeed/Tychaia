@@ -71,6 +71,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.Linux", "Li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.Linux", "Libraries\MonoGame\MonoGame.Framework\MonoGame.Framework.Linux.csproj", "{35253CE1-C864-4CD3-8249-4D1319748E8F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.ProceduralGeneration.Tests", "Tychaia.ProceduralGeneration.Tests\Tychaia.ProceduralGeneration.Tests.csproj", "{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,7 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|Mixed Platforms = Release|Mixed Platforms
 		Release|x86 = Release|x86
+		Default|Any CPU = Default|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{09FF480E-54B1-4A5F-A585-CE74DE399BE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -391,6 +394,20 @@ Global
 		{DF7D4601-0061-4329-9803-6917AF416B70}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{DF7D4601-0061-4329-9803-6917AF416B70}.Release|x86.ActiveCfg = Release|x86
 		{DF7D4601-0061-4329-9803-6917AF416B70}.Release|x86.Build.0 = Release|x86
+		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}.Debug|x86.Build.0 = Debug|Any CPU
+		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}.Release|x86.ActiveCfg = Release|Any CPU
+		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}.Release|x86.Build.0 = Release|Any CPU
 		{EDCFB186-0C67-4771-8033-8572A0744B2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EDCFB186-0C67-4771-8033-8572A0744B2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDCFB186-0C67-4771-8033-8572A0744B2C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

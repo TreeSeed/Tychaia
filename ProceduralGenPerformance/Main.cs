@@ -69,8 +69,8 @@ namespace ProceduralGenPerformance
             }
             else if (mode == "test")
             {
-                var algorithmTest1 = new RuntimeLayer(new AlgorithmTest());
-                var algorithmTest2 = new RuntimeLayer(new AlgorithmTest());
+                var algorithmTest1 = new RuntimeLayer(new AlgorithmPassthrough());
+                var algorithmTest2 = new RuntimeLayer(new AlgorithmPassthrough());
                 var algorithmConstant = new RuntimeLayer(new AlgorithmConstant { Constant = 5 });
                 algorithmTest2.SetInput(0, algorithmConstant);
                 algorithmTest1.SetInput(0, algorithmTest2);
