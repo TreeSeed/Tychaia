@@ -52,6 +52,15 @@ namespace Tychaia.ProceduralGeneration
         }
 
         [DataMember]
+        [DefaultValue(ColorScheme.Perlin)]
+        [Description("The color scheme to use.")]
+        public ColorScheme ColorSet
+        {
+            get;
+            set;
+        }
+
+        [DataMember]
         [DefaultValue(false)]
         [Description("This layer is 2d.")]
         public bool Layer2d
@@ -72,6 +81,7 @@ namespace Tychaia.ProceduralGeneration
             this.MinimumValue = 1;
             this.MaximumValue = 100;
             this.Layer2d = false;
+            this.ColorSet = ColorScheme.Perlin;
         }
 
         // Will be able to use this algorithm for:
@@ -89,13 +99,30 @@ namespace Tychaia.ProceduralGeneration
             else
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
         }
-        
+
+        public enum ColorScheme
+        {
+            Land,
+            Perlin,
+        }
+
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            if (value == 0)
-                return Color.Blue;
+            if (this.ColorSet == ColorScheme.Perlin)
+            {
+                return Color.FromArgb((int)(255 * (value / 100f)), (int)(255 * (value / 100f)), (int)(255 * (value / 100f)));
+            }
+            else if (this.ColorSet == ColorScheme.Land)
+            {
+                if (value == 0)
+                    return Color.Blue;
+                else
+                    return Color.FromArgb(0, (int)(255 * (value / 100f)), 0);
+            }
             else
-                return Color.FromArgb(0, (int)(255 * (value / 100f)), 0);
+            {
+                return Color.Gray;
+            }
         }
     }
 }

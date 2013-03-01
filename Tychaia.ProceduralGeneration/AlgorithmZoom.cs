@@ -57,7 +57,7 @@ namespace Tychaia.ProceduralGeneration
             get { return false; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz, int ocx, int ocy, int ocz)
         {
 
 //            bool xmod = x % 2 != 0;
@@ -69,7 +69,7 @@ namespace Tychaia.ProceduralGeneration
 //            int ocy_n = ymod ? (int)((j - 1) % 2) : 0;
 //            int ocy_s = ymod ? (int)((j + 1) % 2) : 0;
 
-            int current = input[(i / 2) + ox + ((j / 2) + oy) * width + ((k / 2) + oz) * width * height];
+            int current = input[(i / 2) + ox - ocx + ((j / 2) + oy - ocy) * width + ((k / 2) + oz - ocz) * width * height];
             /*
             int north = input[(i / 2 + ocx) + ((j - 1) / 2 + ocy_n) * width];
             int south = input[(i / 2 + ocx) + ((j + 1) / 2 + ocy_s) * width];
@@ -109,7 +109,7 @@ namespace Tychaia.ProceduralGeneration
 //            if (this.Mode == ZoomType.Smooth || this.Mode == ZoomType.Fuzzy)
 //                output[i + j * width] = context.Smooth(this.Mode == ZoomType.Fuzzy, x, y, north, south, west, east, southEast, current, i, j, 0, 0, width, input);
 //            else                    
-                output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
+                output[i + ox - ocx + (j + oy - ocy) * width + (k + oz -ocz) * width * height] = current;
         }
 
         /// <summary>
