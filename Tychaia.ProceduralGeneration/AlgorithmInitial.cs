@@ -11,12 +11,12 @@ using System.Drawing;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerCategory(FlowCategory.Land)]
-    [FlowDesignerName("Initial Land")]
+    [FlowDesignerCategory(FlowCategory.BaseLayers)]
+    [FlowDesignerName("Initial Random")]
     public class AlgorithmInitial : Algorithm<int>
     {
         [DataMember]
-        [DefaultValue(0.95)]
+        [DefaultValue(0)]
         [Description("The value between 0.0 and 1.0 above which the cell is selected.")]
         public double Limit
         {
@@ -51,17 +51,27 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
+        [DataMember]
+        [DefaultValue(false)]
+        [Description("This layer is 2d.")]
+        public bool Layer2d
+        {
+            get;
+            set;
+        }
+
         public override bool Is2DOnly
         {
-            get { return true; }
+            get { return false; }
         }
         
         public AlgorithmInitial()
         {
-            this.Limit = 0.95;
+            this.Limit = 0;
             this.GuaranteeStartingPoint = true;
             this.MinimumValue = 1;
             this.MaximumValue = 100;
+            this.Layer2d = false;
         }
 
         // Will be able to use this algorithm for:
@@ -70,14 +80,14 @@ namespace Tychaia.ProceduralGeneration
         // Landmarks - We can spread landmarks over the world, which we can then use values to determine the size/value of the landmarks.
         // Monsters - By utilising multiple value scaling we can either distribute individual monsters or monster groups or even monster villages.
         // Tresure chests - Spreading tresure chests in dungeons (can be used as an estimated location then moved slightly too).
-        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth)
+        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             if (this.GuaranteeStartingPoint && x == 0 && y == 0)
-                output[i + j * width + k * width * height] = this.MaximumValue;
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.MaximumValue;
             else if (context.GetRandomDouble(x, y, z, context.Modifier) > this.Limit)
-                output[i + j * width + k * width * height] = context.GetRandomRange(x, y, z, this.MinimumValue, this.MaximumValue, context.Modifier);
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = context.GetRandomRange(x, y, z, this.MinimumValue, this.MaximumValue, context.Modifier);
             else
-                output[i + j * width + k * width * height] = 0;
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
         }
         
         public override Color GetColorForValue(StorageLayer parent, dynamic value)

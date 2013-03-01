@@ -78,8 +78,9 @@
     <Compile Include="Biomes\Biome.cs" />
     <Compile Include="AlgorithmBiomes.cs" />
     <Compile Include="Biomes\GrasslandBiome.cs" />
-    <Compile Include="AlgorithmGradientInitial.cs" />
     <Compile Include="AlgorithmPassthrough.cs" />
+    <Compile Include="AlgorithmMixdown.cs" />
+    <Compile Include="AlgorithmDebuggingInitial.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -100,6 +101,10 @@
     <ProjectReference Include="..\Tychaia.Globals\Tychaia.Globals.csproj">
       <Project>{58F07D5A-E86E-4561-88E8-F96744D59157}</Project>
       <Name>Tychaia.Globals</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Protogame.Noise\Protogame.Noise.csproj">
+      <Project>{FE9A9DF1-16D8-4A24-8978-D4F2E540F039}</Project>
+      <Name>Protogame.Noise</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

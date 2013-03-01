@@ -35,6 +35,7 @@ namespace Tychaia.ProceduralGeneration
         public AlgorithmZoom()
         {
             this.Mode = ZoomType.Smooth;
+            this.Layer2d = false;
         }
 
         public override string[] InputNames
@@ -42,21 +43,31 @@ namespace Tychaia.ProceduralGeneration
             get { return new string[] { "Input" }; }
         }
 
+        [DataMember]
+        [DefaultValue(false)]
+        [Description("This layer is 2d.")]
+        public bool Layer2d
+        {
+            get;
+            set;
+        }
+
         public override bool Is2DOnly
         {
-            get { return true; }
+            get { return false; }
         }
 
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            bool xmod = x % 2 != 0;
-            bool ymod = y % 2 != 0;
-            int ocx = xmod ? (int)(i % 2) : 0;
-            int ocy = ymod ? (int)(j % 2) : 0;
-            int ocx_w = xmod ? (int)((i - 1) % 2) : 0;
-            int ocx_e = xmod ? (int)((i + 1) % 2) : 0;
-            int ocy_n = ymod ? (int)((j - 1) % 2) : 0;
-            int ocy_s = ymod ? (int)((j + 1) % 2) : 0;
+
+//            bool xmod = x % 2 != 0;
+//            bool ymod = y % 2 != 0;
+//            int ocx = xmod ? (int)(i % 2) : 0;
+//            int ocy = ymod ? (int)(j % 2) : 0;
+//            int ocx_w = xmod ? (int)((i - 1) % 2) : 0;
+//            int ocx_e = xmod ? (int)((i + 1) % 2) : 0;
+//            int ocy_n = ymod ? (int)((j - 1) % 2) : 0;
+//            int ocy_s = ymod ? (int)((j + 1) % 2) : 0;
 
             int current = input[(i / 2) + ox + ((j / 2) + oy) * width + ((k / 2) + oz) * width * height];
             /*

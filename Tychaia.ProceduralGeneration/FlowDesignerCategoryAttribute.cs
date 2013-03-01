@@ -11,7 +11,7 @@ namespace Tychaia.ProceduralGeneration
     public enum FlowCategory
     {
         General,
-        InitialGeneration,
+        BaseLayers,
         ZoomTools,
         Land,
         Biome,
