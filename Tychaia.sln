@@ -111,12 +111,12 @@ Global
 		{2337776D-7D0C-40AA-A439-C26C3CE24FAB}.Release (prebuilt MonoGame)|Any CPU.Build.0 = Release|Any CPU
 		{2337776D-7D0C-40AA-A439-C26C3CE24FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2337776D-7D0C-40AA-A439-C26C3CE24FAB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug (prebuilt MonoGame)|Any CPU.ActiveCfg = Debug|Any CPU
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug (prebuilt MonoGame)|Any CPU.ActiveCfg = Debug|x86
+		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|Any CPU.Build.0 = Debug|x86
 		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release (prebuilt MonoGame)|Any CPU.ActiveCfg = Release|x86
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|Any CPU.ActiveCfg = Release|x86
+		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|Any CPU.Build.0 = Release|x86
 		{388584AB-4469-42C7-8876-11AC3ACF97AB}.Debug (prebuilt MonoGame)|Any CPU.ActiveCfg = Prebuilt MonoGame|Any CPU
 		{388584AB-4469-42C7-8876-11AC3ACF97AB}.Debug|Any CPU.ActiveCfg = Prebuilt MonoGame|Any CPU
 		{388584AB-4469-42C7-8876-11AC3ACF97AB}.Release (prebuilt MonoGame)|Any CPU.ActiveCfg = Prebuilt MonoGame|Any CPU
