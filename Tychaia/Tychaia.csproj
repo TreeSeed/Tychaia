@@ -6,26 +6,21 @@
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}</ProjectGuid>
-    <ProjectTypeGuids>{9B831FEF-F496-498F-9FE8-180DA5CB4258};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>Tychaia</RootNamespace>
     <AssemblyName>Tychaia</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>True</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>True</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -118,11 +113,14 @@
       <Project>{641D5815-4533-4146-96C1-D932FE1641F9}</Project>
       <Name>Tychaia.ProceduralGeneration.Legacy</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup Condition="('$(Target)' != 'Debug (prebuilt MonoGame)' And '$(Target)' != 'Release (prebuilt MonoGame)') And '$(OSTYPE)' == 'linux'">
     <ProjectReference Include="..\Libraries\MonoGame\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
       <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
       <Name>MonoGame.Framework.Linux</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\MonoGame.Prebuilt\MonoGame.targets" />
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>

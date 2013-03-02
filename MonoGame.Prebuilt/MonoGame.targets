@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Condition="('$(Target)' != 'Debug (prebuilt MonoGame)' And '$(Target)' != 'Release (prebuilt MonoGame)') And '$(OS)' == 'Windows_NT'">
+    <ProjectReference Include="..\Libraries\MonoGame\MonoGame.Framework\MonoGame.Framework.Windows.csproj">
+      <Project>{7DE47032-A904-4C29-BD22-2D235E8D91BA}</Project>
+      <Name>MonoGame.Framework.Windows</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Target)' == 'Debug (prebuilt MonoGame)' Or '$(Target)' == 'Release (prebuilt MonoGame)'">
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\MonoGame.Prebuilt\MonoGame.Framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
