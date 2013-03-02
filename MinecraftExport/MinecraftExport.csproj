@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{934D08FB-35DB-4481-A3C4-64F8AE5C8F51}</ProjectGuid>
@@ -11,25 +11,6 @@
     <RootNamespace>MinecraftExport</RootNamespace>
     <AssemblyName>MinecraftExport</AssemblyName>
     <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugSymbols>True</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>False</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>True</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>True</DebugSymbols>
@@ -73,13 +54,13 @@
       <Project>{7264A1C4-AB4A-4437-B252-7379B98B5509}</Project>
       <Name>Substrate (NET4)</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Tychaia\Tychaia.csproj">
-      <Project>{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}</Project>
-      <Name>Tychaia</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Tychaia.ProceduralGeneration.Legacy\Tychaia.ProceduralGeneration.Legacy.csproj">
       <Project>{641D5815-4533-4146-96C1-D932FE1641F9}</Project>
       <Name>Tychaia.ProceduralGeneration.Legacy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia\Tychaia.csproj">
+      <Project>{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}</Project>
+      <Name>Tychaia</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

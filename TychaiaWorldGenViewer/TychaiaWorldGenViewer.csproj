@@ -175,7 +175,7 @@
   </ProjectExtensions>
   <ItemGroup>
     <ProjectReference Include="..\Tychaia.ProceduralGeneration.Legacy\Tychaia.ProceduralGeneration.Legacy.csproj">
-      <Project>{642D5815-4533-4146-96C1-D932FE1641F9}</Project>
+      <Project>{641D5815-4533-4146-96C1-D932FE1641F9}</Project>
       <Name>Tychaia.ProceduralGeneration.Legacy</Name>
     </ProjectReference>
   </ItemGroup>

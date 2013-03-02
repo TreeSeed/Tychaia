@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeMeAWorld", "MakeMeAWorld\MakeMeAWorld.csproj", "{74591317-9179-43D8-83A3-FFBEEB57B92F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TychaiaWorldGenViewer", "TychaiaWorldGenViewer\TychaiaWorldGenViewer.csproj", "{EDCFB186-0C67-4771-8033-8572A0744B2C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.ProceduralGeneration", "Tychaia.ProceduralGeneration\Tychaia.ProceduralGeneration.csproj", "{642D5815-4533-4146-96C1-D932FE1641F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.ProceduralGeneration", "Tychaia.ProceduralGeneration\Tychaia.ProceduralGeneration.csproj", "{4298E98C-3351-4FB2-A8FF-B466915A239F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Globals", "Tychaia.Globals\Tychaia.Globals.csproj", "{58F07D5A-E86E-4561-88E8-F96744D59157}"
 EndProject
@@ -16,6 +14,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protogame.Noise", "Protogame.Noise\Protogame.Noise.csproj", "{FE9A9DF1-16D8-4A24-8978-D4F2E540F039}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protogame.Math", "Protogame.Math\Protogame.Math.csproj", "{C5966454-0813-47E9-A652-05E3CD35E2E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.ProceduralGeneration.Legacy", "Tychaia.ProceduralGeneration.Legacy\Tychaia.ProceduralGeneration.Legacy.csproj", "{641D5815-4533-4146-96C1-D932FE1641F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redpoint.FlowGraph", "Libraries\Redpoint.FlowGraph\Redpoint.FlowGraph.csproj", "{996097C6-F59B-4395-A3C5-BECDCE904690}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,14 @@ Global
 		{2337776D-7D0C-40AA-A439-C26C3CE24FAB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2337776D-7D0C-40AA-A439-C26C3CE24FAB}.Release|x86.ActiveCfg = Release|x86
 		{2337776D-7D0C-40AA-A439-C26C3CE24FAB}.Release|x86.Build.0 = Release|x86
+		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Debug|x86.ActiveCfg = Debug|x86
+		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Debug|x86.Build.0 = Debug|x86
+		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Release|x86.ActiveCfg = Release|x86
+		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Release|x86.Build.0 = Release|x86
 		{58F07D5A-E86E-4561-88E8-F96744D59157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{58F07D5A-E86E-4561-88E8-F96744D59157}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58F07D5A-E86E-4561-88E8-F96744D59157}.Debug|x86.ActiveCfg = Debug|x86
@@ -41,18 +51,26 @@ Global
 		{58F07D5A-E86E-4561-88E8-F96744D59157}.Release|Any CPU.Build.0 = Release|Any CPU
 		{58F07D5A-E86E-4561-88E8-F96744D59157}.Release|x86.ActiveCfg = Release|x86
 		{58F07D5A-E86E-4561-88E8-F96744D59157}.Release|x86.Build.0 = Release|x86
-		{642D5815-4533-4146-96C1-D932FE1641F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{642D5815-4533-4146-96C1-D932FE1641F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{642D5815-4533-4146-96C1-D932FE1641F9}.Debug|x86.ActiveCfg = Debug|x86
-		{642D5815-4533-4146-96C1-D932FE1641F9}.Debug|x86.Build.0 = Debug|x86
-		{642D5815-4533-4146-96C1-D932FE1641F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{642D5815-4533-4146-96C1-D932FE1641F9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{642D5815-4533-4146-96C1-D932FE1641F9}.Release|x86.ActiveCfg = Release|x86
-		{642D5815-4533-4146-96C1-D932FE1641F9}.Release|x86.Build.0 = Release|x86
+		{641D5815-4533-4146-96C1-D932FE1641F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{641D5815-4533-4146-96C1-D932FE1641F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{641D5815-4533-4146-96C1-D932FE1641F9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{641D5815-4533-4146-96C1-D932FE1641F9}.Debug|x86.Build.0 = Debug|Any CPU
+		{641D5815-4533-4146-96C1-D932FE1641F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{641D5815-4533-4146-96C1-D932FE1641F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{641D5815-4533-4146-96C1-D932FE1641F9}.Release|x86.ActiveCfg = Release|Any CPU
+		{641D5815-4533-4146-96C1-D932FE1641F9}.Release|x86.Build.0 = Release|Any CPU
 		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{996097C6-F59B-4395-A3C5-BECDCE904690}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{996097C6-F59B-4395-A3C5-BECDCE904690}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{996097C6-F59B-4395-A3C5-BECDCE904690}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{996097C6-F59B-4395-A3C5-BECDCE904690}.Debug|x86.Build.0 = Debug|Any CPU
+		{996097C6-F59B-4395-A3C5-BECDCE904690}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{996097C6-F59B-4395-A3C5-BECDCE904690}.Release|Any CPU.Build.0 = Release|Any CPU
+		{996097C6-F59B-4395-A3C5-BECDCE904690}.Release|x86.ActiveCfg = Release|Any CPU
+		{996097C6-F59B-4395-A3C5-BECDCE904690}.Release|x86.Build.0 = Release|Any CPU
 		{C5966454-0813-47E9-A652-05E3CD35E2E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C5966454-0813-47E9-A652-05E3CD35E2E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5966454-0813-47E9-A652-05E3CD35E2E0}.Debug|x86.ActiveCfg = Debug|x86
@@ -69,14 +87,6 @@ Global
 		{DDF5D740-6EE1-44BA-9DB9-782BF23E28D6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DDF5D740-6EE1-44BA-9DB9-782BF23E28D6}.Release|x86.ActiveCfg = Release|x86
 		{DDF5D740-6EE1-44BA-9DB9-782BF23E28D6}.Release|x86.Build.0 = Release|x86
-		{EDCFB186-0C67-4771-8033-8572A0744B2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDCFB186-0C67-4771-8033-8572A0744B2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDCFB186-0C67-4771-8033-8572A0744B2C}.Debug|x86.ActiveCfg = Debug|x86
-		{EDCFB186-0C67-4771-8033-8572A0744B2C}.Debug|x86.Build.0 = Debug|x86
-		{EDCFB186-0C67-4771-8033-8572A0744B2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EDCFB186-0C67-4771-8033-8572A0744B2C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EDCFB186-0C67-4771-8033-8572A0744B2C}.Release|x86.ActiveCfg = Release|x86
-		{EDCFB186-0C67-4771-8033-8572A0744B2C}.Release|x86.Build.0 = Release|x86
 		{FE9A9DF1-16D8-4A24-8978-D4F2E540F039}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FE9A9DF1-16D8-4A24-8978-D4F2E540F039}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE9A9DF1-16D8-4A24-8978-D4F2E540F039}.Debug|x86.ActiveCfg = Debug|x86
@@ -87,6 +97,6 @@ Global
 		{FE9A9DF1-16D8-4A24-8978-D4F2E540F039}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = TychaiaWorldGenViewer\TychaiaWorldGenViewer.csproj
+		StartupItem = MakeMeAWorld\MakeMeAWorld.csproj
 	EndGlobalSection
 EndGlobal

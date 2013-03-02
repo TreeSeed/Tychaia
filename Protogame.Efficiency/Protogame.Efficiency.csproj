@@ -30,9 +30,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="MonoGame.Framework.Linux">
-      <HintPath>..\Libraries\MonoGame\MonoGame.Framework.Linux.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -42,4 +39,11 @@
     <Compile Include="SpriteEffect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup Condition="('$(Target)' != 'Debug (prebuilt MonoGame)' And '$(Target)' != 'Release (prebuilt MonoGame)') And '$(OSTYPE)' == 'linux'">
+    <ProjectReference Include="..\Libraries\MonoGame\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
+      <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
+      <Name>MonoGame.Framework.Linux</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\MonoGame.Prebuilt\MonoGame.targets" />
 </Project>

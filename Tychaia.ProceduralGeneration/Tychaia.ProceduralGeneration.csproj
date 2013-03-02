@@ -93,13 +93,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Libraries\Redpoint.FlowGraph\Redpoint.FlowGraph.csproj">
-      <Project>{996097C6-F59B-4395-A3C5-BECDCE904690}</Project>
-      <Name>Redpoint.FlowGraph</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Tychaia.Globals\Tychaia.Globals.csproj">
       <Project>{58F07D5A-E86E-4561-88E8-F96744D59157}</Project>
       <Name>Tychaia.Globals</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Redpoint.FlowGraph\Redpoint.FlowGraph.csproj">
+      <Project>{996097C6-F59B-4395-A3C5-BECDCE904690}</Project>
+      <Name>Redpoint.FlowGraph</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
