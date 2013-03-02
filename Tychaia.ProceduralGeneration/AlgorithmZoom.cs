@@ -70,6 +70,11 @@ namespace Tychaia.ProceduralGeneration
 //            int ocy_s = ymod ? (int)((j + 1) % 2) : 0;
 
             int current = input[(i / 2) + ox - ocx + ((j / 2) + oy - ocy) * width + ((k / 2) + oz - ocz) * width * height];
+
+            if (this.Mode == ZoomType.Smooth)
+                current = (current + input[((i + 1) / 2) + ox - ocx + (((j + 1) / 2) + oy - ocy) * width + (((k + 1) / 2) + oz - ocz) * width * height]) / 2;
+
+
             /*
             int north = input[(i / 2 + ocx) + ((j - 1) / 2 + ocy_n) * width];
             int south = input[(i / 2 + ocx) + ((j + 1) / 2 + ocy_s) * width];
@@ -109,7 +114,10 @@ namespace Tychaia.ProceduralGeneration
 //            if (this.Mode == ZoomType.Smooth || this.Mode == ZoomType.Fuzzy)
 //                output[i + j * width] = context.Smooth(this.Mode == ZoomType.Fuzzy, x, y, north, south, west, east, southEast, current, i, j, 0, 0, width, input);
 //            else                    
+
+
                 output[i + ox - ocx + (j + oy - ocy) * width + (k + oz -ocz) * width * height] = current;
+
         }
 
         /// <summary>
@@ -118,6 +126,7 @@ namespace Tychaia.ProceduralGeneration
         public enum ZoomType
         {
             Square,
+            SquareSmooth,
             Smooth,
             Fuzzy,
         }
