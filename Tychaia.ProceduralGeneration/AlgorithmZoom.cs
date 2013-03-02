@@ -34,7 +34,7 @@ namespace Tychaia.ProceduralGeneration
 
         public AlgorithmZoom()
         {
-            this.Mode = ZoomType.Smooth;
+            this.Mode = ZoomType.Square;
             this.Layer2d = false;
         }
 
