@@ -78,8 +78,9 @@
     <Compile Include="Biomes\Biome.cs" />
     <Compile Include="AlgorithmBiomes.cs" />
     <Compile Include="Biomes\GrasslandBiome.cs" />
-    <Compile Include="AlgorithmGradientInitial.cs" />
     <Compile Include="AlgorithmPassthrough.cs" />
+    <Compile Include="AlgorithmMixdown.cs" />
+    <Compile Include="AlgorithmDebuggingInitial.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -100,6 +101,10 @@
     <ProjectReference Include="..\Libraries\Redpoint.FlowGraph\Redpoint.FlowGraph.csproj">
       <Project>{996097C6-F59B-4395-A3C5-BECDCE904690}</Project>
       <Name>Redpoint.FlowGraph</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Protogame.Noise\Protogame.Noise.csproj">
+      <Project>{FE9A9DF1-16D8-4A24-8978-D4F2E540F039}</Project>
+      <Name>Protogame.Noise</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

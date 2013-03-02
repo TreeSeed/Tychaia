@@ -154,7 +154,10 @@ namespace Tychaia.ProceduralGeneration
                                          int k,
                                          int width,
                                          int height,
-                                         int depth);
+                                         int depth,
+                                         int ox,
+                                         int oy,
+                                         int oz);
 
         public sealed override Type[] InputTypes
         {
@@ -190,7 +193,10 @@ namespace Tychaia.ProceduralGeneration
                                          int depth,
                                          int ox,
                                          int oy,
-                                         int oz);
+                                         int oz,
+                                         int ocx,
+                                         int ocy,
+                                         int ocz);
 
         public sealed override Type[] InputTypes
         {
@@ -221,7 +227,10 @@ namespace Tychaia.ProceduralGeneration
                                          int depth,
                                          int ox,
                                          int oy,
-                                         int oz);
+                                         int oz,
+                                         int ocx,
+                                         int ocy,
+                                         int ocz);
 
         public sealed override Type[] InputTypes
         {
@@ -253,7 +262,10 @@ namespace Tychaia.ProceduralGeneration
                                          int depth,
                                          int ox,
                                          int oy,
-                                         int oz);
+                                         int oz,
+                                         int ocx,
+                                         int ocy,
+                                         int ocz);
         
         public sealed override Type[] InputTypes
         {
@@ -294,7 +306,10 @@ namespace Tychaia.ProceduralGeneration
                                          int depth,
                                          int ox,
                                          int oy,
-                                         int oz);
+                                         int oz,
+                                         int ocx,
+                                         int ocy,
+                                         int ocz);
         
         public sealed override Type[] InputTypes
         {
@@ -337,7 +352,10 @@ namespace Tychaia.ProceduralGeneration
                                          int depth,
                                          int ox,
                                          int oy,
-                                         int oz);
+                                         int oz,
+                                         int ocx,
+                                         int ocy,
+                                         int ocz);
         
         public sealed override Type[] InputTypes
         {

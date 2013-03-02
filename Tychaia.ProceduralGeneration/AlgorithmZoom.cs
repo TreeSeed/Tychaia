@@ -35,6 +35,7 @@ namespace Tychaia.ProceduralGeneration
         public AlgorithmZoom()
         {
             this.Mode = ZoomType.Smooth;
+            this.Layer2d = false;
         }
 
         public override string[] InputNames
@@ -42,23 +43,38 @@ namespace Tychaia.ProceduralGeneration
             get { return new string[] { "Input" }; }
         }
 
-        public override bool Is2DOnly
+        [DataMember]
+        [DefaultValue(false)]
+        [Description("This layer is 2d.")]
+        public bool Layer2d
         {
-            get { return true; }
+            get;
+            set;
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override bool Is2DOnly
         {
-            bool xmod = x % 2 != 0;
-            bool ymod = y % 2 != 0;
-            int ocx = xmod ? (int)(i % 2) : 0;
-            int ocy = ymod ? (int)(j % 2) : 0;
-            int ocx_w = xmod ? (int)((i - 1) % 2) : 0;
-            int ocx_e = xmod ? (int)((i + 1) % 2) : 0;
-            int ocy_n = ymod ? (int)((j - 1) % 2) : 0;
-            int ocy_s = ymod ? (int)((j + 1) % 2) : 0;
+            get { return false; }
+        }
 
-            int current = input[(i / 2) + ox + ((j / 2) + oy) * width + ((k / 2) + oz) * width * height];
+        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz, int ocx, int ocy, int ocz)
+        {
+
+//            bool xmod = x % 2 != 0;
+//            bool ymod = y % 2 != 0;
+//            int ocx = xmod ? (int)(i % 2) : 0;
+//            int ocy = ymod ? (int)(j % 2) : 0;
+//            int ocx_w = xmod ? (int)((i - 1) % 2) : 0;
+//            int ocx_e = xmod ? (int)((i + 1) % 2) : 0;
+//            int ocy_n = ymod ? (int)((j - 1) % 2) : 0;
+//            int ocy_s = ymod ? (int)((j + 1) % 2) : 0;
+
+            int current = input[(i / 2) + ox - ocx + ((j / 2) + oy - ocy) * width + ((k / 2) + oz - ocz) * width * height];
+
+            if (this.Mode == ZoomType.Smooth)
+                current = (current + input[((i + 1) / 2) + ox - ocx + (((j + 1) / 2) + oy - ocy) * width + (((k + 1) / 2) + oz - ocz) * width * height]) / 2;
+
+
             /*
             int north = input[(i / 2 + ocx) + ((j - 1) / 2 + ocy_n) * width];
             int south = input[(i / 2 + ocx) + ((j + 1) / 2 + ocy_s) * width];
@@ -98,7 +114,10 @@ namespace Tychaia.ProceduralGeneration
 //            if (this.Mode == ZoomType.Smooth || this.Mode == ZoomType.Fuzzy)
 //                output[i + j * width] = context.Smooth(this.Mode == ZoomType.Fuzzy, x, y, north, south, west, east, southEast, current, i, j, 0, 0, width, input);
 //            else                    
-                output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
+
+
+                output[i + ox - ocx + (j + oy - ocy) * width + (k + oz -ocz) * width * height] = current;
+
         }
 
         /// <summary>
@@ -107,6 +126,7 @@ namespace Tychaia.ProceduralGeneration
         public enum ZoomType
         {
             Square,
+            SquareSmooth,
             Smooth,
             Fuzzy,
         }

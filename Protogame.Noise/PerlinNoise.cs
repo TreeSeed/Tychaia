@@ -69,6 +69,12 @@ namespace Protogame.Noise
             _random = new Random(seed);
             InitGradients();
         }
+        
+        public PerlinNoise(long seed)
+        {
+            _random = new Random((int)seed);
+            InitGradients();
+        }
 
         public const double OFFSET = 0.5;
 
