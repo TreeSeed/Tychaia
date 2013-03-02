@@ -52,6 +52,15 @@ namespace Tychaia.ProceduralGeneration
         }
 
         [DataMember]
+        [DefaultValue(0)]
+        [Description("The maximum value that a selected cell will be given.")]
+        public int modifier
+        {
+            get;
+            set;
+        }
+
+        [DataMember]
         [DefaultValue(ColorScheme.Perlin)]
         [Description("The color scheme to use.")]
         public ColorScheme ColorSet
@@ -81,6 +90,7 @@ namespace Tychaia.ProceduralGeneration
             this.MinimumValue = 1;
             this.MaximumValue = 100;
             this.Layer2d = false;
+            this.modifier = 0;
             this.ColorSet = ColorScheme.Perlin;
         }
 
@@ -95,7 +105,7 @@ namespace Tychaia.ProceduralGeneration
             if (this.GuaranteeStartingPoint && x == 0 && y == 0)
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.MaximumValue;
             else if (context.GetRandomDouble(x, y, z, context.Modifier) > this.Limit)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = context.GetRandomRange(x, y, z, this.MinimumValue, this.MaximumValue, context.Modifier);
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = context.GetRandomRange(x, y, z, this.MinimumValue, this.MaximumValue, context.Modifier + this.modifier);
             else
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
         }
