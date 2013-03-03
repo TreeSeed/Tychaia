@@ -6,7 +6,7 @@
 	url = git://github.com/hach-que/NBTExplorer.git
 [submodule "Libraries/Voxeliq"]
 	path = Libraries/Voxeliq
-	url = git://github.com/hach-que/Voxeliq.git
+	url = git://github.com/hach-que/voxeliq.git
 [submodule "Libraries/Redpoint.FlowGraph"]
 	path = Libraries/Redpoint.FlowGraph
 	url = git://github.com/hach-que/Redpoint.FlowGraph.git
