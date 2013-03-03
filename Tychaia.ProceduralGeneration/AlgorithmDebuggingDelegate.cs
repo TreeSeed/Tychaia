@@ -11,12 +11,33 @@ namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
     [FlowDesignerCategory(FlowCategory.Debugging)]
-    [FlowDesignerName("Initial Gradient")]
+    [FlowDesignerName("Initial Delegate")]
     public class AlgorithmDebuggingDelegate : Algorithm<int>
     {
+        public bool ShowAs2D
+        {
+            get;
+            set;
+        }
+
         public override bool Is2DOnly
         {
-            get { return false; }
+            get { return this.ShowAs2D; }
+        }
+
+        private static Func<long, long, long, bool> _Test1 = (x, y, z) => (x == 4 && y == 6 && z == 7);
+        private static Func<long, long, long, bool> _Test2 = (x, y, z) => (y == 0 && z == 0);
+
+        public bool Test1
+        {
+            get { return this.ValueShouldBePlacedAt == _Test1; }
+            set { this.ValueShouldBePlacedAt = _Test1; }
+        }
+        
+        public bool Test2
+        {
+            get { return this.ValueShouldBePlacedAt == _Test2; }
+            set { this.ValueShouldBePlacedAt = _Test2; }
         }
 
         public Func<long, long, long, bool> ValueShouldBePlacedAt
@@ -36,7 +57,7 @@ namespace Tychaia.ProceduralGeneration
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             if (value == 0)
-                return System.Drawing.Color.FromArgb(0, 0, 0);
+                return System.Drawing.Color.FromArgb(1, 0, 0, 0);
             else
                 return System.Drawing.Color.FromArgb(255, 0, 0);
         }

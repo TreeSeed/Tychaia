@@ -8,10 +8,10 @@ using NUnit.Framework;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    [TestFixture()]
+    [TestFixture]
     public class AlgorithmZoomTest
     {
-        [Test()]
+        [Test, TestFor(typeof(AlgorithmZoom))]
         public void ZoomSquareTest()
         {
             int computations1, computations2;
@@ -31,7 +31,7 @@ namespace Tychaia.ProceduralGeneration.Tests
                             "Square zoom is not working for (" + i + ", " + j + ", " + k + ").");
         }
 
-        [Test()]
+        [Test, TestFor(typeof(AlgorithmZoom))]
         public void TestForCorrectSquareZoomingWithNoOffsetsOrModifications()
         {
             int computations;
@@ -58,7 +58,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             Assert.IsTrue(result[9 + 13 * 32 + 15 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (x, y, z zoomed corner).");
         }
         
-        [Test()]
+        [Test, TestFor(typeof(AlgorithmZoom))]
         public void TestForCorrectSquareZoomingWithOffsetX1()
         {
             int computations;
@@ -73,19 +73,31 @@ namespace Tychaia.ProceduralGeneration.Tests
             var runtimeInput = new RuntimeLayer(input);
             var runtimeZoom = new RuntimeLayer(zoom);
             runtimeZoom.SetInput(0, runtimeInput);
-            var result = runtimeZoom.GenerateData(1, 0, 0, 33, 32, 32, out computations);
-            
+            var result = runtimeZoom.GenerateData(1, 0, 0, 32, 32, 32, out computations);
+
+            // Search for the value within the grid to see if it even exists at all.
+            var locatedat = "";
+            for (var x = 0; x < 32; x++)
+                for (var y = 0; y < 32; y++)
+                    for (var z = 0; z < 32; z++)
+                    {
+                        if (result[x + y * 32 + z * 32 * 32] == 1)
+                            locatedat += "(" + x + ", " + y + ", " + z + ")";
+                    }
+            if (locatedat == "")
+                locatedat = "nowhere";
+
             // If placed at 4, 6, 7 that will translate to 7, 12, 14 up to 8, 13, 15.
-            Assert.IsTrue(result[7 + 12 * 32 + 14 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (original point).");
-            Assert.IsTrue(result[8 + 12 * 32 + 14 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (x, 0, 0 zoomed corner).");
-            Assert.IsTrue(result[7 + 13 * 32 + 14 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (0, y, 0 zoomed corner).");
-            Assert.IsTrue(result[7 + 12 * 32 + 15 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (0, 0, z zoomed corner).");
-            Assert.IsTrue(result[8 + 13 * 32 + 14 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (x, y, 0 zoomed corner).");
-            Assert.IsTrue(result[7 + 13 * 32 + 15 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (0, y, z zoomed corner).");
-            Assert.IsTrue(result[8 + 13 * 32 + 15 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (x, y, z zoomed corner).");
+            Assert.IsTrue(result[7 + 12 * 32 + 14 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (original point).  Found points at " + locatedat + ".");
+            Assert.IsTrue(result[8 + 12 * 32 + 14 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (x, 0, 0 zoomed corner).  Found points at " + locatedat + ".");
+            Assert.IsTrue(result[7 + 13 * 32 + 14 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (0, y, 0 zoomed corner).  Found points at " + locatedat + ".");
+            Assert.IsTrue(result[7 + 12 * 32 + 15 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (0, 0, z zoomed corner).  Found points at " + locatedat + ".");
+            Assert.IsTrue(result[8 + 13 * 32 + 14 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (x, y, 0 zoomed corner).  Found points at " + locatedat + ".");
+            Assert.IsTrue(result[7 + 13 * 32 + 15 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (0, y, z zoomed corner).  Found points at " + locatedat + ".");
+            Assert.IsTrue(result[8 + 13 * 32 + 15 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (x, y, z zoomed corner).  Found points at " + locatedat + ".");
         }
         
-        [Test()]
+        [Test, TestFor(typeof(AlgorithmZoom))]
         public void TestForCorrectSquareZoomingWithOffsetX2()
         {
             int computations;
@@ -100,7 +112,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var runtimeInput = new RuntimeLayer(input);
             var runtimeZoom = new RuntimeLayer(zoom);
             runtimeZoom.SetInput(0, runtimeInput);
-            var result = runtimeZoom.GenerateData(2, 0, 0, 34, 32, 32, out computations);
+            var result = runtimeZoom.GenerateData(2, 0, 0, 32, 32, 32, out computations);
             
             // If placed at 4, 6, 7 that will translate to 6, 12, 14 up to 7, 13, 15.
             Assert.IsTrue(result[6 + 12 * 32 + 14 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (original point).");
@@ -112,7 +124,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             Assert.IsTrue(result[7 + 13 * 32 + 15 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (x, y, z zoomed corner).");
         }
         
-        [Test()]
+        [Test, TestFor(typeof(AlgorithmZoom))]
         public void TestForOCXOddAdjustmentShutterBug()
         {
             int computations;
@@ -127,7 +139,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var runtimeInput = new RuntimeLayer(input);
             var runtimeZoom = new RuntimeLayer(zoom);
             runtimeZoom.SetInput(0, runtimeInput);
-            var result = runtimeZoom.GenerateData(1, 0, 0, 33, 32, 32, out computations);
+            var result = runtimeZoom.GenerateData(1, 0, 0, 32, 32, 32, out computations);
             
             // We have filled the entire block, therefore this bug can be detected by checking
             // every odd row.

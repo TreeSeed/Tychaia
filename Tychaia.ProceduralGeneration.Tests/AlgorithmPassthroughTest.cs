@@ -8,22 +8,22 @@ using NUnit.Framework;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    [TestFixture()]
+    [TestFixture]
     public class AlgorithmPassthroughTest
     {
-        [Test()]
+        [Test, TestFor(typeof(AlgorithmPassthrough))]
         public void TestRuntimePassthroughNoBorder()
         {
             this.TestRuntimePassthrough(0, 0);
         }
         
-        [Test()]
+        [Test, TestFor(typeof(AlgorithmPassthrough))]
         public void TestRuntimePassthroughOnePositiveBorder()
         {
             this.TestRuntimePassthrough(1, 1);
         }
         
-        [Test()]
+        [Test, TestFor(typeof(AlgorithmPassthrough))]
         public void TestRuntimePassthroughOneCombinationBorder()
         {
             this.TestRuntimePassthrough(0, 1);
@@ -31,25 +31,25 @@ namespace Tychaia.ProceduralGeneration.Tests
             this.TestRuntimePassthrough(1, 1);
         }
         
-        [Test()]
+        [Test, TestFor(typeof(AlgorithmPassthrough))]
         public void TestRuntimePassthroughSmallPositiveBorder()
         {
             this.TestRuntimePassthrough(2, 2);
         }
         
-        [Test()]
+        [Test, TestFor(typeof(AlgorithmPassthrough))]
         public void TestRuntimePassthroughMediumPositiveBorder()
         {
             this.TestRuntimePassthrough(5, 5);
         }
         
-        [Test()]
+        [Test, TestFor(typeof(AlgorithmPassthrough))]
         public void TestRuntimePassthroughLargePositiveBorder()
         {
             this.TestRuntimePassthrough(20, 20);
         }
         
-        [Test()]
+        [Test, TestFor(typeof(AlgorithmPassthrough))]
         public void TestRuntimePassthroughUnevenPositiveBorder()
         {
             this.TestRuntimePassthrough(4, 7);
