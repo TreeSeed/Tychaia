@@ -231,9 +231,9 @@ namespace Tychaia.ProceduralGeneration
                 case 14: // 0 inputs
                     {
                         // context, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz                    
-                        for (int k = -childOffsetZ; k < depth - childOffsetZ; k++)
-                            for (int i = -childOffsetX; i < width - childOffsetX; i++)
-                                for (int j = -childOffsetY; j < height - childOffsetY; j++)
+                    for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1); k++)
+                        for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1); i++)
+                            for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1); j++)
                                 {
                                     algorithm.ProcessCell(this, outputArray, absoluteX + i, absoluteY + j, absoluteZ + k, i, j, k, arrayWidth, arrayHeight, arrayDepth, MaxOffsetX, MaxOffsetY, MaxOffsetZ);
                                     computations += 1;
@@ -258,9 +258,9 @@ namespace Tychaia.ProceduralGeneration
                                 MaxOffsetX,
                                 MaxOffsetY,
                                 MaxOffsetZ,
-                                childOffsetX + this.m_Algorithm.RequiredXBorder[0],
-                                childOffsetY + this.m_Algorithm.RequiredYBorder[0],
-                                childOffsetZ + this.m_Algorithm.RequiredZBorder[0],
+                                (this.m_Algorithm.InputWidthAtHalfSize[0] ? (childOffsetX / 2) + this.m_Algorithm.RequiredXBorder[0] : childOffsetX + this.m_Algorithm.RequiredXBorder[0]),
+                                (this.m_Algorithm.InputHeightAtHalfSize[0] ? (childOffsetY / 2) + this.m_Algorithm.RequiredYBorder[0] : childOffsetY + this.m_Algorithm.RequiredYBorder[0]),
+                                (this.m_Algorithm.InputDepthAtHalfSize[0] ? (childOffsetZ / 2) + this.m_Algorithm.RequiredZBorder[0] : childOffsetZ + this.m_Algorithm.RequiredZBorder[0]),
                                 ref computations);
 
                             int[] ocx = new int[] {0};
@@ -280,9 +280,9 @@ namespace Tychaia.ProceduralGeneration
                                 zmod = absoluteZ % 2 != 0;
                         }
 
-                            for (int k = -childOffsetZ; k < depth - childOffsetZ; k++)
-                                for (int i = -childOffsetX; i < width - childOffsetX; i++)
-                                    for (int j = -childOffsetY; j < height - childOffsetY; j++)
+                        for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1); k++)
+                            for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1); i++)
+                                for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1); j++)
                                     {
                                         for (int input = 0; input < this.m_Inputs.Length; input++)
                                         {
