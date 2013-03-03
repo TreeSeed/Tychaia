@@ -194,9 +194,9 @@ namespace Tychaia.ProceduralGeneration
                                          int ox,
                                          int oy,
                                          int oz,
-                                         int ocx,
-                                         int ocy,
-                                         int ocz);
+                                         int[] ocx,
+                                         int[] ocy,
+                                         int[] ocz);
 
         public sealed override Type[] InputTypes
         {
@@ -228,9 +228,9 @@ namespace Tychaia.ProceduralGeneration
                                          int ox,
                                          int oy,
                                          int oz,
-                                         int ocx,
-                                         int ocy,
-                                         int ocz);
+                                         int[] ocx,
+                                         int[] ocy,
+                                         int[] ocz);
 
         public sealed override Type[] InputTypes
         {
@@ -263,9 +263,9 @@ namespace Tychaia.ProceduralGeneration
                                          int ox,
                                          int oy,
                                          int oz,
-                                         int ocx,
-                                         int ocy,
-                                         int ocz);
+                                         int[] ocx,
+                                         int[] ocy,
+                                         int[] ocz);
         
         public sealed override Type[] InputTypes
         {
@@ -307,9 +307,9 @@ namespace Tychaia.ProceduralGeneration
                                          int ox,
                                          int oy,
                                          int oz,
-                                         int ocx,
-                                         int ocy,
-                                         int ocz);
+                                         int[] ocx,
+                                         int[] ocy,
+                                         int[] ocz);
         
         public sealed override Type[] InputTypes
         {
@@ -353,9 +353,9 @@ namespace Tychaia.ProceduralGeneration
                                          int ox,
                                          int oy,
                                          int oz,
-                                         int ocx,
-                                         int ocy,
-                                         int ocz);
+                                         int[] ocx,
+                                         int[] ocy,
+                                         int[] ocz);
         
         public sealed override Type[] InputTypes
         {

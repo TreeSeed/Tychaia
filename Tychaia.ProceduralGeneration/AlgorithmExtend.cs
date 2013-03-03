@@ -68,7 +68,7 @@ namespace Tychaia.ProceduralGeneration
         // Monsters - We can spread monster villages out, simmilar to towns. 
         // Dungeons - We can use this to smooth dungeons out, so that there are less or more pointy bits. Alternatively we can also use this to spread out some side sections.
         // Anything else?
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz, int ocx, int ocy, int ocz)
+        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz, int[] ocx, int[] ocy, int[] ocz)
         {
             // Does this if statement work?
             // Nevermind have to remake this entire section anyway, too many || && and its getting confusing and over extended.
