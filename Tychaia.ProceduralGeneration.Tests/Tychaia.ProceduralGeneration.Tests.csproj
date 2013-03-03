@@ -32,6 +32,9 @@
     <Reference Include="System" />
     <Reference Include="nunit.framework" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Core" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -44,5 +47,9 @@
     <Compile Include="AlgorithmPassthroughTest.cs" />
     <Compile Include="AlgorithmZoomTest.cs" />
     <Compile Include="CompilerTest.cs" />
+    <Compile Include="SkewTests.cs" />
+    <Compile Include="TestForAttribute.cs" />
+    <Compile Include="AlgorithmInitialTest.cs" />
+    <Compile Include="AlgorithmConstantTest.cs" />
   </ItemGroup>
 </Project>

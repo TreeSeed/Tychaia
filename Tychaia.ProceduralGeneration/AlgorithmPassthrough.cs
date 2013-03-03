@@ -16,13 +16,17 @@ namespace Tychaia.ProceduralGeneration
     {
         public override int[] RequiredXBorder { get { return new int[] {this.XBorder}; } }
         public override int[] RequiredYBorder { get { return new int[] {this.YBorder}; } }
-        public override bool[] InputWidthAtHalfSize { get { return new bool[] {WidthHalf}; } }
-        public override bool[] InputHeightAtHalfSize { get { return new bool[] {HeightHalf}; } }
+        public override int[] RequiredZBorder { get { return new int[] {this.ZBorder}; } }
+        public override bool[] InputWidthAtHalfSize { get { return new bool[] {this.WidthHalf}; } }
+        public override bool[] InputHeightAtHalfSize { get { return new bool[] {this.HeightHalf}; } }
+        public override bool[] InputDepthAtHalfSize { get { return new bool[] {this.DepthHalf}; } }
 
         public int XBorder { get; set; }
         public int YBorder { get; set; }
+        public int ZBorder { get; set; }
         public bool WidthHalf { get; set; }
         public bool HeightHalf { get; set; }
+        public bool DepthHalf { get; set; }
 
         public override string[] InputNames
         {
@@ -50,10 +54,30 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Multi Passthrough")]
     public class AlgorithmMultiPassthrough : Algorithm<int, int, int, int>
     {
-        public override int[] RequiredXBorder { get { return new int[] {this.XBorderA, this.XBorderB, 0}; } }
-        public override int[] RequiredYBorder { get { return new int[] {this.YBorderA, this.YBorderB, 0}; } }
-        public override bool[] InputWidthAtHalfSize { get { return new bool[] {WidthHalfA, false, false}; } }
-        public override bool[] InputHeightAtHalfSize { get { return new bool[] {HeightHalfA, false, false}; } }
+        public override int[] RequiredXBorder { get { return new int[]
+                {
+                    this.XBorderA,
+                    this.XBorderB,
+                    0
+                }; } }
+        public override int[] RequiredYBorder { get { return new int[]
+                {
+                    this.YBorderA,
+                    this.YBorderB,
+                    0
+                }; } }
+        public override bool[] InputWidthAtHalfSize { get { return new bool[]
+                {
+                    WidthHalfA,
+                    false,
+                    false
+                }; } }
+        public override bool[] InputHeightAtHalfSize { get { return new bool[]
+                {
+                    HeightHalfA,
+                    false,
+                    false
+                }; } }
         
         public int XBorderA { get; set; }
         public int YBorderA { get; set; }

@@ -54,7 +54,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override bool Is2DOnly
         {
-            get { return false; }
+            get { return this.Layer2d; }
         }
 
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz, int[] ocx, int[] ocy, int[] ocz)
@@ -73,11 +73,11 @@ namespace Tychaia.ProceduralGeneration
 
             if (this.Mode == ZoomType.Smooth)
                 current = (current + input[((i + 0) / 2) + ox + ocx[0] + (((j + 0) / 2) + oy + ocy[0]) * width + (((k + 1) / 2) + oz + ocz[0]) * width * height]
-                           + input[((i + 0) / 2) + ox + ocx[0] + (((j + 0) / 2) + oy + ocy[0]) * width + (((k - 1) / 2) + oz + ocz[0]) * width * height]
-                           + input[((i + 1) / 2) + ox + ocx[0] + (((j + 0) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
-                           + input[((i - 1) / 2) + ox + ocx[0] + (((j + 0) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
-                           + input[((i + 0) / 2) + ox + ocx[0] + (((j + 1) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
-                           + input[((i + 0) / 2) + ox + ocx[0] + (((j - 1) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
+                    + input[((i + 0) / 2) + ox + ocx[0] + (((j + 0) / 2) + oy + ocy[0]) * width + (((k - 1) / 2) + oz + ocz[0]) * width * height]
+                    + input[((i + 1) / 2) + ox + ocx[0] + (((j + 0) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
+                    + input[((i - 1) / 2) + ox + ocx[0] + (((j + 0) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
+                    + input[((i + 0) / 2) + ox + ocx[0] + (((j + 1) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
+                    + input[((i + 0) / 2) + ox + ocx[0] + (((j - 1) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
                            ) / 7;
 
 
@@ -122,7 +122,7 @@ namespace Tychaia.ProceduralGeneration
 //            else                    
 
 
-                output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
+            output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
 
         }
 
