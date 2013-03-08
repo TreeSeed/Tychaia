@@ -230,6 +230,9 @@ namespace Tychaia.ProceduralGeneration
             {
                 case 14: // 0 inputs
                     {
+
+                    algorithm.Initialize();
+
                         // context, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz                    
                     for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1); k++)
                         for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1); i++)
@@ -279,6 +282,8 @@ namespace Tychaia.ProceduralGeneration
                             if (this.m_Algorithm.InputDepthAtHalfSize[input])
                                 zmod = absoluteZ % 2 != 0;
                         }
+
+                        algorithm.Initialize();
 
                         for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1); k++)
                             for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1); i++)
@@ -398,7 +403,17 @@ namespace Tychaia.ProceduralGeneration
             int arrayWidth = width + MaxOffsetX * 2;
             int arrayHeight = height + MaxOffsetY * 2;
             int arrayDepth = depth + MaxOffsetZ * 2;
-            // TODO: Fix input width @ half interaction with offsets
+
+            // TODO: Optimization List
+            // 1) Make it check Is2DOnly == true, make Z = 1;
+            // 2) Fix array size to be closer to the actual generation size
+            //    Aka account for halving
+            //    Can completely redo system, work out array width then max offset off of that 
+            //    Otherwise halves get wierd with different width
+            //    Because then if the offset is bigger than the half it gets funky
+            // TODO: Addition List
+            // 1) Make a system for layers that can generate just 1 value
+            //    Not sure if this is needed?
 
             dynamic resultArray = this.PerformAlgorithmRuntimeCall(
                 x,

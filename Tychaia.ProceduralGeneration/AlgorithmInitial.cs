@@ -93,7 +93,10 @@ namespace Tychaia.ProceduralGeneration
             this.Modifier = 0;
             this.ColorSet = ColorScheme.Perlin;
         }
-
+        
+        public override void Initialize()
+        {
+        }
         // Will be able to use this algorithm for:
         // Land - This is the equivelent of InitialLand
         // Towns - This is the equivelent of InitialTowns

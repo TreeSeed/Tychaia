@@ -60,7 +60,10 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return true; }
         }
-
+        
+        public override void Initialize()
+        {
+        }
         // Will be able to use this algorithm for:
         // Land - This is the equivelent of ExtendLand
         // Towns - This is the equivelent of ExtendTowns

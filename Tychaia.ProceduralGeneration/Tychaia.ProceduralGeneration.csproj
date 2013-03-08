@@ -81,8 +81,8 @@
     <Compile Include="AlgorithmPassthrough.cs" />
     <Compile Include="AlgorithmMixdown.cs" />
     <Compile Include="AlgorithmDebuggingInitial.cs" />
-    <Compile Include="AlgorithmPerlinTest.cs" />
     <Compile Include="AlgorithmDebuggingDelegate.cs" />
+    <Compile Include="AlgorithmPerlin.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

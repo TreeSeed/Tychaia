@@ -57,6 +57,10 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2d; }
         }
 
+        public override void Initialize()
+        {
+        }
+
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz, int[] ocx, int[] ocy, int[] ocz)
         {
 

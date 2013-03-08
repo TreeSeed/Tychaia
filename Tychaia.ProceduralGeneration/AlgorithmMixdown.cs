@@ -80,6 +80,9 @@ namespace Tychaia.ProceduralGeneration
             this.Layer2d = false;
         }
 
+        public override void Initialize()
+        {
+        }
         public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz, int[] ocx, int[] ocy, int[] ocz)
         {
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = (int)(((inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height] * InputAWorth) + (inputB[(i + ox) + (j + oy) * width + (k + oz) * width * height] * InputBWorth)) / (InputAWorth + InputBWorth));

@@ -144,6 +144,8 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TOutput> : Algorithm
     {
+        public abstract void Initialize();
+
         public abstract void ProcessCell(IRuntimeContext context,
                                          TOutput[] output,
                                          long x,
@@ -179,6 +181,8 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TInput, TOutput> : Algorithm
     {
+        public abstract void Initialize();
+
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInput[] input,
                                          TOutput[] output,
@@ -212,6 +216,8 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TOutput> : Algorithm
     {
+        public abstract void Initialize();
+
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,
                                          TInputB[] inputB,
@@ -246,6 +252,8 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TInputC, TOutput> : Algorithm
     {
+        public abstract void Initialize();
+
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,
                                          TInputB[] inputB,
@@ -289,6 +297,8 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TInputC, TInputD, TOutput> : Algorithm
     {
+        public abstract void Initialize();
+
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,
                                          TInputB[] inputB,
@@ -334,6 +344,8 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TInputC, TInputD, TInputE, TOutput> : Algorithm
     {
+        public abstract void Initialize();
+
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,
                                          TInputB[] inputB,
