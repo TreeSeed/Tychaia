@@ -93,11 +93,11 @@ namespace Tychaia.ProceduralGeneration
             {
                 int selected = 0;
 
-                if (x % 2 == 0 && y % 2 == 0)
-                if (this.Mode == ZoomType.Fuzzy)
-                    selected = context.GetRandomRange(x, y, z, 4);
-                else
-                    selected = context.GetRandomRange(x, y, z, 3);
+                if ((x - i) % 2 == 0 && (y - j) % 2 == 0)
+                    if (this.Mode == ZoomType.Fuzzy)
+                        selected = context.GetRandomRange(x, y, z, 4);
+                    else
+                        selected = context.GetRandomRange(x, y, z, 3);
                 else
                     selected = context.GetRandomRange(x, y, z, 2);
 
@@ -107,9 +107,9 @@ namespace Tychaia.ProceduralGeneration
                         output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
                         break;
                     case 1:
-                        if (x % 2 == 0)
+                        if ((x - i) % 2 == 0)
                             output[i + ox + (j + oy) * width + (k + oz) * width * height] = south;
-                        else if (y % 2 == 0)
+                        else if ((y - i) % 2 == 0)
                             output[i + ox + (j + oy) * width + (k + oz) * width * height] = east;
                         else
                             output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
