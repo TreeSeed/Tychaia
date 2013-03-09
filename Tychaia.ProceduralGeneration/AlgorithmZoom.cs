@@ -17,7 +17,7 @@ namespace Tychaia.ProceduralGeneration
     public class AlgorithmZoom : Algorithm<int, int>
     {
         [DataMember]
-        [DefaultValue(ZoomType.Smooth)]
+        [DefaultValue(ZoomType.Square)]
         [Description("The zooming algorithm to use.")]
         public ZoomType Mode
         {
@@ -74,59 +74,62 @@ namespace Tychaia.ProceduralGeneration
 //            int ocy_s = ymod ? (int)((j + 1) % 2) : 0;
 
             int current = input[(i / 2) + ox + ocx[0] + ((j / 2) + oy + ocy[0]) * width + ((k / 2) + oz + ocz[0]) * width * height];
+            
+            int ocx_e = ((x - i) % 2 == 1 ? (ocx[0]== 1 ? 0 : 1) : 0);
+            int ocx_w = ((x - i) % 2 == 1 ? (ocx[0]== 1 ? 0 : 1) : 0);
+            int ocy_s = ((y - j) % 2 == 1 ? (ocy[0]== 1 ? 0 : 1) : 0);
+            int ocy_n = ((y - j) % 2 == 1 ? (ocy[0]== 1 ? 0 : 1) : 0);
 
-            if (this.Mode == ZoomType.Smooth)
-                current = (current + input[((i + 0) / 2) + ox + ocx[0] + (((j + 0) / 2) + oy + ocy[0]) * width + (((k + 1) / 2) + oz + ocz[0]) * width * height]
-                    + input[((i + 0) / 2) + ox + ocx[0] + (((j + 0) / 2) + oy + ocy[0]) * width + (((k - 1) / 2) + oz + ocz[0]) * width * height]
-                    + input[((i + 1) / 2) + ox + ocx[0] + (((j + 0) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
-                    + input[((i - 1) / 2) + ox + ocx[0] + (((j + 0) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
-                    + input[((i + 0) / 2) + ox + ocx[0] + (((j + 1) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
-                    + input[((i + 0) / 2) + ox + ocx[0] + (((j - 1) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
-                           ) / 7;
+            int north = input[(i / 2 + ox + ocx[0]) + ((j - 1) / 2 + oy + ocy_n) * width + ((k / 2) + oz + ocz[0]) * width * height];
+            int south = input[(i / 2 + ox + ocx[0]) + ((j + 1) / 2 + oy + ocy_s) * width + ((k / 2) + oz + ocz[0]) * width * height];
+            int east = input[((i + 1) / 2 + ox + ocx_e) + (j / 2 + oy + ocy[0]) * width + ((k / 2) + oz + ocz[0]) * width * height];
+            int west = input[((i - 1) / 2 + ox + ocx_w) + (j / 2 + oy + ocy[0]) * width + ((k / 2) + oz + ocz[0]) * width * height];
+            int southEast = input[((i + 2) / 2 + ox + ocx[0]) + ((j + 2) / 2 + oy + ocy[0]) * width + ((k / 2) + oz + ocz[0]) * width * height];
 
-
-            /*
-            int north = input[(i / 2 + ocx) + ((j - 1) / 2 + ocy_n) * width];
-            int south = input[(i / 2 + ocx) + ((j + 1) / 2 + ocy_s) * width];
-            int east = input[((i + 1) / 2 + ocx_e) + (j / 2 + ocy) * width];
-            int west = input[((i - 1) / 2 + ocx_w) + (j / 2 + ocy) * width];
-            int southEast = input[((i + 2) / 2 + ocx) + ((j + 2) / 2 + ocy) * width];
-*/
-            /*  Template for new Smooth system, have to fix/solve the Fuzzy Problem.
-            int selected = 0;
-
-            if (x % 2 == 0 && y % 2 == 0)
-                if (ZoomType == ZoomType.Fuzzy)
-                    selected = this.GetRandomRange(x, y, 0, 4);
-                else
-                    selected = this.GetRandomRange(x, y, 0, 3);
+            //Template for new Smooth system, have to fix/solve the Fuzzy Problem.
+            if (this.Mode == ZoomType.Square)
+                output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
             else
-                selected = this.GetRandomRange(x, y, 0, 2);
-
-            switch (selected)
             {
-                case 0:
-                    output[i + j * width] = current;
-                case 1:
-                    if (x % 2 == 0)
-                        output[i + j * width] = south;
-                    else if (y % 2 == 0)
-                        output[i + j * width] = east;
-                    else
-                        output[i + j * width] = current;
-                case 2:
-                    output[i + j * width] = east;
-                case 3:
-                    output[i + j * width] = southEast;
+                int selected = 0;
+
+                if (x % 2 == 0 && y % 2 == 0)
+                if (this.Mode == ZoomType.Fuzzy)
+                    selected = context.GetRandomRange(x, y, z, 4);
+                else
+                    selected = context.GetRandomRange(x, y, z, 3);
+                else
+                    selected = context.GetRandomRange(x, y, z, 2);
+
+                switch (selected)
+                {
+                    case 0:
+                        output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
+                        break;
+                    case 1:
+                        if (x % 2 == 0)
+                            output[i + ox + (j + oy) * width + (k + oz) * width * height] = south;
+                        else if (y % 2 == 0)
+                            output[i + ox + (j + oy) * width + (k + oz) * width * height] = east;
+                        else
+                            output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
+                        break;
+                    case 2:
+                        output[i + ox + (j + oy) * width + (k + oz) * width * height] = east;
+                        break;
+                    case 3:
+                        output[i + ox + (j + oy) * width + (k + oz) * width * height] = southEast;
+                        break;
+                }
             }
-            */
+
 
 //            if (this.Mode == ZoomType.Smooth || this.Mode == ZoomType.Fuzzy)
 //                output[i + j * width] = context.Smooth(this.Mode == ZoomType.Fuzzy, x, y, north, south, west, east, southEast, current, i, j, 0, 0, width, input);
 //            else                    
 
 
-            output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
+            //output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
 
         }
 
@@ -137,7 +140,6 @@ namespace Tychaia.ProceduralGeneration
         {
             Square,
             SquareSmooth,
-            Smooth,
             Fuzzy,
         }
 
