@@ -61,7 +61,7 @@ namespace Tychaia.ProceduralGeneration
             get { return true; }
         }
         
-        public override void Initialize()
+        public override void Initialize(IRuntimeContext context)
         {
         }
         // Will be able to use this algorithm for:
@@ -77,7 +77,7 @@ namespace Tychaia.ProceduralGeneration
             // Nevermind have to remake this entire section anyway, too many || && and its getting confusing and over extended.
             // Wondering exactly how to do that - something about having setting checks at the start (then setting booleans) I think, then utilize that throughtout (rather than having multiple checks).
             // Also any other features you can think of?
-            if ((input[(i + ox) + (j + oy) * width] == Value && ExcludeValue == true) || (input[(i + ox) + (j + oy) * width] != Value && ExcludeValue == false))
+            if ((input[(i + ox) + (j + oy) * width + (k + oz) * width * height] == Value && ExcludeValue == true) || (input[(i + ox) + (j + oy) * width + (k + oz) * width * height] != Value && ExcludeValue == false))
             {
                 int checkvalue = 50;
 
@@ -88,33 +88,33 @@ namespace Tychaia.ProceduralGeneration
                         switch (selected)
                         {
                             case 0:
-                                output[(i + ox) + (j + oy) * width] = input[((i + ox) + 1) + ((j + oy) + 1) * width];
+                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) + 1) + ((j + oy) + 1) * width + (k + oz) * width * height];
                                 break;
                             case 1:
-                                output[(i + ox) + (j + oy) * width] = input[((i + ox) - 1) + ((j + oy) - 1) * width];
+                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) - 1) + ((j + oy) - 1) * width + (k + oz) * width * height];
                                 break;
                             case 2:
-                                output[(i + ox) + (j + oy) * width] = input[((i + ox) - 1) + ((j + oy) + 1) * width]; 
+                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) - 1) + ((j + oy) + 1) * width + (k + oz) * width * height]; 
                                 break;
                             case 3:
-                                output[(i + ox) + (j + oy) * width] = input[((i + ox) + 1) + ((j + oy) - 1) * width];
+                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) + 1) + ((j + oy) - 1) * width + (k + oz) * width * height];
                                 break;
                             case 4:
-                                output[(i + ox) + (j + oy) * width] = input[((i + ox) + 0) + ((j + oy) + 1) * width];
+                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) + 0) + ((j + oy) + 1) * width + (k + oz) * width * height];
                                 break;
                             case 5:
-                                output[(i + ox) + (j + oy) * width] = input[((i + ox) + 1) + ((j + oy) + 0) * width];
+                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) + 1) + ((j + oy) + 0) * width + (k + oz) * width * height];
                                 break;
                             case 6:
-                                output[(i + ox) + (j + oy) * width] = input[((i + ox) + 0) + ((j + oy) - 1) * width];
+                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) + 0) + ((j + oy) - 1) * width + (k + oz) * width * height];
                                 break;
                             case 7:
-                                output[(i + ox) + (j + oy) * width] = input[((i + ox) - 1) + ((j + oy) + 0) * width];
+                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) - 1) + ((j + oy) + 0) * width + (k + oz) * width * height];
                                 break;
                         }
 
-                        if (this.NeighborChancing == true && checkvalue < (input[((i + ox) + 1) + ((j + oy) + 1) * width] + input[((i + ox) - 1) + ((j + oy) - 1) * width] + input[((i + ox) - 1) + ((j + oy) + 1) * width] + input[((i + ox) + 1) + ((j + oy) - 1) * width] + input[((i + ox) + 0) + ((j + oy) - 1) * width] + input[((i + ox) + 1) + ((j + oy) - 0) * width] + input[((i + ox) + 0) + ((j + oy) + 1) * width] + input[((i + ox) - 1) + ((j + oy) - 0) * width]))
-                            if ((output[(i) + (j) * width] == Value && ExcludeValue == true) || (output[(i) + (j) * width] != Value && ExcludeValue == false))
+                        if (this.NeighborChancing == true && checkvalue < (input[((i + ox) + 1) + ((j + oy) + 1) * width + (k + oz) * width * height] + input[((i + ox) - 1) + ((j + oy) - 1) * width + (k + oz) * width * height] + input[((i + ox) - 1) + ((j + oy) + 1) * width + (k + oz) * width * height] + input[((i + ox) + 1) + ((j + oy) - 1) * width + (k + oz) * width * height] + input[((i + ox) + 0) + ((j + oy) - 1) * width + (k + oz) * width * height] + input[((i + ox) + 1) + ((j + oy) - 0) * width + (k + oz) * width * height] + input[((i + ox) + 0) + ((j + oy) + 1) * width + (k + oz) * width * height] + input[((i + ox) - 1) + ((j + oy) - 0) * width + (k + oz) * width * height]))
+                            if ((output[(i) + (j) * width + (k + oz) * width * height] == Value && ExcludeValue == true) || (output[(i) + (j) * width + (k + oz) * width * height] != Value && ExcludeValue == false))
                         {
                             checkvalue += 50;
                             a--;
@@ -122,7 +122,7 @@ namespace Tychaia.ProceduralGeneration
                 }
             }
             else 
-                output[(i + ox) + (j + oy) * width] = input[(i + ox) + (j + oy) * width];
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[(i + ox) + (j + oy) * width + (k + oz) * width * height];
         }
         
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)

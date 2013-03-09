@@ -83,6 +83,9 @@
     <Compile Include="AlgorithmDebuggingInitial.cs" />
     <Compile Include="AlgorithmDebuggingDelegate.cs" />
     <Compile Include="AlgorithmPerlin.cs" />
+    <Compile Include="AlgorithmDeriveTerrain.cs" />
+    <Compile Include="AlgorithmTerrainTo3D.cs" />
+    <Compile Include="Biomes\WaterBiome.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

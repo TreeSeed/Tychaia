@@ -94,7 +94,7 @@ namespace Tychaia.ProceduralGeneration
             this.ColorSet = ColorScheme.Perlin;
         }
         
-        public override void Initialize()
+        public override void Initialize(IRuntimeContext context)
         {
         }
         // Will be able to use this algorithm for:

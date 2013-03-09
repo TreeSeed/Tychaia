@@ -132,7 +132,7 @@ namespace Tychaia.ProceduralGeneration
         /// <param name="parent">The primary input.</param>
         /// <param name="value">The value to determine.</param>
         /// <returns>The color determined by the parent.</returns>
-        public Color DelegateColorForValueToParent(StorageLayer parent, dynamic value)
+        public Color DelegateColorForValueToParent(StorageLayer parent, dynamic value, int parentID = 0)
         {
             if (parent != null)
                 return parent.Algorithm.GetColorForValue(parent.Inputs.Length >= 1 ? parent.Inputs[0] : null, value);
@@ -144,7 +144,7 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TOutput> : Algorithm
     {
-        public abstract void Initialize();
+        public abstract void Initialize(IRuntimeContext context);
 
         public abstract void ProcessCell(IRuntimeContext context,
                                          TOutput[] output,
@@ -181,7 +181,7 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TInput, TOutput> : Algorithm
     {
-        public abstract void Initialize();
+        public abstract void Initialize(IRuntimeContext context);
 
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInput[] input,
@@ -216,7 +216,7 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TOutput> : Algorithm
     {
-        public abstract void Initialize();
+        public abstract void Initialize(IRuntimeContext context);
 
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,
@@ -252,7 +252,7 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TInputC, TOutput> : Algorithm
     {
-        public abstract void Initialize();
+        public abstract void Initialize(IRuntimeContext context);
 
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,
@@ -297,7 +297,7 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TInputC, TInputD, TOutput> : Algorithm
     {
-        public abstract void Initialize();
+        public abstract void Initialize(IRuntimeContext context);
 
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,
@@ -344,7 +344,7 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TInputC, TInputD, TInputE, TOutput> : Algorithm
     {
-        public abstract void Initialize();
+        public abstract void Initialize(IRuntimeContext context);
 
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,

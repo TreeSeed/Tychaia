@@ -57,7 +57,7 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2d; }
         }
 
-        public override void Initialize()
+        public override void Initialize(IRuntimeContext context)
         {
         }
 

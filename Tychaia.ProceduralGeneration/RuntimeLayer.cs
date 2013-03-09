@@ -231,7 +231,7 @@ namespace Tychaia.ProceduralGeneration
                 case 14: // 0 inputs
                     {
 
-                    algorithm.Initialize();
+                    algorithm.Initialize(this);
 
                         // context, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz                    
                     for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1); k++)
@@ -283,7 +283,7 @@ namespace Tychaia.ProceduralGeneration
                                 zmod = absoluteZ % 2 != 0;
                         }
 
-                        algorithm.Initialize();
+                        algorithm.Initialize(this);
 
                         for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1); k++)
                             for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1); i++)
@@ -321,6 +321,219 @@ namespace Tychaia.ProceduralGeneration
                         }
                         break;
                     }
+                case 19: // 2 inputs
+                {
+                    // context, inputA, inputB, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz
+                    if (this.m_Inputs[0] != null && this.m_Inputs[1] != null)
+                    {
+                        dynamic inputAArray = this.m_Inputs[0].PerformAlgorithmRuntimeCall(
+                            (this.m_Algorithm.InputWidthAtHalfSize[0] ? ((absoluteX) < 0 ? (absoluteX - 1) / 2 : (absoluteX) / 2) : absoluteX),
+                            (this.m_Algorithm.InputHeightAtHalfSize[0] ? ((absoluteY) < 0 ? (absoluteY - 1) / 2 : (absoluteY) / 2) : absoluteY),
+                            (this.m_Algorithm.InputDepthAtHalfSize[0] ? ((absoluteZ) < 0 ? (absoluteZ - 1) / 2 : (absoluteZ) / 2) : absoluteZ),
+                            (this.m_Algorithm.InputWidthAtHalfSize[0] ? (width / 2) + this.m_Algorithm.RequiredXBorder[0] * 2 : width + this.m_Algorithm.RequiredXBorder[0] * 2), 
+                            (this.m_Algorithm.InputHeightAtHalfSize[0] ? (height / 2) + this.m_Algorithm.RequiredYBorder[0] * 2 : height + this.m_Algorithm.RequiredYBorder[0] * 2), 
+                            (this.m_Algorithm.InputDepthAtHalfSize[0] ? (depth / 2) + this.m_Algorithm.RequiredZBorder[0] * 2 : depth + this.m_Algorithm.RequiredZBorder[0] * 2), 
+                            arrayWidth, 
+                            arrayHeight, 
+                            arrayDepth,
+                            MaxOffsetX,
+                            MaxOffsetY,
+                            MaxOffsetZ,
+                            (this.m_Algorithm.InputWidthAtHalfSize[0] ? (childOffsetX / 2) + this.m_Algorithm.RequiredXBorder[0] : childOffsetX + this.m_Algorithm.RequiredXBorder[0]),
+                            (this.m_Algorithm.InputHeightAtHalfSize[0] ? (childOffsetY / 2) + this.m_Algorithm.RequiredYBorder[0] : childOffsetY + this.m_Algorithm.RequiredYBorder[0]),
+                            (this.m_Algorithm.InputDepthAtHalfSize[0] ? (childOffsetZ / 2) + this.m_Algorithm.RequiredZBorder[0] : childOffsetZ + this.m_Algorithm.RequiredZBorder[0]),
+                            ref computations);
+
+                        dynamic inputBArray = this.m_Inputs[1].PerformAlgorithmRuntimeCall(
+                            (this.m_Algorithm.InputWidthAtHalfSize[1] ? ((absoluteX) < 0 ? (absoluteX - 1) / 2 : (absoluteX) / 2) : absoluteX),
+                            (this.m_Algorithm.InputHeightAtHalfSize[1] ? ((absoluteY) < 0 ? (absoluteY - 1) / 2 : (absoluteY) / 2) : absoluteY),
+                            (this.m_Algorithm.InputDepthAtHalfSize[1] ? ((absoluteZ) < 0 ? (absoluteZ - 1) / 2 : (absoluteZ) / 2) : absoluteZ),
+                            (this.m_Algorithm.InputWidthAtHalfSize[1] ? (width / 2) + this.m_Algorithm.RequiredXBorder[1] * 2 : width + this.m_Algorithm.RequiredXBorder[1] * 2), 
+                            (this.m_Algorithm.InputHeightAtHalfSize[1] ? (height / 2) + this.m_Algorithm.RequiredYBorder[1] * 2 : height + this.m_Algorithm.RequiredYBorder[1] * 2), 
+                            (this.m_Algorithm.InputDepthAtHalfSize[1] ? (depth / 2) + this.m_Algorithm.RequiredZBorder[1] * 2 : depth + this.m_Algorithm.RequiredZBorder[1] * 2), 
+                            arrayWidth, 
+                            arrayHeight, 
+                            arrayDepth,
+                            MaxOffsetX,
+                            MaxOffsetY,
+                            MaxOffsetZ,
+                            (this.m_Algorithm.InputWidthAtHalfSize[1] ? (childOffsetX / 2) + this.m_Algorithm.RequiredXBorder[1] : childOffsetX + this.m_Algorithm.RequiredXBorder[1]),
+                            (this.m_Algorithm.InputHeightAtHalfSize[1] ? (childOffsetY / 2) + this.m_Algorithm.RequiredYBorder[1] : childOffsetY + this.m_Algorithm.RequiredYBorder[1]),
+                            (this.m_Algorithm.InputDepthAtHalfSize[1] ? (childOffsetZ / 2) + this.m_Algorithm.RequiredZBorder[1] : childOffsetZ + this.m_Algorithm.RequiredZBorder[1]),
+                            ref computations);
+                        
+                        int[] ocx = new int[] {0};
+                        int[] ocy = new int[] {0};
+                        int[] ocz = new int[] {0};
+                        bool xmod = false;
+                        bool ymod = false;
+                        bool zmod = false;
+                        
+                        for (int input = 0; input < this.m_Inputs.Length; input++)
+                        {
+                            if (this.m_Algorithm.InputWidthAtHalfSize[input])
+                                xmod = absoluteX % 2 != 0;
+                            if (this.m_Algorithm.InputHeightAtHalfSize[input])
+                                ymod = absoluteY % 2 != 0;
+                            if (this.m_Algorithm.InputDepthAtHalfSize[input])
+                                zmod = absoluteZ % 2 != 0;
+                        }
+                        
+                        algorithm.Initialize(this);
+                        
+                        for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1); k++)
+                            for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1); i++)
+                                for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1); j++)
+                            {
+                                for (int input = 0; input < this.m_Inputs.Length; input++)
+                                {
+                                    if (this.m_Algorithm.InputWidthAtHalfSize[input])
+                                        ocx[input] = xmod ? (int)(i % 2) : 0;
+                                    if (this.m_Algorithm.InputHeightAtHalfSize[input])
+                                        ocy[input] = ymod ? (int)(j % 2) : 0;
+                                    if (this.m_Algorithm.InputDepthAtHalfSize[input])
+                                        ocz[input] = zmod ? (int)(k % 2) : 0;
+                                }
+                                
+                                algorithm.ProcessCell(
+                                    this,
+                                    inputAArray,
+                                    inputBArray,
+                                    outputArray,
+                                    absoluteX + i,
+                                    absoluteY + j,
+                                    absoluteZ + k,
+                                    i,
+                                    j,
+                                    k,
+                                    arrayWidth,
+                                    arrayHeight,
+                                    arrayDepth,
+                                    MaxOffsetX,
+                                    MaxOffsetY,
+                                    MaxOffsetZ,
+                                    ocx, ocy, ocz);
+                                computations += 1;
+                            }
+                    }
+                    break;
+                }
+                case 20: // 3 inputs
+                {
+                    // context, inputA, inputB, inputC, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz
+                    if (this.m_Inputs[0] != null && this.m_Inputs[1] != null && this.m_Inputs[2] != null)
+                    {
+                        dynamic inputAArray = this.m_Inputs[0].PerformAlgorithmRuntimeCall(
+                            (this.m_Algorithm.InputWidthAtHalfSize[0] ? ((absoluteX) < 0 ? (absoluteX - 1) / 2 : (absoluteX) / 2) : absoluteX),
+                            (this.m_Algorithm.InputHeightAtHalfSize[0] ? ((absoluteY) < 0 ? (absoluteY - 1) / 2 : (absoluteY) / 2) : absoluteY),
+                            (this.m_Algorithm.InputDepthAtHalfSize[0] ? ((absoluteZ) < 0 ? (absoluteZ - 1) / 2 : (absoluteZ) / 2) : absoluteZ),
+                            (this.m_Algorithm.InputWidthAtHalfSize[0] ? (width / 2) + this.m_Algorithm.RequiredXBorder[0] * 2 : width + this.m_Algorithm.RequiredXBorder[0] * 2), 
+                            (this.m_Algorithm.InputHeightAtHalfSize[0] ? (height / 2) + this.m_Algorithm.RequiredYBorder[0] * 2 : height + this.m_Algorithm.RequiredYBorder[0] * 2), 
+                            (this.m_Algorithm.InputDepthAtHalfSize[0] ? (depth / 2) + this.m_Algorithm.RequiredZBorder[0] * 2 : depth + this.m_Algorithm.RequiredZBorder[0] * 2), 
+                            arrayWidth, 
+                            arrayHeight, 
+                            arrayDepth,
+                            MaxOffsetX,
+                            MaxOffsetY,
+                            MaxOffsetZ,
+                            (this.m_Algorithm.InputWidthAtHalfSize[0] ? (childOffsetX / 2) + this.m_Algorithm.RequiredXBorder[0] : childOffsetX + this.m_Algorithm.RequiredXBorder[0]),
+                            (this.m_Algorithm.InputHeightAtHalfSize[0] ? (childOffsetY / 2) + this.m_Algorithm.RequiredYBorder[0] : childOffsetY + this.m_Algorithm.RequiredYBorder[0]),
+                            (this.m_Algorithm.InputDepthAtHalfSize[0] ? (childOffsetZ / 2) + this.m_Algorithm.RequiredZBorder[0] : childOffsetZ + this.m_Algorithm.RequiredZBorder[0]),
+                            ref computations);
+                        
+                        dynamic inputBArray = this.m_Inputs[1].PerformAlgorithmRuntimeCall(
+                            (this.m_Algorithm.InputWidthAtHalfSize[1] ? ((absoluteX) < 0 ? (absoluteX - 1) / 2 : (absoluteX) / 2) : absoluteX),
+                            (this.m_Algorithm.InputHeightAtHalfSize[1] ? ((absoluteY) < 0 ? (absoluteY - 1) / 2 : (absoluteY) / 2) : absoluteY),
+                            (this.m_Algorithm.InputDepthAtHalfSize[1] ? ((absoluteZ) < 0 ? (absoluteZ - 1) / 2 : (absoluteZ) / 2) : absoluteZ),
+                            (this.m_Algorithm.InputWidthAtHalfSize[1] ? (width / 2) + this.m_Algorithm.RequiredXBorder[1] * 2 : width + this.m_Algorithm.RequiredXBorder[1] * 2), 
+                            (this.m_Algorithm.InputHeightAtHalfSize[1] ? (height / 2) + this.m_Algorithm.RequiredYBorder[1] * 2 : height + this.m_Algorithm.RequiredYBorder[1] * 2), 
+                            (this.m_Algorithm.InputDepthAtHalfSize[1] ? (depth / 2) + this.m_Algorithm.RequiredZBorder[1] * 2 : depth + this.m_Algorithm.RequiredZBorder[1] * 2), 
+                            arrayWidth, 
+                            arrayHeight, 
+                            arrayDepth,
+                            MaxOffsetX,
+                            MaxOffsetY,
+                            MaxOffsetZ,
+                            (this.m_Algorithm.InputWidthAtHalfSize[1] ? (childOffsetX / 2) + this.m_Algorithm.RequiredXBorder[1] : childOffsetX + this.m_Algorithm.RequiredXBorder[1]),
+                            (this.m_Algorithm.InputHeightAtHalfSize[1] ? (childOffsetY / 2) + this.m_Algorithm.RequiredYBorder[1] : childOffsetY + this.m_Algorithm.RequiredYBorder[1]),
+                            (this.m_Algorithm.InputDepthAtHalfSize[1] ? (childOffsetZ / 2) + this.m_Algorithm.RequiredZBorder[1] : childOffsetZ + this.m_Algorithm.RequiredZBorder[1]),
+                            ref computations);
+
+                        dynamic inputCArray = this.m_Inputs[2].PerformAlgorithmRuntimeCall(
+                            (this.m_Algorithm.InputWidthAtHalfSize[2] ? ((absoluteX) < 0 ? (absoluteX - 1) / 2 : (absoluteX) / 2) : absoluteX),
+                            (this.m_Algorithm.InputHeightAtHalfSize[2] ? ((absoluteY) < 0 ? (absoluteY - 1) / 2 : (absoluteY) / 2) : absoluteY),
+                            (this.m_Algorithm.InputDepthAtHalfSize[2] ? ((absoluteZ) < 0 ? (absoluteZ - 1) / 2 : (absoluteZ) / 2) : absoluteZ),
+                            (this.m_Algorithm.InputWidthAtHalfSize[2] ? (width / 2) + this.m_Algorithm.RequiredXBorder[2] * 2 : width + this.m_Algorithm.RequiredXBorder[2] * 2), 
+                            (this.m_Algorithm.InputHeightAtHalfSize[2] ? (height / 2) + this.m_Algorithm.RequiredYBorder[2] * 2 : height + this.m_Algorithm.RequiredYBorder[2] * 2), 
+                            (this.m_Algorithm.InputDepthAtHalfSize[2] ? (depth / 2) + this.m_Algorithm.RequiredZBorder[2] * 2 : depth + this.m_Algorithm.RequiredZBorder[2] * 2), 
+                            arrayWidth, 
+                            arrayHeight, 
+                            arrayDepth,
+                            MaxOffsetX,
+                            MaxOffsetY,
+                            MaxOffsetZ,
+                            (this.m_Algorithm.InputWidthAtHalfSize[2] ? (childOffsetX / 2) + this.m_Algorithm.RequiredXBorder[2] : childOffsetX + this.m_Algorithm.RequiredXBorder[2]),
+                            (this.m_Algorithm.InputHeightAtHalfSize[2] ? (childOffsetY / 2) + this.m_Algorithm.RequiredYBorder[2] : childOffsetY + this.m_Algorithm.RequiredYBorder[2]),
+                            (this.m_Algorithm.InputDepthAtHalfSize[2] ? (childOffsetZ / 2) + this.m_Algorithm.RequiredZBorder[2] : childOffsetZ + this.m_Algorithm.RequiredZBorder[2]),
+                            ref computations);
+
+                        int[] ocx = new int[] {0};
+                        int[] ocy = new int[] {0};
+                        int[] ocz = new int[] {0};
+                        bool xmod = false;
+                        bool ymod = false;
+                        bool zmod = false;
+                        
+                        for (int input = 0; input < this.m_Inputs.Length; input++)
+                        {
+                            if (this.m_Algorithm.InputWidthAtHalfSize[input])
+                                xmod = absoluteX % 2 != 0;
+                            if (this.m_Algorithm.InputHeightAtHalfSize[input])
+                                ymod = absoluteY % 2 != 0;
+                            if (this.m_Algorithm.InputDepthAtHalfSize[input])
+                                zmod = absoluteZ % 2 != 0;
+                        }
+                        
+                        algorithm.Initialize(this);
+                        
+                        for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1); k++)
+                            for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1); i++)
+                                for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1); j++)
+                            {
+                                for (int input = 0; input < this.m_Inputs.Length; input++)
+                                {
+                                    if (this.m_Algorithm.InputWidthAtHalfSize[input])
+                                        ocx[input] = xmod ? (int)(i % 2) : 0;
+                                    if (this.m_Algorithm.InputHeightAtHalfSize[input])
+                                        ocy[input] = ymod ? (int)(j % 2) : 0;
+                                    if (this.m_Algorithm.InputDepthAtHalfSize[input])
+                                        ocz[input] = zmod ? (int)(k % 2) : 0;
+                                }
+                                
+                                algorithm.ProcessCell(
+                                    this,
+                                    inputAArray,
+                                    inputBArray,
+                                    inputCArray,
+                                    outputArray,
+                                    absoluteX + i,
+                                    absoluteY + j,
+                                    absoluteZ + k,
+                                    i,
+                                    j,
+                                    k,
+                                    arrayWidth,
+                                    arrayHeight,
+                                    arrayDepth,
+                                    MaxOffsetX,
+                                    MaxOffsetY,
+                                    MaxOffsetZ,
+                                    ocx, ocy, ocz);
+                                computations += 1;
+                            }
+                    }
+                    break;
+                }
                 default:
                     // FIXME!
                     throw new NotImplementedException();
@@ -405,7 +618,7 @@ namespace Tychaia.ProceduralGeneration
             int arrayDepth = depth + MaxOffsetZ * 2;
 
             // TODO: Optimization List
-            // 1) Make it check Is2DOnly == true, make Z = 1;
+            // 1) Make it check Is2DOnly == true, make Z = 0, Depth = 1;
             // 2) Fix array size to be closer to the actual generation size
             //    Aka account for halving
             //    Can completely redo system, work out array width then max offset off of that 

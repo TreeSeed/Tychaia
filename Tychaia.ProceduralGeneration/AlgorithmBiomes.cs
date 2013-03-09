@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.ComponentModel;
 using System.Drawing;
 using Tychaia.ProceduralGeneration.Biomes;
+using System.Linq;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -26,21 +27,21 @@ namespace Tychaia.ProceduralGeneration
             get { return true; }
         }
         
-        public override void Initialize()
+        public override void Initialize(IRuntimeContext context)
         {
         }
         public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] inputC, Biome[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz, int[] ocx, int[] ocy, int[] ocz)
         {
 			if (inputC[(i + ox) + (j + oy) * width + (k + oz) * width * height] != 0)
             	output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = Biomes.BiomeEngine.GetBiomeForCell(inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height], inputB[(i + ox) + (j + oy) * width + (k + oz) * width * height], inputC[(i + ox) + (j + oy) * width + (k + oz) * width * height]);
-            else
-				output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = null;
+            else if (inputC[(i + ox) + (j + oy) * width + (k + oz) * width * height] == 0)
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = Biomes.BiomeEngine.Biomes.First(v => v is WaterBiome);
         }
         
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             if (value == null)
-                return Color.Black;
+                return Color.Transparent;
             else
                 return value.BrushColor;
         }

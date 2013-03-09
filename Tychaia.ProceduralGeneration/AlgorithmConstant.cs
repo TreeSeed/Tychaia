@@ -37,7 +37,7 @@ namespace Tychaia.ProceduralGeneration
             get { return false; }
         }
 
-        public override void Initialize()
+        public override void Initialize(IRuntimeContext context)
         {
         }
 

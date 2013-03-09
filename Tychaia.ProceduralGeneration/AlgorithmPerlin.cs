@@ -17,9 +17,9 @@ namespace Tychaia.ProceduralGeneration
     public class AlgorithmPerlinRough : Algorithm<int>
     {
         [DataMember]
-        [DefaultValue(1)]
+        [DefaultValue(50)]
         [Description("The scale of the perlin noise map.")]
-        public int Scale
+        public double Scale
         {
             get;
             set;
@@ -32,10 +32,10 @@ namespace Tychaia.ProceduralGeneration
         
         public AlgorithmPerlinRough()
         {
-            this.Scale = 1;
+            this.Scale = 50;
         }
 
-        public override void Initialize()
+        public override void Initialize(IRuntimeContext context)
         {
         }
 
@@ -50,11 +50,11 @@ namespace Tychaia.ProceduralGeneration
             double result = 0;
             double b = 16;
 
-            if (Scale < 1)
+            if (Scale < 0)
                 Scale = 1;
 
-            for (int a = 1; a <= b; a *= 2)
-                result += (context.GetRandomDouble(x / (a * Scale), y / (a * Scale), z / (a * Scale), context.Modifier) / (double)(b / a));
+            for (double a = 1; a <= b; a *= 2)
+                result += (context.GetRandomDouble((long)(x / (a * (Scale / 100))), (long)(y / (a * (Scale / 100))), (long)(z / (a * (Scale / 100))), context.Modifier) / (double)(b / a));
 
             result /= 1.96875;
 
@@ -124,9 +124,9 @@ namespace Tychaia.ProceduralGeneration
 
         private PerlinNoise perlin = new PerlinNoise(0);
 
-        public override void Initialize()
+        public override void Initialize(IRuntimeContext context)
         {
-            PerlinNoise perlin = new PerlinNoise(this.Modifier);
+            PerlinNoise perlin = new PerlinNoise(context.Seed + this.Modifier);
         }
 
         public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)

@@ -70,11 +70,17 @@ namespace Tychaia.ProceduralGeneration.Biomes
             for (int i = 0; i < Biomes.Count; i++)
             {
                 Biome biome = Biomes[i];
-
-                score[i] += Math.Abs(biome.Rainfall - rainfall) * biome.RainfallSelectionVariance;
-                score[i] += Math.Abs(biome.Temperature - temperature) * biome.TemperatureSelectionVariance;
-				if (biome.Terrain != 0)
-                	score[i] += Math.Abs(biome.Terrain - terrain) * biome.TerrainSelectionVariance;
+                
+                if (biome.Terrain != 0)
+                {
+                    score[i] += Math.Abs(biome.Rainfall - rainfall) * biome.RainfallSelectionVariance;
+                    score[i] += Math.Abs(biome.Temperature - temperature) * biome.TemperatureSelectionVariance;
+                    score[i] += Math.Abs(biome.Terrain - terrain) * biome.TerrainSelectionVariance;
+                }
+                else
+                {
+                    score[i] = -1;
+                }
             }
 
             int hold = 0;
