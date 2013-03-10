@@ -13,9 +13,33 @@ namespace Tychaia.ProceduralGeneration
     public class StorageLayer
     {
         [DataMember]
-        private IAlgorithm m_Algorithm;
+        private IAlgorithm
+            m_Algorithm;
         [DataMember]
-        private StorageLayer[] m_Layers;
+        private StorageLayer[]
+            m_Layers;
+
+        /// <summary>
+        /// The X position for rendering in the editor.  It serves
+        /// no other purpose.
+        /// </summary>
+        [DataMember]
+        public int EditorX
+        {
+            get;
+            set;
+        }
+        
+        /// <summary>
+        /// The Y position for rendering in the editor.  It serves
+        /// no other purpose.
+        /// </summary>
+        [DataMember]
+        public int EditorY
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The current algorithm for this layer.

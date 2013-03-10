@@ -55,8 +55,9 @@ namespace TychaiaWorldGenViewerAlgorithm
 
                 // Create algorithm flow elements.
                 this.c_FlowInterfaceControl.Elements.AddRange(
-                    layers.Select(v => new AlgorithmFlowElement(this.c_FlowInterfaceControl, v))
+                    layers.Select(v => new AlgorithmFlowElement(this.c_FlowInterfaceControl, v) { X = v.EditorX, Y = v.EditorY })
                 );
+
                 /*foreach (var el in layers)
                 {
                     el.SetDeserializationData(this.c_FlowInterfaceControl);
@@ -74,19 +75,24 @@ namespace TychaiaWorldGenViewerAlgorithm
                 this.c_SaveConfigurationAsButton.PerformClick();
             else
             {
-                /*DataContractSerializer x = new DataContractSerializer(
-                    typeof(FlowInterfaceControl.ListFlowElement),
-                    SerializableTypes,
-                    Int32.MaxValue,
-                    false,
-                    true,
-                    null);
-                FlowInterfaceControl.ListFlowElement config = new FlowInterfaceControl.ListFlowElement();
-                foreach (FlowElement el in this.c_FlowInterfaceControl.Elements)
-                    config.Add(el);
-                using (FileStream writer = new FileStream(this.m_LastSavePath, FileMode.Create))
-                    x.WriteObject(writer, config);
-                MessageBox.Show(this, "Save successful.", "Configuration saved.", MessageBoxButtons.OK, MessageBoxIcon.Information);*/
+                // Convert to storage layers.
+                var layers = new List<StorageLayer>();
+                foreach (var element in this.c_FlowInterfaceControl.Elements)
+                {
+                    var algorithmElement = element as AlgorithmFlowElement;
+                    if (algorithmElement == null)
+                        continue;
+
+                    algorithmElement.Layer.EditorX = element.X;
+                    algorithmElement.Layer.EditorY = element.Y;
+
+                    layers.Add(algorithmElement.Layer);
+                }
+
+                // Save the layers.
+                using (var writer = new StreamWriter(this.m_LastSavePath, false))
+                    StorageAccess.SaveStorage(layers.ToArray(), writer);
+                MessageBox.Show(this, "Save successful.", "Configuration saved.", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -101,19 +107,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             {
                 this.m_LastSavePath = sfd.FileName;
                 this.c_SaveConfigurationButton.Enabled = true;
-                /*DataContractSerializer x = new DataContractSerializer(
-                    typeof(FlowInterfaceControl.ListFlowElement),
-                    SerializableTypes,
-                    Int32.MaxValue,
-                    false,
-                    true,
-                    null);
-                FlowInterfaceControl.ListFlowElement config = new FlowInterfaceControl.ListFlowElement();
-                foreach (FlowElement el in this.c_FlowInterfaceControl.Elements)
-                    config.Add(el);
-                using (FileStream writer = new FileStream(sfd.FileName, FileMode.Create))
-                    x.WriteObject(writer, config);
-                MessageBox.Show(this, "Save successful.", "Configuration saved.", MessageBoxButtons.OK, MessageBoxIcon.Information);*/
+                this.c_SaveConfigurationButton_Click(this, new EventArgs());
             }
         }
 
