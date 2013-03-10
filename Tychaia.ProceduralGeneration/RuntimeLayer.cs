@@ -107,22 +107,22 @@ namespace Tychaia.ProceduralGeneration
         // Just finding offsets, then use them to determine max width, start X location, etc.
         public static void FindMaximumOffsets(
             RuntimeLayer layer, 
-            out int OffsetX,
-            out int OffsetY,
-            out int OffsetZ,
-            out int HalfX, 
-            out int HalfY, 
-            out int HalfZ)
+            out int offsetX,
+            out int offsetY,
+            out int offsetZ,
+            out int halfX, 
+            out int halfY, 
+            out int halfZ)
         {
             if (layer == null)
                 throw new ArgumentNullException("layer");
 
-            OffsetX = 0;
-            OffsetY = 0;
-            OffsetZ = 0;
-            HalfX = 0;
-            HalfY = 0;
-            HalfZ = 0;
+            offsetX = 0;
+            offsetY = 0;
+            offsetZ = 0;
+            halfX = 0;
+            halfY = 0;
+            halfZ = 0;
 
             if (layer.m_Inputs.Length != 0)
             {
@@ -153,31 +153,31 @@ namespace Tychaia.ProceduralGeneration
                     TempOffsetY[inputs] += Math.Abs(layer.m_Algorithm.RequiredYBorder[inputs]);
                     TempOffsetZ[inputs] += Math.Abs(layer.m_Algorithm.RequiredZBorder[inputs]);
 
-                    FindMaximumOffsets(input, out OffsetX, out OffsetY, out OffsetZ, out HalfX, out HalfY, out HalfZ);
+                    FindMaximumOffsets(input, out offsetX, out offsetY, out offsetZ, out halfX, out halfY, out halfZ);
 
-                    TempOffsetX[inputs] += OffsetX;
-                    TempOffsetY[inputs] += OffsetY;
-                    TempOffsetZ[inputs] += OffsetZ;
-                    TempHalfX[inputs] += HalfX;
-                    TempHalfY[inputs] += HalfY;
-                    TempHalfZ[inputs] += HalfZ;
+                    TempOffsetX[inputs] += offsetX;
+                    TempOffsetY[inputs] += offsetY;
+                    TempOffsetZ[inputs] += offsetZ;
+                    TempHalfX[inputs] += halfX;
+                    TempHalfY[inputs] += halfY;
+                    TempHalfZ[inputs] += halfZ;
                     inputs++;
                 }
 
                 for (int count = 0; count < inputs; count++)
                 {
-                    if (OffsetX < TempOffsetX[count])
-                        OffsetX = TempOffsetX[count];
-                    if (OffsetY < TempOffsetY[count])
-                        OffsetY = TempOffsetY[count];
-                    if (OffsetZ < TempOffsetZ[count])
-                        OffsetZ = TempOffsetZ[count];
-                    if (HalfX < TempHalfX[count])
-                        HalfX = TempHalfX[count];
-                    if (HalfY < TempHalfY[count])
-                        HalfY = TempHalfY[count];
-                    if (HalfZ < TempHalfZ[count])
-                        HalfZ = TempHalfZ[count]; 
+                    if (offsetX < TempOffsetX[count])
+                        offsetX = TempOffsetX[count];
+                    if (offsetY < TempOffsetY[count])
+                        offsetY = TempOffsetY[count];
+                    if (offsetZ < TempOffsetZ[count])
+                        offsetZ = TempOffsetZ[count];
+                    if (halfX < TempHalfX[count])
+                        halfX = TempHalfX[count];
+                    if (halfY < TempHalfY[count])
+                        halfY = TempHalfY[count];
+                    if (halfZ < TempHalfZ[count])
+                        halfZ = TempHalfZ[count]; 
                 }
             }
         }
@@ -223,7 +223,7 @@ namespace Tychaia.ProceduralGeneration
 
             dynamic outputArray = Activator.CreateInstance(
                 this.m_Algorithm.OutputType.MakeArrayType(),
-                (int)(arrayWidth * arrayHeight * arrayDepth));
+                (arrayWidth * arrayHeight * arrayDepth));
 
             // Depending on the argument count, invoke the method appropriately.
             switch (processCell.GetParameters().Length)
@@ -311,12 +311,12 @@ namespace Tychaia.ProceduralGeneration
             computations = 0;
 
             // Just replicate this into the CompiledLayer system
-            int MaxOffsetX = 0;
-            int MaxOffsetY = 0; 
-            int MaxOffsetZ = 0;
-            int MaxHalfX = 0;
-            int MaxHalfY = 0;
-            int MaxHalfZ = 0;
+            int MaxOffsetX;
+            int MaxOffsetY; 
+            int MaxOffsetZ;
+            int MaxHalfX;
+            int MaxHalfY;
+            int MaxHalfZ;
 
             FindMaximumOffsets(this, out MaxOffsetX, out MaxOffsetY, out MaxOffsetZ, out MaxHalfX, out MaxHalfY, out MaxHalfZ);
             /*
@@ -377,13 +377,6 @@ namespace Tychaia.ProceduralGeneration
             int arrayHeight = height + MaxOffsetY * 2;
             int arrayDepth = depth + MaxOffsetZ * 2;
 
-            // TODO: Optimization List
-            // 1) Fix array size to be closer to the actual generation size
-            //    Aka account for halving
-            //    Can completely redo system, work out array width then max offset off of that 
-            //    Otherwise halves get wierd with different width
-            //    Because then if the offset is bigger than the half it gets funky
-
             dynamic resultArray = this.PerformAlgorithmRuntimeCall(
                 x,
                 y,
@@ -403,7 +396,7 @@ namespace Tychaia.ProceduralGeneration
             // Copy the result into a properly sized array.
             dynamic correctArray = Activator.CreateInstance(
                 this.m_Algorithm.OutputType.MakeArrayType(),
-                (int)(width * height * depth));
+                (width * height * depth));
 
             for (var k = 0; k < depth; k++)
                 for (var i = 0; i < width; i++)

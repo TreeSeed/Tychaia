@@ -167,23 +167,12 @@ namespace Tychaia.ProceduralGeneration
         
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            //            bool xmod = x % 2 != 0;
-            //            bool ymod = y % 2 != 0;
-            //            int ocx = xmod ? (int)(i % 2) : 0;
-            //            int ocy = ymod ? (int)(j % 2) : 0;
-            //            int ocx_w = xmod ? (int)((i - 1) % 2) : 0;
-            //            int ocx_e = xmod ? (int)((i + 1) % 2) : 0;
-            //            int ocy_n = ymod ? (int)((j - 1) % 2) : 0;
-            //            int ocy_s = ymod ? (int)((j + 1) % 2) : 0;
-            
-
             int ocx = ((x - i) % 2 == 0 ? 0 : (i % 2));
             int ocy = ((y - j) % 2 == 0 ? 0 : (j % 2));
             int ocz = 0;
             
             int current = input[(i / 2) + ox + ocx + ((j / 2) + oy + ocy) * width + (k + oz + ocz) * width * height];
-            
-            //Template for new Smooth system, have to fix/solve the Fuzzy Problem.
+
             if (this.Mode == ZoomType.Square)
                 output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
             else
@@ -231,7 +220,6 @@ namespace Tychaia.ProceduralGeneration
                         output[i + ox + (j + oy) * width + (k + oz) * width * height] = southEast;
                         break;
                     case 4:
-                        Console.WriteLine(i + " " + j);
                         output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
                         break;
                 }
