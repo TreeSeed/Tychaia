@@ -24,10 +24,6 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return false; }
         }
-        
-        public override void Initialize(IRuntimeContext context)
-        {
-        }
 
         public override void ProcessCell(IRuntimeContext context, Biome[] inputB, int[] inputA, Biome[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz, int[] ocx, int[] ocy, int[] ocz)
         {

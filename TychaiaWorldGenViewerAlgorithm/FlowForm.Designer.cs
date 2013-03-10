@@ -42,6 +42,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FlowForm));
             this.c_StatusStrip = new System.Windows.Forms.StatusStrip();
             this.c_ZoomStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.c_QueueStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.c_LayerInspector = new System.Windows.Forms.PropertyGrid();
             this.c_ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.c_DisableProcessingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,7 +76,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             // c_StatusStrip
             // 
             this.c_StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.c_ZoomStatus});
+            this.c_ZoomStatus, this.c_QueueStatus});
             this.c_StatusStrip.Location = new System.Drawing.Point(0, 587);
             this.c_StatusStrip.Name = "c_StatusStrip";
             this.c_StatusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
@@ -88,6 +89,12 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.c_ZoomStatus.Name = "c_ZoomStatus";
             this.c_ZoomStatus.Size = new System.Drawing.Size(45, 20);
             this.c_ZoomStatus.Text = "100%";
+            // 
+            // c_QueueStatus
+            // 
+            this.c_QueueStatus.Name = "c_QueueStatus";
+            this.c_QueueStatus.Size = new System.Drawing.Size(200, 20);
+            this.c_QueueStatus.Text = "";
             // 
             // c_LayerInspector
             // 
@@ -322,6 +329,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.c_FlowInterfaceControl.TabIndex = 0;
             this.c_FlowInterfaceControl.Zoom = 1F;
             this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
+            this.c_FlowInterfaceControl.ElementsInQueueCountChanged += new FlowInterfaceControl.ElementsInQueueCountChangedHandler(this.c_FlowInterfaceControl_ElementsInQueueCountChanged);
             this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
             // 
             // FlowForm
@@ -356,6 +364,7 @@ namespace TychaiaWorldGenViewerAlgorithm
         private FlowInterfaceControl c_FlowInterfaceControl;
         private System.Windows.Forms.StatusStrip c_StatusStrip;
         private System.Windows.Forms.ToolStripStatusLabel c_ZoomStatus;
+        private System.Windows.Forms.ToolStripStatusLabel c_QueueStatus;
         private System.Windows.Forms.PropertyGrid c_LayerInspector;
         private System.Windows.Forms.ContextMenuStrip c_ContextMenuStrip;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;

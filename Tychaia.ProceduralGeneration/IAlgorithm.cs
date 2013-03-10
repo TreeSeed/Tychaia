@@ -103,17 +103,65 @@ namespace Tychaia.ProceduralGeneration
     public abstract class Algorithm : IAlgorithm
     {
         [Category("Base")]
-        public virtual int[] RequiredXBorder { get { return new int[] {0, 0, 0, 0, 0, 0}; } }
+        public virtual int[] RequiredXBorder { get { return new int[]
+                {
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                }; } }
         [Category("Base")]
-        public virtual int[] RequiredYBorder { get { return new int[] {0, 0, 0, 0, 0, 0}; } }
+        public virtual int[] RequiredYBorder { get { return new int[]
+                {
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                }; } }
         [Category("Base")]
-        public virtual int[] RequiredZBorder { get { return new int[] {0, 0, 0, 0, 0, 0}; } }
+        public virtual int[] RequiredZBorder { get { return new int[]
+                {
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                }; } }
         [Category("Base")]
-        public virtual bool[] InputWidthAtHalfSize { get { return new bool[] {false, false, false, false, false, false}; } }
+        public virtual bool[] InputWidthAtHalfSize { get { return new bool[]
+                {
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                }; } }
         [Category("Base")]
-        public virtual bool[] InputHeightAtHalfSize { get { return new bool[] {false, false, false, false, false, false}; } }
+        public virtual bool[] InputHeightAtHalfSize { get { return new bool[]
+                {
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                }; } }
         [Category("Base")]
-        public virtual bool[] InputDepthAtHalfSize { get { return new bool[] {false, false, false, false, false, false}; } }
+        public virtual bool[] InputDepthAtHalfSize { get { return new bool[]
+                {
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                }; } }
 
         [Category("Base")]
         public abstract Type[] InputTypes { get; }
@@ -125,6 +173,10 @@ namespace Tychaia.ProceduralGeneration
         public abstract bool Is2DOnly { get; }
 
         public abstract Color GetColorForValue(StorageLayer parent, dynamic value);
+        
+        public virtual void Initialize(IRuntimeContext context)
+        {
+        }
 
         /// <summary>
         /// Delegates the color logic to the primary input of this algorithm.
@@ -136,16 +188,13 @@ namespace Tychaia.ProceduralGeneration
         {
             if (parent != null)
                 return parent.Algorithm.GetColorForValue(parent.Inputs.Length >= 1 ? parent.Inputs[0] : null, value);
-            else
-                return System.Drawing.Color.Gray;
+            return Color.Gray;
         }
     }
 
     [DataContract]
     public abstract class Algorithm<TOutput> : Algorithm
     {
-        public abstract void Initialize(IRuntimeContext context);
-
         public abstract void ProcessCell(IRuntimeContext context,
                                          TOutput[] output,
                                          long x,
@@ -181,8 +230,6 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TInput, TOutput> : Algorithm
     {
-        public abstract void Initialize(IRuntimeContext context);
-
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInput[] input,
                                          TOutput[] output,
@@ -216,8 +263,6 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TOutput> : Algorithm
     {
-        public abstract void Initialize(IRuntimeContext context);
-
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,
                                          TInputB[] inputB,
@@ -252,8 +297,6 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TInputC, TOutput> : Algorithm
     {
-        public abstract void Initialize(IRuntimeContext context);
-
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,
                                          TInputB[] inputB,
@@ -297,8 +340,6 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TInputC, TInputD, TOutput> : Algorithm
     {
-        public abstract void Initialize(IRuntimeContext context);
-
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,
                                          TInputB[] inputB,
@@ -344,8 +385,6 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     public abstract class Algorithm<TInputA, TInputB, TInputC, TInputD, TInputE, TOutput> : Algorithm
     {
-        public abstract void Initialize(IRuntimeContext context);
-
         public abstract void ProcessCell(IRuntimeContext context,
                                          TInputA[] inputA,
                                          TInputB[] inputB,

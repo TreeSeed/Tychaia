@@ -60,10 +60,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return true; }
         }
-        
-        public override void Initialize(IRuntimeContext context)
-        {
-        }
+
         // Will be able to use this algorithm for:
         // Land - This is the equivelent of ExtendLand
         // Towns - This is the equivelent of ExtendTowns
@@ -81,44 +78,44 @@ namespace Tychaia.ProceduralGeneration
             {
                 int checkvalue = 50;
 
-                    for (int a = 0; a < 1; a++)
-                    {
-                        int selected = context.GetRandomRange(x, y, 0, 8, context.Modifier + checkvalue);
+                for (int a = 0; a < 1; a++)
+                {
+                    int selected = context.GetRandomRange(x, y, 0, 8, context.Modifier + checkvalue);
                 
-                        switch (selected)
-                        {
-                            case 0:
-                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) + 1) + ((j + oy) + 1) * width + (k + oz) * width * height];
-                                break;
-                            case 1:
-                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) - 1) + ((j + oy) - 1) * width + (k + oz) * width * height];
-                                break;
-                            case 2:
-                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) - 1) + ((j + oy) + 1) * width + (k + oz) * width * height]; 
-                                break;
-                            case 3:
-                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) + 1) + ((j + oy) - 1) * width + (k + oz) * width * height];
-                                break;
-                            case 4:
-                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) + 0) + ((j + oy) + 1) * width + (k + oz) * width * height];
-                                break;
-                            case 5:
-                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) + 1) + ((j + oy) + 0) * width + (k + oz) * width * height];
-                                break;
-                            case 6:
-                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) + 0) + ((j + oy) - 1) * width + (k + oz) * width * height];
-                                break;
-                            case 7:
-                                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) - 1) + ((j + oy) + 0) * width + (k + oz) * width * height];
-                                break;
-                        }
+                    switch (selected)
+                    {
+                        case 0:
+                            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) + 1) + ((j + oy) + 1) * width + (k + oz) * width * height];
+                            break;
+                        case 1:
+                            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) - 1) + ((j + oy) - 1) * width + (k + oz) * width * height];
+                            break;
+                        case 2:
+                            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) - 1) + ((j + oy) + 1) * width + (k + oz) * width * height]; 
+                            break;
+                        case 3:
+                            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) + 1) + ((j + oy) - 1) * width + (k + oz) * width * height];
+                            break;
+                        case 4:
+                            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) + 0) + ((j + oy) + 1) * width + (k + oz) * width * height];
+                            break;
+                        case 5:
+                            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) + 1) + ((j + oy) + 0) * width + (k + oz) * width * height];
+                            break;
+                        case 6:
+                            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) + 0) + ((j + oy) - 1) * width + (k + oz) * width * height];
+                            break;
+                        case 7:
+                            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[((i + ox) - 1) + ((j + oy) + 0) * width + (k + oz) * width * height];
+                            break;
+                    }
 
-                        if (this.NeighborChancing == true && checkvalue < (input[((i + ox) + 1) + ((j + oy) + 1) * width + (k + oz) * width * height] + input[((i + ox) - 1) + ((j + oy) - 1) * width + (k + oz) * width * height] + input[((i + ox) - 1) + ((j + oy) + 1) * width + (k + oz) * width * height] + input[((i + ox) + 1) + ((j + oy) - 1) * width + (k + oz) * width * height] + input[((i + ox) + 0) + ((j + oy) - 1) * width + (k + oz) * width * height] + input[((i + ox) + 1) + ((j + oy) - 0) * width + (k + oz) * width * height] + input[((i + ox) + 0) + ((j + oy) + 1) * width + (k + oz) * width * height] + input[((i + ox) - 1) + ((j + oy) - 0) * width + (k + oz) * width * height]))
-                            if ((output[(i) + (j) * width + (k + oz) * width * height] == Value && ExcludeValue == true) || (output[(i) + (j) * width + (k + oz) * width * height] != Value && ExcludeValue == false))
-                        {
-                            checkvalue += 50;
-                            a--;
-                        }
+                    if (this.NeighborChancing == true && checkvalue < (input[((i + ox) + 1) + ((j + oy) + 1) * width + (k + oz) * width * height] + input[((i + ox) - 1) + ((j + oy) - 1) * width + (k + oz) * width * height] + input[((i + ox) - 1) + ((j + oy) + 1) * width + (k + oz) * width * height] + input[((i + ox) + 1) + ((j + oy) - 1) * width + (k + oz) * width * height] + input[((i + ox) + 0) + ((j + oy) - 1) * width + (k + oz) * width * height] + input[((i + ox) + 1) + ((j + oy) - 0) * width + (k + oz) * width * height] + input[((i + ox) + 0) + ((j + oy) + 1) * width + (k + oz) * width * height] + input[((i + ox) - 1) + ((j + oy) - 0) * width + (k + oz) * width * height]))
+                    if ((output[(i) + (j) * width + (k + oz) * width * height] == Value && ExcludeValue == true) || (output[(i) + (j) * width + (k + oz) * width * height] != Value && ExcludeValue == false))
+                    {
+                        checkvalue += 50;
+                        a--;
+                    }
                 }
             }
             else 

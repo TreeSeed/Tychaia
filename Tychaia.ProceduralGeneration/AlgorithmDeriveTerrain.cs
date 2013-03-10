@@ -52,10 +52,6 @@ namespace Tychaia.ProceduralGeneration
             this.CheckDiagonals = true;
         }
 
-        public override void Initialize(IRuntimeContext context)
-        {
-        }
-
         public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] inputC, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz, int[] ocx, int[] ocy, int[] ocz)
         {
             if (inputB[i + ox + (j + oy) * width + (k + oz) * width * height] != 0)

@@ -19,9 +19,6 @@ namespace Tychaia.ProceduralGeneration
             get { return false; }
         }
 
-        public override void Initialize(IRuntimeContext context)
-        {
-        }
         public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = (int)(x + y * 256);
@@ -45,10 +42,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return false; }
         }
-        
-        public override void Initialize(IRuntimeContext context)
-        {
-        }
+
         public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             int a = 0;
@@ -64,7 +58,7 @@ namespace Tychaia.ProceduralGeneration
         
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            switch((int)value)
+            switch ((int)value)
             {
                 default:
                     return System.Drawing.Color.FromArgb(150, 150, 150);

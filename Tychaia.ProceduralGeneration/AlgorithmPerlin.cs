@@ -35,10 +35,6 @@ namespace Tychaia.ProceduralGeneration
             this.Scale = 50;
         }
 
-        public override void Initialize(IRuntimeContext context)
-        {
-        }
-
         // Will be able to use this algorithm for:
         // Land - This is the equivelent of InitialLand
         // Towns - This is the equivelent of InitialTowns
@@ -122,16 +118,16 @@ namespace Tychaia.ProceduralGeneration
             this.MaxValue = 100;
         }
 
-        private PerlinNoise perlin = new PerlinNoise(0);
+        private PerlinNoise m_PerlinNoise = null;
 
         public override void Initialize(IRuntimeContext context)
         {
-            PerlinNoise perlin = new PerlinNoise(context.Seed + this.Modifier);
+            this.m_PerlinNoise = new PerlinNoise(context.Seed + this.Modifier);
         }
 
         public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            double noise = perlin.Noise((x) / this.Scale, (y) / this.Scale, (z) / this.Scale) / 2.0 + 0.5;
+            double noise = this.m_PerlinNoise.Noise((x) / this.Scale, (y) / this.Scale, (z) / this.Scale) / 2.0 + 0.5;
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = (int)((noise * (this.MaxValue - this.MinValue)) + this.MinValue);
         }
 

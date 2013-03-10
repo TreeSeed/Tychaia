@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace Tychaia.ProceduralGeneration
@@ -27,15 +23,14 @@ namespace Tychaia.ProceduralGeneration
         
         public override int[] RequiredXBorder { get { return new int[] {2}; } }
         public override int[] RequiredYBorder { get { return new int[] {2}; } }
-        public override int[] RequiredZBorder { get { return new int[] {2}; } }
+        public override int[] RequiredZBorder { get { return new int[] {0}; } }
         public override bool[] InputWidthAtHalfSize { get { return new bool[] {true}; } }
         public override bool[] InputHeightAtHalfSize { get { return new bool[] {true}; } }
-        public override bool[] InputDepthAtHalfSize { get { return new bool[] {true}; } }
+        public override bool[] InputDepthAtHalfSize { get { return new bool[] {false}; } }
 
         public AlgorithmZoom()
         {
             this.Mode = ZoomType.Square;
-            this.Layer2d = false;
         }
 
         public override string[] InputNames
@@ -43,91 +38,49 @@ namespace Tychaia.ProceduralGeneration
             get { return new string[] { "Input" }; }
         }
 
-        [DataMember]
-        [DefaultValue(false)]
-        [Description("This layer is 2d.")]
-        public bool Layer2d
-        {
-            get;
-            set;
-        }
-
         public override bool Is2DOnly
         {
-            get { return this.Layer2d; }
-        }
-
-        public override void Initialize(IRuntimeContext context)
-        {
+            get { return true; }
         }
 
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz, int[] ocx, int[] ocy, int[] ocz)
         {
+            long rw = width / 2 + ox * 2;
 
-//            bool xmod = x % 2 != 0;
-//            bool ymod = y % 2 != 0;
-//            int ocx = xmod ? (int)(i % 2) : 0;
-//            int ocy = ymod ? (int)(j % 2) : 0;
-//            int ocx_w = xmod ? (int)((i - 1) % 2) : 0;
-//            int ocx_e = xmod ? (int)((i + 1) % 2) : 0;
-//            int ocy_n = ymod ? (int)((j - 1) % 2) : 0;
-//            int ocy_s = ymod ? (int)((j + 1) % 2) : 0;
-
-            int current = input[(i / 2) + ox + ocx[0] + ((j / 2) + oy + ocy[0]) * width + ((k / 2) + oz + ocz[0]) * width * height];
-
-            if (this.Mode == ZoomType.Smooth)
-                current = (current + input[((i + 0) / 2) + ox + ocx[0] + (((j + 0) / 2) + oy + ocy[0]) * width + (((k + 1) / 2) + oz + ocz[0]) * width * height]
-                    + input[((i + 0) / 2) + ox + ocx[0] + (((j + 0) / 2) + oy + ocy[0]) * width + (((k - 1) / 2) + oz + ocz[0]) * width * height]
-                    + input[((i + 1) / 2) + ox + ocx[0] + (((j + 0) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
-                    + input[((i - 1) / 2) + ox + ocx[0] + (((j + 0) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
-                    + input[((i + 0) / 2) + ox + ocx[0] + (((j + 1) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
-                    + input[((i + 0) / 2) + ox + ocx[0] + (((j - 1) / 2) + oy + ocy[0]) * width + (((k + 0) / 2) + oz + ocz[0]) * width * height]
-                           ) / 7;
-
-
-            /*
-            int north = input[(i / 2 + ocx) + ((j - 1) / 2 + ocy_n) * width];
-            int south = input[(i / 2 + ocx) + ((j + 1) / 2 + ocy_s) * width];
-            int east = input[((i + 1) / 2 + ocx_e) + (j / 2 + ocy) * width];
-            int west = input[((i - 1) / 2 + ocx_w) + (j / 2 + ocy) * width];
-            int southEast = input[((i + 2) / 2 + ocx) + ((j + 2) / 2 + ocy) * width];
-*/
-            /*  Template for new Smooth system, have to fix/solve the Fuzzy Problem.
-            int selected = 0;
-
-            if (x % 2 == 0 && y % 2 == 0)
-                if (ZoomType == ZoomType.Fuzzy)
-                    selected = this.GetRandomRange(x, y, 0, 4);
-                else
-                    selected = this.GetRandomRange(x, y, 0, 3);
-            else
-                selected = this.GetRandomRange(x, y, 0, 2);
-
-            switch (selected)
-            {
-                case 0:
-                    output[i + j * width] = current;
-                case 1:
-                    if (x % 2 == 0)
-                        output[i + j * width] = south;
-                    else if (y % 2 == 0)
-                        output[i + j * width] = east;
-                    else
-                        output[i + j * width] = current;
-                case 2:
-                    output[i + j * width] = east;
-                case 3:
-                    output[i + j * width] = southEast;
-            }
-            */
-
-//            if (this.Mode == ZoomType.Smooth || this.Mode == ZoomType.Fuzzy)
-//                output[i + j * width] = context.Smooth(this.Mode == ZoomType.Fuzzy, x, y, north, south, west, east, southEast, current, i, j, 0, 0, width, input);
-//            else                    
-
-
-            output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
-
+            int current = this.FindZoomedPoint(input, i, j, ox, oy, x, y, rw);
+            int north = this.FindZoomedPoint(input, i, j - 1, ox, oy, x, y, rw);
+            int south = this.FindZoomedPoint(input, i, j + 1, ox, oy, x, y, rw);
+            int east = this.FindZoomedPoint(input, i + 1, j, ox, oy, x, y, rw);
+            int west = this.FindZoomedPoint(input, i - 1, j, ox, oy, x, y, rw);
+            int southEast = this.FindZoomedPoint(input, i + 1, j + 1, ox, oy, x, y, rw);
+                
+            if (this.Mode == ZoomType.Smooth || this.Mode == ZoomType.Fuzzy)
+                output[i + ox + (j + oy) * width + (k + oz) * width * height] = context.Smooth(
+                    this.Mode == ZoomType.Fuzzy,
+                    x + i,
+                    y + j,
+                    north,
+                    south,
+                    west,
+                    east,
+                    southEast,
+                    current,
+                    i,
+                    j,
+                    ox,
+                    oy,
+                    rw,
+                    input);
+            else                    
+                output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
+        }
+        
+        private int FindZoomedPoint(int[] input, long i, long j, long ox, long oy, long x, long y, long rw)
+        {
+            int ocx = (x % 2 != 0) ? (int)(i % 2) : 0;
+            int ocy = (y % 2 != 0) ? (int)(j % 2) : 0;
+            
+            return input[(i / 2 + ox + ocx) + (j / 2 + oy + ocy) * rw];
         }
 
         /// <summary>

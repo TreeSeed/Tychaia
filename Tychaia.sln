@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protogame", "Protogame\Prot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protogame.Noise", "Protogame.Noise\Protogame.Noise.csproj", "{FE9A9DF1-16D8-4A24-8978-D4F2E540F039}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7AEE2A1E-060F-4DBE-B581-B9330379E002}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Globals", "Tychaia.Globals\Tychaia.Globals.csproj", "{58F07D5A-E86E-4561-88E8-F96744D59157}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Game", "Tychaia.Game\Tychaia.Game.csproj", "{BD3C4687-9A79-415C-A882-0B7C6248E2AF}"
@@ -45,11 +43,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProceduralGenPerformance", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProceduralGenStorage", "ProceduralGenStorage\ProceduralGenStorage.csproj", "{42123AD1-FDB9-4562-A51F-F7C13354FD22}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.ProceduralGeneration.Tests", "Tychaia.ProceduralGeneration.Tests\Tychaia.ProceduralGeneration.Tests.csproj", "{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protogame.Math.Tests", "Protogame.Math.Tests\Protogame.Math.Tests.csproj", "{D8BB61DB-E058-4B25-A8EC-3824DC514F90}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protogame.Math", "Protogame.Math\Protogame.Math.csproj", "{C5966454-0813-47E9-A652-05E3CD35E2E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeMeAWorld", "MakeMeAWorld\MakeMeAWorld.csproj", "{74591317-9179-43D8-83A3-FFBEEB57B92F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protogame.Math.Tests", "Protogame.Math.Tests\Protogame.Math.Tests.csproj", "{D8BB61DB-E058-4B25-A8EC-3824DC514F90}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protogame.Efficiency", "Protogame.Efficiency\Protogame.Efficiency.csproj", "{ADDEEFA0-B802-4E5F-8824-D72D5190D2EA}"
 EndProject
@@ -73,8 +73,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{EBE4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.Windows", "Libraries\MonoGame\MonoGame.Framework\MonoGame.Framework.Windows.csproj", "{7DE47032-A904-4C29-BD22-2D235E8D91BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.ProceduralGeneration.Tests", "Tychaia.ProceduralGeneration.Tests\Tychaia.ProceduralGeneration.Tests.csproj", "{E351ECEE-00E8-4E70-A2C4-A95FB218E67D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.ProceduralGeneration.Legacy", "Tychaia.ProceduralGeneration.Legacy\Tychaia.ProceduralGeneration.Legacy.csproj", "{641D5815-4533-4146-96C1-D932FE1641F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia", "Tychaia\Tychaia.csproj", "{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}"
@@ -85,6 +83,7 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Debug (prebuilt MonoGame)|Any CPU = Debug (prebuilt MonoGame)|Any CPU
 		Release (prebuilt MonoGame)|Any CPU = Release (prebuilt MonoGame)|Any CPU
+		Default|Any CPU = Default|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{09FF480E-54B1-4A5F-A585-CE74DE399BE1}.Debug (prebuilt MonoGame)|Any CPU.ActiveCfg = Debug|Any CPU
@@ -345,6 +344,8 @@ Global
 		{934D08FB-35DB-4481-A3C4-64F8AE5C8F51} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
 		{954128E9-23B2-417F-BB32-36D1B4D5BD03} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
 		{42123AD1-FDB9-4562-A51F-F7C13354FD22} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
+		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
+		{D8BB61DB-E058-4B25-A8EC-3824DC514F90} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
 		{688462F8-6290-4564-A416-4394549465CA} = {89C8C176-FEAA-442B-AE96-87841F31E2CB}
 		{2AF699D5-B23A-4C2A-9320-20CC17DA3C7A} = {89C8C176-FEAA-442B-AE96-87841F31E2CB}
 		{EBE4E351-21F0-4F20-BB06-6B0AE25C406B} = {89C8C176-FEAA-442B-AE96-87841F31E2CB}

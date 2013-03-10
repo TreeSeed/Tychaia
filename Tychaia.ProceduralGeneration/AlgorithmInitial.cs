@@ -71,8 +71,8 @@ namespace Tychaia.ProceduralGeneration
 
         [DataMember]
         [DefaultValue(false)]
-        [Description("This layer is 2d.")]
-        public bool Layer2d
+        [Description("Show this layer as 2D in the editor.")]
+        public bool Layer2D
         {
             get;
             set;
@@ -80,7 +80,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override bool Is2DOnly
         {
-            get { return false; }
+            get { return this.Layer2D; }
         }
         
         public AlgorithmInitial()
@@ -89,14 +89,11 @@ namespace Tychaia.ProceduralGeneration
             this.GuaranteeStartingPoint = true;
             this.MinimumValue = 1;
             this.MaximumValue = 100;
-            this.Layer2d = false;
+            this.Layer2D = false;
             this.Modifier = 0;
             this.ColorSet = ColorScheme.Perlin;
         }
-        
-        public override void Initialize(IRuntimeContext context)
-        {
-        }
+
         // Will be able to use this algorithm for:
         // Land - This is the equivelent of InitialLand
         // Towns - This is the equivelent of InitialTowns

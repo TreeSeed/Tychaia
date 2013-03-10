@@ -128,6 +128,11 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.c_FlowInterfaceControl.Pan(e.X, e.Y);
             this.c_ZoomStatus.Text = (this.c_FlowInterfaceControl.Zoom * 100.0f).ToString() + "%";
         }
+        
+        private void c_FlowInterfaceControl_ElementsInQueueCountChanged(object sender, Redpoint.FlowGraph.FlowInterfaceControl.ElementsInQueueCountChangedEventArgs e)
+        {
+            this.c_QueueStatus.Text = e.Count.ToString() + " elements in queue.";
+        }
 
         private void c_FlowInterfaceControl_SelectedElementChanged(object sender, EventArgs e)
         {
