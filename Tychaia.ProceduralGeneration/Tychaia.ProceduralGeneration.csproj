@@ -86,11 +86,8 @@
     <Compile Include="AlgorithmDeriveTerrain.cs" />
     <Compile Include="AlgorithmTerrainTo3D.cs" />
     <Compile Include="Biomes\WaterBiome.cs" />
-<<<<<<< HEAD
     <Compile Include="AlgorithmCompare.cs" />
-=======
     <Compile Include="AlgorithmResult.cs" />
->>>>>>> 67a6fdde70563da8c66cbfd0442178ce46fc02ac
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
