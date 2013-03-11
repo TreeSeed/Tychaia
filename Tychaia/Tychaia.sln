@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia", "Tychaia.csproj", "{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Debug (prebuilt MonoGame)|Any CPU = Debug (prebuilt MonoGame)|Any CPU
+		Release (prebuilt MonoGame)|Any CPU = Release (prebuilt MonoGame)|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}.Debug (prebuilt MonoGame)|Any CPU.ActiveCfg = Debug (prebuilt MonoGame)|Any CPU
+		{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}.Debug (prebuilt MonoGame)|Any CPU.Build.0 = Debug (prebuilt MonoGame)|Any CPU
+		{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}.Release (prebuilt MonoGame)|Any CPU.ActiveCfg = Release (prebuilt MonoGame)|Any CPU
+		{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}.Release (prebuilt MonoGame)|Any CPU.Build.0 = Release (prebuilt MonoGame)|Any CPU
+		{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Tychaia.csproj
+	EndGlobalSection
+EndGlobal

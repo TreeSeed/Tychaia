@@ -40,9 +40,48 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' != 'Debug (prebuilt MonoGame)' And '$(Configuration)' != 'Release (prebuilt MonoGame)' And '$(OSTYPE)' == 'linux'">
+    <ProjectReference Include="..\Libraries\MonoGame\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
+      <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
+      <Name>MonoGame.Framework.Linux</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Protogame\Protogame.csproj">
+      <Project>{DF7D4601-0061-4329-9803-6917AF416B70}</Project>
+      <Name>Protogame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.Globals\Tychaia.Globals.csproj">
+      <Project>{58F07D5A-E86E-4561-88E8-F96744D59157}</Project>
+      <Name>Tychaia.Globals</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Protogame.Efficiency\Protogame.Efficiency.csproj">
+      <Project>{ADDEEFA0-B802-4E5F-8824-D72D5190D2EA}</Project>
+      <Name>Protogame.Efficiency</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.Game\Tychaia.Game.csproj">
+      <Project>{BD3C4687-9A79-415C-A882-0B7C6248E2AF}</Project>
+      <Name>Tychaia.Game</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.Disk\Tychaia.Disk.csproj">
+      <Project>{C9F2A7E0-D469-4FA2-96FD-9281A60FD5FC}</Project>
+      <Name>Tychaia.Disk</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Protogame.Structure\Protogame.Structure.csproj">
+      <Project>{49E7D444-F991-41FC-8FD7-499372C5E207}</Project>
+      <Name>Protogame.Structure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.ProceduralGeneration\Tychaia.ProceduralGeneration.csproj">
+      <Project>{4298E98C-3351-4FB2-A8FF-B466915A239F}</Project>
+      <Name>Tychaia.ProceduralGeneration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tychaia.Content\compiled\Tychaia.Content.mdproj">
+      <Project>{77A3495A-216F-4561-9BA4-AD75CF67A36C}</Project>
+      <Name>Tychaia.Content</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\MonoGame.Prebuilt\MonoGame.targets" />
   <ItemGroup>
-    <Folder Include="Content\" />
     <Folder Include="Elements\" />
     <Folder Include="Generators\" />
     <Folder Include="Properties\" />
@@ -95,42 +134,6 @@
     <Compile Include="Title\MenuWorld.cs" />
     <Compile Include="Title\TitleWorld.cs" />
     <Compile Include="UI\TitleButton.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Protogame\Protogame.csproj">
-      <Project>{DF7D4601-0061-4329-9803-6917AF416B70}</Project>
-      <Name>Protogame</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Tychaia.Game\Tychaia.Game.csproj">
-      <Project>{BD3C4687-9A79-415C-A882-0B7C6248E2AF}</Project>
-      <Name>Tychaia.Game</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Tychaia.Globals\Tychaia.Globals.csproj">
-      <Project>{58F07D5A-E86E-4561-88E8-F96744D59157}</Project>
-      <Name>Tychaia.Globals</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Protogame.Efficiency\Protogame.Efficiency.csproj">
-      <Project>{ADDEEFA0-B802-4E5F-8824-D72D5190D2EA}</Project>
-      <Name>Protogame.Efficiency</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Tychaia.Disk\Tychaia.Disk.csproj">
-      <Project>{C9F2A7E0-D469-4FA2-96FD-9281A60FD5FC}</Project>
-      <Name>Tychaia.Disk</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Protogame.Structure\Protogame.Structure.csproj">
-      <Project>{49E7D444-F991-41FC-8FD7-499372C5E207}</Project>
-      <Name>Protogame.Structure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Tychaia.ProceduralGeneration.Legacy\Tychaia.ProceduralGeneration.Legacy.csproj">
-      <Project>{641D5815-4533-4146-96C1-D932FE1641F9}</Project>
-      <Name>Tychaia.ProceduralGeneration.Legacy</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)' != 'Debug (prebuilt MonoGame)' And '$(Configuration)' != 'Release (prebuilt MonoGame)' And '$(OSTYPE)' == 'linux'">
-    <ProjectReference Include="..\Libraries\MonoGame\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
-      <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
-      <Name>MonoGame.Framework.Linux</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="..\MonoGame.Prebuilt\MonoGame.targets" />
   <ProjectExtensions>
