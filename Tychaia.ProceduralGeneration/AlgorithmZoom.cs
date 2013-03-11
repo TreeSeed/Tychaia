@@ -10,7 +10,7 @@ namespace Tychaia.ProceduralGeneration
     /// Works in 3 dimensions.
     /// </summary>
     [DataContract]
-    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerCategory(FlowCategory.ZoomTools)]
     [FlowDesignerName("Zoom 3D")]
     public class AlgorithmZoom3D : Algorithm<int, int>
     {
@@ -70,10 +70,10 @@ namespace Tychaia.ProceduralGeneration
                 int selected;
 
                 if ((x - i) % 2 == 0 && (y - j) % 2 == 0)
-                    if (this.Mode == ZoomType.Fuzzy)
-                        selected = context.GetRandomRange(x, y, z, 4);
-                    else
-                        selected = context.GetRandomRange(x, y, z, 3);
+                if (this.Mode == ZoomType.Fuzzy)
+                    selected = context.GetRandomRange(x, y, z, 4);
+                else
+                    selected = context.GetRandomRange(x, y, z, 3);
                 else
                     selected = context.GetRandomRange(x, y, z, 2);
 
@@ -130,7 +130,7 @@ namespace Tychaia.ProceduralGeneration
     /// Only works in 2 dimensions.
     /// </summary>
     [DataContract]
-    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerCategory(FlowCategory.ZoomTools)]
     [FlowDesignerName("Zoom 2D")]
     public class AlgorithmZoom2D : Algorithm<int, int>
     {
@@ -194,10 +194,10 @@ namespace Tychaia.ProceduralGeneration
                 bool xmod = (x) % 2 == 0;
 
                 if (!xmod && !ymod)
-                    if (this.Mode == ZoomType.Fuzzy)
-                        selected = context.GetRandomRange(x, y, 0, 4);
-                    else
-                        selected = context.GetRandomRange(x, y, 0, 3);
+                if (this.Mode == ZoomType.Fuzzy)
+                    selected = context.GetRandomRange(x, y, 0, 4);
+                else
+                    selected = context.GetRandomRange(x, y, 0, 3);
                 else if (xmod && ymod)
                     selected = 4;
                 else

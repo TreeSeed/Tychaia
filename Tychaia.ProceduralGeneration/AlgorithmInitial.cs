@@ -70,7 +70,7 @@ namespace Tychaia.ProceduralGeneration
         }
 
         [DataMember]
-        [DefaultValue(false)]
+        [DefaultValue(true)]
         [Description("Show this layer as 2D in the editor.")]
         public bool Layer2D
         {
@@ -89,9 +89,9 @@ namespace Tychaia.ProceduralGeneration
             this.GuaranteeStartingPoint = true;
             this.MinimumValue = 1;
             this.MaximumValue = 100;
-            this.Layer2D = false;
+            this.Layer2D = true;
             this.Modifier = 0;
-            this.ColorSet = ColorScheme.Perlin;
+            this.ColorSet = ColorScheme.Land;
         }
 
         // Will be able to use this algorithm for:
