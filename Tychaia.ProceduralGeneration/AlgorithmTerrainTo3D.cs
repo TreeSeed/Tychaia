@@ -25,7 +25,7 @@ namespace Tychaia.ProceduralGeneration
             get { return false; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, Biome[] inputB, int[] inputA, Biome[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz, int[] ocx, int[] ocy, int[] ocz)
+        public override void ProcessCell(IRuntimeContext context, Biome[] inputB, int[] inputA, Biome[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             if (inputA[(i + ox) + (j + oy) * width + (0 + oz) * width * height] > z) 
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = inputB[(i + ox) + (j + oy) * width + (0 + oz) * width * height];
