@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Protogame.MultiLevel;
-using Protogame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Graphics;
+using Protogame;
+using Tychaia.Game;
+using Tychaia.Globals;
+using Tychaia.Disk;
 using Tychaia.Generators;
 using Tychaia.Title;
-using Tychaia.Globals;
-using Tychaia.Game;
-using Tychaia.Disk;
 
 namespace Tychaia
 {
@@ -106,7 +101,7 @@ namespace Tychaia
             Vector2 v = new Vector2(
                 gpstate.ThumbSticks.Left.X,
                 -gpstate.ThumbSticks.Left.Y
-                );
+            );
             Matrix m = Matrix.CreateRotationZ(MathHelper.ToRadians(-45));
             v = Vector2.Transform(v, m);
             this.m_Player.X += v.X * mv * (float)(Math.Sqrt(2) / 1.0);

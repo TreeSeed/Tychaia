@@ -1,22 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Tychaia.ProceduralGeneration;
-using System.Runtime.Serialization;
-using System.Xml;
-using System.Reflection;
-using System.IO;
-using Tychaia.Globals;
 using System.Collections.Concurrent;
-using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using System.Threading;
+using Tychaia.Globals;
+using Tychaia.ProceduralGeneration;
+using System.IO;
 
 namespace Tychaia.Generators
 {
     public static class ChunkProvider
     {
-        private static Layer m_ResultLayer = null;
+        private static RuntimeLayer m_ResultLayer = null;
         private static Type[] m_SerializableTypes = null;
         private const string m_WorldConfig = "WorldConfig.xml";
 
@@ -24,9 +18,17 @@ namespace Tychaia.Generators
 
         static ChunkProvider()
         {
-            // FIXME: Use StorageAccess to load reference
-            // to world generation.
-            throw new NotImplementedException();
+            // Use StorageAccess to load reference to world generation.
+            StorageLayer[] layers;
+            using (var reader = new StreamReader(m_WorldConfig))
+                layers = StorageAccess.LoadStorage(reader);
+            foreach (var layer in layers)
+                if (layer.Algorithm is AlgorithmResult)
+                if ((layer.Algorithm as AlgorithmResult).DefaultForGame)
+                {
+                    m_ResultLayer = StorageAccess.ToRuntime(layer);
+                    break;
+                }
         }
 
         #endregion
@@ -99,6 +101,7 @@ namespace Tychaia.Generators
 
             // Generate or load data.
             int[] data = null;
+            int computations;
             if (m_CurrentProvideState.ProvideTask.Info.LevelDisk == null || !m_CurrentProvideState.ProvideTask.Info.LevelDisk.HasRegion(
                      m_CurrentProvideState.Info.Bounds.X,
                      m_CurrentProvideState.Info.Bounds.Y,
@@ -110,9 +113,10 @@ namespace Tychaia.Generators
                      m_CurrentProvideState.Info.Bounds.X,
                      m_CurrentProvideState.Info.Bounds.Y,
                      m_CurrentProvideState.Info.Bounds.Z,
-                     m_CurrentProvideState.Info.Bounds.Width,
-                     m_CurrentProvideState.Info.Bounds.Height,
-                     m_CurrentProvideState.Info.Bounds.Depth);
+                     (int)m_CurrentProvideState.Info.Bounds.Width,
+                    (int)m_CurrentProvideState.Info.Bounds.Height,
+                    (int)m_CurrentProvideState.Info.Bounds.Depth,
+                     out computations);
             else
                 data = m_CurrentProvideState.ProvideTask.Info.LevelDisk.ProvideRegion(
                      m_CurrentProvideState.Info.Bounds.X,

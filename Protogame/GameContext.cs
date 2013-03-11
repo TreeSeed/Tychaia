@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Content;
+using System.IO;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Protogame
 {
@@ -47,7 +46,7 @@ namespace Protogame
         public void LoadTextureAnim(string name, int end)
         {
             for (int i = 1; i <= end; i++)
-                this.LoadTexture(name + i.ToString());
+                this.LoadTexture(name + i);
         }
 
         public void LoadAudio(string name)
