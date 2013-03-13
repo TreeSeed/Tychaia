@@ -10,6 +10,7 @@ using System.ComponentModel;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
+    [FlowDesignerMajorCategory(FlowMajorCategory.Specific2D)]
     [FlowDesignerCategory(FlowCategory.Land)]
     [FlowDesignerName("Extend Land")]
     public class AlgorithmExtend : Algorithm<int, int>

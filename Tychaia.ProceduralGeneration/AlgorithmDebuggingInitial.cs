@@ -10,6 +10,7 @@ using System.ComponentModel;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
+    [FlowDesignerMajorCategory(FlowMajorCategory.Undefined)]
     [FlowDesignerCategory(FlowCategory.Debugging)]
     [FlowDesignerName("Initial Gradient")]
     public class AlgorithmGradientInitial : Algorithm<int>
@@ -34,6 +35,7 @@ namespace Tychaia.ProceduralGeneration
     }
 
     [DataContract]
+    [FlowDesignerMajorCategory(FlowMajorCategory.Undefined)]
     [FlowDesignerCategory(FlowCategory.Debugging)]
     [FlowDesignerName("Initial Grid")]
     public class AlgorithmGridInitial : Algorithm<int>

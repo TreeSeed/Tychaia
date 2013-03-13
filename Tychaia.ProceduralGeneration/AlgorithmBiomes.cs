@@ -13,6 +13,7 @@ using System.Linq;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
+    [FlowDesignerMajorCategory(FlowMajorCategory.Specific2D)]
     [FlowDesignerCategory(FlowCategory.Land)]
     [FlowDesignerName("Biomes")]
     public class AlgorithmBiomes : Algorithm<int, int, int, Biome>

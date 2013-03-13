@@ -237,6 +237,7 @@ namespace TychaiaWorldGenViewerAlgorithm
         {
             public string Name;
             public FlowCategory Category;
+            public FlowMajorCategory MajorCategory;
             public Type Type;
         }
         
@@ -268,14 +269,15 @@ namespace TychaiaWorldGenViewerAlgorithm
                         types.Add(t);
             
             // For each of those layer types, find ones that have
-            // FlowDesignerName and FlowDesignerCategory attributes.
+            // FlowDesignerName, FlowDesignerCategory and FlowDesignerMajorCategory attributes.
             List<SelectedType> selectedTypes = new List<SelectedType>();
             foreach (var t in types)
             {
                 bool foundName = false;
                 bool foundCategory = false;
                 string currentName = "<unknown>";
-                FlowCategory currentCategory = FlowCategory.General;
+                FlowCategory currentCategory = FlowCategory.Undefined;
+                FlowMajorCategory currentMajorCategory = FlowMajorCategory.Undefined;
                 object[] o = t.GetCustomAttributes(true);
                 foreach (var a in o)
                 {
@@ -289,47 +291,137 @@ namespace TychaiaWorldGenViewerAlgorithm
                         currentCategory = (a as FlowDesignerCategoryAttribute).Category;
                         foundCategory = true;
                     }
+                    if (a is FlowDesignerMajorCategoryAttribute)
+                    {
+                        currentMajorCategory = (a as FlowDesignerMajorCategoryAttribute).MajorCategory;
+                    }
                 }
                 if (foundName && foundCategory)
-                    selectedTypes.Add(new SelectedType { Name = currentName, Category = currentCategory, Type = t });
+                    selectedTypes.Add(new SelectedType { Name = currentName, MajorCategory = currentMajorCategory, Category = currentCategory, Type = t });
             }
             
             // Sort selected types into bins.
-            var algorithms = new Dictionary<FlowCategory, List<SelectedType>>();
-            foreach (var t in selectedTypes)
-            {
-                if (typeof(IAlgorithm).IsAssignableFrom(t.Type))
-                {
-                    if (!algorithms.Keys.Contains(t.Category))
-                        algorithms.Add(t.Category, new List<SelectedType>());
-                    algorithms[t.Category].Add(t);
-                }
-            }
-            foreach (var k in algorithms.Keys.ToArray())
-                algorithms[k] = algorithms[k].OrderBy(v => v.Name).ToList();
-            
+//
+//            var algorithms = new Dictionary<FlowCategory, List<SelectedType>>();
+//            var algorithmsMajor = new Dictionary<FlowMajorCategory, List<SelectedType>>();
+//           
+//            foreach (var t in selectedTypes)
+//            {
+//                if (typeof(IAlgorithm).IsAssignableFrom(t.Type))
+//                {
+//                    if (!algorithms.Keys.Contains(t.Category))
+//                        algorithms.Add(t.Category, new List<SelectedType>());
+//                    algorithms[t.Category].Add(t);
+//                }
+//            }
+//            foreach (var k in algorithms.Keys.ToArray())
+//                algorithms[k] = algorithms[k].OrderBy(v => v.Name).ToList();
+
             // If we have at least one entry in the 2D types list, then create
             // the header and submenus.
-            if (algorithms.Count > 0)
+            //if (algorithms.Count > 0)
+            //{
+
+            selectedTypes.OrderBy(v => v.Name);
+            menu.Items.Add(new ToolStripMenuItem("Tychaia World Generator") { Enabled = false });
+
+            for (var m = 0; m < Enum.GetNames(typeof(FlowMajorCategory)).Length; m++)
             {
-                menu.Items.Add(new ToolStripMenuItem("2D:") { Enabled = false });
-                foreach (var c in algorithms.Keys)
-                {
-                    var cm = new ToolStripMenuItem(Enum.GetName(typeof(FlowCategory), c));
-                    foreach (var l in algorithms[c])
+                bool cont = false;
+
+                foreach (var t in selectedTypes)
+                    if (t.MajorCategory.ToString() == Enum.GetNames(typeof(FlowMajorCategory))[m])
                     {
-                        Type t = l.Type;
-                        cm.DropDownItems.Add(new ToolStripMenuItem(l.Name, null, (sender, ev) =>
-                        {
-                            this.CreateDynamicLayer(t);
-                        }, "c_" + l.Name));
+                        cont = true;
+                        break;
                     }
-                    menu.Items.Add(cm);
+
+                if (cont)
+                {
+                    menu.Items.Add("-");
+                    menu.Items.Add(new ToolStripMenuItem(Enum.GetName(typeof(FlowMajorCategory), m) + ":") { Enabled = false });
+                    for (var c = 0; c < Enum.GetNames(typeof(FlowCategory)).Length; c++)
+                    {
+                        cont = false;
+                        var cm = new ToolStripMenuItem(Enum.GetName(typeof(FlowCategory), c));
+                        foreach (var t in selectedTypes)
+                        {
+                            if (t.MajorCategory.ToString() == Enum.GetNames(typeof(FlowMajorCategory))[m] && t.Category.ToString() == Enum.GetNames(typeof(FlowCategory))[c])
+                            {
+                                cont = true;
+                                cm.DropDownItems.Add(new ToolStripMenuItem(t.Name, null, (sender, ev) =>
+                                {
+                                    this.CreateDynamicLayer(t.Type);
+                                }, "c_" + t.Name));
+                            }
+                        }
+                        if (cont)
+                        {
+                            menu.Items.Add(cm);
+                        }
+                    }
+
                 }
+                //}
+//                    foreach (var c in algorithms.Keys)
+//                    {
+//                            var cm = new ToolStripMenuItem(Enum.GetName(typeof(FlowCategory), c));
+//                            foreach (var l in algorithms[c])
+//                            {
+//                                Type t = l.Type;
+//
+//                                cm.DropDownItems.Add(new ToolStripMenuItem(l.Name, null, (sender, ev) =>
+//                                {
+//                                    this.CreateDynamicLayer(t);
+//                                }, "c_" + l.Name));
+//                            }
+//                            menu.Items.Add(cm);
+//                    }
             }
-            
+
+
+//            
+//
+//            //for(int m = 0; m < FlowDesignerMajorCategoryAttribute.GetCustomAttributes; m++)
+//            foreach (FlowMajorCategory m in Enum.GetValues(typeof(FlowMajorCategory)))
+//            //foreach (var c in FlowCategory)
+//            {
+//                menu.Items.Add(new ToolStripMenuItem(Enum.GetName(typeof(FlowMajorCategory), m) + ":") { Enabled = false });
+//
+//                foreach (var t in selectedTypes)
+//                {
+//                       var cm = new ToolStripMenuItem(Enum.GetName(typeof(FlowCategory), t.Category));
+//                       cm.DropDownItems.Add(new ToolStripMenuItem(t.Name, null, (sender, ev) =>
+//                       {
+//                           this.CreateDynamicLayer(t.Type);
+//                       }, "c_" + t.Name));
+//                }
+//            }
+//            
+//            if (algorithms.Count > 0)
+//            {
+//                menu.Items.Add(new ToolStripMenuItem("Undefined:") { Enabled = false });
+//                foreach (var c in algorithms.Keys)
+//                {
+//                    //if (Enum.GetName(typeof(MajorFlowCategory), c) == Enum.GetName(typeof(MajorFlowCategory), m))
+//                    {
+//                        var cm = new ToolStripMenuItem(Enum.GetName(typeof(FlowCategory), c));
+//                        foreach (var l in algorithms[c])
+//                        {
+//                            Type t = l.Type;
+//                            
+//                            cm.DropDownItems.Add(new ToolStripMenuItem(l.Name, null, (sender, ev) =>
+//                                                                       {
+//                                this.CreateDynamicLayer(t);
+//                            }, "c_" + l.Name));
+//                        }
+//                        menu.Items.Add(cm);
+//                        algorithms.Remove(c);
+//                    }
+//                }
+//            }
             // Add other options.
-            if (algorithms.Count > 0)
+            if (selectedTypes.Count > 0)
                 menu.Items.Add("-");
             menu.Items.Add(this.c_DisableProcessingMenuItem);
             menu.Items.Add(this.c_ExportSelectedMenuItem);

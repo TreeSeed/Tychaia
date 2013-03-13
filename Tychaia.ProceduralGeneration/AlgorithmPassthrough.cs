@@ -10,6 +10,7 @@ using System.ComponentModel;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
+    [FlowDesignerMajorCategory(FlowMajorCategory.Undefined)]
     [FlowDesignerCategory(FlowCategory.Debugging)]
     [FlowDesignerName("Passthrough")]
     public class AlgorithmPassthrough : Algorithm<int, int>
@@ -50,6 +51,7 @@ namespace Tychaia.ProceduralGeneration
     }
 
     [DataContract]
+    [FlowDesignerMajorCategory(FlowMajorCategory.Undefined)]
     [FlowDesignerCategory(FlowCategory.Debugging)]
     [FlowDesignerName("Multi Passthrough")]
     public class AlgorithmMultiPassthrough : Algorithm<int, int, int, int>

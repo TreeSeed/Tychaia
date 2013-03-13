@@ -11,6 +11,7 @@ using Tychaia.ProceduralGeneration.Biomes;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
+    [FlowDesignerMajorCategory(FlowMajorCategory.Specific3D)]
     [FlowDesignerCategory(FlowCategory.Land)]
     [FlowDesignerName("Terrain To 3D")]
     public class AlgorithmTerrainTo3D : Algorithm<Biome, int, Biome>

@@ -4,9 +4,23 @@
 // license on the website apply retroactively.
 //
 using System;
+using System.ComponentModel;
 
 namespace Tychaia.ProceduralGeneration
 {
+    public enum FlowMajorCategory
+    {
+        [Description("General 2D")]
+        General2D,
+        [Description("Specific 2D")]
+        Specific2D,
+        [Description("General 3D")]
+        General3D,
+        [Description("Specific 3D")]
+        Specific3D,
+        Undefined
+    }
+
     public enum FlowCategory
     {
         // These are general tools
@@ -16,6 +30,7 @@ namespace Tychaia.ProceduralGeneration
         Manipulation,
         Debugging,
         Output,
+        Undefined,
         // Want to have a seperate heading for anything more specific catergories
         Land,
         Biome, // Required
@@ -34,11 +49,25 @@ namespace Tychaia.ProceduralGeneration
             get;
             private set;
         }
-        
+
         public FlowDesignerCategoryAttribute(FlowCategory category)
         {
             this.Category = category;
         }
+    }
+
+    public class FlowDesignerMajorCategoryAttribute : Attribute
+    {
+        public FlowMajorCategory MajorCategory
+        {
+            get;
+            private set;
+        }
+        
+        public FlowDesignerMajorCategoryAttribute(FlowMajorCategory majorcategory)
+        {
+            this.MajorCategory = majorcategory;
+        }        
     }
 }
 

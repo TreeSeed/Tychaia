@@ -10,6 +10,7 @@ using System.ComponentModel;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
+    [FlowDesignerMajorCategory(FlowMajorCategory.Undefined)]
     [FlowDesignerCategory(FlowCategory.Debugging)]
     [FlowDesignerName("Initial Delegate")]
     public class AlgorithmDebuggingDelegate : Algorithm<int>
