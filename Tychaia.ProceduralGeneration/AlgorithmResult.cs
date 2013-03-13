@@ -10,7 +10,7 @@ using System.ComponentModel;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerCategory(FlowCategory.Output)]
     [FlowDesignerName("Store Result")]
     public class AlgorithmResult : Algorithm<int, int>
     {

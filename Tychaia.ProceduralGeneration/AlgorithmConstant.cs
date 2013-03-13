@@ -11,8 +11,8 @@ using System.Drawing;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerCategory(FlowCategory.General)]
-    [FlowDesignerName("Constant Value")]
+    [FlowDesignerCategory(FlowCategory.Initials)]
+    [FlowDesignerName("Initial Constant")]
     public class AlgorithmConstant : Algorithm<int>
     {
         [DataMember]

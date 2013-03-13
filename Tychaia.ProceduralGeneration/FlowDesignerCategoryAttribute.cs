@@ -7,21 +7,24 @@ using System;
 
 namespace Tychaia.ProceduralGeneration
 {
-    // Going to have to re-think categories - currently in the process of making layers more dynamic (so we can use them for multiple things that are simmilar)
     public enum FlowCategory
     {
+        // These are general tools
         General,
-        BaseLayers,
-        ZoomTools,
+        Initials,
+        Zooming,
+        Manipulation,
+        Debugging,
+        Output,
+        // Want to have a seperate heading for anything more specific catergories
         Land,
-        Biome,
+        Biome, // Required
         Rainfall,
         Temperature,
         Rivers,
         Trees,
         Towns,
-        FamilyTrees,
-        Debugging
+        FamilyTrees // Haven't thought this thru layer wise yet
     }
 
     public class FlowDesignerCategoryAttribute : Attribute

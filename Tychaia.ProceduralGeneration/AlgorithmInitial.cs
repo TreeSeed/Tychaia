@@ -11,7 +11,7 @@ using System.Drawing;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerCategory(FlowCategory.BaseLayers)]
+    [FlowDesignerCategory(FlowCategory.Initials)]
     [FlowDesignerName("Initial Random")]
     public class AlgorithmInitial : Algorithm<int>
     {
@@ -61,7 +61,7 @@ namespace Tychaia.ProceduralGeneration
         }
 
         [DataMember]
-        [DefaultValue(ColorScheme.Perlin)]
+        [DefaultValue(ColorScheme.Land)]
         [Description("The color scheme to use.")]
         public ColorScheme ColorSet
         {

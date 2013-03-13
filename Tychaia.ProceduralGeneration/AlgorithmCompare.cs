@@ -10,7 +10,7 @@ using System.Drawing;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerCategory(FlowCategory.Manipulation)]
     [FlowDesignerName("Value Compare")]
     public class AlgorithmCompare : Algorithm<int, int, int>
     {
@@ -53,6 +53,9 @@ namespace Tychaia.ProceduralGeneration
 
         public AlgorithmCompare()
         {
+            this.AddAnother = 0;
+            this.EstimateMax = 20;
+            this.Layer2d = false;
         }
 
         public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
@@ -81,7 +84,14 @@ namespace Tychaia.ProceduralGeneration
             }
             else
             {
-                a = value * (255 / (this.EstimateMax > 255 ? 255 : this.EstimateMax));
+                double divvalue = (double)this.EstimateMax;
+                
+                if (divvalue > 255)
+                    divvalue = 255;
+                else if (divvalue < 1)
+                    divvalue = 1;
+
+                a = (int)(value * ((double)255 / divvalue));
 
                 if (a > 255)
                     a = 255;
