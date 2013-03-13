@@ -325,12 +325,14 @@ namespace TychaiaWorldGenViewerAlgorithm
             selectedTypes.OrderBy(v => v.Name);
             menu.Items.Add(new ToolStripMenuItem("Tychaia World Generator") { Enabled = false });
 
-            for (var m = 0; m < Enum.GetNames(typeof(FlowMajorCategory)).Length; m++)
-            {
+//            for (var m = 0; m < Enum.GetNames(typeof(FlowMajorCategory)).Length; m++)
+//            {
+            foreach(FlowMajorCategory m in Enum.GetValues(typeof(FlowMajorCategory)))
+                {
                 bool cont = false;
 
                 foreach (var t in selectedTypes)
-                    if (t.MajorCategory.ToString() == Enum.GetNames(typeof(FlowMajorCategory))[m])
+                    if (t.MajorCategory.ToString() == m.ToString())
                     {
                         cont = true;
                         break;
@@ -339,14 +341,15 @@ namespace TychaiaWorldGenViewerAlgorithm
                 if (cont)
                 {
                     menu.Items.Add("-");
-                    menu.Items.Add(new ToolStripMenuItem(Enum.GetName(typeof(FlowMajorCategory), m) + ":") { Enabled = false });
+                    menu.Items.Add(new ToolStripMenuItem(FlowDesignerMajorCategoryAttribute.GetDescription(m) + ":") { Enabled = false });
+
                     for (var c = 0; c < Enum.GetNames(typeof(FlowCategory)).Length; c++)
                     {
                         cont = false;
                         var cm = new ToolStripMenuItem(Enum.GetName(typeof(FlowCategory), c));
                         foreach (var t in selectedTypes)
                         {
-                            if (t.MajorCategory.ToString() == Enum.GetNames(typeof(FlowMajorCategory))[m] && t.Category.ToString() == Enum.GetNames(typeof(FlowCategory))[c])
+                            if (t.MajorCategory.ToString() ==  m.ToString() && t.Category.ToString() == Enum.GetNames(typeof(FlowCategory))[c])
                             {
                                 cont = true;
                                 cm.DropDownItems.Add(new ToolStripMenuItem(t.Name, null, (sender, ev) =>

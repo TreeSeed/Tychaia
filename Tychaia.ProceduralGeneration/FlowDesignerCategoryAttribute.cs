@@ -5,14 +5,19 @@
 //
 using System;
 using System.ComponentModel;
+using System.Reflection;
 
 namespace Tychaia.ProceduralGeneration
 {
     public enum FlowMajorCategory
     {
+        [Description("General 2D")]
         General2D,
+        [Description("Specific 2D")]
         Specific2D,
+        [Description("General 3D")]
         General3D,
+        [Description("Specific 3D")]
         Specific3D,
         Undefined
     }
@@ -58,6 +63,21 @@ namespace Tychaia.ProceduralGeneration
         {
             get;
             private set;
+        }
+
+        // Can actually move this somewhere else.
+        // Retrieved from http://blog.spontaneouspublicity.com/associating-strings-with-enums-in-c
+        public static string GetDescription(FlowMajorCategory value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+            
+            DescriptionAttribute[] attributes = 
+                (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            
+            if (attributes != null && attributes.Length > 0)
+                return attributes[0].Description;
+            else
+                return value.ToString();
         }
         
         public FlowDesignerMajorCategoryAttribute(FlowMajorCategory majorcategory)
