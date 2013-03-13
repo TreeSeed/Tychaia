@@ -10,13 +10,9 @@ namespace Tychaia.ProceduralGeneration
 {
     public enum FlowMajorCategory
     {
-        [Description("General 2D")]
         General2D,
-        [Description("Specific 2D")]
         Specific2D,
-        [Description("General 3D")]
         General3D,
-        [Description("Specific 3D")]
         Specific3D,
         Undefined
     }
