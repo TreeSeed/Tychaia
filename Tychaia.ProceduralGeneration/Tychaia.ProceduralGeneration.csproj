@@ -90,6 +90,7 @@
     <Compile Include="AlgorithmMultiply.cs" />
     <Compile Include="AlgorithmZoom3D.cs" />
     <Compile Include="AlgorithmZoom2D.cs" />
+    <Compile Include="AlgorithmAdd.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

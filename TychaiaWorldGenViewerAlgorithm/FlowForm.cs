@@ -327,8 +327,8 @@ namespace TychaiaWorldGenViewerAlgorithm
 
 //            for (var m = 0; m < Enum.GetNames(typeof(FlowMajorCategory)).Length; m++)
 //            {
-            foreach(FlowMajorCategory m in Enum.GetValues(typeof(FlowMajorCategory)))
-                {
+            foreach (FlowMajorCategory m in Enum.GetValues(typeof(FlowMajorCategory)))
+            {
                 bool cont = false;
 
                 foreach (var t in selectedTypes)
@@ -343,13 +343,14 @@ namespace TychaiaWorldGenViewerAlgorithm
                     menu.Items.Add("-");
                     menu.Items.Add(new ToolStripMenuItem(FlowDesignerMajorCategoryAttribute.GetDescription(m) + ":") { Enabled = false });
 
-                    for (var c = 0; c < Enum.GetNames(typeof(FlowCategory)).Length; c++)
+                    //for (var c = 0; c < Enum.GetNames(typeof(FlowCategory)).Length; c++)
+                    foreach (FlowCategory c in Enum.GetValues(typeof(FlowCategory)))
                     {
                         cont = false;
-                        var cm = new ToolStripMenuItem(Enum.GetName(typeof(FlowCategory), c));
+                        var cm = new ToolStripMenuItem(FlowDesignerCategoryAttribute.GetDescription(c));
                         foreach (var t in selectedTypes)
                         {
-                            if (t.MajorCategory.ToString() ==  m.ToString() && t.Category.ToString() == Enum.GetNames(typeof(FlowCategory))[c])
+                            if (t.MajorCategory.ToString() == m.ToString() && t.Category.ToString() == c.ToString())
                             {
                                 cont = true;
                                 cm.DropDownItems.Add(new ToolStripMenuItem(t.Name, null, (sender, ev) =>
