@@ -353,9 +353,10 @@ namespace TychaiaWorldGenViewerAlgorithm
                             if (t.MajorCategory.ToString() == m.ToString() && t.Category.ToString() == c.ToString())
                             {
                                 cont = true;
+                                var tempt = t;
                                 cm.DropDownItems.Add(new ToolStripMenuItem(t.Name, null, (sender, ev) =>
                                 {
-                                    this.CreateDynamicLayer(t.Type);
+                                    this.CreateDynamicLayer(tempt.Type);
                                 }, "c_" + t.Name));
                             }
                         }
@@ -364,7 +365,6 @@ namespace TychaiaWorldGenViewerAlgorithm
                             menu.Items.Add(cm);
                         }
                     }
-
                 }
                 //}
 //                    foreach (var c in algorithms.Keys)
