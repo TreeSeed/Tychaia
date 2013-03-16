@@ -233,10 +233,10 @@ namespace Tychaia.ProceduralGeneration
 
                     algorithm.Initialize(this);
 
-                        // context, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz                    
-                    for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1); k++)
-                        for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1); i++)
-                            for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1); j++)
+                    // context, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz                    
+                    for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1 - childOffsetZ); k++)
+                        for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1 - childOffsetX); i++)
+                            for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1 - childOffsetY); j++)
                                 {
                                     algorithm.ProcessCell(this, outputArray, absoluteX + i, absoluteY + j, absoluteZ + k, i, j, k, arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ);
                                     computations += 1;
@@ -249,9 +249,9 @@ namespace Tychaia.ProceduralGeneration
                         if (this.m_Inputs[0] != null)
                         {
                             dynamic inputArray0 = this.m_Inputs[0].PerformAlgorithmRuntimeCall(
-                                (this.m_Algorithm.InputWidthAtHalfSize[0] ? ((absoluteX) < 0 ? (absoluteX - 1) / 2 : (absoluteX) / 2) : absoluteX) - this.m_Algorithm.RequiredXBorder[0] * 2,
-                                (this.m_Algorithm.InputHeightAtHalfSize[0] ? ((absoluteY) < 0 ? (absoluteY - 1) / 2 : (absoluteY) / 2) : absoluteY) - this.m_Algorithm.RequiredYBorder[0] * 2,
-                                (this.m_Algorithm.InputDepthAtHalfSize[0] ? ((absoluteZ) < 0 ? (absoluteZ - 1) / 2 : (absoluteZ) / 2) : absoluteZ) - this.m_Algorithm.RequiredZBorder[0] * 2,
+                                (this.m_Algorithm.InputWidthAtHalfSize[0] ? ((absoluteX) < 0 ? (absoluteX - 1) / 2 : (absoluteX) / 2) : absoluteX),
+                                (this.m_Algorithm.InputHeightAtHalfSize[0] ? ((absoluteY) < 0 ? (absoluteY - 1) / 2 : (absoluteY) / 2) : absoluteY),
+                                (this.m_Algorithm.InputDepthAtHalfSize[0] ? ((absoluteZ) < 0 ? (absoluteZ - 1) / 2 : (absoluteZ) / 2) : absoluteZ),
                                 (this.m_Algorithm.InputWidthAtHalfSize[0] ? (width / 2) + this.m_Algorithm.RequiredXBorder[0] * 2 : width + this.m_Algorithm.RequiredXBorder[0] * 2), 
                                 (this.m_Algorithm.InputHeightAtHalfSize[0] ? (height / 2) + this.m_Algorithm.RequiredYBorder[0] * 2 : height + this.m_Algorithm.RequiredYBorder[0] * 2), 
                                 (this.m_Algorithm.InputDepthAtHalfSize[0] ? (depth / 2) + this.m_Algorithm.RequiredZBorder[0] * 2 : depth + this.m_Algorithm.RequiredZBorder[0] * 2), 
@@ -268,9 +268,9 @@ namespace Tychaia.ProceduralGeneration
 
                         algorithm.Initialize(this);
 
-                        for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1); k++)
-                            for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1); i++)
-                                for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1); j++)
+                        for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1 - childOffsetZ); k++)
+                            for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1 - childOffsetX); i++)
+                                for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1 - childOffsetY); j++)
                                     {
                                 
                                         algorithm.ProcessCell(

@@ -83,7 +83,6 @@
     <Compile Include="AlgorithmDebuggingDelegate.cs" />
     <Compile Include="AlgorithmPerlin.cs" />
     <Compile Include="AlgorithmDeriveTerrain.cs" />
-    <Compile Include="AlgorithmTerrainTo3D.cs" />
     <Compile Include="Biomes\WaterBiome.cs" />
     <Compile Include="AlgorithmCompare.cs" />
     <Compile Include="AlgorithmResult.cs" />
@@ -91,6 +90,7 @@
     <Compile Include="AlgorithmZoom3D.cs" />
     <Compile Include="AlgorithmZoom2D.cs" />
     <Compile Include="AlgorithmAdd.cs" />
+    <Compile Include="AlgorithmValueTo3D.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
