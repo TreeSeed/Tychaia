@@ -11,13 +11,13 @@ namespace Tychaia.ProceduralGeneration.Tests
     [TestFixture]
     public class AlgorithmZoomTest
     {
-        [Test, TestFor(typeof(AlgorithmZoom))]
+        [Test, TestFor(typeof(AlgorithmZoom2D))]
         public void ZoomSquareTest()
         {
             int computations1, computations2;
             int width = 16, height = 16, depth = 16;
             var gradient = new RuntimeLayer(new AlgorithmGradientInitial());
-            var zoom = new RuntimeLayer(new AlgorithmZoom { Mode = AlgorithmZoom.ZoomType.Square });
+            var zoom = new RuntimeLayer(new AlgorithmZoom2D { Mode = AlgorithmZoom2D.ZoomType.Square });
             zoom.SetInput(0, gradient);
             var i1 = gradient.GenerateData(0, 0, 0, width, height, depth, out computations1);
             var i2 = zoom.GenerateData(0, 0, 0, width, height, depth, out computations2);
@@ -31,7 +31,7 @@ namespace Tychaia.ProceduralGeneration.Tests
                             "Square zoom is not working for (" + i + ", " + j + ", " + k + ").");
         }
 
-        [Test, TestFor(typeof(AlgorithmZoom))]
+        [Test, TestFor(typeof(AlgorithmZoom2D))]
         public void TestForCorrectSquareZoomingWithNoOffsetsOrModifications()
         {
             int computations;
@@ -39,9 +39,9 @@ namespace Tychaia.ProceduralGeneration.Tests
             {
                 ValueShouldBePlacedAt = (x, y, z) => (x == 4 && y == 6 && z == 7)
             };
-            var zoom = new AlgorithmZoom
+            var zoom = new AlgorithmZoom2D
             {
-                Mode = AlgorithmZoom.ZoomType.Square
+                Mode = AlgorithmZoom2D.ZoomType.Square
             };
             var runtimeInput = new RuntimeLayer(input);
             var runtimeZoom = new RuntimeLayer(zoom);
@@ -58,7 +58,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             Assert.IsTrue(result[9 + 13 * 32 + 15 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (x, y, z zoomed corner).");
         }
         
-        [Test, TestFor(typeof(AlgorithmZoom))]
+        [Test, TestFor(typeof(AlgorithmZoom2D))]
         public void TestForCorrectSquareZoomingWithOffsetX1()
         {
             int computations;
@@ -66,9 +66,9 @@ namespace Tychaia.ProceduralGeneration.Tests
             {
                 ValueShouldBePlacedAt = (x, y, z) => (x == 4 && y == 6 && z == 7)
             };
-            var zoom = new AlgorithmZoom
+            var zoom = new AlgorithmZoom2D
             {
-                Mode = AlgorithmZoom.ZoomType.Square
+                Mode = AlgorithmZoom2D.ZoomType.Square
             };
             var runtimeInput = new RuntimeLayer(input);
             var runtimeZoom = new RuntimeLayer(zoom);
@@ -97,7 +97,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             Assert.IsTrue(result[8 + 13 * 32 + 15 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (x, y, z zoomed corner).  Found points at " + locatedat + ".");
         }
         
-        [Test, TestFor(typeof(AlgorithmZoom))]
+        [Test, TestFor(typeof(AlgorithmZoom2D))]
         public void TestForCorrectSquareZoomingWithOffsetX2()
         {
             int computations;
@@ -105,9 +105,9 @@ namespace Tychaia.ProceduralGeneration.Tests
             {
                 ValueShouldBePlacedAt = (x, y, z) => (x == 4 && y == 6 && z == 7)
             };
-            var zoom = new AlgorithmZoom
+            var zoom = new AlgorithmZoom2D
             {
-                Mode = AlgorithmZoom.ZoomType.Square
+                Mode = AlgorithmZoom2D.ZoomType.Square
             };
             var runtimeInput = new RuntimeLayer(input);
             var runtimeZoom = new RuntimeLayer(zoom);
@@ -124,7 +124,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             Assert.IsTrue(result[7 + 13 * 32 + 15 * 32 * 32] == 1, "Square zooming is not working with no offsets or modifications (x, y, z zoomed corner).");
         }
         
-        [Test, TestFor(typeof(AlgorithmZoom))]
+        [Test, TestFor(typeof(AlgorithmZoom2D))]
         public void TestForOCXOddAdjustmentShutterBug()
         {
             int computations;
@@ -132,9 +132,9 @@ namespace Tychaia.ProceduralGeneration.Tests
             {
                 ValueShouldBePlacedAt = (x, y, z) => true
             };
-            var zoom = new AlgorithmZoom
+            var zoom = new AlgorithmZoom2D
             {
-                Mode = AlgorithmZoom.ZoomType.Square
+                Mode = AlgorithmZoom2D.ZoomType.Square
             };
             var runtimeInput = new RuntimeLayer(input);
             var runtimeZoom = new RuntimeLayer(zoom);
