@@ -30,10 +30,10 @@ namespace ProceduralGenPerformance
             if (mode == "quadzoom")
             {
                 legacy = new LayerZoom(new LayerZoom(new LayerZoom(new LayerZoom(new LayerInitialLand()))));
-                var algorithmZoom1 = new RuntimeLayer(new AlgorithmZoom());
-                var algorithmZoom2 = new RuntimeLayer(new AlgorithmZoom());
-                var algorithmZoom3 = new RuntimeLayer(new AlgorithmZoom());
-                var algorithmZoom4 = new RuntimeLayer(new AlgorithmZoom());
+                var algorithmZoom1 = new RuntimeLayer(new AlgorithmZoom2D());
+                var algorithmZoom2 = new RuntimeLayer(new AlgorithmZoom2D());
+                var algorithmZoom3 = new RuntimeLayer(new AlgorithmZoom2D());
+                var algorithmZoom4 = new RuntimeLayer(new AlgorithmZoom2D());
                 var algorithmInitialLand = new RuntimeLayer(new AlgorithmInitial());
                 algorithmZoom4.SetInput(0, algorithmInitialLand);
                 algorithmZoom3.SetInput(0, algorithmZoom4);
@@ -48,8 +48,8 @@ namespace ProceduralGenPerformance
             else if (mode == "doublezoom")
             {
                 legacy = new LayerZoom(new LayerZoom(new LayerInitialLand()));
-                var algorithmZoom1 = new RuntimeLayer(new AlgorithmZoom());
-                var algorithmZoom2 = new RuntimeLayer(new AlgorithmZoom());
+                var algorithmZoom1 = new RuntimeLayer(new AlgorithmZoom2D());
+                var algorithmZoom2 = new RuntimeLayer(new AlgorithmZoom2D());
                 var algorithmInitialLand = new RuntimeLayer(new AlgorithmInitial());
                 algorithmZoom2.SetInput(0, algorithmInitialLand);
                 algorithmZoom1.SetInput(0, algorithmZoom2);
@@ -61,7 +61,7 @@ namespace ProceduralGenPerformance
             else if (mode == "zoom")
             {
                 legacy = new LayerZoom(new LayerInitialLand());
-                algorithmRuntime = new RuntimeLayer(new AlgorithmZoom());
+                algorithmRuntime = new RuntimeLayer(new AlgorithmZoom2D());
                 algorithmRuntime.SetInput(0, new RuntimeLayer(new AlgorithmInitial()));
 #if !RANGED_LOGIC_TEST
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);

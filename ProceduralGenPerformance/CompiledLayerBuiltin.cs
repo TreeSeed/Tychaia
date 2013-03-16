@@ -101,9 +101,9 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
                         westValue = xwznywnd[(int)((IntPtr)unchecked((long)((i - 1) / 2 + num + num6) + (long)(j / 2 + num2 + num5) * num3))];
                         southEastValue = xwznywnd[(int)((IntPtr)unchecked((long)((i + 2) / 2 + num + num4) + (long)((j + 2) / 2 + num2 + num5) * num3))];
                     }
-                    if (Tychaia.ProceduralGeneration.AlgorithmZoom.ZoomType.Smooth == AlgorithmZoom.ZoomType.Smooth || Tychaia.ProceduralGeneration.AlgorithmZoom.ZoomType.Smooth == AlgorithmZoom.ZoomType.Fuzzy)
+                    if (Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Smooth || Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom.ZoomType.Fuzzy)
                     {
-                        yixzjsyc[i + j * width_btjvczrj] = this.Smooth(Tychaia.ProceduralGeneration.AlgorithmZoom.ZoomType.Smooth == AlgorithmZoom.ZoomType.Fuzzy, (x + i - 2) + (long)i, (y + j - 2) + (long)j, northValue, southValue, westValue, eastValue, southEastValue, num10, (long)i, (long)j, (long)num, (long)num2, num3, xwznywnd);
+                        yixzjsyc[i + j * width_btjvczrj] = this.Smooth(Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Fuzzy, (x + i - 2) + (long)i, (y + j - 2) + (long)j, northValue, southValue, westValue, eastValue, southEastValue, num10, (long)i, (long)j, (long)num, (long)num2, num3, xwznywnd);
                     }
                     else
                     {
@@ -140,9 +140,9 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
                         westValue = yixzjsyc[(int)((IntPtr)unchecked((long)((i - 1) / 2 + num + num6) + (long)(j / 2 + num2 + num5) * num3))];
                         southEastValue = yixzjsyc[(int)((IntPtr)unchecked((long)((i + 2) / 2 + num + num4) + (long)((j + 2) / 2 + num2 + num5) * num3))];
                     }
-                    if (Tychaia.ProceduralGeneration.AlgorithmZoom.ZoomType.Smooth == AlgorithmZoom.ZoomType.Smooth || Tychaia.ProceduralGeneration.AlgorithmZoom.ZoomType.Smooth == AlgorithmZoom.ZoomType.Fuzzy)
+                    if (Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Smooth || Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Fuzzy)
                     {
-                        hhgbkjup[i + j * width_hwyhgeun] = this.Smooth(Tychaia.ProceduralGeneration.AlgorithmZoom.ZoomType.Smooth == AlgorithmZoom.ZoomType.Fuzzy, (x + i - 2) + (long)i, (y + j - 2) + (long)j, northValue, southValue, westValue, eastValue, southEastValue, num10, (long)i, (long)j, (long)num, (long)num2, num3, yixzjsyc);
+                        hhgbkjup[i + j * width_hwyhgeun] = this.Smooth(Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Fuzzy, (x + i - 2) + (long)i, (y + j - 2) + (long)j, northValue, southValue, westValue, eastValue, southEastValue, num10, (long)i, (long)j, (long)num, (long)num2, num3, yixzjsyc);
                     }
                     else
                     {
@@ -179,9 +179,9 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
                         westValue = hhgbkjup[(int)((IntPtr)unchecked((long)((i - 1) / 2 + num + num6) + (long)(j / 2 + num2 + num5) * num3))];
                         southEastValue = hhgbkjup[(int)((IntPtr)unchecked((long)((i + 2) / 2 + num + num4) + (long)((j + 2) / 2 + num2 + num5) * num3))];
                     }
-                    if (Tychaia.ProceduralGeneration.AlgorithmZoom.ZoomType.Smooth == AlgorithmZoom.ZoomType.Smooth || Tychaia.ProceduralGeneration.AlgorithmZoom.ZoomType.Smooth == AlgorithmZoom.ZoomType.Fuzzy)
+                    if (Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Smooth || Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom.ZoomType.Fuzzy)
                     {
-                        wnvoavvn[i + j * width_dtpcbivq] = this.Smooth(Tychaia.ProceduralGeneration.AlgorithmZoom.ZoomType.Smooth == AlgorithmZoom.ZoomType.Fuzzy, (x + i - 2) + (long)i, (y + j - 2) + (long)j, northValue, southValue, westValue, eastValue, southEastValue, num10, (long)i, (long)j, (long)num, (long)num2, num3, hhgbkjup);
+                        wnvoavvn[i + j * width_dtpcbivq] = this.Smooth(Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Fuzzy, (x + i - 2) + (long)i, (y + j - 2) + (long)j, northValue, southValue, westValue, eastValue, southEastValue, num10, (long)i, (long)j, (long)num, (long)num2, num3, hhgbkjup);
                     }
                     else
                     {
@@ -218,9 +218,9 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
                         westValue = wnvoavvn[(int)((IntPtr)unchecked((long)((i - 1) / 2 + num + num6) + (long)(j / 2 + num2 + num5) * num3))];
                         southEastValue = wnvoavvn[(int)((IntPtr)unchecked((long)((i + 2) / 2 + num + num4) + (long)((j + 2) / 2 + num2 + num5) * num3))];
                     }
-                    if (Tychaia.ProceduralGeneration.AlgorithmZoom.ZoomType.Smooth == AlgorithmZoom.ZoomType.Smooth || Tychaia.ProceduralGeneration.AlgorithmZoom.ZoomType.Smooth == AlgorithmZoom.ZoomType.Fuzzy)
+                    if (Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Smooth || Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Fuzzy)
                     {
-                        tehueofv[i + j * width] = this.Smooth(Tychaia.ProceduralGeneration.AlgorithmZoom.ZoomType.Smooth == AlgorithmZoom.ZoomType.Fuzzy, (x + i - 0) + (long)i, (y + j - 0) + (long)j, northValue, southValue, westValue, eastValue, southEastValue, num10, (long)i, (long)j, (long)num, (long)num2, num3, wnvoavvn);
+                        tehueofv[i + j * width] = this.Smooth(Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Fuzzy, (x + i - 0) + (long)i, (y + j - 0) + (long)j, northValue, southValue, westValue, eastValue, southEastValue, num10, (long)i, (long)j, (long)num, (long)num2, num3, wnvoavvn);
                     }
                     else
                     {
