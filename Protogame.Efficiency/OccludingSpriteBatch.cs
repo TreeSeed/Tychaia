@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
 namespace Protogame.Efficiency
@@ -59,7 +55,7 @@ namespace Protogame.Efficiency
                 existing.DepthBufferFunction != CompareFunction.LessEqual)
             {
                 // Set new depth stencil state.
-                DepthStencilState stencil = new DepthStencilState();
+                var stencil = new DepthStencilState();
                 stencil.DepthBufferFunction = CompareFunction.LessEqual;
                 stencil.DepthBufferEnable = true;
                 stencil.DepthBufferWriteEnable = true;

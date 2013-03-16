@@ -93,14 +93,14 @@ namespace Protogame.RTS
             if (this.m_CurrentPath != null && this.MoveSpeed > 0 && !this.Killed)
             {
                 // Check to see if we can move to the desired location.
-                Unit u = this.CollidesAt<Unit>(world, this.m_CurrentPath.Peek().X * Tileset.TILESET_CELL_WIDTH, this.m_CurrentPath.Peek().Y * Tileset.TILESET_CELL_HEIGHT);
+                //Unit u = this.CollidesAt<Unit>(world, this.m_CurrentPath.Peek().X * Tileset.TILESET_CELL_WIDTH, this.m_CurrentPath.Peek().Y * Tileset.TILESET_CELL_HEIGHT);
                 if (true /*u == null || u == this*/) // FIXME: Units should path around obstacles.
                 {
                     // Calculate relative vector to the target.
                     Vector2 max = new Vector2(
                         this.m_CurrentPath.Peek().X * Tileset.TILESET_CELL_WIDTH - this.X,
                         this.m_CurrentPath.Peek().Y * Tileset.TILESET_CELL_HEIGHT - this.Y
-                        );
+                    );
 
                     // Debugging information.
                     (world as RTSWorld).UiManager.Log("unit is moving to " + this.m_CurrentPath.Peek() + ".");
