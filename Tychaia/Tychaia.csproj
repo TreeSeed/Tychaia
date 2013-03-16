@@ -95,6 +95,9 @@
     <None Include="Game.ico" />
     <None Include="GameThumbnail.png" />
     <None Include="Tychaia.csproj" />
+    <None Include="OpenTK.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cube.cs" />
