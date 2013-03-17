@@ -1,10 +1,13 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using System;
 
 namespace Protogame.Efficiency
 {
     public class OccludingSpriteBatch
     {
+        private SpriteBatch m_FakeSpriteBatch;
         private GraphicsDevice m_GraphicsDevice;
         private DepthSpriteBatch m_OccludableSpriteBatch;
         private DepthSpriteBatch m_OccludingSpriteBatch;
@@ -15,10 +18,35 @@ namespace Protogame.Efficiency
             this.m_GraphicsDevice = device;
 
             // Load sprite batches and effects.
-            this.m_OccludableSpriteBatch = new DepthSpriteBatch(device);
-            this.m_OccludableSpriteBatch.Effect = new SpriteEffect(Resources.LoadOccludableSpriteEffect(device));
-            this.m_OccludingSpriteBatch = new DepthSpriteBatch(device);
-            this.m_OccludingSpriteBatch.Effect = new SpriteEffect(Resources.LoadOccludingEffect(device));
+            try
+            {
+                this.m_OccludableSpriteBatch = new DepthSpriteBatch(device);
+                this.m_OccludableSpriteBatch.Effect = new SpriteEffect(Resources.LoadOccludableSpriteEffect(device));
+                this.m_OccludingSpriteBatch = new DepthSpriteBatch(device);
+                this.m_OccludingSpriteBatch.Effect = new SpriteEffect(Resources.LoadOccludingEffect(device));
+                this.Supported = true;
+            }
+            catch (ContentLoadException)
+            {
+                // MonoGame haven't got their shit worked out with the
+                // content compilation yet, so we can't compile effects
+                // on the build service for various platforms.
+                //
+                // For the moment, when this happens, we just do a
+                // passthrough so the effect isn't rendered.  Everything
+                // will look strange, but at least the game will run...
+                this.Supported = false;
+            }
+        }
+
+        /// <summary>
+        /// Whether fast isometric occulsion is currently supported on this platform.
+        /// </summary>
+        /// <value><c>true</c> if supported; otherwise, <c>false</c>.</value>
+        public bool Supported
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -29,6 +57,8 @@ namespace Protogame.Efficiency
         {
             set
             {
+                if (!this.Supported)
+                    throw new NotSupportedException();
                 this.m_OccludingSpriteBatch.Effect.Parameters["DepthTexture"].SetValue(value);
                 this.m_OccludingSpriteBatch.Effect.CurrentTechnique.Passes[0].Apply();
                 this.m_DepthTextureReference = value;
@@ -41,10 +71,14 @@ namespace Protogame.Efficiency
 
         public void Begin(bool clear = false)
         {
+            // Throw an exception if we're not supported.
+            if (!this.Supported)
+                throw new NotSupportedException();
+
             // Clear surfaces if desired.
             if (clear)
                 this.m_GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Target, Color.Black, 1f, 0);
-            
+
             // Reset matrices.
             this.m_OccludableSpriteBatch.ResetMatrices(this.m_GraphicsDevice.Viewport.Width, this.m_GraphicsDevice.Viewport.Height);
             this.m_OccludingSpriteBatch.ResetMatrices(this.m_GraphicsDevice.Viewport.Width, this.m_GraphicsDevice.Viewport.Height);
@@ -66,6 +100,9 @@ namespace Protogame.Efficiency
         public void End()
         {
             // Flushes content.
+            if (!this.Supported)
+                throw new NotSupportedException();
+
             this.m_OccludingSpriteBatch.Flush();
             this.m_OccludableSpriteBatch.Flush();
         }
@@ -93,8 +130,10 @@ namespace Protogame.Efficiency
         public void DrawOccludable(Texture2D texture, Rectangle destinationRectangle,
             Rectangle? sourceRectangle, Color color, float z = 0)
         {
+            if (!this.Supported)
+                throw new NotSupportedException();
             this.m_OccludableSpriteBatch.Draw(texture, sourceRectangle ?? texture.Bounds,
-                destinationRectangle, color, -(1 - z));
+                                              destinationRectangle, color, -(1 - z));
         }
 
         #endregion
@@ -114,7 +153,6 @@ namespace Protogame.Efficiency
         public void DrawOccluding(Texture2D texture, Vector2 position,
             Rectangle? sourceRectangle, Color color, float z = 0)
         {
-            // Z is inverted due to graphics transformations?
             this.DrawOccluding(texture,
                 new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height),
                 sourceRectangle, color, z);
@@ -124,8 +162,10 @@ namespace Protogame.Efficiency
             Rectangle? sourceRectangle, Color color, float z = 0)
         {
             // Z is inverted due to graphics transformations?
+            if (!this.Supported)
+                throw new NotSupportedException();
             this.m_OccludingSpriteBatch.Draw(texture, sourceRectangle ?? texture.Bounds,
-                destinationRectangle, color, -(1 - z));
+                                             destinationRectangle, color, -(1 - z));
         }
 
         #endregion

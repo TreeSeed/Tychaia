@@ -117,7 +117,8 @@ namespace Tychaia
                         c = c.West.South;
                         x -= TileIsometricifier.CHUNK_TOP_WIDTH;
                     }
-                } else
+                }
+                else
                 {
                     for (int i = innerHorizontalChunksToRender / 2; i < j; i++)
                     {
@@ -296,7 +297,7 @@ namespace Tychaia
                 Vector2 pos = this.TranslatePoint(ce.X, ce.Y, ce.Z);
 
                 // Set depth information.
-                if (RenderingBuffers.DepthBuffer != null)
+                if (RenderingBuffers.DepthBuffer != null && FilteredFeatures.IsEnabled(Feature.IsometricOcclusion))
                 {
                     // Draw image with depth.
                     float depth = ((
@@ -310,7 +311,8 @@ namespace Tychaia
                         ce.Color.ToPremultiplied(),
                         depth
                     );
-                } else
+                }
+                else
                 {
                     // Draw image normally.
                     context.SpriteBatch.Draw(
@@ -320,7 +322,8 @@ namespace Tychaia
                         ce.Color.ToPremultiplied()
                     );
                 }
-            } else
+            }
+            else
                 // Render using the default settings.
                 base.HandleRenderOfEntity(context, a);
         }
@@ -335,9 +338,14 @@ namespace Tychaia
             //}
 
             // Ensure we have an occluding sprite batch.
-            if (this.m_OccludingSpriteBatch == null)
-                this.m_OccludingSpriteBatch = new OccludingSpriteBatch(context.Graphics.GraphicsDevice);
-            this.m_OccludingSpriteBatch.Begin(true);
+            if (FilteredFeatures.IsEnabled(Feature.IsometricOcclusion))
+            {
+                if (this.m_OccludingSpriteBatch == null)
+                    this.m_OccludingSpriteBatch = new OccludingSpriteBatch(context.Graphics.GraphicsDevice);
+                this.m_OccludingSpriteBatch.Begin(true);
+            }
+            else
+                context.Graphics.GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Target, Color.Black, 1f, 0);
         }
 
         protected override void DrawTilesBelow(GameContext context)
@@ -387,7 +395,8 @@ namespace Tychaia
                         context.SpriteBatch.Draw(tex, new Vector2(ri.X, ri.Y + zoffset), Color.White);
                     }
                     FilteredConsole.WriteLine(FilterCategory.RenderingActive, "Rendering chunk at " + ri.X + ", " + ri.Y + ".");
-                } else
+                }
+                else
                     FilteredConsole.WriteLine(FilterCategory.Rendering, "No texture yet for chunk to render at " + ri.X + ", " + ri.Y + ".");
             }
 
@@ -429,13 +438,15 @@ namespace Tychaia
                     FilteredFeatures.IsEnabled(Feature.RenderWorld))
                     this.m_OccludingSpriteBatch.DrawOccluding(RenderingBuffers.ScreenBuffer, Vector2.Zero, Color.White);
                 this.m_OccludingSpriteBatch.End();
-            } else
+            }
+            else
             {
                 if (FilteredFeatures.IsEnabled(Feature.RenderWorld))
                 {
                     if (FilteredFeatures.IsEnabled(Feature.RenderingBuffers))
                         context.SpriteBatch.Draw(RenderingBuffers.ScreenBuffer, Vector2.Zero, Color.White);
                 }
+                //context.SpriteBatch.End();
             }
         }
 

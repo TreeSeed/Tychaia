@@ -56,7 +56,14 @@ namespace Protogame
 
         public void LoadEffect(string name)
         {
-            this.Effects.Add(name, this.Content.Load<Effect>(name.Replace('.', '/')));
+            try
+            {
+                this.Effects.Add(name, this.Content.Load<Effect>(name.Replace('.', '/')));
+            }
+            catch (Exception)
+            {
+                this.Effects.Add(name, null);
+            }
         }
 
         public void EndSpriteBatch()

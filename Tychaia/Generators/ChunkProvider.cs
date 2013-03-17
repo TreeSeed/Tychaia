@@ -11,8 +11,7 @@ namespace Tychaia.Generators
     public static class ChunkProvider
     {
         private static RuntimeLayer m_ResultLayer = null;
-        private static Type[] m_SerializableTypes = null;
-        private const string m_WorldConfig = "WorldConfig.xml";
+        private const string WORLD_CONFIG_FILE = "WorldConfig.xml";
 
         #region Initialization
 
@@ -20,7 +19,7 @@ namespace Tychaia.Generators
         {
             // Use StorageAccess to load reference to world generation.
             StorageLayer[] layers;
-            using (var reader = new StreamReader(m_WorldConfig))
+            using (var reader = new StreamReader(WORLD_CONFIG_FILE))
                 layers = StorageAccess.LoadStorage(reader);
             foreach (var layer in layers)
                 if (layer.Algorithm is AlgorithmResult)
@@ -83,6 +82,8 @@ namespace Tychaia.Generators
         {
             if (m_ResultLayer == null)
                 throw new InvalidOperationException("No 3D store result layer was found in the world configuration.");
+            if (task == null)
+                return;
             DateTime start = DateTime.Now;
             FilteredConsole.WriteLine(FilterCategory.OptimizationTiming, "Started with 0ms.");
 
@@ -136,7 +137,16 @@ namespace Tychaia.Generators
                         if (id == -1)
                             m_CurrentProvideState.Blocks[i, j, k] = null;
                         else
-                            m_CurrentProvideState.Blocks[i, j, k] = Block.BlockIDMapping[data[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height]];
+                        {
+                            try
+                            {
+                                m_CurrentProvideState.Blocks[i, j, k] = Block.BlockIDMapping[data[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height]];
+                            }
+                            catch (KeyNotFoundException)
+                            {
+                                m_CurrentProvideState.Blocks[i, j, k] = null;
+                            }
+                        }
                     }
 
             FilteredConsole.WriteLine(FilterCategory.OptimizationTiming, "Provided " + /*zcount +*/ " levels to chunk in " + (DateTime.Now - start).TotalMilliseconds + "ms.");
@@ -160,7 +170,7 @@ namespace Tychaia.Generators
             public Action OnGenerationCallback;
         }
 
-        private static ConcurrentBag<ProvideTask> m_Tasks = new ConcurrentBag<ProvideTask>();
+        private static List<ProvideTask> m_Tasks = new List<ProvideTask>();
         private static List<ProvideTask> m_Skip = new List<ProvideTask>();
 
         private static void Run()
@@ -170,10 +180,15 @@ namespace Tychaia.Generators
                 ProvideTask rt;
                 if (m_CurrentProvideState != null)
                     rt = m_CurrentProvideState.ProvideTask;
-                else if (!m_Tasks.TryTake(out rt))
+                else if (m_Tasks.Count == 0) //!m_Tasks.TryTake(out rt))
                 {
                     Thread.Sleep(10);
                     continue;
+                }
+                else
+                {
+                    rt = m_Tasks[0];
+                    m_Tasks.RemoveAt(0);
                 }
                 if (m_Skip.Contains(rt))
                 {

@@ -15,7 +15,13 @@ namespace Tychaia.Generators
     {
         #region Cell Render Ordering
 
-        private static int[][] CellRenderOrder = new int[4][] { null, null, null, null };
+        private static int[][] CellRenderOrder = new int[4][]
+        {
+            null,
+            null,
+            null,
+            null
+        };
         public const int RenderToNE = 0;
         public const int RenderToNW = 1;
         public const int RenderToSE = 2;
@@ -73,17 +79,29 @@ namespace Tychaia.Generators
             {
                 // Attack from the left.
                 if (atk < maxy)
-                { x = 0; y = atk; }
+                {
+                    x = 0;
+                    y = atk;
+                }
                 else
-                { x = atk - maxy; y = maxy; }
+                {
+                    x = atk - maxy;
+                    y = maxy;
+                }
                 while (y > atk / 2)
                     result[count++] = y-- * RenderWidth + x++;
 
                 // Attack from the right.
                 if (atk < maxx)
-                { x = atk; y = 0; }
+                {
+                    x = atk;
+                    y = 0;
+                }
                 else
-                { x = maxx; y = atk - maxx; }
+                {
+                    x = maxx;
+                    y = atk - maxx;
+                }
                 while (y <= atk / 2)
                     result[count++] = y++ * RenderWidth + x--;
             }
@@ -182,7 +200,7 @@ namespace Tychaia.Generators
                         (float)m_DebugRandomizer.NextDouble(),
                         (float)m_DebugRandomizer.NextDouble(),
                         (float)m_DebugRandomizer.NextDouble()
-                        );
+                    );
                     m_GraphicsDevice.Clear(ClearOptions.Target, c, 1.0f, 0);
                 }
                 else
@@ -228,7 +246,7 @@ namespace Tychaia.Generators
                                     task.Textures["tiles.grass"],
                                     new Vector2(rx, ry),
                                     Color.White
-                                    );
+                                );
                             continue;
                         }
                         Tile t = b.Tile;
@@ -240,7 +258,7 @@ namespace Tychaia.Generators
                                     task.Textures["tiles.dirt"],
                                     new Vector2(rx, ry),
                                     Color.White
-                                    );
+                                );
                             continue;
                         }
                         Color col = new Color(1f, 1f, 1f, 1f).ToPremultiplied();
@@ -251,7 +269,7 @@ namespace Tychaia.Generators
                                 task.Textures[t.Image],
                                 new Vector2(rx, ry),
                                 col
-                                );
+                            );
                         if (FilteredFeatures.IsEnabled(Feature.RenderCellTops))
                         {
                             m_CurrentRenderState.SpriteBatch.Draw(
@@ -263,7 +281,7 @@ namespace Tychaia.Generators
                                 new Vector2(0, 0),
                                 SpriteEffects.None,
                                 0 // TODO: Use this to correct rendering artifacts.
-                                );
+                            );
                         }
                         if (FilteredFeatures.IsEnabled(Feature.RenderCellSides))
                         {
@@ -277,7 +295,7 @@ namespace Tychaia.Generators
                                 new Vector2(0, 0),
                                 SpriteEffects.None,
                                 0 // TODO: Use this to correct rendering artifacts.
-                                );
+                            );
                             m_CurrentRenderState.SpriteBatch.Draw(
                                 task.Textures[t.Image + ".isometric.sideR"],
                                 new Rectangle(rx + TileIsometricifier.TILE_TOP_WIDTH / 2, ry + TileIsometricifier.TILE_TOP_HEIGHT / 2,
@@ -288,7 +306,7 @@ namespace Tychaia.Generators
                                 new Vector2(0, 0),
                                 SpriteEffects.None,
                                 0 // TODO: Use this to correct rendering artifacts.
-                                );
+                            );
                         }
 
                         count++;
@@ -302,7 +320,8 @@ namespace Tychaia.Generators
                 m_CurrentRenderState.SpriteBatch.End();
                 m_GraphicsDevice.SetRenderTarget(null);
             }
-            else if (m_CurrentRenderState.RenderMode == 1 /* depth map */)
+            else if (m_CurrentRenderState.RenderMode == 1 /* depth map */ &&
+                FilteredFeatures.IsEnabled(Feature.IsometricOcclusion))
             {
                 m_GraphicsDevice.SetRenderTarget(m_CurrentRenderState.ChunkDepthMap);
                 if (!m_CurrentRenderState.ChunkDepthMapCleared)
@@ -350,7 +369,8 @@ namespace Tychaia.Generators
                             continue;
                         Tile t = b.Tile;
 
-                        if (t.Image == null) continue;
+                        if (t.Image == null)
+                            continue;
                         context.Effects["IsometricDepthMap"].Parameters["CellDepth"].SetValue((float)Math.Min(depth / 255f, 1.0f));
                         context.Effects["IsometricDepthMap"].CurrentTechnique.Passes[0].Apply();
                         m_CurrentRenderState.SpriteBatch.Draw(
@@ -362,7 +382,7 @@ namespace Tychaia.Generators
                             new Vector2(0, 0),
                             SpriteEffects.None,
                             0
-                            );
+                        );
                         m_CurrentRenderState.SpriteBatch.Draw(
                             task.Textures[t.Image + ".isometric.sideL"],
                             new Rectangle(rx, ry + 12, TileIsometricifier.TILE_SIDE_WIDTH, TileIsometricifier.TILE_SIDE_HEIGHT),
@@ -372,7 +392,7 @@ namespace Tychaia.Generators
                             new Vector2(0, 0),
                             SpriteEffects.None,
                             0
-                            );
+                        );
                         m_CurrentRenderState.SpriteBatch.Draw(
                             task.Textures[t.Image + ".isometric.sideR"],
                             new Rectangle(rx + 16, ry + 12, TileIsometricifier.TILE_SIDE_WIDTH, TileIsometricifier.TILE_SIDE_HEIGHT),
@@ -382,7 +402,7 @@ namespace Tychaia.Generators
                             new Vector2(0, 0),
                             SpriteEffects.None,
                             0
-                            );
+                        );
                         count++;
                     }
 

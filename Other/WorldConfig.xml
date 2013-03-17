@@ -1,1 +1,30 @@
-<ArrayOfStorageLayer xmlns:i="http://www.w3.org/2001/XMLSchema-instance" z:Id="i1" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/" xmlns="http://schemas.datacontract.org/2004/07/Tychaia.ProceduralGeneration"><StorageLayer z:Id="i2"><EditorX>231</EditorX><EditorY>111</EditorY><m_Algorithm i:type="AlgorithmInitial" z:Id="i3"><ColorSet>Land</ColorSet><GuaranteeStartingPoint>true</GuaranteeStartingPoint><Layer2D>true</Layer2D><Limit>0.9</Limit><MaximumValue>100</MaximumValue><MinimumValue>1</MinimumValue><Modifier>0</Modifier></m_Algorithm><m_Layers z:Id="i4" /></StorageLayer><StorageLayer z:Id="i5"><EditorX>499</EditorX><EditorY>123</EditorY><m_Algorithm i:type="AlgorithmResult" z:Id="i6" /><m_Layers z:Id="i7"><StorageLayer z:Ref="i2" /></m_Layers></StorageLayer></ArrayOfStorageLayer>
+<ArrayOfStorageLayer xmlns:i="http://www.w3.org/2001/XMLSchema-instance" z:Id="i1" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/" xmlns="http://schemas.datacontract.org/2004/07/Tychaia.ProceduralGeneration">
+    <StorageLayer z:Id="i2">
+        <EditorX>231</EditorX>
+        <EditorY>111</EditorY>
+        <m_Algorithm i:type="AlgorithmInitial" z:Id="i3">
+            <ColorSet>Land</ColorSet>
+            <GuaranteeStartingPoint>true</GuaranteeStartingPoint>
+            <Layer2D>true</Layer2D>
+            <Limit>0.9</Limit>
+            <MaximumValue>100</MaximumValue>
+            <MinimumValue>1</MinimumValue>
+            <Modifier>0</Modifier>
+        </m_Algorithm>
+        <m_Layers z:Id="i4" />
+    </StorageLayer>
+    <StorageLayer z:Id="i5">
+        <EditorX>499</EditorX>
+        <EditorY>123</EditorY>
+        <m_Algorithm i:type="AlgorithmResult" z:Id="i6">
+            <DefaultForGame>true</DefaultForGame>
+            <DefaultForMakeMeAWorld>false</DefaultForMakeMeAWorld>
+            <Layer2D>true</Layer2D>
+            <Name i:nil="true" />
+            <ShowInMakeMeAWorld>false</ShowInMakeMeAWorld>
+        </m_Algorithm>
+        <m_Layers z:Id="i7">
+            <StorageLayer z:Ref="i2" />
+        </m_Layers>
+    </StorageLayer>
+</ArrayOfStorageLayer>

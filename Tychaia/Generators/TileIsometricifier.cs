@@ -53,6 +53,7 @@ namespace Tychaia.Generators
                 SpriteEffects.None,
                 0);
             context.SpriteBatch.End();
+            context.Graphics.GraphicsDevice.SetRenderTarget(null);
 
             // Then squash.
             RenderTarget2D squashedTarget = RenderTargetFactory.Create(
@@ -70,7 +71,7 @@ namespace Tychaia.Generators
                 new Rectangle(0, 0, TILE_TOP_WIDTH, TILE_TOP_HEIGHT),
                 new Rectangle(0, 0, rotatedTarget.Width, rotatedTarget.Height),
                 Color.White
-                );
+            );
             context.SpriteBatch.End();
             context.Graphics.GraphicsDevice.SetRenderTarget(null);
 
@@ -80,8 +81,10 @@ namespace Tychaia.Generators
 
             // Skew with matrix.
             Matrix m = Matrix.Identity;
-            m.M11 = 1.0f; m.M12 = 0.7f;
-            m.M21 = 0.0f; m.M22 = 1.0f;
+            m.M11 = 1.0f;
+            m.M12 = 0.7f;
+            m.M21 = 0.0f;
+            m.M22 = 1.0f;
             RenderTarget2D shearedLeftTarget = RenderTargetFactory.Create(
                 context.Graphics.GraphicsDevice,
                 TILE_SIDE_WIDTH,
@@ -98,14 +101,16 @@ namespace Tychaia.Generators
                     original.Width * SKEW_SCALE, original.Height * SKEW_SCALE),
                 null,
                 new Color(63, 63, 63)
-                );
+            );
             context.SpriteBatch.End();
             context.Graphics.GraphicsDevice.SetRenderTarget(null);
 
             // Skew with matrix.
             m = Matrix.Identity;
-            m.M11 = 1.0f; m.M12 = -0.7f;
-            m.M21 = 0.0f; m.M22 = 1.0f;
+            m.M11 = 1.0f;
+            m.M12 = -0.7f;
+            m.M21 = 0.0f;
+            m.M22 = 1.0f;
             RenderTarget2D shearedRightTarget = RenderTargetFactory.Create(
                 context.Graphics.GraphicsDevice,
                 TILE_SIDE_WIDTH,
@@ -122,7 +127,7 @@ namespace Tychaia.Generators
                     original.Width * SKEW_SCALE, original.Height * SKEW_SCALE),
                 null,
                 new Color(127, 127, 127)
-                );
+            );
             context.SpriteBatch.End();
             context.Graphics.GraphicsDevice.SetRenderTarget(null);
 

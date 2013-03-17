@@ -15,34 +15,39 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Store Result")]
     public class AlgorithmResult : Algorithm<int, int>
     {
+        [DataMember]
         [Description("The name to display in interfaces such as Make Me a World.")]
         public string Name
         {
             get;
             set;
         }
-
+        
+        [DataMember]
         [Description("Whether to display this layer as 2D in the editor.")]
         public bool Layer2D
         {
             get;
             set;
         }
-
+        
+        [DataMember]
         [Description("Whether this layer should be shown in the Make Me a World website.")]
         public bool ShowInMakeMeAWorld
         {
             get;
             set;
         }
-
+        
+        [DataMember]
         [Description("Whether this layer is the default for Make Me a World.")]
         public bool DefaultForMakeMeAWorld
         {
             get;
             set;
         }
-
+        
+        [DataMember]
         [Description("Whether this layer is the default for in-game.")]
         public bool DefaultForGame
         {
