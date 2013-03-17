@@ -111,8 +111,15 @@ namespace Tychaia.ProceduralGeneration
                             break;
                     }
 
-                    if (this.NeighborChancing == true && checkvalue < (input[((i + ox) + 1) + ((j + oy) + 1) * width + (k + oz) * width * height] + input[((i + ox) - 1) + ((j + oy) - 1) * width + (k + oz) * width * height] + input[((i + ox) - 1) + ((j + oy) + 1) * width + (k + oz) * width * height] + input[((i + ox) + 1) + ((j + oy) - 1) * width + (k + oz) * width * height] + input[((i + ox) + 0) + ((j + oy) - 1) * width + (k + oz) * width * height] + input[((i + ox) + 1) + ((j + oy) - 0) * width + (k + oz) * width * height] + input[((i + ox) + 0) + ((j + oy) + 1) * width + (k + oz) * width * height] + input[((i + ox) - 1) + ((j + oy) - 0) * width + (k + oz) * width * height]))
-                    if ((output[(i) + (j) * width + (k + oz) * width * height] == Value && ExcludeValue == true) || (output[(i) + (j) * width + (k + oz) * width * height] != Value && ExcludeValue == false))
+                    if (this.NeighborChancing == true && checkvalue < (input[((i + ox) + 1) + ((j + oy) + 1) * width + (k + oz) * width * height]
+                                                                       + input[((i + ox) - 1) + ((j + oy) - 1) * width + (k + oz) * width * height] 
+                                                                       + input[((i + ox) - 1) + ((j + oy) + 1) * width + (k + oz) * width * height] 
+                                                                       + input[((i + ox) + 1) + ((j + oy) - 1) * width + (k + oz) * width * height] 
+                                                                       + input[((i + ox) + 0) + ((j + oy) - 1) * width + (k + oz) * width * height] 
+                                                                       + input[((i + ox) + 1) + ((j + oy) - 0) * width + (k + oz) * width * height] 
+                                                                       + input[((i + ox) + 0) + ((j + oy) + 1) * width + (k + oz) * width * height] 
+                                                                       + input[((i + ox) - 1) + ((j + oy) - 0) * width + (k + oz) * width * height]))
+                    if ((output[(i + ox) + (j + oy) * width + (k + oz) * width * height] == Value && ExcludeValue == true) || (output[(i + ox) + (j + oy) * width + (k + oz) * width * height] != Value && ExcludeValue == false))
                     {
                         checkvalue += 50;
                         a--;
