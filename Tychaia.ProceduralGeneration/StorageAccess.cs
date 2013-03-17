@@ -152,7 +152,7 @@ namespace Tychaia.ProceduralGeneration
             };
             foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
                 foreach (Type t in a.GetTypes())
-                    if (typeof(IAlgorithm).IsAssignableFrom(t))
+                    if (typeof(IAlgorithm).IsAssignableFrom(t) && !t.IsGenericType)
                         types.Add(t);
             StorageAccess.SerializableTypes = types.ToArray();
         }

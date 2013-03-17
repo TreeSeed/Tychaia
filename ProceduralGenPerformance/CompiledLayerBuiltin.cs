@@ -101,7 +101,7 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
                         westValue = xwznywnd[(int)((IntPtr)unchecked((long)((i - 1) / 2 + num + num6) + (long)(j / 2 + num2 + num5) * num3))];
                         southEastValue = xwznywnd[(int)((IntPtr)unchecked((long)((i + 2) / 2 + num + num4) + (long)((j + 2) / 2 + num2 + num5) * num3))];
                     }
-                    if (Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Smooth || Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom.ZoomType.Fuzzy)
+                    if (Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Smooth || Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Fuzzy)
                     {
                         yixzjsyc[i + j * width_btjvczrj] = this.Smooth(Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Fuzzy, (x + i - 2) + (long)i, (y + j - 2) + (long)j, northValue, southValue, westValue, eastValue, southEastValue, num10, (long)i, (long)j, (long)num, (long)num2, num3, xwznywnd);
                     }
@@ -179,7 +179,7 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
                         westValue = hhgbkjup[(int)((IntPtr)unchecked((long)((i - 1) / 2 + num + num6) + (long)(j / 2 + num2 + num5) * num3))];
                         southEastValue = hhgbkjup[(int)((IntPtr)unchecked((long)((i + 2) / 2 + num + num4) + (long)((j + 2) / 2 + num2 + num5) * num3))];
                     }
-                    if (Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Smooth || Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom.ZoomType.Fuzzy)
+                    if (Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Smooth || Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Fuzzy)
                     {
                         wnvoavvn[i + j * width_dtpcbivq] = this.Smooth(Tychaia.ProceduralGeneration.AlgorithmZoom2D.ZoomType.Smooth == AlgorithmZoom2D.ZoomType.Fuzzy, (x + i - 2) + (long)i, (y + j - 2) + (long)j, northValue, southValue, westValue, eastValue, southEastValue, num10, (long)i, (long)j, (long)num, (long)num2, num3, hhgbkjup);
                     }
