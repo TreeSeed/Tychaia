@@ -10,7 +10,7 @@ namespace Tychaia.ProceduralGeneration
     /// Only works in 2 dimensions.
     /// </summary>
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General2D)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Zooming)]
     [FlowDesignerName("Zoom 2D")]
     public class AlgorithmZoom2D : Algorithm<int, int>

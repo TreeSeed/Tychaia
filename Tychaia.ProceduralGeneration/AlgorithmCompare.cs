@@ -10,7 +10,7 @@ using System.Drawing;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General2D)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Manipulation)]
     [FlowDesignerName("Value Compare")]
     public class AlgorithmCompare : Algorithm<int, int, int>

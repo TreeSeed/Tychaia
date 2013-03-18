@@ -11,7 +11,7 @@ using System.Drawing;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General2D)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Initials)]
     [FlowDesignerName("Random Values")]
     public class AlgorithmInitial : Algorithm<int>

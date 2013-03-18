@@ -11,20 +11,16 @@ namespace Tychaia.ProceduralGeneration
 {
     public enum FlowMajorCategory
     {
-        [Description("General 2D")]
-        General2D,
-        [Description("Specific 2D")]
-        Specific2D,
-        [Description("General 3D")]
-        General3D,
-        [Description("Specific 3D")]
-        Specific3D,
+        [Description("General Layers")]
+        General,
+        [Description("Specific Layers")]
+        Specific,
         Undefined
     }
 
     public enum FlowCategory
     {
-        // These are general tools
+        // General Layers
         General,
         Initials,
         Zooming,
@@ -32,15 +28,15 @@ namespace Tychaia.ProceduralGeneration
         Debugging,
         Output,
         Undefined,
-        // Want to have a seperate heading for anything more specific catergories
-        Land,
-        Biome, // Required
-        Rainfall,
-        Temperature,
+
+        // Specific Layers
+        Biomes,
+
+        // Not yet implemented / not needed
         Rivers,
         Trees,
         Towns,
-        FamilyTrees // Haven't thought this thru layer wise yet
+        FamilyTrees
     }
 
     public class FlowDesignerCategoryAttribute : Attribute

@@ -12,7 +12,7 @@ using Protogame.Noise;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General2D)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Initials)]
     [FlowDesignerName("Rough Perlin")]
     public class AlgorithmPerlinRough : Algorithm<int>
@@ -65,7 +65,7 @@ namespace Tychaia.ProceduralGeneration
     }
 
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General2D)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Initials)]
     [FlowDesignerName("Smooth Perlin")]
     public class AlgorithmPerlinSmooth : Algorithm<int>

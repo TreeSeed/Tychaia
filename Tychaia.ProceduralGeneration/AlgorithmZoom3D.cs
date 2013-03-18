@@ -16,7 +16,7 @@ namespace Tychaia.ProceduralGeneration
     /// Works in 3 dimensions.
     /// </summary>
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General3D)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Zooming)]
     [FlowDesignerName("Zoom 3D")]
     public class AlgorithmZoom3D : Algorithm<int, int>

@@ -12,7 +12,7 @@ using Protogame.Noise;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General2D)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Manipulation)]
     [FlowDesignerName("Value Mixdown")]
     public class AlgorithmMixdown : Algorithm<int, int, int>
