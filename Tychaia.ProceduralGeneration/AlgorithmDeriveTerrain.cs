@@ -11,8 +11,8 @@ using System.Drawing;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.Specific)]
-    [FlowDesignerCategory(FlowCategory.Biomes)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.Undefined)]
+    [FlowDesignerCategory(FlowCategory.Buggy)]
     [FlowDesignerName("Derive Terrain")]
     public class AlgorithmDeriveTerrain : Algorithm<int, int, int, int>
     {

@@ -28,9 +28,12 @@ namespace Tychaia.ProceduralGeneration
         Debugging,
         Output,
         Undefined,
+        [Description("Bugged Layers")]
+        Buggy,
 
         // Specific Layers
-        Biomes,
+        Biomes, // Includes things such as BiomeToTerrain, BiomeToColor, BiomeToTreeDensity
+
 
         // Not yet implemented / not needed
         Rivers,
