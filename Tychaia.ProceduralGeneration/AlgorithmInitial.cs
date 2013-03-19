@@ -105,8 +105,10 @@ namespace Tychaia.ProceduralGeneration
         {
             if (this.GuaranteeStartingPoint && x == 0 && y == 0)
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.MaximumValue;
-            else if (context.GetRandomDouble(x, y, z, context.Modifier) > this.Limit)
+            else if (!Layer2D && context.GetRandomDouble(x, y, z, context.Modifier) > this.Limit)
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = context.GetRandomRange(x, y, z, this.MinimumValue, this.MaximumValue, context.Modifier + this.Modifier);
+            else if (Layer2D && context.GetRandomDouble(x, y, 0, context.Modifier) > this.Limit)
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = context.GetRandomRange(x, y, 0, this.MinimumValue, this.MaximumValue, context.Modifier + this.Modifier);
             else
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
         }
