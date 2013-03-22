@@ -12,7 +12,7 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Zooming)]
-    [FlowDesignerName("Extend Value")]
+    [FlowDesignerName("2D Extend Value")]
     public class AlgorithmExtend : Algorithm<int, int>
     {
         [DataMember]
@@ -81,7 +81,7 @@ namespace Tychaia.ProceduralGeneration
 
                 for (int a = 0; a < 1; a++)
                 {
-                    int selected = context.GetRandomRange(x, y, 0, 8, context.Modifier + checkvalue);
+                    int selected = context.GetRandomRange(x, y, z, 8, context.Modifier + checkvalue);
                 
                     switch (selected)
                     {
