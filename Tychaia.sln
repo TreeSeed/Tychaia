@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.ProceduralGeneratio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protogame.Math.Tests", "Protogame.Math.Tests\Protogame.Math.Tests.csproj", "{D8BB61DB-E058-4B25-A8EC-3824DC514F90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Threading.Tests", "Tychaia.Threading.Tests\Tychaia.Threading.Tests.csproj", "{623BFEB2-F490-4030-BECF-8801273C789E}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protogame.Math", "Protogame.Math\Protogame.Math.csproj", "{C5966454-0813-47E9-A652-05E3CD35E2E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeMeAWorld", "MakeMeAWorld\MakeMeAWorld.csproj", "{74591317-9179-43D8-83A3-FFBEEB57B92F}"
@@ -78,6 +80,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia", "Tychaia\Tychaia.csproj", "{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}"
 EndProject
 Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "Tychaia.Content", "Tychaia.Content\compiled\Tychaia.Content.mdproj", "{77A3495A-216F-4561-9BA4-AD75CF67A36C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Threading", "Tychaia.Threading\Tychaia.Threading.csproj", "{89EDBF07-CDC7-47C4-BFAD-5C522B8FA428}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -156,6 +160,16 @@ Global
 		{58F07D5A-E86E-4561-88E8-F96744D59157}.Release (prebuilt MonoGame)|Any CPU.Build.0 = Release|Any CPU
 		{58F07D5A-E86E-4561-88E8-F96744D59157}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58F07D5A-E86E-4561-88E8-F96744D59157}.Release|Any CPU.Build.0 = Release|Any CPU
+		{623BFEB2-F490-4030-BECF-8801273C789E}.Debug (prebuilt MonoGame)|Any CPU.ActiveCfg = Release|Any CPU
+		{623BFEB2-F490-4030-BECF-8801273C789E}.Debug (prebuilt MonoGame)|Any CPU.Build.0 = Release|Any CPU
+		{623BFEB2-F490-4030-BECF-8801273C789E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{623BFEB2-F490-4030-BECF-8801273C789E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{623BFEB2-F490-4030-BECF-8801273C789E}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{623BFEB2-F490-4030-BECF-8801273C789E}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{623BFEB2-F490-4030-BECF-8801273C789E}.Release (prebuilt MonoGame)|Any CPU.ActiveCfg = Release|Any CPU
+		{623BFEB2-F490-4030-BECF-8801273C789E}.Release (prebuilt MonoGame)|Any CPU.Build.0 = Release|Any CPU
+		{623BFEB2-F490-4030-BECF-8801273C789E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{623BFEB2-F490-4030-BECF-8801273C789E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{641D5815-4533-4146-96C1-D932FE1641F9}.Debug (prebuilt MonoGame)|Any CPU.ActiveCfg = Debug|Any CPU
 		{641D5815-4533-4146-96C1-D932FE1641F9}.Debug (prebuilt MonoGame)|Any CPU.Build.0 = Debug|Any CPU
 		{641D5815-4533-4146-96C1-D932FE1641F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -212,6 +226,16 @@ Global
 		{7DE47032-A904-4C29-BD22-2D235E8D91BA}.Release (prebuilt MonoGame)|Any CPU.ActiveCfg = Release|Any CPU
 		{7DE47032-A904-4C29-BD22-2D235E8D91BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DE47032-A904-4C29-BD22-2D235E8D91BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89EDBF07-CDC7-47C4-BFAD-5C522B8FA428}.Debug (prebuilt MonoGame)|Any CPU.ActiveCfg = Release|Any CPU
+		{89EDBF07-CDC7-47C4-BFAD-5C522B8FA428}.Debug (prebuilt MonoGame)|Any CPU.Build.0 = Release|Any CPU
+		{89EDBF07-CDC7-47C4-BFAD-5C522B8FA428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89EDBF07-CDC7-47C4-BFAD-5C522B8FA428}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89EDBF07-CDC7-47C4-BFAD-5C522B8FA428}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{89EDBF07-CDC7-47C4-BFAD-5C522B8FA428}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{89EDBF07-CDC7-47C4-BFAD-5C522B8FA428}.Release (prebuilt MonoGame)|Any CPU.ActiveCfg = Release|Any CPU
+		{89EDBF07-CDC7-47C4-BFAD-5C522B8FA428}.Release (prebuilt MonoGame)|Any CPU.Build.0 = Release|Any CPU
+		{89EDBF07-CDC7-47C4-BFAD-5C522B8FA428}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89EDBF07-CDC7-47C4-BFAD-5C522B8FA428}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8A458245-8176-4599-95CD-3CA39F2435CE}.Debug (prebuilt MonoGame)|Any CPU.ActiveCfg = Debug|Any CPU
 		{8A458245-8176-4599-95CD-3CA39F2435CE}.Debug (prebuilt MonoGame)|Any CPU.Build.0 = Debug|Any CPU
 		{8A458245-8176-4599-95CD-3CA39F2435CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -362,6 +386,7 @@ Global
 		{42123AD1-FDB9-4562-A51F-F7C13354FD22} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
 		{E351ECEE-00E8-4E70-A2C4-A95FB218E67D} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
 		{D8BB61DB-E058-4B25-A8EC-3824DC514F90} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
+		{623BFEB2-F490-4030-BECF-8801273C789E} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
 		{688462F8-6290-4564-A416-4394549465CA} = {89C8C176-FEAA-442B-AE96-87841F31E2CB}
 		{2AF699D5-B23A-4C2A-9320-20CC17DA3C7A} = {89C8C176-FEAA-442B-AE96-87841F31E2CB}
 		{EBE4E351-21F0-4F20-BB06-6B0AE25C406B} = {89C8C176-FEAA-442B-AE96-87841F31E2CB}
@@ -371,7 +396,7 @@ Global
 		{7DE47032-A904-4C29-BD22-2D235E8D91BA} = {EBE4E351-21F0-4F20-BB06-6B0AE25C406B}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Tychaia\Tychaia.csproj
+		StartupItem = Tychaia.Threading.Tests\Tychaia.Threading.Tests.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.EolMarker = Unix
