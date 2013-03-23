@@ -10,65 +10,12 @@ using System.Drawing;
 using Protogame.Noise;
 
 namespace Tychaia.ProceduralGeneration
-{
+   {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General2D)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Initials)]
-    [FlowDesignerName("Rough Perlin")]
-    public class AlgorithmPerlinRough : Algorithm<int>
-    {
-        [DataMember]
-        [DefaultValue(50)]
-        [Description("The scale of the perlin noise map.")]
-        public double Scale
-        {
-            get;
-            set;
-        }
-
-        public override bool Is2DOnly
-        {
-            get { return false; }
-        }
-        
-        public AlgorithmPerlinRough()
-        {
-            this.Scale = 50;
-        }
-
-        // Will be able to use this algorithm for:
-        // Land - This is the equivelent of InitialLand
-        // Towns - This is the equivelent of InitialTowns
-        // Landmarks - We can spread landmarks over the world, which we can then use values to determine the size/value of the landmarks.
-        // Monsters - By utilising multiple value scaling we can either distribute individual monsters or monster groups or even monster villages.
-        // Tresure chests - Spreading tresure chests in dungeons (can be used as an estimated location then moved slightly too).
-        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
-        {
-            double result = 0;
-            double b = 16;
-
-            if (Scale < 0)
-                Scale = 1;
-
-            for (double a = 1; a <= b; a *= 2)
-                result += (context.GetRandomDouble((long)(x / (a * (Scale / 100))), (long)(y / (a * (Scale / 100))), (long)(z / (a * (Scale / 100))), context.Modifier) / (double)(b / a));
-
-            result /= 1.96875;
-
-            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = (int)((result) * 100);
-        }
-
-        public override Color GetColorForValue(StorageLayer parent, dynamic value)
-        {
-            return Color.FromArgb((int)(255 * (value / 100f)), (int)(255 * (value / 100f)), (int)(255 * (value / 100f)));
-        }
-    }
-
-    [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General2D)]
-    [FlowDesignerCategory(FlowCategory.Initials)]
-    [FlowDesignerName("Smooth Perlin")]
-    public class AlgorithmPerlinSmooth : Algorithm<int>
+    [FlowDesignerName("Perlin Noise")]
+    public class AlgorithmPerlin : Algorithm<int>
     {
         [DataMember]
         [DefaultValue(10)]
@@ -105,12 +52,21 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
-        public override bool Is2DOnly
+        [DataMember]
+        [DefaultValue(true)]
+        [Description("Show this layer as 2D in the editor.")]
+        public bool Layer2D
         {
-            get { return false; }
+            get;
+            set;
         }
         
-        public AlgorithmPerlinSmooth()
+        public override bool Is2DOnly
+        {
+            get { return this.Layer2D; }
+        }
+        
+        public AlgorithmPerlin()
             : base()
         {
             // Set defaults.
@@ -118,6 +74,7 @@ namespace Tychaia.ProceduralGeneration
             this.Modifier = new Random().Next();
             this.MinValue = 0;
             this.MaxValue = 100;
+            this.Layer2D = false;
         }
 
         private PerlinNoise m_PerlinNoise = null;
@@ -129,8 +86,16 @@ namespace Tychaia.ProceduralGeneration
 
         public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            double noise = this.m_PerlinNoise.Noise((x) / this.Scale, (y) / this.Scale, (z) / this.Scale) / 2.0 + 0.5;
-            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = (int)((noise * (this.MaxValue - this.MinValue)) + this.MinValue);
+            if (!Layer2D)
+            {
+                double noise = this.m_PerlinNoise.Noise((x) / this.Scale, (y) / this.Scale, (z) / this.Scale) / 2.0 + 0.5;
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = (int)((noise * (this.MaxValue - this.MinValue)) + this.MinValue);
+            }
+            else
+            {
+                double noise = this.m_PerlinNoise.Noise((x) / this.Scale, (y) / this.Scale, 0) / 2.0 + 0.5;
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = (int)((noise * (this.MaxValue - this.MinValue)) + this.MinValue);
+            }
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)

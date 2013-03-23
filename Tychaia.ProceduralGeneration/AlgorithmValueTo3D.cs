@@ -12,8 +12,8 @@ using System.Drawing;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.Specific3D)]
-    [FlowDesignerCategory(FlowCategory.Land)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
+    [FlowDesignerCategory(FlowCategory.Output)]
     [FlowDesignerName("Value To 3D")]
     public class AlgorithmValueTo3D : Algorithm<int, int>
     {        

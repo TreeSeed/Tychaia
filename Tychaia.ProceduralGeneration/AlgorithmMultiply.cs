@@ -12,7 +12,7 @@ namespace Tychaia.ProceduralGeneration
 {
 
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General2D)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Manipulation)]
     [FlowDesignerName("Value Multiply")]
     public class AlgorithmMultiply : Algorithm<int, int, int>

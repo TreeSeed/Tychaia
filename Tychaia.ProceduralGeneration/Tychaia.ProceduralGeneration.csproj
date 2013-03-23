@@ -78,7 +78,6 @@
     <Compile Include="AlgorithmBiomes.cs" />
     <Compile Include="Biomes\GrasslandBiome.cs" />
     <Compile Include="AlgorithmPassthrough.cs" />
-    <Compile Include="AlgorithmMixdown.cs" />
     <Compile Include="AlgorithmDebuggingInitial.cs" />
     <Compile Include="AlgorithmDebuggingDelegate.cs" />
     <Compile Include="AlgorithmPerlin.cs" />
@@ -91,6 +90,7 @@
     <Compile Include="AlgorithmZoom2D.cs" />
     <Compile Include="AlgorithmAdd.cs" />
     <Compile Include="AlgorithmValueTo3D.cs" />
+    <Compile Include="AlgorithmAverage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

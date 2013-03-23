@@ -10,9 +10,9 @@ using System.ComponentModel;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.Specific2D)]
-    [FlowDesignerCategory(FlowCategory.Land)]
-    [FlowDesignerName("Extend Land")]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
+    [FlowDesignerCategory(FlowCategory.Zooming)]
+    [FlowDesignerName("2D Extend Value")]
     public class AlgorithmExtend : Algorithm<int, int>
     {
         [DataMember]
@@ -75,13 +75,13 @@ namespace Tychaia.ProceduralGeneration
             // Nevermind have to remake this entire section anyway, too many || && and its getting confusing and over extended.
             // Wondering exactly how to do that - something about having setting checks at the start (then setting booleans) I think, then utilize that throughtout (rather than having multiple checks).
             // Also any other features you can think of?
-            if ((input[(i + ox) + (j + oy) * width + (k + oz) * width * height] == Value && ExcludeValue == true) || (input[(i + ox) + (j + oy) * width + (k + oz) * width * height] != Value && ExcludeValue == false))
+            if ((input[(i + ox) + (j + oy) * width + (k + oz) * width * height] == Value && ExcludeValue) || (input[(i + ox) + (j + oy) * width + (k + oz) * width * height] != Value && ExcludeValue == false))
             {
                 int checkvalue = 50;
 
                 for (int a = 0; a < 1; a++)
                 {
-                    int selected = context.GetRandomRange(x, y, 0, 8, context.Modifier + checkvalue);
+                    int selected = context.GetRandomRange(x, y, z, 8, context.Modifier + checkvalue);
                 
                     switch (selected)
                     {
@@ -111,15 +111,15 @@ namespace Tychaia.ProceduralGeneration
                             break;
                     }
 
-                    if (this.NeighborChancing == true && checkvalue < (input[((i + ox) + 1) + ((j + oy) + 1) * width + (k + oz) * width * height]
-                                                                       + input[((i + ox) - 1) + ((j + oy) - 1) * width + (k + oz) * width * height] 
-                                                                       + input[((i + ox) - 1) + ((j + oy) + 1) * width + (k + oz) * width * height] 
-                                                                       + input[((i + ox) + 1) + ((j + oy) - 1) * width + (k + oz) * width * height] 
-                                                                       + input[((i + ox) + 0) + ((j + oy) - 1) * width + (k + oz) * width * height] 
-                                                                       + input[((i + ox) + 1) + ((j + oy) - 0) * width + (k + oz) * width * height] 
-                                                                       + input[((i + ox) + 0) + ((j + oy) + 1) * width + (k + oz) * width * height] 
-                                                                       + input[((i + ox) - 1) + ((j + oy) - 0) * width + (k + oz) * width * height]))
-                    if ((output[(i + ox) + (j + oy) * width + (k + oz) * width * height] == Value && ExcludeValue == true) || (output[(i + ox) + (j + oy) * width + (k + oz) * width * height] != Value && ExcludeValue == false))
+                    if (this.NeighborChancing && checkvalue < (input[((i + ox) + 1) + ((j + oy) + 1) * width + (k + oz) * width * height]
+                        + input[((i + ox) - 1) + ((j + oy) - 1) * width + (k + oz) * width * height] 
+                        + input[((i + ox) - 1) + ((j + oy) + 1) * width + (k + oz) * width * height] 
+                        + input[((i + ox) + 1) + ((j + oy) - 1) * width + (k + oz) * width * height] 
+                        + input[((i + ox) + 0) + ((j + oy) - 1) * width + (k + oz) * width * height] 
+                        + input[((i + ox) + 1) + ((j + oy) - 0) * width + (k + oz) * width * height] 
+                        + input[((i + ox) + 0) + ((j + oy) + 1) * width + (k + oz) * width * height] 
+                        + input[((i + ox) - 1) + ((j + oy) - 0) * width + (k + oz) * width * height]))
+                    if ((output[(i + ox) + (j + oy) * width + (k + oz) * width * height] == Value && ExcludeValue) || (output[(i + ox) + (j + oy) * width + (k + oz) * width * height] != Value && ExcludeValue))
                     {
                         checkvalue += 50;
                         a--;

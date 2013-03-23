@@ -12,10 +12,10 @@ using Protogame.Noise;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General2D)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Manipulation)]
-    [FlowDesignerName("Value Mixdown")]
-    public class AlgorithmMixdown : Algorithm<int, int, int>
+    [FlowDesignerName("Value Average")]
+    public class AlgorithmAverage : Algorithm<int, int, int>
     {
         [DataMember]
         [DefaultValue(1.0)]
@@ -72,7 +72,7 @@ namespace Tychaia.ProceduralGeneration
             get { return new string[] { "Input A", "Input B" }; }
         }
 
-        public AlgorithmMixdown()
+        public AlgorithmAverage()
         {
             this.InputAWorth = 1.0;
             this.InputBWorth = 1.0;
