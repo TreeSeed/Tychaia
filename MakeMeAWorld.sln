@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeMeAWorld", "MakeMeAWorld\MakeMeAWorld.csproj", "{74591317-9179-43D8-83A3-FFBEEB57B92F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.ProceduralGeneration", "Tychaia.ProceduralGeneration\Tychaia.ProceduralGeneration.csproj", "{4298E98C-3351-4FB2-A8FF-B466915A239F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Globals", "Tychaia.Globals\Tychaia.Globals.csproj", "{58F07D5A-E86E-4561-88E8-F96744D59157}"
@@ -18,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.ProceduralGeneration.Legacy", "Tychaia.ProceduralGeneration.Legacy\Tychaia.ProceduralGeneration.Legacy.csproj", "{641D5815-4533-4146-96C1-D932FE1641F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redpoint.FlowGraph", "Libraries\Redpoint.FlowGraph\Redpoint.FlowGraph.csproj", "{996097C6-F59B-4395-A3C5-BECDCE904690}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeMeAWorld", "MakeMeAWorld\MakeMeAWorld.csproj", "{A1B9925E-2393-44E6-976B-9E1928D8B322}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,10 +59,6 @@ Global
 		{641D5815-4533-4146-96C1-D932FE1641F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{641D5815-4533-4146-96C1-D932FE1641F9}.Release|x86.ActiveCfg = Release|Any CPU
 		{641D5815-4533-4146-96C1-D932FE1641F9}.Release|x86.Build.0 = Release|Any CPU
-		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{996097C6-F59B-4395-A3C5-BECDCE904690}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{996097C6-F59B-4395-A3C5-BECDCE904690}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{996097C6-F59B-4395-A3C5-BECDCE904690}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -71,6 +67,14 @@ Global
 		{996097C6-F59B-4395-A3C5-BECDCE904690}.Release|Any CPU.Build.0 = Release|Any CPU
 		{996097C6-F59B-4395-A3C5-BECDCE904690}.Release|x86.ActiveCfg = Release|Any CPU
 		{996097C6-F59B-4395-A3C5-BECDCE904690}.Release|x86.Build.0 = Release|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Debug|x86.Build.0 = Debug|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Release|x86.ActiveCfg = Release|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Release|x86.Build.0 = Release|Any CPU
 		{C5966454-0813-47E9-A652-05E3CD35E2E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C5966454-0813-47E9-A652-05E3CD35E2E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5966454-0813-47E9-A652-05E3CD35E2E0}.Debug|x86.ActiveCfg = Debug|x86

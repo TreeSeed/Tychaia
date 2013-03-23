@@ -12,7 +12,16 @@
         <script src="_js/BlobBuilder.js" type="text/javascript"></script>
         <script src="_js/canvas-toBlob.js" type="text/javascript"></script>
         <script src="_js/FileSaver.js" type="text/javascript"></script>
-        <script src="_js/logic.js" type="text/javascript"></script>
+        <script src="_js/mmaw-misc.js" type="text/javascript"></script>
+        <script src="_js/mmaw-rendering.js" type="text/javascript"></script>
+        <script src="_js/mmaw-settings.js" type="text/javascript"></script>
+        <script src="_js/mmaw-controller.js" type="text/javascript"></script>
+        <script src="_js/mmaw-ui-main.js" type="text/javascript"></script>
+        <script src="_js/mmaw-ui-processing.js" type="text/javascript"></script>
+        <script src="_js/mmaw-ui-results.js" type="text/javascript"></script>
+        <script src="_js/mmaw-ui-main-and-processing.js" type="text/javascript"></script>
+        <script src="_js/mmaw-ui-results-and-processing.js" type="text/javascript"></script>
+        <script src="_js/mmaw.js" type="text/javascript"></script>
         <link rel="stylesheet" href="_css/main.css" />
     </head>
     <body style="margin: 0px; padding: 0px;">
@@ -73,10 +82,10 @@
                     <div id="advancedOptions" style="display: none;" class="well">
                         <form class="form-horizontal">
                             <div class="control-group">
-                                <label class="control-label" for="outputFormat">Output Layer</label>
+                                <label class="control-label" for="outputLayer">Output Layer</label>
                                 <div class="controls">
-                                    <select id="outputFormat">
-                                        <%=m_HtmlLayerOptions%>
+                                    <select id="outputLayer">
+                                        <%=HtmlLayerOptions%>
                                     </select>
                                 </div>
                             </div>
@@ -84,6 +93,9 @@
                                 <div class="controls">
                                     <label class="checkbox">
                                         <input type="checkbox" id="enableRenderDebugging" /> Enable render debugging
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" id="serverSideRendering" /> Render server side (slower, but more reliable)
                                     </label>
                                 </div>
                             </div>

@@ -17,7 +17,7 @@ namespace Tychaia.Threading
     /// <remarks>
     /// http://stackoverflow.com/questions/15571620/issue-with-threaded-queue-implementation-in-net
     /// </remarks>
-    public class TaskPipeline<T>
+    public class ThreadedTaskPipeline<T> : IPipeline<T>
     {
         private int? m_InputThread;
         private int? m_OutputThread;
@@ -29,7 +29,7 @@ namespace Tychaia.Threading
         /// considered to be the input side of the pipeline.  The
         /// output thread should call Connect().
         /// </summary>
-        public TaskPipeline()
+        public ThreadedTaskPipeline()
         {
             this.m_InputThread = Thread.CurrentThread.ManagedThreadId;
             this.m_OutputThread = null;

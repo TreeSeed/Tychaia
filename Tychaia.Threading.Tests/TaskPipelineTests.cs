@@ -15,7 +15,7 @@ namespace Tychaia.Threading.Tests
         [Test]
         public void TestPipelineBasic()
         {
-            var pipeline = new TaskPipeline<int>();
+            var pipeline = new ThreadedTaskPipeline<int>();
             ThreadStart processor = () =>
             {
                 pipeline.Connect();
@@ -34,7 +34,7 @@ namespace Tychaia.Threading.Tests
         [Test]
         public void TestPipelineParallel()
         {
-            var pipeline = new TaskPipeline<int>();
+            var pipeline = new ThreadedTaskPipeline<int>();
             ThreadStart processor = () =>
             {
                 pipeline.Connect();
@@ -54,7 +54,7 @@ namespace Tychaia.Threading.Tests
         public void TestPipelineParallelTo1000()
         {
             var random = new Random();
-            var pipeline = new TaskPipeline<int>();
+            var pipeline = new ThreadedTaskPipeline<int>();
             var success = true;
             int expected = 0, actual = 0;
             ThreadStart processor = () =>
@@ -89,7 +89,7 @@ namespace Tychaia.Threading.Tests
         public void TestPipelineParallelTo1000TakeSided()
         {
             var random = new Random();
-            var pipeline = new TaskPipeline<int>();
+            var pipeline = new ThreadedTaskPipeline<int>();
             var success = true;
             int expected = 0, actual = 0;
             ThreadStart processor = () =>
@@ -124,7 +124,7 @@ namespace Tychaia.Threading.Tests
         public void TestPipelineParallelTo1000PutSided()
         {
             var random = new Random();
-            var pipeline = new TaskPipeline<int>();
+            var pipeline = new ThreadedTaskPipeline<int>();
             var success = true;
             int expected = 0, actual = 0;
             ThreadStart processor = () =>
@@ -159,7 +159,7 @@ namespace Tychaia.Threading.Tests
         public void TestPipelineParallelTo100()
         {
             var random = new Random();
-            var pipeline = new TaskPipeline<int>();
+            var pipeline = new ThreadedTaskPipeline<int>();
             var success = true;
             int expected = 0, actual = 0;
             ThreadStart processor = () =>
