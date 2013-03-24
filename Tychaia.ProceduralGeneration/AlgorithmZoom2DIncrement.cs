@@ -17,7 +17,7 @@ namespace Tychaia.ProceduralGeneration
     public class AlgorithmZoom2DIncrement : Algorithm<int, int>
     {
         [DataMember]
-        [DefaultValue(ZoomType.Square)]
+        [DefaultValue(ZoomType.Smooth)]
         [Description("The zooming algorithm to use.")]
         public ZoomType Mode
         {
@@ -42,9 +42,11 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
-        public override int[] RequiredXBorder { get { return new int[] {3}; } }
-        public override int[] RequiredYBorder { get { return new int[] {3}; } }
+
+        // Keep offsets odd (otherwise it screws it up)
+        // TODO: Fix offsets odd not giving the correct ocx/ocy values
+        public override int[] RequiredXBorder { get { return new int[] {4}; } }
+        public override int[] RequiredYBorder { get { return new int[] {4}; } }
         public override int[] RequiredZBorder { get { return new int[] {0}; } }
         public override bool[] InputWidthAtHalfSize { get { return new bool[] {true}; } }
         public override bool[] InputHeightAtHalfSize { get { return new bool[] {true}; } }
@@ -52,7 +54,7 @@ namespace Tychaia.ProceduralGeneration
         
         public AlgorithmZoom2DIncrement()
         {
-            this.Mode = ZoomType.Square;
+            this.Mode = ZoomType.Smooth;
             this.EstimateMax = 5;
             this.ColorSet = ColorScheme.Land;
         }
@@ -69,30 +71,55 @@ namespace Tychaia.ProceduralGeneration
         
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            int ocx = ((x - i) % 2 == 0 ? 0 : (i % 2));
-            int ocy = ((y - j) % 2 == 0 ? 0 : (j % 2));
-            int ocz = 0;
+            // Offsets for all positions
+            bool ocx = (x - i) % 2 == 0;
+            bool ocy = (y - j) % 2 == 0;
+            int ocxv = (ocx ? 0 : (i % 2)); // Shifting by an even number
+            int ocxvo = (ocx ? 0 : ((i + 1) % 2)); // Shifting by an odd number
+            int ocyv = (ocy ? 0 : (j % 2));
+            int ocyvo = (ocy ? 0 : ((j + 1) % 2));
+            int ocz = 0; // Just a placeholder here
 
             // Working out current cell value
-            int v00 = input[(i / 2 + ox + ocx - 1) + (j / 2 + oy + ocy - 1) * width + (k + oz + ocz) * width * height];
-            int v01 = input[(i / 2 + ox + ocx - 1) + (j / 2 + oy + ocy) * width + (k + oz + ocz) * width * height];
-            int v02 = input[(i / 2 + ox + ocx - 1) + (j / 2 + oy + ocy + 1) * width + (k + oz + ocz) * width * height];
-            int v10 = input[(i / 2 + ox + ocx) + (j / 2 + oy + ocy - 1) * width + (k + oz + ocz) * width * height];
-            int v11 = input[(i / 2 + ox + ocx) + (j / 2 + oy + ocy) * width + (k + oz + ocz) * width * height];
-            int v12 = input[(i / 2 + ox + ocx) + (j / 2 + oy + ocy + 1) * width + (k + oz + ocz) * width * height];
-            int v20 = input[(i / 2 + ox + ocx + 1) + (j / 2 + oy + ocy - 1) * width + (k + oz + ocz) * width * height];
-            int v21 = input[(i / 2 + ox + ocx + 1) + (j / 2 + oy + ocy) * width + (k + oz + ocz) * width * height];
-            int v22 = input[(i / 2 + ox + ocx + 1) + (j / 2 + oy + ocy + 1) * width + (k + oz + ocz) * width * height];
+            int v00 = input[((i + 0) / 2 + ox + ocxv - 1) + ((j + 0) / 2 + oy + ocyv - 1) * width + (k + oz + ocz) * width * height];
+            int v01 = input[((i + 0) / 2 + ox + ocxv - 1) + ((j + 0) / 2 + oy + ocyv - 0) * width + (k + oz + ocz) * width * height];
+            int v02 = input[((i + 0) / 2 + ox + ocxv - 1) + ((j + 0) / 2 + oy + ocyv + 1) * width + (k + oz + ocz) * width * height];
+            int v10 = input[((i + 0) / 2 + ox + ocxv + 0)  + ((j + 0) / 2 + oy + ocyv - 1) * width + (k + oz + ocz) * width * height];
+            int v11 = input[((i + 0) / 2 + ox + ocxv + 0)  + ((j + 0) / 2 + oy + ocyv) * width + (k + oz + ocz) * width * height];
+            int v12 = input[((i + 0) / 2 + ox + ocxv + 0)  + ((j + 0) / 2 + oy + ocyv + 1) * width + (k + oz + ocz) * width * height];
+            int v20 = input[((i + 0) / 2 + ox + ocxv + 1) + ((j + 0) / 2 + oy + ocyv - 1) * width + (k + oz + ocz) * width * height];
+            int v21 = input[((i + 0) / 2 + ox + ocxv + 1) + ((j + 0) / 2 + oy + ocyv + 0) * width + (k + oz + ocz) * width * height];
+            int v22 = input[((i + 0) / 2 + ox + ocxv + 1) + ((j + 0) / 2 + oy + ocyv + 1) * width + (k + oz + ocz) * width * height];
 
             // v11 is the center value we're zooming in on.
             int mod = 0;
 
-            if ((v00 < v11 || v20 < v11 || v02 < v11 || v22 < v11) && v11 > 0)
+            if (v11 > 0)
+                if (v00 > v11 ||
+                    v01 > v11 ||
+                    v02 > v11 ||
+                    v10 > v11 ||
+                    v12 > v11 ||
+                    v20 > v11 ||
+                    v21 > v11 ||
+                    v22 > v11)
+                    mod = 0;
+            else
                 mod = 1;
-            else if (v11 < 0 && (v01 > v11 || v10 > v11 || v21 > v11 || v12 > v11))
+            else
+                if (v00 < v11 ||
+                    v01 < v11 ||
+                    v02 < v11 ||
+                    v10 < v11 ||
+                    v12 < v11 ||
+                    v20 < v11 ||
+                    v21 < v11 ||
+                    v22 < v11)
+                    mod = 0;
+            else
                 mod = -1;
 
-            int current = v11 * 2 - mod;
+            int current = v11 + mod;
 
             if (this.Mode == ZoomType.Square)
                 output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
@@ -113,28 +140,44 @@ namespace Tychaia.ProceduralGeneration
                 else
                     selected = context.GetRandomRange(x, y, 0, 2);
                 
-                int ocx_e = ((x - i) % 2 == 0 ? 0 : ((i + 1) % 2));
-
                 // Working out current cell value
-                v00 = input[((i + 1)/ 2 + ox + ocx_e - 1) + (j / 2 + oy + ocy - 1) * width + (k + oz + ocz) * width * height];
-                v01 = input[((i + 1)/ 2 + ox + ocx_e - 1) + (j / 2 + oy + ocy) * width + (k + oz + ocz) * width * height];
-                v02 = input[((i + 1)/ 2 + ox + ocx_e - 1) + (j / 2 + oy + ocy + 1) * width + (k + oz + ocz) * width * height];
-                v10 = input[((i + 1)/ 2 + ox + ocx_e) + (j / 2 + oy + ocy - 1) * width + (k + oz + ocz) * width * height];
-                v11 = input[((i + 1)/ 2 + ox + ocx_e) + (j / 2 + oy + ocy) * width + (k + oz + ocz) * width * height];
-                v12 = input[((i + 1)/ 2 + ox + ocx_e) + (j / 2 + oy + ocy + 1) * width + (k + oz + ocz) * width * height];
-                v20 = input[((i + 1)/ 2 + ox + ocx_e + 1) + (j / 2 + oy + ocy - 1) * width + (k + oz + ocz) * width * height];
-                v21 = input[((i + 1)/ 2 + ox + ocx_e + 1) + (j / 2 + oy + ocy) * width + (k + oz + ocz) * width * height];
-                v22 = input[((i + 1)/ 2 + ox + ocx_e + 1) + (j / 2 + oy + ocy + 1) * width + (k + oz + ocz) * width * height];
+                v00 = input[((i + 1) / 2 + ox + ocxvo - 1) + ((j + 0) / 2 + oy + ocyv - 1) * width + (k + oz + ocz) * width * height];
+                v01 = input[((i + 1) / 2 + ox + ocxvo - 1) + ((j + 0) / 2 + oy + ocyv - 0) * width + (k + oz + ocz) * width * height];
+                v02 = input[((i + 1) / 2 + ox + ocxvo - 1) + ((j + 0) / 2 + oy + ocyv + 1) * width + (k + oz + ocz) * width * height];
+                v10 = input[((i + 1) / 2 + ox + ocxvo + 0)  + ((j + 0) / 2 + oy + ocyv - 1) * width + (k + oz + ocz) * width * height];
+                v11 = input[((i + 1) / 2 + ox + ocxvo + 0)  + ((j + 0) / 2 + oy + ocyv) * width + (k + oz + ocz) * width * height];
+                v12 = input[((i + 1) / 2 + ox + ocxvo + 0)  + ((j + 0) / 2 + oy + ocyv + 1) * width + (k + oz + ocz) * width * height];
+                v20 = input[((i + 1) / 2 + ox + ocxvo + 1) + ((j + 0) / 2 + oy + ocyv - 1) * width + (k + oz + ocz) * width * height];
+                v21 = input[((i + 1) / 2 + ox + ocxvo + 1) + ((j + 0) / 2 + oy + ocyv + 0) * width + (k + oz + ocz) * width * height];
+                v22 = input[((i + 1) / 2 + ox + ocxvo + 1) + ((j + 0) / 2 + oy + ocyv + 1) * width + (k + oz + ocz) * width * height];
                 
                 // v11 is the center value we're zooming in on.
-                mod = 0;
-                
-                if ((v00 < v11 || v20 < v11 || v02 < v11 || v22 < v11) && v11 > 0)
-                    mod = 1;
-                else if (v11 < 0 && (v01 > v11 || v10 > v11 || v21 > v11 || v12 > v11))
-                    mod = -1;
+                if (v11 > 0)
+                    if (v00 > v11 ||
+                        v01 > v11 ||
+                        v02 > v11 ||
+                        v10 > v11 ||
+                        v12 > v11 ||
+                        v20 > v11 ||
+                        v21 > v11 ||
+                        v22 > v11)
+                        mod = 0;
+                    else
+                        mod = 1;
+                else
+                    if (v00 < v11 ||
+                        v01 < v11 ||
+                        v02 < v11 ||
+                        v10 < v11 ||
+                        v12 < v11 ||
+                        v20 < v11 ||
+                        v21 < v11 ||
+                        v22 < v11)
+                        mod = 0;
+                    else
+                        mod = -1;
 
-                int east = v11 * 2 - mod;
+                int east = v11 + mod;
 
                 switch (selected)
                 {
@@ -142,28 +185,45 @@ namespace Tychaia.ProceduralGeneration
                         output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
                         break;
                     case 1:
-                        int ocy_s = ((y - j) % 2 == 0 ? 0 : ((j + 1) % 2));
 
                         // Working out current cell value
-                        v00 = input[(i / 2 + ox + ocx - 1) + ((j + 1) / 2 + oy + ocy_s - 1) * width + (k + oz + ocz) * width * height];
-                        v01 = input[(i / 2 + ox + ocx - 1) + ((j + 1) / 2 + oy + ocy_s) * width + (k + oz + ocz) * width * height];
-                        v02 = input[(i / 2 + ox + ocx - 1) + ((j + 1) / 2 + oy + ocy_s + 1) * width + (k + oz + ocz) * width * height];
-                        v10 = input[(i / 2 + ox + ocx) + ((j + 1) / 2 + oy + ocy_s - 1) * width + (k + oz + ocz) * width * height];
-                        v11 = input[(i / 2 + ox + ocx) + ((j + 1) / 2 + oy + ocy_s) * width + (k + oz + ocz) * width * height];
-                        v12 = input[(i / 2 + ox + ocx) + ((j + 1) / 2 + oy + ocy_s + 1) * width + (k + oz + ocz) * width * height];
-                        v20 = input[(i / 2 + ox + ocx + 1) + ((j + 1) / 2 + oy + ocy_s - 1) * width + (k + oz + ocz) * width * height];
-                        v21 = input[(i / 2 + ox + ocx + 1) + ((j + 1) / 2 + oy + ocy_s) * width + (k + oz + ocz) * width * height];
-                        v22 = input[(i / 2 + ox + ocx + 1) + ((j + 1) / 2 + oy + ocy_s + 1) * width + (k + oz + ocz) * width * height];
+                        v00 = input[((i + 0) / 2 + ox + ocxv - 1) + ((i + 1) / 2 + oy + ocyvo - 1) * width + (k + oz + ocz) * width * height];
+                        v01 = input[((i + 0) / 2 + ox + ocxv - 1) + ((i + 1) / 2 + oy + ocyvo - 0) * width + (k + oz + ocz) * width * height];
+                        v02 = input[((i + 0) / 2 + ox + ocxv - 1) + ((i + 1) / 2 + oy + ocyvo + 1) * width + (k + oz + ocz) * width * height];
+                        v10 = input[((i + 0) / 2 + ox + ocxv + 0)  + ((i + 1) / 2 + oy + ocyvo - 1) * width + (k + oz + ocz) * width * height];
+                        v11 = input[((i + 0) / 2 + ox + ocxv + 0)  + ((i + 1) / 2 + oy + ocyvo) * width + (k + oz + ocz) * width * height];
+                        v12 = input[((i + 0) / 2 + ox + ocxv + 0)  + ((i + 1) / 2 + oy + ocyvo + 1) * width + (k + oz + ocz) * width * height];
+                        v20 = input[((i + 0) / 2 + ox + ocxv + 1) + ((i + 1) / 2 + oy + ocyvo - 1) * width + (k + oz + ocz) * width * height];
+                        v21 = input[((i + 0) / 2 + ox + ocxv + 1) + ((i + 1) / 2 + oy + ocyvo + 0) * width + (k + oz + ocz) * width * height];
+                        v22 = input[((i + 0) / 2 + ox + ocxv + 1) + ((i + 1) / 2 + oy + ocyvo + 1) * width + (k + oz + ocz) * width * height];
                         
                         // v11 is the center value we're zooming in on.
-                        mod = 0;
-                        
-                        if ((v00 < v11 || v20 < v11 || v02 < v11 || v22 < v11) && v11 > 0)
+                        if (v11 > 0)
+                            if (v00 > v11 ||
+                                v01 > v11 ||
+                                v02 > v11 ||
+                                v10 > v11 ||
+                                v12 > v11 ||
+                                v20 > v11 ||
+                                v21 > v11 ||
+                                v22 > v11)
+                                mod = 0;
+                        else
                             mod = 1;
-                        else if (v11 < 0 && (v01 > v11 || v10 > v11 || v21 > v11 || v12 > v11))
+                        else
+                            if (v00 < v11 ||
+                                v01 < v11 ||
+                                v02 < v11 ||
+                                v10 < v11 ||
+                                v12 < v11 ||
+                                v20 < v11 ||
+                                v21 < v11 ||
+                                v22 < v11)
+                                mod = 0;
+                        else
                             mod = -1;
                         
-                        int south = v11 * 2 - mod;
+                        int south = v11 + mod;
 
                         if (xmod)
                             output[i + ox + (j + oy) * width + (k + oz) * width * height] = south;
@@ -177,25 +237,43 @@ namespace Tychaia.ProceduralGeneration
                         break;
                     case 3:
                         // Working out current cell value
-                        v00 = input[((i + 2) / 2 + ox + ocx - 1) + ((j + 2) / 2 + oy + ocy - 1) * width + (k + oz + ocz) * width * height];
-                        v01 = input[((i + 2) / 2 + ox + ocx - 1) + ((j + 2) / 2 + oy + ocy) * width + (k + oz + ocz) * width * height];
-                        v02 = input[((i + 2) / 2 + ox + ocx - 1) + ((j + 2) / 2 + oy + ocy + 1) * width + (k + oz + ocz) * width * height];
-                        v10 = input[((i + 2) / 2 + ox + ocx) + ((j + 2) / 2 + oy + ocy - 1) * width + (k + oz + ocz) * width * height];
-                        v11 = input[((i + 2) / 2 + ox + ocx) + ((j + 2) / 2 + oy + ocy) * width + (k + oz + ocz) * width * height];
-                        v12 = input[((i + 2) / 2 + ox + ocx) + ((j + 2) / 2 + oy + ocy + 1) * width + (k + oz + ocz) * width * height];
-                        v20 = input[((i + 2) / 2 + ox + ocx + 1) + ((j + 2) / 2 + oy + ocy - 1) * width + (k + oz + ocz) * width * height];
-                        v21 = input[((i + 2) / 2 + ox + ocx + 1) + ((j + 2) / 2 + oy + ocy) * width + (k + oz + ocz) * width * height];
-                        v22 = input[((i + 2) / 2 + ox + ocx + 1) + ((j + 2) / 2 + oy + ocy + 1) * width + (k + oz + ocz) * width * height];
+                        v00 = input[((i + 2) / 2 + ox + ocxv - 1) + ((j + 2) / 2 + oy + ocyv - 1) * width + (k + oz + ocz) * width * height];
+                        v01 = input[((i + 2) / 2 + ox + ocxv - 1) + ((j + 2) / 2 + oy + ocyv - 0) * width + (k + oz + ocz) * width * height];
+                        v02 = input[((i + 2) / 2 + ox + ocxv - 1) + ((j + 2) / 2 + oy + ocyv + 1) * width + (k + oz + ocz) * width * height];
+                        v10 = input[((i + 2) / 2 + ox + ocxv + 0)  + ((j + 2) / 2 + oy + ocyv - 1) * width + (k + oz + ocz) * width * height];
+                        v11 = input[((i + 2) / 2 + ox + ocxv + 0)  + ((j + 2) / 2 + oy + ocyv) * width + (k + oz + ocz) * width * height];
+                        v12 = input[((i + 2) / 2 + ox + ocxv + 0)  + ((j + 2) / 2 + oy + ocyv + 1) * width + (k + oz + ocz) * width * height];
+                        v20 = input[((i + 2) / 2 + ox + ocxv + 1) + ((j + 2) / 2 + oy + ocyv - 1) * width + (k + oz + ocz) * width * height];
+                        v21 = input[((i + 2) / 2 + ox + ocxv + 1) + ((j + 2) / 2 + oy + ocyv + 0) * width + (k + oz + ocz) * width * height];
+                        v22 = input[((i + 2) / 2 + ox + ocxv + 1) + ((j + 2) / 2 + oy + ocyv + 1) * width + (k + oz + ocz) * width * height];
                         
                         // v11 is the center value we're zooming in on.
-                        mod = 0;
-                        
-                        if ((v00 < v11 || v20 < v11 || v02 < v11 || v22 < v11) && v11 > 0)
+                        if (v11 > 0)
+                            if (v00 > v11 ||
+                                v01 > v11 ||
+                                v02 > v11 ||
+                                v10 > v11 ||
+                                v12 > v11 ||
+                                v20 > v11 ||
+                                v21 > v11 ||
+                                v22 > v11)
+                                mod = 0;
+                        else
                             mod = 1;
-                        else if (v11 < 0 && (v01 > v11 || v10 > v11 || v21 > v11 || v12 > v11))
+                        else
+                            if (v00 < v11 ||
+                                v01 < v11 ||
+                                v02 < v11 ||
+                                v10 < v11 ||
+                                v12 < v11 ||
+                                v20 < v11 ||
+                                v21 < v11 ||
+                                v22 < v11)
+                                mod = 0;
+                        else
                             mod = -1;
                         
-                        int southEast = v11 * 2 - mod;
+                        int southEast = v11 + mod;
 
                         output[i + ox + (j + oy) * width + (k + oz) * width * height] = southEast;
                         break;
@@ -237,14 +315,18 @@ namespace Tychaia.ProceduralGeneration
             
             if (a > 255)
                 a = 255;
+            else if (a < -255)
+                a = -255;
 
             if (this.ColorSet == ColorScheme.Perlin)
                 return Color.FromArgb(a, a, a);
             else if (this.ColorSet == ColorScheme.Land)
                 if (a == 0)
-                    return Color.Blue;
-                else
+                    return Color.FromArgb(0, 0, 255);
+                else if (a > 0)
                     return Color.FromArgb(0, a, 0);
+                else
+                    return Color.FromArgb(0, 0, 255 + a);
             else
                 return Color.Gray;
         }

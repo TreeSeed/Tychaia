@@ -16,7 +16,7 @@ namespace Tychaia.ProceduralGeneration
     public class AlgorithmZoom2D : Algorithm<int, int>
     {
         [DataMember]
-        [DefaultValue(ZoomType.Square)]
+        [DefaultValue(ZoomType.Smooth)]
         [Description("The zooming algorithm to use.")]
         public ZoomType Mode
         {
@@ -33,7 +33,7 @@ namespace Tychaia.ProceduralGeneration
         
         public AlgorithmZoom2D()
         {
-            this.Mode = ZoomType.Square;
+            this.Mode = ZoomType.Smooth;
         }
 
         public override string[] InputNames

@@ -51,7 +51,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Threading.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protogame.Math", "Protogame.Math\Protogame.Math.csproj", "{C5966454-0813-47E9-A652-05E3CD35E2E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeMeAWorld", "MakeMeAWorld\MakeMeAWorld.csproj", "{74591317-9179-43D8-83A3-FFBEEB57B92F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeMeAWorld", "MakeMeAWorld\MakeMeAWorld.csproj", "{A1B9925E-2393-44E6-976B-9E1928D8B322}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protogame.Efficiency", "Protogame.Efficiency\Protogame.Efficiency.csproj", "{ADDEEFA0-B802-4E5F-8824-D72D5190D2EA}"
 EndProject
@@ -186,14 +186,6 @@ Global
 		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Release (prebuilt MonoGame)|Any CPU.Build.0 = Release|Any CPU
 		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Debug (prebuilt MonoGame)|Any CPU.ActiveCfg = Debug|Any CPU
-		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Debug (prebuilt MonoGame)|Any CPU.Build.0 = Debug|Any CPU
-		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Release (prebuilt MonoGame)|Any CPU.ActiveCfg = Release|Any CPU
-		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Release (prebuilt MonoGame)|Any CPU.Build.0 = Release|Any CPU
-		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74591317-9179-43D8-83A3-FFBEEB57B92F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{74FD2B9A-7400-4487-9401-CC78855C739C}.Debug (prebuilt MonoGame)|Any CPU.ActiveCfg = Debug|Any CPU
 		{74FD2B9A-7400-4487-9401-CC78855C739C}.Debug (prebuilt MonoGame)|Any CPU.Build.0 = Debug|Any CPU
 		{74FD2B9A-7400-4487-9401-CC78855C739C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -268,6 +260,14 @@ Global
 		{996097C6-F59B-4395-A3C5-BECDCE904690}.Release (prebuilt MonoGame)|Any CPU.Build.0 = Release|Any CPU
 		{996097C6-F59B-4395-A3C5-BECDCE904690}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{996097C6-F59B-4395-A3C5-BECDCE904690}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Debug (prebuilt MonoGame)|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Debug (prebuilt MonoGame)|Any CPU.Build.0 = Debug|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Release (prebuilt MonoGame)|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Release (prebuilt MonoGame)|Any CPU.Build.0 = Release|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B9925E-2393-44E6-976B-9E1928D8B322}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A6933395-45D0-40AA-820C-3716746F6141}.Debug (prebuilt MonoGame)|Any CPU.ActiveCfg = Debug|Any CPU
 		{A6933395-45D0-40AA-820C-3716746F6141}.Debug (prebuilt MonoGame)|Any CPU.Build.0 = Debug|Any CPU
 		{A6933395-45D0-40AA-820C-3716746F6141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -396,7 +396,7 @@ Global
 		{7DE47032-A904-4C29-BD22-2D235E8D91BA} = {EBE4E351-21F0-4F20-BB06-6B0AE25C406B}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Tychaia.Threading.Tests\Tychaia.Threading.Tests.csproj
+		StartupItem = TychaiaWorldGenViewerAlgorithm\TychaiaWorldGenViewerAlgorithm.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.EolMarker = Unix
