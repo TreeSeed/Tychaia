@@ -22,7 +22,7 @@ namespace MakeMeAWorld
             var folder = context.Server.MapPath("~/App_Data/cached_" + layer + "_" + request.Seed);
             var cache = context.Server.MapPath("~/App_Data/cached_" + layer + "_" + request.Seed +
                 "/" + request.X + "_" + request.Y + "_" + request.Z +
-                "_" + request.Size + ".png");
+                "_" + request.Size + (request.Packed ? "_packed" : "") + ".png");
             if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
             return cache;
@@ -43,11 +43,22 @@ namespace MakeMeAWorld
         protected override void ProcessGeneration(GenerationResult result, HttpContext context)
         {
             var bitmap = RenderPartial3D(result);
+            this.SaveToCache(bitmap, result.Request, context);
+        }
+        
+        protected override void ProcessEmpty(GenerationResult result, HttpContext context)
+        {
+            var bitmap = new Bitmap(1, 1);
+            this.SaveToCache(bitmap, result.Request, context);
+        }
+
+        private void SaveToCache(Bitmap bitmap, GenerationRequest request, HttpContext context)
+        {
             try
             {
                 context.Response.ContentType = "image/png";
                 bitmap.Save(context.Response.OutputStream, ImageFormat.Png);
-                var cache = this.GetCacheName(result.Request, context);
+                var cache = this.GetCacheName(request, context);
                 if (cache != null)
                 {
                     try
@@ -177,7 +188,7 @@ namespace MakeMeAWorld
         {
             var width = result.Request.Size;
             var height = result.Request.Size;
-            var depth = result.Request.Size;
+            var depth = result.Layer.Algorithm.Is2DOnly ? 1 : result.Request.Size;
             var bitmap = new Bitmap(width * 2, height * 3);
             using (var graphics = Graphics.FromImage(bitmap))
             {
@@ -190,7 +201,7 @@ namespace MakeMeAWorld
                     var parentLayer = StorageAccess.FromRuntime(result.Layer.GetInputs()[0]);
                     for (int z = zbottom; z < ztop; z++)
                     {
-                        int rcx = width / 2 - 1 + 16;
+                        int rcx = width / 2 - 1 + 32;
                         int rcy = height / 2 - 15 + 32;
                         int rw = 2;
                         int rh = 1;

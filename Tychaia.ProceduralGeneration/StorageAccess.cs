@@ -88,8 +88,9 @@ namespace Tychaia.ProceduralGeneration
         {
             if (!allLayers.Contains(layer))
                 allLayers.Add(layer);
-            foreach (var input in layer.Inputs)
-                AddRecursiveStorage(allLayers, input);
+            if (layer.Inputs != null)
+                foreach (var input in layer.Inputs)
+                    AddRecursiveStorage(allLayers, input);
         }
 
         /// <summary>

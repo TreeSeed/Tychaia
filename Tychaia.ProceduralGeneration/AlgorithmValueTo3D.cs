@@ -56,18 +56,22 @@ namespace Tychaia.ProceduralGeneration
 
             int a;
 
-                double divvalue = (double)this.EstimateMax;
+            double divvalue = (double)this.EstimateMax;
                 
-                if (divvalue > 255)
-                    divvalue = 255;
-                else if (divvalue < 1)
-                    divvalue = 1;
+            if (divvalue > 255)
+                divvalue = 255;
+            else if (divvalue < 1)
+                divvalue = 1;
                 
-                a = (int)(value * ((double)255 / divvalue));
-                
-                if (a > 255)
-                    a = 255;
+            a = (int)(value * ((double)255 / divvalue));
+         
+            if (a < 0)
+                a = 0;
+            if (a > 255)
+                a = 255;
 
+            if (a == 0)
+                return Color.Transparent;
             return Color.FromArgb(a, a, a);
         }
     }

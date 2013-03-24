@@ -7,6 +7,9 @@ using System;
 using System.IO;
 using System.Web;
 using System.Text;
+using System.Collections.Generic;
+using System.Drawing;
+using Tychaia.ProceduralGeneration;
 
 namespace MakeMeAWorld
 {
@@ -18,7 +21,7 @@ namespace MakeMeAWorld
             var folder = context.Server.MapPath("~/App_Data/cached_" + layer + "_" + request.Seed);
             var cache = context.Server.MapPath("~/App_Data/cached_" + layer + "_" + request.Seed +
                 "/" + request.X + "_" + request.Y + "_" + request.Z +
-                "_" + request.Size + ".json");
+                "_" + request.Size + (request.Packed ? "_packed" : "") + ".json");
             try
             {
                 if (!Directory.Exists(folder))
@@ -41,7 +44,7 @@ namespace MakeMeAWorld
             }
             return false;
         }
-        
+
         protected override void ProcessGeneration(GenerationResult result, HttpContext context)
         {
             var cache = this.GetCacheName(result.Request, context);
@@ -50,24 +53,137 @@ namespace MakeMeAWorld
             {
                 using (var webWriter = new StreamWriter(context.Response.OutputStream))
                 {
-                    cacheWriter.Write("[");
-                    webWriter.Write("[");
+                    if (result.Request.Packed)
+                    {
+                        cacheWriter.Write("{\"empty\":false,\"packed\":true,\"data\":[");
+                        webWriter.Write("{\"empty\":false,\"packed\":true,\"data\":[");
+                        {
+                            var continuousValue = 0;
+                            var continuousCount = 1;
+                            var first = true;
+                            var i = 0;
+                            do
+                            {
+                                // Store the value into our continuity tracker.
+                                if (i != result.Data.Length)
+                                    continuousValue = result.Data[i];
+
+                                // Increment to the next position.
+                                i++;
+
+                                if (i == result.Data.Length ||
+                                    continuousValue != result.Data[i])
+                                {
+                                    // Output in the most efficient manner.
+                                    if (("[" + continuousCount + "," + continuousValue + "]").Length >
+                                        ((continuousValue.ToString().Length + 1) * continuousCount) - 1)
+                                    {
+                                        // Single value.
+                                        for (var a = 0; a < continuousCount; a++)
+                                        {
+                                            if (!first)
+                                            {
+                                                cacheWriter.Write(",");
+                                                webWriter.Write(",");
+                                            }
+                                            first = false;
+
+                                            cacheWriter.Write(continuousValue);
+                                            webWriter.Write(continuousValue);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (!first)
+                                        {
+                                            cacheWriter.Write(",");
+                                            webWriter.Write(",");
+                                        }
+                                        first = false;
+
+                                        // Multiple copies of the same
+                                        // value in a row.
+                                        cacheWriter.Write("[" + continuousCount + "," + continuousValue + "]");
+                                        webWriter.Write("[" + continuousCount + "," + continuousValue + "]");
+                                    }
+
+                                    // Reset the continity count.
+                                    continuousCount = 1;
+                                }
+                                else
+                                    continuousCount++;
+                            } while (i < result.Data.Length);
+                        }
+                    }
+                    else
+                    {
+                        cacheWriter.Write("{\"empty\":false,\"packed\":false,\"data\":[");
+                        webWriter.Write("{\"empty\":false,\"packed\":false,\"data\":[");
+                        {
+                            var first = true;
+                            for (var i = 0; i < result.Data.Length; i++)
+                            {
+                                if (!first)
+                                {
+                                    cacheWriter.Write(",");
+                                    webWriter.Write(",");
+                                }
+                                first = false;
+                                cacheWriter.Write(result.Data[i]);
+                                webWriter.Write(result.Data[i]);
+                            }
+                        }
+                    }
+                    cacheWriter.Write("],\"mappings\":{");
+                    webWriter.Write("],\"mappings\":{");
+                    var mappings = new Dictionary<int, Color>();
+                    var parentLayer = StorageAccess.FromRuntime(result.Layer.GetInputs()[0]);
                     for (var i = 0; i < result.Data.Length; i++)
                     {
-                        if (i != 0)
-                        {
-                            cacheWriter.Write(", ");
-                            webWriter.Write(", ");
-                        }
-                        cacheWriter.Write(i);
-                        webWriter.Write(i);
+                        if (!mappings.ContainsKey(result.Data[i]))
+                            mappings.Add(result.Data[i], 
+                                         result.Layer.Algorithm.GetColorForValue(
+                                             parentLayer,
+                                result.Data[i]));
                     }
-                    cacheWriter.Write("]");
-                    webWriter.Write("]");
+                    {
+                        var first = true;
+                        foreach (var kv in mappings)
+                        {
+                            if (!first)
+                            {
+                                cacheWriter.Write(",");
+                                webWriter.Write(",");
+                            }
+                            first = false;
+
+                            var colorString =
+                            "[" + kv.Value.A +
+                                "," + kv.Value.R +
+                                "," + kv.Value.G +
+                                "," + kv.Value.B + "]";
+                            cacheWriter.Write("\"" + kv.Key + "\":" + colorString);
+                            webWriter.Write("\"" + kv.Key + "\":" + colorString);
+                        }
+                    }
+                    cacheWriter.Write("}}");
+                    webWriter.Write("}}");
                 }
             }
-            var stringBuilder = new StringBuilder();
-            stringBuilder.Append("[");
+        }
+        
+        protected override void ProcessEmpty(GenerationResult result, HttpContext context)
+        {
+            var cache = this.GetCacheName(result.Request, context);
+            context.Response.ContentType = "application/json";
+            using (var cacheWriter = new StreamWriter(cache))
+            {
+                using (var webWriter = new StreamWriter(context.Response.OutputStream))
+                {
+                    cacheWriter.Write("{\"empty\":true}");
+                    webWriter.Write("{\"empty\":true}");
+                }
+            }
         }
     }
 }

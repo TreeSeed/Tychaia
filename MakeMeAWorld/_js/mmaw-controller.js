@@ -24,7 +24,12 @@ function MMAWController()
     /// Utility object for miscellaneous functionality.
     /// </summary>
     this.misc = null;
-    
+
+    /// <summary>
+    /// Utility object for handling rendering sizes.
+    /// </summary>
+    this.sizes = null;
+            
     /// <summary>
     /// An array of stages that can be active in the UI.
     /// </summary>
@@ -47,6 +52,7 @@ function MMAWController()
         this.rendering = new MMAWRendering();
         this.settings = new MMAWSettings();
         this.misc = new MMAWMisc();
+        this.sizes = new MMAWSizes();
         
         // Create the stage handlers.
         var main = new MMAWUIMain(this);
@@ -74,6 +80,9 @@ function MMAWController()
         {
             this.stages[i].initialize();
         }
+        
+        // Initialize the sizes option.
+        this.sizes.initializeOutputSizeOption();
         
         // Goto the main stage.
         this.gotoStage("main");

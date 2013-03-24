@@ -88,22 +88,22 @@ function MMAWRendering()
 
         // Draw rounded rectangle.
         ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-        roundRect(ctx, 10, 1080 - 10 - 21, 1900, 21, 5, true, false);
+        this.roundRect(ctx, 10, canvas.height - 10 - 21, canvas.width - 20, 21, 5, true, false);
 
         // Draw drop shadows.
         var offset = 17;
         ctx.fillStyle = "#000";
-        drawText(13, 1080 - 13 - offset);
-        drawText(14, 1080 - 13 - offset);
-        drawText(15, 1080 - 13 - offset);
-        drawText(13, 1080 - 12 - offset);
-        drawText(15, 1080 - 12 - offset);
-        drawText(13, 1080 - 11 - offset);
-        drawText(14, 1080 - 11 - offset);
-        drawText(15, 1080 - 11 - offset);
+        drawText(13, canvas.height - 13 - offset);
+        drawText(14, canvas.height - 13 - offset);
+        drawText(15, canvas.height - 13 - offset);
+        drawText(13, canvas.height - 12 - offset);
+        drawText(15, canvas.height - 12 - offset);
+        drawText(13, canvas.height - 11 - offset);
+        drawText(14, canvas.height - 11 - offset);
+        drawText(15, canvas.height - 11 - offset);
 
         // Draw actual text.
         ctx.fillStyle = "#FFF";
-        drawText(14, 1080 - 12 - offset);
+        drawText(14, canvas.height - 12 - offset);
     };
 };

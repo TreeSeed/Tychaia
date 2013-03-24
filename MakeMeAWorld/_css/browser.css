@@ -6,13 +6,25 @@ html, body {
 	padding: 0px;
 }
 body {
-	overflow: hidden;
+	overflow-x: hidden;
+}
+#canvasContainer {
+    position: fixed;
+    overflow-y: hidden;
+    width: 1920px;
+    height: 1080px;
+    top: 0px;
+    left: 0px;
 }
 #canvas {
 	background-color: black;
 	margin: 0px;
 	border: 0px;
 	padding: 0px;
+    
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 
 	image-rendering: optimizeSpeed; 
 	image-rendering: -moz-crisp-edges; 
