@@ -63,7 +63,6 @@
     <Compile Include="IGenerator.cs" />
     <Compile Include="Compiler\ArrayPool.cs" />
     <Compile Include="Compiler\AlgorithmRefactorer.cs" />
-    <Compile Include="AlgorithmInitial.cs" />
     <Compile Include="AlgorithmConstant.cs" />
     <Compile Include="AlgorithmUtility.cs" />
     <Compile Include="AlgorithmExtend.cs" />
@@ -92,6 +91,8 @@
     <Compile Include="AlgorithmValueTo3D.cs" />
     <Compile Include="AlgorithmAverage.cs" />
     <Compile Include="AlgorithmDistanceFrom0.cs" />
+    <Compile Include="AlgorithmZoom2DIncrement.cs" />
+    <Compile Include="AlgorithmInitialBool.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

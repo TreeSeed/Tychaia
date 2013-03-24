@@ -13,8 +13,8 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Initials)]
-    [FlowDesignerName("Random Values")]
-    public class AlgorithmInitial : Algorithm<int>
+    [FlowDesignerName("On / Off Values")]
+    public class AlgorithmInitialBool : Algorithm<int>
     {
         [DataMember]
         [DefaultValue(0)]
@@ -29,24 +29,6 @@ namespace Tychaia.ProceduralGeneration
         [DefaultValue(true)]
         [Description("Whether to guarantee the maximum value at the global (0, 0) position.")]
         public bool GuaranteeStartingPoint
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        [DefaultValue(1)]
-        [Description("The minimum value that a selected cell will be given.")]
-        public int MinimumValue
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        [DefaultValue(100)]
-        [Description("The maximum value that a selected cell will be given.")]
-        public int MaximumValue
         {
             get;
             set;
@@ -84,12 +66,10 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
         
-        public AlgorithmInitial()
+        public AlgorithmInitialBool()
         {
             this.Limit = 0;
             this.GuaranteeStartingPoint = true;
-            this.MinimumValue = 1;
-            this.MaximumValue = 100;
             this.Layer2D = true;
             this.Modifier = 0;
             this.ColorSet = ColorScheme.Land;
@@ -104,11 +84,11 @@ namespace Tychaia.ProceduralGeneration
         public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             if (this.GuaranteeStartingPoint && x == 0 && y == 0)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.MaximumValue;
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 1;
             else if (!Layer2D && context.GetRandomDouble(x, y, z, context.Modifier) > this.Limit)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = context.GetRandomRange(x, y, z, this.MinimumValue, this.MaximumValue, context.Modifier + this.Modifier);
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = context.GetRandomRange(x, y, z, 0, 2, context.Modifier + this.Modifier);
             else if (Layer2D && context.GetRandomDouble(x, y, 0, context.Modifier) > this.Limit)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = context.GetRandomRange(x, y, 0, this.MinimumValue, this.MaximumValue, context.Modifier + this.Modifier);
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = context.GetRandomRange(x, y, 0, 0, 2, context.Modifier + this.Modifier);
             else
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
         }
@@ -123,14 +103,17 @@ namespace Tychaia.ProceduralGeneration
         {
             if (this.ColorSet == ColorScheme.Perlin)
             {
-                return Color.FromArgb((int)(255 * (value / 100f)), (int)(255 * (value / 100f)), (int)(255 * (value / 100f)));
+                if (value == 0)
+                    return Color.Black;
+                else
+                    return Color.White;
             }
             else if (this.ColorSet == ColorScheme.Land)
             {
                 if (value == 0)
                     return Color.Blue;
                 else
-                    return Color.FromArgb(0, (int)(255 * (value / 100f)), 0);
+                    return Color.Green;
             }
             else
             {
