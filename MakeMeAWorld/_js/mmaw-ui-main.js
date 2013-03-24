@@ -100,7 +100,7 @@ function MMAWUIMain(controller)
         this.controller.gotoStage("processing");
 
         var retriever, renderer;
-        if ($("serverSideRendering").checked) {
+        if ($("#serverSideRendering")[0].checked) {
             retriever = new MMAWServerRetriever();
             renderer = new MMAWServerRenderer();
         } else {

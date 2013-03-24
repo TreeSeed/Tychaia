@@ -60,7 +60,7 @@ namespace MakeMeAWorld
                 Size = Convert.ToInt32(context.Request.QueryString["size"]),
                 Seed = Convert.ToInt64(context.Request.QueryString["seed"]),
                 LayerName = context.Request.QueryString["layer"],
-                Packed = context.Request.QueryString["packed"] == "true"
+                Packed = Convert.ToBoolean(context.Request.QueryString["packed"])
             };
 
             // Force the size to be 64x64x64.

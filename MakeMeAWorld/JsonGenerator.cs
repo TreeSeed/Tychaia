@@ -59,7 +59,7 @@ namespace MakeMeAWorld
                         webWriter.Write("{\"empty\":false,\"packed\":true,\"data\":[");
                         {
                             var continuousValue = 0;
-                            var continuousCount = 0;
+                            var continuousCount = 1;
                             var first = true;
                             var i = 0;
                             do
@@ -74,23 +74,33 @@ namespace MakeMeAWorld
                                 if (i == result.Data.Length ||
                                     continuousValue != result.Data[i])
                                 {
-                                    if (!first)
-                                    {
-                                        cacheWriter.Write(",");
-                                        webWriter.Write(",");
-                                    }
-                                    first = false;
-                            
                                     // Output in the most efficient manner.
                                     if (("[" + continuousCount + "," + continuousValue + "]").Length >
-                                        (continuousValue.ToString().Length + 1 * continuousCount) - 1)
+                                        ((continuousValue.ToString().Length + 1) * continuousCount) - 1)
                                     {
                                         // Single value.
-                                        cacheWriter.Write(continuousValue);
-                                        webWriter.Write(continuousValue);
+                                        for (var a = 0; a < continuousCount; a++)
+                                        {
+                                            if (!first)
+                                            {
+                                                cacheWriter.Write(",");
+                                                webWriter.Write(",");
+                                            }
+                                            first = false;
+
+                                            cacheWriter.Write(continuousValue);
+                                            webWriter.Write(continuousValue);
+                                        }
                                     }
                                     else
                                     {
+                                        if (!first)
+                                        {
+                                            cacheWriter.Write(",");
+                                            webWriter.Write(",");
+                                        }
+                                        first = false;
+
                                         // Multiple copies of the same
                                         // value in a row.
                                         cacheWriter.Write("[" + continuousCount + "," + continuousValue + "]");

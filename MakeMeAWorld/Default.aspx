@@ -119,7 +119,7 @@
                                         <p style="color: grey; font-size:75%;">
                                             Compresses data across the network, but requires time
                                             to unpack the data transferred, which will increase
-                                            the render time by approximately 10%.
+                                            the render time by approximately 50%.
                                         </p>
                                     </label>
                                     <label class="checkbox">
