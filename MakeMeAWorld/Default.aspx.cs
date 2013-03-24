@@ -16,9 +16,9 @@ namespace MakeMeAWorld
             foreach (var layer in list)
             {
                 if (layer == defaultLayer)
-                    HtmlLayerOptions += "<option value=\"" + layer + "\" selected=\"selected\">" + layer + "</option>";
+                    HtmlLayerOptions += "<option value=\"" + layer + "\" selected=\"selected\">" + layer.Substring(3) + "</option>";
                 else
-                    HtmlLayerOptions += "<option value=\"" + layer + "\">" + layer + "</option>";
+                    HtmlLayerOptions += "<option value=\"" + layer + "\">" + layer.Substring(3) + "</option>";
             }
         }
     }

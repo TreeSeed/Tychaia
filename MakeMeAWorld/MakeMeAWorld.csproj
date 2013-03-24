@@ -66,6 +66,12 @@
     </Content>
     <Content Include="_js\mmaw-ui-results-and-processing.js" />
     <Content Include="_js\mmaw-controller.js" />
+    <Content Include="_js\mmaw-processor.js" />
+    <Content Include="_js\mmaw-server-retriever.js" />
+    <Content Include="_js\mmaw-server-renderer.js" />
+    <Content Include="_js\mmaw-client-renderer.js" />
+    <Content Include="_js\mmaw-client-retriever.js" />
+    <Content Include="_js\mmaw-sizes.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Default.aspx.cs">

@@ -13,6 +13,7 @@
         <script src="_js/canvas-toBlob.js" type="text/javascript"></script>
         <script src="_js/FileSaver.js" type="text/javascript"></script>
         <script src="_js/mmaw-misc.js" type="text/javascript"></script>
+        <script src="_js/mmaw-sizes.js" type="text/javascript"></script>
         <script src="_js/mmaw-rendering.js" type="text/javascript"></script>
         <script src="_js/mmaw-settings.js" type="text/javascript"></script>
         <script src="_js/mmaw-controller.js" type="text/javascript"></script>
@@ -21,11 +22,18 @@
         <script src="_js/mmaw-ui-results.js" type="text/javascript"></script>
         <script src="_js/mmaw-ui-main-and-processing.js" type="text/javascript"></script>
         <script src="_js/mmaw-ui-results-and-processing.js" type="text/javascript"></script>
+        <script src="_js/mmaw-server-renderer.js" type="text/javascript"></script>
+        <script src="_js/mmaw-server-retriever.js" type="text/javascript"></script>
+        <script src="_js/mmaw-client-renderer.js" type="text/javascript"></script>
+        <script src="_js/mmaw-client-retriever.js" type="text/javascript"></script>
+        <script src="_js/mmaw-processor.js" type="text/javascript"></script>
         <script src="_js/mmaw.js" type="text/javascript"></script>
         <link rel="stylesheet" href="_css/main.css" />
     </head>
     <body style="margin: 0px; padding: 0px;">
-        <canvas id="canvas" width="1920" height="1080"></canvas>
+        <div id="canvasContainer">
+            <canvas id="canvas" width="1920" height="1080"></canvas>
+        </div>
 
         <div id="container">
             <h1 id="header">Make me a world with Tychaia!</h1>
@@ -60,12 +68,12 @@
                             playing in-game.  For all intents and purposes, the game provides limitless exploration.
                         </p>
                         <p>
-                            On this site you can generate a 1920x1080 wallpaper render using the current Tychaia world generator.  You can enter
-                            a seed below and our server will generate the cell renders, which are then formed into a complete image by the
-                            web browser.
+                            On this site you can generate a <span class="size">1920x1080</span> wallpaper render using the current Tychaia world
+                            generator.  You can enter a seed below and our server will generate the cell renders, which are then formed into a
+                            complete image by the web browser.
                         </p>
                     </div>
-                    <form id="newRender" class="form-inline" style="margin-bottom: 0px; margin-top: 13px;">
+                    <form id="newRender" class="form-inline" style="margin-bottom: 0px; margin-top: 13px; white-space: nowrap;">
                         <div class="input-append">
                             <input type="text" id="seedSet" value="" style="width: 375px;" placeholder="Enter seed..." />
                             <div class="btn-group">
@@ -84,8 +92,15 @@
                             <div class="control-group">
                                 <label class="control-label" for="outputLayer">Output Layer</label>
                                 <div class="controls">
-                                    <select id="outputLayer">
+                                    <select class="span4" id="outputLayer">
                                         <%=HtmlLayerOptions%>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="outputSize">Output Size</label>
+                                <div class="controls">
+                                    <select class="span4" id="outputSize">
                                     </select>
                                 </div>
                             </div>
@@ -93,9 +108,29 @@
                                 <div class="controls">
                                     <label class="checkbox">
                                         <input type="checkbox" id="enableRenderDebugging" /> Enable render debugging
+                                        <p style="color: grey; font-size:75%;">
+                                            Sets the canvas colour to red before drawing images,
+                                            highlighting any pixels on the result image which
+                                            have not been render to at all.
+                                        </p>
                                     </label>
                                     <label class="checkbox">
-                                        <input type="checkbox" id="serverSideRendering" /> Render server side (slower, but more reliable)
+                                        <input type="checkbox" id="transmitPackedData" /> Pack data before transmission
+                                        <p style="color: grey; font-size:75%;">
+                                            Compresses data across the network, but requires time
+                                            to unpack the data transferred, which will increase
+                                            the render time by approximately 10%.
+                                        </p>
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" id="serverSideRendering" /> Render server side
+                                        <p style="color: grey; font-size:75%;">
+                                            Uses the server to perform the rendering, transferring
+                                            images to the browser instead of the raw data and colour
+                                            mappings.  This significantly increases the time required
+                                            to render, but is more reliable and will work across any
+                                            browser that has even limited canvas support.
+                                        </p>
                                     </label>
                                 </div>
                             </div>
@@ -104,7 +139,7 @@
                 </div>
             </div>
         </div>
-        <div id="watermark">Powered by <a href="http://tychaia.com/">Tychaia</a>.  Image is 1920x1080 when saved.  Seed is <span id="seed">0</span>.</div>
+        <div id="watermark">Powered by <a href="http://tychaia.com/">Tychaia</a>.  Image is <span class="size">1920x1080</span> when saved.  Seed is <span id="seed">0</span>.</div>
         <div id="ieDownload" class="modal hide fade">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
