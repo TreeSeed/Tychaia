@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Tychaia.Globals;
+﻿using Tychaia.Globals;
 
 namespace Protogame.Structure
 {
@@ -52,12 +48,12 @@ namespace Protogame.Structure
                     {
                         if ((z & current.GetMaskAtDepth()) == 0)
                         {
-                            current = current.m_Nodes[0] != null ? current.m_Nodes[0] : null;
+                            current = current.m_Nodes[0] ?? null;
                             FilteredConsole.Write(FilterCategory.OctreeGetTracing, "0 - ");
                         }
                         else
                         {
-                            current = current.m_Nodes[1] != null ? current.m_Nodes[1] : null;
+                            current = current.m_Nodes[1] ?? null;
                             FilteredConsole.Write(FilterCategory.OctreeGetTracing, "1 - ");
                         }
                     }
@@ -65,12 +61,12 @@ namespace Protogame.Structure
                     {
                         if ((z & current.GetMaskAtDepth()) == 0)
                         {
-                            current = current.m_Nodes[2] != null ? current.m_Nodes[2] : null;
+                            current = current.m_Nodes[2] ?? null;
                             FilteredConsole.Write(FilterCategory.OctreeGetTracing, "2 - ");
                         }
                         else
                         {
-                            current = current.m_Nodes[3] != null ? current.m_Nodes[3] : null;
+                            current = current.m_Nodes[3] ?? null;
                             FilteredConsole.Write(FilterCategory.OctreeGetTracing, "3 - ");
                         }
                     }
@@ -81,12 +77,12 @@ namespace Protogame.Structure
                     {
                         if ((z & current.GetMaskAtDepth()) == 0)
                         {
-                            current = current.m_Nodes[4] != null ? current.m_Nodes[4] : null;
+                            current = current.m_Nodes[4] ?? null;
                             FilteredConsole.Write(FilterCategory.OctreeGetTracing, "4 - ");
                         }
                         else
                         {
-                            current = current.m_Nodes[5] != null ? current.m_Nodes[5] : null;
+                            current = current.m_Nodes[5] ?? null;
                             FilteredConsole.Write(FilterCategory.OctreeGetTracing, "5 - ");
                         }
                     }
@@ -94,12 +90,12 @@ namespace Protogame.Structure
                     {
                         if ((z & current.GetMaskAtDepth()) == 0)
                         {
-                            current = current.m_Nodes[6] != null ? current.m_Nodes[6] : null;
+                            current = current.m_Nodes[6] ?? null;
                             FilteredConsole.Write(FilterCategory.OctreeGetTracing, "6 - ");
                         }
                         else
                         {
-                            current = current.m_Nodes[7] != null ? current.m_Nodes[7] : null;
+                            current = current.m_Nodes[7] ?? null;
                             FilteredConsole.Write(FilterCategory.OctreeGetTracing, "7 - ");
                         }
                     }

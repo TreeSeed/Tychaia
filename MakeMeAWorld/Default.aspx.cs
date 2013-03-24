@@ -11,14 +11,14 @@ namespace MakeMeAWorld
         protected void Page_Load(object sender, EventArgs e)
         {
             HtmlLayerOptions = "";
-            var list = ImageGenerator.GetListOfAvailableLayers(this.Context);
-            list = list.OrderBy(v => v.Substring(3)).ToList();
-            foreach (var l in list)
+            var list = BaseGenerator.GetListOfAvailableLayers(this.Context);
+            var defaultLayer = BaseGenerator.GetDefaultAvailableLayer(this.Context);
+            foreach (var layer in list)
             {
-                if (l.Substring(3) == "Game World")
-                    HtmlLayerOptions += "<option value=\"" + l + "\" selected=\"selected\">" + l.Substring(3) + "</option>";
+                if (layer == defaultLayer)
+                    HtmlLayerOptions += "<option value=\"" + layer + "\" selected=\"selected\">" + layer + "</option>";
                 else
-                    HtmlLayerOptions += "<option value=\"" + l + "\">" + l.Substring(3) + "</option>";
+                    HtmlLayerOptions += "<option value=\"" + layer + "\">" + layer + "</option>";
             }
         }
     }
