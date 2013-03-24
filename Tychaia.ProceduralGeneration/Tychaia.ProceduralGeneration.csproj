@@ -91,6 +91,7 @@
     <Compile Include="AlgorithmAdd.cs" />
     <Compile Include="AlgorithmValueTo3D.cs" />
     <Compile Include="AlgorithmAverage.cs" />
+    <Compile Include="AlgorithmDistanceFrom0.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
