@@ -81,6 +81,8 @@ namespace Tychaia.ProceduralGeneration
             int ocz = 0; // Just a placeholder here
 
             // Working out current cell value
+            // This does have to be i + 1 rather than +1 at the end.
+            // Has to be the same as any other access :/
             int v00 = input[((i + 0) / 2 + ox + ocxv - 1) + ((j + 0) / 2 + oy + ocyv - 1) * width + (k + oz + ocz) * width * height];
             int v01 = input[((i + 0) / 2 + ox + ocxv - 1) + ((j + 0) / 2 + oy + ocyv - 0) * width + (k + oz + ocz) * width * height];
             int v02 = input[((i + 0) / 2 + ox + ocxv - 1) + ((j + 0) / 2 + oy + ocyv + 1) * width + (k + oz + ocz) * width * height];
@@ -95,6 +97,7 @@ namespace Tychaia.ProceduralGeneration
             int mod = 0;
 
             if (v11 > 0)
+            {
                 if (v00 > v11 ||
                     v01 > v11 ||
                     v02 > v11 ||
@@ -103,10 +106,10 @@ namespace Tychaia.ProceduralGeneration
                     v20 > v11 ||
                     v21 > v11 ||
                     v22 > v11)
-                    mod = 0;
+                    mod = 1;
+            }
             else
-                mod = 1;
-            else
+            {
                 if (v00 < v11 ||
                     v01 < v11 ||
                     v02 < v11 ||
@@ -115,9 +118,8 @@ namespace Tychaia.ProceduralGeneration
                     v20 < v11 ||
                     v21 < v11 ||
                     v22 < v11)
-                    mod = 0;
-            else
-                mod = -1;
+                    mod = -1;
+            }
 
             int current = v11 + mod;
 
@@ -152,7 +154,10 @@ namespace Tychaia.ProceduralGeneration
                 v22 = input[((i + 1) / 2 + ox + ocxvo + 1) + ((j + 0) / 2 + oy + ocyv + 1) * width + (k + oz + ocz) * width * height];
                 
                 // v11 is the center value we're zooming in on.
+                mod = 0;
+                
                 if (v11 > 0)
+                {
                     if (v00 > v11 ||
                         v01 > v11 ||
                         v02 > v11 ||
@@ -161,10 +166,10 @@ namespace Tychaia.ProceduralGeneration
                         v20 > v11 ||
                         v21 > v11 ||
                         v22 > v11)
-                        mod = 0;
-                    else
                         mod = 1;
+                }
                 else
+                {
                     if (v00 < v11 ||
                         v01 < v11 ||
                         v02 < v11 ||
@@ -173,9 +178,8 @@ namespace Tychaia.ProceduralGeneration
                         v20 < v11 ||
                         v21 < v11 ||
                         v22 < v11)
-                        mod = 0;
-                    else
                         mod = -1;
+                }
 
                 int east = v11 + mod;
 
@@ -198,7 +202,10 @@ namespace Tychaia.ProceduralGeneration
                         v22 = input[((i + 0) / 2 + ox + ocxv + 1) + ((i + 1) / 2 + oy + ocyvo + 1) * width + (k + oz + ocz) * width * height];
                         
                         // v11 is the center value we're zooming in on.
+                        mod = 0;
+                        
                         if (v11 > 0)
+                        {
                             if (v00 > v11 ||
                                 v01 > v11 ||
                                 v02 > v11 ||
@@ -207,10 +214,10 @@ namespace Tychaia.ProceduralGeneration
                                 v20 > v11 ||
                                 v21 > v11 ||
                                 v22 > v11)
-                                mod = 0;
+                                mod = 1;
+                        }
                         else
-                            mod = 1;
-                        else
+                        {
                             if (v00 < v11 ||
                                 v01 < v11 ||
                                 v02 < v11 ||
@@ -219,9 +226,8 @@ namespace Tychaia.ProceduralGeneration
                                 v20 < v11 ||
                                 v21 < v11 ||
                                 v22 < v11)
-                                mod = 0;
-                        else
-                            mod = -1;
+                                mod = -1;
+                        }
                         
                         int south = v11 + mod;
 
@@ -248,7 +254,10 @@ namespace Tychaia.ProceduralGeneration
                         v22 = input[((i + 2) / 2 + ox + ocxv + 1) + ((j + 2) / 2 + oy + ocyv + 1) * width + (k + oz + ocz) * width * height];
                         
                         // v11 is the center value we're zooming in on.
+                        mod = 0;
+                        
                         if (v11 > 0)
+                        {
                             if (v00 > v11 ||
                                 v01 > v11 ||
                                 v02 > v11 ||
@@ -257,10 +266,10 @@ namespace Tychaia.ProceduralGeneration
                                 v20 > v11 ||
                                 v21 > v11 ||
                                 v22 > v11)
-                                mod = 0;
+                                mod = 1;
+                        }
                         else
-                            mod = 1;
-                        else
+                        {
                             if (v00 < v11 ||
                                 v01 < v11 ||
                                 v02 < v11 ||
@@ -269,9 +278,8 @@ namespace Tychaia.ProceduralGeneration
                                 v20 < v11 ||
                                 v21 < v11 ||
                                 v22 < v11)
-                                mod = 0;
-                        else
-                            mod = -1;
+                                mod = -1;
+                        }
                         
                         int southEast = v11 + mod;
 
