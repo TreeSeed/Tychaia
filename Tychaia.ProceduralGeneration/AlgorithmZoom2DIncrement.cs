@@ -23,7 +23,13 @@ namespace Tychaia.ProceduralGeneration
         {
             get;
             set;
-        }        
+        }
+
+        public bool __DEBUG_TestEdges
+        {
+            get;
+            set;
+        }
 
         [DataMember]
         [DefaultValue(5)]
@@ -101,16 +107,43 @@ namespace Tychaia.ProceduralGeneration
             int v00 = input[((i - 1) + ox - ocxvo - 1) + ((j - 1) + oy - ocyvo - 1) * width + (k + oz + ocz) * width * height];
             int v01 = input[((i - 1) + ox - ocxvo - 0) + ((j + 0) + oy + ocyv - 0) * width + (k + oz + ocz) * width * height];
             int v02 = input[((i - 1) + ox - ocxvo - 1) + ((j + 1) + oy + ocyvo + 1) * width + (k + oz + ocz) * width * height];
-            int v10 = input[((i + 0) + ox + ocxv + 0)  + ((j - 1) + oy - ocyvo - 0) * width + (k + oz + ocz) * width * height];
-            int v11 = input[((i + 0) + ox + ocxv + 0)  + ((j + 0) + oy + ocyv) * width + (k + oz + ocz) * width * height];
-            int v12 = input[((i + 0) + ox + ocxv + 0)  + ((j + 1) + oy + ocyvo + 0) * width + (k + oz + ocz) * width * height];
+            int v10 = input[((i + 0) + ox + ocxv + 0) + ((j - 1) + oy - ocyvo - 0) * width + (k + oz + ocz) * width * height];
+            int v11 = input[((i + 0) + ox + ocxv + 0) + ((j + 0) + oy + ocyv) * width + (k + oz + ocz) * width * height];
+            int v12 = input[((i + 0) + ox + ocxv + 0) + ((j + 1) + oy + ocyvo + 0) * width + (k + oz + ocz) * width * height];
             int v20 = input[((i + 1) + ox + ocxvo + 1) + ((j - 1) + oy - ocyvo - 1) * width + (k + oz + ocz) * width * height];
             int v21 = input[((i + 1) + ox + ocxvo + 0) + ((j + 0) + oy + ocyv + 0) * width + (k + oz + ocz) * width * height];
             int v22 = input[((i + 1) + ox + ocxvo + 1) + ((j + 1) + oy + ocyvo + 1) * width + (k + oz + ocz) * width * height];
             // v11 is the center value we're zooming in on.
             int mod = 0;
 
-           if (v11 < 1)
+            if (v11 < 1)
+            {
+                // Water bitches.
+            }
+            else
+            {
+                if (__DEBUG_TestEdges)
+                {
+                    if (v12 < v11 ||
+                        v21 < v11 ||
+                        v10 < v11 ||
+                        v01 < v11)
+                        mod = 0;
+                    else
+                        mod = 1;
+                }
+                else
+                {
+                    
+                    if (v12 < v11 ||
+                        v21 < v11)
+                        mod = 0;
+                    else
+                        mod = 1;
+                }
+            }
+
+            /*if (v11 < 1)
             {
 //                if (v00 > v11 ||
 //                    v01 > v11 ||
@@ -144,7 +177,7 @@ namespace Tychaia.ProceduralGeneration
                     mod = 0;
                 else
                     mod = 1;
-            }
+            }*/
 
             int current = v11 + mod;
 
@@ -224,7 +257,7 @@ namespace Tychaia.ProceduralGeneration
         }
 
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
-           {
+        {
             int a;
             
             double divvalue = (double)this.EstimateMax;
@@ -244,12 +277,12 @@ namespace Tychaia.ProceduralGeneration
             if (this.ColorSet == ColorScheme.Perlin)
                 return Color.FromArgb(a, a, a);
             else if (this.ColorSet == ColorScheme.Land)
-                if (a == 0)
-                    return Color.FromArgb(0, 0, 255);
-                else if (a > 0)
-                    return Color.FromArgb(0, a, 0);
-                else
-                    return Color.FromArgb(0, 0, 255 + a);
+            if (a == 0)
+                return Color.FromArgb(0, 0, 255);
+            else if (a > 0)
+                return Color.FromArgb(0, a, 0);
+            else
+                return Color.FromArgb(0, 0, 255 + a);
             else
                 return Color.Gray;
         }

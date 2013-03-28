@@ -12,13 +12,9 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     [FlowDesignerMajorCategory(FlowMajorCategory.Undefined)]
     [FlowDesignerCategory(FlowCategory.Debugging)]
-    [FlowDesignerName("Delegate")]
-    public class AlgorithmDebuggingDelegate : Algorithm<int, int>
+    [FlowDesignerName("Initial Delegate")]
+    public class AlgorithmDebuggingInitialDelegate : Algorithm<int>
     {
-        public override int[] RequiredXBorder { get { return new int[] { 2 }; } }
-        public override int[] RequiredYBorder { get { return new int[] { 2 }; } }
-        public override int[] RequiredZBorder { get { return new int[] { 2 }; } }
-
         public bool ShowAs2D
         {
             get;
@@ -30,26 +26,33 @@ namespace Tychaia.ProceduralGeneration
             get { return this.ShowAs2D; }
         }
 
-        public Action<IRuntimeContext, int[], int[], long, long, long, int, int, int, int, int, int, int, int, int> Delegate
+        private static Func<long, long, long, bool> _Test1 = (x, y, z) => (x == 4 && y == 6 && z == 7);
+        private static Func<long, long, long, bool> _Test2 = (x, y, z) => (y == 0 && z == 0);
+
+        public bool Test1
+        {
+            get { return this.ValueShouldBePlacedAt == _Test1; }
+            set { this.ValueShouldBePlacedAt = _Test1; }
+        }
+        
+        public bool Test2
+        {
+            get { return this.ValueShouldBePlacedAt == _Test2; }
+            set { this.ValueShouldBePlacedAt = _Test2; }
+        }
+
+        public Func<long, long, long, bool> ValueShouldBePlacedAt
         {
             get;
             set;
         }
 
-        public override string[] InputNames
+        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            get
-            {
-                return new string[] { "Parent" };
-            }
-        }
-
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
-        {
-            if (this.Delegate == null)
+            if (this.ValueShouldBePlacedAt == null)
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
             else
-                this.Delegate(context, input, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz);
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.ValueShouldBePlacedAt(x, y, z) ? 1 : 0;
         }
         
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)

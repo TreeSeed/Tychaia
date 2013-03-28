@@ -15,7 +15,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         public void TestXSkew()
         {
             int computations;
-            var input = new AlgorithmDebuggingDelegate
+            var input = new AlgorithmDebuggingInitialDelegate
             {
                 ValueShouldBePlacedAt = (x, y, z) => (y == 0 && z == 0)
             };
@@ -62,7 +62,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         public void TestYSkew()
         {
             int computations;
-            var input = new AlgorithmDebuggingDelegate
+            var input = new AlgorithmDebuggingInitialDelegate
             {
                 ValueShouldBePlacedAt = (x, y, z) => (x == 0 && z == 0)
             };
@@ -109,7 +109,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         public void TestZSkew()
         {
             int computations;
-            var input = new AlgorithmDebuggingDelegate
+            var input = new AlgorithmDebuggingInitialDelegate
             {
                 ValueShouldBePlacedAt = (x, y, z) => (x == 0 && y == 0)
             };

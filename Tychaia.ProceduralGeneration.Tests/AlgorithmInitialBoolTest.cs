@@ -9,15 +9,13 @@ using NUnit.Framework;
 namespace Tychaia.ProceduralGeneration.Tests
 {
     [TestFixture]
-    public class AlgorithmInitialTest
+    public class AlgorithmInitialBoolTest
     {
-        [Test, TestFor(typeof(AlgorithmInitial))]
+        [Test, TestFor(typeof(AlgorithmInitialBool))]
         public void TestRange()
         {
             int computations;
-            var minimum = 39;
-            var maximum = 67;
-            var gradient = new RuntimeLayer(new AlgorithmInitial { MinimumValue = minimum, MaximumValue = maximum });
+            var gradient = new RuntimeLayer(new AlgorithmInitialBool());
             var result = gradient.GenerateData(0, 0, 0, 16, 16, 16, out computations);
             
             for (var i = 0; i < 16; i++)
@@ -27,8 +25,9 @@ namespace Tychaia.ProceduralGeneration.Tests
                         if (result[i + j * 16 + k * 16 * 16] == 0)
                             continue;
 
-                        Assert.GreaterOrEqual(result[i + j * 16 + k * 16 * 16], minimum);
-                        Assert.LessOrEqual(result[i + j * 16 + k * 16 * 16], maximum);
+                        Assert.IsTrue(
+                            result[i + j * 16 + k * 16 * 16] == 0 || 
+                            result[i + j * 16 + k * 16 * 16] == 1);
                     }
         }
     }

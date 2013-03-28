@@ -139,6 +139,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                 64, 64, 64);
             this.m_CompiledBitmap = this.m_RuntimeBitmap;
             this.m_Control.Invalidate(this.InvalidatingRegion.Apply(this.m_Control.Zoom));
+            /*
             this.m_PerformanceThread = new Thread(() =>
             {
                 Thread.Sleep(1000);
@@ -155,6 +156,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                 }
             });
             this.m_PerformanceThread.Start();
+            */
         }
 
         private void PerformMeasurements()

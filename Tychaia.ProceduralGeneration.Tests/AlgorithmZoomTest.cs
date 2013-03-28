@@ -35,7 +35,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         public void TestForCorrectSquareZoomingWithNoOffsetsOrModifications()
         {
             int computations;
-            var input = new AlgorithmDebuggingDelegate
+            var input = new AlgorithmDebuggingInitialDelegate
             {
                 ValueShouldBePlacedAt = (x, y, z) => (x == 4 && y == 6 && z == 7)
             };
@@ -62,7 +62,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         public void TestForCorrectSquareZoomingWithOffsetX1()
         {
             int computations;
-            var input = new AlgorithmDebuggingDelegate
+            var input = new AlgorithmDebuggingInitialDelegate
             {
                 ValueShouldBePlacedAt = (x, y, z) => (x == 4 && y == 6 && z == 7)
             };
@@ -101,7 +101,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         public void TestForCorrectSquareZoomingWithOffsetX2()
         {
             int computations;
-            var input = new AlgorithmDebuggingDelegate
+            var input = new AlgorithmDebuggingInitialDelegate
             {
                 ValueShouldBePlacedAt = (x, y, z) => (x == 4 && y == 6 && z == 7)
             };
@@ -128,7 +128,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         public void TestForOCXOddAdjustmentShutterBug()
         {
             int computations;
-            var input = new AlgorithmDebuggingDelegate
+            var input = new AlgorithmDebuggingInitialDelegate
             {
                 ValueShouldBePlacedAt = (x, y, z) => true
             };

@@ -78,7 +78,6 @@
     <Compile Include="Biomes\GrasslandBiome.cs" />
     <Compile Include="AlgorithmPassthrough.cs" />
     <Compile Include="AlgorithmDebuggingInitial.cs" />
-    <Compile Include="AlgorithmDebuggingDelegate.cs" />
     <Compile Include="AlgorithmPerlin.cs" />
     <Compile Include="AlgorithmDeriveTerrain.cs" />
     <Compile Include="Biomes\WaterBiome.cs" />
@@ -93,6 +92,8 @@
     <Compile Include="AlgorithmDistanceFrom0.cs" />
     <Compile Include="AlgorithmZoom2DIncrement.cs" />
     <Compile Include="AlgorithmInitialBool.cs" />
+    <Compile Include="AlgorithmDebuggingInitialDelegate.cs" />
+    <Compile Include="AlgorithmDebuggingDelegate.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
