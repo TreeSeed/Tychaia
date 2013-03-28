@@ -45,8 +45,8 @@ namespace Tychaia.ProceduralGeneration
 
         // Keep offsets odd (otherwise it screws it up)
         // TODO: Fix offsets odd not giving the correct ocx/ocy values
-        public override int[] RequiredXBorder { get { return new int[] {4}; } }
-        public override int[] RequiredYBorder { get { return new int[] {4}; } }
+        public override int[] RequiredXBorder { get { return new int[] {2}; } }
+        public override int[] RequiredYBorder { get { return new int[] {2}; } }
         public override int[] RequiredZBorder { get { return new int[] {0}; } }
         public override bool[] InputWidthAtHalfSize { get { return new bool[] {false}; } }
         public override bool[] InputHeightAtHalfSize { get { return new bool[] {false}; } }
@@ -138,9 +138,9 @@ namespace Tychaia.ProceduralGeneration
 //                    v22 < v11)
                     // TODO: Does work
                     if (v12 < v11 || // only these 2
-                        v21 < v11 || // only these 2
-                        v10 < v11 ||
-                        v01 < v11)
+                        v21 < v11) //|| // only these 2
+//                        v10 < v11 ||
+//                        v01 < v11)
                     mod = 0;
                 else
                     mod = 1;
