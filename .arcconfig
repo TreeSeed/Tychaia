@@ -1,0 +1,5 @@
+{
+    "project_id": "Tychaia",
+    "conduit_uri": "http://phab.tychaia.com/",
+    "arc.autostash": true
+}
