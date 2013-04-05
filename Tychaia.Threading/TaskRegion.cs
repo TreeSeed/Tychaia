@@ -11,15 +11,13 @@ namespace Tychaia.Threading
         bool m_IsThreaded;
         IPipeline<object> m_Pipeline;
 
-        // just testing arc diff
-
         public TaskRegion(bool threaded)
         {
             this.m_IsThreaded = threaded;
             if (this.m_IsThreaded)
-                this.m_Pipeline = new ThreadedTaskPipeline();
+                this.m_Pipeline = new ThreadedTaskPipeline<object>();
             else
-                this.m_Pipeline = new InlineTaskPipeline();
+                this.m_Pipeline = new InlineTaskPipeline<object>();
         }
     }
 }

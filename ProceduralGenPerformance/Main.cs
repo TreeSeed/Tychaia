@@ -34,7 +34,7 @@ namespace ProceduralGenPerformance
                 var algorithmZoom2 = new RuntimeLayer(new AlgorithmZoom2D());
                 var algorithmZoom3 = new RuntimeLayer(new AlgorithmZoom2D());
                 var algorithmZoom4 = new RuntimeLayer(new AlgorithmZoom2D());
-                var algorithmInitialLand = new RuntimeLayer(new AlgorithmInitial());
+                var algorithmInitialLand = new RuntimeLayer(new AlgorithmInitialBool());
                 algorithmZoom4.SetInput(0, algorithmInitialLand);
                 algorithmZoom3.SetInput(0, algorithmZoom4);
                 algorithmZoom2.SetInput(0, algorithmZoom3);
@@ -50,7 +50,7 @@ namespace ProceduralGenPerformance
                 legacy = new LayerZoom(new LayerZoom(new LayerInitialLand()));
                 var algorithmZoom1 = new RuntimeLayer(new AlgorithmZoom2D());
                 var algorithmZoom2 = new RuntimeLayer(new AlgorithmZoom2D());
-                var algorithmInitialLand = new RuntimeLayer(new AlgorithmInitial());
+                var algorithmInitialLand = new RuntimeLayer(new AlgorithmInitialBool());
                 algorithmZoom2.SetInput(0, algorithmInitialLand);
                 algorithmZoom1.SetInput(0, algorithmZoom2);
                 algorithmRuntime = algorithmZoom1;
@@ -62,7 +62,7 @@ namespace ProceduralGenPerformance
             {
                 legacy = new LayerZoom(new LayerInitialLand());
                 algorithmRuntime = new RuntimeLayer(new AlgorithmZoom2D());
-                algorithmRuntime.SetInput(0, new RuntimeLayer(new AlgorithmInitial()));
+                algorithmRuntime.SetInput(0, new RuntimeLayer(new AlgorithmInitialBool()));
 #if !RANGED_LOGIC_TEST
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
 #endif
@@ -83,7 +83,7 @@ namespace ProceduralGenPerformance
             {
                 legacy = null;
                 algorithmRuntime = new RuntimeLayer(new AlgorithmExtend());
-                algorithmRuntime.SetInput(0, new RuntimeLayer(new AlgorithmInitial()));
+                algorithmRuntime.SetInput(0, new RuntimeLayer(new AlgorithmInitialBool()));
 #if !RANGED_LOGIC_TEST
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
 #endif
@@ -91,7 +91,7 @@ namespace ProceduralGenPerformance
             else if (mode == "land")
             {
                 legacy = new LayerInitialLand();
-                algorithmRuntime = new RuntimeLayer(new AlgorithmInitial());
+                algorithmRuntime = new RuntimeLayer(new AlgorithmInitialBool());
 #if !RANGED_LOGIC_TEST
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
 #endif

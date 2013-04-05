@@ -18,7 +18,7 @@ namespace ProceduralGenStorage
             var algorithmZoom2 = new RuntimeLayer(new AlgorithmZoom2D());
             var algorithmZoom3 = new RuntimeLayer(new AlgorithmZoom2D());
             var algorithmZoom4 = new RuntimeLayer(new AlgorithmZoom2D());
-            var algorithmInitialLand = new RuntimeLayer(new AlgorithmInitial());
+            var algorithmInitialLand = new RuntimeLayer(new AlgorithmInitialBool());
             algorithmZoom4.SetInput(0, algorithmInitialLand);
             algorithmZoom3.SetInput(0, algorithmZoom4);
             algorithmZoom2.SetInput(0, algorithmZoom3);
