@@ -13,6 +13,7 @@ namespace Tychaia.Puzzle
         void DrawUI(IPuzzleUI ui);
         void ClickLeft(int x, int y);
         void ClickRight(int x, int y);
+        //void Hover(int x, int y);
     }
 }
 
