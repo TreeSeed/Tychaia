@@ -48,11 +48,21 @@ namespace Tychaia.ProceduralGeneration
         
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            int ocx = ((x - i) % 2 == 0 ? 0 : (i % 2));
-            int ocy = ((y - j) % 2 == 0 ? 0 : (j % 2));
+            int ocx = 0, ocy = 0;
+            if (i >= 0)
+                ocx = ((x - i) % 2 == 0 ? 0 : (i % 2));
+            else 
+                ocx = x > 0 ? 0 - ((int)x % 2) : (int)x % 2;
+            if (j >= 0)
+                ocy = ((y - j) % 2 == 0 ? 0 : (j % 2));
+            else 
+                ocy = y > 0 ? 0 - ((int)y % 2) : (int)y % 2;
             int ocz = 0;
             
-            int current = input[(i / 2) + ox + ocx + ((j / 2) + oy + ocy) * width + (k + oz + ocz) * width * height];
+            int current = input[
+                (i / 2) + ox + ocx + 
+                ((j / 2) + oy + ocy) * width + 
+                (k + oz + ocz) * width * height];
 
             if (this.Mode == ZoomType.Square)
                 output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;

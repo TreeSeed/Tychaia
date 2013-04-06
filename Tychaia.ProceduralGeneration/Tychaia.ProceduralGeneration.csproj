@@ -94,6 +94,7 @@
     <Compile Include="AlgorithmInitialBool.cs" />
     <Compile Include="AlgorithmDebuggingInitialDelegate.cs" />
     <Compile Include="AlgorithmDebuggingDelegate.cs" />
+    <Compile Include="AlgorithmDebuggingInitialValueDelegate.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

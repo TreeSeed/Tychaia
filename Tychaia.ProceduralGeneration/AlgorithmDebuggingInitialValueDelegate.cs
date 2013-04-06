@@ -12,8 +12,8 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     [FlowDesignerMajorCategory(FlowMajorCategory.Undefined)]
     [FlowDesignerCategory(FlowCategory.Debugging)]
-    [FlowDesignerName("Initial Delegate")]
-    public class AlgorithmDebuggingInitialDelegate : Algorithm<int>
+    [FlowDesignerName("Initial Value Delegate")]
+    public class AlgorithmDebuggingInitialValueDelegate : Algorithm<int>
     {
         public bool ShowAs2D
         {
@@ -26,22 +26,7 @@ namespace Tychaia.ProceduralGeneration
             get { return this.ShowAs2D; }
         }
 
-        private static Func<long, long, long, bool> m_Test1 = (x, y, z) => (x == 4 && y == 6 && z == 7);
-        private static Func<long, long, long, bool> m_Test2 = (x, y, z) => (y == 0 && z == 0);
-
-        public bool Test1
-        {
-            get { return this.ValueShouldBePlacedAt == m_Test1; }
-            set { this.ValueShouldBePlacedAt = value ? m_Test1 : null; }
-        }
-        
-        public bool Test2
-        {
-            get { return this.ValueShouldBePlacedAt == m_Test2; }
-            set { this.ValueShouldBePlacedAt = value ? m_Test2 : null; }
-        }
-
-        public Func<long, long, long, bool> ValueShouldBePlacedAt
+        public Func<long, long, long, int, int, int, int> GetValueForPosition
         {
             get;
             set;
@@ -49,10 +34,10 @@ namespace Tychaia.ProceduralGeneration
 
         public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            if (this.ValueShouldBePlacedAt == null)
+            if (this.GetValueForPosition == null)
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
             else
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.ValueShouldBePlacedAt(x, y, z) ? 1 : 0;
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.GetValueForPosition(x, y, z, i, j, k);
         }
         
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)

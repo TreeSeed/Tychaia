@@ -146,6 +146,53 @@ namespace Tychaia.ProceduralGeneration.Tests
             for (var x = 1; x < 32; x += 2)
                 Assert.IsTrue(result[x + 0 * 32 + 0 * 32 * 32] == 1, "OCX odd adjustment shutter bug is present, where every odd row is blank when main adjustment is an odd number.");
         }
+
+        [Test]
+        public void TestZoomedArrayAccess()
+        {
+            int computations;
+            var inputA = new AlgorithmDebuggingInitialValueDelegate
+            {
+                GetValueForPosition = (x, y, z, i, j, k) =>
+                {
+                    return (int)(x * y * z);
+                }
+            };
+            var testBase = "";
+            Action<IRuntimeContext, int[], int[], long, long, long, int, int, int, int, int, int, int, int, int> verifyAccess
+                = (context, input, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz) =>
+            {
+                Assert.AreEqual(
+                    x / 2 * y / 2 * z / 2,
+                    input[(i / 2 + ox) + (j / 2 + oy) * width + (k / 2 + oz) * width * height],
+                    testBase);
+            };
+            var test = new AlgorithmDebuggingDelegate
+            {
+                Delegate = (context, input, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz) =>
+                {
+                    verifyAccess(context, input, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz);
+                }
+            };
+            var runtimeInput = new RuntimeLayer(inputA);
+            var runtimeTest = new RuntimeLayer(test);
+            runtimeTest.SetInput(0, runtimeInput);
+
+            testBase = "testing at 0, 0, 0";
+            runtimeTest.GenerateData(0, 0, 0, 10, 10, 10, out computations);
+            testBase = "testing at 1, 0, 0";
+            runtimeTest.GenerateData(1, 0, 0, 10, 10, 10, out computations);
+            testBase = "testing at 0, 1, 0";
+            runtimeTest.GenerateData(0, 1, 0, 10, 10, 10, out computations);
+            testBase = "testing at 1, 1, 0";
+            runtimeTest.GenerateData(1, 1, 0, 10, 10, 10, out computations);
+            testBase = "testing at -1, 0, 0";
+            runtimeTest.GenerateData(-1, 0, 0, 10, 10, 10, out computations);
+            testBase = "testing at 0, -1, 0";
+            runtimeTest.GenerateData(0, -1, 0, 10, 10, 10, out computations);
+            testBase = "testing at -1, -1, 0";
+            runtimeTest.GenerateData(-1, -1, 0, 10, 10, 10, out computations);
+        }
     }
 }
 
