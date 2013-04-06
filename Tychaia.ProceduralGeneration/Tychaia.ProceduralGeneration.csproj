@@ -94,12 +94,16 @@
     <Compile Include="AlgorithmInitialBool.cs" />
     <Compile Include="AlgorithmDebuggingInitialDelegate.cs" />
     <Compile Include="AlgorithmDebuggingDelegate.cs" />
+    <Compile Include="AlgorithmNPCStats.cs" />
+    <Compile Include="Buildings\Building.cs" />
+    <Compile Include="Professions\Professions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Compiler\" />
     <Folder Include="Flow\" />
     <Folder Include="Biomes\" />
+    <Folder Include="Buildings\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compiler\CompiledLayerTemplate.cs">

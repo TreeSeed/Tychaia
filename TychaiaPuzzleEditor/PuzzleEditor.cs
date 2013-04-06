@@ -132,6 +132,12 @@ namespace TychaiaPuzzleEditor
         {
             var pen = new Pen(new SolidBrush(this.m_ActiveColor));
             this.m_ActiveGraphics.DrawEllipse(pen, new Rectangle(x - radius, y - radius, radius * 2, radius * 2));
+        }       
+
+        public void FillCircle(int x, int y, int radius)
+        {
+            var brush = new SolidBrush(this.m_ActiveColor);
+            this.m_ActiveGraphics.FillEllipse(brush, new Rectangle(x - radius, y - radius, radius * 2, radius * 2));
         }
 
         public void DrawText(int x, int y, string text)
