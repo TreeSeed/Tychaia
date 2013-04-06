@@ -48,15 +48,8 @@ namespace Tychaia.ProceduralGeneration
         
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            int ocx = 0, ocy = 0;
-            if (i >= 0)
-                ocx = ((x - i) % 2 == 0 ? 0 : (i % 2));
-            else 
-                ocx = x > 0 ? 0 - ((int)x % 2) : (int)x % 2;
-            if (j >= 0)
-                ocy = ((y - j) % 2 == 0 ? 0 : (j % 2));
-            else 
-                ocy = y > 0 ? 0 - ((int)y % 2) : (int)y % 2;
+            int ocx = ((x - Math.Abs(i)) % 2 == 0 ? 0 : Math.Abs(i % 2)) - (i % 2 == -1 ? 1 : 0);
+            int ocy = ((y - Math.Abs(j)) % 2 == 0 ? 0 : Math.Abs(j % 2)) - (j % 2 == -1 ? 1 : 0);
             int ocz = 0;
             
             int current = input[
