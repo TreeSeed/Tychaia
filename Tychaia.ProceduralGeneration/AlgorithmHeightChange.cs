@@ -11,7 +11,7 @@ using System.Drawing;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.Undefined)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Output)]
     [FlowDesignerName("Height Change")]
     public class AlgorithmHeightChange : Algorithm<int, int>
@@ -29,6 +29,15 @@ namespace Tychaia.ProceduralGeneration
         [DefaultValue(true)]
         [Description("True = X, False = Y")]
         public bool XorY
+        {
+            get;
+            set;
+        }
+
+        [DataMember]
+        [DefaultValue(false)]
+        [Description("Invert the blue / green colours.")]
+        public bool InverseColours
         {
             get;
             set;
@@ -80,6 +89,13 @@ namespace Tychaia.ProceduralGeneration
             
             if (a < 0)
             {
+                if (this.InverseColours)
+                {
+                    if (a < -255)
+                        return Color.FromArgb(0, 255, 0);
+                    return Color.FromArgb(0, -a, 0);
+                }
+
                 if (a < -255)
                     return Color.FromArgb(0, 0, 255);
                 return Color.FromArgb(0, 0, -a);
@@ -90,6 +106,8 @@ namespace Tychaia.ProceduralGeneration
             
             if (a == 0)
                 return Color.Black;
+            if (this.InverseColours)
+                return Color.FromArgb(0, 0, a);
             return Color.FromArgb(0, a, 0);
         }
     }

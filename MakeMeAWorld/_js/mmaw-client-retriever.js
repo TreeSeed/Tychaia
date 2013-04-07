@@ -49,17 +49,12 @@ function MMAWClientRetriever() {
                     if (this.processor.onProgress != null)
                         this.processor.onProgress();
                     if (cell.onRetrieved != null)
-                        window.setTimeout(
-                            function() { cell.onRetrieved(cell); },
-                            1);
-//                    if (this._retrieving)
-//                        retrieve(i + 1);
+                        cell.onRetrieved(cell);
+                    if (this._retrieving)
+                        retrieve(i + 1);
             }.bind(this));
         }.bind(this);
-//        retrieve(0);
-
-        for (var i = 0; i < this._cellsToRetrieve.length; i++)
-            retrieve(i);
+        retrieve(0);
     };
     
     /// <summary>

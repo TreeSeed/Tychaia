@@ -156,6 +156,8 @@ Global
 		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Debug (prebuilt MonoGame)|Any CPU.Build.0 = Debug|Any CPU
 		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Default|Any CPU.Build.0 = Debug|Any CPU
 		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Release (prebuilt MonoGame)|Any CPU.ActiveCfg = Release|Any CPU
 		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Release (prebuilt MonoGame)|Any CPU.Build.0 = Release|Any CPU
 		{4298E98C-3351-4FB2-A8FF-B466915A239F}.Release|Any CPU.ActiveCfg = Release|Any CPU

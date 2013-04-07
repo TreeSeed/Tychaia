@@ -56,13 +56,16 @@ namespace Tychaia.ProceduralGeneration
             if (input[(i + ox) + (j + oy) * width + (0 + oz) * width * height] >= z) 
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = (int)z;
             else
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = -1;
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = Int32.MaxValue;
         }
         
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            if (value == -1)
+            if (value == Int32.MaxValue)
                 return Color.Transparent;
+
+            if (ColorSet == ColorScheme.Land)
+                return this.DelegateColorForValueToParent(parent, value);
 
             int a;
 
@@ -88,7 +91,7 @@ namespace Tychaia.ProceduralGeneration
                 }
                 
                 if (ColorSet == ColorScheme.Land)
-                    return Color.FromArgb(0, 0, -a);
+                    return Color.FromArgb(0, 0, 255 - a);
                 else if (ColorSet == ColorScheme.Perlin)
                     return Color.FromArgb(-a, -a, -a);
             }
