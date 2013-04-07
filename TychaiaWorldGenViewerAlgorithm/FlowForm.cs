@@ -37,25 +37,34 @@ namespace TychaiaWorldGenViewerAlgorithm
             };
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                StorageLayer[] layers;
+                try
+                {
+                    // Load from file.
+                    using (var stream = new StreamReader(openFileDialog.FileName))
+                        layers = StorageAccess.LoadStorage(stream);
+                    if (layers == null)
+                    {
+                        MessageBox.Show(this, "Unable to load configuration file.", "Configuration invalid.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, "Unable to load configuration file.", "Configuration invalid.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                
                 // Reset state.
                 this.c_FlowInterfaceControl.Elements.Clear();
                 this.c_FlowInterfaceControl.Invalidate();
                 this.m_LastSavePath = openFileDialog.FileName;
                 this.c_SaveConfigurationButton.Enabled = true;
 
-                // Load from file.
-                StorageLayer[] layers;
-                using (var stream = new StreamReader(openFileDialog.FileName))
-                    layers = StorageAccess.LoadStorage(stream);
-                if (layers == null)
-                {
-                    MessageBox.Show(this, "Unable to load configuration file.", "Configuration invalid.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
                 // Create algorithm flow elements.
                 this.c_FlowInterfaceControl.Elements.AddRange(
-                    layers.Select(v => new AlgorithmFlowElement(this.c_FlowInterfaceControl, v) { X = v.EditorX, Y = v.EditorY })
+                    layers.Where(v => v != null)
+                          .Select(v => new AlgorithmFlowElement(this.c_FlowInterfaceControl, v) { X = v.EditorX, Y = v.EditorY })
                 );
 
                 /*foreach (var el in layers)
@@ -90,9 +99,23 @@ namespace TychaiaWorldGenViewerAlgorithm
                 }
 
                 // Save the layers.
-                using (var writer = new StreamWriter(this.m_LastSavePath, false))
-                    StorageAccess.SaveStorage(layers.ToArray(), writer);
-                MessageBox.Show(this, "Save successful.", "Configuration saved.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                try
+                {
+                    var memory = new MemoryStream();
+                    using (var writer = new StreamWriter(memory))
+                    {
+                        StorageAccess.SaveStorage(layers.ToArray(), writer);
+                        memory.Seek(0, SeekOrigin.Begin);
+                        using (var file = new StreamWriter(this.m_LastSavePath, false))
+                            memory.CopyTo(file.BaseStream);
+                    }
+
+                    MessageBox.Show(this, "Save successful.", "Configuration saved.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, "Save failure.", ex.Message + "\r\n" + ex.StackTrace, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
