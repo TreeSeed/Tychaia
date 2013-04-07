@@ -17,7 +17,7 @@ namespace Tychaia.ProceduralGeneration
     public class AlgorithmInitialBool : Algorithm<int>
     {
         [DataMember]
-        [DefaultValue(0)]
+        [DefaultValue(0.8)]
         [Description("The value between 0.0 and 1.0 above which the cell is selected.")]
         public double Limit
         {
@@ -36,8 +36,17 @@ namespace Tychaia.ProceduralGeneration
 
         [DataMember]
         [DefaultValue(0)]
-        [Description("The maximum value that a selected cell will be given.")]
-        public int Modifier
+        [Description("The Lower value selected.")]
+        public int LowerValue
+        {
+            get;
+            set;
+        }
+        
+        [DataMember]
+        [DefaultValue(1)]
+        [Description("The Higher value selected.")]
+        public int HigherValue
         {
             get;
             set;
@@ -68,11 +77,12 @@ namespace Tychaia.ProceduralGeneration
         
         public AlgorithmInitialBool()
         {
-            this.Limit = 0;
+            this.Limit = 0.8;
             this.GuaranteeStartingPoint = true;
             this.Layer2D = true;
-            this.Modifier = 0;
             this.ColorSet = ColorScheme.Land;
+            this.LowerValue = 0;
+            this.HigherValue = 1;
         }
 
         // Will be able to use this algorithm for:
@@ -84,13 +94,13 @@ namespace Tychaia.ProceduralGeneration
         public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             if (this.GuaranteeStartingPoint && x == 0 && y == 0)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 1;
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.HigherValue;
             else if (!Layer2D && context.GetRandomDouble(x, y, z, context.Modifier) > this.Limit)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 1;
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.HigherValue;
             else if (Layer2D && context.GetRandomDouble(x, y, 0, context.Modifier) > this.Limit)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 1;
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.HigherValue;
             else
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.LowerValue;
         }
 
         public enum ColorScheme
@@ -103,14 +113,14 @@ namespace Tychaia.ProceduralGeneration
         {
             if (this.ColorSet == ColorScheme.Perlin)
             {
-                if (value == 0)
+                if (value == this.LowerValue)
                     return Color.Black;
                 else
                     return Color.White;
             }
             else if (this.ColorSet == ColorScheme.Land)
             {
-                if (value == 0)
+                if (value == this.LowerValue)
                     return Color.Blue;
                 else
                     return Color.Green;

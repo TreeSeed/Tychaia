@@ -52,6 +52,7 @@
     <Compile Include="AlgorithmConstantTest.cs" />
     <Compile Include="AlgorithmInitialBoolTest.cs" />
     <Compile Include="BorderTests.cs" />
+    <Compile Include="AlgorithmIncrementWaterDistanceTest.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

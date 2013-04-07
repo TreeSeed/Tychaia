@@ -12,9 +12,9 @@ namespace Tychaia.ProceduralGeneration
     /// </summary>
     [DataContract]
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
-    [FlowDesignerCategory(FlowCategory.Zooming)]
-    [FlowDesignerName("Zoom 2D Increment")]
-    public class AlgorithmZoom2DIncrement : Algorithm<int, int>
+    [FlowDesignerCategory(FlowCategory.Terrain)]
+    [FlowDesignerName("Increment Water Distance")]
+    public class AlgorithmIncrementWaterDistance : Algorithm<int, int>
     {
         [DataMember]
         [DefaultValue(0)]
@@ -43,7 +43,7 @@ namespace Tychaia.ProceduralGeneration
         public override bool[] InputHeightAtHalfSize { get { return new bool[] {false}; } }
         public override bool[] InputDepthAtHalfSize { get { return new bool[] {false}; } }
         
-        public AlgorithmZoom2DIncrement()
+        public AlgorithmIncrementWaterDistance()
         {
             this.MaxTerrainBinary = 0;
             this.ColorSet = ColorScheme.Land;
@@ -77,6 +77,7 @@ namespace Tychaia.ProceduralGeneration
             else if (v11 < 0 && (v01 > v11 || v10 > v11 || v21 > v11 || v12 > v11))
                 mod = -1;
 
+
             output[i + ox + (j + oy) * width + (k + oz) * width * height] = v11 * 2 - mod;
         }
 
@@ -88,6 +89,13 @@ namespace Tychaia.ProceduralGeneration
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
+            if (value == -1)
+                return Color.Pink;
+            if (value == -2)
+                return Color.Aqua;
+            if (value == 0)
+                return Color.Beige;
+
             if (this.MaxTerrainBinary < 0)
                 this.MaxTerrainBinary = 0;
             var maxValue = 1 << this.MaxTerrainBinary;
@@ -95,7 +103,8 @@ namespace Tychaia.ProceduralGeneration
             var a = (int)(256 * (value / (double)(maxValue - minValue)));
             if (a < 0 || a >= 256)
                 return Color.Red;
-            return Color.FromArgb(value + minValue < 0 ? 0 : a, value + minValue < 0 ? 0 : a, a);
+
+            return Color.FromArgb(0, value + minValue < 0 ? 0 : a, value + minValue < 0 ? a : 0);
         }
     }
 }

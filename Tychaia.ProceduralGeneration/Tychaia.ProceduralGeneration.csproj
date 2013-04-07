@@ -90,7 +90,6 @@
     <Compile Include="AlgorithmValueTo3D.cs" />
     <Compile Include="AlgorithmAverage.cs" />
     <Compile Include="AlgorithmDistanceFrom0.cs" />
-    <Compile Include="AlgorithmZoom2DIncrement.cs" />
     <Compile Include="AlgorithmInitialBool.cs" />
     <Compile Include="AlgorithmDebuggingInitialDelegate.cs" />
     <Compile Include="AlgorithmDebuggingDelegate.cs" />
@@ -99,6 +98,7 @@
     <Compile Include="Buildings\Building.cs" />
     <Compile Include="Professions\Professions.cs" />
     <Compile Include="AlgorithmDebuggingOffset.cs" />
+    <Compile Include="AlgorithmIncrementWaterDistance.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
