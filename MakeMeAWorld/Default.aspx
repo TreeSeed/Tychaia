@@ -115,11 +115,11 @@
                                         </p>
                                     </label>
                                     <label class="checkbox">
-                                        <input type="checkbox" id="transmitPackedData" /> Pack data before transmission
+                                        <input type="checkbox" id="transmitPackedData" checked="checked" /> Pack data before transmission
                                         <p style="color: grey; font-size:75%;">
-                                            Compresses data across the network, but requires time
-                                            to unpack the data transferred, which will increase
-                                            the render time by approximately 50%.
+                                            Compresses data across the network reducing the time
+                                            to download the data from the server at the cost of
+                                            additional time to unpack the data before render.
                                         </p>
                                     </label>
                                     <label class="checkbox">
