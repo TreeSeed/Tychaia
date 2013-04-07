@@ -30,6 +30,16 @@ namespace Tychaia.ProceduralGeneration
             m_Inputs;
 
         /// <summary>
+        /// Occurs when data has been generated for an algorithm.
+        /// </summary>
+        public event DataGeneratedEventHandler DataGenerated;
+
+        /// <summary>
+        /// Arbitrary userdata to associate with this object.
+        /// </summary>
+        public object Userdata;
+
+        /// <summary>
         /// The current algorithm that this runtime layer is using.
         /// </summary>
         public IAlgorithm Algorithm
@@ -231,12 +241,12 @@ namespace Tychaia.ProceduralGeneration
                 case 14: // 0 inputs
                     {
 
-                    algorithm.Initialize(this);
+                        algorithm.Initialize(this);
 
-                    // context, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz                    
-                    for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1 - childOffsetZ); k++)
-                        for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1 - childOffsetX); i++)
-                            for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1 - childOffsetY); j++)
+                        // context, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz                    
+                        for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1 - childOffsetZ); k++)
+                            for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1 - childOffsetX); i++)
+                                for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1 - childOffsetY); j++)
                                 {
                                     algorithm.ProcessCell(this, outputArray, absoluteX + i, absoluteY + j, absoluteZ + k, i, j, k, arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ);
                                     computations += 1;
@@ -248,29 +258,15 @@ namespace Tychaia.ProceduralGeneration
                         // context, input, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz
                         if (this.m_Inputs[0] != null)
                         {
-                            dynamic inputArray0 = this.m_Inputs[0].PerformAlgorithmRuntimeCall(
-                                (this.m_Algorithm.InputWidthAtHalfSize[0] ? ((absoluteX) < 0 ? (absoluteX - 1) / 2 : (absoluteX) / 2) : absoluteX),
-                                (this.m_Algorithm.InputHeightAtHalfSize[0] ? ((absoluteY) < 0 ? (absoluteY - 1) / 2 : (absoluteY) / 2) : absoluteY),
-                                (this.m_Algorithm.InputDepthAtHalfSize[0] ? ((absoluteZ) < 0 ? (absoluteZ - 1) / 2 : (absoluteZ) / 2) : absoluteZ),
-                                (this.m_Algorithm.InputWidthAtHalfSize[0] ? (width / 2) + this.m_Algorithm.RequiredXBorder[0] * 2 : width + this.m_Algorithm.RequiredXBorder[0] * 2), 
-                                (this.m_Algorithm.InputHeightAtHalfSize[0] ? (height / 2) + this.m_Algorithm.RequiredYBorder[0] * 2 : height + this.m_Algorithm.RequiredYBorder[0] * 2), 
-                                (this.m_Algorithm.InputDepthAtHalfSize[0] ? (depth / 2) + this.m_Algorithm.RequiredZBorder[0] * 2 : depth + this.m_Algorithm.RequiredZBorder[0] * 2), 
-                                arrayWidth, 
-                                arrayHeight, 
-                                arrayDepth,
-                                maxOffsetX,
-                                maxOffsetY,
-                                maxOffsetZ,
-                                (this.m_Algorithm.InputWidthAtHalfSize[0] ? (childOffsetX / 2) + this.m_Algorithm.RequiredXBorder[0] : childOffsetX + this.m_Algorithm.RequiredXBorder[0]),
-                                (this.m_Algorithm.InputHeightAtHalfSize[0] ? (childOffsetY / 2) + this.m_Algorithm.RequiredYBorder[0] : childOffsetY + this.m_Algorithm.RequiredYBorder[0]),
-                                (this.m_Algorithm.InputDepthAtHalfSize[0] ? (childOffsetZ / 2) + this.m_Algorithm.RequiredZBorder[0] : childOffsetZ + this.m_Algorithm.RequiredZBorder[0]),
-                                ref computations);
+                            dynamic inputArray0 = this.GetInputData(0, absoluteX, absoluteY, absoluteZ, width, height, depth,
+                                arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
+                                childOffsetX, childOffsetY, childOffsetZ, ref computations);
 
-                        algorithm.Initialize(this);
+                            algorithm.Initialize(this);
 
-                        for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1 - childOffsetZ); k++)
-                            for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1 - childOffsetX); i++)
-                                for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1 - childOffsetY); j++)
+                            for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1 - childOffsetZ); k++)
+                                for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1 - childOffsetX); i++)
+                                    for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1 - childOffsetY); j++)
                                     {
                                 
                                         algorithm.ProcessCell(
@@ -293,56 +289,28 @@ namespace Tychaia.ProceduralGeneration
                                     }
                         }
                         break;
-                }
+                    }
                 case 16: // 2 inputs
-                {
-                    // context, input0, input1, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz
-                    if (this.m_Inputs[0] != null && this.m_Inputs[1] != null)
                     {
-                        dynamic inputArray0 = this.m_Inputs[0].PerformAlgorithmRuntimeCall(
-                            (this.m_Algorithm.InputWidthAtHalfSize[0] ? ((absoluteX) < 0 ? (absoluteX - 1) / 2 : (absoluteX) / 2) : absoluteX) - this.m_Algorithm.RequiredXBorder[0] * 2,
-                            (this.m_Algorithm.InputHeightAtHalfSize[0] ? ((absoluteY) < 0 ? (absoluteY - 1) / 2 : (absoluteY) / 2) : absoluteY) - this.m_Algorithm.RequiredYBorder[0] * 2,
-                            (this.m_Algorithm.InputDepthAtHalfSize[0] ? ((absoluteZ) < 0 ? (absoluteZ - 1) / 2 : (absoluteZ) / 2) : absoluteZ) - this.m_Algorithm.RequiredZBorder[0] * 2,
-                            (this.m_Algorithm.InputWidthAtHalfSize[0] ? (width / 2) + this.m_Algorithm.RequiredXBorder[0] * 2 : width + this.m_Algorithm.RequiredXBorder[0] * 2), 
-                            (this.m_Algorithm.InputHeightAtHalfSize[0] ? (height / 2) + this.m_Algorithm.RequiredYBorder[0] * 2 : height + this.m_Algorithm.RequiredYBorder[0] * 2), 
-                            (this.m_Algorithm.InputDepthAtHalfSize[0] ? (depth / 2) + this.m_Algorithm.RequiredZBorder[0] * 2 : depth + this.m_Algorithm.RequiredZBorder[0] * 2), 
-                            arrayWidth, 
-                            arrayHeight, 
-                            arrayDepth,
-                            maxOffsetX,
-                            maxOffsetY,
-                            maxOffsetZ,
-                            (this.m_Algorithm.InputWidthAtHalfSize[0] ? (childOffsetX / 2) + this.m_Algorithm.RequiredXBorder[0] : childOffsetX + this.m_Algorithm.RequiredXBorder[0]),
-                            (this.m_Algorithm.InputHeightAtHalfSize[0] ? (childOffsetY / 2) + this.m_Algorithm.RequiredYBorder[0] : childOffsetY + this.m_Algorithm.RequiredYBorder[0]),
-                            (this.m_Algorithm.InputDepthAtHalfSize[0] ? (childOffsetZ / 2) + this.m_Algorithm.RequiredZBorder[0] : childOffsetZ + this.m_Algorithm.RequiredZBorder[0]),
-                            ref computations);
+                        // context, input0, input1, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz
+                        if (this.m_Inputs[0] != null && this.m_Inputs[1] != null)
+                        {
+                            dynamic inputArray0 = this.GetInputData(0, absoluteX, absoluteY, absoluteZ, width, height, depth,
+                                arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
+                                childOffsetX, childOffsetY, childOffsetZ, ref computations);
 
-                        dynamic inputArray1 = this.m_Inputs[1].PerformAlgorithmRuntimeCall(
-                            (this.m_Algorithm.InputWidthAtHalfSize[1] ? ((absoluteX) < 0 ? (absoluteX - 1) / 2 : (absoluteX) / 2) : absoluteX) - this.m_Algorithm.RequiredXBorder[1] * 2,
-                            (this.m_Algorithm.InputHeightAtHalfSize[1] ? ((absoluteY) < 0 ? (absoluteY - 1) / 2 : (absoluteY) / 2) : absoluteY) - this.m_Algorithm.RequiredYBorder[1] * 2,
-                            (this.m_Algorithm.InputDepthAtHalfSize[1] ? ((absoluteZ) < 0 ? (absoluteZ - 1) / 2 : (absoluteZ) / 2) : absoluteZ) - this.m_Algorithm.RequiredZBorder[1] * 2,
-                            (this.m_Algorithm.InputWidthAtHalfSize[1] ? (width / 2) + this.m_Algorithm.RequiredXBorder[1] * 2 : width + this.m_Algorithm.RequiredXBorder[1] * 2), 
-                            (this.m_Algorithm.InputHeightAtHalfSize[1] ? (height / 2) + this.m_Algorithm.RequiredYBorder[1] * 2 : height + this.m_Algorithm.RequiredYBorder[1] * 2), 
-                            (this.m_Algorithm.InputDepthAtHalfSize[1] ? (depth / 2) + this.m_Algorithm.RequiredZBorder[1] * 2 : depth + this.m_Algorithm.RequiredZBorder[1] * 2), 
-                            arrayWidth, 
-                            arrayHeight, 
-                            arrayDepth,
-                            maxOffsetX,
-                            maxOffsetY,
-                            maxOffsetZ,
-                            (this.m_Algorithm.InputWidthAtHalfSize[1] ? (childOffsetX / 2) + this.m_Algorithm.RequiredXBorder[1] : childOffsetX + this.m_Algorithm.RequiredXBorder[1]),
-                            (this.m_Algorithm.InputHeightAtHalfSize[1] ? (childOffsetY / 2) + this.m_Algorithm.RequiredYBorder[1] : childOffsetY + this.m_Algorithm.RequiredYBorder[1]),
-                            (this.m_Algorithm.InputDepthAtHalfSize[1] ? (childOffsetZ / 2) + this.m_Algorithm.RequiredZBorder[1] : childOffsetZ + this.m_Algorithm.RequiredZBorder[1]),
-                            ref computations);
+                            dynamic inputArray1 = this.GetInputData(1, absoluteX, absoluteY, absoluteZ, width, height, depth,
+                                arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
+                                childOffsetX, childOffsetY, childOffsetZ, ref computations);
                         
-                        algorithm.Initialize(this);
+                            algorithm.Initialize(this);
                         
-                        for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1); k++)
-                            for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1); i++)
-                                for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1); j++)
-                            {
+                            for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1); k++)
+                                for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1); i++)
+                                    for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1); j++)
+                                    {
                                 
-                                algorithm.ProcessCell(
+                                        algorithm.ProcessCell(
                                     this,
                                     inputArray0,
                                     inputArray1,
@@ -359,17 +327,80 @@ namespace Tychaia.ProceduralGeneration
                                     maxOffsetX,
                                     maxOffsetY,
                                     maxOffsetZ);
-                                computations += 1;
-                            }
+                                        computations += 1;
+                                    }
+                        }
+                        break;
                     }
-                    break;
-                }
                 default:
                     // FIXME!
                     throw new NotImplementedException();
             }
 
+            if (this.DataGenerated != null)
+            {
+                this.DataGenerated(this, new DataGeneratedEventArgs
+                {
+                    Generator = this,
+                    Algorithm = algorithm,
+                    Data = outputArray,
+                    GSAbsoluteX = absoluteX,
+                    GSAbsoluteY = absoluteY,
+                    GSAbsoluteZ = absoluteZ,
+                    GSWidth = width,
+                    GSHeight = height,
+                    GSDepth = depth,
+                    GSMaxOffsetX = maxOffsetX,
+                    GSMaxOffsetY = maxOffsetY,
+                    GSMaxOffsetZ = maxOffsetZ,
+                    GSChildOffsetX = childOffsetX,
+                    GSChildOffsetY = childOffsetY,
+                    GSChildOffsetZ = childOffsetZ,
+                    GSArrayWidth = arrayWidth,
+                    GSArrayHeight = arrayHeight,
+                    GSArrayDepth = arrayDepth,
+                });
+            }
+
             return outputArray;
+        }
+
+        private dynamic GetInputData(
+            int idx,
+            long absoluteX,
+            long absoluteY,
+            long absoluteZ,
+            int width,
+            int height,
+            int depth,
+            int arrayWidth,
+            int arrayHeight,
+            int arrayDepth,
+            int maxOffsetX,
+            int maxOffsetY,
+            int maxOffsetZ,
+            int childOffsetX,
+            int childOffsetY,
+            int childOffsetZ,
+            ref int computations)
+        {
+            return this.m_Inputs[idx].PerformAlgorithmRuntimeCall(
+                (this.m_Algorithm.InputWidthAtHalfSize[idx] ? ((absoluteX) < 0 ? (absoluteX - 1) / 2 : (absoluteX) / 2) : absoluteX) - this.m_Algorithm.RequiredXBorder[idx] * 2,
+                (this.m_Algorithm.InputHeightAtHalfSize[idx] ? ((absoluteY) < 0 ? (absoluteY - 1) / 2 : (absoluteY) / 2) : absoluteY) - this.m_Algorithm.RequiredYBorder[idx] * 2,
+                (this.m_Algorithm.InputDepthAtHalfSize[idx] ? ((absoluteZ) < 0 ? (absoluteZ - 1) / 2 : (absoluteZ) / 2) : absoluteZ) - this.m_Algorithm.RequiredZBorder[idx] * 2,
+                (this.m_Algorithm.InputWidthAtHalfSize[idx] ? (width / 2) + this.m_Algorithm.RequiredXBorder[idx] * 2 : width + this.m_Algorithm.RequiredXBorder[idx] * 2), 
+                (this.m_Algorithm.InputHeightAtHalfSize[idx] ? (height / 2) + this.m_Algorithm.RequiredYBorder[idx] * 2 : height + this.m_Algorithm.RequiredYBorder[idx] * 2), 
+                (this.m_Algorithm.InputDepthAtHalfSize[idx] ? (depth / 2) + this.m_Algorithm.RequiredZBorder[idx] * 2 : depth + this.m_Algorithm.RequiredZBorder[idx] * 2), 
+                arrayWidth, 
+                arrayHeight, 
+                arrayDepth,
+                maxOffsetX,
+                maxOffsetY,
+                maxOffsetZ,
+                (this.m_Algorithm.InputWidthAtHalfSize[idx] ? (childOffsetX / 2) + this.m_Algorithm.RequiredXBorder[idx] : childOffsetX + this.m_Algorithm.RequiredXBorder[idx]),
+                (this.m_Algorithm.InputHeightAtHalfSize[idx] ? (childOffsetY / 2) + this.m_Algorithm.RequiredYBorder[idx] : childOffsetY + this.m_Algorithm.RequiredYBorder[idx]),
+                (this.m_Algorithm.InputDepthAtHalfSize[idx] ? (childOffsetZ / 2) + this.m_Algorithm.RequiredZBorder[idx] : childOffsetZ + this.m_Algorithm.RequiredZBorder[idx]),
+                ref computations);
         }
 
         /// <summary>
@@ -644,5 +675,42 @@ namespace Tychaia.ProceduralGeneration
         #endregion
 
     }
+
+    public class DataGeneratedEventArgs : EventArgs
+    {
+        public IGenerator Generator;
+        public Algorithm Algorithm;
+        public dynamic Data;
+
+        public long GSAbsoluteX;
+        public long GSAbsoluteY;
+        public long GSAbsoluteZ;
+        public int GSWidth;
+        public int GSHeight;
+        public int GSDepth;
+        public int GSMaxOffsetX;
+        public int GSMaxOffsetY;
+        public int GSMaxOffsetZ;
+        public int GSChildOffsetX;
+        public int GSChildOffsetY;
+        public int GSChildOffsetZ;
+        
+        /// <summary>
+        /// The width of the data array.
+        /// </summary>
+        public int GSArrayWidth;
+        
+        /// <summary>
+        /// The height of the data array.
+        /// </summary>
+        public int GSArrayHeight;
+
+        /// <summary>
+        /// The depth of the data array.
+        /// </summary>
+        public int GSArrayDepth;
+    };
+    
+    public delegate void DataGeneratedEventHandler(object sender,DataGeneratedEventArgs e);
 }
 

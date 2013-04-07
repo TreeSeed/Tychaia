@@ -1,10 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Tychaia.ProceduralGeneration;
 using System.Drawing.Imaging;
@@ -36,7 +31,7 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         #region Cell Render Ordering
 
-        private static int[][] CellRenderOrder = new int[4][]
+        private static int[][] m_CellRenderOrder = new int[4][]
             {
                 null,
                 null,
@@ -48,7 +43,7 @@ namespace TychaiaWorldGenViewerAlgorithm
         private const int RenderToSE = 2;
         private const int RenderToSW = 3;
 
-        private static int[] CalculateCellRenderOrder(int targetDir, int width, int height, int depth)
+        private static int[] CalculateCellRenderOrder(int targetDir, int width, int height)
         {
             /*               North
              *        0  1  2  3  4  5  6 
@@ -86,15 +81,15 @@ namespace TychaiaWorldGenViewerAlgorithm
             if (targetDir != RenderToNE)
                 throw new InvalidOperationException();
 
-            int[] result = new int[width * height];
-            int count = 0;
-            int start = 0;
-            int maxx = width - 1;
-            int maxy = height - 1;
-            int last = maxx + maxy;
+            var result = new int[width * height];
+            var count = 0;
+            var start = 0;
+            var maxx = width - 1;
+            var maxy = height - 1;
+            var last = maxx + maxy;
             int x, y;
 
-            for (int atk = start; atk <= last; atk++)
+            for (var atk = start; atk <= last; atk++)
             {
                 // Attack from the left.
                 if (atk < maxy)
@@ -128,52 +123,58 @@ namespace TychaiaWorldGenViewerAlgorithm
             return result;
         }
 
-        private static int[] GetCellRenderOrder(int cameraDirection, int width, int height, int depth)
+        private static int[] GetCellRenderOrder(int cameraDirection, int width, int height)
         {
-            if (CellRenderOrder[cameraDirection] == null)
-                CellRenderOrder[cameraDirection] = CalculateCellRenderOrder(cameraDirection, width, height, depth);
-            return CellRenderOrder[cameraDirection];
+            if (m_CellRenderOrder[cameraDirection] == null)
+                m_CellRenderOrder[cameraDirection] = CalculateCellRenderOrder(cameraDirection, width, height);
+            return m_CellRenderOrder[cameraDirection];
         }
 
         #endregion
         
         private static Bitmap RenderPartial3D(RuntimeLayer layer, int sx, int sy, int sz, int width, int height, int depth)
         {
-            Bitmap bitmap = new Bitmap(width * 2, height * 3);
-            Graphics graphics = Graphics.FromImage(bitmap);
+            var bitmap = new Bitmap(width * 2, height * 3);
+            var graphics = Graphics.FromImage(bitmap);
             graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-            int[] data = null;
+            int[] data;
             try
             {
-                int computations = 0;
+                int computations;
                 data = layer.GenerateData(TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.X + sx, TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Y + sy, TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Z + sz, width, height, depth, out computations);
 
-                int[] render = GetCellRenderOrder(RenderToNE, width, height, depth);
-                int ztop = depth;
-                int zbottom = 0;
-                for (int z = zbottom; z < ztop; z++)
+                var render = GetCellRenderOrder(RenderToNE, width, height);
+                var ztop = layer.Algorithm.Is2DOnly ? 1 : depth;
+                var zbottom = 0;
+                for (var z = zbottom; z < ztop; z++)
                 {
-                    int rcx = width / 2 - 1 + 16;
-                    int rcy = height / 2 - 15 + 32;
-                    int rw = 2;
-                    int rh = 1;
-                    for (int i = 0; i < render.Length; i++)
+                    var rcx = width / 2 - 1 + 16;
+                    var rcy = height / 2 - 15 + 32;
+                    var rw = 2;
+                    var rh = 1;
+                    for (var i = 0; i < render.Length; i++)
                     {
                         // Calculate the X / Y of the tile in the grid.
-                        int x = render[i] % width;
-                        int y = render[i] / width;
+                        var x = render[i] % width;
+                        var y = render[i] / width;
 
                         // Calculate the render position on screen.
-                        int rx = rcx + (int)((x - y) / 2.0 * rw);// (int)(x / ((RenderWidth + 1) / 2.0) * rw);
-                        int ry = rcy + (x + y) * rh - (rh / 2 * (width + height)) - (z - zbottom) * 1;
+                        var rx = rcx + (int)((x - y) / 2.0 * rw);// (int)(x / ((RenderWidth + 1) / 2.0) * rw);
+                        var ry = rcy + (x + y) * rh - (rh / 2 * (width + height)) - (z - zbottom) * 1;
 
                         while (true)
                         {
                             try
                             {
-                                Color lc = layer.Algorithm.GetColorForValue(
+                                Color lc;
+                                if (layer.GetInputs().Length > 0)
+                                    lc = layer.Algorithm.GetColorForValue(
                                     StorageAccess.FromRuntime(layer.GetInputs()[0]),
                                     data[x + y * width + z * width * height]);
+                                else
+                                    lc = layer.Algorithm.GetColorForValue(
+                                        null,
+                                        data[x + y * width + z * width * height]);
                                 var sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
                                 graphics.FillRectangle(
                                     sb,
@@ -221,10 +222,10 @@ namespace TychaiaWorldGenViewerAlgorithm
                 this.m_Y = 0;
                 this.m_Z += 32;
             }
-            if (this.m_Z >= 192)
+            if (this.m_Z >= 192 || (this.m_Layer.Algorithm.Is2DOnly && this.m_Z >= 32))
             {
                 this.c_Timer.Stop();
-                SaveFileDialog sfd = new SaveFileDialog();
+                var sfd = new SaveFileDialog();
                 sfd.Filter = "PNG File|*.png";
                 if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
@@ -234,7 +235,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             }
 
             double count = (this.m_X / 32) + (this.m_Y / 32) * (512 / 32) + (this.m_Z / 32) * (512 / 32) * (512 / 32);
-            double total = (512 / 32) * (512 / 32) * (192 / 32);
+            double total = (512 / 32) * (512 / 32) * ((this.m_Layer.Algorithm.Is2DOnly ? 32 : 192) / 32);
             this.Text = "Export Layer (" + Math.Round(count / total * 100.0, 2) + "% complete)";
 
             this.c_RenderBox.Refresh();

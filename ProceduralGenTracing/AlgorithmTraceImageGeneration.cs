@@ -9,17 +9,8 @@ using System.Threading;
 
 namespace Tychaia.ProceduralGeneration.Flow
 {
-    public static class AlgorithmFlowImageGeneration
+    public static class AlgorithmTraceImageGeneration
     {
-        public static Bitmap RegenerateImageForLayer(StorageLayer layer, long ox, long oy, long oz, int width, int height, int depth, bool compiled = false)
-        {
-            var runtime = StorageAccess.ToRuntime(layer);
-            //if (compiled)
-            //    return Regenerate3DImageForLayer(runtime, ox, oy, oz, width, height, depth, StorageAccess.ToCompiled(layer));
-            //else
-            return Regenerate3DImageForLayer(runtime, ox, oy, oz, width, height, depth);
-        }
-
         #region Cell Render Ordering
 
         private static int[][] CellRenderOrder = new int[4][]
@@ -122,61 +113,60 @@ namespace Tychaia.ProceduralGeneration.Flow
         }
 
         #endregion
-        
-        private const int RenderWidth = 64;
-        private const int RenderHeight = 64;
-        private const int RenderDepth = 64;
-        
-        private static Bitmap Regenerate3DImageForLayer(RuntimeLayer runtimeLayer, long ox, long oy, long oz, int width, int height, int depth, IGenerator compiledLayer = null)
+
+        private const int TraceScale = 3;
+        private const int TraceRenderWidth = 64 * TraceScale;
+        private const int TraceRenderHeight = 64 * TraceScale;
+        private const int TraceRenderDepth = 64 * TraceScale;
+
+        public static Bitmap RenderTraceResult(
+            RuntimeLayer layer,
+            dynamic data,
+            int width,
+            int height,
+            int depth)
         {
             int owidth = width;
             int oheight = height;
-            width = 128;
-            height = 192; // this affects bitmaps and rendering and stuff :(
-            depth = 128;
+            width = 128 * TraceScale;
+            height = 128 * TraceScale;
+            depth = 128 * TraceScale;
 
-            // ARGHGHG FIXME
             Bitmap b = new Bitmap(width, height);
             Graphics g = Graphics.FromImage(b);
             g.Clear(Color.White);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-            int computations = 0;
-            dynamic data;
-            if (compiledLayer != null)
-                data = compiledLayer.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth, out computations);
-            else
-                data = runtimeLayer.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth, out computations); 
             
             StorageLayer parent;
-            if (runtimeLayer.GetInputs().Length == 0)
+            if (layer.GetInputs().Length == 0)
                 parent = null;
             else
-                parent = StorageAccess.FromRuntime(runtimeLayer.GetInputs()[0]);
-
-            int[] render = GetCellRenderOrder(RenderToNE, RenderWidth, RenderHeight);
-            int ztop = runtimeLayer.Algorithm.Is2DOnly ? 1 : RenderDepth;
+                parent = StorageAccess.FromRuntime(layer.GetInputs()[0]);
+            
+            int[] render = GetCellRenderOrder(RenderToNE, TraceRenderWidth, TraceRenderHeight);
+            int ztop = layer.Algorithm.Is2DOnly ? 1 : TraceRenderDepth;
             int zbottom = 0;
             for (int z = zbottom; z < ztop; z++)
             {
                 int rcx = width / 2 - 1;
-                int rcy = height / 2 - 31;
+                int rcy = height / 2 - (height / 2 - 1);
                 int rw = 2;
                 int rh = 1;
                 for (int i = 0; i < render.Length; i++)
                 {
                     // Calculate the X / Y of the tile in the grid.
-                    int x = render[i] % RenderWidth;
-                    int y = render[i] / RenderWidth;
+                    int x = render[i] % TraceRenderWidth;
+                    int y = render[i] / TraceRenderWidth;
                     
                     // Calculate the render position on screen.
                     int rx = rcx + (int)((x - y) / 2.0 * rw);// (int)(x / ((RenderWidth + 1) / 2.0) * rw);
-                    int ry = rcy + (x + y) * rh - (rh / 2 * (RenderWidth + RenderHeight)) - (z - zbottom) * 1;
+                    int ry = rcy + (x + y) * rh - (rh / 2 * (TraceRenderWidth + TraceRenderHeight)) - (z - zbottom) * 1;
                     
                     while (true)
                     {
                         try
                         {
-                            Color lc = runtimeLayer.Algorithm.GetColorForValue(
+                            Color lc = layer.Algorithm.GetColorForValue(
                                 parent,
                                 data[x + y * owidth + z * owidth * oheight]);
                             SolidBrush sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
