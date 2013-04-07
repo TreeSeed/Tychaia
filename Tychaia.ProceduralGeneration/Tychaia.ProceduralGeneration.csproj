@@ -99,6 +99,7 @@
     <Compile Include="Professions\Professions.cs" />
     <Compile Include="AlgorithmDebuggingOffset.cs" />
     <Compile Include="AlgorithmIncrementWaterDistance.cs" />
+    <Compile Include="AlgorithmHeightChange.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

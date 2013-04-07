@@ -26,6 +26,15 @@ namespace Tychaia.ProceduralGeneration
             set;
         }
 
+        [DataMember]
+        [DefaultValue(ColorScheme.Perlin)]
+        [Description("The color scheme to use.")]
+        public ColorScheme ColorSet
+        {
+            get;
+            set;
+        }
+
         public override string[] InputNames
         {
             get { return new string[] { "Value" }; }
@@ -39,6 +48,7 @@ namespace Tychaia.ProceduralGeneration
         public AlgorithmValueTo3D()
         {
             this.EstimateMax = 64;
+            this.ColorSet = ColorScheme.Perlin;
         }
 
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
@@ -64,15 +74,43 @@ namespace Tychaia.ProceduralGeneration
                 divvalue = 1;
                 
             a = (int)(value * ((double)255 / divvalue));
-         
+
             if (a < 0)
-                a = 0;
+            {
+                if (a < -255)
+                {
+                    if (ColorSet == ColorScheme.Land)
+                        return Color.FromArgb(0, 0, 255);
+                    else if (ColorSet == ColorScheme.Perlin)
+                        return Color.FromArgb(255, 255, 255);
+
+                    return Color.Red;
+                }
+                
+                if (ColorSet == ColorScheme.Land)
+                    return Color.FromArgb(0, 0, -a);
+                else if (ColorSet == ColorScheme.Perlin)
+                    return Color.FromArgb(-a, -a, -a);
+            }
+            
             if (a > 255)
                 a = 255;
-
+            
             if (a == 0)
-                return Color.Transparent;
-            return Color.FromArgb(a, a, a);
+                return Color.Black;
+
+            if (ColorSet == ColorScheme.Land)
+                return Color.FromArgb(0, a, 0);
+            else if (ColorSet == ColorScheme.Perlin)
+                return Color.FromArgb(a, a, a);
+
+            return Color.Red;
+        }
+
+        public enum ColorScheme
+        {
+            Land,
+            Perlin,
         }
     }
 
