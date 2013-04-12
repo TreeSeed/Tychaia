@@ -56,6 +56,8 @@ namespace Tychaia.ProceduralGeneration
         
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
+            return this.DelegateColorForValueToParent(parent, value);
+            /*
             int a;
 
             double divvalue = (double)this.EstimateMax;
@@ -70,7 +72,7 @@ namespace Tychaia.ProceduralGeneration
             if (a > 255)
                 a = 255;
 
-            return Color.FromArgb(a, a, a);
+            return Color.FromArgb(a, a, a);*/
         }
     }
 }

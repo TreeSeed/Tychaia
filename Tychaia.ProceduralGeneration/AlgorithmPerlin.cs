@@ -10,7 +10,7 @@ using System.Drawing;
 using Protogame.Noise;
 
 namespace Tychaia.ProceduralGeneration
-   {
+{
     [DataContract]
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Initials)]
@@ -100,7 +100,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            return Color.FromArgb((int)(255 * (value / 100f)), (int)(255 * (value / 100f)), (int)(255 * (value / 100f)));
+            return Color.FromArgb((int)(255 * (value / (float)this.MaxValue)), (int)(255 * (value / (float)this.MaxValue)), (int)(255 * (value / (float)this.MaxValue)));
         }
     }
 }

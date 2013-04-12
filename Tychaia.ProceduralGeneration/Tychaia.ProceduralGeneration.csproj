@@ -65,7 +65,6 @@
     <Compile Include="Compiler\AlgorithmRefactorer.cs" />
     <Compile Include="AlgorithmConstant.cs" />
     <Compile Include="AlgorithmUtility.cs" />
-    <Compile Include="AlgorithmExtend.cs" />
     <Compile Include="StorageLayer.cs" />
     <Compile Include="StorageAccess.cs" />
     <Compile Include="Flow\AlgorithmFlowConnector.cs" />
@@ -100,6 +99,8 @@
     <Compile Include="AlgorithmDebuggingOffset.cs" />
     <Compile Include="AlgorithmIncrementWaterDistance.cs" />
     <Compile Include="AlgorithmHeightChange.cs" />
+    <Compile Include="AlgorithmExtend2D.cs" />
+    <Compile Include="AlgorithmSmooth.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
