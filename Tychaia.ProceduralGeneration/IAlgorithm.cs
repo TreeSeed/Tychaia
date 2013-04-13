@@ -184,10 +184,10 @@ namespace Tychaia.ProceduralGeneration
         /// <param name="parent">The primary input.</param>
         /// <param name="value">The value to determine.</param>
         /// <returns>The color determined by the parent.</returns>
-        public Color DelegateColorForValueToParent(StorageLayer parent, dynamic value)
+        public Color DelegateColorForValueToParent(StorageLayer parent, dynamic value, int index = 0)
         {
             if (parent != null)
-                return parent.Algorithm.GetColorForValue(parent.Inputs.Length >= 1 ? parent.Inputs[0] : null, value);
+                return parent.Algorithm.GetColorForValue(parent.Inputs.Length >= (index + 1) ? parent.Inputs[index] : null, value);
             return Color.Gray;
         }
     }

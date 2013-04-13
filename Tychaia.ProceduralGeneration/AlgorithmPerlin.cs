@@ -100,7 +100,10 @@ namespace Tychaia.ProceduralGeneration
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            return Color.FromArgb((int)(255 * (value / (float)this.MaxValue)), (int)(255 * (value / (float)this.MaxValue)), (int)(255 * (value / (float)this.MaxValue)));
+            return Color.FromArgb(
+                (int)(255 * ((value - this.MinValue) / (float)(this.MaxValue - this.MinValue))),
+                (int)(255 * ((value - this.MinValue) / (float)(this.MaxValue - this.MinValue))),
+                (int)(255 * ((value - this.MinValue) / (float)(this.MaxValue - this.MinValue))));
         }
     }
 }

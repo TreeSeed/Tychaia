@@ -101,6 +101,7 @@
     <Compile Include="AlgorithmHeightChange.cs" />
     <Compile Include="AlgorithmExtend2D.cs" />
     <Compile Include="AlgorithmSmooth.cs" />
+    <Compile Include="AlgorithmSmoothByInput.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

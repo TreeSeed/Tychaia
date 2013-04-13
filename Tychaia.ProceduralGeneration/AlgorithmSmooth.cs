@@ -11,7 +11,7 @@ namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
-    [FlowDesignerCategory(FlowCategory.Zooming)]
+    [FlowDesignerCategory(FlowCategory.Manipulation)]
     [FlowDesignerName("Smooth 2D")]
     public class AlgorithmSmooth2D : Algorithm<int, int>
     {
