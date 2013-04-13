@@ -61,9 +61,6 @@
     <Content Include="_js\mmaw.js" />
     <Content Include="_js\mmaw-ui-results.js" />
     <Content Include="_js\mmaw-ui-processing.js" />
-    <Content Include="_js\mmaw-ui-main-and-processing.js">
-      <DependentUpon>mmaw-settings.js</DependentUpon>
-    </Content>
     <Content Include="_js\mmaw-ui-results-and-processing.js" />
     <Content Include="_js\mmaw-controller.js" />
     <Content Include="_js\mmaw-processor.js" />
@@ -72,6 +69,7 @@
     <Content Include="_js\mmaw-client-renderer.js" />
     <Content Include="_js\mmaw-client-retriever.js" />
     <Content Include="_js\mmaw-sizes.js" />
+    <Content Include="_js\mmaw-ui-main-and-processing.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Default.aspx.cs">
