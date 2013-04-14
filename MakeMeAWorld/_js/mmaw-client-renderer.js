@@ -113,33 +113,34 @@ function MMAWClientRenderer() {
             return;
         if (cell.data.empty)
             return; // Don't need to render empty data.
-        var dataArray = this._decodeDataArray(cell.data);
+        
+        // Set up the image data and finish handler.
         var cellPosition = this._determineCellRenderPosition(cell.x, cell.y, cell.z);
-        for (var z = 0; z < this.getRenderIncrement(); z++)
-            for (var x = 0; x < this.getRenderIncrement(); x++)
-                for (var y = 0; y < this.getRenderIncrement(); y++)
-                {
-                    var pixelPosition = this._determinePixelRenderPosition(x, y, z);
-                    var value = dataArray[x + y * this.getRenderIncrement() + z * this.getRenderIncrement() * this.getRenderIncrement()];
-                    if (cell.data.mappings[value] !== undefined &&
-                        cell.data.mappings[value] !== null) {
-                        var a = cell.data.mappings[value][0];
-                        if (a > 0)
-                        {
-                            var r = cell.data.mappings[value][1];
-                            var g = cell.data.mappings[value][2];
-                            var b = cell.data.mappings[value][3];
-                            this._context.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
-                            this._context.fillRect(cellPosition.x + pixelPosition.x, cellPosition.y + pixelPosition.y, 2, 1);
-                        }
-                    }
+        var imageData = this._context.createImageData(300, 300);
+        var finished = function(imageData) {
+            this._context.putImageData(imageData, cellPosition.x, cellPosition.y);
+            this.processor.cellsRendered += 1;
+            if (this.processor.onProgress != null)
+                this.processor.onProgress();
+            if (this.processor.onFinish != null &&
+                this.processor.cells.length == this.processor.cellsRendered)
+                this.processor.onFinish();
+        };
+        
+        // If we have web worker support, use that.
+        if (typeof(Worker) !== "undefined") {
+            var w = new Worker("mmaw-client-webworker.js");
+            w.onMessage = function(e) {
+                if (e.imageData != null) {
+                    finished(e.imageData);
                 }
-        this.processor.cellsRendered += 1;
-        if (this.processor.onProgress != null)
-            this.processor.onProgress();
-        if (this.processor.onFinish != null &&
-            this.processor.cells.length == this.processor.cellsRendered)
-            this.processor.onFinish();
+            };
+            w.postMessage({func: "setIsWebWorker", arguments: []});
+            w.postMessage({func: "process", arguments: [cell, imageData, null]});
+        } else {
+            var w = new MMAWClientWebWorker();
+            w.process(cell, imageData, function(imageData) { finished(imageData); });
+        }
     };
     
     /// <summary>

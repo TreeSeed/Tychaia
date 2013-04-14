@@ -70,6 +70,7 @@
     <Content Include="_js\mmaw-client-retriever.js" />
     <Content Include="_js\mmaw-sizes.js" />
     <Content Include="_js\mmaw-ui-main-and-processing.js" />
+    <Content Include="_js\mmaw-client-webworker.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Default.aspx.cs">
