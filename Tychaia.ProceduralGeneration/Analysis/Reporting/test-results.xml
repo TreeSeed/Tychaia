@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="reports.xsl"?>
+<analysis>
+    <layers>
+        <layer name="Initial Bool" id="l0">
+<code><![CDATA[if (this.GuaranteeStartingPoint && x == 0 && y == 0)
+    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.HigherValue;
+else if (!Layer2D && context.GetRandomDouble(x, y, z, context.Modifier) > this.Limit)
+    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.HigherValue;
+else if (Layer2D && context.GetRandomDouble(x, y, 0, context.Modifier) > this.Limit)
+    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.HigherValue;
+else
+    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.LowerValue;]]></code>
+</layer>
+    </layers>
+    <report name="Simplification Analysis">
+        <issues>
+            <issue>
+                <layer id="l0" />
+                <id>S0001</id>
+                <name>Replace expression</name>
+                <description>
+                <![CDATA[
+                The following expressions should be replaced with the suggested alternatives.
+                The analysis engine has determined that the suggested alternatives would perform
+                faster than the current code.
+                ]]>
+                </description>
+                <locations>
+                    <highlight start="50" end="55">
+                        <importance>100</importance>
+                        <message>Replace with 'hello'.</message>
+                    </highlight>
+                    <highlight start="60" end="65">
+                        <importance>75</importance>
+                        <message>Replace with 'x * 5'.</message>
+                    </highlight>
+                    <highlight start="70" end="75">
+                        <importance>50</importance>
+                        <message>Replace with 'x * 5'.</message>
+                    </highlight>
+                    <highlight start="80" end="85">
+                        <importance>25</importance>
+                        <message>Replace with 'x * 5'.</message>
+                    </highlight>
+                    <highlight start="90" end="95">
+                        <importance>0</importance>
+                        <message>Replace with 'x * 5'.</message>
+                    </highlight>
+                </locations>
+            </issue>
+            <issue>
+                <layer id="l0" />
+                <id>S0002</id>
+                <name>Expression-by-expression breakdown</name>
+                <description>
+                <![CDATA[
+                The following report indicates time spent per expression when calculating the
+                result for the layer.  Yellow areas are where time is spent less, red areas are
+                where time is spent the most.
+                ]]>
+                </description>
+                <locations>
+                    <highlight start="1" end="5">
+                        <importance>0</importance>
+                    </highlight>
+                    <highlight start="5" end="32">
+                        <importance>75</importance>
+                    </highlight>
+                    <highlight start="32" end="100">
+                        <importance>0</importance>
+                    </highlight>
+                </locations>
+            </issue>
+        </issues>
+    </report>
+</analysis>
