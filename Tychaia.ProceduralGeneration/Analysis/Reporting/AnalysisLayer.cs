@@ -3,32 +3,20 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
 //
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 namespace Tychaia.ProceduralGeneration.Analysis.Reporting
 {
-    public struct AnalysisLayer : IXmlSerializable
+    [DataContract(Name = "layer")]
+    public class AnalysisLayer
     {
-        public string ID;
-        public StorageLayer StorageLayer;
-        
-        #region IXmlSerializable implementation
-        
-        public XmlSchema GetSchema()
-        {
-        }
-        
-        public void ReadXml(XmlReader reader)
-        {
-        }
-        
-        public void WriteXml(XmlWriter writer)
-        {
-        }
-        
-        #endregion
+        [DataMember(Name = "name")]
+        public string
+            Name;
+
+        [DataMember(Name = "code")]
+        public string
+            Code;
     }
 }
 

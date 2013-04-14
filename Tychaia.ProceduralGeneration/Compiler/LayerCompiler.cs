@@ -101,24 +101,10 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 "" + ranged.Width + " + \" \" + " +
                 "" + ranged.Height + " + \" \" + " +
                 "" + ranged.Depth + ");";*/
-
-            // Load Tychaia.ProceduralGeneration into Mono.Cecil.
-            var module = AssemblyDefinition.ReadAssembly("Tychaia.ProceduralGeneration.dll").MainModule;
-
-            // Now we have a reference to the method we want to decompile.
-            TypeDefinition cecilType;
-            MethodDefinition processCell;
-            FindProcessCell(module, algorithmType, out processCell, out cecilType);
-            var decompilerSettings = new DecompilerSettings();
-            var astBuilder = new AstBuilder(new DecompilerContext(module) { CurrentType = cecilType, Settings = decompilerSettings });
-            astBuilder.AddMethod(processCell);
-            astBuilder.RunTransformations();
-            astBuilder.CompilationUnit.AcceptVisitor(new InsertParenthesesVisitor {
-                InsertParenthesesForReadability = true
-            });
             
             // Refactor the method.
-            var method = astBuilder.CompilationUnit.Members.Where(v => v is MethodDeclaration).Cast<MethodDeclaration>().First();
+            AstBuilder astBuilder;
+            var method = DecompileUtil.GetAlgorithmCode(algorithmType, out astBuilder);
             AlgorithmRefactorer.InlineMethod(algorithm, method, result.OutputVariableName, result.InputVariableNames,
                                              "__cx", "__cy", "__cz",
                                              "__cwidth", "__cheight", "__cdepth");
@@ -176,31 +162,6 @@ for (var j = (int)((" + iy.GetText(null) + ") - y); j < " + ioutery.GetText(null
             return result;
         }
 
-        /// <summary>
-        /// Finds the Mono.Cecil.MethodDefinition for ProcessCell in the specified algorithm type.
-        /// </summary>
-        private static void FindProcessCell(ModuleDefinition module,
-                                            Type algorithmType,
-                                            out MethodDefinition methodDefinition,
-                                            out TypeDefinition typeDefinition)
-        {
-            foreach (var t in module.Types)
-            {
-                if (t.FullName == algorithmType.FullName)
-                {
-                    foreach (var m in t.Methods)
-                    {
-                        if (m.Name == "ProcessCell")
-                        {
-                            methodDefinition = m;
-                            typeDefinition = t;
-                            return;
-                        }
-                    }
-                }
-            }
-            throw new MissingMethodException();
-        }
 
         /// <summary>
         /// Generates the compiled type.

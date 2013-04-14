@@ -106,6 +106,10 @@
     <Compile Include="Analysis\Reporting\AnalysisIssue.cs" />
     <Compile Include="Analysis\Reporting\AnalysisReport.cs" />
     <Compile Include="Analysis\Reporting\AnalysisLayer.cs" />
+    <Compile Include="Analysis\Reporting\AnalysisLocation.cs" />
+    <Compile Include="Analysis\Reporting\AnalysisIO.cs" />
+    <Compile Include="Analysis\Reporting\AnalysisLocationHighlight.cs" />
+    <Compile Include="Compiler\DecompileUtil.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -130,6 +134,7 @@
     <None Include="Analysis\Reporting\bootstrap\js\jquery-1.9.1.min.js" />
     <None Include="Analysis\Reporting\bootstrap\js\prettify.js" />
     <None Include="Analysis\Reporting\test-results.xml" />
+    <None Include="Analysis\Reporting\test.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tychaia.Globals\Tychaia.Globals.csproj">
