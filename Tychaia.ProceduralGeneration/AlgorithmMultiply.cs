@@ -80,6 +80,8 @@ namespace Tychaia.ProceduralGeneration
                 
             if (a > 255)
                 a = 255;
+            if (a < 0)
+                a = 0;
 
             return Color.FromArgb(a, a, a);
         }

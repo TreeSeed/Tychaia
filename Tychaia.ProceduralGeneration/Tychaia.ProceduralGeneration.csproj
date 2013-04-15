@@ -65,7 +65,6 @@
     <Compile Include="Compiler\AlgorithmRefactorer.cs" />
     <Compile Include="AlgorithmConstant.cs" />
     <Compile Include="AlgorithmUtility.cs" />
-    <Compile Include="AlgorithmExtend.cs" />
     <Compile Include="StorageLayer.cs" />
     <Compile Include="StorageAccess.cs" />
     <Compile Include="Flow\AlgorithmFlowConnector.cs" />
@@ -100,6 +99,17 @@
     <Compile Include="AlgorithmDebuggingOffset.cs" />
     <Compile Include="AlgorithmIncrementWaterDistance.cs" />
     <Compile Include="AlgorithmHeightChange.cs" />
+    <Compile Include="AlgorithmExtend2D.cs" />
+    <Compile Include="AlgorithmSmooth.cs" />
+    <Compile Include="AlgorithmSmoothByInput.cs" />
+    <Compile Include="Analysis\Reporting\Analysis.cs" />
+    <Compile Include="Analysis\Reporting\AnalysisIssue.cs" />
+    <Compile Include="Analysis\Reporting\AnalysisReport.cs" />
+    <Compile Include="Analysis\Reporting\AnalysisLayer.cs" />
+    <Compile Include="Analysis\Reporting\AnalysisLocation.cs" />
+    <Compile Include="Analysis\Reporting\AnalysisIO.cs" />
+    <Compile Include="Analysis\Reporting\AnalysisLocationHighlight.cs" />
+    <Compile Include="Compiler\DecompileUtil.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -107,11 +117,24 @@
     <Folder Include="Flow\" />
     <Folder Include="Biomes\" />
     <Folder Include="Buildings\" />
+    <Folder Include="Analysis\" />
+    <Folder Include="Analysis\Reporting\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compiler\CompiledLayerTemplate.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Analysis\Reporting\reports.xsl" />
+    <None Include="Analysis\Reporting\bootstrap\css\bootstrap-responsive.min.css" />
+    <None Include="Analysis\Reporting\bootstrap\css\bootstrap.min.css" />
+    <None Include="Analysis\Reporting\bootstrap\css\prettify.css" />
+    <None Include="Analysis\Reporting\bootstrap\img\glyphicons-halflings-white.png" />
+    <None Include="Analysis\Reporting\bootstrap\img\glyphicons-halflings.png" />
+    <None Include="Analysis\Reporting\bootstrap\js\bootstrap.min.js" />
+    <None Include="Analysis\Reporting\bootstrap\js\jquery-1.9.1.min.js" />
+    <None Include="Analysis\Reporting\bootstrap\js\prettify.js" />
+    <None Include="Analysis\Reporting\test-results.xml" />
+    <None Include="Analysis\Reporting\test.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tychaia.Globals\Tychaia.Globals.csproj">

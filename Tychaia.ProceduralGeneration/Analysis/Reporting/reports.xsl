@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:i="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"
+                xmlns:t="http://schemas.datacontract.org/2004/07/Tychaia.ProceduralGeneration.Analysis.Reporting">
+                
+    <xsl:output indent="yes" method="html" />
+    
+    <xsl:template match="/t:analysis">
+        <html>
+            <head>
+                <title>Tychaia Analysis Reports</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+                <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
+                <link href="bootstrap/css/prettify.css" rel="stylesheet" />
+                <style type="text/css">
+                <![CDATA[
+                a.report-code-highlight, a.report-code-highlight:hover { text-decoration: none; cursor: default; }
+                a.report-code-highlight *, .linenums div.tooltip { text-shadow: none; }
+                ]]>
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <xsl:apply-templates />
+                </div>
+                <script src="bootstrap/js/jquery-1.9.1.min.js"></script>
+                <script src="bootstrap/js/bootstrap.min.js"></script>
+                <script src="bootstrap/js/prettify.js"></script>
+                <script type="text/javascript">
+                <![CDATA[
+                    $(function () {
+                        $("[data-toggle='tooltip']").tooltip();
+                    });
+                    prettyPrint();
+                ]]>
+                </script>
+            </body>
+        </html>
+    </xsl:template>
+    
+    <xsl:template match="/t:analysis/t:layers" />
+    
+    <xsl:template match="/t:analysis/t:reports/t:report">
+        <h3>
+            <xsl:value-of select="t:name" />
+        </h3>
+        <xsl:apply-templates />
+    </xsl:template>
+    
+    <xsl:template match="/t:analysis/t:reports/t:report/t:name" />
+    
+    <xsl:template match="/t:analysis/t:reports/t:report/t:issues">
+        <xsl:apply-templates />
+    </xsl:template>
+    
+    <xsl:template match="/t:analysis/t:reports/t:report/t:issues/t:issue">
+        <h4>
+            <span style="text-decoration: underline;"><xsl:value-of select="t:id" />: <xsl:value-of select="t:name" /></span>
+        </h4>
+        <p>
+            <xsl:value-of select="t:description" />
+        </p>
+        <pre class="prettyprint linenums">
+            <xsl:call-template name="format-locations">
+                <xsl:with-param name="text" select="/t:analysis/t:layers/t:layer[@z:Id=current()/t:layer/@z:Ref]/t:code" />
+                <xsl:with-param name="locations" select="t:locations" />
+            </xsl:call-template>
+        </pre>
+    </xsl:template>
+    
+    <xsl:template match="t:locations/t:location[@i:type='replace']">
+        <xsl:param name="previous" />
+        <xsl:param name="current" />
+        <span style="background-color: red;">
+            <xsl:value-of select="." />
+        </span>
+    </xsl:template>
+    
+    <xsl:template match="t:locations/t:location[@i:type='highlight']">
+        <xsl:param name="previous" />
+        <xsl:param name="current" />
+        <a data-toggle="tooltip" class="report-code-highlight">
+            <xsl:attribute name="title">
+                <xsl:value-of select="$current/t:message" />
+            </xsl:attribute>
+            <xsl:attribute name="style">
+                <xsl:text>background-color: rgb(255, </xsl:text>
+                <xsl:value-of select="255 - round(($current/t:importance div 100) * 255)" />
+                <xsl:text>, 0);</xsl:text>
+            </xsl:attribute>
+            <xsl:value-of select="$previous" />
+        </a>
+    </xsl:template>
+    
+    <!-- Formats the locations in the code as needed -->
+    <xsl:template name="format-locations">
+        <xsl:param name="text"/>
+        <xsl:param name="locations"/>
+
+        <xsl:variable name="result">
+            <xsl:if test="$locations/t:*[1]/t:start = 1">
+                <xsl:message terminate="no">Start points should be greater than 0 (character indexing starts at 1).</xsl:message>
+            </xsl:if>
+            <xsl:if test="$locations/t:*[1]/t:end &lt; $locations/t:*[1]/t:start">
+                <xsl:message terminate="yes">End position of location must be after start.</xsl:message>
+            </xsl:if>
+            <xsl:value-of select="substring($text, 1, $locations/t:*[1]/t:start)"/>
+            <xsl:apply-templates select="$locations/t:*[1]">
+                <xsl:with-param name="previous" select="substring($text, $locations/t:*[1]/t:start + 1, $locations/t:*[1]/t:end - $locations/t:*[1]/t:start)" />
+                <xsl:with-param name="current" select="$locations/t:*[1]" />
+            </xsl:apply-templates>
+            <xsl:for-each select="$locations/t:*[position() &gt; 1]">
+                <xsl:if test="t:end &lt; t:start">
+                    <xsl:message terminate="yes">End position of location must be after start.</xsl:message>
+                </xsl:if>
+                <xsl:value-of select="substring($text, preceding-sibling::t:*[1]/t:end + 1, t:start - preceding-sibling::t:*[1]/t:end)"/>
+                <xsl:apply-templates select="$locations/t:*[1]">
+                    <xsl:with-param name="previous" select="substring($text, t:start + 1, t:end - t:start)" />
+                    <xsl:with-param name="current" select="." />
+                </xsl:apply-templates>
+            </xsl:for-each>
+            <xsl:value-of select="substring($text, $locations/t:*[last()]/t:end + 1)"/>
+        </xsl:variable>
+        <xsl:copy-of select="$result"/>
+    </xsl:template>
+    
+</xsl:stylesheet>

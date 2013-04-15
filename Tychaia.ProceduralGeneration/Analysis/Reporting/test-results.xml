@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="reports.xsl"?>
+<analysis xmlns="http://schemas.datacontract.org/2004/07/Tychaia.ProceduralGeneration.Analysis.Reporting"
+          xmlns:i="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
+    <layers>
+        <layer z:Id="i0">
+        <name>Initial Bool</name>
+<code><![CDATA[if (this.GuaranteeStartingPoint && x == 0 && y == 0)
+    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.HigherValue;
+else if (!Layer2D && context.GetRandomDouble(x, y, z, context.Modifier) > this.Limit)
+    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.HigherValue;
+else if (Layer2D && context.GetRandomDouble(x, y, 0, context.Modifier) > this.Limit)
+    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.HigherValue;
+else
+    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.LowerValue;]]></code>
+</layer>
+    </layers>
+    <reports>
+        <report name="Simplification Analysis">
+            <issues>
+                <issue>
+                    <layer z:Ref="i0" />
+                    <id>S0001</id>
+                    <name>Replace expression</name>
+                    <description>
+                    <![CDATA[
+                    The following expressions should be replaced with the suggested alternatives.
+                    The analysis engine has determined that the suggested alternatives would perform
+                    faster than the current code.
+                    ]]>
+                    </description>
+                    <locations>
+                        <location i:type="highlight">
+                            <start>50</start>
+                            <end>55</end>
+                            <importance>100</importance>
+                            <message>Replace with 'hello'.</message>
+                        </location>
+                        <location i:type="highlight">
+                            <start>60</start>
+                            <end>65</end>
+                            <importance>75</importance>
+                            <message>Replace with 'x * 5'.</message>
+                        </location>
+                        <location i:type="highlight">
+                            <start>70</start>
+                            <end>75</end>
+                            <importance>50</importance>
+                            <message>Replace with 'x * 5'.</message>
+                        </location>
+                        <location i:type="highlight">
+                            <start>80</start>
+                            <end>85</end>
+                            <importance>25</importance>
+                            <message>Replace with 'x * 5'.</message>
+                        </location>
+                        <location i:type="highlight">
+                            <start>90</start>
+                            <end>95</end>
+                            <importance>0</importance>
+                            <message>Replace with 'x * 5'.</message>
+                        </location>
+                    </locations>
+                </issue>
+                <issue>
+                    <layer z:Ref="i0" />
+                    <id>S0002</id>
+                    <name>Expression-by-expression breakdown</name>
+                    <description>
+                    <![CDATA[
+                    The following report indicates time spent per expression when calculating the
+                    result for the layer.  Yellow areas are where time is spent less, red areas are
+                    where time is spent the most.
+                    ]]>
+                    </description>
+                    <locations>
+                        <highlight start="1" end="5">
+                            <importance>0</importance>
+                        </highlight>
+                        <highlight start="5" end="32">
+                            <importance>75</importance>
+                        </highlight>
+                        <highlight start="32" end="100">
+                            <importance>0</importance>
+                        </highlight>
+                    </locations>
+                </issue>
+            </issues>
+        </report>
+    </reports>
+</analysis>
