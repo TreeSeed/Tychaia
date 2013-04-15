@@ -9,85 +9,77 @@ using System.Collections.Generic;
 
 namespace Tychaia.Puzzle
 {
-    public class WarfranePuzzle : IPuzzle
+    public class DDOPuzzle : IPuzzle
     {
         public class Tile
         {
             public int X;
             public int Y;
-            public bool[] Line = new bool[] { false, false, false, false, false, false, false };
+            public int Size = 100;
+            public bool[] Line = new bool[] { false, false, false, false };
             public int[] Adj;
             public int ID;
-            public Color TileColor = Color.Blue;
+            public Color TileColor = Color.Black;
             public bool Set = false;
-            public WarfranePuzzle Puzzle;
+            public DDOPuzzle Puzzle;
             public int Rotation = 0;
 
-            public Tile(WarfranePuzzle puzzle) : this(0, puzzle)
+            public Tile(int x, int y, DDOPuzzle puzzle)
             {
-                X = 200;
-                Y = 200;
-            }
-
-            public Tile(int id, WarfranePuzzle puzzle)
-            {
-                X = (int)(Math.Sin(id * Math.PI / 3) * 100 + 200);
-                Y = (int)(Math.Cos(id * Math.PI / 3) * 100 + 200);
-                ID = id;
-
-                switch (id)
-                {
-                    case 0:
-                        Adj = new int[] { 1, 2, 3, 4, 5, 6 };
-                        break;
-                    case 1:
-                        Adj = new int[] { 0, 2, 6 };
-                        break;
-                    case 2:
-                        Adj = new int[] { 0, 3, 1 };
-                        break;
-                    case 3:
-                        Adj = new int[] { 0, 4, 2 };
-                        break;
-                    case 4:
-                        Adj = new int[] { 0, 5, 3 };
-                        break;
-                    case 5:
-                        Adj = new int[] { 0, 6, 4 };
-                        break;
-                    case 6:
-                        Adj = new int[] { 0, 1, 5 };
-                        break;
-                }
-
+                X = x;
+                Y = y;
                 Puzzle = puzzle;
             }
 
             public void Draw(IPuzzleUI ui)
             {
                 ui.SetColor(TileColor);
-                ui.DrawCircle(X, Y, 50);
-                ui.SetColor(Color.Black);
 
-                int c = 0;
+                ui.DrawRectangle(X - Size/2, Y - Size/2, X + Size/2, Y + Size/2);
 
-                foreach (var a in Adj)
+                ui.SetColor(Color.Blue);
+                switch(Rotation)
                 {
-                    if (Line[a] == true)
-                    {   
-                        int b = Rotation + c;
-                        ui.DrawLine(X, Y, X + (int)(Math.Sin((b) * Math.PI / 3) * 50), Y + (int)(Math.Cos((b) * Math.PI / 3) * 50));
-                    }
-
-                    if (ID != 0)
-                    {
-                        if (a == 0)
-                            c++;
-                        else
-                            c = -1;
-                    }
-                    else
-                        c++;
+                    case 0:
+                        if (Line[0] == true)
+                            ui.DrawLine(X, Y, X, Y + Size/2);
+                        if (Line[1] == true)
+                            ui.DrawLine(X, Y, X + Size/2, Y);
+                        if (Line[2] == true)
+                            ui.DrawLine(X, Y, X, Y - Size/2);
+                        if (Line[3] == true)
+                            ui.DrawLine(X, Y, X - Size/2, Y);
+                        break;
+                    case 1:
+                        if (Line[1] == true)
+                            ui.DrawLine(X, Y, X, Y + Size/2);
+                        if (Line[2] == true)
+                            ui.DrawLine(X, Y, X + Size/2, Y);
+                        if (Line[3] == true)
+                            ui.DrawLine(X, Y, X, Y - Size/2);
+                        if (Line[0] == true)
+                            ui.DrawLine(X, Y, X - Size/2, Y);
+                        break;
+                    case 2:
+                        if (Line[2] == true)
+                            ui.DrawLine(X, Y, X, Y + Size/2);
+                        if (Line[3] == true)
+                            ui.DrawLine(X, Y, X + Size/2, Y);
+                        if (Line[0] == true)
+                            ui.DrawLine(X, Y, X, Y - Size/2);
+                        if (Line[1] == true)
+                            ui.DrawLine(X, Y, X - Size/2, Y);
+                        break;
+                    case 3:
+                        if (Line[3] == true)
+                            ui.DrawLine(X, Y, X, Y + Size/2);
+                        if (Line[0] == true)
+                            ui.DrawLine(X, Y, X + Size/2, Y);
+                        if (Line[1] == true)
+                            ui.DrawLine(X, Y, X, Y - Size/2);
+                        if (Line[2] == true)
+                            ui.DrawLine(X, Y, X - Size/2, Y);
+                        break;
                 }
             }
         }
@@ -99,13 +91,12 @@ namespace Tychaia.Puzzle
         private Random r = new Random();
         private int victories = 0;
 
-        public WarfranePuzzle()
+        public DDOPuzzle()
         {
-            TileList.Add(new Tile(this));
-            for (int a = 1; a < 7; a++)
-            {
-                TileList.Add(new Tile(a, this));
-            }
+            for (int i = -2; i < 3; i++)
+                for (int j = -2; j < 3; j++)
+                    TileList.Add(new Tile(300 + i * 100, 300 + j * 100, this));
+
 
             Generate();
             /*
@@ -119,49 +110,55 @@ namespace Tychaia.Puzzle
 
         public void Generate()
         {
-            for (int a = 0; a < 7; a++)
+            foreach(Tile tile in TileList)
             {
-                TileList[a].Set = false;
-                TileList[a].Line = new bool[] { false, false, false, false, false, false, false }; 
-            }
+                int amount = GetRandomRange(random, random, random, random, 1, 4, random + mod);
+                mod = r.Next();
 
-            int number = GetRandomRange(random, random, random, random, 3, 7, random + mod);
-            mod = r.Next();
-            int selection = GetRandomRange(random, random, random, random, 0, 7, random + mod);
-            mod = r.Next();
-
-            while (number > 0)
-            {
-                if (TileList[selection].Set == false)
+                for (int i = 0; i < amount; i++)
                 {
-                    TileList[selection].Set = true;
-                    if (selection == 0)
+                    int selected = GetRandomRange(random, random, random, random, 0, 4, random + mod);
+
+                    while (tile.Line[selected] == true)
                     {
-                        selection = TileList[selection].Adj[GetRandomRange(random, random, random, random, 0, 6, random + mod)];
+                        mod = r.Next();
+                        selected = GetRandomRange(random, random, random, random, 0, 4, random + mod);
                     }
-                    else
-                    {
-                        selection = TileList[selection].Adj[GetRandomRange(random, random, random, random, 0, 3, random + mod)];
-                    }
-                    number--;
+
+                    tile.Line[selected] = true;
                     mod = r.Next();
                 }
-                else
-                {
-                    mod = r.Next();
-                    selection = GetRandomRange(random, random, random, random, 0, 7, random + mod);
-                }
             }
-
-            CheckLinks();
+            MakePath();
             JumbleRotation();
+        }
+
+        public void MakePath()
+        {
+            int connect = 0;
+            foreach(Tile tile in TileList)
+            {
+                tile.Line[connect] = true;
+
+                int selected = GetRandomRange(random, random, random, random, 0, 2, random + mod);
+                mod = r.Next();
+                for (int i = 2; i < 4; i++)
+                {
+                    int j = i + selected;
+                    if (j > 3)
+                        j -= 2;
+
+                    if (tile.Line[j] == true)
+                        connect = j;
+                }
+            }
         }
 
         public void JumbleRotation()
         {
             foreach (var tile in TileList)
             {
-                tile.Rotation = GetRandomRange(random, random, random, random, 0, 6, random + mod);
+                tile.Rotation = GetRandomRange(random, random, random, random, 0, 4, random + mod);
                 mod = r.Next();
             }
         }
@@ -183,10 +180,11 @@ namespace Tychaia.Puzzle
         {
             ui.BeginUI();
 
-            ui.DrawText(300, 600, victories.ToString());
+            //ui.DrawText(300, 600, victories.ToString());
 
             foreach (var Tile in TileList)
                 Tile.Draw(ui);
+
 
             ui.EndUI();
         }
@@ -194,8 +192,11 @@ namespace Tychaia.Puzzle
         public void ClickLeft(int x, int y)
         {
             foreach (var Tile in TileList)
-                if (Math.Sqrt(Math.Pow(x - Tile.X, 2) + Math.Pow(y - Tile.Y, 2)) < 50)
+                if (x - Tile.X < 50 && Tile.X - x < 50 && y - Tile.Y < 50 && Tile.Y - y < 50)
             {
+                if (Tile.Rotation == 3)
+                    Tile.Rotation = 0;
+                else
                     Tile.Rotation++;
             }
 
@@ -210,9 +211,12 @@ namespace Tychaia.Puzzle
         public void ClickRight(int x, int y)
         {
             foreach (var Tile in TileList)
-                if (Math.Sqrt(Math.Pow(x - Tile.X, 2) + Math.Pow(y - Tile.Y, 2)) < 50)
+                if (x - Tile.X < 50 && Tile.X - x < 50 && y - Tile.Y < 50 && Tile.Y - y < 50)
             {
-                Tile.Rotation--;
+                if (Tile.Rotation == 0)
+                    Tile.Rotation = 3;
+                else
+                    Tile.Rotation--;
             }
         }
 
