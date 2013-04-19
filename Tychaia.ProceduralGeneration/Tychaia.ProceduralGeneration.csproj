@@ -90,7 +90,6 @@
     <Compile Include="AlgorithmValueTo3D.cs" />
     <Compile Include="AlgorithmAverage.cs" />
     <Compile Include="AlgorithmDistanceFrom0.cs" />
-    <Compile Include="AlgorithmInitialBool.cs" />
     <Compile Include="AlgorithmDebuggingInitialDelegate.cs" />
     <Compile Include="AlgorithmDebuggingDelegate.cs" />
     <Compile Include="AlgorithmDebuggingInitialValueDelegate.cs" />
@@ -100,6 +99,9 @@
     <Compile Include="AlgorithmDebuggingOffset.cs" />
     <Compile Include="AlgorithmIncrementWaterDistance.cs" />
     <Compile Include="AlgorithmHeightChange.cs" />
+    <Compile Include="AlgorithmInitialBool.cs" />
+    <Compile Include="AlgorithmInitialTowns.cs" />
+    <Compile Include="Towns\Town.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -107,6 +109,7 @@
     <Folder Include="Flow\" />
     <Folder Include="Biomes\" />
     <Folder Include="Buildings\" />
+    <Folder Include="Towns\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compiler\CompiledLayerTemplate.cs">
