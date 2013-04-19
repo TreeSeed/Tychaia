@@ -9,11 +9,11 @@ using System.ComponentModel;
 
 namespace Tychaia.ProceduralGeneration
 {
-    [DataContract]
+    [DataContract(Name = "AlgorithmExtend")]
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Zooming)]
     [FlowDesignerName("2D Extend Value")]
-    public class AlgorithmExtend : Algorithm<int, int>
+    public class AlgorithmExtend2D : Algorithm<int, int>
     {
         [DataMember]
         [DefaultValue(0)]
@@ -45,7 +45,7 @@ namespace Tychaia.ProceduralGeneration
         public override int[] RequiredXBorder { get { return new int[] {1}; } }
         public override int[] RequiredYBorder { get { return new int[] {1}; } }
 
-        public AlgorithmExtend()
+        public AlgorithmExtend2D()
         {
             this.Value = 0;
             this.ExcludeValue = true;
@@ -81,7 +81,7 @@ namespace Tychaia.ProceduralGeneration
 
                 for (int a = 0; a < 1; a++)
                 {
-                    int selected = context.GetRandomRange(x, y, z, 8, context.Modifier + checkvalue);
+                    int selected = context.GetRandomRange(x, y, 0, 8, context.Modifier + checkvalue);
                 
                     switch (selected)
                     {

@@ -19,7 +19,8 @@ namespace TychaiaPuzzleEditor
         public PuzzleEditorForm()
         {
             this.SuspendLayout();
-            
+
+            this.DoubleBuffered = true;
             this.ClientSize = new Size(800, 600);
             this.m_PuzzleList = new ComboBox();
             this.InitializePuzzleList();

@@ -39,6 +39,7 @@
     <Compile Include="IPuzzleUI.cs" />
     <Compile Include="TestPuzzle.cs" />
     <Compile Include="WarframePuzzle.cs" />
+    <Compile Include="DDOPuzzle.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

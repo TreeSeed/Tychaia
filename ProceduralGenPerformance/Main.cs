@@ -82,7 +82,7 @@ namespace ProceduralGenPerformance
             else if (mode == "extend")
             {
                 legacy = null;
-                algorithmRuntime = new RuntimeLayer(new AlgorithmExtend());
+                algorithmRuntime = new RuntimeLayer(new AlgorithmExtend2D());
                 algorithmRuntime.SetInput(0, new RuntimeLayer(new AlgorithmInitialBool()));
 #if !RANGED_LOGIC_TEST
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
