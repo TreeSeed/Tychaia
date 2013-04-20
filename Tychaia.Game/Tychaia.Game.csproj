@@ -38,12 +38,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)' != 'Debug (prebuilt MonoGame)' And '$(Configuration)' != 'Release (prebuilt MonoGame)' And '$(OSTYPE)' == 'linux'">
-    <ProjectReference Include="..\Libraries\MonoGame\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
-      <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
-      <Name>MonoGame.Framework.Linux</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="..\MonoGame.Prebuilt\MonoGame.targets" />
   <ItemGroup>
     <Compile Include="Being.cs" />
