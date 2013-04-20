@@ -17,6 +17,18 @@ namespace Tychaia.ProceduralGeneration.Analysis.Reporting
         [DataMember(Name = "message")]
         public string
             Message;
+
+        public override AnalysisLocation Copy()
+        {
+            return new AnalysisLocationHighlight
+            {
+                Importance = this.Importance,
+                UniqueID = this.UniqueID,
+                Message = this.Message,
+                Start = this.Start,
+                End = this.End
+            };
+        }
     }
 }
 

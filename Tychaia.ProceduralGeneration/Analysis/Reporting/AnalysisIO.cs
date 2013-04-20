@@ -46,7 +46,7 @@ namespace Tychaia.ProceduralGeneration.Analysis.Reporting
                     m_SerializableTypes,
                     Int32.MaxValue,
                     false,
-                    true,
+                    false,
                     null);
                 x.WriteObject(memory, analysis);
 

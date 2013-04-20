@@ -17,6 +17,16 @@ namespace Tychaia.ProceduralGeneration.Analysis.Reporting
         [DataMember(Name = "end")]
         public int
             End;
+
+        [DataMember(Name = "uniqueid")]
+        public int
+            UniqueID;
+
+        [DataMember(Name = "uniqueidrefs")]
+        public string
+            UniqueIDRefs;
+
+        public abstract AnalysisLocation Copy();
     }
 }
 

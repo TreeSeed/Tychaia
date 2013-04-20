@@ -14,10 +14,6 @@ namespace Tychaia.ProceduralGeneration.Analysis.Reporting
         [DataMember(Name = "layers")]
         public List<AnalysisLayer>
             Layers = new List<AnalysisLayer>();
-
-        [DataMember(Name = "reports")]
-        public List<AnalysisReport>
-            Reports = new List<AnalysisReport>();
     }
 }
 

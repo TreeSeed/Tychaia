@@ -110,6 +110,11 @@
     <Compile Include="Analysis\Reporting\AnalysisIO.cs" />
     <Compile Include="Analysis\Reporting\AnalysisLocationHighlight.cs" />
     <Compile Include="Compiler\DecompileUtil.cs" />
+    <Compile Include="Analysis\AnalysisEngine.cs" />
+    <Compile Include="Analysis\SimplificationAnalysisEngine.cs" />
+    <Compile Include="Analysis\TextLocationExtensions.cs" />
+    <Compile Include="Analysis\Output\AstNodeExtensions.cs" />
+    <Compile Include="Analysis\Output\TrackingOutputFormatter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -119,6 +124,7 @@
     <Folder Include="Buildings\" />
     <Folder Include="Analysis\" />
     <Folder Include="Analysis\Reporting\" />
+    <Folder Include="Analysis\Output\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compiler\CompiledLayerTemplate.cs">
@@ -135,6 +141,7 @@
     <None Include="Analysis\Reporting\bootstrap\js\prettify.js" />
     <None Include="Analysis\Reporting\test-results.xml" />
     <None Include="Analysis\Reporting\test.xml" />
+    <None Include="Analysis\Reporting\bootstrap\css\docs.css" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tychaia.Globals\Tychaia.Globals.csproj">

@@ -5,9 +5,11 @@
 //
 using Tychaia.ProceduralGeneration.Analysis.Reporting;
 using System.IO;
+using System.Linq;
 using Tychaia.ProceduralGeneration;
-using Tychaia.ProceduralGeneration.Compiler;
-using ICSharpCode.Decompiler.Ast;
+using Tychaia.ProceduralGeneration.Analysis;
+using System;
+using System.Collections.Generic;
 
 namespace AnalysisReportingTest
 {
@@ -15,30 +17,29 @@ namespace AnalysisReportingTest
     {
         public static void Main(string[] args)
         {
-            AstBuilder astBuilder;
-            var algorithm = new AlgorithmInitialBool();
-            var method = DecompileUtil.GetAlgorithmCode(algorithm.GetType(), out astBuilder);
-
-            var layer = new AnalysisLayer();
-            layer.Name = algorithm.GetType().FullName;
-            layer.Code = method.GetText();
-            var report = new AnalysisReport();
-            report.Name = "Simplification Analysis";
-            var issue = new AnalysisIssue();
-            issue.ID = "S0001";
-            issue.Name = "Replace Expressions";
-            issue.Layer = layer;
-            issue.Description = "Replace the expressions dawg.";
-            issue.Locations.Add(new AnalysisLocationHighlight { Start = 10, End = 20, Importance = 50, Message = "test" });
-            report.Issues.Add(issue);
+            var engine = new SimplificationAnalysisEngine();
             var analysis = new Analysis();
-            analysis.Layers.Add(layer);
-            analysis.Reports.Add(report);
 
+            foreach (var layer in GetAllLayersForStaticAnalysis())
+            {
+                engine.Process(layer, ref analysis);
+                if (layer.Reports.Count > 0)
+                    analysis.Layers.Add(layer);
+            }
+            
             using (var writer = new StreamWriter("test.xml"))
             {
                 AnalysisIO.Save(analysis, writer);
             }
+        }
+
+        private static IEnumerable<AnalysisLayer> GetAllLayersForStaticAnalysis()
+        {
+            return from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                from type in assembly.GetTypes()
+                where !type.IsAbstract && typeof(IAlgorithm).IsAssignableFrom(type) && !type.IsGenericType
+                let algorithm = Activator.CreateInstance(type) as IAlgorithm
+                select new AnalysisLayer(new StorageLayer { Algorithm = algorithm });
         }
     }
 }
