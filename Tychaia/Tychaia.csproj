@@ -44,6 +44,10 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' != 'Debug (prebuilt MonoGame)' And '$(Configuration)' != 'Release (prebuilt MonoGame)' And '$(OSTYPE)' == 'linux'">
+    <ProjectReference Include="..\Libraries\MonoGame\MonoGame.Framework\MonoGame.Framework.Linux.csproj">
+      <Project>{35253CE1-C864-4CD3-8249-4D1319748E8F}</Project>
+      <Name>MonoGame.Framework.Linux</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Protogame\Protogame.csproj">
       <Project>{DF7D4601-0061-4329-9803-6917AF416B70}</Project>
       <Name>Protogame</Name>
