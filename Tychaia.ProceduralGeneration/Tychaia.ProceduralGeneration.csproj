@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -117,18 +117,10 @@
     <Compile Include="Analysis\TextLocationExtensions.cs" />
     <Compile Include="Analysis\Output\AstNodeExtensions.cs" />
     <Compile Include="Analysis\Output\TrackingOutputFormatter.cs" />
+    <Compile Include="Tracing\AlgorithmTraceImageGeneration.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Compiler\" />
-    <Folder Include="Flow\" />
-    <Folder Include="Biomes\" />
-    <Folder Include="Buildings\" />
-    <Folder Include="Towns\" />
-    <Folder Include="Analysis\" />
-    <Folder Include="Analysis\Reporting\" />
-    <Folder Include="Analysis\Output\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Compiler\CompiledLayerTemplate.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

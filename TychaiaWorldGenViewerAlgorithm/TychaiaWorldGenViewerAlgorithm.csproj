@@ -8,8 +8,8 @@
     <ProjectGuid>{EDCFB186-0C67-4771-8033-8572A0744B2C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TychaiaWorldGenViewer</RootNamespace>
-    <AssemblyName>TychaiaWorldGenViewer</AssemblyName>
+    <RootNamespace>TychaiaWorldGenViewerAlgorithm</RootNamespace>
+    <AssemblyName>TychaiaWorldGenViewerAlgorithm</AssemblyName>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalyseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AnalyseForm.Designer.cs">
+      <DependentUpon>AnalyseForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExportForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -70,7 +76,16 @@
     <Compile Include="RenameDialog.Designer.cs">
       <DependentUpon>RenameDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="TraceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TraceForm.Designer.cs">
+      <DependentUpon>TraceForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UsefulExtensions.cs" />
+    <EmbeddedResource Include="AnalyseForm.resx">
+      <DependentUpon>AnalyseForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ExportForm.resx">
       <DependentUpon>ExportForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -85,9 +100,13 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="RenameDialog.resx">
       <DependentUpon>RenameDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TraceForm.resx">
+      <DependentUpon>TraceForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -188,6 +207,10 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
+    <ProjectReference Include="..\Libraries\NGif\NGif.csproj">
+      <Project>{1C3A03CA-5E55-4CC4-9746-194A4188960A}</Project>
+      <Name>NGif</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tychaia.ProceduralGeneration\Tychaia.ProceduralGeneration.csproj">
       <Project>{4298E98C-3351-4FB2-A8FF-B466915A239F}</Project>
       <Name>Tychaia.ProceduralGeneration</Name>

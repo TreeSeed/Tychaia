@@ -40,7 +40,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.c_RenderBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.c_RenderBox.Location = new System.Drawing.Point(0, 0);
             this.c_RenderBox.Name = "c_RenderBox";
-            this.c_RenderBox.Size = new System.Drawing.Size(1008, 986);
+            this.c_RenderBox.Size = new System.Drawing.Size(1008, 976);
             this.c_RenderBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.c_RenderBox.TabIndex = 0;
             this.c_RenderBox.TabStop = false;
@@ -54,7 +54,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 986);
+            this.ClientSize = new System.Drawing.Size(1008, 976);
             this.Controls.Add(this.c_RenderBox);
             this.MaximumSize = new System.Drawing.Size(1024, 9000);
             this.Name = "ExportForm";
