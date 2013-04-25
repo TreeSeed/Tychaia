@@ -144,7 +144,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                 parent = StorageAccess.FromRuntime(layer.GetInputs()[0]);
             
             int[] render = GetCellRenderOrder(RenderToNE, TraceRenderWidth, TraceRenderHeight);
-            int ztop = layer.Algorithm.Is2DOnly ? 1 : TraceRenderDepth;
+            int ztop = layer.Algorithm.Is2DOnly ? 1 : 128;
             int zbottom = 0;
             for (int z = zbottom; z < ztop; z++)
             {

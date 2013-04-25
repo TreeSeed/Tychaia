@@ -47,6 +47,8 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.c_ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.c_DisableProcessingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_ExportSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_TraceSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.c_AnalyseSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_RenameSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.c_DeleteSelectedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
@@ -127,6 +129,22 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.c_ExportSelectedMenuItem.Size = new System.Drawing.Size(202, 24);
             this.c_ExportSelectedMenuItem.Text = "Export Selected";
             this.c_ExportSelectedMenuItem.Click += new System.EventHandler(this.c_ExportSelectedMenuItem_Click);
+            // 
+            // c_AnalyseSelectedMenuItem
+            // 
+            this.c_AnalyseSelectedMenuItem.Enabled = false;
+            this.c_AnalyseSelectedMenuItem.Name = "c_AnalyseSelectedMenuItem";
+            this.c_AnalyseSelectedMenuItem.Size = new System.Drawing.Size(202, 24);
+            this.c_AnalyseSelectedMenuItem.Text = "Analyse Selected";
+            this.c_AnalyseSelectedMenuItem.Click += new System.EventHandler(this.c_AnalyseSelectedMenuItem_Click);
+            // 
+            // c_TraceSelectedMenuItem
+            // 
+            this.c_TraceSelectedMenuItem.Enabled = false;
+            this.c_TraceSelectedMenuItem.Name = "c_TraceSelectedMenuItem";
+            this.c_TraceSelectedMenuItem.Size = new System.Drawing.Size(202, 24);
+            this.c_TraceSelectedMenuItem.Text = "Trace Selected";
+            this.c_TraceSelectedMenuItem.Click += new System.EventHandler(this.c_TraceSelectedMenuItem_Click);
             // 
             // c_RenameSelectedMenuItem
             // 
@@ -382,6 +400,8 @@ namespace TychaiaWorldGenViewerAlgorithm
         private System.Windows.Forms.ToolStripMenuItem c_RenameSelectedMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_DisableProcessingMenuItem;
         private System.Windows.Forms.ToolStripMenuItem c_ExportSelectedMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem c_TraceSelectedMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem c_AnalyseSelectedMenuItem;
         private System.Windows.Forms.NumericUpDown c_ZNumericUpDown;
         private System.Windows.Forms.Label c_ZLabel;
     }

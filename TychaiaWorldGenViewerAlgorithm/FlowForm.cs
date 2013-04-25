@@ -157,7 +157,8 @@ namespace TychaiaWorldGenViewerAlgorithm
             {
                 this.c_LayerInspector.SelectedObject = null;
                 this.c_ExportSelectedMenuItem.Enabled = false;
-                this.c_DeleteSelectedMenuItem.Enabled = false;
+                this.c_AnalyseSelectedMenuItem.Enabled = false;
+                this.c_TraceSelectedMenuItem.Enabled = false;
                 this.c_RenameSelectedMenuItem.Enabled = false;
                 this.c_DisableProcessingMenuItem.Enabled = false;
                 this.c_DisableProcessingMenuItem.Checked = false;
@@ -166,6 +167,8 @@ namespace TychaiaWorldGenViewerAlgorithm
             {
                 this.c_LayerInspector.SelectedObject = this.c_FlowInterfaceControl.SelectedElement.GetObjectToInspect();
                 this.c_ExportSelectedMenuItem.Enabled = true;
+                this.c_AnalyseSelectedMenuItem.Enabled = true;
+                this.c_TraceSelectedMenuItem.Enabled = true;
                 this.c_DeleteSelectedMenuItem.Enabled = true;
                 this.c_RenameSelectedMenuItem.Enabled = true;
                 this.c_DisableProcessingMenuItem.Enabled = true;
@@ -184,8 +187,26 @@ namespace TychaiaWorldGenViewerAlgorithm
             if (this.c_FlowInterfaceControl.SelectedElement == null)
                 return;
 
-            ExportForm ef = new ExportForm(this.c_FlowInterfaceControl.SelectedElement);
+            var ef = new ExportForm(this.c_FlowInterfaceControl.SelectedElement);
             ef.Show();
+        }
+
+        private void c_AnalyseSelectedMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.c_FlowInterfaceControl.SelectedElement == null)
+                return;
+
+            var af = new AnalyseForm(this.c_FlowInterfaceControl.SelectedElement);
+            af.Show();
+        }
+
+        private void c_TraceSelectedMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.c_FlowInterfaceControl.SelectedElement == null)
+                return;
+
+            var tf = new TraceForm(this.c_FlowInterfaceControl.SelectedElement);
+            tf.ShowDialog();
         }
 
         private void c_DeleteSelectedMenuItem_Click(object sender, EventArgs e)
@@ -324,32 +345,9 @@ namespace TychaiaWorldGenViewerAlgorithm
             }
             
             // Sort selected types into bins.
-//
-//            var algorithms = new Dictionary<FlowCategory, List<SelectedType>>();
-//            var algorithmsMajor = new Dictionary<FlowMajorCategory, List<SelectedType>>();
-//           
-//            foreach (var t in selectedTypes)
-//            {
-//                if (typeof(IAlgorithm).IsAssignableFrom(t.Type))
-//                {
-//                    if (!algorithms.Keys.Contains(t.Category))
-//                        algorithms.Add(t.Category, new List<SelectedType>());
-//                    algorithms[t.Category].Add(t);
-//                }
-//            }
-//            foreach (var k in algorithms.Keys.ToArray())
-//                algorithms[k] = algorithms[k].OrderBy(v => v.Name).ToList();
-
-            // If we have at least one entry in the 2D types list, then create
-            // the header and submenus.
-            //if (algorithms.Count > 0)
-            //{
-
             selectedTypes.OrderBy(v => v.Name);
             menu.Items.Add(new ToolStripMenuItem("Tychaia World Generator") { Enabled = false });
 
-//            for (var m = 0; m < Enum.GetNames(typeof(FlowMajorCategory)).Length; m++)
-//            {
             foreach (FlowMajorCategory m in Enum.GetValues(typeof(FlowMajorCategory)))
             {
                 bool cont = false;
@@ -366,7 +364,6 @@ namespace TychaiaWorldGenViewerAlgorithm
                     menu.Items.Add("-");
                     menu.Items.Add(new ToolStripMenuItem(FlowDesignerMajorCategoryAttribute.GetDescription(m) + ":") { Enabled = false });
 
-                    //for (var c = 0; c < Enum.GetNames(typeof(FlowCategory)).Length; c++)
                     foreach (FlowCategory c in Enum.GetValues(typeof(FlowCategory)))
                     {
                         cont = false;
@@ -389,69 +386,15 @@ namespace TychaiaWorldGenViewerAlgorithm
                         }
                     }
                 }
-                //}
-//                    foreach (var c in algorithms.Keys)
-//                    {
-//                            var cm = new ToolStripMenuItem(Enum.GetName(typeof(FlowCategory), c));
-//                            foreach (var l in algorithms[c])
-//                            {
-//                                Type t = l.Type;
-//
-//                                cm.DropDownItems.Add(new ToolStripMenuItem(l.Name, null, (sender, ev) =>
-//                                {
-//                                    this.CreateDynamicLayer(t);
-//                                }, "c_" + l.Name));
-//                            }
-//                            menu.Items.Add(cm);
-//                    }
             }
 
-
-//            
-//
-//            //for(int m = 0; m < FlowDesignerMajorCategoryAttribute.GetCustomAttributes; m++)
-//            foreach (FlowMajorCategory m in Enum.GetValues(typeof(FlowMajorCategory)))
-//            //foreach (var c in FlowCategory)
-//            {
-//                menu.Items.Add(new ToolStripMenuItem(Enum.GetName(typeof(FlowMajorCategory), m) + ":") { Enabled = false });
-//
-//                foreach (var t in selectedTypes)
-//                {
-//                       var cm = new ToolStripMenuItem(Enum.GetName(typeof(FlowCategory), t.Category));
-//                       cm.DropDownItems.Add(new ToolStripMenuItem(t.Name, null, (sender, ev) =>
-//                       {
-//                           this.CreateDynamicLayer(t.Type);
-//                       }, "c_" + t.Name));
-//                }
-//            }
-//            
-//            if (algorithms.Count > 0)
-//            {
-//                menu.Items.Add(new ToolStripMenuItem("Undefined:") { Enabled = false });
-//                foreach (var c in algorithms.Keys)
-//                {
-//                    //if (Enum.GetName(typeof(MajorFlowCategory), c) == Enum.GetName(typeof(MajorFlowCategory), m))
-//                    {
-//                        var cm = new ToolStripMenuItem(Enum.GetName(typeof(FlowCategory), c));
-//                        foreach (var l in algorithms[c])
-//                        {
-//                            Type t = l.Type;
-//                            
-//                            cm.DropDownItems.Add(new ToolStripMenuItem(l.Name, null, (sender, ev) =>
-//                                                                       {
-//                                this.CreateDynamicLayer(t);
-//                            }, "c_" + l.Name));
-//                        }
-//                        menu.Items.Add(cm);
-//                        algorithms.Remove(c);
-//                    }
-//                }
-//            }
             // Add other options.
             if (selectedTypes.Count > 0)
                 menu.Items.Add("-");
             menu.Items.Add(this.c_DisableProcessingMenuItem);
             menu.Items.Add(this.c_ExportSelectedMenuItem);
+            menu.Items.Add(this.c_AnalyseSelectedMenuItem);
+            menu.Items.Add(this.c_TraceSelectedMenuItem);
             menu.Items.Add(this.c_RenameSelectedMenuItem);
             menu.Items.Add(this.c_DeleteSelectedMenuItem);
         }
