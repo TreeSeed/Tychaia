@@ -9,13 +9,13 @@ function MMAWSettings()
     /// Loads the settings from the URL hash fragment.
     /// </summary>
     this.loadSeedFromHash = function() {
-        var split = window.location.hash.substring(1).split("#", 2);
+        var split = window.location.hash.substring(1).split("&", 2);
         if (split.length == 1) {
-            $("#seedSet")[0].value = decodeURIComponent(split[0]);
-            $("#outputFormat")[0].value = "3D-Game World";
+            $("#seedSet").val(decodeURIComponent(split[0]));
+            $("#outputLayer").val($("#defaultLayer").text());
         } else {
-            $("#seedSet")[0].value = decodeURIComponent(split[1]);
-            $("#outputFormat")[0].value = decodeURIComponent(split[0]);
+            $("#seedSet").val(decodeURIComponent(split[1]));
+            $("#outputLayer").val(decodeURIComponent(split[0]));
         }
     };
     
@@ -23,10 +23,10 @@ function MMAWSettings()
     /// Saves the current settings into the URL hash fragment.
     /// </summary>
     this.setHashFromSettings = function() {
-        if ($("#outputFormat")[0].value == "3D-Game World") {
+        if ($("#outputLayer").val() == $("#defaultLayer").text()) {
             window.location.hash = encodeURIComponent($("#seed").text());
         } else {
-            window.location.hash = encodeURIComponent($("#outputFormat")[0].value) + "#" + encodeURIComponent($("#seed").text());
+            window.location.hash = encodeURIComponent($("#outputLayer").val()) + "&" + encodeURIComponent($("#seed").text());
         }
     }
 }

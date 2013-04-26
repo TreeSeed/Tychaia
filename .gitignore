@@ -15,7 +15,7 @@ Profiling*.sqlite
 *.vsmdi
 MakeMeAWorld/App_Data/*
 */test-results/*
-Tychaia.userprefs
+*.userprefs
 *.orig
 Thumbs.db
 !MakeMeAWorld/bin

@@ -81,6 +81,11 @@ function MMAWProcessor(retriever, renderer, canvas, seed)
     /// The time when processing was started.
     /// </summary>
     this._start = null;
+    
+    /// <summary>
+    /// Whether we are currently stopping.
+    /// </summary>
+    this._stopping = false;
 
     /// <summary>
     /// Starts the processing operation.
@@ -109,7 +114,6 @@ function MMAWProcessor(retriever, renderer, canvas, seed)
     };
     
     this.calculateProgressInformation = function(zeroFill) {
-        // FIXME
         var penalty = 0;
         var millisCurrent = new Date().getTime();
         var millisDifference = millisCurrent - this._start;
@@ -124,8 +128,13 @@ function MMAWProcessor(retriever, renderer, canvas, seed)
         $("#progress").html(((this.cellsRendered / this.cells.length) * 100).toFixed(4) + "% complete (" + (this.cells.length - this.cellsRendered) +
                             " tiles remaining)<br />" + this.cellsRetrieved + " retrieved, " +
                             this.cellsRendered + " rendered, " + this.cellsSkipped + " skipped");
-        $("#timeRemaining").text("Completion in " + stringRemaining + " minutes.");
-        //current += 1;
+        if (this._stopping) {
+            $("#timeRemaining").text("Stopping...");
+        } else if (isNaN(estimatedTimeRemaining.getMinutes())) {
+            $("#timeRemaining").text("Estimating...");
+        } else {
+            $("#timeRemaining").text("Completion in " + stringRemaining + " minutes.");
+        }
     };
     
     /// <summary>
@@ -135,6 +144,7 @@ function MMAWProcessor(retriever, renderer, canvas, seed)
         // Stop the retriever and renderer.
         this.retriever.stop(this);
         this.renderer.stop(this);
+        this._stopping = true;
     };
     
     /// <summary>

@@ -18,10 +18,10 @@ function MMAWUIMain(controller)
         if (window.location.hash != "") {
             this.controller.settings.loadSeedFromHash();
         } else {
-            $("#seedSet")[0].value = Math.random().toString() * 0xFFFFFFFFFFFFFF;
+            $("#seedSet").val(Math.random().toString() * 0xFFFFFFFFFFFFFF);
         }
-        $("#seed").text($("#seedSet")[0].value);
-        this.controller.seed = this.controller.misc.returnNumberOrHash($("#seedSet")[0].value);
+        $("#seed").text($("#seedSet").val());
+        this.controller.seed = this.controller.misc.returnNumberOrHash($("#seedSet").val());
         
         // Register UI handlers.
         $("#seedSet").change(this._onSeedSetChanged.bind(this));
@@ -29,6 +29,7 @@ function MMAWUIMain(controller)
         $("#outputLayer").change(this._onOutputLayerChanged.bind(this));
         $("#showAdvanced").click(this._onShowAdvancedClicked.bind(this));
         $("#loadButton").click(this._onGenerationStarted.bind(this));
+        $("#stopEarly").click(this._onStopEarlyClicked.bind(this));
         
         // Focus the UI.
         $("#seedSet").focus();
@@ -60,8 +61,8 @@ function MMAWUIMain(controller)
     /// Event handler for when user changes the seed value.
     /// </summary>
     this._onSeedSetChanged = function() {
-        $("#seed").text($("#seedSet")[0].value);
-        this.controller.seed = this.controller.misc.returnNumberOrHash($("#seedSet")[0].value);
+        $("#seed").text($("#seedSet").val());
+        this.controller.seed = this.controller.misc.returnNumberOrHash($("#seedSet").val());
         this.controller.settings.setHashFromSettings();
     };
     
@@ -69,9 +70,9 @@ function MMAWUIMain(controller)
     /// Event handler for when the "Randomize" button is clicked.
     /// </summary>
     this._onRandomizeClicked = function() {
-        $("#seedSet")[0].value = Math.random().toString() * 0xFFFFFFFFFFFFFF;
-        $("#seed").text($("#seedSet")[0].value);
-        this.controller.seed = this.controller.misc.returnNumberOrHash($("#seedSet")[0].value);
+        $("#seedSet").val(Math.random().toString() * 0xFFFFFFFFFFFFFF);
+        $("#seed").text($("#seedSet").val());
+        this.controller.seed = this.controller.misc.returnNumberOrHash($("#seedSet").val());
         this.controller.settings.setHashFromSettings();
     };
     
@@ -79,40 +80,47 @@ function MMAWUIMain(controller)
     /// Event handler for when user changes the output layer.
     /// </summary>
     this._onOutputLayerChanged = function() {
-        this.settings.setHashFromSettings();
+        this.controller.settings.setHashFromSettings();
     };
     
     /// <summary>
     /// Event handler for when the user shows the advanced options.
     /// </summary>
     this._onShowAdvancedClicked = function () {
-        $("#advancedOptionsTabs").show();
-        $("#advancedOptions").show();
+        $("#advancedOptionsTabs").toggle();
+        $("#advancedOptions").toggle();
         return false;
     };
     
     /// <summary>
     /// Event handler for when the user clicks the "Make me a world" button.
     /// </summary>
-    this.stopEarly = false;
-    this.stopFailure = false;
+    this._stopEarly = false;
+    this._stopFailure = false;
+    this._stopCallback = null;
     this._onGenerationStarted = function () {
         this.controller.gotoStage("processing");
+        $("#progress").html("0% complete (0 tiles remaining)<br />0 retrieved, 0 rendered, 0 skipped");
 
         var retriever, renderer;
-        if ($("#serverSideRendering")[0].checked) {
+        if ($("#serverSideRenderingForced").length > 0 ||
+            $("#serverSideRendering").is(':checked')) {
             retriever = new MMAWServerRetriever();
             renderer = new MMAWServerRenderer();
         } else {
             retriever = new MMAWClientRetriever();
             renderer = new MMAWClientRenderer();
         }
+        $("#info").data("never-show", !renderer.showInfoPanel());
+        if (!renderer.showInfoPanel()) {
+            $("#info").hide();
+        }
         var processor = new MMAWProcessor(
                 retriever,
                 renderer,
                 $("#canvas")[0],
                 this.controller.seed);
-        if ($("#outputLayer")[0].value.substring(0, 2) == "2D") {
+        if ($("#outputLayer").val().substring(0, 2) == "2D") {
             processor.minDepth = 0;
             processor.maxDepth = 1;
         }
@@ -120,17 +128,35 @@ function MMAWUIMain(controller)
             processor.calculateProgressInformation(this.controller.misc.zeroFill);
         }.bind(this);
         processor.onFinish = function() {
-            if (this.controller.currentStage == "mainAndProcessing")
+            if (this.controller.currentStage == this.controller.stages["mainAndProcessing"])
                 this.controller.gotoStage("mainAndResults");
             else
                 this.controller.gotoStage("results");
             $("#endMessage").text("Rendering completed successfully.");
             this.controller.rendering.renderWatermark($("#canvas")[0], $("#seed").text());
         }.bind(this);
+        this._stopCallback = function() {
+            processor.stopProcessing();
+            if (this.controller.currentStage == this.controller.stages["mainAndProcessing"])
+                this.controller.gotoStage("mainAndResults");
+            else
+                this.controller.gotoStage("results");
+            $("#endMessage").text("Rendering stopped.");
+            this.controller.rendering.renderWatermark($("#canvas")[0], $("#seed").text());
+        };
         processor.startProcessing();
         
         // Since this is a submit button, we don't want
         // the page to actually reload.
         return false;
+    };
+    
+    /// <summary>
+    /// Event handler for when the user clicks the "Stop Early" button.
+    /// </summary>
+    this._onStopEarlyClicked = function () {
+        this._stopEarly = true;
+        this._stopFailure = false;
+        this._stopCallback();
     };
 };

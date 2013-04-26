@@ -13,11 +13,16 @@ function MMAWClientWebWorker() {
     this._webWorkerEnvironment = null;
     
     /// <summary>
+    /// The image data to render onto.
+    /// </summary>
+    this._imageData = null;
+    
+    /// <summary>
     /// Handler for when the web worker recieves a message.
     /// </summary>
     this.onMessageRecieved = function(data) {
         if (this[data.func] != null) {
-            this[data.func].apply(this, Array.prototype.slice.call(data.arguments, 1));
+            this[data.func].bind(this).apply(this, data.arguments);
         }
     };
     
@@ -30,9 +35,65 @@ function MMAWClientWebWorker() {
     };
     
     /// <summary>
+    /// Sets the image data we're going to render images onto.
+    /// </summary>
+    this.setImageData = function(imageData) {
+        this._imageData = imageData;
+    };
+    
+    /// <summary>
+    /// The render increment, or the total size of each cell that
+    /// is rendered.
+    /// </summary>
+    this.getRenderIncrement = function() {
+        // Our cell position calculations assume this
+        // value (so we can optimize the algorithms).
+        return 64;
+    };
+    
+    this._determinePixelRenderPosition = function(x, y, z) {
+        return {
+            x: 63 + (x - y),
+            y: 49 + (x + y) - z - 64
+        };
+    };
+    
+    this._decodeDataArray = function(data) {
+        if (!data.packed)
+        {
+            // Unpacked data doesn't need decoding.
+            return data.data;
+        }
+        var start = 0;
+        var end = this.getRenderIncrement() *
+                  this.getRenderIncrement() *
+                  this.getRenderIncrement();
+        var extractCount = 0;
+        var dataIndex = 0;
+        var dataArray = [];
+        for (var i = start; i < end; i++) {
+            var value = data.data[dataIndex];
+            if (value instanceof Array) {
+                if (extractCount < value[0]) {
+                    dataArray.push(value[1]);
+                    extractCount++;
+                } else {
+                    extractCount = 0;
+                    dataIndex++;
+                }
+            } else {
+                dataArray.push(value);
+                extractCount = 0;
+                dataIndex++;
+            }
+        }
+        return dataArray;
+    };
+    
+    /// <summary>
     /// Processes an image.
     /// </summary>
-    this.process = function(cell, imageData, callback) {
+    this.process = function(cell, cellPosition, callback, token) {
         var dataArray = this._decodeDataArray(cell.data);
         for (var z = 0; z < this.getRenderIncrement(); z++)
             for (var x = 0; x < this.getRenderIncrement(); x++)
@@ -40,19 +101,32 @@ function MMAWClientWebWorker() {
                 {
                     var pixelPosition = this._determinePixelRenderPosition(x, y, z);
                     var value = dataArray[x + y * this.getRenderIncrement() + z * this.getRenderIncrement() * this.getRenderIncrement()];
+                    
+                    var ax = cellPosition.x + pixelPosition.x;
+                    var ay = cellPosition.y + pixelPosition.y;
                     if (cell.data.mappings[value] !== undefined &&
                         cell.data.mappings[value] !== null) {
-                        var idx = (pixelPosition.x + pixelPosition.y * imageData.width) * 4;
-                        imageData.data[idx + 0] = a;
-                        imageData.data[idx + 1] = r;
-                        imageData.data[idx + 2] = g;
-                        imageData.data[idx + 3] = b;
+                        var idx;
+                        if (!(ax < 0 || ay < 0 || ax >= this._imageData.width || ay >= this._imageData.height)) {
+                            idx = (ax + ay * this._imageData.width) * 4;
+                            this._imageData.data[idx + 0] = cell.data.mappings[value][1];
+                            this._imageData.data[idx + 1] = cell.data.mappings[value][2];
+                            this._imageData.data[idx + 2] = cell.data.mappings[value][3];
+                            this._imageData.data[idx + 3] = cell.data.mappings[value][0];
+                        }
+                        if (!(ax + 1 < 0 || ay < 0 || ax + 1 >= this._imageData.width || ay >= this._imageData.height)) {
+                            idx = (ax + 1 + ay * this._imageData.width) * 4;
+                            this._imageData.data[idx + 0] = cell.data.mappings[value][1];
+                            this._imageData.data[idx + 1] = cell.data.mappings[value][2];
+                            this._imageData.data[idx + 2] = cell.data.mappings[value][3];
+                            this._imageData.data[idx + 3] = cell.data.mappings[value][0];
+                        }
                     }
                 }
         if (callback == null) {
-            this._webWorkerEnvironment.postMessage({imageData: imageData});
+            this._webWorkerEnvironment.postMessage({token: token, data: {imageData: this._imageData}});
         } else {
-            callback(imageData);
+            callback(this._imageData);
         }
     };
     

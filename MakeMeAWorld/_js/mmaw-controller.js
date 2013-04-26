@@ -84,8 +84,11 @@ function MMAWController()
         // Initialize the sizes option.
         this.sizes.initializeOutputSizeOption();
         
-        // Goto the main stage.
-        this.gotoStage("main");
+        // Goto the main stage if the initialization
+        // didn't already select one.
+        if (this.currentStage === null) {
+            this.gotoStage("main");
+        }
     };
     
     /// <summary>

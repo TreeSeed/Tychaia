@@ -2,11 +2,11 @@
 <!DOCTYPE html> 
 <html lang="en">
     <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <title>Make me a world with Tychaia!</title>
         <link rel="stylesheet" href="_css/bootstrap.min.css" />
         <link rel="stylesheet" href="_css/browser.css" />
         <link rel="stylesheet" href="_css/platformer.css" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <script src="_js/jquery-1.8.3.min.js" type="text/javascript"></script>
         <script src="_js/bootstrap.min.js" type="text/javascript"></script>
         <script src="_js/BlobBuilder.js" type="text/javascript"></script>
@@ -26,6 +26,7 @@
         <script src="_js/mmaw-server-retriever.js" type="text/javascript"></script>
         <script src="_js/mmaw-client-renderer.js" type="text/javascript"></script>
         <script src="_js/mmaw-client-retriever.js" type="text/javascript"></script>
+        <script src="_js/mmaw-client-webworker.js" type="text/javascript"></script>
         <script src="_js/mmaw-processor.js" type="text/javascript"></script>
         <script src="_js/mmaw.js" type="text/javascript"></script>
         <link rel="stylesheet" href="_css/main.css" />
@@ -37,10 +38,10 @@
 
         <div id="container">
             <h1 id="header">Make me a world with Tychaia!</h1>
-            <div id="progress" style="display: none; margin-top: 30px;">0% complete (0 tiles remaining)<br />0 rendered, 0 skipped</div>
+            <div id="progress" style="display: none; margin-top: 30px;">0% complete (0 tiles remaining)<br />0 retrieved, 0 rendered, 0 skipped</div>
             <div id="remainingHolder" style="display: none; font-weight: bold;">
                 <input id="stopEarly" type="button" class="btn btn-mini btn-danger" value="Stop" />
-                <div id="timeRemaining" style="font-weight: bold;">Completion in -:-- minutes.</div>
+                <div id="timeRemaining" style="font-weight: bold;">Estimating...</div>
             </div>
             <div id="info" style="display: none;">
                 The map is now being rendered.  Only cells which contain content
@@ -95,6 +96,7 @@
                                     <select class="span4" id="outputLayer">
                                         <%=HtmlLayerOptions%>
                                     </select>
+                                    <div style="display: none;" id="defaultLayer"><%=DefaultLayerOption%></div>
                                 </div>
                             </div>
                             <div class="control-group">
@@ -114,6 +116,10 @@
                                             have not been render to at all.
                                         </p>
                                     </label>
+                                    <%
+                                    if (ShowExperimentalOptions)
+                                    {
+                                    %>
                                     <label class="checkbox">
                                         <input type="checkbox" id="transmitPackedData" checked="checked" /> Pack data before transmission
                                         <p style="color: grey; font-size:75%;">
@@ -132,6 +138,15 @@
                                             browser that has even limited canvas support.
                                         </p>
                                     </label>
+                                    <%
+                                    }
+                                    else
+                                    {
+                                    %>
+                                    <input type="hidden" id="serverSideRenderingForced" />
+                                    <%
+                                    }
+                                    %>
                                 </div>
                             </div>
                         </form>

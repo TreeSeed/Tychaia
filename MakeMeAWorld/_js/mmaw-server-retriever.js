@@ -64,8 +64,8 @@ function MMAWServerRetriever() {
             img.src = "images/map.png?x=" + cell.x + "&y=" + cell.y + "&z=" + cell.z +
                       "&size=" + this.processor.renderer.getRenderIncrement() +
                       "&seed=" + this.processor.seed + "&layer=" +
-                      $("#outputLayer")[0].value.substring(3) +
-                      "&packed=" + ($("#transmitPackedData")[0].checked ? "true" : "false");
+                      $("#outputLayer").val().substring(3) +
+                      "&packed=" + (($("#transmitPackedData") && $("#transmitPackedData").is(':checked')) ? "true" : "false");
         }.bind(this);
         retrieve(0);
     };

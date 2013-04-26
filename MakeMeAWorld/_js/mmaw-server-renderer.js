@@ -29,6 +29,14 @@ function MMAWServerRenderer() {
     };
     
     /// <summary>
+    /// Whether to show the info panel message referencing the
+    /// server-side rendering.
+    /// </summary>
+    this.showInfoPanel = function() {
+        return true;
+    };
+    
+    /// <summary>
     /// Determines the 2D position at which a cell will be rendered
     /// based on it's location in 3D space.
     /// </summary>

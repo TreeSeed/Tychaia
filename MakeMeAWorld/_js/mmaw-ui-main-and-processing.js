@@ -25,7 +25,9 @@ function MMAWUIMainAndProcessing(controller)
         $("#welcomeMessage").show();
         $("#progress").show();
         $("#remainingHolder").show();
-        $("#info").show();
+        if (!$("#info").data("never-show")) {
+            $("#info").show();
+        }
         $("#end").hide();
         $("#watermark").show();
         $("#newRender").hide();

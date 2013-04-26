@@ -46,7 +46,7 @@ function MMAWSizes()
             $("#outputSize")[0].appendChild(option);
         }
         $("#outputSize").change(function() {
-            this.setSize($("#outputSize")[0].value);
+            this.setSize($("#outputSize").val());
         }.bind(this));
     };
     

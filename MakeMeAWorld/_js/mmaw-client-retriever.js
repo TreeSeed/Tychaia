@@ -27,34 +27,51 @@ function MMAWClientRetriever() {
         this._cellsToRetrieve.push(cell);
     };
     
+    this._cellsRetrieved = [];
+    this._cellsRetrievedCount = 0;
+    
     /// <summary>
     /// Starts retrieving.
     /// </summary>
     this.start = function() {
         this._retrieving = true;
+        this._cellsRetrieved = [];
+        for (var i = 0; i < this._cellsToRetrieve.length; i++) {
+            this._cellsRetrieved[i] = null;
+        }
         
-        var retrieve = function(i)
-        {
-            if (i >= this._cellsToRetrieve.length)
-                return;
-        
-            var cell = this._cellsToRetrieve[i];
-            $.get("raw/map.json?x=" + cell.x + "&y=" + cell.y + "&z=" + cell.z +
-                  "&size=" + this.processor.renderer.getRenderIncrement() +
-                  "&seed=" + this.processor.seed + "&layer=" +
-                  $("#outputLayer")[0].value.substring(3) +
-                  "&packed=" + ($("#transmitPackedData")[0].checked ? "true" : "false"), function(data) {
-                    cell.data = data;
-                    this.processor.cellsRetrieved += 1;
-                    if (this.processor.onProgress != null)
-                        this.processor.onProgress();
-                    if (cell.onRetrieved != null)
-                        cell.onRetrieved(cell);
-                    if (this._retrieving)
-                        retrieve(i + 1);
-            }.bind(this));
-        }.bind(this);
-        retrieve(0);
+        for (var i = 0; i < this._cellsToRetrieve.length; i++) {
+            (function (cell, ii) {
+                $.get("raw/map.json?x=" + cell.x + "&y=" + cell.y + "&z=" + cell.z +
+                      "&size=" + this.processor.renderer.getRenderIncrement() +
+                      "&seed=" + this.processor.seed + "&layer=" +
+                      $("#outputLayer").val().substring(3) +
+                      "&packed=" + (($("#transmitPackedData") && $("#transmitPackedData").is(':checked')) ? "true" : "false"), function(data) {
+                        if (!this._retrieving) {
+                            return;
+                        }
+                        cell.data = data;
+                        this.processor.cellsRetrieved += 1;
+                        if (this.processor.onProgress != null)
+                            this.processor.onProgress();
+                        this._cellsRetrieved[ii] = function() {
+                            if (cell.onRetrieved != null)
+                                cell.onRetrieved(cell);
+                        };
+                        if (ii == this._cellsRetrievedCount) {
+                            var ix = ii;
+                            while (this._cellsRetrieved[ix] != null) {
+                                if (!this._retrieving) {
+                                    return;
+                                }
+                                this._cellsRetrieved[ix]();
+                                this._cellsRetrievedCount++;
+                                ix++;
+                            }
+                        }
+                }.bind(this));
+            }.bind(this))(this._cellsToRetrieve[i], i);
+        }
     };
     
     /// <summary>

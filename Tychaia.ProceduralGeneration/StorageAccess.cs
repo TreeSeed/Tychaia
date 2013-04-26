@@ -152,9 +152,29 @@ namespace Tychaia.ProceduralGeneration
                 typeof(StorageLayer[]),
             };
             foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
-                foreach (Type t in a.GetTypes())
+            {
+                Type[] assemblyTypes;
+                try
+                {
+                    assemblyTypes = a.GetTypes();
+                }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    // We couldn't load all the types from this assembly, but
+                    // then again, we may not have to.  Use whatever types we
+                    // could load and then skip over the nulls in the foreach.
+                    assemblyTypes = ex.Types;
+                    Console.WriteLine("errors while loading assembly:");
+                    Console.WriteLine("-- " + a.FullName);
+                    foreach (var exx in ex.LoaderExceptions)
+                    {
+                        Console.WriteLine(exx);
+                    }
+                }
+                foreach (Type t in assemblyTypes.Where(x => x != null))
                     if (typeof(IAlgorithm).IsAssignableFrom(t) && !t.IsGenericType)
                         types.Add(t);
+            }
             StorageAccess.SerializableTypes = types.ToArray();
         }
 

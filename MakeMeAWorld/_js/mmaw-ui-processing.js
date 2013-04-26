@@ -14,8 +14,6 @@ function MMAWUIProcessing(controller)
     /// Initializes the UI after the initial page load.
     /// </summary>
     this.initialize = function() {
-        // Register UI handlers.
-        $("#stopEarly").click(this._onStopEarlyClicked.bind(this));
     };
     
     /// <summary>
@@ -26,17 +24,12 @@ function MMAWUIProcessing(controller)
         $("#header").show();
         $("#welcomeMessage").hide();
         $("#progress").show();
+        $("#timeRemaining").text("Estimating...");
         $("#remainingHolder").show();
-        $("#info").show();
+        if (!$("#info").data("never-show")) {
+            $("#info").show();
+        }
         $("#end").hide();
         $("#watermark").show();
-    };
-    
-    /// <summary>
-    /// Event handler for when the user clicks the "Stop Early" button.
-    /// </summary>
-    this._onStopEarlyClicked = function () {
-        this.stopEarly = true;
-        this.stopFailure = false;
     };
 };

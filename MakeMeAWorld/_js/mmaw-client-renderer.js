@@ -22,6 +22,39 @@ function MMAWClientRenderer() {
     this._context = null;
     
     /// <summary>
+    /// The web worker if available.
+    /// </summary>
+    this._webWorker = null;
+    
+    /// <summary>
+    /// Whether we are actually using web workers.
+    /// </summary>
+    this._webWorkerIsWebWorker = false;
+    
+    /// <summary>
+    /// The web worker callback handlers.
+    /// </summary>
+    this._webWorkerHandlers = [];
+    
+    /// <summary>
+    /// The web worker token for callbacks.
+    /// </summary>
+    this._webWorkerToken = 0;
+    
+    /// <summary>
+    /// If the image data has been passed to
+    /// the web worker instance.
+    /// </summary>
+    this._webWorkerHasImageData = false;
+    
+    /// <summary>
+    /// The queue for non-web worker mode (since web
+    /// workers implicitly give us a queue through
+    /// the messaging system).
+    /// </summary>
+    this._nonWebWorkerQueue = [];
+    
+    /// <summary>
     /// The render increment, or the total size of each cell that
     /// is rendered.
     /// </summary>
@@ -29,6 +62,14 @@ function MMAWClientRenderer() {
         // Our cell position calculations assume this
         // value (so we can optimize the algorithms).
         return 64;
+    };
+    
+    /// <summary>
+    /// Whether to show the info panel message referencing the
+    /// server-side rendering.
+    /// </summary>
+    this.showInfoPanel = function() {
+        return false;
     };
     
     /// <summary>
@@ -43,13 +84,6 @@ function MMAWClientRenderer() {
         return {
             x: rx,
             y: ry
-        };
-    };
-    
-    this._determinePixelRenderPosition = function(x, y, z) {
-        return {
-            x: 63 + (x - y),
-            y: 49 + (x + y) - z - 64
         };
     };
     
@@ -72,38 +106,6 @@ function MMAWClientRenderer() {
         cell.onRetrieved = this._onCellDataRetrieved.bind(this);
     };
     
-    this._decodeDataArray = function(data) {
-        if (!data.packed)
-        {
-            // Unpacked data doesn't need decoding.
-            return data.data;
-        }
-        var start = 0;
-        var end = this.getRenderIncrement() *
-                  this.getRenderIncrement() *
-                  this.getRenderIncrement();
-        var extractCount = 0;
-        var dataIndex = 0;
-        var dataArray = [];
-        for (var i = start; i < end; i++) {
-            var value = data.data[dataIndex];
-            if (value instanceof Array) {
-                if (extractCount < value[0]) {
-                    dataArray.push(value[1]);
-                    extractCount++;
-                } else {
-                    extractCount = 0;
-                    dataIndex++;
-                }
-            } else {
-                dataArray.push(value);
-                extractCount = 0;
-                dataIndex++;
-            }
-        }
-        return dataArray;
-    };
-    
     /// <summary>
     /// Event handler for when cell data has been retrieved
     /// from the server.
@@ -111,36 +113,75 @@ function MMAWClientRenderer() {
     this._onCellDataRetrieved = function(cell) {
         if (!this._rendering)
             return;
-        if (cell.data.empty)
+        if (cell.data.empty) {
+            this.processor.cellsSkipped += 1;
+            if (this.processor.onProgress != null)
+                this.processor.onProgress();
+            if (this.processor.onFinish != null &&
+                this.processor.cells.length == this.processor.cellsRendered + this.processor.cellsSkipped)
+                this.processor.onFinish();
             return; // Don't need to render empty data.
+        }
         
         // Set up the image data and finish handler.
         var cellPosition = this._determineCellRenderPosition(cell.x, cell.y, cell.z);
-        var imageData = this._context.createImageData(300, 300);
         var finished = function(imageData) {
-            this._context.putImageData(imageData, cellPosition.x, cellPosition.y);
+            this._context.putImageData(imageData, 0, 0);
             this.processor.cellsRendered += 1;
             if (this.processor.onProgress != null)
                 this.processor.onProgress();
             if (this.processor.onFinish != null &&
-                this.processor.cells.length == this.processor.cellsRendered)
+                this.processor.cells.length == this.processor.cellsRendered + this.processor.cellsSkipped)
                 this.processor.onFinish();
-        };
+        }.bind(this);
         
         // If we have web worker support, use that.
-        if (typeof(Worker) !== "undefined") {
-            var w = new Worker("mmaw-client-webworker.js");
-            w.onMessage = function(e) {
-                if (e.imageData != null) {
-                    finished(e.imageData);
+        if (this._webWorkerIsWebWorker) {
+            // Clear onRetrieved handler so we can pass it
+            // to the web worker.
+            var oldRetrieved = cell.onRetrieved;
+            cell.onRetrieved = null;
+            
+            // Set the up the token and callback.
+            var token = this._webWorkerToken++;
+            this._webWorkerHandlers[token] = function(data) {
+                if (data.imageData != null) {
+                    finished(data.imageData);
                 }
             };
-            w.postMessage({func: "setIsWebWorker", arguments: []});
-            w.postMessage({func: "process", arguments: [cell, imageData, null]});
+            if (!this._webWorkerHasImageData) {
+                this._webWorker.postMessage({func: "setImageData", arguments: [this._context.getImageData(0, 0, this.processor.canvas.width, this.processor.canvas.height)]});
+                this._webWorkerHasImageData = true;
+            }
+            this._webWorker.postMessage({func: "process", arguments: [cell, cellPosition, null, token]});
+            
+            // Set the onRetrieved handler back.
+            cell.onRetrieved = oldRetrieved;
         } else {
-            var w = new MMAWClientWebWorker();
-            w.process(cell, imageData, function(imageData) { finished(imageData); });
+            if (!this._webWorkerHasImageData) {
+                this._webWorker.setImageData(this._context.getImageData(0, 0, this.processor.canvas.width, this.processor.canvas.height));
+            }
+            
+            this._nonWebWorkerQueue.push(function() {
+                this._webWorker.process(cell, cellPosition, function(imageData) { finished(imageData); }, null);
+            }.bind(this));
         }
+    };
+    
+    this._processNonWebWorkerQueue = function() {
+        if (this._nonWebWorkerQueue.length > 0) {
+            this._nonWebWorkerQueue.shift()();
+        }
+        if (this._rendering) {
+            window.setTimeout(this._processNonWebWorkerQueue.bind(this), 100);
+        }
+    };
+    
+    /// <summary>
+    /// The web worker handler.
+    /// </summary>
+    this._onWebWorkerMessage = function(event) {
+        this._webWorkerHandlers[event.data.token](event.data.data);
     };
     
     /// <summary>
@@ -149,6 +190,21 @@ function MMAWClientRenderer() {
     this.start = function() {
         this._rendering = true;
         this._context = this.processor.canvas.getContext("2d");
+        
+        // Try to use web workers.
+        try {
+            this._webWorker = new Worker("/_js/mmaw-client-webworker.js");
+            this._webWorker.onmessage = this._onWebWorkerMessage.bind(this);
+            this._webWorkerIsWebWorker = true;
+        } catch (ex) {
+            this._webWorker = new MMAWClientWebWorker();
+            this._webWorkerIsWebWorker = false;
+            window.setTimeout(this._processNonWebWorkerQueue.bind(this), 100);
+            if (console && console.log) {
+                console.log("Unable to use Web Workers for rendering.");
+                console.log(ex);
+            }
+        }
     };
     
     /// <summary>
@@ -156,6 +212,9 @@ function MMAWClientRenderer() {
     /// </summary>
     this.stop = function() {
         this._rendering = false;
+        if (this._webWorkerIsWebWorker) {
+            this._webWorker.terminate();
+        }
     };
 };
 
