@@ -24,7 +24,7 @@ function MMAWServerRenderer() {
     /// The render increment, or the total size of each cell that
     /// is rendered.
     /// </summary>
-    this.getRenderIncrement = function() {
+    this.getRenderIncrement = function(layerName) {
         return 64;
     };
     
@@ -41,7 +41,7 @@ function MMAWServerRenderer() {
     /// based on it's location in 3D space.
     /// </summary>
     this._determineRenderPosition = function(x, y, z) {
-        var rcx = 32 / 2 + this.processor.canvas.width / 2 - this.getRenderIncrement();
+        var rcx = 32 / 2 + this.processor.canvas.width / 2 - this.getRenderIncrement($("#outputLayer").val());
         var rcy = 32 / 2;
         var rx = rcx + ((x / 32 - y / 32) / 2.0 * 64);
         var ry = rcy + (x / 32 + y / 32) * 32 - (z / 32 - 0) * 32;
@@ -56,8 +56,8 @@ function MMAWServerRenderer() {
     /// </summary>
     this.canSkip = function(x, y, z) {
         var position = this._determineRenderPosition(x, y, z);
-        if (position.x < (-this.getRenderIncrement() * 3) || position.x > this.processor.canvas.width ||
-            position.y < (-this.getRenderIncrement() * 3) || position.y > this.processor.canvas.height) {
+        if (position.x < (-this.getRenderIncrement($("#outputLayer").val()) * 3) || position.x > this.processor.canvas.width ||
+            position.y < (-this.getRenderIncrement($("#outputLayer").val()) * 3) || position.y > this.processor.canvas.height) {
             return true;
         }
         return false;

@@ -135,6 +135,14 @@ function MMAWUIMain(controller)
             $("#endMessage").text("Rendering completed successfully.");
             this.controller.rendering.renderWatermark($("#canvas")[0], $("#seed").text());
         }.bind(this);
+        processor.onFailure = function(ex) {
+            if (this.controller.currentStage == this.controller.stages["mainAndProcessing"])
+                this.controller.gotoStage("mainAndResults");
+            else
+                this.controller.gotoStage("results");
+            $("#endMessage").text("Rendering failed (" + ex + ").");
+            this.controller.rendering.renderWatermark($("#canvas")[0], $("#seed").text());
+        }.bind(this);
         this._stopCallback = function() {
             processor.stopProcessing();
             if (this.controller.currentStage == this.controller.stages["mainAndProcessing"])

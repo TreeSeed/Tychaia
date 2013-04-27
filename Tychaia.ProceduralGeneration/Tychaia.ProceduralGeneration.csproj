@@ -118,6 +118,7 @@
     <Compile Include="Analysis\Output\AstNodeExtensions.cs" />
     <Compile Include="Analysis\Output\TrackingOutputFormatter.cs" />
     <Compile Include="Tracing\AlgorithmTraceImageGeneration.cs" />
+    <Compile Include="AlgorithmReduceWaterDepth.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />

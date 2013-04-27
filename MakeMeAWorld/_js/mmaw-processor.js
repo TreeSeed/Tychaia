@@ -78,6 +78,11 @@ function MMAWProcessor(retriever, renderer, canvas, seed)
     this.onFinish = null;
     
     /// <summary>
+    /// Callback when processing fails.
+    /// </summary>
+    this.onFailure = null;
+    
+    /// <summary>
     /// The time when processing was started.
     /// </summary>
     this._start = null;
@@ -96,8 +101,8 @@ function MMAWProcessor(retriever, renderer, canvas, seed)
         this.cells = this._createCellArray(
             this.canvas.width,
             this.canvas.height,
-            this.minDepth * this.renderer.getRenderIncrement(),
-            this.maxDepth * this.renderer.getRenderIncrement());
+            this.minDepth * this.renderer.getRenderIncrement($("#outputLayer").val()),
+            this.maxDepth * this.renderer.getRenderIncrement($("#outputLayer").val()));
     
         // Set up the canvas as required.
         var ctx = this.canvas.getContext('2d');
@@ -142,9 +147,22 @@ function MMAWProcessor(retriever, renderer, canvas, seed)
     /// </summary>
     this.stopProcessing = function() {
         // Stop the retriever and renderer.
-        this.retriever.stop(this);
-        this.renderer.stop(this);
-        this._stopping = true;
+        if (!this._stopping) {
+            this.retriever.stop(this);
+            this.renderer.stop(this);
+            this._stopping = true;
+        }
+    };
+    
+    /// <summary>
+    /// Stops the processing operation as a failure.
+    /// </summary>
+    this.failProcessing = function(ex) {
+        // Stop the retriever and renderer.
+        if (!this._stopping) {
+            this.stopProcessing();
+            this.onFailure(ex);
+        }
     };
     
     /// <summary>
@@ -152,9 +170,10 @@ function MMAWProcessor(retriever, renderer, canvas, seed)
     /// </summary>
     this._createCellArray = function(imageWidth, imageHeight, imageZ, imageDepth) {
         var cells = [];
-        for (var z = imageZ; z < imageDepth; z += this.renderer.getRenderIncrement()) {
-            for (var y = -imageHeight; y < imageHeight; y += this.renderer.getRenderIncrement()) {
-                for (var x = -imageWidth; x < imageWidth; x += this.renderer.getRenderIncrement()) {
+        var increment = this.renderer.getRenderIncrement($("#outputLayer").val());
+        for (var z = imageZ; z < imageDepth; z += increment) {
+            for (var y = -imageHeight; y < imageHeight; y += increment) {
+                for (var x = -imageWidth; x < imageWidth; x += increment) {
                     if (this.renderer.canSkip(x, y, z)) {
                         continue;
                     }

@@ -33,7 +33,7 @@ function MMAWClientRetriever() {
     /// <summary>
     /// Starts retrieving.
     /// </summary>
-    this.start = function() {
+    this.start = function(processor) {
         this._retrieving = true;
         this._cellsRetrieved = [];
         for (var i = 0; i < this._cellsToRetrieve.length; i++) {
@@ -43,7 +43,7 @@ function MMAWClientRetriever() {
         for (var i = 0; i < this._cellsToRetrieve.length; i++) {
             (function (cell, ii) {
                 $.get("raw/map.json?x=" + cell.x + "&y=" + cell.y + "&z=" + cell.z +
-                      "&size=" + this.processor.renderer.getRenderIncrement() +
+                      "&size=" + this.processor.renderer.getRenderIncrement($("#outputLayer").val()) +
                       "&seed=" + this.processor.seed + "&layer=" +
                       $("#outputLayer").val().substring(3) +
                       "&packed=" + (($("#transmitPackedData") && $("#transmitPackedData").is(':checked')) ? "true" : "false"), function(data) {
@@ -69,6 +69,8 @@ function MMAWClientRetriever() {
                                 ix++;
                             }
                         }
+                }.bind(this)).fail(function() {
+                    processor.failProcessing("Can't reach server");
                 }.bind(this));
             }.bind(this))(this._cellsToRetrieve[i], i);
         }

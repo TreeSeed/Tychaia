@@ -55,8 +55,8 @@ namespace MakeMeAWorld
                 {
                     if (result.Request.Packed)
                     {
-                        cacheWriter.Write("{\"empty\":false,\"packed\":true,\"data\":[");
-                        webWriter.Write("{\"empty\":false,\"packed\":true,\"data\":[");
+                        cacheWriter.Write("{\"empty\":false,\"time\":\"" + result.TotalTime + "\",\"packed\":true,\"data\":[");
+                        webWriter.Write("{\"empty\":false,\"time\":\"" + result.TotalTime + "\",\"packed\":true,\"data\":[");
                         {
                             var continuousValue = 0;
                             var continuousCount = 1;
@@ -117,8 +117,8 @@ namespace MakeMeAWorld
                     }
                     else
                     {
-                        cacheWriter.Write("{\"empty\":false,\"packed\":false,\"data\":[");
-                        webWriter.Write("{\"empty\":false,\"packed\":false,\"data\":[");
+                        cacheWriter.Write("{\"empty\":false,\"time\":\"" + result.TotalTime + "\",\"packed\":false,\"data\":[");
+                        webWriter.Write("{\"empty\":false,\"time\":\"" + result.TotalTime + "\",\"packed\":false,\"data\":[");
                         {
                             var first = true;
                             for (var i = 0; i < result.Data.Length; i++)

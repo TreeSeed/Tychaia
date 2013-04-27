@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="MakeMeAWorld.Default" %>
 <!DOCTYPE html> 
-<html lang="en">
+<html lang="en" manifest="cache.manifest">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <title>Make me a world with Tychaia!</title>

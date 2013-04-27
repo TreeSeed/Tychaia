@@ -31,6 +31,7 @@ namespace MakeMeAWorld
             public RuntimeLayer Layer;
             public int[] Data;
             public int Computations;
+            public TimeSpan TotalTime;
         }
 
         /// <summary>
@@ -75,10 +76,21 @@ namespace MakeMeAWorld
             // Handle with cache if possible.
             if (this.ProcessCache(request, context))
                 return;
+            
+            // If a 3D layer and the size is 64, we actually do
+            // a size of 16x16x16 and scale it at the result
+            // level.
+            /*var scale = 1;
+            if (!layer.Algorithm.Is2DOnly && request.Size == 64)
+            {
+                request.Size = 16;
+                scale = 4;
+            }*/
 
             // Generate the requested data.
             int computations;
             layer.Seed = request.Seed;
+            var start = DateTime.Now;
             var data = layer.GenerateData(
                 request.X, 
                 request.Y, 
@@ -87,14 +99,30 @@ namespace MakeMeAWorld
                 request.Size,
                 layer.Algorithm.Is2DOnly ? 1 : request.Size,
                 out computations);
-            
+            var end = DateTime.Now;
+
+            // Scale the data if needed.
+            /*if (scale == 4)
+            {
+                var newData = new int[64 * 64 * 64];
+                for (var x = 0; x < 16; x++)
+                    for (var y = 0; y < 16; y++)
+                        for (var z = 0; z < 16; z++)
+                            for (var i = 0; i < 4; i++)
+                                for (var j = 0; j < 4; j++)
+                                    for (var k = 0; k < 4; k++)
+                                        newData[(x * 4 + i) + (y * 4 + j) * 64 + (z * 4 + k) * 64 * 64] = data[x + y * 16 + k * 16 * 16];
+                data = newData;
+            }*/
+
             // Store the result.
             var generation = new GenerationResult
             {
                 Request = request,
                 Layer = layer,
                 Data = data,
-                Computations = computations
+                Computations = computations,
+                TotalTime = end - start
             };
 
             // 3D layers can be optimized to empty results.

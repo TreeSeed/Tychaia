@@ -18,6 +18,11 @@ function MMAWClientWebWorker() {
     this._imageData = null;
     
     /// <summary>
+    /// The render increment we're using.
+    /// </summary>
+    this._renderIncrement = 64;
+    
+    /// <summary>
     /// Handler for when the web worker recieves a message.
     /// </summary>
     this.onMessageRecieved = function(data) {
@@ -42,13 +47,10 @@ function MMAWClientWebWorker() {
     };
     
     /// <summary>
-    /// The render increment, or the total size of each cell that
-    /// is rendered.
+    /// Sets the render increment we are using.
     /// </summary>
-    this.getRenderIncrement = function() {
-        // Our cell position calculations assume this
-        // value (so we can optimize the algorithms).
-        return 64;
+    this.setRenderIncrement = function(renderIncrement) {
+        this._renderIncrement = renderIncrement;
     };
     
     this._determinePixelRenderPosition = function(x, y, z) {
@@ -65,9 +67,9 @@ function MMAWClientWebWorker() {
             return data.data;
         }
         var start = 0;
-        var end = this.getRenderIncrement() *
-                  this.getRenderIncrement() *
-                  this.getRenderIncrement();
+        var end = this._renderIncrement *
+                  this._renderIncrement *
+                  this._renderIncrement;
         var extractCount = 0;
         var dataIndex = 0;
         var dataArray = [];
@@ -91,35 +93,41 @@ function MMAWClientWebWorker() {
     };
     
     /// <summary>
+    /// Draws a pixel to the image data, taking into
+    /// account the existing pixel data.
+    /// </summary>
+    this.drawPixel = function(imageData, idx, color) {
+        if (color[0] == 0) {
+            return;
+        }
+        imageData.data[idx + 0] = color[1];
+        imageData.data[idx + 1] = color[2];
+        imageData.data[idx + 2] = color[3];
+        imageData.data[idx + 3] = color[0];
+    };
+    
+    /// <summary>
     /// Processes an image.
     /// </summary>
     this.process = function(cell, cellPosition, callback, token) {
         var dataArray = this._decodeDataArray(cell.data);
-        for (var z = 0; z < this.getRenderIncrement(); z++)
-            for (var x = 0; x < this.getRenderIncrement(); x++)
-                for (var y = 0; y < this.getRenderIncrement(); y++)
+        var max = this._renderIncrement;
+        for (var z = 0; z < max; z++)
+            for (var x = 0; x < max; x++)
+                for (var y = 0; y < max; y++)
                 {
                     var pixelPosition = this._determinePixelRenderPosition(x, y, z);
-                    var value = dataArray[x + y * this.getRenderIncrement() + z * this.getRenderIncrement() * this.getRenderIncrement()];
+                    var value = dataArray[x + y * this._renderIncrement + z * this._renderIncrement * this._renderIncrement];
                     
                     var ax = cellPosition.x + pixelPosition.x;
                     var ay = cellPosition.y + pixelPosition.y;
                     if (cell.data.mappings[value] !== undefined &&
                         cell.data.mappings[value] !== null) {
-                        var idx;
                         if (!(ax < 0 || ay < 0 || ax >= this._imageData.width || ay >= this._imageData.height)) {
-                            idx = (ax + ay * this._imageData.width) * 4;
-                            this._imageData.data[idx + 0] = cell.data.mappings[value][1];
-                            this._imageData.data[idx + 1] = cell.data.mappings[value][2];
-                            this._imageData.data[idx + 2] = cell.data.mappings[value][3];
-                            this._imageData.data[idx + 3] = cell.data.mappings[value][0];
+                            this.drawPixel(this._imageData, (ax + ay * this._imageData.width) * 4, cell.data.mappings[value]);
                         }
                         if (!(ax + 1 < 0 || ay < 0 || ax + 1 >= this._imageData.width || ay >= this._imageData.height)) {
-                            idx = (ax + 1 + ay * this._imageData.width) * 4;
-                            this._imageData.data[idx + 0] = cell.data.mappings[value][1];
-                            this._imageData.data[idx + 1] = cell.data.mappings[value][2];
-                            this._imageData.data[idx + 2] = cell.data.mappings[value][3];
-                            this._imageData.data[idx + 3] = cell.data.mappings[value][0];
+                            this.drawPixel(this._imageData, (ax + 1 + ay * this._imageData.width) * 4, cell.data.mappings[value]);
                         }
                     }
                 }

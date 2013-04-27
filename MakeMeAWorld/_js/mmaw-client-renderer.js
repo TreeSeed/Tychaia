@@ -58,7 +58,7 @@ function MMAWClientRenderer() {
     /// The render increment, or the total size of each cell that
     /// is rendered.
     /// </summary>
-    this.getRenderIncrement = function() {
+    this.getRenderIncrement = function(layerName) {
         // Our cell position calculations assume this
         // value (so we can optimize the algorithms).
         return 64;
@@ -77,7 +77,7 @@ function MMAWClientRenderer() {
     /// based on it's location in 3D space.
     /// </summary>
     this._determineCellRenderPosition = function(x, y, z) {
-        var rcx = 32 / 2 + this.processor.canvas.width / 2 - this.getRenderIncrement();
+        var rcx = 32 / 2 + this.processor.canvas.width / 2 - this.getRenderIncrement($("#outputLayer").val());
         var rcy = 32 / 2;
         var rx = rcx + ((x / 32 - y / 32) / 2.0 * 64);
         var ry = rcy + (x / 32 + y / 32) * 32 - (z / 32 - 0) * 32;
@@ -92,8 +92,8 @@ function MMAWClientRenderer() {
     /// </summary>
     this.canSkip = function(x, y, z) {
         var position = this._determineCellRenderPosition(x, y, z);
-        if (position.x < (-this.getRenderIncrement() * 3) || position.x > this.processor.canvas.width ||
-            position.y < (-this.getRenderIncrement() * 3) || position.y > this.processor.canvas.height) {
+        if (position.x < (-this.getRenderIncrement($("#outputLayer").val()) * 3) || position.x > this.processor.canvas.width ||
+            position.y < (-this.getRenderIncrement($("#outputLayer").val()) * 3) || position.y > this.processor.canvas.height) {
             return true;
         }
         return false;
@@ -145,12 +145,16 @@ function MMAWClientRenderer() {
             // Set the up the token and callback.
             var token = this._webWorkerToken++;
             this._webWorkerHandlers[token] = function(data) {
+                if (data.message != null) {
+                    console.log(data.message);
+                }
                 if (data.imageData != null) {
                     finished(data.imageData);
                 }
             };
             if (!this._webWorkerHasImageData) {
                 this._webWorker.postMessage({func: "setImageData", arguments: [this._context.getImageData(0, 0, this.processor.canvas.width, this.processor.canvas.height)]});
+                this._webWorker.postMessage({func: "setRenderIncrement", arguments: [this.getRenderIncrement($("#outputLayer").val())]});
                 this._webWorkerHasImageData = true;
             }
             this._webWorker.postMessage({func: "process", arguments: [cell, cellPosition, null, token]});
@@ -160,6 +164,7 @@ function MMAWClientRenderer() {
         } else {
             if (!this._webWorkerHasImageData) {
                 this._webWorker.setImageData(this._context.getImageData(0, 0, this.processor.canvas.width, this.processor.canvas.height));
+                this._webWorker.setRenderIncrement(this.getRenderIncrement($("#outputLayer").val()));
             }
             
             this._nonWebWorkerQueue.push(function() {
