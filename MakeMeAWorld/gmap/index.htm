@@ -6,6 +6,10 @@
         <link href="/gmap/default.css" rel="stylesheet">
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
         <script>
+            function presenting() {
+                return location.search === "?present" || location.hash === "#present";
+            }
+        
             var tychaiaTypeOptions = {
                 getTileUrl: function (coord, zoom) {
                     var x = (coord.y + coord.x) * 32;
@@ -38,6 +42,7 @@
                     center: myLatlng,
                     zoom: 7,
                     streetViewControl: false,
+                    disableDefaultUI: presenting(),
                     mapTypeControlOptions: {
                         mapTypeIds: ['tychaia']
                     }
@@ -83,6 +88,12 @@
                         .lng()
                         .toFixed(2) + "&deg;" + wp;
                 });
+            
+                // If in presentation mode, change what divs are shown.
+                if (presenting()) {
+                    document.getElementById("coordinates").style.display = "none";
+                    document.getElementById("url").style.display = "block";
+                }
             }
 
              // Normalizes the coords that tiles repeat across the x axis (horizontally)
@@ -121,7 +132,9 @@
             function update() {
                 if (isIdle) {
                     map.panBy(Math.sin(direction / 180 * (2 * 3.14)) * 2, Math.cos(direction / 180 * (2 * 3.14)) * 2);
-                    document.getElementById("autopanning").style.display = "";
+                    if (!presenting()) {
+                        document.getElementById("autopanning").style.display = "block";
+                    }
                 } else {
                     document.getElementById("autopanning").style.display = "none";
                 }
@@ -136,6 +149,7 @@
         <div id="map-canvas"></div>
         <div id="coordinates_container">
             <a id="logo" href="http://tychaia.com/">Tychaia</a>
+            <div id="url">www.tychaia.com</div>
             <div id="coordinates">&nbsp;</div>
             <div id="autopanning">Autopan: 0&deg;</div>
         </div>

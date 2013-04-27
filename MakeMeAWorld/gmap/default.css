@@ -51,8 +51,12 @@ html, body {
     margin-bottom: 20px;
 }
 
-#logo
-{
+#coordinates_container div#url {
+    display: none;
+    width: 200px;
+}
+
+#logo {
     display: block;
     margin: auto;
     margin-bottom: 20px;
