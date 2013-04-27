@@ -68,7 +68,7 @@ namespace MakeMeAWorld
                 request.Z.ToString(),
                 request.Size.ToString(),
                 "get" + (request.AsSquare ? "_square" : "") +
-                (request.Packed ? "_packed" : "") + extension
+                (request.Packed ? "_packed" : "") + "." + extension
             };
             for (var i = 0; i < cacheComponents.Length - 1; i++)
             {
