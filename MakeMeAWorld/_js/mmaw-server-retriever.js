@@ -30,7 +30,7 @@ function MMAWServerRetriever() {
     /// <summary>
     /// Starts retrieving.
     /// </summary>
-    this.start = function() {
+    this.start = function(processor) {
         this._retrieving = true;
         
         var retrieve = function(i)

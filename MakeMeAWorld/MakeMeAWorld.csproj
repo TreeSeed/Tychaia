@@ -188,5 +188,6 @@
       <Link>WorldConfig.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="nginx.conf" />
   </ItemGroup>
 </Project>
