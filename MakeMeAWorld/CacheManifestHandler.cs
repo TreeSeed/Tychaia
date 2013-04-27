@@ -23,6 +23,11 @@ namespace MakeMeAWorld
             {
                 context.Response.Write("/_css/" + f.Name + "\n");
             }
+            context.Response.Write("/\n");
+            context.Response.Write("/Default.aspx\n");
+            context.Response.Write("/explore\n");
+            context.Response.Write("/gmap/index.htm\n");
+            context.Response.Write("/gmap/default.css\n");
         }
     }
 }

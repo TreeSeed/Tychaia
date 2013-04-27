@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" manifest="cache.manifest">
     
     <head>
         <title>Explore Tychaia</title>
@@ -15,7 +15,7 @@
                         '&packed=false&as_square=true';
                 },
                 tileSize: new google.maps.Size(64, 64 - 1),
-                maxZoom: 5,
+                maxZoom: 7,
                 minZoom: 0,
                 name: 'World',
                 mapTypeId: 'satellite'
@@ -32,7 +32,7 @@
                 var myLatlng = new google.maps.LatLng(0, 0);
                 var mapOptions = {
                     center: myLatlng,
-                    zoom: 5,
+                    zoom: 7,
                     streetViewControl: false,
                     mapTypeControlOptions: {
                         mapTypeIds: ['tychaia']

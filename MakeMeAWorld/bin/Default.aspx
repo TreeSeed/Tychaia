@@ -73,6 +73,7 @@
                             generator.  You can enter a seed below and our server will generate the cell renders, which are then formed into a
                             complete image by the web browser.
                         </p>
+                        <p><span style="color:cyan;font-weight:bold;">New:</span> <a href="/explore">Explore an infinite map!</a></p>
                     </div>
                     <form id="newRender" class="form-inline" style="margin-bottom: 0px; margin-top: 13px; white-space: nowrap;">
                         <div class="input-append">
