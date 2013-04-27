@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic);
+@import url(http://fonts.googleapis.com/css?family=Metamorphous);
 
 html, body {
   height: 100%;
@@ -40,9 +42,26 @@ html, body {
 #coordinates_container div {
     margin: auto;
     padding: 5px;
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.5);
     color: white;
     font-weight: bold;
     width: 200px;
     text-align: center;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+#logo
+{
+    display: block;
+    margin: auto;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 36px;
+    text-decoration: none;
+    
+    color: rgb(255, 255, 255);
+    font-size: 36px;
+    font-family: Metamorphous,sans-serif;
+    text-shadow: 0px 2px 2px rgb(0, 0, 0);
 }
