@@ -22,7 +22,8 @@ namespace MakeMeAWorld
             var folder = context.Server.MapPath("~/App_Data/cached_" + layer + "_" + request.Seed);
             var cache = context.Server.MapPath("~/App_Data/cached_" + layer + "_" + request.Seed +
                 "/" + request.X + "_" + request.Y + "_" + request.Z +
-                "_" + request.Size + (request.Packed ? "_packed" : "") + ".png");
+                "_" + request.Size + (request.Packed ? "_packed" : "") +
+                "_" + (request.AsSquare ? "_square" : "") + ".png");
             if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
             return cache;
@@ -189,7 +190,11 @@ namespace MakeMeAWorld
             var width = result.Request.Size;
             var height = result.Request.Size;
             var depth = result.Layer.Algorithm.Is2DOnly ? 1 : result.Request.Size;
-            var bitmap = new Bitmap(width * 2, height * 3);
+            Bitmap bitmap;
+            if (result.Request.AsSquare)
+                bitmap = new Bitmap(width, height - 1);
+            else
+                bitmap = new Bitmap(width * 2, height * 3);
             using (var graphics = Graphics.FromImage(bitmap))
             {
                 graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
@@ -214,6 +219,17 @@ namespace MakeMeAWorld
                             // Calculate the render position on screen.
                             int rx = rcx + (int)((x - y) / 2.0 * rw);
                             int ry = rcy + (x + y) * rh - (rh / 2 * (width + height)) - (z - zbottom) * 1;
+
+                            // Adjust for square mode.
+                            if (result.Request.AsSquare)
+                            {
+                                rx = (rx - rcx) + width / 2;
+                                ry = (ry - rcy) - height / 2;
+                                if (rx < -1 || ry < -1 ||
+                                    rx > width + 1 || ry > height + 1)
+                                    continue;
+                            }
+
                             while (true)
                             {
                                 try

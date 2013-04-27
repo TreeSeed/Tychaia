@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <title>Explore Tychaia</title>
+        <link href="/gmap/default.css" rel="stylesheet">
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+        <script>
+            var tychaiaTypeOptions = {
+                getTileUrl: function (coord, zoom) {
+                    var x = (coord.y + coord.x) * 32;
+                    var y = (coord.y - coord.x) * 32;
+                    return '/images/map.png?x=' +
+                        x + '&y=' + y + '&z=0&size=64&seed=20286183684741856&layer=GoogleMapZoom' + zoom +
+                        '&packed=false&as_square=true';
+                },
+                tileSize: new google.maps.Size(64, 64 - 1),
+                maxZoom: 5,
+                minZoom: 0,
+                name: 'World',
+                mapTypeId: 'satellite'
+            };
+
+            var tychaiaMapType = new google.maps.ImageMapType(tychaiaTypeOptions);
+            var isIdle = false;
+            var idleTimeout = null;
+            var direction = Math.random() * 360;
+
+            var map;
+
+            function initialize() {
+                var myLatlng = new google.maps.LatLng(0, 0);
+                var mapOptions = {
+                    center: myLatlng,
+                    zoom: 5,
+                    streetViewControl: false,
+                    mapTypeControlOptions: {
+                        mapTypeIds: ['tychaia']
+                    }
+                };
+
+                map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+                map.mapTypes.set('tychaia', tychaiaMapType);
+                map.setMapTypeId('tychaia');
+                map.setTilt(45);
+                var np = map.getCenter()
+                    .lat() >= 0 ? "N" : "S";
+                var wp = map.getCenter()
+                    .lng() < 0 ? "W" : "E";
+                document.getElementById("coordinates")
+                    .innerHTML = map.getCenter()
+                    .lat()
+                    .toFixed(2) + "&deg;" + np + " " + map.getCenter()
+                    .lng()
+                    .toFixed(2) + "&deg;" + wp;
+
+                var idleReset = function () {
+                    window.clearTimeout(idleTimeout);
+                    idleTimeout = window.setTimeout(function () {
+                        isIdle = true;
+                    }, 10000);
+                    isIdle = false;
+                };
+                google.maps.event.addListener(map, 'idle', idleReset);
+                google.maps.event.addListener(map, 'click', idleReset);
+                google.maps.event.addListener(map, 'dragstart', idleReset);
+                google.maps.event.addListener(map, 'drag', idleReset);
+                google.maps.event.addListener(map, 'dragend', idleReset);
+                google.maps.event.addListener(map, 'center_changed', function () {
+                    var np = map.getCenter()
+                        .lat() >= 0 ? "N" : "S";
+                    var wp = map.getCenter()
+                        .lng() < 0 ? "W" : "E";
+                    document.getElementById("coordinates")
+                        .innerHTML = map.getCenter()
+                        .lat()
+                        .toFixed(2) + "&deg;" + np + " " + map.getCenter()
+                        .lng()
+                        .toFixed(2) + "&deg;" + wp;
+                });
+            }
+
+             // Normalizes the coords that tiles repeat across the x axis (horizontally)
+             // like the standard Google map tiles.
+
+            function getNormalizedCoord(coord, zoom) {
+                var y = coord.y;
+                var x = coord.x;
+
+                // tile range in one direction range is dependent on zoom level
+                // 0 = 1 tile, 1 = 2 tiles, 2 = 4 tiles, 3 = 8 tiles, etc
+                var tileRange = 1 << zoom;
+
+                // don't repeat across y-axis (vertically)
+                if (y < 0 || y >= tileRange) {
+                    return null;
+                }
+
+                // repeat across x-axis
+                if (x < 0 || x >= tileRange) {
+                    x = (x % tileRange + tileRange) % tileRange;
+                }
+
+                return {
+                    x: x,
+                    y: y
+                };
+            }
+
+            var directionRandomize = window.setInterval(function() {
+                direction += (Math.random() * 2 - 1) / 10;
+                while (direction < 0) direction += 360;
+                while (direction >= 360) direction -= 360;
+                document.getElementById("autopanning").innerHTML = "Autopan: " + direction.toFixed(2) + "&deg;";
+            }, 10);
+            function update() {
+                if (isIdle) {
+                    map.panBy(Math.sin(direction / 180 * (2 * 3.14)) * 2, Math.cos(direction / 180 * (2 * 3.14)) * 2);
+                    document.getElementById("autopanning").style.display = "";
+                } else {
+                    document.getElementById("autopanning").style.display = "none";
+                }
+            }
+            window.setInterval(update, 100);
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+        </script>
+    </head>
+    
+    <body>
+        <div id="map-canvas"></div>
+        <div id="coordinates_container">
+            <div id="coordinates">&nbsp;</div>
+            <div id="autopanning">Autopan: 0&deg;</div>
+        </div>
+    </body>
+
+</html>

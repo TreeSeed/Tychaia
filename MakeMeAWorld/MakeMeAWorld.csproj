@@ -71,6 +71,8 @@
     <Content Include="_js\mmaw-sizes.js" />
     <Content Include="_js\mmaw-ui-main-and-processing.js" />
     <Content Include="_js\mmaw-client-webworker.js" />
+    <Content Include="gmap\index.htm" />
+    <Content Include="gmap\default.css" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Default.aspx.cs">
@@ -176,6 +178,7 @@
     <Folder Include="_css\" />
     <Folder Include="_js\" />
     <Folder Include="Properties\" />
+    <Folder Include="gmap\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Other\WorldConfig.xml">

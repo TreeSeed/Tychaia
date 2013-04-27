@@ -23,6 +23,7 @@ namespace MakeMeAWorld
             public long Seed;
             public string LayerName;
             public bool Packed;
+            public bool AsSquare;
         }
 
         protected class GenerationResult
@@ -61,7 +62,8 @@ namespace MakeMeAWorld
                 Size = Convert.ToInt32(context.Request.QueryString["size"]),
                 Seed = Convert.ToInt64(context.Request.QueryString["seed"]),
                 LayerName = context.Request.QueryString["layer"],
-                Packed = Convert.ToBoolean(context.Request.QueryString["packed"])
+                Packed = Convert.ToBoolean(context.Request.QueryString["packed"]),
+                AsSquare = Convert.ToBoolean(context.Request.QueryString["as_square"])
             };
 
             // Force the size to be 64x64x64.
@@ -155,7 +157,8 @@ namespace MakeMeAWorld
             foreach (var layer in layers)
                 if ((layer.Algorithm is AlgorithmResult) &&
                     (layer.Algorithm as AlgorithmResult).Name == request.LayerName &&
-                    (layer.Algorithm as AlgorithmResult).ShowInMakeMeAWorld &&
+                    ((layer.Algorithm as AlgorithmResult).ShowInMakeMeAWorld || 
+                    (layer.Algorithm as AlgorithmResult).PermitInMakeMeAWorld) &&
                     !(layer.Algorithm as AlgorithmResult).DefaultForMakeMeAWorld)
                     return StorageAccess.ToRuntime(layer);
             foreach (var layer in layers)

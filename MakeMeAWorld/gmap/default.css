@@ -1,0 +1,48 @@
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#map-canvas, #map_canvas {
+  height: 100%;
+}
+
+@media print {
+  html, body {
+    height: auto;
+  }
+
+  #map_canvas {
+    height: 650px;
+  }
+}
+
+#panel {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  margin-left: -180px;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+}
+
+#coordinates_container {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    margin-top: 40px;
+}
+
+#coordinates_container div {
+    margin: auto;
+    padding: 5px;
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    width: 200px;
+    text-align: center;
+}
