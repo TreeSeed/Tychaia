@@ -42,11 +42,14 @@ function MMAWClientRetriever() {
         
         for (var i = 0; i < this._cellsToRetrieve.length; i++) {
             (function (cell, ii) {
-                $.get("raw/map.json?x=" + cell.x + "&y=" + cell.y + "&z=" + cell.z +
-                      "&size=" + this.processor.renderer.getRenderIncrement($("#outputLayer").val()) +
-                      "&seed=" + this.processor.seed + "&layer=" +
-                      $("#outputLayer").val().substring(3) +
-                      "&packed=" + (($("#transmitPackedData") && $("#transmitPackedData").is(':checked')) ? "true" : "false"), function(data) {
+                $.get("/api-v1/" + $("#outputLayer").val().substring(3) +
+                             "/" + this.processor.seed +
+                             "/" + cell.x +
+                             "/" + cell.y +
+                             "/" + cell.z +
+                             "/" + this.processor.renderer.getRenderIncrement($("#outputLayer").val()) +
+                             "/" + (($("#transmitPackedData") && $("#transmitPackedData").is(':checked')) ? "get_packed.json" : "get.json"),
+                    function(data) {
                         if (!this._retrieving) {
                             return;
                         }

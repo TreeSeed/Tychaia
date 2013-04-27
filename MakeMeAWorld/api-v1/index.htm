@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" manifest="cache.manifest">
+    
+    <head>
+        <title>Make Me a World API (v1)</title>
+    </head>
+    
+    <body>
+        <h1>Make Me a World API (v1)</h1>
+        
+        <a href="#calling-the-api">Calling the API</a> &bull;
+        <a href="#file-formats">File Formats</a> &bull;
+        <a href="#json-data-format">JSON Data Format</a> &bull;
+        <a href="#json-color-mappings">JSON Color Mappings</a>
+        
+        <p>
+            Make Me a World has an API which it uses to fetch the result of the generation
+            for rendering on the Make Me a World website.  While this API is used internally,
+            it is also written to be able to be used externally as well.
+        </p>
+        <a name="calling-the-api" />
+        <h2>Calling the API</h2>
+        <p>
+            The API is relatively simple.  Paths of the form:
+        </p>
+        <code>
+            /api-v1/{layer}/{seed}/{x}/{y}/{z}/{size}/{file}
+        </code>
+        <p>
+            will cause the server to return the resultant data depending on the parameters
+            provided.
+        </p>
+        <table border="1" cellpadding="10">
+            <tr>
+                <th width="40%">Parameter</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>layer</td>
+                <td>
+                    This is the name of the layer to generate content for.  Use the Make Me a
+                    World website to determine a valid value for this parameter.  The available
+                    layers are subject to change at any time.
+                </td>
+            </tr>
+            <tr>
+                <td>seed</td>
+                <td>
+                    The generation seed.  If you provide the exact same parameter and the same
+                    seed, you will get the same result.
+                </td>
+            </tr>
+            <tr>
+                <td>x</td>
+                <td>The isometric X position in the world.</td>
+            </tr>
+            <tr>
+                <td>y</td>
+                <td>The isometric Y position in the world.</td>
+            </tr>
+            <tr>
+                <td>z</td>
+                <td>The isometric Z position in the world.</td>
+            </tr>
+            <tr>
+                <td>size</td>
+                <td>The size of the result to return.  <strong>Should always be 64.</strong></td>
+            </tr>
+            <tr>
+                <td>file</td>
+                <td>One of the supported file formats (see below).</td>
+            </tr>
+        </table>
+        <a name="file-formats" />
+        <h2>File Formats</h2>
+        <h3>get.png</h3>
+        <a href="/api-v1/Height Change/71117529948005144/0/0/0/64/get.png">Try it!</a>
+        <p>
+            This is known as "server-side rendering".  It is what the Make Me a World website used to 
+            use before the introduction of client side rendering.  It's much slower than delivering
+            the raw data, but it allows the results to be used where you can't perform the rendering
+            yourself.
+        </p>
+        <p>
+            The result of this request is a 128x192 PNG image.
+        </p>
+        <h3>get_square.png</h3>
+        <a href="/api-v1/Height Change/71117529948005144/0/0/0/64/get_square.png">Try it!</a>
+        <p>
+            This is known as square rendering.  It is the same as server-side rendering, except that
+            the result is a square image of the area.  These are the same tiles used in the Google Maps
+            explorer.
+        </p>
+        <p>
+            The result of this request is a 64x<strong>63</strong> PNG image.  Note this is due to the
+            way the server renders.  Underlyingly it is performing the same render as with <code>get.png</code>,
+            except that it is cropping of the diagonal corners to sample the full rectangular area
+            available for the otherwise isometric image.
+        </p>
+        <h3>get.json</h3>
+        <a href="/api-v1/Height Change/71117529948005144/0/0/0/64/get.json">Try it!</a>
+        <p>
+            This is the raw data API, which can be used to do client-side rendering.  It provides a JSON
+            object of the following format:
+        </p>
+        <pre>
+{
+   "empty":false,
+   "time":"00:00:00.3161890",
+   "packed":false,
+   "data":[...],
+   "mappings":{...}
+}
+        </pre>
+        <p>
+            A description of each of the properties is as follows:
+        </p>
+        <table border="1" cellpadding="10">
+            <tr>
+                <th width="40%">Property</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>empty</td>
+                <td>
+                    Whether there is no data for this cell / tile at all.  <strong>If this is true, no other properties
+                    or data are present in the result.</strong>
+                </td>
+            </tr>
+            <tr>
+                <td>time</td>
+                <td>
+                    The time it took to generate the result.
+                </td>
+            </tr>
+            <tr>
+                <td>packed</td>
+                <td>Whether the resulting data is in packed format (see below).</td>
+            </tr>
+            <tr>
+                <td>data</td>
+                <td>The result data (see below).</td>
+            </tr>
+            <tr>
+                <td>mappings</td>
+                <td>The value-color mappings (see below).</td>
+            </tr>
+        </table>
+        <h3>get_packed.json</h3>
+        <a href="/api-v1/Height Change/71117529948005144/0/0/0/64/get_packed.json">Try it!</a>
+        <p>
+            This is the same as <code>get.json</code> except that the result data is in a packed format.
+        </p>
+        <a name="json-data-format" />
+        <h2>JSON Data Format</h2>
+        <h3>Data Indexing</h3>
+        <p>
+            The unpacked data will result in an array that is accessed Z major to X minor.  That is, the following
+            expression will give you the cell value for a particular X, Y, Z position.  For 2D layers, omit the Z
+            component of the expression.
+        </p>
+        <code>
+            x + y * width + z * width * height
+        </code>
+        <h3>Unpacked Format</h3>
+        <p>
+            The unpacked data format is a simple JSON array with values.  Each index lines up with a single
+            "pixel" in the result.  Thus given a size of 64 for a 2D layer, there would be 4096 indexes to access.
+        </p>
+        <p>
+            This is a very simple format, but it comes at the cost of taking long to send back to the client
+            from the server (because the result is much larger).
+        </p>
+        <h3>Packed Format</h3>
+        <p>
+            The packed data format consists of a JSON array which in turn, can contain either single values or
+            "value pairs".  A value pair is a JSON array with two elements: the count and the value.  It is best
+            explained with an example.  For the following packed result:
+        </p>
+        <code>
+            [0, 1, -2, [6, 0], 1, -1, 0, 0, 7, [6, -2], -1]
+        </code>
+        <p>
+            the unpacked equivalent is:
+        </p>
+        <code>
+            [0, 1, -2, 0, 0, 0, 0, 0, 0, 1, -1, 0, 0, 7, -2, -2, -2, -2, -2, -2, -1]
+        </code>
+        <p>
+            The server uses heuristics to determine the most optimal result based on characters returned.  Since
+            this is a linear operation, it does not add any noticable difference to the time taken to calculate
+            the result data.
+        </p>
+        <p>
+            <strong>
+                It is highly recommended that you use the packed data format where you can.  You will notice
+                considerable improvements in time taken to download from the server.
+            </strong>
+        </p>
+        <a name="json-color-mappings" />
+        <h2>JSON Color Mappings</h2>
+        <p>
+            The value-color mappings are of the following format:
+        </p>
+        <pre>
+{
+  "0":[
+    255,
+    0,
+    0,
+    0
+  ],
+  "1":[
+    255,
+    0,
+    0,
+    25
+  ]
+}
+        </pre>
+        <p>
+            Each key is a value that will appear in the result data.  The array
+            for each value are the ARGB values for the color.
+        </p>
+    </body>
+
+</html>

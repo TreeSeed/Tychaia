@@ -61,11 +61,13 @@ function MMAWServerRetriever() {
             img.onerror = function () {
                 processor.failProcessing("Can't reach server");
             }.bind(this);
-            img.src = "images/map.png?x=" + cell.x + "&y=" + cell.y + "&z=" + cell.z +
-                      "&size=" + this.processor.renderer.getRenderIncrement($("#outputLayer").val()) +
-                      "&seed=" + this.processor.seed + "&layer=" +
-                      $("#outputLayer").val().substring(3) +
-                      "&packed=" + (($("#transmitPackedData") && $("#transmitPackedData").is(':checked')) ? "true" : "false");
+            img.src = "/api-v1/" + $("#outputLayer").val().substring(3) +
+                      "/" + this.processor.seed +
+                      "/" + cell.x +
+                      "/" + cell.y +
+                      "/" + cell.z +
+                      "/" + this.processor.renderer.getRenderIncrement($("#outputLayer").val()) +
+                      "/" + "get.png";
         }.bind(this);
         retrieve(0);
     };

@@ -6,6 +6,7 @@
 
 using System;
 using System.Web;
+using System.Linq;
 using Tychaia.ProceduralGeneration;
 using System.IO;
 using System.Collections.Generic;
@@ -51,20 +52,86 @@ namespace MakeMeAWorld
         /// </summary>
         protected abstract void ProcessGeneration(GenerationResult result, HttpContext context);
 
+        protected string GetCacheName(GenerationRequest request, HttpContext context, string extension)
+        {
+            if (request.LayerName.Contains(".") || request.LayerName.Contains("/"))
+                throw new HttpException("Layer name is not valid.");
+            var cacheComponents = new string[]
+            {
+                "~",
+                "App_Cache",
+                "api-v1",
+                request.LayerName,
+                request.Seed.ToString(),
+                request.X.ToString(),
+                request.Y.ToString(),
+                request.Z.ToString(),
+                request.Size.ToString(),
+                "get" + (request.AsSquare ? "_square" : "") +
+                (request.Packed ? "_packed" : "") + extension
+            };
+            for (var i = 0; i < cacheComponents.Length - 1; i++)
+            {
+                var path = context.Server.MapPath(cacheComponents.Where((x, id) => id <= i).Aggregate((a, b) => a + "/" + b));
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+            }
+            return context.Server.MapPath(cacheComponents.Aggregate((a, b) => a + "/" + b));
+        }
+
         public override sealed void ProcessRequest(HttpContext context)
         {
-            // Read in provided parameters.
-            var request = new GenerationRequest
+            // Read in provided parameters, using either the fast or slow
+            // API URLs.
+            GenerationRequest request;
+            if (context.Request.Url.AbsolutePath.StartsWith("/api-v1/", StringComparison.Ordinal))
             {
-                X = Convert.ToInt64(context.Request.QueryString["x"]),
-                Y = Convert.ToInt64(context.Request.QueryString["y"]),
-                Z = Convert.ToInt64(context.Request.QueryString["z"]),
-                Size = Convert.ToInt32(context.Request.QueryString["size"]),
-                Seed = Convert.ToInt64(context.Request.QueryString["seed"]),
-                LayerName = context.Request.QueryString["layer"],
-                Packed = Convert.ToBoolean(context.Request.QueryString["packed"]),
-                AsSquare = Convert.ToBoolean(context.Request.QueryString["as_square"])
-            };
+                // The format of this URL allows Nginx to automatically
+                // serve the resource if it already exists, which the
+                // query string version does not.  However it means that
+                // we have to parse out the path components of the request
+                // so that we have the information we want.
+                var components = context.Request.Url.AbsolutePath.Substring("/api-v1/".Length).Split('/');
+                if (components.Length != 7)
+                    throw new HttpException(500, "Not enough URL components to determine request.");
+                request = new GenerationRequest
+                {
+                    X = Convert.ToInt64(components[2]),
+                    Y = Convert.ToInt64(components[3]),
+                    Z = Convert.ToInt64(components[4]),
+                    Size = Convert.ToInt32(components[5]),
+                    Seed = Convert.ToInt64(components[1]),
+                    LayerName = HttpUtility.UrlDecode(components[0]),
+                    Packed = components[6].Contains("_packed"),
+                    AsSquare = components[6].Contains("_square")
+                };
+                if (request.LayerName.Contains(".") || request.LayerName.Contains("/"))
+                    throw new HttpException("Layer name is not valid.");
+                var permittedNames = new[]
+                {
+                    "get.png",
+                    "get_square.png",
+                    "get.json",
+                    "get_packed.json"
+                };
+                if (!permittedNames.Contains(components[6]))
+                    throw new HttpException(500, "The final component of the URL must be one of {" +
+                        permittedNames.Aggregate((a, b) => a + ", " + b) + "} for fast caching to work.");
+            }
+            else
+            {
+                request = new GenerationRequest
+                {
+                    X = Convert.ToInt64(context.Request.QueryString["x"]),
+                    Y = Convert.ToInt64(context.Request.QueryString["y"]),
+                    Z = Convert.ToInt64(context.Request.QueryString["z"]),
+                    Size = Convert.ToInt32(context.Request.QueryString["size"]),
+                    Seed = Convert.ToInt64(context.Request.QueryString["seed"]),
+                    LayerName = context.Request.QueryString["layer"],
+                    Packed = Convert.ToBoolean(context.Request.QueryString["packed"]),
+                    AsSquare = Convert.ToBoolean(context.Request.QueryString["as_square"])
+                };
+            }
 
             // Force the size to be 64x64x64.
             request.Size = Math.Max(0, request.Size);
@@ -78,16 +145,6 @@ namespace MakeMeAWorld
             // Handle with cache if possible.
             if (this.ProcessCache(request, context))
                 return;
-            
-            // If a 3D layer and the size is 64, we actually do
-            // a size of 16x16x16 and scale it at the result
-            // level.
-            /*var scale = 1;
-            if (!layer.Algorithm.Is2DOnly && request.Size == 64)
-            {
-                request.Size = 16;
-                scale = 4;
-            }*/
 
             // Generate the requested data.
             int computations;
@@ -102,20 +159,6 @@ namespace MakeMeAWorld
                 layer.Algorithm.Is2DOnly ? 1 : request.Size,
                 out computations);
             var end = DateTime.Now;
-
-            // Scale the data if needed.
-            /*if (scale == 4)
-            {
-                var newData = new int[64 * 64 * 64];
-                for (var x = 0; x < 16; x++)
-                    for (var y = 0; y < 16; y++)
-                        for (var z = 0; z < 16; z++)
-                            for (var i = 0; i < 4; i++)
-                                for (var j = 0; j < 4; j++)
-                                    for (var k = 0; k < 4; k++)
-                                        newData[(x * 4 + i) + (y * 4 + j) * 64 + (z * 4 + k) * 64 * 64] = data[x + y * 16 + k * 16 * 16];
-                data = newData;
-            }*/
 
             // Store the result.
             var generation = new GenerationResult
@@ -158,17 +201,8 @@ namespace MakeMeAWorld
                 if ((layer.Algorithm is AlgorithmResult) &&
                     (layer.Algorithm as AlgorithmResult).Name == request.LayerName &&
                     ((layer.Algorithm as AlgorithmResult).ShowInMakeMeAWorld || 
-                    (layer.Algorithm as AlgorithmResult).PermitInMakeMeAWorld) &&
-                    !(layer.Algorithm as AlgorithmResult).DefaultForMakeMeAWorld)
+                    (layer.Algorithm as AlgorithmResult).PermitInMakeMeAWorld))
                     return StorageAccess.ToRuntime(layer);
-            foreach (var layer in layers)
-                if ((layer.Algorithm is AlgorithmResult) &&
-                    (layer.Algorithm as AlgorithmResult).ShowInMakeMeAWorld &&
-                    (layer.Algorithm as AlgorithmResult).DefaultForMakeMeAWorld)
-                {
-                    request.LayerName = (layer.Algorithm as AlgorithmResult).Name;
-                    return StorageAccess.ToRuntime(layer);
-                }
             return null;
         }
         

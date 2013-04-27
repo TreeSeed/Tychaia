@@ -6,7 +6,6 @@
 using System;
 using System.IO;
 using System.Web;
-using System.Text;
 using System.Collections.Generic;
 using System.Drawing;
 using Tychaia.ProceduralGeneration;
@@ -15,27 +14,9 @@ namespace MakeMeAWorld
 {
     public class JsonGenerator : BaseGenerator
     {
-        private string GetCacheName(GenerationRequest request, HttpContext context)
-        {
-            var layer = request.LayerName.Replace("_", "");
-            var folder = context.Server.MapPath("~/App_Data/cached_" + layer + "_" + request.Seed);
-            var cache = context.Server.MapPath("~/App_Data/cached_" + layer + "_" + request.Seed +
-                "/" + request.X + "_" + request.Y + "_" + request.Z +
-                "_" + request.Size + (request.Packed ? "_packed" : "") + ".json");
-            try
-            {
-                if (!Directory.Exists(folder))
-                    Directory.CreateDirectory(folder);
-            }
-            catch (Exception)
-            {
-            }
-            return cache;
-        }
-        
         protected override bool ProcessCache(GenerationRequest request, HttpContext context)
         {
-            var cache = this.GetCacheName(request, context);
+            var cache = this.GetCacheName(request, context, "json");
             if (File.Exists(cache))
             {
                 context.Response.ContentType = "application/json";
@@ -47,7 +28,7 @@ namespace MakeMeAWorld
 
         protected override void ProcessGeneration(GenerationResult result, HttpContext context)
         {
-            var cache = this.GetCacheName(result.Request, context);
+            var cache = this.GetCacheName(result.Request, context, "json");
             context.Response.ContentType = "application/json";
             using (var cacheWriter = new StreamWriter(cache))
             {
@@ -174,7 +155,7 @@ namespace MakeMeAWorld
         
         protected override void ProcessEmpty(GenerationResult result, HttpContext context)
         {
-            var cache = this.GetCacheName(result.Request, context);
+            var cache = this.GetCacheName(result.Request, context, "json");
             context.Response.ContentType = "application/json";
             using (var cacheWriter = new StreamWriter(cache))
             {

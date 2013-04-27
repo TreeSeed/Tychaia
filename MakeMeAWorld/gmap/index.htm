@@ -10,9 +10,13 @@
                 getTileUrl: function (coord, zoom) {
                     var x = (coord.y + coord.x) * 32;
                     var y = (coord.y - coord.x) * 32;
-                    return '/images/map.png?x=' +
-                        x + '&y=' + y + '&z=0&size=64&seed=20286183684741856&layer=GoogleMapZoom' + zoom +
-                        '&packed=false&as_square=true';
+                    return "/api-v1/" + "GoogleMapZoom" + zoom +
+                                  "/" + "20286183684741856" +
+                                  "/" + x +
+                                  "/" + y +
+                                  "/" + "0" +
+                                  "/" + "64" + 
+                                  "/" + "get_square.png";
                 },
                 tileSize: new google.maps.Size(64, 64 - 1),
                 maxZoom: 7,

@@ -36,6 +36,7 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Drawing" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx">
@@ -73,6 +74,7 @@
     <Content Include="_js\mmaw-client-webworker.js" />
     <Content Include="gmap\index.htm" />
     <Content Include="gmap\default.css" />
+    <Content Include="api-v1\index.htm" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Default.aspx.cs">
@@ -179,6 +181,7 @@
     <Folder Include="_js\" />
     <Folder Include="Properties\" />
     <Folder Include="gmap\" />
+    <Folder Include="api-v1\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Other\WorldConfig.xml">

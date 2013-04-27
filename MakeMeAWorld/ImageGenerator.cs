@@ -10,28 +10,14 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Web;
 using Tychaia.ProceduralGeneration;
-using System.Linq;
 
 namespace MakeMeAWorld
 {
     public class ImageGenerator : BaseGenerator
     {
-        private string GetCacheName(GenerationRequest request, HttpContext context)
-        {
-            var layer = request.LayerName.Replace("_", "");
-            var folder = context.Server.MapPath("~/App_Data/cached_" + layer + "_" + request.Seed);
-            var cache = context.Server.MapPath("~/App_Data/cached_" + layer + "_" + request.Seed +
-                "/" + request.X + "_" + request.Y + "_" + request.Z +
-                "_" + request.Size + (request.Packed ? "_packed" : "") +
-                "_" + (request.AsSquare ? "_square" : "") + ".png");
-            if (!Directory.Exists(folder))
-                Directory.CreateDirectory(folder);
-            return cache;
-        }
-
         protected override bool ProcessCache(GenerationRequest request, HttpContext context)
         {
-            var cache = this.GetCacheName(request, context);
+            var cache = this.GetCacheName(request, context, "png");
             if (File.Exists(cache))
             {
                 context.Response.ContentType = "image/png";
@@ -53,13 +39,13 @@ namespace MakeMeAWorld
             this.SaveToCache(bitmap, result.Request, context);
         }
 
-        private void SaveToCache(Bitmap bitmap, GenerationRequest request, HttpContext context)
+        private void SaveToCache(Image bitmap, GenerationRequest request, HttpContext context)
         {
             try
             {
                 context.Response.ContentType = "image/png";
                 bitmap.Save(context.Response.OutputStream, ImageFormat.Png);
-                var cache = this.GetCacheName(request, context);
+                var cache = this.GetCacheName(request, context, "png");
                 if (cache != null)
                 {
                     try
@@ -189,7 +175,6 @@ namespace MakeMeAWorld
         {
             var width = result.Request.Size;
             var height = result.Request.Size;
-            var depth = result.Layer.Algorithm.Is2DOnly ? 1 : result.Request.Size;
             Bitmap bitmap;
             if (result.Request.AsSquare)
                 bitmap = new Bitmap(width, height - 1);
@@ -198,6 +183,7 @@ namespace MakeMeAWorld
             using (var graphics = Graphics.FromImage(bitmap))
             {
                 graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+                var depth = result.Layer.Algorithm.Is2DOnly ? 1 : result.Request.Size;
                 try
                 {
                     var render = GetCellRenderOrder(RenderToNE, width, height);
