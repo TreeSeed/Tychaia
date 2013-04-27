@@ -35,15 +35,13 @@ function MMAWSizes()
     
     this.activeSize = "1920x1080";
     
-    this.initializeOutputSizeOption = function() { 
+    this.initializeOutputSizeOption = function() {
+        var sel = $("#outputSize");
         for (var idx in this.sizes) {
             if (!this.sizes.hasOwnProperty(idx)) {
                 continue;
             }
-            var option = document.createElement("option");
-            option.innerText = idx;
-            option.value = idx;
-            $("#outputSize")[0].appendChild(option);
+            sel.append($("<option>").attr('value', idx).text(idx));
         }
         $("#outputSize").change(function() {
             this.setSize($("#outputSize").val());

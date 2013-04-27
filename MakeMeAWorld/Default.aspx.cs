@@ -14,8 +14,8 @@ namespace MakeMeAWorld
         protected void Page_Load(object sender, EventArgs e)
         {
             var experimentalValue = HttpContext.Current.Request.QueryString["experimental"];
-            ShowExperimentalOptions = experimentalValue == "true" ||
-                experimentalValue == "yes";
+            ShowExperimentalOptions = true;
+            //experimentalValue == "true" || experimentalValue == "yes";
 
             HtmlLayerOptions = "";
             var list = BaseGenerator.GetListOfAvailableLayers(this.Context);
