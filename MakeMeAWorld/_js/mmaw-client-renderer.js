@@ -135,6 +135,16 @@ function MMAWClientRenderer() {
                 this.processor.onFinish();
         }.bind(this);
         
+        // Define our callback.
+        var handler = function(data) {
+            if (data.message != null) {
+                console.log(data.message);
+            }
+            if (data.imageData != null) {
+                finished(data.imageData);
+            }
+        };
+        
         // If we have web worker support, use that.
         if (this._webWorkerIsWebWorker) {
             // Clear onRetrieved handler so we can pass it
@@ -144,14 +154,7 @@ function MMAWClientRenderer() {
             
             // Set the up the token and callback.
             var token = this._webWorkerToken++;
-            this._webWorkerHandlers[token] = function(data) {
-                if (data.message != null) {
-                    console.log(data.message);
-                }
-                if (data.imageData != null) {
-                    finished(data.imageData);
-                }
-            };
+            this._webWorkerHandlers[token] = handler;
             if (!this._webWorkerHasImageData) {
                 this._webWorker.postMessage({func: "setImageData", arguments: [this._context.getImageData(0, 0, this.processor.canvas.width, this.processor.canvas.height)]});
                 this._webWorker.postMessage({func: "setRenderIncrement", arguments: [this.getRenderIncrement($("#outputLayer").val())]});
@@ -168,7 +171,7 @@ function MMAWClientRenderer() {
             }
             
             this._nonWebWorkerQueue.push(function() {
-                this._webWorker.process(cell, cellPosition, function(imageData) { finished(imageData); }, null);
+                this._webWorker.process(cell, cellPosition, handler, null);
             }.bind(this));
         }
     };

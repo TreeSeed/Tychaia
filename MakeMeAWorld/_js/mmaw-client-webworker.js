@@ -110,8 +110,20 @@ function MMAWClientWebWorker() {
     /// Processes an image.
     /// </summary>
     this.process = function(cell, cellPosition, callback, token) {
+        if (typeof cell.data === "string") {
+            cell.data = JSON.parse(cell.data);
+        }
         var dataArray = this._decodeDataArray(cell.data);
         var max = this._renderIncrement;
+        if (dataArray === undefined) {
+            var err = "dataArray still undefined even after attempting fallback JSON parse";
+            if (callback == null) {
+                this._webWorkerEnvironment.postMessage({token: token, data: {message: err}});
+            } else {
+                callback({message: err});
+            }
+            return;
+        }
         for (var z = 0; z < max; z++)
             for (var x = 0; x < max; x++)
                 for (var y = 0; y < max; y++)
@@ -134,7 +146,7 @@ function MMAWClientWebWorker() {
         if (callback == null) {
             this._webWorkerEnvironment.postMessage({token: token, data: {imageData: this._imageData}});
         } else {
-            callback(this._imageData);
+            callback({imageData: this._imageData});
         }
     };
     

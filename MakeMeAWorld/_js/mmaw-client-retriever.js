@@ -50,6 +50,9 @@ function MMAWClientRetriever() {
                              "/" + this.processor.renderer.getRenderIncrement($("#outputLayer").val()) +
                              "/" + (($("#transmitPackedData") && $("#transmitPackedData").is(':checked')) ? "get_packed.json" : "get.json"),
                     function(data) {
+                        if (typeof data === "string") {
+                            data = JSON.parse(data);
+                        }
                         if (!this._retrieving) {
                             return;
                         }
