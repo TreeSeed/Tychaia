@@ -135,8 +135,6 @@
     <None Include="Analysis\Reporting\bootstrap\js\bootstrap.min.js" />
     <None Include="Analysis\Reporting\bootstrap\js\jquery-1.9.1.min.js" />
     <None Include="Analysis\Reporting\bootstrap\js\prettify.js" />
-    <None Include="Analysis\Reporting\test-results.xml" />
-    <None Include="Analysis\Reporting\test.xml" />
     <None Include="Analysis\Reporting\bootstrap\css\docs.css" />
   </ItemGroup>
   <ItemGroup>
