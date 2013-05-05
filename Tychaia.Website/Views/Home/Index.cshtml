@@ -1,0 +1,63 @@
+﻿@using Tychaia.Website;
+@{
+    ViewBag.Title = "Home";
+}
+
+<h2>What is Tychaia?</h2>
+<div class="block">
+    <p>
+        Tychaia is an infinite, procedurally generated RPG set
+        in a medieval world. It's set with an isometric view and a
+        play style similar to Diablo, but with a twist: when you die,
+        the entire world is regenerated from scratch and you get to
+        play an entirely new game.
+    </p>
+    <p>
+        Tychaia is still in early development.  You can follow
+        the latest developments via:
+    </p>
+    <ul>
+        <li>
+            The <a href="http://forums.tigsource.com/index.php?topic=27727.0">development logs</a> on TIGSource.
+        </li>
+        <li>The <a href="https://github.com/hach-que/Tychaia">development repository</a> on GitHub.</li>
+        <li>The <a href="http://phab.tychaia.com/maniphest/view/all/">task and code review tracker</a> called Phabricator.</li>
+        <li>
+            The
+            <a href="https://plus.google.com/communities/111849161186026536208">Google+</a>
+            or
+            <a href="https://www.facebook.com/RedpointSoftware">Facebook</a>
+            communities.
+        </li>
+    </ul>
+    <p>You can also contact the developers directly via:</p>
+    <ul>
+        <li><a href="http://www.twitter.com/#!/hachque">James Rhodes</a> on Twitter.</li>
+        <li><a href="http://www.twitter.com/#!/Sabre070">Josh Harvey</a> on Twitter.</li>
+    </ul>
+</div>
+<h2>
+    @Model.Feed.Title.Content
+    <span id="atom_feed">(<a href="http://code.redpointsoftware.com.au/phame/blog/feed/1/">Atom Feed</a>)</span>
+</h2>
+@foreach (var entry in Model.Feed.Entries)
+{
+    <div class="block phame">
+        @if (entry.Authors.Count > 0)
+        {
+            var name = @entry.Authors[0].Name;
+            name = name.Substring(name.IndexOf("(") + 1);
+            name = name.Substring(0, name.IndexOf(")"));
+            <div class="details">
+                <div class="author">@name</div>
+                <div class="date">@DateTimeHelper.ToPreformatted(entry.UpdatedOn)</div>
+            </div>
+            <h3>@entry.Title.Content</h3>
+        }
+        else
+        {
+            <h3>@entry.Title.Content</h3>
+        }
+        @Html.Raw(entry.Content.Content)
+    </div>
+}
