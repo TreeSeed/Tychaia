@@ -74,7 +74,7 @@
                             complete image by the web browser.
                         </p>
                         <p><span style="color:cyan;font-weight:bold;">New:</span> <a href="/explore">Explore an infinite map!</a></p>
-                        <p><span style="color:cyan;font-weight:bold;">New:</span> <a href="/api-v1">API v1 for developers!</a></p>
+                        <p><span style="color:cyan;font-weight:bold;">New:</span> <a href="/api-v1/index.htm">API v1 for developers!</a></p>
                     </div>
                     <form id="newRender" class="form-inline" style="margin-bottom: 0px; margin-top: 13px; white-space: nowrap;">
                         <div class="input-append">
