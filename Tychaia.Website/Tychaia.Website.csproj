@@ -109,6 +109,8 @@
     <Compile Include="MenuExtensions.cs" />
     <Compile Include="Controllers\DownloadController.cs" />
     <Compile Include="DateTimeHelper.cs" />
+    <Compile Include="BaseHandler.cs" />
+    <Compile Include="TestHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
