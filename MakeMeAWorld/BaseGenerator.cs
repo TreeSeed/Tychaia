@@ -148,7 +148,7 @@ namespace MakeMeAWorld
 
             // Generate the requested data.
             int computations;
-            layer.Seed = request.Seed;
+            layer.SetSeed(request.Seed);
             var start = DateTime.Now;
             var data = layer.GenerateData(
                 request.X, 

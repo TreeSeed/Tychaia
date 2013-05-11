@@ -60,7 +60,7 @@ namespace Tychaia.ProceduralGeneration
                 inputs.Add(null);
             this.m_Inputs = inputs.ToArray();
 
-            this.Seed = 100;
+            this.Seed = 0;
             this.Modifier = 0;
         }
 
@@ -80,11 +80,17 @@ namespace Tychaia.ProceduralGeneration
         /// <summary>
         /// Sets the specified algorithm as the input at the specified index.
         /// </summary>
+        /// <remarks>
+        /// This function also automatically updates the seed value for the
+        /// new input layer as well.
+        /// </remarks>
         public void SetInput(int index, RuntimeLayer input)
         {
             if (!this.CanBeInput(index, input))
                 throw new InvalidOperationException("Specified algorithm can not be set as input at this index.");
             this.m_Inputs[index] = input;
+            if (this.m_Inputs[index] != null)
+                this.m_Inputs[index].SetSeed(this.Seed);
         }
 
         /// <summary>
@@ -524,10 +530,24 @@ namespace Tychaia.ProceduralGeneration
             {
                 return this.m_Seed;
             }
-            set
+            private set
             {
                 this.m_Seed = value;
             }
+        }
+
+        /// <summary>
+        /// Sets the seed of this layer and all of it's input layers
+        /// recursively.
+        /// </summary>
+        /// <param name="seed">Seed.</param>
+        public void SetSeed(long seed)
+        {
+            this.Seed = seed;
+            if (this.m_Inputs != null)
+                foreach (var input in this.m_Inputs)
+                    if (input != null)
+                        input.SetSeed(seed);
         }
         
         /// <summary>

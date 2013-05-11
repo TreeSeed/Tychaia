@@ -21,7 +21,7 @@ public class CompiledLayer : IRuntimeContext, IGenerator
 
     public CompiledLayer()
     {
-        this.Seed = 100;
+        this.Seed = 0;
         this.Modifier = 0;
     }
 
@@ -61,10 +61,19 @@ public class CompiledLayer : IRuntimeContext, IGenerator
         {
             return this.m_Seed;
         }
-        set
+        private set
         {
             this.m_Seed = value;
         }
+    }
+
+    /// <summary>
+    /// Sets the seed of this compiled layer.
+    /// </summary>
+    /// <param name="seed">Seed.</param>
+    public void SetSeed(long seed)
+    {
+        this.Seed = seed;
     }
     
     /// <summary>

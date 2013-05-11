@@ -247,10 +247,20 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
         {
             return this.m_Seed;
         }
-        set
+        private set
         {
             this.m_Seed = value;
         }
+    }
+
+    /// <summary>
+    /// Sets the seed of this layer and all of it's input layers
+    /// recursively.
+    /// </summary>
+    /// <param name="seed">Seed.</param>
+    public void SetSeed(long seed)
+    {
+        this.Seed = seed;
     }
     
     /// <summary>
