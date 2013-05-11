@@ -16,3 +16,6 @@
 [submodule "Tychaia.Content"]
 	path = Tychaia.Content
 	url = git://github.com/hach-que/Tychaia.Content.git
+[submodule "Libraries/Phabricator.Conduit"]
+	path = Libraries/Phabricator.Conduit
+	url = git://github.com/hach-que/Phabricator.Conduit.git

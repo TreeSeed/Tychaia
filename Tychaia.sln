@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redpoint.FlowGraph", "Libra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NGif", "Libraries\NGif\NGif.csproj", "{1C3A03CA-5E55-4CC4-9746-194A4188960A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phabricator.Conduit", "Libraries\Phabricator.Conduit\Phabricator.Conduit.csproj", "{3A42BCA2-93B3-4361-9E32-0A17BCF8625A}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools and Tests", "Tools and Tests", "{D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PositionOctreeTest", "PositionOctreeTest\PositionOctreeTest.csproj", "{A6933395-45D0-40AA-820C-3716746F6141}"
@@ -77,13 +79,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{EBE4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.Windows", "Libraries\MonoGame\MonoGame.Framework\MonoGame.Framework.Windows.csproj", "{7DE47032-A904-4C29-BD22-2D235E8D91BA}"
 EndProject
-Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "MonoGame.Prebuilt", "MonoGame.Prebuilt\MonoGame.Prebuilt.mdproj", "{388584AB-4469-42C7-8876-11AC3ACF97AB}"
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "MonoGame.Prebuilt", "MonoGame.Prebuilt\MonoGame.Prebuilt.mdproj", "{388584AB-4469-42C7-8876-11AC3ACF97AB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.ProceduralGeneration.Legacy", "Tychaia.ProceduralGeneration.Legacy\Tychaia.ProceduralGeneration.Legacy.csproj", "{641D5815-4533-4146-96C1-D932FE1641F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia", "Tychaia\Tychaia.csproj", "{15B2B752-DB22-4A1C-AA2E-2E68B259DBC9}"
 EndProject
-Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "Tychaia.Content", "Tychaia.Content\compiled\Tychaia.Content.mdproj", "{77A3495A-216F-4561-9BA4-AD75CF67A36C}"
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "Tychaia.Content", "Tychaia.Content\compiled\Tychaia.Content.mdproj", "{77A3495A-216F-4561-9BA4-AD75CF67A36C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tychaia.Threading", "Tychaia.Threading\Tychaia.Threading.csproj", "{89EDBF07-CDC7-47C4-BFAD-5C522B8FA428}"
 EndProject
@@ -164,6 +166,16 @@ Global
 		{388584AB-4469-42C7-8876-11AC3ACF97AB}.Default|Any CPU.ActiveCfg = Prebuilt MonoGame|Any CPU
 		{388584AB-4469-42C7-8876-11AC3ACF97AB}.Release (prebuilt MonoGame)|Any CPU.ActiveCfg = Prebuilt MonoGame|Any CPU
 		{388584AB-4469-42C7-8876-11AC3ACF97AB}.Release|Any CPU.ActiveCfg = Prebuilt MonoGame|Any CPU
+		{3A42BCA2-93B3-4361-9E32-0A17BCF8625A}.Debug (prebuilt MonoGame)|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A42BCA2-93B3-4361-9E32-0A17BCF8625A}.Debug (prebuilt MonoGame)|Any CPU.Build.0 = Debug|Any CPU
+		{3A42BCA2-93B3-4361-9E32-0A17BCF8625A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A42BCA2-93B3-4361-9E32-0A17BCF8625A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A42BCA2-93B3-4361-9E32-0A17BCF8625A}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A42BCA2-93B3-4361-9E32-0A17BCF8625A}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{3A42BCA2-93B3-4361-9E32-0A17BCF8625A}.Release (prebuilt MonoGame)|Any CPU.ActiveCfg = Release|Any CPU
+		{3A42BCA2-93B3-4361-9E32-0A17BCF8625A}.Release (prebuilt MonoGame)|Any CPU.Build.0 = Release|Any CPU
+		{3A42BCA2-93B3-4361-9E32-0A17BCF8625A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A42BCA2-93B3-4361-9E32-0A17BCF8625A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{42123AD1-FDB9-4562-A51F-F7C13354FD22}.Debug (prebuilt MonoGame)|Any CPU.ActiveCfg = Debug|Any CPU
 		{42123AD1-FDB9-4562-A51F-F7C13354FD22}.Debug (prebuilt MonoGame)|Any CPU.Build.0 = Debug|Any CPU
 		{42123AD1-FDB9-4562-A51F-F7C13354FD22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -483,6 +495,7 @@ Global
 		{2337776D-7D0C-40AA-A439-C26C3CE24FAB} = {067C85F0-593F-4A65-A45B-68039284257B}
 		{996097C6-F59B-4395-A3C5-BECDCE904690} = {067C85F0-593F-4A65-A45B-68039284257B}
 		{1C3A03CA-5E55-4CC4-9746-194A4188960A} = {067C85F0-593F-4A65-A45B-68039284257B}
+		{3A42BCA2-93B3-4361-9E32-0A17BCF8625A} = {067C85F0-593F-4A65-A45B-68039284257B}
 		{A6933395-45D0-40AA-820C-3716746F6141} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
 		{8A458245-8176-4599-95CD-3CA39F2435CE} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}
 		{934D08FB-35DB-4481-A3C4-64F8AE5C8F51} = {D4ED81FD-AA4A-4866-BD6E-117C6BEBBB0F}

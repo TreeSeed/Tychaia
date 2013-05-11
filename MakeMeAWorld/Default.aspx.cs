@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 
 namespace MakeMeAWorld
 {
-    public partial class Default : System.Web.UI.Page
+    public class Default : System.Web.UI.Page
     {
         public string HtmlLayerOptions;
         public string DefaultLayerOption;
@@ -15,7 +14,6 @@ namespace MakeMeAWorld
         {
             var experimentalValue = HttpContext.Current.Request.QueryString["experimental"];
             ShowExperimentalOptions = true;
-            //experimentalValue == "true" || experimentalValue == "yes";
 
             HtmlLayerOptions = "";
             var list = BaseGenerator.GetListOfAvailableLayers(this.Context);

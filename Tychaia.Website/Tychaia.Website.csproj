@@ -109,6 +109,8 @@
     <Compile Include="MenuExtensions.cs" />
     <Compile Include="Controllers\DownloadController.cs" />
     <Compile Include="DateTimeHelper.cs" />
+    <Compile Include="Controllers\WikiController.cs" />
+    <Compile Include="Models\WikiPageModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -156,10 +158,12 @@
     <Content Include="Content\download_for_linux.png" />
     <Content Include="Content\download_for_mac.png" />
     <Content Include="Content\download_for_windows.png" />
+    <Content Include="Views\Wiki\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Views\Download\" />
+    <Folder Include="Views\Wiki\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
@@ -269,4 +273,10 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <ProjectReference Include="..\Libraries\Phabricator.Conduit\Phabricator.Conduit.csproj">
+      <Project>{3A42BCA2-93B3-4361-9E32-0A17BCF8625A}</Project>
+      <Name>Phabricator.Conduit</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
