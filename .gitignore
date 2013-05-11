@@ -15,8 +15,11 @@ Profiling*.sqlite
 *.vsmdi
 MakeMeAWorld/App_Data/*
 MakeMeAWorld/App_Cache/*
+Tychaia.Website/App_Cache/*
+Tychaia.Website/Local.config
 */test-results/*
 *.userprefs
 *.orig
 Thumbs.db
 !MakeMeAWorld/bin
+!Tychaia.Website/bin

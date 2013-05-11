@@ -19,12 +19,9 @@ namespace Tychaia.Website
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                "Default", // Route name
-                "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
-            );
-
+            routes.MapRoute("Home", "", new { controller = "Home", action = "Index" });
+            routes.MapRoute("Download", "download", new { controller = "Download", action = "Index" });
+            routes.MapRoute("Wiki", "w/{*slug}", new { controller = "Wiki", action = "Index", slug = UrlParameter.Optional });
         }
 
         protected void Application_Start()
@@ -42,7 +39,7 @@ namespace Tychaia.Website
                 AspNetRequestScopeStorageProvider).Assembly.GetType(
                 "System.Web.WebPages.WebPageHttpModule").GetProperty
                 ("AppStartExecuteCompleted", 
-                 BindingFlags.NonPublic | BindingFlags.Static);
+            BindingFlags.NonPublic | BindingFlags.Static);
             ob.SetValue(null, true, null);
         }
     }
