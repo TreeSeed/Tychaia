@@ -151,7 +151,7 @@ div.block h2
     margin-right: 10px;
 }
 
-#atom_feed
+span.actions
 {
     font-size: 12px;
     text-decoration: none;
@@ -159,7 +159,7 @@ div.block h2
     line-height: 40px;
 }
 
-#atom_feed a
+span.actions a, h2 a
 {
     color: #fff;
 }

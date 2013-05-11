@@ -98,6 +98,7 @@
     <Reference Include="Argotic.Core">
       <HintPath>..\packages\Argotic.Core.2008.0.2.0\lib\Net35\Argotic.Core.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
@@ -111,6 +112,10 @@
     <Compile Include="DateTimeHelper.cs" />
     <Compile Include="Controllers\WikiController.cs" />
     <Compile Include="Models\WikiPageModel.cs" />
+    <Compile Include="ViewModels\WikiPageViewModel.cs" />
+    <Compile Include="Models\BreadcrumbModel.cs" />
+    <Compile Include="PhabricatorCache.cs" />
+    <Compile Include="Controllers\CacheController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -164,6 +169,7 @@
     <Folder Include="Models\" />
     <Folder Include="Views\Download\" />
     <Folder Include="Views\Wiki\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />

@@ -4,17 +4,13 @@
 // license on the website apply retroactively.
 //
 using System;
-using System.Web;
-using System.Collections.Generic;
 
 namespace Tychaia.Website.Models
 {
-    public class WikiPageModel
+    public class BreadcrumbModel
     {
-        public string Title;
+        public string Text;
         public string Slug;
-        public IHtmlString Content;
-        public List<WikiPageModel> Children;
     }
 }
 

@@ -22,6 +22,7 @@ namespace Tychaia.Website
             routes.MapRoute("Home", "", new { controller = "Home", action = "Index" });
             routes.MapRoute("Download", "download", new { controller = "Download", action = "Index" });
             routes.MapRoute("Wiki", "w/{*slug}", new { controller = "Wiki", action = "Index", slug = UrlParameter.Optional });
+            routes.MapRoute("Cache", "clear-cache", new { controller = "Cache", action = "Index" });
         }
 
         protected void Application_Start()

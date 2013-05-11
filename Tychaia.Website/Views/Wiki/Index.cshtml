@@ -1,9 +1,52 @@
-﻿@using Tychaia.Website;
+﻿@model Tychaia.Website.ViewModels.WikiPageViewModel
+@using Tychaia.Website;
 @{
     ViewBag.Title = "Home";
 }
 
-<h2>@Model.Title</h2>
+<h2>
+    @foreach (var breadcrumb in Model.Breadcrumbs)
+    {
+        if (breadcrumb.Slug != null)
+        {
+            @:<a href="/w/@breadcrumb.Slug">@breadcrumb.Text</a> &gt;
+        }
+        else
+        {
+            @breadcrumb.Text
+        }
+    }
+    <span class="actions">
+    (
+        <a href="http://code.redpointsoftware.com.au/phriction/edit/?slug=@Model.Page.Slug">Edit</a> &bull;
+        <a href="http://code.redpointsoftware.com.au/phriction/history/@Model.Page.Slug">History</a> &bull;
+        <a href="http://code.redpointsoftware.com.au/phriction/new/?slug=@Model.Page.Slug">Create Sub-Page</a>
+    )
+    </span>
+</h2>
 <div class="block">
-    @Model.Content
+    @Model.Page.Content
 </div>
+@if (Model.Page.Children != null)
+{
+    <h2>Document Hierarchy</h2>
+    <div class="block">
+        <ul>
+        @foreach (var child in Model.Page.Children)
+        {
+            <li>
+                <a href="/w/@child.Slug">@child.Title</a>
+                @if (child.Children != null && child.Children.Count > 0)
+                {
+                    <ul>
+                        @foreach (var grandchild in child.Children)
+                        {
+                            <li><a href="/w/@grandchild.Slug">@grandchild.Title</a></li>
+                        }
+                    </ul>
+                }
+            </li>
+        }
+        </ul>
+    </div>
+}
