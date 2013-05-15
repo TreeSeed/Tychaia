@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project
+  Name="Tychaia"
+  Path="Tychaia"
+  Type="XNA">
+  
+  <References>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Protogame" />
+    <Reference Include="Protogame.Efficiency" />
+    <Reference Include="Protogame.Structure" />
+    <Reference Include="Tychaia.Globals" />
+    <Reference Include="Tychaia.Game" />
+    <Reference Include="Tychaia.Disk" />
+    <Reference Include="Tychaia.ProceduralGeneration" />
+    <Reference Include="Tychaia.Content" />
+    <Reference Include="MonoGame" />
+  </References>
+  <Files>
+    <Compile Include="Cube.cs" />
+    <Compile Include="DebugTracker.cs" />
+    <Compile Include="Direction.cs" />
+    <Compile Include="IsometricWorldManager.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="RandomExtensions.cs" />
+    <Compile Include="RenderTargetFactory.cs" />
+    <Compile Include="RPGWorld.cs" />
+    <Compile Include="RuntimeGame.cs" />
+    <Compile Include="Static.cs" />
+    <Compile Include="Elements\Region.cs" />
+    <Compile Include="Elements\World.cs" />
+    <Compile Include="Generators\Block.cs" />
+    <Compile Include="Generators\Chunk.cs" />
+    <Compile Include="Generators\ChunkOctree.cs" />
+    <Compile Include="Generators\ChunkProvider.cs" />
+    <Compile Include="Generators\ChunkRenderer.cs" />
+    <Compile Include="Generators\RenderingBuffers.cs" />
+    <Compile Include="Generators\TileIsometricifier.cs" />
+    <Compile Include="Generators\UniqueRenderCache.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tiles\DirtTile.cs" />
+    <Compile Include="Tiles\GrassLeafTile.cs" />
+    <Compile Include="Tiles\GrassTile.cs" />
+    <Compile Include="Tiles\LavaTile.cs" />
+    <Compile Include="Tiles\LeafGreyTile.cs" />
+    <Compile Include="Tiles\LeafTile.cs" />
+    <Compile Include="Tiles\SandGrassTile.cs" />
+    <Compile Include="Tiles\SandTile.cs" />
+    <Compile Include="Tiles\SnowTile.cs" />
+    <Compile Include="Tiles\StoneTile.cs" />
+    <Compile Include="Tiles\TrunkTile.cs" />
+    <Compile Include="Tiles\WaterTile.cs" />
+    <Compile Include="Title\LoadWorld.cs" />
+    <Compile Include="Title\MenuWorld.cs" />
+    <Compile Include="Title\TitleWorld.cs" />
+    <Compile Include="UI\TitleButton.cs" />
+    <None Include="app.config" />
+    <None Include="Game.ico" />
+    <None Include="GameThumbnail.png" />
+    <None Include="OpenTK.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Other\WorldConfig.xml">
+      <Link>WorldConfig.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </Files>
+</Project>

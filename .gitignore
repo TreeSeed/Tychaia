@@ -23,3 +23,9 @@ Tychaia.Website/Local.config
 Thumbs.db
 !MakeMeAWorld/bin
 !Tychaia.Website/bin
+
+# Generated solution and project files
+*.Linux.csproj
+*.Windows.csproj
+*.Linux.sln
+*.Windows.sln
