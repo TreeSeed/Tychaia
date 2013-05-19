@@ -7,6 +7,7 @@ using Phabricator.Conduit;
 using Tychaia.Website.Models;
 using Tychaia.Website.ViewModels;
 using System.Web;
+using System.Web.Script.Serialization;
 
 namespace Tychaia.Website.Controllers
 {
@@ -57,15 +58,15 @@ namespace Tychaia.Website.Controllers
             foreach (var child in hierarchyResult)
             {
                 var childModel = new WikiPageModel();
-                childModel.Title = child.title;
-                childModel.Slug = this.RewriteSlug(child.slug);
-                childModel.Children = child.children.Count == 0 ? null :
+                childModel.Title = child.Value.title;
+                childModel.Slug = this.RewriteSlug(child.Value.slug);
+                childModel.Children = child.Value.children.Count == 0 ? null :
                     new List<WikiPageModel>();
-                foreach (var grandchild in child.children)
+                foreach (var grandchild in child.Value.children)
                 {
                     var grandchildModel = new WikiPageModel();
-                    grandchildModel.Title = grandchild.title;
-                    grandchildModel.Slug = this.RewriteSlug(grandchild.slug);
+                    grandchildModel.Title = grandchild.Value.title;
+                    grandchildModel.Slug = this.RewriteSlug(grandchild.Value.slug);
                     childModel.Children.Add(grandchildModel);
                 }
                 if (childModel.Children.Count == 0)

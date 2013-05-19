@@ -85,7 +85,8 @@ namespace Tychaia.Website
                 try
                 {
                     hierarchy = client.Do("phriction.hierarchy", new {
-                        slug = slug
+                        slug = slug,
+                        depth = 2
                     });
                 }
                 catch (ConduitException)
@@ -94,6 +95,8 @@ namespace Tychaia.Website
                     // the phriction.hierarchy method.
                     hierarchy = new List<object>();
                 }
+                if (hierarchy == null)
+                    throw new NotImplementedException(slug);
                 Phabricator.WikiHierarchyCache.Add(
                     new CacheItem(slug, hierarchy),
                     new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) }
