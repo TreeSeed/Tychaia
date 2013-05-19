@@ -53,7 +53,7 @@
             <xsl:when test="$project/@Type = 'XNA'">
               <xsl:text>Exe</xsl:text>
             </xsl:when>
-            <xsl:when test="$project/@Type = 'WindowsForms'">
+            <xsl:when test="$project/@Type = 'GUI'">
               <xsl:text>Exe</xsl:text>
             </xsl:when>
             <xsl:otherwise>
@@ -346,6 +346,19 @@ select="/Input/Projects/Project[@Name=$include-path]/@Guid" />}</Project>
       
       <ItemGroup>
         <xsl:for-each select="$project/Files/Content">
+          <xsl:element 
+            name="{name()}" 
+            namespace="http://schemas.microsoft.com/developer/msbuild/2003">
+            <xsl:attribute name="Include">
+              <xsl:value-of select="@Include" />
+            </xsl:attribute>
+            <xsl:apply-templates select="node()"/>
+          </xsl:element>
+        </xsl:for-each>
+      </ItemGroup>
+      
+      <ItemGroup>
+        <xsl:for-each select="$project/Files/EmbeddedResource">
           <xsl:element 
             name="{name()}" 
             namespace="http://schemas.microsoft.com/developer/msbuild/2003">

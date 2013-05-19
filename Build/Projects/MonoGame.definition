@@ -86,8 +86,6 @@
       Name="MonoGame.Framework.Windows"
       Guid="7DE47032-A904-4C29-BD22-2D235E8D91BA"
       Path="Libraries/MonoGame/MonoGame.Framework/MonoGame.Framework.Windows.csproj">
-      <ConfigurationMapping Old="Debug" New="Debug|x86" />
-      <ConfigurationMapping Old="Release" New="Release|x86" />
     </Project>
   </Platform>
   

@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ExternalProject Name="voxeliq">
   
+  <!--
+  Disabling Voxeliq as it doesn't work under MonoDevelop at all.  It
+  appears to be an XNA-only project that has to be compiled from
+  within Visual Studio with XNA installed.
+  
+  Hopefully this will work again when MonoGame has a content pipeline
+  and they migrate the project type over to MonoGame.
+  -->
+  <!--
   <Platform Type="Windows">
-    <Project Path="Libraries/voxeliq/src/Engine/Voxeliq.Engine.Windows.DX11.csproj" />
+    <Project
+      Name="Voxeliq.Engine.Windows.DX11"
+      Guid="121E6761-22F9-4401-A1E3-3E4FA72AE149"
+      Path="Libraries/voxeliq/src/Engine/Voxeliq.Engine.MonoGame.Windows.DX11.csproj" />
   </Platform>
+  -->
   
 </ExternalProject>
