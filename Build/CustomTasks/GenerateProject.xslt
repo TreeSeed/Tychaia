@@ -3,7 +3,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:msxsl="urn:schemas-microsoft-com:xslt"
   xmlns:user="urn:my-scripts"
-  exclude-result-prefixes="xsl,msxsl,user"
+  exclude-result-prefixes="xsl msxsl user"
   version="1.0">
   
   <xsl:output method="xml" indent="no" />

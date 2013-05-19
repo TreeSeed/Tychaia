@@ -3,7 +3,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:msxsl="urn:schemas-microsoft-com:xslt"
   xmlns:user="urn:my-scripts"
-  exclude-result-prefixes="xsl,msxsl,user"
+  exclude-result-prefixes="xsl msxsl user"
   version="1.0">
   
   <xsl:output method="text" indent="no" />
@@ -18,11 +18,10 @@
       try
       {
         var current = Environment.CurrentDirectory;
-        Uri fromUri = new Uri(System.IO.Path.Combine(current, from));
-        Uri toUri = new Uri(System.IO.Path.Combine(current, to));
-        Uri relativeUri = fromUri.MakeRelativeUri(toUri);
-        String relativePath = Uri.UnescapeDataString(relativeUri.ToString());
-        return relativePath.Replace('/', System.IO.Path.DirectorySeparatorChar);
+        from = System.IO.Path.Combine(current, from.Replace('\\', '/'));
+        to = System.IO.Path.Combine(current, to.Replace('\\', '/'));
+        return (new Uri(from).MakeRelativeUri(new Uri(to)))
+          .ToString().Replace('/', '\\');
       }
       catch (Exception ex)
       {
