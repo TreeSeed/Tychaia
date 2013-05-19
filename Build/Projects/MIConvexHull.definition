@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ExternalProject Name="MIConvexHull">
+  
+  <Project
+    Name="MIConvexHull"
+    Guid="2337776D-7D0C-40AA-A439-C26C3CE24FAB"
+    Path="Libraries/MIConvexHull/MIConvexHull.csproj" />
+  
+</ExternalProject>

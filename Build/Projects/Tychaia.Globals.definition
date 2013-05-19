@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project
+  Name="Tychaia.Globals"
+  Path="Tychaia.Globals"
+  Type="Library">
+  
+  <References>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </References>
+  <Files>
+    <Compile Include="FilteredConsole.cs" />
+    <Compile Include="FilteredFeatures.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.cs" 
+/>
+  </Files>
+</Project>

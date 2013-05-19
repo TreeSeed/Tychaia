@@ -48,32 +48,7 @@ namespace TychaiaWorldGenViewer
 
         private void c_LoadConfigurationButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog()
-            {
-                Filter = "XML Files|*.xml",
-                CheckFileExists = true,
-                CheckPathExists = true
-            };
-            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                this.c_FlowInterfaceControl.Elements.Clear();
-                this.c_FlowInterfaceControl.Invalidate();
-                if (config == null)
-                {
-                    MessageBox.Show(this, "Unable to load configuration file.", "Configuration invalid.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                this.m_LastSavePath = ofd.FileName;
-                this.c_SaveConfigurationButton.Enabled = true;
-                foreach (FlowElement el in config)
-                {
-                    el.SetDeserializationData(this.c_FlowInterfaceControl);
-                    this.c_FlowInterfaceControl.Elements.Add(el);
-                }
-                foreach (FlowElement el in config)
-                    this.c_FlowInterfaceControl.PushForReprocessing(el);
-                this.c_FlowInterfaceControl.Invalidate();
-            }
+            throw new NotImplementedException("This doesn't work any more....");
         }
 
         private void c_SaveConfigurationButton_Click(object sender, EventArgs e)

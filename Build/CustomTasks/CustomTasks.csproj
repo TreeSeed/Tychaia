@@ -41,4 +41,7 @@
   <ItemGroup>
     <EmbeddedResource Include="GenerateProject.xslt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="GenerateSolution.xslt" />
+  </ItemGroup>
 </Project>

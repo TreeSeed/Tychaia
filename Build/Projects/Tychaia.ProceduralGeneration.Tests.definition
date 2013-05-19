@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project
+  Name="Tychaia.ProceduralGeneration.Tests"
+  Path="Tychaia.ProceduralGeneration.Tests"
+  Type="Tests">
+  
+  <References>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Core" />
+    <Reference Include="Tychaia.ProceduralGeneration" />
+  </References>
+  <Files>
+    <Compile Include="AlgorithmPassthroughTest.cs" />
+    <Compile Include="AlgorithmZoomTest.cs" />
+    <Compile Include="CompilerTest.cs" />
+    <Compile Include="SkewTests.cs" />
+    <Compile Include="TestForAttribute.cs" />
+    <Compile Include="AlgorithmConstantTest.cs" />
+    <Compile Include="AlgorithmInitialBoolTest.cs" />
+    <Compile Include="BorderTests.cs" />
+    <Compile Include="AlgorithmIncrementWaterDistanceTest.cs" />
+    <Compile Include="ContinuityTests.cs" />
+  </Files>
+</Project>

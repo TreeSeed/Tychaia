@@ -61,8 +61,8 @@ namespace Tychaia.CustomTasks
             }
             
             var solution = Path.Combine(
-              this.RootPath,
-              "Tychaia." + this.Platform + ".sln");
+                this.RootPath,
+                "Tychaia." + this.Platform + ".sln");
             this.Log.LogMessage("Generating: (solution)");
             generator.GenerateSolution(solution);
             
@@ -72,7 +72,7 @@ namespace Tychaia.CustomTasks
             return true;
         }
     }
-    
+
     public class CleanProjectsTask : GenerateProjectsTask
     {
         public override bool Execute()
@@ -87,6 +87,9 @@ namespace Tychaia.CustomTasks
                 projectDoc.Load(Path.Combine(
                     this.SourcePath,
                     definition + ".definition"));
+                if (projectDoc == null ||
+                    projectDoc.DocumentElement.Name != "Project")
+                    continue;
                 var path = Path.Combine(
                     this.RootPath,
                     projectDoc.DocumentElement.Attributes["Path"].Value,
@@ -128,7 +131,7 @@ namespace Tychaia.CustomTasks
             if (doc.DocumentElement.Attributes["Guid"] == null)
             {
                 doc.DocumentElement.SetAttribute("Guid", 
-Guid.NewGuid().ToString().ToUpper());
+                Guid.NewGuid().ToString().ToUpper());
             }
         }
 
@@ -145,16 +148,38 @@ Guid.NewGuid().ToString().ToUpper());
                 );
             }
             
-            // Work out what path to save at.
+            // Work out what document this is.
             var projectDoc = this.m_ProjectDocuments.First(
-              x => x.DocumentElement.Attributes["Name"].Value == project);
+                x => x.DocumentElement.Attributes["Name"].Value == project);
+            
+            // Check to see if we have a Project node; if not
+            // then this is an external or other type of project
+            // that we don't process.
+            if (projectDoc == null ||
+                projectDoc.DocumentElement.Name != "Project")
+                return;
+            
+            // Work out what path to save at.
             var path = Path.Combine(
                 this.m_RootPath,
                 projectDoc.DocumentElement.Attributes["Path"].Value,
                 projectDoc.DocumentElement.Attributes["Name"].Value + "." +
                 this.m_Platform + ".csproj");
             path = new FileInfo(path).FullName;
-            var input = this.CreateInputFor(project, this.m_Platform);
+            
+            // Work out what path the NuGet packages.config might be at.
+            var packagesPath = Path.Combine(
+                this.m_RootPath,
+                projectDoc.DocumentElement.Attributes["Path"].Value,
+                "packages.config");
+            
+            // Generate the input document.
+            var input = this.CreateInputFor(
+                project,
+                this.m_Platform,
+                packagesPath);
+            
+            // Transform the input document using the XSLT transform.
             var settings = new XmlWriterSettings();
             settings.Indent = true;
             using (var writer = XmlWriter.Create(path, settings))
@@ -199,7 +224,10 @@ Guid.NewGuid().ToString().ToUpper());
             }
         }
 
-        private XmlDocument CreateInputFor(string project, string platform)
+        private XmlDocument CreateInputFor(
+            string project,
+            string platform,
+            string packagesPath)
         {
             var doc = new XmlDocument();
             doc.AppendChild(doc.CreateXmlDeclaration("1.0", "UTF-8", null));
@@ -214,6 +242,9 @@ Guid.NewGuid().ToString().ToUpper());
             generation.AppendChild(projectName);
             generation.AppendChild(platformName);
             input.AppendChild(generation);
+
+            var nuget = doc.CreateElement("NuGet");
+            input.AppendChild(nuget);
             
             var projects = doc.CreateElement("Projects");
             input.AppendChild(projects);
@@ -223,7 +254,107 @@ Guid.NewGuid().ToString().ToUpper());
                     projectDoc.DocumentElement,
                     true));
             }
+
+            // Also check if there are NuGet packages.config file for
+            // this project and if there is, include all of the relevant
+            // NuGet package information for referencing the correct DLLs.
+            if (File.Exists(packagesPath))
+            {
+                this.DetectNuGetPackages(
+                    packagesPath,
+                    doc,
+                    nuget);
+            }
+            
             return doc;
+        }
+
+        private void DetectNuGetPackages(
+            string packagesPath,
+            XmlDocument document,
+            XmlNode nuget)
+        {
+            // Read the packages document and generate Project nodes for 
+            // each package that we want.
+            var packagesDoc = new XmlDocument();
+            packagesDoc.Load(packagesPath);
+            var packages = packagesDoc.DocumentElement
+                .ChildNodes
+                    .Cast<XmlElement>()
+                    .Where(x => x.Name == "package")
+                    .Select(x => x);
+            foreach (var package in packages)
+            {
+                var id = package.Attributes["id"].Value;
+                var version = package.Attributes["version"].Value;
+
+                var packagePath = Path.Combine(
+                    this.m_RootPath,
+                    "packages",
+                    id + "." + version,
+                    id + "." + version + ".nuspec");
+                var packageDoc = new XmlDocument();
+                packageDoc.Load(packagePath);
+
+                var references = packageDoc.DocumentElement
+                    .FirstChild
+                    .ChildNodes
+                    .Cast<XmlElement>()
+                    .First(x => x.Name == "references")
+                    .ChildNodes
+                    .Cast<XmlElement>()
+                    .Where(x => x.Name == "reference")
+                    .Select(x => x.Attributes["file"].Value)
+                    .ToList();
+                
+                var clrNames = new[]
+                {
+                    "",
+                    "net40-client",
+                    "Net40-client",
+                    "net40",
+                    "Net40",
+                    "net35",
+                    "Net35",
+                    "net20",
+                    "Net20"
+                };
+                var referenceBasePath = Path.Combine(
+                    "packages",
+                    id + "." + version,
+                    "lib");
+                if (!Directory.Exists(
+                    Path.Combine(
+                    this.m_RootPath,
+                    referenceBasePath)))
+                    continue;
+                foreach (var reference in references)
+                {
+                    foreach (var clrName in clrNames)
+                    {
+                        var packageDll = Path.Combine(
+                            referenceBasePath,
+                            clrName,
+                            reference);
+                        if (File.Exists(
+                            Path.Combine(
+                            this.m_RootPath,
+                            packageDll)))
+                        {
+                            var packageReference =
+                                document.CreateElement("Package");
+                            packageReference.SetAttribute(
+                                "Name",
+                                id);
+                            packageReference.AppendChild(
+                                document.CreateTextNode(packageDll
+                                .Replace('/', '\\')));
+                            nuget.AppendChild(packageReference);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         private XmlDocument CreateInputFor(string platform)
@@ -270,7 +401,7 @@ Guid.NewGuid().ToString().ToUpper());
         public static XmlDocument ToXmlDocument(this XDocument xDocument)
         {
             var xmlDocument = new XmlDocument();
-            using(var xmlReader = xDocument.CreateReader())
+            using (var xmlReader = xDocument.CreateReader())
             {
                 xmlDocument.Load(xmlReader);
             }

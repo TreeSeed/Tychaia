@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project
+  Name="Tychaia.ProceduralGeneration"
+  Path="Tychaia.ProceduralGeneration"
+  Type="Library">
+  
+  <References>
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="ICSharpCode.NRefactory" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tychaia.Globals" />
+    <Reference Include="Redpoint.FlowGraph" />
+    <Reference Include="Protogame.Noise" />
+  </References>
+  <Files>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="IAlgorithm.cs" />
+    <Compile Include="IRuntimeContext.cs" />
+    <Compile Include="RuntimeLayer.cs" />
+    <Compile Include="FlowDesignerCategoryAttribute.cs" />
+    <Compile Include="FlowDesignerNameAttribute.cs" />
+    <Compile Include="Compiler\LayerCompiler.cs" />
+    <Compile Include="IGenerator.cs" />
+    <Compile Include="Compiler\ArrayPool.cs" />
+    <Compile Include="Compiler\AlgorithmRefactorer.cs" />
+    <Compile Include="AlgorithmConstant.cs" />
+    <Compile Include="AlgorithmUtility.cs" />
+    <Compile Include="StorageLayer.cs" />
+    <Compile Include="StorageAccess.cs" />
+    <Compile Include="Flow\AlgorithmFlowConnector.cs" />
+    <Compile Include="Flow\AlgorithmFlowElement.cs" />
+    <Compile Include="Flow\AlgorithmFlowImageGeneration.cs" />
+    <Compile Include="AlgorithmColors.cs" />
+    <Compile Include="Compiler\RangedLayer.cs" />
+    <Compile Include="Biomes\Biome.cs" />
+    <Compile Include="AlgorithmBiomes.cs" />
+    <Compile Include="Biomes\GrasslandBiome.cs" />
+    <Compile Include="AlgorithmPassthrough.cs" />
+    <Compile Include="AlgorithmDebuggingInitial.cs" />
+    <Compile Include="AlgorithmPerlin.cs" />
+    <Compile Include="AlgorithmDeriveTerrain.cs" />
+    <Compile Include="Biomes\WaterBiome.cs" />
+    <Compile Include="AlgorithmCompare.cs" />
+    <Compile Include="AlgorithmResult.cs" />
+    <Compile Include="AlgorithmMultiply.cs" />
+    <Compile Include="AlgorithmZoom3D.cs" />
+    <Compile Include="AlgorithmZoom2D.cs" />
+    <Compile Include="AlgorithmAdd.cs" />
+    <Compile Include="AlgorithmValueTo3D.cs" />
+    <Compile Include="AlgorithmAverage.cs" />
+    <Compile Include="AlgorithmDistanceFrom0.cs" />
+    <Compile Include="AlgorithmDebuggingInitialDelegate.cs" />
+    <Compile Include="AlgorithmDebuggingDelegate.cs" />
+    <Compile Include="AlgorithmDebuggingInitialValueDelegate.cs" />
+    <Compile Include="AlgorithmNPCStats.cs" />
+    <Compile Include="Buildings\Building.cs" />
+    <Compile Include="Professions\Professions.cs" />
+    <Compile Include="AlgorithmDebuggingOffset.cs" />
+    <Compile Include="AlgorithmIncrementWaterDistance.cs" />
+    <Compile Include="AlgorithmHeightChange.cs" />
+    <Compile Include="AlgorithmExtend2D.cs" />
+    <Compile Include="AlgorithmSmooth.cs" />
+    <Compile Include="AlgorithmSmoothByInput.cs" />
+    <Compile Include="AlgorithmInitialBool.cs" />
+    <Compile Include="AlgorithmInitialTowns.cs" />
+    <Compile Include="Towns\Town.cs" />
+    <Compile Include="Analysis\Reporting\Analysis.cs" />
+    <Compile Include="Analysis\Reporting\AnalysisIssue.cs" />
+    <Compile Include="Analysis\Reporting\AnalysisReport.cs" />
+    <Compile Include="Analysis\Reporting\AnalysisLayer.cs" />
+    <Compile Include="Analysis\Reporting\AnalysisLocation.cs" />
+    <Compile Include="Analysis\Reporting\AnalysisIO.cs" />
+    <Compile Include="Analysis\Reporting\AnalysisLocationHighlight.cs" />
+    <Compile Include="Compiler\DecompileUtil.cs" />
+    <Compile Include="Analysis\AnalysisEngine.cs" />
+    <Compile Include="Analysis\SimplificationAnalysisEngine.cs" />
+    <Compile Include="Analysis\TextLocationExtensions.cs" />
+    <Compile Include="Analysis\Output\AstNodeExtensions.cs" />
+    <Compile Include="Analysis\Output\TrackingOutputFormatter.cs" />
+    <Compile Include="Tracing\AlgorithmTraceImageGeneration.cs" />
+    <Compile Include="AlgorithmReduceWaterDepth.cs" />
+    <None Include="Compiler\CompiledLayerTemplate.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Analysis\Reporting\reports.xsl" />
+    <None 
+Include="Analysis\Reporting\bootstrap\css\bootstrap-responsive.min.css" />
+    <None Include="Analysis\Reporting\bootstrap\css\bootstrap.min.css" />
+    <None Include="Analysis\Reporting\bootstrap\css\prettify.css" />
+    <None 
+Include="Analysis\Reporting\bootstrap\img\glyphicons-halflings-white.png" />
+    <None Include="Analysis\Reporting\bootstrap\img\glyphicons-halflings.png" />
+    <None Include="Analysis\Reporting\bootstrap\js\bootstrap.min.js" />
+    <None Include="Analysis\Reporting\bootstrap\js\jquery-1.9.1.min.js" />
+    <None Include="Analysis\Reporting\bootstrap\js\prettify.js" />
+    <None Include="Analysis\Reporting\bootstrap\css\docs.css" />
+  </Files>
+</Project>

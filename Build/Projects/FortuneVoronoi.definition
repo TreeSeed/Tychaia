@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ExternalProject Name="FortuneVoronoi">
+  
+  <Project
+    Name="FortuneVoronoi"
+    Guid="DDF5D740-6EE1-44BA-9DB9-782BF23E28D6"
+    Path="Libraries/BenTools/FortuneVoronoi.csproj" />
+  
+</ExternalProject>

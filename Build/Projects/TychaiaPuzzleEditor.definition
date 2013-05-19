@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project
+  Name="TychaiaPuzzleEditor"
+  Path="TychaiaPuzzleEditor"
+  Type="GUI">
+  
+  <References>
+    <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="Tychaia.Puzzle" />
+  </References>
+  <Files>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="PuzzleEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </Files>
+</Project>

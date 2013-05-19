@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project
+  Name="Tychaia.Threading.Tests"
+  Path="Tychaia.Threading.Tests"
+  Type="Tests">
+  
+  <References>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework" />
+    <Reference Include="Tychaia.Threading" />
+  </References>
+  <Files>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TaskPipelineTests.cs" />
+  </Files>
+</Project>

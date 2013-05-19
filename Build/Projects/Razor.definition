@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ExternalProject Name="Razor">
+  
+  <Binary
+    Name="System.Web.WebPages.Deployment" 
+    Path="Libraries/Microsoft/System.Web.WebPages.Deployment.dll" />
+  <Binary
+    Name="System.Web.WebPages" 
+    Path="Libraries/Microsoft/System.Web.WebPages.dll" />
+  <Binary
+    Name="System.Web.WebPages.Razor" 
+    Path="Libraries/Microsoft/System.Web.WebPages.Razor.dll" />
+  <Binary
+    Name="System.Web.Helpers" 
+    Path="Libraries/Microsoft/System.Web.Helpers.dll" />
+  <Binary
+    Name="System.Web.Mvc" 
+    Path="Libraries/Microsoft/System.Web.Mvc.dll" />
+  <Binary
+    Name="System.Web.Razor" 
+    Path="Libraries/Microsoft/System.Web.Razor.dll" />
+  
+</ExternalProject>

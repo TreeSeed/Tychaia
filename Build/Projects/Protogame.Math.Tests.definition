@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project
+  Name="Protogame.Math.Tests"
+  Path="Protogame.Math.Tests"
+  Type="Tests">
+  
+  <References>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework" />
+    <Reference Include="Protogame.Math" />
+  </References>
+  <Files>
+    <Compile Include="CircumcentreSolverTest.cs" />
+  </Files>
+</Project>

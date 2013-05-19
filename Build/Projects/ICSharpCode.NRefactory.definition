@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ExternalProject Name="ICSharpCode.NRefactory">
+  
+  <Binary
+    Name="ICSharp.Decompiler" 
+    Path="Libraries/ICSharpCode/ICSharpCode.Decompiler.dll" />
+  <Binary
+    Name="ICSharp.NRefactory"
+    Path="Libraries/ICSharpCode/ICSharpCode.NRefactory.dll" />
+  <Binary
+    Name="ICSharp.NRefactory.CSharp"
+    Path="Libraries/ICSharpCode/ICSharpCode.NRefactory.CSharp.dll" />
+  <Binary
+    Name="Mono.Cecil"
+    Path="Libraries/ICSharpCode/Mono.Cecil.dll" />
+  <Binary
+    Name="Mono.Cecil.Pdb"
+    Path="Libraries/ICSharpCode/Mono.Cecil.Pdb.dll" />
+  
+</ExternalProject>

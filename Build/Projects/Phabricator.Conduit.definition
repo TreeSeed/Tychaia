@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ExternalProject Name="Phabricator.Conduit">
+  
+  <Project 
+    Name="Phabricator.Conduit"
+    Guid="3A42BCA2-93B3-4361-9E32-0A17BCF8625A"
+    Path="Libraries/Phabricator.Conduit/Phabricator.Conduit.csproj" />
+  
+</ExternalProject>

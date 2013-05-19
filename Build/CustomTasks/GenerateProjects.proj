@@ -13,8 +13,46 @@
   <ItemGroup>
     <Definition Include="MakeMeAWorld" />
     <Definition Include="MinecraftExport" />
-    <Definition Include="Tychaia.Game" />
+    <Definition Include="PositionOctreeTest" />
+    <Definition Include="ProceduralGenPerformance" />
+    <Definition Include="ProceduralGenStorage" />
+    <Definition Include="ProceduralGenTracing" />
+    <Definition Include="Protogame" />
+    <Definition Include="Protogame.Efficiency" />
+    <Definition Include="Protogame.Math" />
+    <Definition Include="Protogame.Math.Tests" />
+    <Definition Include="Protogame.Noise" />
+    <Definition Include="Protogame.Structure" />
     <Definition Include="Tychaia" />
+    <Definition Include="Tychaia.Disk" />
+    <Definition Include="Tychaia.Disk.Minecraft" />
+    <Definition Include="Tychaia.Disk.Tychaia" />
+    <Definition Include="Tychaia.Game" />
+    <Definition Include="Tychaia.Globals" />
+    <Definition Include="Tychaia.ProceduralGeneration" />
+    <Definition Include="Tychaia.ProceduralGeneration.Legacy" />
+    <Definition Include="Tychaia.ProceduralGeneration.Tests" />
+    <Definition Include="Tychaia.Puzzle" />
+    <Definition Include="Tychaia.RuntimeGeneration" />
+    <Definition Include="Tychaia.Threading" />
+    <Definition Include="Tychaia.Threading.Tests" />
+    <Definition Include="Tychaia.Website" />
+    <Definition Include="TychaiaPuzzleEditor" />
+    <Definition Include="TychaiaWorldGenViewer" />
+    <Definition Include="TychaiaWorldGenViewerAlgorithm" />
+    <Definition Include="MonoGame" />
+    <Definition Include="Substrate" />
+    <Definition Include="voxeliq" />
+    <Definition Include="ICSharpCode.NRefactory" />
+    <Definition Include="AStarPathFinder" />
+    <Definition Include="Process4" />
+    <Definition Include="MIConvexHull" />
+    <Definition Include="NGif" />
+    <Definition Include="FortuneVoronoi" />
+    <Definition Include="Redpoint.FlowGraph" />
+    <Definition Include="Tychaia.Content" />
+    <Definition Include="Phabricator.Conduit" />
+    <Definition Include="Razor" />
   </ItemGroup>
   
   <Target Name="Build">

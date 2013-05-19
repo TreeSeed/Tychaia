@@ -12,7 +12,7 @@
 	url = git://github.com/hach-que/Redpoint.FlowGraph.git
 [submodule "Libraries/MonoGame"]
 	path = Libraries/MonoGame
-	url = git://github.com/hach-que/MonoGame.git
+	url = git://github.com/mono/MonoGame.git
 [submodule "Tychaia.Content"]
 	path = Tychaia.Content
 	url = git://github.com/hach-que/Tychaia.Content.git

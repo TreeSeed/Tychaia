@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ExternalProject Name="Redpoint.FlowGraph">
+  
+  <Project 
+    Name="Redpoint.FlowGraph"
+    Guid="996097C6-F59B-4395-A3C5-BECDCE904690"
+    Path="Libraries/Redpoint.FlowGraph/Redpoint.FlowGraph.csproj" />
+  
+</ExternalProject>

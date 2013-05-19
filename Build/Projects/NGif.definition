@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ExternalProject Name="NGif">
+  
+  <Project
+    Name="NGif"
+    Guid="1C3A03CA-5E55-4CC4-9746-194A4188960A"
+    Path="Libraries/NGif/NGif.csproj" />
+  
+</ExternalProject>

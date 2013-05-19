@@ -16,7 +16,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="Tychaia.ProceduralGeneration.Legacy" />
     <Reference Include="Tychaia" />
-    <External Include="Substrate" />
+    <Reference Include="Substrate" />
   </References>
   <Files>
     <Compile Include="ChunkProvider.cs" />

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project
+  Name="Tychaia.Disk"
+  Path="Tychaia.Disk"
+  Type="Library">
+  
+  <References>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </References>
+  <Files>
+    <Compile Include="ILevel.cs" />
+    <Compile Include="ILevelAPI.cs" />
+    <Compile Include="LevelAPI.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </Files>
+</Project>
