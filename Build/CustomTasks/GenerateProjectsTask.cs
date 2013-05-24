@@ -239,8 +239,11 @@ namespace Tychaia.CustomTasks
             projectName.AppendChild(doc.CreateTextNode(project));
             var platformName = doc.CreateElement("Platform");
             platformName.AppendChild(doc.CreateTextNode(platform));
+            var rootName = doc.CreateElement("RootPath");
+            rootName.AppendChild(doc.CreateTextNode(this.m_RootPath));
             generation.AppendChild(projectName);
             generation.AppendChild(platformName);
+            generation.AppendChild(rootName);
             input.AppendChild(generation);
 
             var nuget = doc.CreateElement("NuGet");

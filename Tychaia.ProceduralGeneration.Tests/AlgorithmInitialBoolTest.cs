@@ -4,14 +4,14 @@
 // license on the website apply retroactively.
 //
 using System;
-using NUnit.Framework;
+using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    [TestFixture]
+    
     public class AlgorithmInitialBoolTest
     {
-        [Test, TestFor(typeof(AlgorithmInitialBool))]
+        [Fact, TestFor(typeof(AlgorithmInitialBool))]
         public void TestRange()
         {
             int computations;
@@ -25,7 +25,7 @@ namespace Tychaia.ProceduralGeneration.Tests
                         if (result[i + j * 16 + k * 16 * 16] == 0)
                             continue;
 
-                        Assert.IsTrue(
+                        Assert.True(
                             result[i + j * 16 + k * 16 * 16] == 0 || 
                             result[i + j * 16 + k * 16 * 16] == 1);
                     }

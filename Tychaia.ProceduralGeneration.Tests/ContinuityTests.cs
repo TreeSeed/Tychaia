@@ -3,11 +3,10 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
 //
-using NUnit.Framework;
+using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    [TestFixture]
     public static class ContinuityTests
     {
         public static void PerformSampling(string name, IGenerator layer)
@@ -28,20 +27,20 @@ namespace Tychaia.ProceduralGeneration.Tests
                     for (var z = -s; z < s; z++)
                     {
                         int[] sample = layer.GenerateData(x + o, y + o, z + o, 1, 1, 1, out computations);
-                        Assert.AreEqual(sample[0], initial[(x + s) + (y + s) * s * 2 + (z + s) * s * 2 * s * 2],
-                                    name + " is not continuous.");
+                        Assert.Equal(sample[0], initial[(x + s) + (y + s) * s * 2 + (z + s) * s * 2 * s * 2]);//,
+                        //name + " is not continuous.");
                     }
         }
 
-        [Test]
+        [Fact]
         public static void TestAlgorithmInitialBool()
         {
             var algorithm = new AlgorithmInitialBool();
             var runtime = new RuntimeLayer(algorithm);
             PerformSampling("AlgorithmInitialBool", runtime);
         }
-        
-        [Test]
+
+        [Fact]
         public static void TestAlgorithmZoom2DIteration1()
         {
             var algorithmInitial = new AlgorithmInitialBool();
@@ -52,7 +51,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             PerformSampling("AlgorithmZoom2D (1 iteration)", runtimeZoom2DIteration1);
         }
 
-        [Test]
+        [Fact]
         public static void TestAlgorithmZoom2DIteration2()
         {
             var algorithmInitial = new AlgorithmInitialBool();
@@ -65,8 +64,8 @@ namespace Tychaia.ProceduralGeneration.Tests
             runtimeZoom2DIteration2.SetInput(0, runtimeInitial);
             PerformSampling("AlgorithmZoom2D (2 iteration)", runtimeZoom2DIteration2);
         }
-        
-        [Test]
+
+        [Fact]
         public static void TestAlgorithmIncrementWaterDistance1()
         {
             var algorithmInitial = new AlgorithmInitialBool();
@@ -79,8 +78,8 @@ namespace Tychaia.ProceduralGeneration.Tests
             runtimeIncrementWaterDistance.SetInput(0, runtimeInitial);
             PerformSampling("AlgorithmIncrementWaterDistance", runtimeIncrementWaterDistance);
         }
-        
-        [Test]
+
+        [Fact]
         public static void TestAlgorithmIncrementWaterDistance2()
         {
             var algorithmInitial = new AlgorithmInitialBool();
@@ -103,7 +102,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             PerformSampling("AlgorithmIncrementWaterDistance (4 iterations)", runtimeIncrementWaterDistance2);
         }
 
-        [Test]
+        [Fact]
         public static void TestAlgorithmIncrementWaterDistance3()
         {
             var algorithmInitial = new AlgorithmInitialBool();
@@ -132,7 +131,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             PerformSampling("AlgorithmIncrementWaterDistance (4 iterations)", runtimeIncrementWaterDistance3);
         }
 
-        [Test]
+        [Fact]
         public static void TestAlgorithmIncrementWaterDistance4()
         {
             var algorithmInitial = new AlgorithmInitialBool();

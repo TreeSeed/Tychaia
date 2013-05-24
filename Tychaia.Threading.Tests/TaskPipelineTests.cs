@@ -4,24 +4,23 @@
 // license on the website apply retroactively.
 //
 using System;
-using NUnit.Framework;
 using System.Threading;
+using Xunit;
 
 namespace Tychaia.Threading.Tests
 {
-    [TestFixture]
     public class TaskPipelineTests
     {
-        [Test]
+        [Fact]
         public void TestPipelineBasic()
         {
             var pipeline = new ThreadedTaskPipeline<int>();
             ThreadStart processor = () =>
             {
                 pipeline.Connect();
-                Assert.AreEqual(pipeline.Take(), 1);
-                Assert.AreEqual(pipeline.Take(), 2);
-                Assert.AreEqual(pipeline.Take(), 3);
+                Assert.Equal(pipeline.Take(), 1);
+                Assert.Equal(pipeline.Take(), 2);
+                Assert.Equal(pipeline.Take(), 3);
             };
             pipeline.Put(1);
             pipeline.Put(2);
@@ -31,16 +30,16 @@ namespace Tychaia.Threading.Tests
             thread.Join();
         }
 
-        [Test]
+        [Fact]
         public void TestPipelineParallel()
         {
             var pipeline = new ThreadedTaskPipeline<int>();
             ThreadStart processor = () =>
             {
                 pipeline.Connect();
-                Assert.AreEqual(pipeline.Take(), 1);
-                Assert.AreEqual(pipeline.Take(), 2);
-                Assert.AreEqual(pipeline.Take(), 3);
+                Assert.Equal(pipeline.Take(), 1);
+                Assert.Equal(pipeline.Take(), 2);
+                Assert.Equal(pipeline.Take(), 3);
             };
             var thread = new Thread(processor);
             thread.Start();
@@ -49,8 +48,8 @@ namespace Tychaia.Threading.Tests
             pipeline.Put(3);
             thread.Join();
         }
-        
-        [Test]
+
+        [Fact]
         public void TestPipelineParallelTo1000()
         {
             var random = new Random();
@@ -82,10 +81,10 @@ namespace Tychaia.Threading.Tests
             }
             thread.Join();
             if (!success)
-                Assert.AreEqual(expected, actual);
+                Assert.Equal(expected, actual);
         }
-        
-        [Test]
+
+        [Fact]
         public void TestPipelineParallelTo1000TakeSided()
         {
             var random = new Random();
@@ -117,10 +116,10 @@ namespace Tychaia.Threading.Tests
             }
             thread.Join();
             if (!success)
-                Assert.AreEqual(expected, actual);
+                Assert.Equal(expected, actual);
         }
-        
-        [Test]
+
+        [Fact]
         public void TestPipelineParallelTo1000PutSided()
         {
             var random = new Random();
@@ -152,10 +151,10 @@ namespace Tychaia.Threading.Tests
             }
             thread.Join();
             if (!success)
-                Assert.AreEqual(expected, actual);
+                Assert.Equal(expected, actual);
         }
-        
-        [Test]
+
+        [Fact]
         public void TestPipelineParallelTo100()
         {
             var random = new Random();
@@ -187,9 +186,8 @@ namespace Tychaia.Threading.Tests
             }
             thread.Join();
             if (!success)
-                Assert.AreEqual(expected, actual);
+                Assert.Equal(expected, actual);
         }
-
         /*
         [Test]
         public void TestPipelineHighlyParallel()

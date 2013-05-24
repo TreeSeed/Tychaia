@@ -4,7 +4,7 @@
 // license on the website apply retroactively.
 //
 using System;
-using NUnit.Framework;
+using Xunit;
 using Tychaia.ProceduralGeneration.Compiler;
 
 namespace Tychaia.ProceduralGeneration.Tests
@@ -14,10 +14,10 @@ namespace Tychaia.ProceduralGeneration.Tests
 
     #if DISABLED
 
-    [TestFixture]
+    
     public class CompilerTest
     {
-        [Test]
+        [Fact]
         public void TestCompileGradient()
         {
             int computations1, computations2;
@@ -32,13 +32,13 @@ namespace Tychaia.ProceduralGeneration.Tests
             for (var x = 0; x < width; x++)
                 for (var y = 0; y < height; y++)
                     for (var z = 0; z < depth; z++)
-                        Assert.AreEqual(
+                        Assert.Equal(
                             i1[x + y * width + z * width * height],
                             c1[x + y * width + z * width * height],
                             "Value differs in gradient compare.");
         }
 
-        [Test]
+        [Fact]
         public void TestCompilePassthrough()
         {
             int computations1, computations2;
@@ -55,7 +55,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             for (var x = 0; x < width; x++)
                 for (var y = 0; y < height; y++)
                     for (var z = 0; z < depth; z++)
-                        Assert.AreEqual(
+                        Assert.Equal(
                             i1[x + y * width + z * width * height],
                             c1[x + y * width + z * width * height],
                             "Value differs in gradient compare.");
@@ -63,7 +63,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             for (var x = 0; x < width; x++)
                 for (var y = 0; y < height; y++)
                     for (var z = 0; z < depth; z++)
-                        Assert.AreEqual(
+                        Assert.Equal(
                             i2[x + y * width + z * width * height],
                             c2[x + y * width + z * width * height],
                             "Value differs in passthrough compare.");

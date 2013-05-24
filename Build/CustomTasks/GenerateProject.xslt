@@ -369,7 +369,22 @@ select="/Input/Projects/Project[@Name=$include-path]/@Guid" />}</Project>
           </xsl:element>
         </xsl:for-each>
       </ItemGroup>
-      
+    
+      <xsl:if test="$project/@Type = 'Tests'">   
+      	<UsingTask
+    	  AssemblyFile="xunit.runner.msbuild.dll"
+          TaskName="Xunit.Runner.MSBuild.xunit">
+          <xsl:attribute name="AssemblyFile">
+          	<xsl:value-of select="concat(
+/Input/Generation/RootPath,
+'packages/xunit.runners.1.9.1/tools/xunit.runner.msbuild.dll')" />
+          </xsl:attribute>
+        </UsingTask>
+        <Target Name="AfterBuild">
+          <xunit Assembly="$(TargetPath)" />
+        </Target>
+      </xsl:if>
+          
     </Project>
     
   </xsl:template>

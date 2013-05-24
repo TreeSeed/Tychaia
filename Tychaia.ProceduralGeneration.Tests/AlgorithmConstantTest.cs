@@ -4,14 +4,13 @@
 // license on the website apply retroactively.
 //
 using System;
-using NUnit.Framework;
+using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    [TestFixture]
     public class AlgorithmConstantTest
     {
-        [Test, TestFor(typeof(AlgorithmConstant))]
+        [Fact, TestFor(typeof(AlgorithmConstant))]
         public void TestValues()
         {
             int computations;
@@ -23,7 +22,7 @@ namespace Tychaia.ProceduralGeneration.Tests
                 for (var i = 0; i < 3; i++)
                     for (var j = 0; j < 3; j++)
                         for (var k = 0; k < 3; k++)
-                            Assert.AreEqual(result[i + j * 3 + k * 3 * 3], v);
+                            Assert.Equal(result[i + j * 3 + k * 3 * 3], v);
             }
         }
     }

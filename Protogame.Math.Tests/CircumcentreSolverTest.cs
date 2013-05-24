@@ -1,21 +1,19 @@
-﻿using NUnit.Framework;
-using System;
+﻿using Xunit;
 
 namespace Protogame.Math.Tests
 {
-    [TestFixture]
     public class CircumcentreSolverTest
     {
         private void AssertSphere(double[] a, double[] b, double[] c, double[] d, double[] centre, double radius)
         {
             CircumcentreSolver solver = new CircumcentreSolver(a, b, c, d);
-            Assert.AreEqual(centre[0], solver.Centre[0]);
-            Assert.AreEqual(centre[1], solver.Centre[1]);
-            Assert.AreEqual(centre[2], solver.Centre[2]);
-            Assert.AreEqual(radius, solver.Radius);
+            Assert.Equal(centre[0], solver.Centre[0]);
+            Assert.Equal(centre[1], solver.Centre[1]);
+            Assert.Equal(centre[2], solver.Centre[2]);
+            Assert.Equal(radius, solver.Radius);
         }
 
-        [Test]
+        [Fact]
         public void TestSolver()
         {
             this.AssertSphere(
