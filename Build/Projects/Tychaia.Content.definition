@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ExternalProject Name="Tychaia.Content">
   
-  <Project
-    Name="Tychaia.Content"
-    Guid="77A3495A-216F-4561-9BA4-AD75CF67A36C"
-    Path="Tychaia.Content/compiled/Tychaia.Content.mdproj"
-    Type="Content">
-      <ConfigurationMapping Old="Debug" New="Default" />
-      <ConfigurationMapping Old="Release" New="Default" />
-    </Project>
+  <!-- Windows / MSBuild doesn't like this type of project yet.. -->
+  <Platform Type="Linux">
+    <Project
+      Name="Tychaia.Content"
+      Guid="77A3495A-216F-4561-9BA4-AD75CF67A36C"
+      Path="Tychaia.Content/compiled/Tychaia.Content.mdproj"
+      Type="Content">
+        <ConfigurationMapping Old="Debug" New="Default" />
+        <ConfigurationMapping Old="Release" New="Default" />
+      </Project>
+  </Platform>
   
 </ExternalProject>
