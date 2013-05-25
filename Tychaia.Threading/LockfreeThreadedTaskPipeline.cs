@@ -6,13 +6,19 @@
 using System;
 using System.Threading;
 
+#pragma warning disable 420
+
 namespace Tychaia.Threading
 {
     /// <summary>
     /// A thread-safe pipeline capable of accepting tasks from one thread
     /// and collecting them on another.
     /// </summary>
-    public class ThreadedTaskPipeline<T> : IPipeline<T>
+    /// <remarks>
+    /// http://stackoverflow.com/questions/15571620/issue-with-threaded-queue-implementation-in-net
+    /// </remarks>
+    [Obsolete("This implementation has threading issues!", true)]
+    public class LockfreeThreadedTaskPipeline<T> : IPipeline<T>
     {
         private int? m_InputThread;
         private int? m_OutputThread;
@@ -23,7 +29,7 @@ namespace Tychaia.Threading
         /// considered to be the input side of the pipeline.  The
         /// output thread should call Connect().
         /// </summary>
-        public ThreadedTaskPipeline()
+        public LockfreeThreadedTaskPipeline()
         {
             this.m_InputThread = Thread.CurrentThread.ManagedThreadId;
             this.m_OutputThread = null;
@@ -58,19 +64,20 @@ namespace Tychaia.Threading
             if (this.m_InputThread != Thread.CurrentThread.ManagedThreadId)
                 throw new InvalidOperationException("Only the input thread may place items into TaskPipeline.");
 
-            lock (this)
+            retry:
+
+            var head = this.m_Head;
+            while (head != null && head.Next != null)
+                head = head.Next;
+            if (head == null)
             {
-                var head = this.m_Head;
-                while (head != null && head.Next != null)
-                    head = head.Next;
-                if (head == null)
-                {
-                    m_Head = new TaskPipelineEntry<T> { Value = value };
-                }
-                else
-                {
-                    head.Next = new TaskPipelineEntry<T> { Value = value };
-                }
+                if (Interlocked.CompareExchange(ref m_Head, new TaskPipelineEntry<T> { Value = value }, null) != null)
+                    goto retry;
+            }
+            else
+            {
+                if (Interlocked.CompareExchange(ref head.Next, new TaskPipelineEntry<T> { Value = value }, null) != null)
+                    goto retry;
             }
         }
 
@@ -84,18 +91,20 @@ namespace Tychaia.Threading
             if (this.m_OutputThread != Thread.CurrentThread.ManagedThreadId)
                 throw new InvalidOperationException("Only the output thread may retrieve items from TaskPipeline.");
 
-            // Return if no value.
+            // Wait until there is an item to take.
             var spin = new SpinWait();
             while (this.m_Head == null)
                 spin.SpinOnce();
 
-            T value;
-            lock (this)
-            {
-                value = m_Head.Value;
-                m_Head = m_Head.Next;
-            }
-            return value;
+            // Return the item and exchange the current head with
+            // the next item, all in an atomic operation.
+            var head = m_Head;
+            retry:
+                var next = head.Next;
+            if (Interlocked.CompareExchange(ref head.Next, TaskPipelineEntry<T>.Sentinel, next) != next)
+                goto retry;
+            this.m_Head = next;
+            return head.Value;
         }
 
         /// <summary>
@@ -108,21 +117,21 @@ namespace Tychaia.Threading
             if (this.m_OutputThread != Thread.CurrentThread.ManagedThreadId)
                 throw new InvalidOperationException("Only the output thread may retrieve items from TaskPipeline.");
 
-            // Return if no value.
-            if (this.m_Head == null)
-            {
-                retrieved = false;
-                return default(T);
-            }
-
-            T value;
-            lock (this)
-            {
-                value = m_Head.Value;
-                m_Head = m_Head.Next;
-            }
+            // Wait until there is an item to take.
+            var spin = new SpinWait();
+            while (this.m_Head == null)
+                spin.SpinOnce();
+            
+            // Return the item and exchange the current head with
+            // the next item, all in an atomic operation.
+            var head = m_Head;
+            retry:
+            var next = head.Next;
+            if (Interlocked.CompareExchange(ref head.Next, TaskPipelineEntry<T>.Sentinel, next) != next)
+                goto retry;
+            this.m_Head = next;
             retrieved = true;
-            return value;
+            return head.Value;
         }
     }
 }

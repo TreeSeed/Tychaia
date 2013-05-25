@@ -188,18 +188,18 @@ namespace Tychaia.Threading.Tests
             if (!success)
                 Assert.Equal(expected, actual);
         }
-        /*
-        [Test]
+
+        [Fact]
         public void TestPipelineHighlyParallel()
         {
             var success = true;
             int expected = 0, actual = 0;
-            bool[] finished = new bool[10];
+            bool[] finished = new bool[100];
             ParameterizedThreadStart container = (index) =>
             {
                 finished[(int)index] = true;
                 var random = new Random();
-                var pipeline = new TaskPipeline<int>();
+                var pipeline = new ThreadedTaskPipeline<int>();
                 ThreadStart processor = () =>
                 {
                     pipeline.Connect();
@@ -236,9 +236,8 @@ namespace Tychaia.Threading.Tests
                     break;
             }
             if (!success)
-                Assert.AreEqual(expected, actual);
+                Assert.Equal(expected, actual);
         }
-        */
     }
 }
 

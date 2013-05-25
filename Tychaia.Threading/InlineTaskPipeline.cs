@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Tychaia.Threading
 {
-    public class InlineTaskPipeline<T> : IPipeline<T>
+    public class InlineTaskPipeline<T> : IPipeline<T> where T : class
     {
         private Queue<T> m_InternalQueue;
 
@@ -20,13 +20,31 @@ namespace Tychaia.Threading
         {
         }
 
+        public void Disconnect()
+        {
+        }
+
         public void Put(T value)
         {
             this.m_InternalQueue.Enqueue(value);
         }
-
+        
         public T Take()
         {
+            if (this.m_InternalQueue.Count == 0)
+                return null;
+            return this.m_InternalQueue.Dequeue();
+        }
+
+        public T Take(out bool retrieved)
+        {
+            if (this.m_InternalQueue.Count == 0)
+            {
+                retrieved = false;
+                return null;
+            }
+
+            retrieved = true;
             return this.m_InternalQueue.Dequeue();
         }
     }

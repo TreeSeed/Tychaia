@@ -13,6 +13,9 @@
     <Compile Include="TaskPipelineEntry.cs" />
     <Compile Include="TaskRegion.cs" />
     <Compile Include="IPipeline.cs" />
+    <Compile Include="IRegionProcessor.cs" />
+    <Compile Include="LockfreeThreadedTaskPipeline.cs" />
+    <Compile Include="TaskRegionEntry.cs" />
     <Compile Include="ThreadedTaskPipeline.cs" />
     <Compile Include="InlineTaskPipeline.cs" />
   </Files>
