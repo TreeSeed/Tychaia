@@ -83,12 +83,16 @@
   
   <Platform Type="Windows">
     <Project 
-      Name="MonoGame.Framework.Windows"
+      Name="MonoGame.Framework.WindowsGL"
       Guid="7DE47032-A904-4C29-BD22-2D235E8D91BA"
-      Path="Libraries/MonoGame/MonoGame.Framework/MonoGame.Framework.Windows.csproj">
+      Path="Libraries/MonoGame/MonoGame.Framework/MonoGame.Framework.WindowsGL.csproj">
     </Project>
+    <Project
+      Name="Lidgren.Network.Windows"
+      Guid="AE483C29-042E-4226-BA52-D247CE7676DA"
+      Path="Libraries/MonoGame/ThirdParty/Lidgren.Network/Lidgren.Network.Windows.csproj" />
   </Platform>
-  
+
   <Platform Type="Metro">
     <Project 
       Name="MonoGame.Framework.Metro"
