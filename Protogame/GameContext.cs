@@ -24,6 +24,7 @@ namespace Protogame
         public int FPS { get; internal set; }
         public Game Game { get; internal set; }
         public WorldManager WorldManager { get; internal set; }
+        public int FrameCount { get; internal set; }
 
         internal GameContext()
         {
@@ -31,6 +32,17 @@ namespace Protogame
             this.Sounds = new Dictionary<string, SoundEffect>();
             this.Fonts = new Dictionary<string, SpriteFont>();
             this.Effects = new Dictionary<string, Effect>();
+        }
+
+        public Rectangle ScreenBounds
+        {
+            get { return this.Window.ClientBounds; }
+        }
+
+        public void SetScreenSize(int width, int height)
+        {
+            this.Graphics.PreferredBackBufferWidth = 1024; // GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            this.Graphics.PreferredBackBufferHeight = 768; // GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
         }
 
         public void LoadFont(string name)

@@ -33,6 +33,8 @@ namespace Protogame
         {
             get
             {
+                if (this.Images == null)
+                    return null;
                 if (this.m_ImageIndex >= this.Images.Length)
                     this.m_ImageIndex = 0;
                 return this.Images[this.m_ImageIndex];
@@ -72,15 +74,18 @@ namespace Protogame
 
         public virtual void Update(World world)
         {
-            if (this.m_ImageFrameAlarm == 0)
+            if (this.Images != null)
             {
-                this.m_ImageIndex++;
-                this.m_ImageFrameAlarm = this.ImageSpeed - 1;
+                if (this.m_ImageFrameAlarm == 0)
+                {
+                    this.m_ImageIndex++;
+                    this.m_ImageFrameAlarm = this.ImageSpeed - 1;
+                }
+                else
+                    this.m_ImageFrameAlarm -= 1;
+                if (this.m_ImageIndex >= this.Images.Length)
+                    this.m_ImageIndex = 0;
             }
-            else
-                this.m_ImageFrameAlarm -= 1;
-            if (this.m_ImageIndex >= this.Images.Length)
-                this.m_ImageIndex = 0;
         }
 
         public virtual void Draw(World world, XnaGraphics graphics)

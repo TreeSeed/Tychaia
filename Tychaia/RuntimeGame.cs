@@ -25,8 +25,7 @@ namespace Tychaia
 
         public RuntimeGame()
         {
-            this.m_GameContext.Graphics.PreferredBackBufferWidth = 1024; // GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            this.m_GameContext.Graphics.PreferredBackBufferHeight = 768; // GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            this.m_GameContext.SetScreenSize(1024, 768);
             //this.m_GameContext.Graphics.ToggleFullScreen();
             Static.GraphicsDevice = this.m_GameContext.Graphics.GraphicsDevice;
             Static.GameContext = this.m_GameContext;
@@ -53,6 +52,15 @@ namespace Tychaia
             RenderingBuffers.Initialize(this.m_GameContext);
             ChunkRenderer.Initialize(this.m_GameContext.Graphics.GraphicsDevice);
             ChunkProvider.Initialize();
+            this.Window.ClientSizeChanged += HandleClientSizeChanged;
+        }
+
+        /// <summary>
+        /// Handles when the client screen size changes, reinitializing any backing buffers.
+        /// </summary>
+        protected virtual void HandleClientSizeChanged (object sender, EventArgs e)
+        {
+            RenderingBuffers.Initialize(this.m_GameContext);
         }
 
         /// <summary>
