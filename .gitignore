@@ -29,3 +29,6 @@ Thumbs.db
 *.Windows.csproj
 *.Linux.sln
 *.Windows.sln
+_UpgradeReport_Files/*
+Backup*/*
+UpgradeLog*.*
