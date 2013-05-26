@@ -46,7 +46,10 @@ namespace Tychaia.CustomTasks
             this.Log.LogMessage(
                 "Starting generation of projects for " + this.Platform);
             
-            var generator = new ProjectGenerator(this.RootPath, this.Platform);
+            var generator = new ProjectGenerator(
+                this.RootPath,
+                this.Platform,
+                this.Log);
             foreach (var definition in this.Definitions)
             {
                 this.Log.LogMessage("Loading: " + definition);
@@ -113,18 +116,29 @@ namespace Tychaia.CustomTasks
         private List<XmlDocument> m_ProjectDocuments = new List<XmlDocument>();
         private XslCompiledTransform m_ProjectTransform = null;
         private XslCompiledTransform m_SolutionTransform = null;
+        private TaskLoggingHelper m_Log;
 
-        public ProjectGenerator(string rootPath, string platform)
+        public ProjectGenerator(
+            string rootPath,
+            string platform,
+            TaskLoggingHelper log)
         {
             this.m_RootPath = rootPath;
             this.m_Platform = platform;
+            this.m_Log = log;
         }
 
         public void Load(string path)
         {
             var doc = new XmlDocument();
             doc.Load(path);
-            this.m_ProjectDocuments.Add(doc);
+            
+            // If this is a ContentProject, we actually need to generate the
+            // full project node from the files that are in the Source folder.
+            if (doc.DocumentElement.Name == "ContentProject")
+                this.m_ProjectDocuments.Add(GenerateContentProject(doc));
+            else
+                this.m_ProjectDocuments.Add(doc);
             
             // Also add a Guid attribute if one doesn't exist.  This makes it 
             // easier to define projects.
@@ -240,7 +254,8 @@ namespace Tychaia.CustomTasks
             var platformName = doc.CreateElement("Platform");
             platformName.AppendChild(doc.CreateTextNode(platform));
             var rootName = doc.CreateElement("RootPath");
-            rootName.AppendChild(doc.CreateTextNode(this.m_RootPath));
+            rootName.AppendChild(doc.CreateTextNode(
+                new DirectoryInfo(this.m_RootPath).FullName));
             generation.AppendChild(projectName);
             generation.AppendChild(platformName);
             generation.AppendChild(rootName);
@@ -358,6 +373,69 @@ namespace Tychaia.CustomTasks
                     }
                 }
             }
+        }
+        
+        private XmlDocument GenerateContentProject(XmlDocument source)
+        {
+            var sourceFolder = source
+                .DocumentElement
+                .ChildNodes
+                .Cast<XmlElement>()
+                .First(x => x.Name == "Source")
+                .GetAttribute("Include");
+            var originalSourceFolder = sourceFolder;
+            sourceFolder = Path.Combine(this.m_RootPath, sourceFolder);
+            
+            var allFiles = this.GetListOfFilesInDirectory(sourceFolder);
+            this.m_Log.LogMessage(
+              "Scanning: " +
+              originalSourceFolder + 
+              " (" + allFiles.Count + " total XNB files)"
+              );
+            
+            var doc = new XmlDocument();
+            doc.AppendChild(doc.CreateXmlDeclaration("1.0", "UTF-8", null));
+            var projectNode = doc.CreateElement("ContentProject");
+            doc.AppendChild(projectNode);
+            projectNode.SetAttribute(
+                "Name",
+                source.DocumentElement.GetAttribute("Name"));
+            
+            foreach (var file in allFiles)
+            {
+                var fileNode = doc.CreateElement("Compiled");
+                var fullPathNode = doc.CreateElement("FullPath");
+                var relativePathNode = doc.CreateElement("RelativePath");
+                fullPathNode.AppendChild(doc.CreateTextNode(file));
+                var index = file.Replace("\\", "/")
+                    .LastIndexOf(originalSourceFolder.Replace("\\", "/"));
+                var relativePath = "Content\\" + file
+                    .Substring(index + originalSourceFolder.Length)
+                    .Replace("/", "\\")
+                    .Trim('\\');
+                relativePathNode.AppendChild(doc.CreateTextNode(relativePath));
+                fileNode.AppendChild(fullPathNode);
+                fileNode.AppendChild(relativePathNode);
+                projectNode.AppendChild(fileNode);
+            }
+            
+            return doc;
+        }
+        
+        private List<string> GetListOfFilesInDirectory(string folder)
+        {
+            var result = new List<string>();
+            var directoryInfo = new DirectoryInfo(folder);
+            foreach (var directory in directoryInfo.GetDirectories())
+            {
+                result.AddRange(
+                    this.GetListOfFilesInDirectory(directory.FullName));
+            }
+            foreach (var file in directoryInfo.GetFiles("*.xnb"))
+            {
+                result.Add(file.FullName);
+            }
+            return result;
         }
 
         private XmlDocument CreateInputFor(string platform)

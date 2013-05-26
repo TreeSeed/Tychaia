@@ -177,13 +177,16 @@ select="/Input/Projects/Project[@Name=$include-path]/@Guid" />}</Project>
             count(/Input/Projects/Project[@Name=$include-path]) = 0">
             <xsl:if test="
               count(/Input/Projects/ExternalProject[@Name=$include-path]) = 0">
+              <xsl:if test="
+                count(/Input/Projects/ContentProject[@Name=$include-path]) = 0">
 
-              <Reference>
-                <xsl:attribute name="Include">
-                  <xsl:value-of select="@Include" />
-                </xsl:attribute>
-                <xsl:text />
-              </Reference>
+                <Reference>
+                  <xsl:attribute name="Include">
+                    <xsl:value-of select="@Include" />
+                  </xsl:attribute>
+                  <xsl:text />
+                </Reference>
+              </xsl:if>
             </xsl:if>
           </xsl:if>
         </xsl:for-each>
@@ -376,6 +379,40 @@ select="/Input/Projects/Project[@Name=$include-path]/@Guid" />}</Project>
             </xsl:attribute>
             <xsl:apply-templates select="node()"/>
           </xsl:element>
+        </xsl:for-each>
+      </ItemGroup>
+      
+      <ItemGroup>
+        <xsl:for-each select="$project/References/Reference">
+          <xsl:variable name="include-path" select="./@Include" />
+          <xsl:if test="
+            count(/Input/Projects/ContentProject[@Name=$include-path]) > 0">
+
+            <xsl:for-each select="/Input
+                                  /Projects
+                                  /ContentProject[@Name=$include-path]
+                                  /Compiled">
+              <None>
+                <xsl:attribute name="Include">
+                  <xsl:value-of
+                    select="user:GetRelativePath(
+                      concat(
+                        /Input/Generation/RootPath,
+                        $project/@Path,
+                        '\',
+                        $project/@Name,
+                        '.',
+                        /Input/Generation/Platform,
+                        '.csproj'),
+                      current()/FullPath)" />
+                </xsl:attribute>
+                <Link>
+                  <xsl:value-of select="current()/RelativePath" />
+                </Link>
+                <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+              </None>
+            </xsl:for-each>
+          </xsl:if>
         </xsl:for-each>
       </ItemGroup>
     
