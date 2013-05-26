@@ -99,6 +99,7 @@ namespace Protogame
             //    this.Exit();
 
             // Measure FPS.
+            this.m_GameContext.FrameCount += 1;
             this.m_ElapsedTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             if (this.m_ElapsedTime >= 1000f)
             {
@@ -106,6 +107,11 @@ namespace Protogame
                 this.m_TotalFrames = 0;
                 this.m_ElapsedTime = 0;
             }
+
+            // If this is before the 60th frame, skip so that MonoGame
+            // can initialize properly.
+            if (this.m_GameContext.FrameCount < 60)
+                return;
 
             // Update the game.
             this.m_GameContext.GameTime = gameTime;
@@ -125,6 +131,14 @@ namespace Protogame
             // Skip if we haven't yet loaded the sprite batch.
             if (this.m_GameContext.SpriteBatch == null)
                 throw new ProtogameException("The sprite batch instance was not set when it came time to draw the game.  Ensure that you are calling base.LoadContent in the overridden LoadContent method of your game.");
+
+            // If this is before the 60th frame, skip so that MonoGame
+            // can initialize properly.
+            if (this.m_GameContext.FrameCount < 60)
+            {
+                this.GraphicsDevice.Clear(Color.Black);
+                return;
+            }
 
             // Draw the game.
             this.m_GameContext.GameTime = gameTime;

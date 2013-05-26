@@ -32,6 +32,12 @@ namespace Tychaia.UI
             get { return this.m_Area.X; }
             set { this.m_Area.X = value; }
         }
+        
+        public int Y
+        {
+            get { return this.m_Area.Y; }
+            set { this.m_Area.Y = value; }
+        }
 
         public void Process(XnaGraphics xna, MouseState mouse)
         {
@@ -44,11 +50,12 @@ namespace Tychaia.UI
             {
                 if (mouse.LeftButton == ButtonState.Pressed)
                     this.m_IsDown = true;
-                else if (this.m_IsDown)
+                if (this.m_IsDown && mouse.LeftButton != ButtonState.Pressed)
+                {
                     this.m_OnClick();
+                    this.m_IsDown = false;
+                }
             }
-            else if (this.m_IsDown)
-                this.m_IsDown = false;
             if (this.m_Area.Contains(mouse.X, mouse.Y))
                 xna.FillRectangle(this.m_Area, new Color(1f, 1f, 1f, 0.25f + (float)(this.m_PulseValue / 2.0)).ToPremultiplied());
             else

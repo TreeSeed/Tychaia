@@ -17,6 +17,7 @@ namespace Tychaia.Title
         protected World m_TargetWorld = null;
         private int m_PreviousX = 800;
         private int m_MenuItemY = 300;
+        private ScatterBackground m_ScatterBackground;
 
         public void AddMenuItem(string name, Action handler)
         {
@@ -28,13 +29,23 @@ namespace Tychaia.Title
         {
             // Calculate the difference between button positions.
             int cx = context.Window.ClientBounds.Width / 2;
+            int i = context.ScreenBounds.Height / 4 * 3;
             foreach (TitleButton b in this.m_Buttons)
+            {
                 b.X += cx - this.m_PreviousX;
+                b.Y = i;
+                i += 40;
+            }
             this.m_PreviousX = cx;
         }
 
         public override bool Update(GameContext context)
         {
+            if (this.m_ScatterBackground == null && context.FrameCount > 60)
+                this.m_ScatterBackground = new ScatterBackground(context, this);
+            if (this.m_ScatterBackground != null)
+                this.m_ScatterBackground.Update(context, this);
+
             this.AdjustButtons(context);
             if (this.m_TargetWorld != null)
             {
@@ -47,22 +58,37 @@ namespace Tychaia.Title
         public override void DrawBelow(GameContext context)
         {
             this.AdjustButtons(context);
+
+            // Draw background effects.
+            XnaGraphics xna = new XnaGraphics(context);
+            xna.FillRectangle(
+                context.ScreenBounds,
+                Color.Black);
         }
 
         public override void DrawAbove(GameContext context)
         {
             XnaGraphics xna = new XnaGraphics(context);
-            xna.DrawStringCentered(context.Camera.Width / 2, 50, "τυχαία", "TitleFont");
-            xna.DrawStringCentered(context.Camera.Width / 2, 200, "(tychaía)", "SubtitleFont");
+            xna.DrawStringCentered(context.ScreenBounds.Width / 2, 50, "Tychaia", "TitleFont");
+
+            // TODO: Draw animation of player falling here.
+            xna.DrawSprite(
+                context.ScreenBounds.Width / 2,
+                context.ScreenBounds.Height / 2,
+                "chars.player.player");
 
             MouseState state = Mouse.GetState();
             foreach (TitleButton b in this.m_Buttons)
                 b.Process(xna, state);
 
-            xna.DrawStringCentered(context.Camera.Width / 2, 750, "Using static seed: " + m_StaticSeed.ToString(), "Arial");
+            /*xna.DrawStringCentered(
+                context.ScreenBounds.Width / 2,
+                context.ScreenBounds.Height - 50,
+                "Using static seed: " + m_StaticSeed.ToString(),
+                "Arial");*/
 
             // Draw debug information.
-            DebugTracker.Draw(context, null);
+            //DebugTracker.Draw(context, null);
         }
     }
 }
