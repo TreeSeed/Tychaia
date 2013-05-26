@@ -3,7 +3,7 @@
     "conduit_uri": "http://code.redpointsoftware.com.au/",
     "arc.autostash": true,
     "load": [
-        "Redpoint.Arcanist"
+        "Build/Arcanist"
     ],
     "unit.engine": "xUnitTestEngine"
 }
