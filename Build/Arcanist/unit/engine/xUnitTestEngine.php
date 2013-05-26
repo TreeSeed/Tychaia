@@ -109,11 +109,11 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
     $results = array();
     $results[] = $this->generateProjects();
     if ($this->resultsContainFailures($results)) {
-      return $results;
+      return array_mergev($results);
     }
     $results[] = $this->buildProjects($test_assemblies);
     if ($this->resultsContainFailures($results)) {
-      return $results;
+      return array_mergev($results);
     }
     $results[] = $this->testAssemblies($test_assemblies);
 
@@ -182,6 +182,7 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
         throw $exc;
       }
       $result->setResult(ArcanistUnitTestResult::RESULT_FAIL);
+      $result->setUserdata($exc->getStdout());
     }
 
     $result->setDuration(microtime(true) - $regenerate_start);
@@ -223,6 +224,7 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
           throw $exc;
         }
         $result->setResult(ArcanistUnitTestResult::RESULT_FAIL);
+        $result->setUserdata($exc->getStdout());
         $build_failed = true;
       }
 
@@ -265,9 +267,8 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
       try {
         $future->resolvex();
       } catch(CommandException $exc) {
-        if ($exc->getError() > 1) {
-          throw $exc;
-        }
+        // xUnit returns the number of test failures as the
+        // return code, so we just ignore this.
       }
 
       $results[] = $this->parseTestResult($outputs[$test_assembly]);
@@ -299,8 +300,10 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
       }
       $userdata = "";
       $reason = $test->getElementsByTagName("reason");
-      if ($reason->length > 0) {
-        $message = $reason->item(0)->getElementsByTagName("message");
+      $failure = $test->getElementsByTagName("failure");
+      if ($reason->length > 0 || $failure->length > 0) {
+        $node = ($reason->length > 0) ? $reason : $failure;
+        $message = $node->item(0)->getElementsByTagName("message");
         if ($message->length > 0) {
           $userdata = $message->item(0)->nodeValue;
         }
