@@ -82,7 +82,16 @@
         <DebugSymbols>True</DebugSymbols>
         <DebugType>full</DebugType>
         <Optimize>False</Optimize>
-        <OutputPath>bin\Debug</OutputPath>
+        <OutputPath>
+          <xsl:choose>
+            <xsl:when test="$project/@Type = 'Website'">
+              <xsl:text>bin\</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:text>bin\Debug\</xsl:text>
+            </xsl:otherwise>
+          </xsl:choose>
+        </OutputPath>
         <DefineConstants>
           <xsl:text>DEBUG;</xsl:text>
           <xsl:choose>
