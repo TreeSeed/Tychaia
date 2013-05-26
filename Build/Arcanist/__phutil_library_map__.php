@@ -10,6 +10,7 @@ phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' =>
   array(
+    'RedpointUpgradeWebsitesWorkflow' => 'workflow/RedpointUpgradeWebsitesWorkflow.php',
     'xUnitTestEngine' => 'unit/engine/xUnitTestEngine.php',
   ),
   'function' =>
@@ -17,6 +18,7 @@ phutil_register_library_map(array(
   ),
   'xmap' =>
   array(
+    'RedpointUpgradeWebsitesWorkflow' => 'ArcanistBaseWorkflow',
     'xUnitTestEngine' => 'ArcanistBaseUnitTestEngine',
   ),
 ));
