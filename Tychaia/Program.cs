@@ -1,5 +1,6 @@
 using System;
 using Tychaia.Generators;
+using System.Windows.Forms;
 
 namespace Tychaia
 {
@@ -12,7 +13,19 @@ namespace Tychaia
         {
             using (RuntimeGame game = new RuntimeGame())
             {
-                game.Run();
+                try
+                {
+                    game.Run();
+                }
+                catch (EntryPointNotFoundException)
+                {
+#if PLATFORM_WINDOWS || PLATFORM_LINUX
+                    if (!game.HasTicked)
+                        MessageBox.Show("Tychaia requires a graphics card with 3D hardware acceleration.", "Sorry!");
+                    else
+#endif
+                        throw;
+                }
             }
         }
     }

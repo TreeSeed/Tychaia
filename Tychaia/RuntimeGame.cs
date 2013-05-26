@@ -23,6 +23,8 @@ namespace Tychaia
         public static GameContext ContextForStateValidationOutput = null;
         public static object LockForStateValidationOutput = new object();
 
+        public bool HasTicked { get; private set; }
+
         public RuntimeGame()
         {
             this.m_GameContext.SetScreenSize(1024, 768);
@@ -128,6 +130,9 @@ namespace Tychaia
             {
  	            base.Draw(gameTime);
             }
+
+            // Indicate that we have drawn at least one frame.
+            this.HasTicked = true;
 
             // Unload unused chunks from memory.
             ChunkProvider.DiscardUnneededChunks();
