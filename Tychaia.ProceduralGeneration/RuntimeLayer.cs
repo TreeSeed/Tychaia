@@ -391,9 +391,9 @@ namespace Tychaia.ProceduralGeneration
             ref int computations)
         {
             return this.m_Inputs[idx].PerformAlgorithmRuntimeCall(
-                (this.m_Algorithm.InputWidthAtHalfSize[idx] ? ((absoluteX) < 0 ? (absoluteX - 1) / 2 : (absoluteX) / 2) : absoluteX) - this.m_Algorithm.RequiredXBorder[idx] * 2,
-                (this.m_Algorithm.InputHeightAtHalfSize[idx] ? ((absoluteY) < 0 ? (absoluteY - 1) / 2 : (absoluteY) / 2) : absoluteY) - this.m_Algorithm.RequiredYBorder[idx] * 2,
-                (this.m_Algorithm.InputDepthAtHalfSize[idx] ? ((absoluteZ) < 0 ? (absoluteZ - 1) / 2 : (absoluteZ) / 2) : absoluteZ) - this.m_Algorithm.RequiredZBorder[idx] * 2,
+                (this.m_Algorithm.InputWidthAtHalfSize[idx] ? ((absoluteX) < 0 ? (absoluteX - 1) / 2 : (absoluteX) / 2) : absoluteX),
+                (this.m_Algorithm.InputHeightAtHalfSize[idx] ? ((absoluteY) < 0 ? (absoluteY - 1) / 2 : (absoluteY) / 2) : absoluteY),
+                (this.m_Algorithm.InputDepthAtHalfSize[idx] ? ((absoluteZ) < 0 ? (absoluteZ - 1) / 2 : (absoluteZ) / 2) : absoluteZ),
                 (this.m_Algorithm.InputWidthAtHalfSize[idx] ? (width / 2) + this.m_Algorithm.RequiredXBorder[idx] * 2 : width + this.m_Algorithm.RequiredXBorder[idx] * 2), 
                 (this.m_Algorithm.InputHeightAtHalfSize[idx] ? (height / 2) + this.m_Algorithm.RequiredYBorder[idx] * 2 : height + this.m_Algorithm.RequiredYBorder[idx] * 2), 
                 (this.m_Algorithm.InputDepthAtHalfSize[idx] ? (depth / 2) + this.m_Algorithm.RequiredZBorder[idx] * 2 : depth + this.m_Algorithm.RequiredZBorder[idx] * 2), 
