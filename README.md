@@ -38,6 +38,6 @@ Building
 
 If you've got a license to the game, you can build it using Mono or .NET in the following manner:
 
-  # Goto the `Build` directory and run `xbuild /p:TargetPlatform=<Platform>`, where `<Platform>` is either "Linux" or "Windows".
-  # Use the resulting `Tychaia.<Platform>.sln` file to build the game.
+  1. Goto the `Build` directory and run `xbuild /p:TargetPlatform=<Platform>`, where `<Platform>` is either "Linux" or "Windows".
+  2. Use the resulting `Tychaia.<Platform>.sln` file to build the game.
 
