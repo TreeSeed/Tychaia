@@ -426,7 +426,7 @@ select="/Input/Projects/Project[@Name=$include-path]/@Guid" />}</Project>
 'packages/xunit.runners.1.9.1/tools/xunit.runner.msbuild.dll')" />
           </xsl:attribute>
         </UsingTask>
-        <Target Name="AfterBuild">
+        <Target Name="AfterBuild" Condition="$(SkipTestsOnBuild) != 'True'">
           <xunit Assembly="$(TargetPath)" />
         </Target>
       </xsl:if>

@@ -72,7 +72,6 @@ namespace Tychaia.Threading
             this.m_Processor = new TProcessor();
             while ((DateTime.Now - this.m_LastProcess).TotalSeconds < 5)
             {
-                Console.WriteLine(this.m_LastProcess);
                 bool retrieved;
                 var value = this.m_Pipeline.Take(out retrieved);
                 if (retrieved)

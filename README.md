@@ -3,7 +3,14 @@ Tychaia
 
 An openly developed, procedurally generated infinite RPG.
 
-*This game is __not__ open source software!*  While it is openly developed, it might not be a freeware game.  We're still in early stages of development, so we have yet to determine an appropriate license.
+*This game is __not__ open source software!*  While it is openly developed, it is not a freeware game.  We're still in early stages of development, so we have yet to write up an appropriate license.
+
+Links
+-------
+
+  * [Tychaia on TIGSource](http://forums.tigsource.com/index.php?topic=27727)
+  * [Tychaia Website](http://www.tychaia.com/)
+  * [Make me a World!](http://makemeaworld.com/)
 
 About
 --------
@@ -12,8 +19,9 @@ Imagine a game where the world never ends, the scale is infinite and there's alw
 
 ![A very early screenshot.](http://i.imgur.com/BeXfI.png)
 
-There's still a lot of work to be done regarding the game's procedural generation, such as:
-  * ~~Biomes~~
+The game places a very heavy focus on procedural generation; it generates the entire world from scratch every time you play, including content such as:
+
+  * Terrain
   * Dungeons
   * Regions
   * Towns
@@ -25,7 +33,11 @@ There's still a lot of work to be done regarding the game's procedural generatio
 
 ![The world generation design tool.](http://i.imgur.com/kyd5A.png)
 
-Working with MonoGame
+Building
 ------------------------
 
-Easy installation for MonoGame templates from http://www.infinitespace-studios.co.uk/monodevelop/.  Add this as a repository in the Addin Manager and then install the MonoGame template which will install the appropriate templates for the solution.
+If you've got a license to the game, you can build it using Mono or .NET in the following manner:
+
+  1. Goto the `Build` directory and run `xbuild /p:TargetPlatform=<Platform>`, where `<Platform>` is either "Linux" or "Windows".
+  2. Use the resulting `Tychaia.<Platform>.sln` file to build the game.
+

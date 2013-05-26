@@ -1,5 +1,9 @@
 {
     "project_id": "Tychaia",
     "conduit_uri": "http://code.redpointsoftware.com.au/",
-    "arc.autostash": true
+    "arc.autostash": true,
+    "load": [
+        "Build/Arcanist"
+    ],
+    "unit.engine": "xUnitTestEngine"
 }
