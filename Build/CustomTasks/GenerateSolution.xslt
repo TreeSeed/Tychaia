@@ -169,7 +169,7 @@ EndProject
         <xsl:value-of select="$release-mapping" />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:text>Debug|Any CPU</xsl:text>
+        <xsl:text>Release|Any CPU</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:text>
@@ -182,7 +182,7 @@ EndProject
         <xsl:value-of select="$release-mapping" />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:text>Debug|Any CPU</xsl:text>
+        <xsl:text>Release|Any CPU</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:text>
