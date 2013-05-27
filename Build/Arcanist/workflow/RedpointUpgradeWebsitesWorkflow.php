@@ -56,6 +56,9 @@ EOTEXT
     $root = $working_copy->getProjectRoot();
     $console = PhutilConsole::getConsole();
 
+    // All commands have to execute at the root of the site.
+    chdir($root);
+
     $console->writeOut("Stopping service...\n");
     phutil_passthru("sudo systemctl stop mono-makemeaworld.com.service");
 
@@ -77,6 +80,12 @@ EOTEXT
 
     $console->writeOut("Pulling latest version... ");
     execx("git pull");
+    $this->writeOutOkay($console);
+
+    $console->writeOut("Resetting and cleaning submodules... ");
+    execx("git submodule foreach --recursive git reset --hard HEAD");
+    execx("git submodule foreach --recursive git clean -xdf");
+    execx("git submodule update --init --recursive");
     $this->writeOutOkay($console);
 
     $console->writeOut("Linking back Local.config... ");
