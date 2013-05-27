@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -57,31 +57,31 @@ namespace TychaiaWorldGenViewer.Flow
         private static int[] CalculateCellRenderOrder(int targetDir)
         {
             /*               North
-             *        0  1  2  3  4  5  6 
-             *        1  2  3  4  5  6  7 
+             *        0  1  2  3  4  5  6
+             *        1  2  3  4  5  6  7
              *        2  3  4  5  6  7  8
              *  East  3  4  5  6  7  8  9  West
              *        4  5  6  7  8  9  10
              *        5  6  7  8  9  10 11
              *        6  7  8  9  10 11 12
              *               South
-             *  
+             *
              * Start value is always 0.
              * Last value is (MaxX + MaxY).
              * This is the AtkValue.
-             * 
+             *
              * We attack from the left side of the render first
              * with (X: 0, Y: AtkValue) until Y would be less than
              * half of AtkValue.
-             * 
+             *
              * We then attack from the right side of the render
              * with (X: AtkValue, Y: 0) until X would be less than
              * half of AtkValue - 1.
-             * 
+             *
              * If we are attacking from the left, but Y is now
              * greater than MaxY, then we are over half-way and are
              * now starting at the bottom of the grid.
-             * 
+             *
              * In this case, we start with (X: AtkValue - MaxY, Y: MaxY)
              * and continue until we reach the same conditions that
              * apply normally.  The same method applies to the right hand
@@ -143,7 +143,7 @@ namespace TychaiaWorldGenViewer.Flow
             /* Our world is laid out in memory in terms of X / Y, but
              * we are rendering isometric, which means that the rendering
              * order for tiles must be like so:
-             * 
+             *
              *               North
              *        1  3  5  9  13 19 25
              *        2  6  10 14 20 26 32
@@ -153,7 +153,7 @@ namespace TychaiaWorldGenViewer.Flow
              *        16 23 30 36 41 46 48
              *        22 29 35 40 44 47 49
              *               South
-             *  
+             *
              * We also need to account for situations where the user rotates
              * the isometric view.
              */
@@ -168,7 +168,7 @@ namespace TychaiaWorldGenViewer.Flow
              *        -2.5 -2   -1.5  -1   -0.5  0    0.5
              *        -3   -2.5 -2    -1.5 -1   -0.5  0
              *                      South
-             *                      
+             *
              *  v = (x - y) / 2.0
              */
 
@@ -190,7 +190,7 @@ namespace TychaiaWorldGenViewer.Flow
                     // Calculate the render position on screen.
                     int rx = rcx + (int)((x - y) / 2.0 * rw);// (int)(x / ((RenderWidth + 1) / 2.0) * rw);
                     int ry = rcy + (x + y) * rh - (rh / 2 * (RenderWidth + RenderHeight)) - (z - zbottom) * 1;
-                    
+
                     while (true)
                     {
                         try

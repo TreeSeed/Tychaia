@@ -1,4 +1,4 @@
-﻿using System.Web.Mvc;
+using System.Web.Mvc;
 using Argotic.Syndication;
 using System;
 using System.Runtime.Caching;

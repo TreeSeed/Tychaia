@@ -1,4 +1,4 @@
-﻿namespace TychaiaWorldGenViewer
+namespace TychaiaWorldGenViewer
 {
     partial class RenameDialog
     {

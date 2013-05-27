@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +29,7 @@ namespace Tychaia.ProceduralGeneration
         {
             List<int> ViableBuildings = new List<int>();
             int SelectedBuilding = -1;
-            
+
             for (int i = 0; i < BuildingEngine.Buildings.Count; i++)
             {
                 Building b = BuildingEngine.Buildings[i];

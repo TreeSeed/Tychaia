@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,7 +42,7 @@ namespace Tychaia.RuntimeGeneration
                 Console.WriteLine("The weights.txt file does not exist.");
                 return;
             }
-            
+
             Console.Write("Loading from weights.txt... ");
             int count = 1;
             try

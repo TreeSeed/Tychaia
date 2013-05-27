@@ -43,7 +43,7 @@ namespace Tychaia.ProceduralGeneration
         {
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[(i + ox) + (j + oy) * width + (k + oz) * width * height];
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);
@@ -80,24 +80,24 @@ namespace Tychaia.ProceduralGeneration
                     false,
                     false
                 }; } }
-        
+
         public int XBorderA { get; set; }
         public int YBorderA { get; set; }
         public int XBorderB { get; set; }
         public int YBorderB { get; set; }
         public bool WidthHalfA { get; set; }
         public bool HeightHalfA { get; set; }
-        
+
         public override string[] InputNames
         {
             get { return new string[] { "Input A", "Input B", "Input C" }; }
         }
-        
+
         public override bool Is2DOnly
         {
             get { return false; }
         }
-        
+
         public override void Initialize(IRuntimeContext context)
         {
         }
@@ -105,7 +105,7 @@ namespace Tychaia.ProceduralGeneration
         {
             output[i + ox + (j + oy) * width + (k + oz) * width * height] = inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height];
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);

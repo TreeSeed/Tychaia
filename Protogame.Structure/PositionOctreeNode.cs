@@ -1,4 +1,4 @@
-﻿using Tychaia.Globals;
+using Tychaia.Globals;
 
 namespace Protogame.Structure
 {

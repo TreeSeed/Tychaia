@@ -1,4 +1,4 @@
-﻿namespace TychaiaWorldGenViewer.Flow
+namespace TychaiaWorldGenViewer.Flow
 {
     partial class FlowInterfaceControl
     {

@@ -1,4 +1,4 @@
-﻿namespace TychaiaWorldGenViewerAlgorithm
+namespace TychaiaWorldGenViewerAlgorithm
 {
     partial class AnalyseForm
     {

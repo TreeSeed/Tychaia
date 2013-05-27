@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,7 +32,7 @@ namespace Tychaia.ProceduralGeneration
             {
                 Town t = TownEngine.Towns[i];   // Need to try implement a method that will place the best town possible
                 if (soilfertility >= t.MinSoilFertility &&
-                    oredensity >= t.MinOreDensity && 
+                    oredensity >= t.MinOreDensity &&
                     rareoredensity >= t.MinRareOreDensity)
                     ViableTowns.Add(i);
             }

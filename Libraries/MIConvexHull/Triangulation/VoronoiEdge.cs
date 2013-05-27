@@ -1,4 +1,4 @@
-﻿namespace MIConvexHull
+namespace MIConvexHull
 {
     /// <summary>
     /// A class representing an (undirected) edge of the Voronoi graph.

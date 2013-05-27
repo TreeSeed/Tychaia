@@ -74,7 +74,7 @@ namespace Tychaia.Puzzle
                 foreach (var a in Adj)
                 {
                     if (Line[a] == true)
-                    {   
+                    {
                         int b = Rotation + c;
                         ui.DrawLine(X, Y, X + (int)(Math.Sin((b) * Math.PI / 3) * 50), Y + (int)(Math.Cos((b) * Math.PI / 3) * 50));
                     }
@@ -113,8 +113,8 @@ namespace Tychaia.Puzzle
              * 503
              * 602
              *  1
-             * 
-             */ 
+             *
+             */
         }
 
         public void Generate()
@@ -122,7 +122,7 @@ namespace Tychaia.Puzzle
             for (int a = 0; a < 7; a++)
             {
                 TileList[a].Set = false;
-                TileList[a].Line = new bool[] { false, false, false, false, false, false, false }; 
+                TileList[a].Line = new bool[] { false, false, false, false, false, false, false };
             }
 
             int number = GetRandomRange(random, random, random, random, 3, 7, random + mod);
@@ -235,14 +235,14 @@ namespace Tychaia.Puzzle
                 return a % (end - start) + start;
             }
         }
-        
+
         public static int GetRandomInt(long seed, long x, long y, long z, long modifier = 0)
         {
             unchecked
             {
                 return (int)(GetRandomNumber(seed, x, y, z, modifier) % int.MaxValue);
             }
-            
+
         }
         private static long GetRandomNumber(long _seed, long x, long y, long z, long modifier)
         {
@@ -265,7 +265,7 @@ namespace Tychaia.Puzzle
                 seed += modifier;
                 // Prevents the seed from being 0 along an axis.
                 seed += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
-                
+
                 long rng = seed * seed;
                 rng += (x - 11) * 2990430311017;
                 rng *= (y - 12) * 14475080218213;
@@ -278,7 +278,7 @@ namespace Tychaia.Puzzle
                 rng += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
                 rng += modifier;
                 rng += 3661988493967;
-                
+
                 return rng;
             }
         }

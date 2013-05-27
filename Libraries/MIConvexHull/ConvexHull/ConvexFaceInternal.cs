@@ -1,4 +1,4 @@
-﻿namespace MIConvexHull
+namespace MIConvexHull
 {
     using System.Collections.Generic;
 

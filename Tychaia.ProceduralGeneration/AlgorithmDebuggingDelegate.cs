@@ -51,7 +51,7 @@ namespace Tychaia.ProceduralGeneration
             else
                 this.Delegate(context, input, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz);
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             if (value == 0)

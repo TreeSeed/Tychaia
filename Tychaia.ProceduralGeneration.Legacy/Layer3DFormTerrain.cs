@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,7 +48,7 @@ namespace Tychaia.ProceduralGeneration
                             if (k < terr + 1)
                                 data[i + j * width + (k - z) * width * height] = 600 /* hack */;
                             else if (k <= 0)
-                                data[i + j * width + (k - z) * width * height] = 0;                           
+                                data[i + j * width + (k - z) * width * height] = 0;
                         }
                     }
                     else

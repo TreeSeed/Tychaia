@@ -1,4 +1,4 @@
-﻿namespace MIConvexHull
+namespace MIConvexHull
 {
     /// <summary>
     /// A convex face representation containing adjacency information.

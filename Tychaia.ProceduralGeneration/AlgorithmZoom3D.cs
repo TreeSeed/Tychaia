@@ -47,10 +47,10 @@ namespace Tychaia.ProceduralGeneration
             int ocx = ((x - Math.Abs(i)) % 2 == 0 ? 0 : Math.Abs(i % 2)) - (i % 2 == -1 ? 1 : 0);
             int ocy = ((y - Math.Abs(j)) % 2 == 0 ? 0 : Math.Abs(j % 2)) - (j % 2 == -1 ? 1 : 0);
             int ocz = ((z - Math.Abs(k)) % 2 == 0 ? 0 : Math.Abs(k % 2)) - (k % 2 == -1 ? 1 : 0);
-            
+
             int current = input[
-                                (i / 2) + ox + ocx + 
-                ((j / 2) + oy + ocy) * width + 
+                                (i / 2) + ox + ocx +
+                ((j / 2) + oy + ocy) * width +
                 ((k / 2) + oz + ocz) * width * height];
 
             output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;

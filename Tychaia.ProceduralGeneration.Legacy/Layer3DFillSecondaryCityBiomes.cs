@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,7 +43,7 @@ namespace Tychaia.ProceduralGeneration
                     {
                         data[i + j * width] = 0;
                         if (citybiome[i + j * width] != 0)
-                        {                            
+                        {
                             // Store result.
                             bool endloop = false;
                             int citybiomecount = 0;

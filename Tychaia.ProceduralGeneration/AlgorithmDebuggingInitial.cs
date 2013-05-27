@@ -24,7 +24,7 @@ namespace Tychaia.ProceduralGeneration
         {
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = (int)(x + y * 256);
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             if (value <= 0)
@@ -57,7 +57,7 @@ namespace Tychaia.ProceduralGeneration
 
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = a;
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             switch ((int)value)

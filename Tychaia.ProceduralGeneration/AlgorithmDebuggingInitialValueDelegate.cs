@@ -39,7 +39,7 @@ namespace Tychaia.ProceduralGeneration
             else
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.GetValueForPosition(x, y, z, i, j, k);
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             if (value == 0)

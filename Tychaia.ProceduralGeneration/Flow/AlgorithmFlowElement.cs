@@ -29,7 +29,7 @@ namespace Tychaia.ProceduralGeneration.Flow
         private List<FlowConnector>
             m_OutputConnectors = new List<FlowConnector>();
         private Bitmap m_CachedBitmap;
-        
+
         public override Bitmap Image
         {
             get
@@ -47,7 +47,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                 throw new NotImplementedException();
             }
         }
-        
+
         public StorageLayer Layer
         {
             get
@@ -70,7 +70,7 @@ namespace Tychaia.ProceduralGeneration.Flow
             this.ImageWidth = 128;
             this.ImageHeight = 192;
             this.ObjectPropertyUpdated();
-            
+
             // Create input / output connectors.
             foreach (string s in this.m_Layer.Algorithm.InputNames)
                 this.m_InputConnectors.Add(new AlgorithmFlowConnector(this, s, true, l));
@@ -110,7 +110,7 @@ namespace Tychaia.ProceduralGeneration.Flow
             : this(control, new StorageLayer { Algorithm = algorithm })
         {
         }
-        
+
         private void RefreshImageSync()
         {
             try
@@ -280,12 +280,12 @@ namespace Tychaia.ProceduralGeneration.Flow
                     result.Add(i);
             return result.ToArray();
         }
-        
+
         public override void SetDeserializationData(FlowInterfaceControl control)
         {
             this.m_Control = control;
         }
-        
+
         public FlowConnector[] GetConnectorsForLayer(FlowConnector connector, bool isInput)
         {
             if (isInput)
@@ -302,7 +302,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                     .Where(v => v is AlgorithmFlowElement)
                     .Select(v => v as AlgorithmFlowElement)
                     .Where(v => v.m_Layer.Inputs == null ? false : v.m_Layer.Inputs.Contains(this.m_Layer));
-                
+
                 // TODO: Probably can be moved into LINQ query above.
                 List<FlowConnector> fll = new List<FlowConnector>();
                 foreach (AlgorithmFlowElement el in lfe)
@@ -318,7 +318,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                 return fll.ToArray();
             }
         }
-        
+
         public void SetConnectorsForLayer(AlgorithmFlowConnector connector, FlowConnector[] targets, bool isInput)
         {
             if (isInput)
@@ -346,12 +346,12 @@ namespace Tychaia.ProceduralGeneration.Flow
                     true);
                 }
             }
-            
+
             // Invalidate the control area.
             foreach (Rectangle r in this.GetConnectorRegionsToInvalidate())
                 this.m_Control.Invalidate(r);
         }
-        
+
         public override object GetObjectToInspect()
         {
             return this.m_Layer.Algorithm;
@@ -360,7 +360,7 @@ namespace Tychaia.ProceduralGeneration.Flow
         public override void ObjectPropertyUpdated()
         {
             this.m_Control.PushForReprocessing(this);
-            
+
             // Update children.
             foreach (FlowConnector output in this.m_OutputConnectors)
             {
@@ -374,14 +374,14 @@ namespace Tychaia.ProceduralGeneration.Flow
                 }
             }
         }
-        
+
         public override void ObjectReprocessRequested()
         {
             this.RefreshImageSync();
         }
-        
+
         #region Overridden Properties
-        
+
         public override List<FlowConnector> InputConnectors
         {
             get
@@ -389,7 +389,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                 return this.m_InputConnectors;
             }
         }
-        
+
         public override List<FlowConnector> OutputConnectors
         {
             get
@@ -397,7 +397,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                 return this.m_OutputConnectors;
             }
         }
-        
+
         #endregion
     }
 }

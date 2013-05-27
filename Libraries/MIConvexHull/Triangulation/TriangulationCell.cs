@@ -1,4 +1,4 @@
-﻿namespace MIConvexHull
+namespace MIConvexHull
 {
     /// <summary>
     /// Representation of the triangulation cell. Pretty much the same as ConvexFace,

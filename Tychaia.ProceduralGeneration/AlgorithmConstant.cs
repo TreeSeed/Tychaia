@@ -32,7 +32,7 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
+
         public override bool Is2DOnly
         {
             get { return false; }
@@ -42,7 +42,7 @@ namespace Tychaia.ProceduralGeneration
         {
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.Constant;
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.Color;

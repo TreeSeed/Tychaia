@@ -23,7 +23,7 @@ namespace Tychaia.ProceduralGeneration
         /// needs in order to complete it's operation.
         /// </summary>
         int[] RequiredYBorder { get; }
-        
+
         /// <summary>
         /// The required amount of Z border data that this algorithm
         /// needs in order to complete it's operation.
@@ -75,27 +75,27 @@ namespace Tychaia.ProceduralGeneration
         bool Is2DOnly { get; }
     }
 
-    /// 
+    ///
     /// These algoritms implement a ProcessCell function which is used to
     /// generate data.
-    /// 
+    ///
     /// The x, y, z parameters represent the current absolute location.
     ///   -- This is the one to use with GetRandomNumber etc.
     /// The i, j, k parameters represent the current x, y, z location relative to the top-left corner.
     ///   -- This is the one to use when reading and writing array data.
     /// The width, height, depth parameters represent the total size of the dimensions requested.
     ///   -- These are also used when reading and writing array data.
-    /// 
+    ///
     /// The runtime context exposes random generation functionality.
     /// The output array is where you write your output, while the input
     /// arrays are where you get your data from.
-    /// 
+    ///
     /// IMPORTANT: The input arrays will come with border data according to
     /// the value in this.RequiredBorder.  You must use this value to offset
     /// reads from input like so:
-    /// 
+    ///
     ///   input[(x + this.RequiredBorder) + (y + this.RequiredBorder) * width + (z + this.RequiredBorder) * width * height]
-    /// 
+    ///
 
     #region Abstract Algorithm Classes
 
@@ -173,7 +173,7 @@ namespace Tychaia.ProceduralGeneration
         public abstract bool Is2DOnly { get; }
 
         public abstract Color GetColorForValue(StorageLayer parent, dynamic value);
-        
+
         public virtual void Initialize(IRuntimeContext context)
         {
         }
@@ -250,7 +250,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return new Type[] { typeof(TInput) }; }
         }
-        
+
         public sealed override Type OutputType
         {
             get { return typeof(TOutput); }
@@ -281,7 +281,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return new Type[] { typeof(TInputA), typeof(TInputB) }; }
         }
-        
+
         public sealed override Type OutputType
         {
             get { return typeof(TOutput); }
@@ -308,7 +308,7 @@ namespace Tychaia.ProceduralGeneration
                                          int ox,
                                          int oy,
                                          int oz);
-        
+
         public sealed override Type[] InputTypes
         {
             get
@@ -321,7 +321,7 @@ namespace Tychaia.ProceduralGeneration
                 };
             }
         }
-        
+
         public sealed override Type OutputType
         {
             get { return typeof(TOutput); }
@@ -349,7 +349,7 @@ namespace Tychaia.ProceduralGeneration
                                          int ox,
                                          int oy,
                                          int oz);
-        
+
         public sealed override Type[] InputTypes
         {
             get
@@ -363,7 +363,7 @@ namespace Tychaia.ProceduralGeneration
                 };
             }
         }
-        
+
         public sealed override Type OutputType
         {
             get { return typeof(TOutput); }
@@ -392,7 +392,7 @@ namespace Tychaia.ProceduralGeneration
                                          int ox,
                                          int oy,
                                          int oz);
-        
+
         public sealed override Type[] InputTypes
         {
             get
@@ -407,7 +407,7 @@ namespace Tychaia.ProceduralGeneration
                 };
             }
         }
-        
+
         public sealed override Type OutputType
         {
             get { return typeof(TOutput); }

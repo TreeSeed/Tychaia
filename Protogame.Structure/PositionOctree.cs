@@ -1,4 +1,4 @@
-﻿namespace Protogame.Structure
+namespace Protogame.Structure
 {
     public class PositionOctree<T> where T : class
     {

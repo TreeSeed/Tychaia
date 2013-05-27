@@ -34,7 +34,7 @@ namespace Tychaia.ProceduralGeneration
             get { return this.ValueShouldBePlacedAt == m_Test1; }
             set { this.ValueShouldBePlacedAt = value ? m_Test1 : null; }
         }
-        
+
         public bool Test2
         {
             get { return this.ValueShouldBePlacedAt == m_Test2; }
@@ -54,7 +54,7 @@ namespace Tychaia.ProceduralGeneration
             else
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.ValueShouldBePlacedAt(x, y, z) ? 1 : 0;
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             if (value == 0)

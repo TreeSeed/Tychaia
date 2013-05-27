@@ -29,7 +29,7 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
+
         /// <summary>
         /// The Y position for rendering in the editor.  It serves
         /// no other purpose.
@@ -59,7 +59,7 @@ namespace Tychaia.ProceduralGeneration
                     this.m_Layers = new StorageLayer[this.m_Algorithm.InputTypes.Length];
             }
         }
-        
+
         /// <summary>
         /// The input layers.
         /// </summary>
