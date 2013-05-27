@@ -180,7 +180,7 @@ namespace Tychaia.Generators
             else if (this.m_UniqueRender != null && (this.m_UniqueRender.Target != null || this.m_UniqueRender.DepthMap != null))
                 // Release from the unique render cache.
                 UniqueRenderCache.Release(this.m_RawData);
-            
+
             // Send message about texture being discarded.
             FilteredConsole.WriteLine(FilterCategory.GraphicsMemoryUsage, "Textures discarded for chunk " + this.X + ", " + this.Y + ".");
         }
@@ -297,7 +297,7 @@ namespace Tychaia.Generators
                 LevelDisk = this.m_DiskLevel,
                 Seed = this.m_Seed,
                 Random = new Random(this.m_Seed),
-                Bounds = new Cube(this.X / Scale.CUBE_X, this.Y / Scale.CUBE_Y, this.Z / Scale.CUBE_Z, 
+                Bounds = new Cube(this.X / Scale.CUBE_X, this.Y / Scale.CUBE_Y, this.Z / Scale.CUBE_Z,
                     Chunk.Width, Chunk.Height, Chunk.Depth)
             };
             ChunkProvider.FillChunk(this, this.m_RawData, this.m_Blocks, i, () =>

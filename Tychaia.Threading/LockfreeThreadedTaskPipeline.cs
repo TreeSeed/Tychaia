@@ -121,7 +121,7 @@ namespace Tychaia.Threading
             var spin = new SpinWait();
             while (this.m_Head == null)
                 spin.SpinOnce();
-            
+
             // Return the item and exchange the current head with
             // the next item, all in an atomic operation.
             var head = m_Head;

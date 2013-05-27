@@ -23,29 +23,29 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
+
         public override int[] RequiredXBorder { get { return new int[] {2}; } }
         public override int[] RequiredYBorder { get { return new int[] {2}; } }
         public override int[] RequiredZBorder { get { return new int[] {0}; } }
         public override bool[] InputWidthAtHalfSize { get { return new bool[] {false}; } }
         public override bool[] InputHeightAtHalfSize { get { return new bool[] {false}; } }
         public override bool[] InputDepthAtHalfSize { get { return new bool[] {false}; } }
-        
+
         public AlgorithmSmooth2D()
         {
             this.Mode = SmoothType.Linear;
         }
-        
+
         public override string[] InputNames
         {
             get { return new string[] { "Input" }; }
         }
-        
+
         public override bool Is2DOnly
         {
             get { return true; }
         }
-        
+
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             var ck = (k + oz) * width * height;
@@ -76,7 +76,7 @@ namespace Tychaia.ProceduralGeneration
             var v42 = input[(iox + 2) + (joy + 0) * width + ck];
             var v43 = input[(iox + 2) + (joy + 1) * width + ck];
             var v44 = input[(iox + 2) + (joy + 2) * width + ck];
-            
+
             var result = 0;
             var total = 0;
             var applier = new int[5, 5];
@@ -140,10 +140,10 @@ namespace Tychaia.ProceduralGeneration
                     storage[ii, jj] = sample[ii, jj] * applier[ii, jj];
             foreach (var v in storage)
                 result += v;
-            
+
             output[i + ox + (j + oy) * width + (k + oz) * width * height] = (int)((double)result / (double)total);
         }
-        
+
         /// <summary>
         /// An enumeration defining the type of smooth to perform.
         /// </summary>
@@ -154,7 +154,7 @@ namespace Tychaia.ProceduralGeneration
             Parabolic,
             Cubic,
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);

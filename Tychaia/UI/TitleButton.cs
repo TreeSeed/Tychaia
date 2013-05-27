@@ -32,7 +32,7 @@ namespace Tychaia.UI
             get { return this.m_Area.X; }
             set { this.m_Area.X = value; }
         }
-        
+
         public int Y
         {
             get { return this.m_Area.Y; }

@@ -201,7 +201,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                 graphics.DrawImage(
                     this.m_Bitmaps[e.NewValue],
                     new Rectangle(0, 0, this.c_TraceImage.Width, this.c_TraceImage.Height),
-                    // destination rectangle 
+                    // destination rectangle
                     0,
                     0,           // upper-left corner of source rectangle
                     this.m_Bitmaps[e.NewValue].Width,       // width of source rectangle

@@ -65,7 +65,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             if (algorithm == null)
                 throw new InvalidOperationException("Attempted to compile null runtime layer!");
             var algorithmType = algorithm.GetType();
-            
+
             // If the runtime layer has inputs, we need to process them first.
             if (layer.Algorithm.InputTypes.Length > 0)
             {
@@ -89,7 +89,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             Console.WriteLine(ranged.ToString());
 
             // Add the conditional container.
-            string code = "if (k >= (int)((" + ranged.Z.GetText(null) + ") - z) && i >= (int)((" + ranged.X.GetText(null) + ") - x) && j >= (int)((" + ranged.Y.GetText(null) + ") - y)" + 
+            string code = "if (k >= (int)((" + ranged.Z.GetText(null) + ") - z) && i >= (int)((" + ranged.X.GetText(null) + ") - x) && j >= (int)((" + ranged.Y.GetText(null) + ") - y)" +
                 " && k < " + ranged.OuterZ.GetText(null) + " && i < " + ranged.OuterX.GetText(null) + " && j < " + ranged.OuterY.GetText(null) + @")
 {
 ";
@@ -101,7 +101,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 "" + ranged.Width + " + \" \" + " +
                 "" + ranged.Height + " + \" \" + " +
                 "" + ranged.Depth + ");";*/
-            
+
             // Refactor the method.
             AstBuilder astBuilder;
             var method = DecompileUtil.GetAlgorithmCode(algorithmType, out astBuilder);
@@ -124,7 +124,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             // somewhere to accumulate code.
             var result = new ProcessedResult();
             result.ProcessedCode = "";
-            
+
             // Get a reference to the algorithm that the runtime layer is using.
             var algorithm = layer.Algorithm;
             if (algorithm == null)
@@ -199,7 +199,7 @@ for (var j = (int)((" + iy.GetText(null) + ") - y); j < " + ioutery.GetText(null
             {
                 //int i = 1;
                 foreach (var line in final.Split('\n'))
-                    //i++.ToString().PadLeft(4) + ":  " + 
+                    //i++.ToString().PadLeft(4) + ":  " +
                     writer.WriteLine(line);
             }
             if (results.Errors.HasErrors)

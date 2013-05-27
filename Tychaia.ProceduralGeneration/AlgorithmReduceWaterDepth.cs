@@ -29,7 +29,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return true; }
         }
-        
+
         public AlgorithmReduceWaterDepth()
         {
             this.Divisor = 1;
@@ -52,7 +52,7 @@ namespace Tychaia.ProceduralGeneration
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             if (input[(i + ox) + (j + oy) * width + (k + oz) * width * height] < 0)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
                     (int)Math.Floor(input[(i + ox) + (j + oy) * width + (k + oz) * width * height] / (double)(this.Divisor == 0 ? 1 : Math.Abs(this.Divisor)));
             else
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[(i + ox) + (j + oy) * width + (k + oz) * width * height];

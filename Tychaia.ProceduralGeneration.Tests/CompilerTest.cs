@@ -14,7 +14,7 @@ namespace Tychaia.ProceduralGeneration.Tests
 
     #if DISABLED
 
-    
+
     public class CompilerTest
     {
         [Fact]
@@ -51,7 +51,7 @@ namespace Tychaia.ProceduralGeneration.Tests
 
             var c1 = LayerCompiler.Compile(gradient).GenerateData(0, 0, 0, width, height, depth, out computations1);
             var c2 = LayerCompiler.Compile(passthrough).GenerateData(0, 0, 0, width, height, depth, out computations2);
-            
+
             for (var x = 0; x < width; x++)
                 for (var y = 0; y < height; y++)
                     for (var z = 0; z < depth; z++)
@@ -59,7 +59,7 @@ namespace Tychaia.ProceduralGeneration.Tests
                             i1[x + y * width + z * width * height],
                             c1[x + y * width + z * width * height],
                             "Value differs in gradient compare.");
-            
+
             for (var x = 0; x < width; x++)
                 for (var y = 0; y < height; y++)
                     for (var z = 0; z < depth; z++)

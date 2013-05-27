@@ -64,13 +64,13 @@ namespace Tychaia.ProceduralGeneration.Biomes
         {
             /* What I was going to do:
              * Have it check for the most suitable biome. Biomes will just be given an average for each rain/temp/height and then it will select which biome fits best.
-             */ 
+             */
             double[] score = new double[Biomes.Count];
 
             for (int i = 0; i < Biomes.Count; i++)
             {
                 Biome biome = Biomes[i];
-                
+
                 if (biome.Terrain != 0)
                 {
                     score[i] += Math.Abs(biome.Rainfall - rainfall) * biome.RainfallSelectionVariance;

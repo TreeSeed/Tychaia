@@ -14,7 +14,7 @@ namespace Tychaia.ProceduralGeneration
             get;
             private set;
         }
-    
+
         public FlowDesignerNameAttribute(string name)
         {
             this.Name = name;

@@ -92,7 +92,7 @@ namespace Protogame
                 if (t is EntityTile)
                     this.Entities.Add(t as EntityTile);
         }
-        
+
         /// <summary>
         /// Performs any custom drawing events for this world, prior to everything else being drawn.
         /// </summary>

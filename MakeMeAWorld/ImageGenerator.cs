@@ -32,7 +32,7 @@ namespace MakeMeAWorld
             var bitmap = RenderPartial3D(result);
             this.SaveToCache(bitmap, result.Request, context);
         }
-        
+
         protected override void ProcessEmpty(GenerationResult result, HttpContext context)
         {
             var bitmap = new Bitmap(1, 1);
@@ -65,11 +65,11 @@ namespace MakeMeAWorld
         }
 
         #region Rendering
-        
+
         #region 3D Rendering
-        
+
         #region Cell Render Ordering
-        
+
         private static int[][] m_CellRenderOrder = new int[4][]
         {
             null,
@@ -81,45 +81,45 @@ namespace MakeMeAWorld
         private const int RenderToNW = 1;
         private const int RenderToSE = 2;
         private const int RenderToSW = 3;
-        
+
         private static int[] CalculateCellRenderOrder(int targetDir, int width, int height)
         {
             /*               North
-             *        0  1  2  3  4  5  6 
-             *        1  2  3  4  5  6  7 
+             *        0  1  2  3  4  5  6
+             *        1  2  3  4  5  6  7
              *        2  3  4  5  6  7  8
              *  East  3  4  5  6  7  8  9  West
              *        4  5  6  7  8  9  10
              *        5  6  7  8  9  10 11
              *        6  7  8  9  10 11 12
              *               South
-             *  
+             *
              * Start value is always 0.
              * Last value is (MaxX + MaxY).
              * This is the AtkValue.
-             * 
+             *
              * We attack from the left side of the render first
              * with (X: 0, Y: AtkValue) until Y would be less than
              * half of AtkValue.
-             * 
+             *
              * We then attack from the right side of the render
              * with (X: AtkValue, Y: 0) until X would be less than
              * half of AtkValue - 1.
-             * 
+             *
              * If we are attacking from the left, but Y is now
              * greater than MaxY, then we are over half-way and are
              * now starting at the bottom of the grid.
-             * 
+             *
              * In this case, we start with (X: AtkValue - MaxY, Y: MaxY)
              * and continue until we reach the same conditions that
              * apply normally.  The same method applies to the right hand
              * side where we start with (X: MaxX, Y: AtkValue - MaxX).
              *
              */
-            
+
             if (targetDir != RenderToNE)
                 throw new InvalidOperationException();
-            
+
             var result = new int[width * height];
             var count = 0;
             var start = 0;
@@ -127,7 +127,7 @@ namespace MakeMeAWorld
             var maxy = height - 1;
             var last = maxx + maxy;
             int x, y;
-            
+
             for (int atk = start; atk <= last; atk++)
             {
                 // Attack from the left.
@@ -143,7 +143,7 @@ namespace MakeMeAWorld
                 }
                 while (y > atk / 2)
                     result[count++] = y-- * width + x++;
-                
+
                 // Attack from the right.
                 if (atk < maxx)
                 {
@@ -158,19 +158,19 @@ namespace MakeMeAWorld
                 while (y <= atk / 2)
                     result[count++] = y++ * width + x--;
             }
-            
+
             return result;
         }
-        
+
         private static int[] GetCellRenderOrder(int cameraDirection, int width, int height)
         {
             if (m_CellRenderOrder[cameraDirection] == null)
                 m_CellRenderOrder[cameraDirection] = CalculateCellRenderOrder(cameraDirection, width, height);
             return m_CellRenderOrder[cameraDirection];
         }
-        
+
         #endregion
-        
+
         private static Bitmap RenderPartial3D(GenerationResult result)
         {
             var width = result.Request.Size;
@@ -241,7 +241,7 @@ namespace MakeMeAWorld
             }
             return bitmap;
         }
-        
+
         #endregion
 
         #endregion

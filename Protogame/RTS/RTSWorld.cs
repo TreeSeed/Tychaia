@@ -32,7 +32,7 @@ namespace Protogame.RTS
             // Add default, neutral team.
             Team neutral = new Team(0, "Neutral", Color.LightGray);
             this.Teams.Add(neutral);
-            
+
 #if MULTIPLAYER
             // Get global session information.
             this.m_GlobalSession = new Distributed<GlobalSession>("rts-session");

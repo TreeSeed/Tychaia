@@ -42,7 +42,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return new string[] { "Previous Terrain", "New Land", "Terrain Modifier" }; }
         }
-        
+
         public override bool Is2DOnly
         {
             get { return true; }
@@ -65,7 +65,7 @@ namespace Tychaia.ProceduralGeneration
                 if (inputB[i + 1 + ox + (j + oy) * width + (k + oz) * width * height] != 0 &&
                     inputB[i - 1 + ox + (j + oy) * width + (k + oz) * width * height] != 0 &&
                     inputB[i + ox + (j + 1 + oy) * width + (k + oz) * width * height] != 0 &&
-                    inputB[i + ox + (j - 1 + oy) * width + (k + oz) * width * height] != 0) 
+                    inputB[i + ox + (j - 1 + oy) * width + (k + oz) * width * height] != 0)
                 {
                     if (this.CheckDiagonals == true &&
                         inputB[i + 1 + ox + (j + 1 + oy) * width + (k + oz) * width * height] != 0 &&
@@ -94,7 +94,7 @@ namespace Tychaia.ProceduralGeneration
                 output[i + ox + (j + oy) * width + (k + oz) * width * height] = 0;
             }
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             if (value == 0)

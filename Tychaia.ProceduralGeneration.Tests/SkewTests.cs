@@ -32,7 +32,7 @@ namespace Tychaia.ProceduralGeneration.Tests
                         passthrough.YBorder = j;
                         passthrough.ZBorder = k;
                         var result = runtimePassthough.GenerateData(0, -16, -16, 32, 32, 32, out computations);
-            
+
                         // Test the area where we should be filled.
                         for (var x = 0; x < 32; x += 1)
                             Assert.True(result[x + 16 * 32 + 16 * 32 * 32] == 1, "Skew present on the X axis with borders (" + i + ", " + j + ", " + k + "), value missing.");
@@ -69,7 +69,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var runtimeInput = new RuntimeLayer(input);
             var runtimePassthough = new RuntimeLayer(passthrough);
             runtimePassthough.SetInput(0, runtimeInput);
-            
+
             // We need to check with various borders.
             for (var i = 0; i < 2; i++)
                 for (var j = 0; j < 2; j++)
@@ -79,11 +79,11 @@ namespace Tychaia.ProceduralGeneration.Tests
                         passthrough.YBorder = j;
                         passthrough.ZBorder = k;
                         var result = runtimePassthough.GenerateData(-16, 0, -16, 32, 32, 32, out computations);
-                    
+
                         // Test the area where we should be filled.
                         for (var y = 0; y < 32; y += 1)
                             Assert.True(result[16 + y * 32 + 16 * 32 * 32] == 1, "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k + "), value missing.");
-                    
+
                         // Test the areas where we should not be filled.
                         for (var y = 0; y < 32; y += 1)
                             Assert.False(result[17 + y * 32 + 15 * 32 * 32] == 1, "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k + "), value present at (1, " + y + ", -1).");
@@ -116,7 +116,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var runtimeInput = new RuntimeLayer(input);
             var runtimePassthough = new RuntimeLayer(passthrough);
             runtimePassthough.SetInput(0, runtimeInput);
-            
+
             // We need to check with various borders.
             for (var i = 0; i < 2; i++)
                 for (var j = 0; j < 2; j++)
@@ -126,11 +126,11 @@ namespace Tychaia.ProceduralGeneration.Tests
                         passthrough.YBorder = j;
                         passthrough.ZBorder = k;
                         var result = runtimePassthough.GenerateData(-16, -16, 0, 32, 32, 32, out computations);
-                    
+
                         // Test the area where we should be filled.
                         for (var z = 0; z < 32; z += 1)
                             Assert.True(result[16 + 16 * 32 + z * 32 * 32] == 1, "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k + "), value missing.");
-                    
+
                         // Test the areas where we should not be filled.
                         for (var z = 0; z < 32; z += 1)
                             Assert.False(result[15 + 17 * 32 + z * 32 * 32] == 1, "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k + "), value present at (-1, 1, " + z + ").");

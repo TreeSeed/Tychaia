@@ -49,9 +49,9 @@ public class CompiledLayer : IRuntimeContext, IGenerator
     #endregion
 
     #region Randomness
-    
+
     private long m_Seed;
-    
+
     /// <summary>
     /// The world seed.
     /// </summary>
@@ -75,7 +75,7 @@ public class CompiledLayer : IRuntimeContext, IGenerator
     {
         this.Seed = seed;
     }
-    
+
     /// <summary>
     /// Returns a random positive integer between the specified 0 and
     /// the exclusive end value.
@@ -84,7 +84,7 @@ public class CompiledLayer : IRuntimeContext, IGenerator
     {
         return AlgorithmUtility.GetRandomRange(this.Seed, x, y, z, end, modifier);
     }
-    
+
     /// <summary>
     /// Returns a random positive integer between the specified inclusive start
     /// value and the exclusive end value.
@@ -93,7 +93,7 @@ public class CompiledLayer : IRuntimeContext, IGenerator
     {
         return AlgorithmUtility.GetRandomRange(this.Seed, x, y, z, start, end, modifier);
     }
-    
+
     /// <summary>
     /// Returns a random integer over the range of valid integers based
     /// on the provided X and Y position, and the specified modifier.
@@ -102,7 +102,7 @@ public class CompiledLayer : IRuntimeContext, IGenerator
     {
         return AlgorithmUtility.GetRandomInt(this.Seed, x, y, z, modifier);
     }
-    
+
     /// <summary>
     /// Returns a random long integer over the range of valid long integers based
     /// on the provided X and Y position, and the specified modifier.
@@ -111,7 +111,7 @@ public class CompiledLayer : IRuntimeContext, IGenerator
     {
         return AlgorithmUtility.GetRandomLong(this.Seed, x, y, z, modifier);
     }
-    
+
     /// <summary>
     /// Returns a random double between the range of 0.0 and 1.0 based on
     /// the provided X and Y position, and the specified modifier.
@@ -120,11 +120,11 @@ public class CompiledLayer : IRuntimeContext, IGenerator
     {
         return AlgorithmUtility.GetRandomDouble(this.Seed, x, y, z, modifier);
     }
-    
+
     #endregion
-    
+
     #region Other
-    
+
     /// <summary>
     /// Smoothes the specified data according to smoothing logic.  Apparently
     /// inlining this functionality causes the algorithms to run slower, so we
@@ -134,7 +134,7 @@ public class CompiledLayer : IRuntimeContext, IGenerator
     {
         // Parent-based Smoothing
         int selected = 0;
-        
+
         if (x % 2 == 0)
         {
             if (y % 2 == 0)
@@ -198,11 +198,11 @@ public class CompiledLayer : IRuntimeContext, IGenerator
                 }
             }
         }
-        
+
         // Select one of the four options if we couldn't otherwise
         // determine a value.
         selected = this.GetRandomRange(x, y, 0, 4);
-        
+
         switch (selected)
         {
             case 0:
@@ -214,10 +214,10 @@ public class CompiledLayer : IRuntimeContext, IGenerator
             case 3:
                 return westValue;
         }
-        
+
         throw new InvalidOperationException();
     }
-    
+
     #endregion
 
 }

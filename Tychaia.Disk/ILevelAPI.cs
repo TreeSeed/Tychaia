@@ -12,7 +12,7 @@ namespace Tychaia.Disk
         /// </summary>
         /// <returns>A list of available levels.</returns>
         List<string> GetAvailableLevels();
-        
+
         /// <summary>
         /// Returns a reference to a new level.  This function will also
         /// create any initial data for the level; it does not have to have

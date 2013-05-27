@@ -25,7 +25,7 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
+
         [DataMember]
         [Description("The seed modifier value to apply to this perlin map.")]
         public long Modifier
@@ -33,7 +33,7 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
+
         [DataMember]
         [DefaultValue(0)]
         [Description("The minimum integer value in the resulting layer.")]
@@ -42,7 +42,7 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
+
         [DataMember]
         [DefaultValue(100)]
         [Description("The maximum integer value in the resulting layer.")]
@@ -60,12 +60,12 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
+
         public override bool Is2DOnly
         {
             get { return this.Layer2D; }
         }
-        
+
         public AlgorithmPerlin()
             : base()
         {

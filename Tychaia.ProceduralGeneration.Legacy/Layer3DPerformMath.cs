@@ -151,7 +151,7 @@ namespace Tychaia.ProceduralGeneration
                                     val = 0;
                                     break;
                             }
-                        
+
                             // Store result.
                             data[i + j * width + k * width * height] = (int)(val * (this.MaxOutput - this.MinOutput) + this.MinOutput);
                         }

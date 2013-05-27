@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    
+
     public class AlgorithmIncrementWaterDistanceTest
     {
         [Fact, TestFor(typeof(AlgorithmIncrementWaterDistance))]
@@ -39,7 +39,7 @@ namespace Tychaia.ProceduralGeneration.Tests
                         Assert.True(
                             result[i + j * 16 + k * 16 * 16] == -2);
                     }
-        }        
+        }
 
         [Fact, TestFor(typeof(AlgorithmIncrementWaterDistance))]
         public void TestPositiveDoubling()
@@ -51,17 +51,17 @@ namespace Tychaia.ProceduralGeneration.Tests
                     return (int)(1);
                 }
             };
-            
+
             int computations;
             var increment = new AlgorithmIncrementWaterDistance();
-            
+
             var runtimeInput = new RuntimeLayer(inputA);
             var runtimeTest = new RuntimeLayer(increment);
             runtimeTest.SetInput(0, runtimeInput);
-            
+
             var result = runtimeTest.GenerateData(0, 0, 0, 16, 16, 16, out computations);
-            
-            
+
+
             for (var i = 0; i < 16; i++)
                 for (var j = 0; j < 16; j++)
                     for (var k = 0; k < 16; k++)

@@ -28,7 +28,7 @@ namespace Tychaia.Threading
         {
             this.m_InternalQueue.Enqueue(value);
         }
-        
+
         public T Take()
         {
             if (this.m_InternalQueue.Count == 0)

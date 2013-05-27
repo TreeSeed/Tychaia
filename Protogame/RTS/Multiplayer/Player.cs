@@ -39,7 +39,7 @@ namespace Protogame.RTS.Multiplayer
             get;
             private set;
         }
-        
+
 #if MULTIPLAYER
         [ClientCallable]
 #endif

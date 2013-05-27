@@ -27,7 +27,7 @@ namespace Tychaia.ProceduralGeneration
             get;
             private set;
         }
-        
+
         public FlowDesignerCategoryAttribute(FlowCategory category)
         {
             this.Category = category;

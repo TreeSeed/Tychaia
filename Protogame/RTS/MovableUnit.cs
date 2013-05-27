@@ -105,7 +105,7 @@ namespace Protogame.RTS
                     // Debugging information.
                     (world as RTSWorld).UiManager.Log("unit is moving to " + this.m_CurrentPath.Peek() + ".");
 
-                    // If we are closer to the target than our move speed, jump directly to 
+                    // If we are closer to the target than our move speed, jump directly to
                     // it and pop the target location.
                     if (max.Length() < this.MoveSpeed)
                     {

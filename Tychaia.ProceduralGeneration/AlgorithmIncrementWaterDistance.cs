@@ -51,7 +51,7 @@ namespace Tychaia.ProceduralGeneration
         public override bool[] InputWidthAtHalfSize { get { return new bool[] {false}; } }
         public override bool[] InputHeightAtHalfSize { get { return new bool[] {false}; } }
         public override bool[] InputDepthAtHalfSize { get { return new bool[] {false}; } }
-        
+
         public AlgorithmIncrementWaterDistance()
         {
             this.MaxTerrainBinary = 0;
@@ -62,12 +62,12 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return new string[] { "Input" }; }
         }
-        
+
         public override bool Is2DOnly
         {
             get { return true; }
         }
-        
+
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             int v00 = input[((i - 1) + ox) + ((j - 1) + oy) * width + (k + oz) * width * height];
@@ -79,7 +79,7 @@ namespace Tychaia.ProceduralGeneration
             int v20 = input[((i + 1) + ox) + ((j - 1) + oy) * width + (k + oz) * width * height];
             int v21 = input[((i + 1) + ox) + ((j + 0) + oy) * width + (k + oz) * width * height];
             int v22 = input[((i + 1) + ox) + ((j + 1) + oy) * width + (k + oz) * width * height];
-            
+
             if (this.Initial)
             {
                 int result;
@@ -88,11 +88,11 @@ namespace Tychaia.ProceduralGeneration
                 else if (
                     (v00 > 0 ? 1 : 0 +
                     v01 > 0 ? 1 : 0 +
-                    v02 > 0 ? 1 : 0 + 
-                    v10 > 0 ? 1 : 0 + 
-                    v12 > 0 ? 1 : 0 + 
-                    v20 > 0 ? 1 : 0 + 
-                    v21 > 0 ? 1 : 0 + 
+                    v02 > 0 ? 1 : 0 +
+                    v10 > 0 ? 1 : 0 +
+                    v12 > 0 ? 1 : 0 +
+                    v20 > 0 ? 1 : 0 +
+                    v21 > 0 ? 1 : 0 +
                     v22 > 0 ? 1 : 0) > 0)
                     result = 0;
                 else

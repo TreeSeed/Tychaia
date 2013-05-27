@@ -54,7 +54,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                     MessageBox.Show(this, "Unable to load configuration file.", "Configuration invalid.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                
+
                 // Reset state.
                 this.c_FlowInterfaceControl.Elements.Clear();
                 this.c_FlowInterfaceControl.Invalidate();
@@ -145,7 +145,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.c_FlowInterfaceControl.Pan(e.X, e.Y);
             this.c_ZoomStatus.Text = (this.c_FlowInterfaceControl.Zoom * 100.0f).ToString() + "%";
         }
-        
+
         private void c_FlowInterfaceControl_ElementsInQueueCountChanged(object sender, Redpoint.FlowGraph.FlowInterfaceControl.ElementsInQueueCountChangedEventArgs e)
         {
             this.c_QueueStatus.Text = e.Count.ToString() + " elements in queue.";
@@ -274,9 +274,9 @@ namespace TychaiaWorldGenViewerAlgorithm
         }
 
         #endregion
-        
+
         #region Menu Generation
-        
+
         private struct SelectedType
         {
             public string Name;
@@ -284,7 +284,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             public FlowMajorCategory MajorCategory;
             public Type Type;
         }
-        
+
         private void CreateDynamicLayer(Type t)
         {
             ConstructorInfo[] cis = t.GetConstructors();
@@ -302,7 +302,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             )
             );
         }
-        
+
         private void CreateMenuItems(ContextMenuStrip menu)
         {
             // Get list of layer types.
@@ -311,7 +311,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                 foreach (var t in a.GetTypes())
                     if (typeof(IAlgorithm).IsAssignableFrom(t))
                         types.Add(t);
-            
+
             // For each of those layer types, find ones that have
             // FlowDesignerName, FlowDesignerCategory and FlowDesignerMajorCategory attributes.
             List<SelectedType> selectedTypes = new List<SelectedType>();
@@ -343,7 +343,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                 if (foundName && foundCategory)
                     selectedTypes.Add(new SelectedType { Name = currentName, MajorCategory = currentMajorCategory, Category = currentCategory, Type = t });
             }
-            
+
             // Sort selected types into bins.
             selectedTypes.OrderBy(v => v.Name);
             menu.Items.Add(new ToolStripMenuItem("Tychaia World Generator") { Enabled = false });
@@ -398,7 +398,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             menu.Items.Add(this.c_RenameSelectedMenuItem);
             menu.Items.Add(this.c_DeleteSelectedMenuItem);
         }
-        
+
         #endregion
     }
 }

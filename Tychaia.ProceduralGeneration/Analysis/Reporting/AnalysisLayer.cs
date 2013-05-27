@@ -21,7 +21,7 @@ namespace Tychaia.ProceduralGeneration.Analysis.Reporting
         [DataMember(Name = "code")]
         public string
             Code;
-        
+
         [DataMember(Name = "hash")]
         public uint Hash
         {
@@ -40,7 +40,7 @@ namespace Tychaia.ProceduralGeneration.Analysis.Reporting
                 Name = a;
             }
         }
-        
+
         [DataMember(Name = "reports")]
         public List<AnalysisReport>
             Reports = new List<AnalysisReport>();

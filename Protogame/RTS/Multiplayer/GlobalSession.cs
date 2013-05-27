@@ -74,7 +74,7 @@ namespace Protogame.RTS.Multiplayer
             get;
             set;
         }
-        
+
 #if MULTIPLAYER
         public DList<Player> Players
 #else

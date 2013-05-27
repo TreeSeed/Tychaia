@@ -25,7 +25,7 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
+
         [DataMember]
         [DefaultValue(false)]
         [Description("This layer is 2d.")]
@@ -34,23 +34,23 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
+
         public override bool Is2DOnly
         {
             get { return Layer2d; }
         }
-        
+
         public override string[] InputNames
         {
             get { return new string[] { "Input", "Multiplier" }; }
         }
-        
+
         public AlgorithmMultiply()
-        {   
+        {
             this.EstimateMax = 100;
             this.Layer2d = false;
         }
-        
+
         public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             double difference = -1;
@@ -64,20 +64,20 @@ namespace Tychaia.ProceduralGeneration
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height];
 
         }
-        
+
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             int a;
 
             double divvalue = (double)this.EstimateMax;
-                
+
             if (divvalue > 255)
                 divvalue = 255;
             else if (divvalue < 1)
                 divvalue = 1;
-                
+
             a = (int)(value * ((double)255 / divvalue));
-                
+
             if (a > 255)
                 a = 255;
             if (a < 0)

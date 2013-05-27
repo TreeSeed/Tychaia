@@ -62,7 +62,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 ))));
             }
         }
-        
+
         public Expression OuterZ
         {
             get
@@ -108,7 +108,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
 
         // Just finding offsets, then use them to determine max width, start X location, etc.
         public static void FindMaximumOffsets(
-            RangedLayer layer, 
+            RangedLayer layer,
             out Expression OffsetX,
             out Expression OffsetY,
             out Expression OffsetZ)
@@ -124,7 +124,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             {
                 if (input == null)
                     continue;
-                
+
                 Expression iOffsetX, iOffsetY, iOffsetZ;
                 FindMaximumOffsets(input, out iOffsetX, out iOffsetY, out iOffsetZ);
 
@@ -369,7 +369,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             )
             );
         }
-        
+
         /// <summary>
         /// Creates a parethesized divide-by-2 expression.
         /// </summary>

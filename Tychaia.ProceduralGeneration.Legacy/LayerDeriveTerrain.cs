@@ -126,7 +126,7 @@ namespace Tychaia.ProceduralGeneration
                 return -1;
 
             return parent[x + y * width];
-        } 
+        }
 
         public override Dictionary<int, LayerColor> GetLayerColors()
         {

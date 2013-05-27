@@ -20,7 +20,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             zoom.SetInput(0, gradient);
             var i1 = gradient.GenerateData(0, 0, 0, width, height, depth, out computations1);
             var i2 = zoom.GenerateData(0, 0, 0, width, height, depth, out computations2);
-            
+
             for (var i = 0; i < width; i++)
                 for (var j = 0; j < height; j++)
                     for (var k = 0; k < depth; k++)
@@ -47,7 +47,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var runtimeZoom = new RuntimeLayer(zoom);
             runtimeZoom.SetInput(0, runtimeInput);
             var result = runtimeZoom.GenerateData(1, 0, 0, 32, 32, 32, out computations);
-            
+
             // We have filled the entire block, therefore this bug can be detected by checking
             // every odd row.
             for (var x = 1; x < 32; x += 2)

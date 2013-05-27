@@ -104,8 +104,8 @@ namespace Tychaia.Puzzle
              * 503
              * 602
              *  1
-             * 
-             */ 
+             *
+             */
         }
 
         public void Generate()
@@ -239,14 +239,14 @@ namespace Tychaia.Puzzle
                 return a % (end - start) + start;
             }
         }
-        
+
         public static int GetRandomInt(long seed, long x, long y, long z, long modifier = 0)
         {
             unchecked
             {
                 return (int)(GetRandomNumber(seed, x, y, z, modifier) % int.MaxValue);
             }
-            
+
         }
         private static long GetRandomNumber(long _seed, long x, long y, long z, long modifier)
         {
@@ -269,7 +269,7 @@ namespace Tychaia.Puzzle
                 seed += modifier;
                 // Prevents the seed from being 0 along an axis.
                 seed += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
-                
+
                 long rng = seed * seed;
                 rng += (x - 11) * 2990430311017;
                 rng *= (y - 12) * 14475080218213;
@@ -282,7 +282,7 @@ namespace Tychaia.Puzzle
                 rng += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
                 rng += modifier;
                 rng += 3661988493967;
-                
+
                 return rng;
             }
         }

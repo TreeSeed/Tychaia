@@ -58,7 +58,7 @@ namespace Tychaia.Generators
             { 0, WaterBlock },
             { 1, GrassBlock },
             { 2, SandBlock },
-            { 3, SnowBlock }, 
+            { 3, SnowBlock },
             { 4, DirtBlock },
             { 5, StoneBlock },
             { 6, TrunkBlock },

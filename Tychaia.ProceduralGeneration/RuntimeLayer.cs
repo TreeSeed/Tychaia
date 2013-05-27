@@ -122,12 +122,12 @@ namespace Tychaia.ProceduralGeneration
 
         // Just finding offsets, then use them to determine max width, start X location, etc.
         public static void FindMaximumOffsets(
-            RuntimeLayer layer, 
+            RuntimeLayer layer,
             out int offsetX,
             out int offsetY,
             out int offsetZ,
-            out int halfX, 
-            out int halfY, 
+            out int halfX,
+            out int halfY,
             out int halfZ)
         {
             if (layer == null)
@@ -156,12 +156,12 @@ namespace Tychaia.ProceduralGeneration
                         continue;
 
                     // can't just divide offsets after half by half
-                    // 
+                    //
 
 //                    TempOffsetX[inputs] += (layer.m_Algorithm.InputWidthAtHalfSize[inputs] ? Math.Abs(layer.m_Algorithm.RequiredXBorder[inputs]) * 2 : Math.Abs(layer.m_Algorithm.RequiredXBorder[inputs]));
 //                    TempOffsetY[inputs] += (layer.m_Algorithm.InputHeightAtHalfSize[inputs] ? Math.Abs(layer.m_Algorithm.RequiredYBorder[inputs]) * 2 : Math.Abs(layer.m_Algorithm.RequiredYBorder[inputs]));
 //                    TempOffsetZ[inputs] += (layer.m_Algorithm.InputDepthAtHalfSize[inputs] ? Math.Abs(layer.m_Algorithm.RequiredZBorder[inputs]) * 2 : Math.Abs(layer.m_Algorithm.RequiredZBorder[inputs]));
-                    
+
                     TempHalfX[inputs] += (layer.m_Algorithm.InputWidthAtHalfSize[inputs] ? 1 : 0);
                     TempHalfY[inputs] += (layer.m_Algorithm.InputHeightAtHalfSize[inputs] ? 1 : 0);
                     TempHalfZ[inputs] += (layer.m_Algorithm.InputDepthAtHalfSize[inputs] ? 1 : 0);
@@ -193,7 +193,7 @@ namespace Tychaia.ProceduralGeneration
                     if (halfY < TempHalfY[count])
                         halfY = TempHalfY[count];
                     if (halfZ < TempHalfZ[count])
-                        halfZ = TempHalfZ[count]; 
+                        halfZ = TempHalfZ[count];
                 }
             }
         }
@@ -230,7 +230,7 @@ namespace Tychaia.ProceduralGeneration
             if (arrayWidth != (int)(xTo - xFrom) ||
                 arrayHeight != (int)(yTo - yFrom) ||
                 arrayDepth != (int)(zTo - zFrom))
-                throw new InvalidOperationException("Size generation is out of sync!"); 
+                throw new InvalidOperationException("Size generation is out of sync!");
             */
 
             // Get the method for processing cells.
@@ -249,7 +249,7 @@ namespace Tychaia.ProceduralGeneration
 
                         algorithm.Initialize(this);
 
-                        // context, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz                    
+                        // context, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz
                         for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1 - childOffsetZ); k++)
                             for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1 - childOffsetX); i++)
                                 for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1 - childOffsetY); j++)
@@ -274,7 +274,7 @@ namespace Tychaia.ProceduralGeneration
                                 for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1 - childOffsetX); i++)
                                     for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1 - childOffsetY); j++)
                                     {
-                                
+
                                         algorithm.ProcessCell(
                                     this,
                                     inputArray0,
@@ -308,14 +308,14 @@ namespace Tychaia.ProceduralGeneration
                             dynamic inputArray1 = this.GetInputData(1, absoluteX, absoluteY, absoluteZ, width, height, depth,
                                 arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
                                 childOffsetX, childOffsetY, childOffsetZ, ref computations);
-                        
+
                             algorithm.Initialize(this);
-                        
+
                             for (int k = -childOffsetZ; k < (depth - childOffsetZ > 0 ? depth - childOffsetZ : 1); k++)
                                 for (int i = -childOffsetX; i < (width - childOffsetX > 0 ? width - childOffsetX : 1); i++)
                                     for (int j = -childOffsetY; j < (height - childOffsetY > 0 ? height - childOffsetY : 1); j++)
                                     {
-                                
+
                                         algorithm.ProcessCell(
                                     this,
                                     inputArray0,
@@ -394,11 +394,11 @@ namespace Tychaia.ProceduralGeneration
                 (this.m_Algorithm.InputWidthAtHalfSize[idx] ? ((absoluteX) < 0 ? (absoluteX - 1) / 2 : (absoluteX) / 2) : absoluteX),
                 (this.m_Algorithm.InputHeightAtHalfSize[idx] ? ((absoluteY) < 0 ? (absoluteY - 1) / 2 : (absoluteY) / 2) : absoluteY),
                 (this.m_Algorithm.InputDepthAtHalfSize[idx] ? ((absoluteZ) < 0 ? (absoluteZ - 1) / 2 : (absoluteZ) / 2) : absoluteZ),
-                (this.m_Algorithm.InputWidthAtHalfSize[idx] ? (width / 2) + this.m_Algorithm.RequiredXBorder[idx] * 2 : width + this.m_Algorithm.RequiredXBorder[idx] * 2), 
-                (this.m_Algorithm.InputHeightAtHalfSize[idx] ? (height / 2) + this.m_Algorithm.RequiredYBorder[idx] * 2 : height + this.m_Algorithm.RequiredYBorder[idx] * 2), 
-                (this.m_Algorithm.InputDepthAtHalfSize[idx] ? (depth / 2) + this.m_Algorithm.RequiredZBorder[idx] * 2 : depth + this.m_Algorithm.RequiredZBorder[idx] * 2), 
-                arrayWidth, 
-                arrayHeight, 
+                (this.m_Algorithm.InputWidthAtHalfSize[idx] ? (width / 2) + this.m_Algorithm.RequiredXBorder[idx] * 2 : width + this.m_Algorithm.RequiredXBorder[idx] * 2),
+                (this.m_Algorithm.InputHeightAtHalfSize[idx] ? (height / 2) + this.m_Algorithm.RequiredYBorder[idx] * 2 : height + this.m_Algorithm.RequiredYBorder[idx] * 2),
+                (this.m_Algorithm.InputDepthAtHalfSize[idx] ? (depth / 2) + this.m_Algorithm.RequiredZBorder[idx] * 2 : depth + this.m_Algorithm.RequiredZBorder[idx] * 2),
+                arrayWidth,
+                arrayHeight,
                 arrayDepth,
                 maxOffsetX,
                 maxOffsetY,
@@ -419,7 +419,7 @@ namespace Tychaia.ProceduralGeneration
 
             // Just replicate this into the CompiledLayer system
             int MaxOffsetX;
-            int MaxOffsetY; 
+            int MaxOffsetY;
             int MaxOffsetZ;
             int MaxHalfX;
             int MaxHalfY;
@@ -466,7 +466,7 @@ namespace Tychaia.ProceduralGeneration
 
             // Actually for compiled you can just have ParentOffsetX
             // Increment that every layer
-            // Reset it at the start of each for loop 
+            // Reset it at the start of each for loop
             // then add it up over each layer
             // For ( reset if () add if () add ))
             // Then it will be I + ParentOffsetX
@@ -494,8 +494,8 @@ namespace Tychaia.ProceduralGeneration
                 arrayWidth,
                 arrayHeight,
                 arrayDepth,
-                MaxOffsetX, 
-                MaxOffsetY, 
+                MaxOffsetX,
+                MaxOffsetY,
                 MaxOffsetZ,
                 0, 0, 0,
                 ref computations);
@@ -516,11 +516,11 @@ namespace Tychaia.ProceduralGeneration
             // Return the result.
             return correctArray;
         }
-        
+
         #region Randomness
-        
+
         private long m_Seed;
-        
+
         /// <summary>
         /// The world seed.
         /// </summary>
@@ -549,7 +549,7 @@ namespace Tychaia.ProceduralGeneration
                     if (input != null)
                         input.SetSeed(seed);
         }
-        
+
         /// <summary>
         /// Returns a random positive integer between the specified 0 and
         /// the exclusive end value.
@@ -558,7 +558,7 @@ namespace Tychaia.ProceduralGeneration
         {
             return AlgorithmUtility.GetRandomRange(this.Seed, x, y, z, end, modifier);
         }
-        
+
         /// <summary>
         /// Returns a random positive integer between the specified inclusive start
         /// value and the exclusive end value.
@@ -567,7 +567,7 @@ namespace Tychaia.ProceduralGeneration
         {
             return AlgorithmUtility.GetRandomRange(this.Seed, x, y, z, start, end, modifier);
         }
-        
+
         /// <summary>
         /// Returns a random integer over the range of valid integers based
         /// on the provided X and Y position, and the specified modifier.
@@ -576,7 +576,7 @@ namespace Tychaia.ProceduralGeneration
         {
             return AlgorithmUtility.GetRandomInt(this.Seed, x, y, z, modifier);
         }
-        
+
         /// <summary>
         /// Returns a random long integer over the range of valid long integers based
         /// on the provided X and Y position, and the specified modifier.
@@ -585,7 +585,7 @@ namespace Tychaia.ProceduralGeneration
         {
             return AlgorithmUtility.GetRandomLong(this.Seed, x, y, z, modifier);
         }
-        
+
         /// <summary>
         /// Returns a random double between the range of 0.0 and 1.0 based on
         /// the provided X and Y position, and the specified modifier.
@@ -598,7 +598,7 @@ namespace Tychaia.ProceduralGeneration
         #endregion
 
         #region Other
-        
+
         /// <summary>
         /// Smoothes the specified data according to smoothing logic.  Apparently
         /// inlining this functionality causes the algorithms to run slower, so we
@@ -608,7 +608,7 @@ namespace Tychaia.ProceduralGeneration
         {
             // Parent-based Smoothing
             int selected = 0;
-            
+
             if (x % 2 == 0)
             {
                 if (y % 2 == 0)
@@ -672,11 +672,11 @@ namespace Tychaia.ProceduralGeneration
                     }
                 }
             }
-            
+
             // Select one of the four options if we couldn't otherwise
             // determine a value.
             selected = this.GetRandomRange(x, y, 0, 4);
-            
+
             switch (selected)
             {
                 case 0:
@@ -688,10 +688,10 @@ namespace Tychaia.ProceduralGeneration
                 case 3:
                     return westValue;
             }
-            
+
             throw new InvalidOperationException();
         }
-        
+
         #endregion
 
     }
@@ -714,12 +714,12 @@ namespace Tychaia.ProceduralGeneration
         public int GSChildOffsetX;
         public int GSChildOffsetY;
         public int GSChildOffsetZ;
-        
+
         /// <summary>
         /// The width of the data array.
         /// </summary>
         public int GSArrayWidth;
-        
+
         /// <summary>
         /// The height of the data array.
         /// </summary>
@@ -730,7 +730,7 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public int GSArrayDepth;
     };
-    
+
     public delegate void DataGeneratedEventHandler(object sender,DataGeneratedEventArgs e);
 }
 

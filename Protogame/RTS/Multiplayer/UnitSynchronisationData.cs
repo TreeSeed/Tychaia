@@ -25,7 +25,7 @@ namespace Protogame.RTS.Multiplayer
     {
         public string UnitNetworkName;
     }
-    
+
 #if MULTIPLAYER
     [Distributed]
 #endif
@@ -33,7 +33,7 @@ namespace Protogame.RTS.Multiplayer
     {
         public event EventHandler Move;
         public event EventHandler Attack;
-        
+
 #if MULTIPLAYER
         [ClientCallable]
         public void BroadcastMove(float x, float y)

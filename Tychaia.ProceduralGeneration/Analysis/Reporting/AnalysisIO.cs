@@ -14,7 +14,7 @@ namespace Tychaia.ProceduralGeneration.Analysis.Reporting
     public class AnalysisIO
     {
         private static Type[] m_SerializableTypes = null;
-        
+
         static AnalysisIO()
         {
             List<Type> types = new List<Type> {
@@ -55,7 +55,7 @@ namespace Tychaia.ProceduralGeneration.Analysis.Reporting
                 memory.CopyTo(output.BaseStream);
             }
         }
-        
+
         /// <summary>
         /// Loads storage layers from a stream.
         /// </summary>

@@ -80,7 +80,7 @@ namespace Tychaia.ProceduralGeneration
                      * x = 0 i = 1 v = x[0]
                      * x = 0 i = 2 v = x[1]
                      * x = 0 i = 3 v = x[1]
-                     * 
+                     *
                      * x = 1 i = 0 v = x[0]
                      * x = 1 i = 1 v = x[1]
                      * x = 1 i = 2 v = x[1]
@@ -95,10 +95,10 @@ namespace Tychaia.ProceduralGeneration
 
                     if (this.Mode == ZoomType.Smooth || this.Mode == ZoomType.Fuzzy)
                         data[i + j * width] = this.Smooth(x + i, y + j, north, south, west, east, current, i, j, ox, oy, rw, parent);
-                    else                    
+                    else
                         data[i + j * width] = current;
                 }
-      
+
             return data;
         }
 

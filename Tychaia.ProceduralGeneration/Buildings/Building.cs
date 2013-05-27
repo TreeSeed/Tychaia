@@ -24,7 +24,7 @@ namespace Tychaia.ProceduralGeneration.Buildings
 //        public WorldObject[] ObjectsProvided; // A list of the objects that go into this building.
         // TODO: Check if it will be better/easier to do predrawn stuff, or section-stitching or random generation
         //                                               Still have as much random generation as we can (setting areas for where things go, etc)
-        
+
 
         // Color that this Building draws
         public Color BrushColor;

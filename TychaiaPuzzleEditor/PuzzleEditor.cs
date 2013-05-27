@@ -54,7 +54,7 @@ namespace TychaiaPuzzleEditor
                 }
             }
 
-            this.m_PuzzleList.SelectedValueChanged += (sender, e) => 
+            this.m_PuzzleList.SelectedValueChanged += (sender, e) =>
             {
                 if (this.m_PuzzleList.SelectedItem == null)
                     this.m_Puzzle = null;
@@ -93,7 +93,7 @@ namespace TychaiaPuzzleEditor
         }
 
         #region IPuzzleUI implementation
-        
+
         private Color m_ActiveColor = Color.Black;
         private Graphics m_ActiveGraphics = null;
 
@@ -133,7 +133,7 @@ namespace TychaiaPuzzleEditor
         {
             var pen = new Pen(new SolidBrush(this.m_ActiveColor));
             this.m_ActiveGraphics.DrawEllipse(pen, new Rectangle(x - radius, y - radius, radius * 2, radius * 2));
-        }       
+        }
 
         public void FillCircle(int x, int y, int radius)
         {

@@ -52,13 +52,13 @@ namespace Tychaia
             /* We need to render our isometric chunks surrounding the
              * center chunk, but we only want to render what we have to.
              * We will end up with a pattern like:
-             * 
+             *
              * A   B   C   D   E   F
              *   G   H   I   J   K
              * L   M   N   O   P   Q
              *   R   S   T   U   V
              * W   X   Y   Z   1   2
-             * 
+             *
              * Thus the minimum number of chunks to be rendered horizontally
              * can be determined by the distance between G - K
              */

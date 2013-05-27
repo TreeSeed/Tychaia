@@ -18,11 +18,11 @@ namespace Tychaia.ProceduralGeneration
         [DataMember]
         [DefaultValue(0)]
         public int OffsetX { get; set; }
-        
+
         [DataMember]
         [DefaultValue(0)]
         public int OffsetY { get; set; }
-        
+
         [DataMember]
         [DefaultValue(0)]
         public int OffsetZ { get; set; }
@@ -30,7 +30,7 @@ namespace Tychaia.ProceduralGeneration
         public override int[] RequiredXBorder { get { return new int[] { Math.Abs(this.OffsetX) }; } }
         public override int[] RequiredYBorder { get { return new int[] { Math.Abs(this.OffsetY) }; } }
         public override int[] RequiredZBorder { get { return new int[] { Math.Abs(this.OffsetZ) }; } }
-        
+
         [DataMember]
         public bool ShowAs2D
         {
@@ -62,7 +62,7 @@ namespace Tychaia.ProceduralGeneration
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
                 input[(i + this.OffsetX + ox) + (j + this.OffsetY + oy) * width + (k + this.OffsetZ + oz) * width * height];
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);

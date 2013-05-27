@@ -35,7 +35,7 @@ namespace Tychaia.ProceduralGeneration
             else if (inputC[(i + ox) + (j + oy) * width + (k + oz) * width * height] == 0)
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = Biomes.BiomeEngine.Biomes.First(v => v is WaterBiome);
         }
-        
+
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             if (value == null)

@@ -32,7 +32,7 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-                
+
         [DataMember]
         [DefaultValue(0)]
         [Description("The minimum integer value in the military strength map.")]

@@ -24,7 +24,7 @@ namespace Tychaia.ProceduralGeneration
             : base(biomes)
         {
         }
-        
+
         protected override int[] GenerateDataImpl(long x, long y, long width, long height)
         {
             if (this.Parents.Length < 1 || this.Parents[0] == null)
@@ -32,7 +32,7 @@ namespace Tychaia.ProceduralGeneration
 
             int[] data = new int[width * height];
             int[] parent = this.Parents[0].GenerateData(x, y, width, height);
-            
+
             for (int a = 0; a < width; a++)
                 for (int b = 0; b < height; b++)
                 {
@@ -55,20 +55,20 @@ namespace Tychaia.ProceduralGeneration
                     else
                         data[a + b * width] = 0;
                 }
-            
+
             return data;
         }
-        
+
         public override Dictionary<int, LayerColor> GetLayerColors()
         {
             return LayerColors.TreeBrushes;
         }
-        
+
         public override string[] GetParentsRequired()
         {
             return new string[] { "Secondary Biomes" };
         }
-        
+
         public override string ToString()
         {
             return "Generate Trees";

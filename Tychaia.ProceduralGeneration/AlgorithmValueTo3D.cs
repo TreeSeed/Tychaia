@@ -16,7 +16,7 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerCategory(FlowCategory.Output)]
     [FlowDesignerName("Value To 3D")]
     public class AlgorithmValueTo3D : Algorithm<int, int>
-    {        
+    {
         [DataMember]
         [DefaultValue(64)]
         [Description("Estimate maximum value.")]
@@ -53,12 +53,12 @@ namespace Tychaia.ProceduralGeneration
 
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            if (input[(i + ox) + (j + oy) * width + (0 + oz) * width * height] >= z) 
+            if (input[(i + ox) + (j + oy) * width + (0 + oz) * width * height] >= z)
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = (int)z;
             else
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = Int32.MaxValue;
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             if (value == Int32.MaxValue)
@@ -70,12 +70,12 @@ namespace Tychaia.ProceduralGeneration
             int a;
 
             double divvalue = (double)this.EstimateMax;
-                
+
             if (divvalue > 255)
                 divvalue = 255;
             else if (divvalue < 1)
                 divvalue = 1;
-                
+
             a = (int)(value * ((double)255 / divvalue));
 
             if (a < 0)
@@ -89,16 +89,16 @@ namespace Tychaia.ProceduralGeneration
 
                     return Color.Red;
                 }
-                
+
                 if (ColorSet == ColorScheme.Land)
                     return Color.FromArgb(0, 0, 255 - a);
                 else if (ColorSet == ColorScheme.Perlin)
                     return Color.FromArgb(-a, -a, -a);
             }
-            
+
             if (a > 255)
                 a = 255;
-            
+
             if (a == 0)
                 return Color.Black;
 

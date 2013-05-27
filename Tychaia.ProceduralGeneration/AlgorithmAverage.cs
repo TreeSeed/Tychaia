@@ -34,7 +34,7 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
+
         [DataMember]
         [DefaultValue(0)]
         [Description("The minimum integer value in the resulting layer.")]
@@ -43,7 +43,7 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
+
         [DataMember]
         [DefaultValue(100)]
         [Description("The maximum integer value in the resulting layer.")]
@@ -90,7 +90,7 @@ namespace Tychaia.ProceduralGeneration
             else if (output[(i + ox) + (j + oy) * width + (k + oz) * width * height] < this.MinValue)
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.MinValue;
         }
-        
+
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             int a = (int)(255 * (value / (double)(this.MaxValue - this.MinValue)));

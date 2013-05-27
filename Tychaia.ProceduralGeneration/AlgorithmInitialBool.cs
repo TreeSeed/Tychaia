@@ -24,7 +24,7 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
+
         [DataMember]
         [DefaultValue(true)]
         [Description("Whether to guarantee the maximum value at the global (0, 0) position.")]
@@ -42,7 +42,7 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
+
         [DataMember]
         [DefaultValue(1)]
         [Description("The Higher value selected.")]
@@ -74,7 +74,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return this.Layer2D; }
         }
-        
+
         public AlgorithmInitialBool()
         {
             this.Limit = 0.8;

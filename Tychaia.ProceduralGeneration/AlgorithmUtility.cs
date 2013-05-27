@@ -23,7 +23,7 @@ namespace Tychaia.ProceduralGeneration
                 return a % end;
             }
         }
-        
+
         /// <summary>
         /// Returns a random positive integer between the specified inclusive start
         /// value and the exclusive end value.
@@ -38,7 +38,7 @@ namespace Tychaia.ProceduralGeneration
                 return a % (end - start) + start;
             }
         }
-        
+
         /// <summary>
         /// Returns a random integer over the range of valid integers based
         /// on the provided X and Y position, and the specified modifier.
@@ -50,7 +50,7 @@ namespace Tychaia.ProceduralGeneration
                 return (int)(AlgorithmUtility.GetRandomNumber(seed, x, y, z, modifier) % int.MaxValue);
             }
         }
-        
+
         /// <summary>
         /// Returns a random long integer over the range of valid long integers based
         /// on the provided X and Y position, and the specified modifier.
@@ -59,7 +59,7 @@ namespace Tychaia.ProceduralGeneration
         {
             return AlgorithmUtility.GetRandomNumber(seed, x, y, z, modifier);
         }
-        
+
         /// <summary>
         /// Returns a random double between the range of 0.0 and 1.0 based on
         /// the provided X and Y position, and the specified modifier.
@@ -71,7 +71,7 @@ namespace Tychaia.ProceduralGeneration
                 a += long.MaxValue;
             return (double)a / (double)long.MaxValue;
         }
-        
+
         private static long GetRandomNumber(long _seed, long x, long y, long z, long modifier)
         {
             /* From: http://stackoverflow.com/questions/2890040/implementing-gethashcode
@@ -93,7 +93,7 @@ namespace Tychaia.ProceduralGeneration
                 seed += modifier;
                 // Prevents the seed from being 0 along an axis.
                 seed += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
-                
+
                 long rng = seed * seed;
                 rng += (x - 11) * 2990430311017;
                 rng *= (y - 12) * 14475080218213;
@@ -106,7 +106,7 @@ namespace Tychaia.ProceduralGeneration
                 rng += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
                 rng += modifier;
                 rng += 3661988493967;
-                
+
                 return rng;
             }
         }

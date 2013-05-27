@@ -37,31 +37,31 @@ namespace Tychaia.ProceduralGeneration.Flow
         private static int[] CalculateCellRenderOrder(int targetDir, int width, int height)
         {
             /*               North
-             *        0  1  2  3  4  5  6 
-             *        1  2  3  4  5  6  7 
+             *        0  1  2  3  4  5  6
+             *        1  2  3  4  5  6  7
              *        2  3  4  5  6  7  8
              *  East  3  4  5  6  7  8  9  West
              *        4  5  6  7  8  9  10
              *        5  6  7  8  9  10 11
              *        6  7  8  9  10 11 12
              *               South
-             *  
+             *
              * Start value is always 0.
              * Last value is (MaxX + MaxY).
              * This is the AtkValue.
-             * 
+             *
              * We attack from the left side of the render first
              * with (X: 0, Y: AtkValue) until Y would be less than
              * half of AtkValue.
-             * 
+             *
              * We then attack from the right side of the render
              * with (X: AtkValue, Y: 0) until X would be less than
              * half of AtkValue - 1.
-             * 
+             *
              * If we are attacking from the left, but Y is now
              * greater than MaxY, then we are over half-way and are
              * now starting at the bottom of the grid.
-             * 
+             *
              * In this case, we start with (X: AtkValue - MaxY, Y: MaxY)
              * and continue until we reach the same conditions that
              * apply normally.  The same method applies to the right hand
@@ -122,11 +122,11 @@ namespace Tychaia.ProceduralGeneration.Flow
         }
 
         #endregion
-        
+
         private const int RenderWidth = 64;
         private const int RenderHeight = 64;
         private const int RenderDepth = 64;
-        
+
         private static Bitmap Regenerate3DImageForLayer(RuntimeLayer runtimeLayer, long ox, long oy, long oz, int width, int height, int depth, IGenerator compiledLayer = null)
         {
             int owidth = width;
@@ -145,8 +145,8 @@ namespace Tychaia.ProceduralGeneration.Flow
             if (compiledLayer != null)
                 data = compiledLayer.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth, out computations);
             else
-                data = runtimeLayer.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth, out computations); 
-            
+                data = runtimeLayer.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth, out computations);
+
             StorageLayer parent;
             if (runtimeLayer.GetInputs().Length == 0)
                 parent = null;
@@ -167,11 +167,11 @@ namespace Tychaia.ProceduralGeneration.Flow
                     // Calculate the X / Y of the tile in the grid.
                     int x = render[i] % RenderWidth;
                     int y = render[i] / RenderWidth;
-                    
+
                     // Calculate the render position on screen.
                     int rx = rcx + (int)((x - y) / 2.0 * rw);// (int)(x / ((RenderWidth + 1) / 2.0) * rw);
                     int ry = rcy + (x + y) * rh - (rh / 2 * (RenderWidth + RenderHeight)) - (z - zbottom) * 1;
-                    
+
                     while (true)
                     {
                         try
@@ -193,7 +193,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                     }
                 }
             }
-            
+
             return b;
         }
     }

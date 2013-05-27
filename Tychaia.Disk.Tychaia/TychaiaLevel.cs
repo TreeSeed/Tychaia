@@ -22,7 +22,7 @@ namespace Tychaia.Disk.Tychaia
         // when they're storing temporary or dynamic data).  We could do this
         // by just storing the terrain data in the octree and putting entities
         // in a seperate file with a different structure.
-        
+
         private string m_Path = null;
         private TerrainOctree m_Terrain = null;
 

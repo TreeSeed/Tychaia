@@ -13,14 +13,14 @@ namespace Tychaia.ProceduralGeneration
         /// The world seed.
         /// </summary>
         long Seed { get; }
-        
+
         /// <summary>
         /// Sets the seed of this layer and all of it's input layers
         /// recursively.
         /// </summary>
         /// <param name="seed">Seed.</param>
         void SetSeed(long seed);
-        
+
         /// <summary>
         /// Generates data using the current algorithm.
         /// </summary>

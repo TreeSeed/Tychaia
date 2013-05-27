@@ -122,7 +122,7 @@ namespace MakeMeAWorld
                     for (var i = 0; i < result.Data.Length; i++)
                     {
                         if (!mappings.ContainsKey(result.Data[i]))
-                            mappings.Add(result.Data[i], 
+                            mappings.Add(result.Data[i],
                                          result.Layer.Algorithm.GetColorForValue(
                                              parentLayer,
                                 result.Data[i]));
@@ -152,7 +152,7 @@ namespace MakeMeAWorld
                 }
             }
         }
-        
+
         protected override void ProcessEmpty(GenerationResult result, HttpContext context)
         {
             var cache = this.GetCacheName(result.Request, context, "json");

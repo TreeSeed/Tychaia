@@ -28,7 +28,7 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
+
         [DataMember]
         public LayerVoronoiMixdown Mixdown
         {

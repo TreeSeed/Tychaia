@@ -36,7 +36,7 @@ namespace Protogame.RTS
         }
 
         #region Multiplayer Event Handling
-        
+
 #if MULTIPLAYER
         public void __Event_MoveSynchronisationHandler(object sender, EventArgs ev)
         {

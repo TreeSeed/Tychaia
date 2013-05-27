@@ -41,14 +41,14 @@ namespace MakeMeAWorld
         /// true if the request has been handled by the cache.
         /// </summary>
         protected abstract bool ProcessCache(GenerationRequest request, HttpContext context);
-        
+
         /// <summary>
         /// Processes an empty 3D result (when all of the values are the same).
         /// </summary>
         protected abstract void ProcessEmpty(GenerationResult result, HttpContext context);
 
         /// <summary>
-        /// Processes a request using the generated data and layer information. 
+        /// Processes a request using the generated data and layer information.
         /// </summary>
         protected abstract void ProcessGeneration(GenerationResult result, HttpContext context);
 
@@ -151,8 +151,8 @@ namespace MakeMeAWorld
             layer.SetSeed(request.Seed);
             var start = DateTime.Now;
             var data = layer.GenerateData(
-                request.X, 
-                request.Y, 
+                request.X,
+                request.Y,
                 layer.Algorithm.Is2DOnly ? 0 : request.Z,
                 request.Size,
                 request.Size,
@@ -188,9 +188,9 @@ namespace MakeMeAWorld
                     return false;
             return true;
         }
-        
+
         #region Data Loading
-        
+
         private static RuntimeLayer CreateLayerFromConfig(string path, GenerationRequest request)
         {
             // Use StorageAccess to load reference to world generation.
@@ -200,12 +200,12 @@ namespace MakeMeAWorld
             foreach (var layer in layers)
                 if ((layer.Algorithm is AlgorithmResult) &&
                     (layer.Algorithm as AlgorithmResult).Name == request.LayerName &&
-                    ((layer.Algorithm as AlgorithmResult).ShowInMakeMeAWorld || 
+                    ((layer.Algorithm as AlgorithmResult).ShowInMakeMeAWorld ||
                     (layer.Algorithm as AlgorithmResult).PermitInMakeMeAWorld))
                     return StorageAccess.ToRuntime(layer);
             return null;
         }
-        
+
         public static List<string> GetListOfAvailableLayers(HttpContext context)
         {
             return GetListOfAvailableLayers(context.Server.MapPath("~/bin/WorldConfig.xml"));
@@ -219,7 +219,7 @@ namespace MakeMeAWorld
         private static List<string> GetListOfAvailableLayers(string path)
         {
             var result = new List<string>();
-            
+
             // Use StorageAccess to load reference to world generation.
             StorageLayer[] layers;
             using (var reader = new StreamReader(path))
@@ -230,10 +230,10 @@ namespace MakeMeAWorld
                     result.Add(
                         (layer.Algorithm.Is2DOnly ? "2D," : "3D,") +
                         (layer.Algorithm as AlgorithmResult).Name);
-            
+
             return result;
         }
-        
+
         private static string GetDefaultAvailableLayer(string path)
         {
             // Use StorageAccess to load reference to world generation.
@@ -245,10 +245,10 @@ namespace MakeMeAWorld
                 if ((layer.Algorithm as AlgorithmResult).DefaultForMakeMeAWorld)
                     return (layer.Algorithm.Is2DOnly ? "2D," : "3D,") +
                         (layer.Algorithm as AlgorithmResult).Name;
-            
+
             return null;
         }
-        
+
         #endregion
     }
 }

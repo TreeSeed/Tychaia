@@ -79,7 +79,7 @@ namespace Tychaia.ProceduralGeneration
                             data[i + j * width] = this.SmoothRandom(parent, i + ox, j + oy, rw);
                             break;
                     }
-      
+
             return data;
         }
 
@@ -136,10 +136,10 @@ namespace Tychaia.ProceduralGeneration
                     applier[i + 2, j + 2] = this.GetRandomRange(x + i, y + j, 0, 250);
             return this.SmoothBase(parent, applier, x, y, rw);
         }
-     
+
         private int[,] m_BaseSample = new int[5, 5];
         private int[,] m_BaseOutput = new int[5, 5];
-     
+
         private int SmoothBase(int[] parent, int[,] applier, int x, int y, long rw)
         {
             int result = 0;

@@ -52,7 +52,7 @@ namespace Tychaia.ProceduralGeneration
                      * x = 0 i = 1 v = x[0]
                      * x = 0 i = 2 v = x[1]
                      * x = 0 i = 3 v = x[1]
-                     * 
+                     *
                      * x = 1 i = 0 v = x[0]
                      * x = 1 i = 1 v = x[1]
                      * x = 1 i = 2 v = x[1]

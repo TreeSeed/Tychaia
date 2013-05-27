@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    
+
     public class AlgorithmInitialBoolTest
     {
         [Fact, TestFor(typeof(AlgorithmInitialBool))]
@@ -17,7 +17,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             int computations;
             var gradient = new RuntimeLayer(new AlgorithmInitialBool());
             var result = gradient.GenerateData(0, 0, 0, 16, 16, 16, out computations);
-            
+
             for (var i = 0; i < 16; i++)
                 for (var j = 0; j < 16; j++)
                     for (var k = 0; k < 16; k++)
@@ -26,7 +26,7 @@ namespace Tychaia.ProceduralGeneration.Tests
                             continue;
 
                         Assert.True(
-                            result[i + j * 16 + k * 16 * 16] == 0 || 
+                            result[i + j * 16 + k * 16 * 16] == 0 ||
                             result[i + j * 16 + k * 16 * 16] == 1);
                     }
         }

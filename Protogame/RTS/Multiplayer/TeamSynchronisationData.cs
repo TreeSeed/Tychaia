@@ -14,7 +14,7 @@ namespace Protogame.RTS.Multiplayer
     public class TeamSynchronisationData
     {
         public int PlayerID { get; private set; }
-        
+
 #if MULTIPLAYER
         [ClientCallable]
 #endif

@@ -18,7 +18,7 @@ namespace Protogame.Math
         private const float ZERO = 0;
         private double m_X0, m_Y0, m_Z0;
         private double m_Radius;
-        private double[,] P = 
+        private double[,] P =
                 {
                     { ZERO, ZERO, ZERO },
                     { ZERO, ZERO, ZERO },
@@ -170,7 +170,7 @@ namespace Protogame.Math
         {
             int i, j, j1, j2;
             double d = 0;
-            double[,] m = 
+            double[,] m =
                     {
                         { ZERO, ZERO, ZERO, ZERO },
                         { ZERO, ZERO, ZERO, ZERO },

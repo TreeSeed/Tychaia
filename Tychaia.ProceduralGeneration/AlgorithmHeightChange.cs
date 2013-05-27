@@ -24,7 +24,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return new string[] { "2D Terrain Map" }; }
         }
-        
+
         [DataMember]
         [DefaultValue(true)]
         [Description("True = X, False = Y")]
@@ -70,23 +70,23 @@ namespace Tychaia.ProceduralGeneration
             else
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[(i + ox) + (j + oy) * width + (k + oz) * width * height] - input[(i + 1 + ox) + (j + oy) * width + (k + oz) * width * height];
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             if (value == 0)
                 return Color.Black;
-            
+
             int a;
-            
+
             double divvalue = (double)this.EstimateMax;
-            
+
             if (divvalue > 255)
                 divvalue = 255;
             else if (divvalue < 1)
                 divvalue = 1;
-            
+
             a = (int)(value * ((double)255 / divvalue));
-            
+
             if (a < 0)
             {
                 if (this.InverseColours)
@@ -103,7 +103,7 @@ namespace Tychaia.ProceduralGeneration
 
             if (a > 255)
                 a = 255;
-            
+
             if (a == 0)
                 return Color.Black;
             if (this.InverseColours)

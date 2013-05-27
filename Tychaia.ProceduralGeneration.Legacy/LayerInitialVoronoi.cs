@@ -117,7 +117,7 @@ namespace Tychaia.ProceduralGeneration
             // Skip computations if we are only outputting original scatter values.
             if (this.Result == VoronoiResult.OriginalOnly)
                 return data;
-            
+
             // Compute the Voronoi diagram.
             VoronoiGraph graph = Fortune.ComputeVoronoiGraph(points);
 

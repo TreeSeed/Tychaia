@@ -3,7 +3,7 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
 //
-// This layer is used for the gradual increase of monster difficulty 
+// This layer is used for the gradual increase of monster difficulty
 // as well as increases and decreases to temperature according to height.
 //
 using System;
@@ -26,7 +26,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get;
             set;
-        }        
+        }
 
         [DataMember]
         [DefaultValue(true)]
@@ -35,7 +35,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get;
             set;
-        }        
+        }
 
         [DataMember]
         [DefaultValue(true)]
@@ -53,7 +53,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get;
             set;
-        }        
+        }
 
         [DataMember]
         [DefaultValue(20)]
@@ -62,7 +62,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get;
             set;
-        }        
+        }
 
         [DataMember]
         [DefaultValue(20)]
@@ -92,7 +92,7 @@ namespace Tychaia.ProceduralGeneration
         {
 
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
-            
+
             if (Xcalculation)
             {
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] += ((int)(Math.Abs(x) / Xdivider) > int.MaxValue ? int.MaxValue : (int)(Math.Abs(x) / Xdivider));
@@ -106,14 +106,14 @@ namespace Tychaia.ProceduralGeneration
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] += ((int)(Math.Abs(z) / Zdivider) > int.MaxValue ? int.MaxValue : (int)(Math.Abs(z) / Zdivider));
             }
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             int a = value;
 
             if (a > 255)
                 a = 255;
-            
+
             return Color.FromArgb(a, a, a);
         }
     }

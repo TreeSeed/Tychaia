@@ -52,7 +52,7 @@ namespace Tychaia.ProceduralGeneration
             for (int k = 0; k < width; k++)
                 for (int l = 0; l < height; l++)
                 {
-                    data[k + l * width] = parent[(k + ox) + (l + oy) * rw]; 
+                    data[k + l * width] = parent[(k + ox) + (l + oy) * rw];
                 }
 
             for (int i = 0; i < rw; i++)

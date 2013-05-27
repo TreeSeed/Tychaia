@@ -37,9 +37,9 @@ namespace Tychaia.ProceduralGeneration.Professions
         }
 
         public static Profession GetProfessionForCell(double rainfall, double temperature, double terrain)
-        { 
+        {
             throw new NotImplementedException("GetProfessionForCell not implemented");
-           
+
             return null;
 
         }

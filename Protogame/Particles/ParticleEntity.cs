@@ -17,7 +17,7 @@ namespace Protogame.Particles
         public float Tick { get; private set; }
 
         public ParticleEntity(ParticleDefinition definition)
-        {            
+        {
             this.Definition = definition;
             this.Tick = 0;
             this.Width = 4;

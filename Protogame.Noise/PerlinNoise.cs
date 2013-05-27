@@ -69,7 +69,7 @@ namespace Protogame.Noise
             _random = new Random(seed);
             InitGradients();
         }
-        
+
         public PerlinNoise(long seed)
         {
             _random = new Random((int)seed);

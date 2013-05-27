@@ -23,12 +23,12 @@ namespace Tychaia.ProceduralGeneration.Flow
                 this.m_LayerOwner.SetConnectorsForLayer(this, value, this.IsInput);
             }
         }
-        
-        
+
+
         [DataMember]
         private AlgorithmFlowElement
             m_LayerOwner;
-        
+
         public AlgorithmFlowConnector(AlgorithmFlowElement owner, string name, bool isInput, StorageLayer layer)
             : base(owner, name, isInput)
         {

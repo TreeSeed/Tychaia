@@ -23,14 +23,14 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-        
+
         public override int[] RequiredXBorder { get { return new int[] {2}; } }
         public override int[] RequiredYBorder { get { return new int[] {2}; } }
         public override int[] RequiredZBorder { get { return new int[] {0}; } }
         public override bool[] InputWidthAtHalfSize { get { return new bool[] {true}; } }
         public override bool[] InputHeightAtHalfSize { get { return new bool[] {true}; } }
         public override bool[] InputDepthAtHalfSize { get { return new bool[] {false}; } }
-        
+
         public AlgorithmZoom2D()
         {
             this.Mode = ZoomType.Smooth;
@@ -40,12 +40,12 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return new string[] { "Input" }; }
         }
-        
+
         public override bool Is2DOnly
         {
             get { return true; }
         }
-        
+
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             int ocx = ((x - Math.Abs(i)) % 2 == 0 ? 0 : Math.Abs(i % 2)) - (i % 2 == -1 ? 1 : 0);
@@ -58,8 +58,8 @@ namespace Tychaia.ProceduralGeneration
             int ocz = 0;
 
             int current = input[
-                (i / 2) + ox + ocx + 
-                ((j / 2) + oy + ocy) * width + 
+                (i / 2) + ox + ocx +
+                ((j / 2) + oy + ocy) * width +
                 (k + oz + ocz) * width * height];
 
             if (this.Mode == ZoomType.Square)
@@ -67,7 +67,7 @@ namespace Tychaia.ProceduralGeneration
             else
             {
                 int selected;
-                
+
                 bool ymod = (y) % 2 == 0;
                 bool xmod = (x) % 2 == 0;
 
@@ -80,7 +80,7 @@ namespace Tychaia.ProceduralGeneration
                     selected = 4;
                 else
                     selected = context.GetRandomRange(x, y, 0, 2);
-                
+
                 int ocx_e = ((x - Math.Abs(i)) % 2 == 0 ? 0 : Math.Abs((i + 1) % 2)) - ((i + 1) % 2 == -1 ? 1 : 0);
                 int east = input[((i + 1) / 2 + ox + ocx_e) + (j / 2 + oy + ocy) * width + ((k) + oz + ocz) * width * height];
 
@@ -90,7 +90,7 @@ namespace Tychaia.ProceduralGeneration
                         output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
                         break;
                     case 1:
-                        
+
                         int ocy_s = ((y - Math.Abs(j)) % 2 == 0 ? 0 : Math.Abs((j + 1) % 2)) - ((j + 1) % 2 == -1 ? 1 : 0);
                         int south = input[(i / 2 + ox + ocx) + ((j + 1) / 2 + oy + ocy_s) * width + (k + oz + ocz) * width * height];
 
@@ -124,7 +124,7 @@ namespace Tychaia.ProceduralGeneration
             Smooth,
             Fuzzy,
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);

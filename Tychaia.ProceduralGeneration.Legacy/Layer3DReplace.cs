@@ -79,7 +79,7 @@ namespace Tychaia.ProceduralGeneration
                         data[i + j * width + k * width * height] = replace[i + j * width + k * width * height];
                     break;
             }
-        } 
+        }
 
         public override Dictionary<int, LayerColor> GetLayerColors()
         {

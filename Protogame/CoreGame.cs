@@ -22,7 +22,7 @@ namespace Protogame
                 return this.m_GameContext.World;
             }
         }
-        
+
         public CoreGame()
         {
             this.Content.RootDirectory = System.IO.Path.Combine(Protogame.World.RuntimeDirectory, "Content");

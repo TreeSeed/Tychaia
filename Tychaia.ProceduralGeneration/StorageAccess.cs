@@ -135,9 +135,9 @@ namespace Tychaia.ProceduralGeneration
         #endregion
 
         #region Initialization of static loading and saving logic
-        
+
         private static Type[] SerializableTypes = null;
-        
+
         static StorageAccess()
         {
             // Dynamically generate a list of serializable types for the

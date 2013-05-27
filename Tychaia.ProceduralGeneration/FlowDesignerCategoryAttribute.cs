@@ -59,10 +59,10 @@ namespace Tychaia.ProceduralGeneration
         public static string GetDescription(FlowCategory value)
         {
             FieldInfo fi = value.GetType().GetField(value.ToString());
-            
-            DescriptionAttribute[] attributes = 
+
+            DescriptionAttribute[] attributes =
                 (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
-            
+
             if (attributes != null && attributes.Length > 0)
                 return attributes[0].Description;
             else
@@ -83,20 +83,20 @@ namespace Tychaia.ProceduralGeneration
         public static string GetDescription(FlowMajorCategory value)
         {
             FieldInfo fi = value.GetType().GetField(value.ToString());
-            
-            DescriptionAttribute[] attributes = 
+
+            DescriptionAttribute[] attributes =
                 (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
-            
+
             if (attributes != null && attributes.Length > 0)
                 return attributes[0].Description;
             else
                 return value.ToString();
         }
-        
+
         public FlowDesignerMajorCategoryAttribute(FlowMajorCategory majorcategory)
         {
             this.MajorCategory = majorcategory;
-        }        
+        }
     }
 }
 

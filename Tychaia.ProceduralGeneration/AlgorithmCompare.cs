@@ -71,7 +71,7 @@ namespace Tychaia.ProceduralGeneration
             else
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
         }
-        
+
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             int a;
@@ -86,7 +86,7 @@ namespace Tychaia.ProceduralGeneration
             else
             {
                 double divvalue = (double)this.EstimateMax;
-                
+
                 if (divvalue > 255)
                     divvalue = 255;
                 else if (divvalue < 1)

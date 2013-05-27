@@ -123,11 +123,11 @@ namespace Protogame.RTS
                 if (e is Unit)
                 {
                     Unit u = e as Unit;
-                    
+
                     // Check to see if the unit is under the mouse cursor.
                     if (u.CollidesAt<Unit>(world, mouse.X, mouse.Y) != u)
                         continue;
-                    
+
                     // Check to see if this unit is on our team.
                     if (u.Team == this.Team)
                         continue;

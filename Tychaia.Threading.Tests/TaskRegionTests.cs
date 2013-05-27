@@ -42,7 +42,7 @@ namespace Tychaia.Threading.Tests
         public void RegionIsProcessedFullyThreaded()
         {
             var region = new TaskRegion<LongProcessor, long?>(true);
-            region.ComputeRegion(0, 0, 0, 10, 10, 10);      
+            region.ComputeRegion(0, 0, 0, 10, 10, 10);
 
             // For a threaded region, we need to call Process() at least
             // once every 5 seconds to keep processing alive.

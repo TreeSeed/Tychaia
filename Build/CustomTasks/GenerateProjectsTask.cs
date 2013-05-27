@@ -45,7 +45,7 @@ namespace Tychaia.CustomTasks
         {
             this.Log.LogMessage(
                 "Starting generation of projects for " + this.Platform);
-            
+
             var generator = new ProjectGenerator(
                 this.RootPath,
                 this.Platform,
@@ -62,16 +62,16 @@ namespace Tychaia.CustomTasks
                 this.Log.LogMessage("Generating: " + definition);
                 generator.Generate(definition.ToString());
             }
-            
+
             var solution = Path.Combine(
                 this.RootPath,
                 "Tychaia." + this.Platform + ".sln");
             this.Log.LogMessage("Generating: (solution)");
             generator.GenerateSolution(solution);
-            
+
             this.Log.LogMessage(
                 "Generation complete.");
-            
+
             return true;
         }
     }
@@ -82,7 +82,7 @@ namespace Tychaia.CustomTasks
         {
             this.Log.LogMessage(
                 "Starting clean of projects for " + this.Platform);
-            
+
             foreach (var definition in this.Definitions)
             {
                 this.Log.LogMessage("Cleaning: " + definition);
@@ -101,10 +101,10 @@ namespace Tychaia.CustomTasks
                 if (File.Exists(path))
                     File.Delete(path);
             }
-            
+
             this.Log.LogMessage(
                 "Clean complete.");
-            
+
             return true;
         }
     }
@@ -132,19 +132,19 @@ namespace Tychaia.CustomTasks
         {
             var doc = new XmlDocument();
             doc.Load(path);
-            
+
             // If this is a ContentProject, we actually need to generate the
             // full project node from the files that are in the Source folder.
             if (doc.DocumentElement.Name == "ContentProject")
                 this.m_ProjectDocuments.Add(GenerateContentProject(doc));
             else
                 this.m_ProjectDocuments.Add(doc);
-            
-            // Also add a Guid attribute if one doesn't exist.  This makes it 
+
+            // Also add a Guid attribute if one doesn't exist.  This makes it
             // easier to define projects.
             if (doc.DocumentElement.Attributes["Guid"] == null)
             {
-                doc.DocumentElement.SetAttribute("Guid", 
+                doc.DocumentElement.SetAttribute("Guid",
                 Guid.NewGuid().ToString().ToUpper());
             }
         }
@@ -161,18 +161,18 @@ namespace Tychaia.CustomTasks
                     resolver
                 );
             }
-            
+
             // Work out what document this is.
             var projectDoc = this.m_ProjectDocuments.First(
                 x => x.DocumentElement.Attributes["Name"].Value == project);
-            
+
             // Check to see if we have a Project node; if not
             // then this is an external or other type of project
             // that we don't process.
             if (projectDoc == null ||
                 projectDoc.DocumentElement.Name != "Project")
                 return;
-            
+
             // Work out what path to save at.
             var path = Path.Combine(
                 this.m_RootPath,
@@ -180,19 +180,19 @@ namespace Tychaia.CustomTasks
                 projectDoc.DocumentElement.Attributes["Name"].Value + "." +
                 this.m_Platform + ".csproj");
             path = new FileInfo(path).FullName;
-            
+
             // Work out what path the NuGet packages.config might be at.
             var packagesPath = Path.Combine(
                 this.m_RootPath,
                 projectDoc.DocumentElement.Attributes["Path"].Value,
                 "packages.config");
-            
+
             // Generate the input document.
             var input = this.CreateInputFor(
                 project,
                 this.m_Platform,
                 packagesPath);
-            
+
             // Transform the input document using the XSLT transform.
             var settings = new XmlWriterSettings();
             settings.Indent = true;
@@ -200,7 +200,7 @@ namespace Tychaia.CustomTasks
             {
                 this.m_ProjectTransform.Transform(input, writer);
             }
-            
+
             // Also remove any left over .sln or .userprefs files.
             var slnPath = Path.Combine(
                 this.m_RootPath,
@@ -230,7 +230,7 @@ namespace Tychaia.CustomTasks
                     resolver
                 );
             }
-            
+
             var input = this.CreateInputFor(this.m_Platform);
             using (var writer = new StreamWriter(solutionPath))
             {
@@ -247,7 +247,7 @@ namespace Tychaia.CustomTasks
             doc.AppendChild(doc.CreateXmlDeclaration("1.0", "UTF-8", null));
             var input = doc.CreateElement("Input");
             doc.AppendChild(input);
-            
+
             var generation = doc.CreateElement("Generation");
             var projectName = doc.CreateElement("ProjectName");
             projectName.AppendChild(doc.CreateTextNode(project));
@@ -263,7 +263,7 @@ namespace Tychaia.CustomTasks
 
             var nuget = doc.CreateElement("NuGet");
             input.AppendChild(nuget);
-            
+
             var projects = doc.CreateElement("Projects");
             input.AppendChild(projects);
             foreach (var projectDoc in this.m_ProjectDocuments)
@@ -283,7 +283,7 @@ namespace Tychaia.CustomTasks
                     doc,
                     nuget);
             }
-            
+
             return doc;
         }
 
@@ -292,7 +292,7 @@ namespace Tychaia.CustomTasks
             XmlDocument document,
             XmlNode nuget)
         {
-            // Read the packages document and generate Project nodes for 
+            // Read the packages document and generate Project nodes for
             // each package that we want.
             var packagesDoc = new XmlDocument();
             packagesDoc.Load(packagesPath);
@@ -324,7 +324,7 @@ namespace Tychaia.CustomTasks
                     .Where(x => x.Name == "reference")
                     .Select(x => x.Attributes["file"].Value)
                     .ToList();
-                
+
                 var clrNames = new[]
                 {
                     "",
@@ -374,7 +374,7 @@ namespace Tychaia.CustomTasks
                 }
             }
         }
-        
+
         private XmlDocument GenerateContentProject(XmlDocument source)
         {
             var sourceFolder = source
@@ -385,14 +385,14 @@ namespace Tychaia.CustomTasks
                 .GetAttribute("Include");
             var originalSourceFolder = sourceFolder;
             sourceFolder = Path.Combine(this.m_RootPath, sourceFolder);
-            
+
             var allFiles = this.GetListOfFilesInDirectory(sourceFolder);
             this.m_Log.LogMessage(
               "Scanning: " +
-              originalSourceFolder + 
+              originalSourceFolder +
               " (" + allFiles.Count + " total XNB files)"
               );
-            
+
             var doc = new XmlDocument();
             doc.AppendChild(doc.CreateXmlDeclaration("1.0", "UTF-8", null));
             var projectNode = doc.CreateElement("ContentProject");
@@ -400,7 +400,7 @@ namespace Tychaia.CustomTasks
             projectNode.SetAttribute(
                 "Name",
                 source.DocumentElement.GetAttribute("Name"));
-            
+
             foreach (var file in allFiles)
             {
                 var fileNode = doc.CreateElement("Compiled");
@@ -418,10 +418,10 @@ namespace Tychaia.CustomTasks
                 fileNode.AppendChild(relativePathNode);
                 projectNode.AppendChild(fileNode);
             }
-            
+
             return doc;
         }
-        
+
         private List<string> GetListOfFilesInDirectory(string folder)
         {
             var result = new List<string>();
@@ -444,13 +444,13 @@ namespace Tychaia.CustomTasks
             doc.AppendChild(doc.CreateXmlDeclaration("1.0", "UTF-8", null));
             var input = doc.CreateElement("Input");
             doc.AppendChild(input);
-            
+
             var generation = doc.CreateElement("Generation");
             var platformName = doc.CreateElement("Platform");
             platformName.AppendChild(doc.CreateTextNode(platform));
             generation.AppendChild(platformName);
             input.AppendChild(generation);
-            
+
             var projects = doc.CreateElement("Projects");
             input.AppendChild(projects);
             foreach (var projectDoc in this.m_ProjectDocuments)
@@ -464,7 +464,7 @@ namespace Tychaia.CustomTasks
     }
 
     public class EmbeddedResourceResolver : XmlUrlResolver
-    {        
+    {
         public override object GetEntity(
             Uri absoluteUri,
             string role,
@@ -472,7 +472,7 @@ namespace Tychaia.CustomTasks
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
             return assembly.GetManifestResourceStream(
-                this.GetType(), 
+                this.GetType(),
                 Path.GetFileName(absoluteUri.AbsolutePath));
         }
     }

@@ -20,7 +20,7 @@ namespace Tychaia.ProceduralGeneration.Biomes
         public double BuildingMaterial;       // The building material that the buildings are made out of in this biome
         public double HeatValue = 0.5;        // The amount of heat that is in this biome
         public double WaterValue = 0.5;       // The amount of water that is in this biome
-        
+
         // Primary to Secondary biomes
         public int[] SuitableBiomes;
         public int DefaultFor = -1;

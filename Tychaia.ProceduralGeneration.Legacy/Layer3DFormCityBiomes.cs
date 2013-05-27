@@ -32,7 +32,7 @@ namespace Tychaia.ProceduralGeneration
             get;
             set;
         }
-                
+
         [DataMember]
         [DefaultValue(0)]
         [Description("The minimum integer value in the military strength map.")]
@@ -129,7 +129,7 @@ namespace Tychaia.ProceduralGeneration
 
                         // Have to remember to change this possibly for 3d placement (assuming that we are going to end up having different biomes at different z levels)
                         if (biome[i + j * width] != 0)
-                        {                            
+                        {
                             // Normalize values.
                             // int nbiome = biome[i + j * width];
                             double nsoilfertility = (soilfertility[i + j * width] - this.MinSoilFertility) / (double)(this.MaxSoilFertility - this.MinSoilFertility);

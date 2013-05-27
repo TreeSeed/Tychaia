@@ -53,7 +53,7 @@ namespace Tychaia.ProceduralGeneration
         {
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height] + inputB[(i + ox) + (j + oy) * width + (k + oz) * width * height];
         }
-        
+
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);
@@ -61,7 +61,7 @@ namespace Tychaia.ProceduralGeneration
             int a;
 
             double divvalue = (double)this.EstimateMax;
-                
+
             if (divvalue > 255)
                 divvalue = 255;
             else if (divvalue < 1)

@@ -103,25 +103,25 @@ namespace Tychaia.ProceduralGeneration.Analysis
                 return;
             report.Issues.Add(issue);
         }
-        
+
         #region Implementation and AST Visitors
-        
+
         private class AstNodeCount
         {
             public List<AstNode> AstNodes { get; set; }
             public int Count { get; set; }
-            
+
             public AstNodeCount(AstNode initial)
             {
                 this.AstNodes = new List<AstNode> { initial };
                 this.Count = 1;
             }
         }
-        
+
         private class CalculateExpressionTreeVisitor : DepthFirstAstVisitor
         {
             public Dictionary<string, AstNodeCount> UniqueNodes = new Dictionary<string, AstNodeCount>();
-            
+
             private void AddExpressionToUniqueList(AstNode astNode)
             {
                 if (!this.UniqueNodes.ContainsKey(astNode.ToString()))
@@ -132,7 +132,7 @@ namespace Tychaia.ProceduralGeneration.Analysis
                     this.UniqueNodes[astNode.ToString()].AstNodes.Add(astNode);
                 }
             }
-            
+
             public override void VisitMemberReferenceExpression(MemberReferenceExpression memberReferenceExpression)
             {
                 // No point simplifying ThisReferenceExpressions since they don't
@@ -147,7 +147,7 @@ namespace Tychaia.ProceduralGeneration.Analysis
                     base.VisitMemberReferenceExpression(memberReferenceExpression);
                 }
             }
-            
+
             public override void VisitInvocationExpression(InvocationExpression invocationExpression)
             {
                 // In function invocations, we only want to analyise the arguments as there
@@ -158,7 +158,7 @@ namespace Tychaia.ProceduralGeneration.Analysis
                     expr.AcceptVisitor(this);
                 }
             }
-            
+
             public override void VisitAssignmentExpression(AssignmentExpression assignmentExpression)
             {
                 // We only want to navigate the left hand side expression if it's an
@@ -175,26 +175,26 @@ namespace Tychaia.ProceduralGeneration.Analysis
                 }
                 assignmentExpression.Right.AcceptVisitor(this);
             }
-            
+
             public override void VisitBinaryOperatorExpression(BinaryOperatorExpression binaryOperatorExpression)
             {
                 this.AddExpressionToUniqueList(binaryOperatorExpression);
                 base.VisitBinaryOperatorExpression(binaryOperatorExpression);
             }
-            
+
             public override void VisitIndexerExpression(IndexerExpression indexerExpression)
             {
                 this.AddExpressionToUniqueList(indexerExpression);
                 base.VisitIndexerExpression(indexerExpression);
             }
-            
+
             public override void VisitUnaryOperatorExpression(UnaryOperatorExpression unaryOperatorExpression)
             {
                 this.AddExpressionToUniqueList(unaryOperatorExpression);
                 base.VisitUnaryOperatorExpression(unaryOperatorExpression);
             }
         }
-        
+
         #endregion
     }
 }

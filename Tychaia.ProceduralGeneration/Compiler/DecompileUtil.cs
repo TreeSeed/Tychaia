@@ -23,7 +23,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
         {
             // Load Tychaia.ProceduralGeneration into Mono.Cecil.
             var module = AssemblyDefinition.ReadAssembly("Tychaia.ProceduralGeneration.dll").MainModule;
-            
+
             // Now we have a reference to the method we want to decompile.
             TypeDefinition cecilType;
             MethodDefinition processCell;
@@ -35,7 +35,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             astBuilder.CompilationUnit.AcceptVisitor(new InsertParenthesesVisitor {
                 InsertParenthesesForReadability = true
             });
-            
+
             // Return.
             return astBuilder.CompilationUnit.Members.Where(v => v is MethodDeclaration).Cast<MethodDeclaration>().First();
         }

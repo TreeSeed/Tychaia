@@ -76,7 +76,7 @@ namespace Tychaia.ProceduralGeneration
                         for (int k = 0; k < BuildingEngine.Buildings[BuildingID].Length; k++)
                             for (int l = 0; l < BuildingEngine.Buildings[BuildingID].Width; l++)
                                 data[i + k + (j + l) * width] = BuildingID;
-                    
+
                 }
 
             return data;

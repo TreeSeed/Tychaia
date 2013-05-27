@@ -16,7 +16,7 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerCategory(FlowCategory.NPCs)]
     [FlowDesignerName("NPC Stats")]
     public class AlgorithmNPCStats : Algorithm<int, int>
-    {        
+    {
         [DataMember]
         [DefaultValue(Stat.Trust)]
         [Description("Which stat are you modifying?")]
@@ -45,11 +45,11 @@ namespace Tychaia.ProceduralGeneration
         {
             // IF Input has favored value then take 10% towards that value, else take random 0 - 100.
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             int a = (int)(value * 2.55);
-         
+
             if (a < 0)
                 a = 0;
             if (a > 255)
@@ -62,7 +62,7 @@ namespace Tychaia.ProceduralGeneration
         {                                   // For each value certain professions will favor near certain values
             Trust,                          // How much the NPC trusts people
             LocalReputation,                // How much the local trusts this person
-            RegionReputation,               // How much the region trusts this person 
+            RegionReputation,               // How much the region trusts this person
             SelfishGiving,                  // If this person cares more for themself or others
             GoodEvil,                       // If this person is generall good or evil
             SimpleComplex,                  // If this person thinks of the bigger picture or for the quick solution

@@ -38,12 +38,12 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return new string[] { "Input", "Perlin" }; }
         }
-        
+
         public override bool Is2DOnly
         {
             get { return true; }
         }
-        
+
         public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             var ck = (k + oz) * width * height;
@@ -134,7 +134,7 @@ namespace Tychaia.ProceduralGeneration
                 rounded = v22;
             output[i + ox + (j + oy) * width + (k + oz) * width * height] = rounded;
         }
-        
+
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);
