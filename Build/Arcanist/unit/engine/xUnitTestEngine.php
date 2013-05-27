@@ -17,6 +17,13 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
   private $projectRoot;
 
   /**
+   * This test engine supports running all tests.
+   */
+  protected function supportsRunAllTests() {
+    return true;
+  }
+
+  /**
    * Determines what executables and test paths to use.  Between platforms
    * this also changes whether the test engine is run under .NET or Mono.  It
    * also ensures that all of the required binaries are available for the tests
@@ -67,27 +74,40 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
 
     $this->loadEnvironment();
 
-    $paths = $this->getPaths();
-
     $affected_tests = array();
-    foreach ($paths as $path) {
-      if (substr_count($path, "/") > 0) {
-        $components = explode("/", $path);
-        $affected_assembly = $components[0];
-
-        // If the change is made inside an assembly that has a `.Tests`
-        // extension, then the developer has changed the actual tests.
-        if (substr($affected_assembly, -6) === ".Tests") {
-          $affected_assembly_path = Filesystem::resolvePath($affected_assembly);
-          $test_assembly = $affected_assembly;
-        } else {
-          $affected_assembly_path = Filesystem::resolvePath(
-            $affected_assembly.".Tests");
-          $test_assembly = $affected_assembly.".Tests";
+    if ($this->getRunAllTests()) {
+      // Find all of the .Tests folders in the project root.
+      $entries = Filesystem::listDirectory($this->projectRoot);
+      foreach ($entries as $entry) {
+        if (substr($entry, -6) === ".Tests") {
+          if (is_dir($this->projectRoot."/".$entry)) {
+            $affected_tests[] = $entry;
+          }
         }
-        if (is_dir($affected_assembly_path) &&
-            !in_array($test_assembly, $affected_tests)) {
-          $affected_tests[] = $test_assembly;
+      }
+    } else {
+      $paths = $this->getPaths();
+
+      foreach ($paths as $path) {
+        if (substr_count($path, "/") > 0) {
+          $components = explode("/", $path);
+          $affected_assembly = $components[0];
+
+          // If the change is made inside an assembly that has a `.Tests`
+          // extension, then the developer has changed the actual tests.
+          if (substr($affected_assembly, -6) === ".Tests") {
+            $affected_assembly_path = Filesystem::resolvePath(
+              $affected_assembly);
+            $test_assembly = $affected_assembly;
+          } else {
+            $affected_assembly_path = Filesystem::resolvePath(
+              $affected_assembly.".Tests");
+            $test_assembly = $affected_assembly.".Tests";
+          }
+          if (is_dir($affected_assembly_path) &&
+              !in_array($test_assembly, $affected_tests)) {
+            $affected_tests[] = $test_assembly;
+          }
         }
       }
     }
@@ -170,7 +190,8 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
     $regenerate_start = microtime(true);
     $regenerate_future = new ExecFuture(
       csprintf("xbuild /p:TargetPlatform=$platform"));
-    $regenerate_future->setCWD(Filesystem::resolvePath("Build"));
+    $regenerate_future->setCWD(Filesystem::resolvePath(
+      $this->projectRoot."/Build"));
     $result = new ArcanistUnitTestResult();
     $result->setName("(regenerate projects for $platform)");
 
@@ -208,8 +229,8 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
     foreach ($test_assemblies as $test_assembly) {
       $build_future = new ExecFuture(
         csprintf("xbuild /p:SkipTestsOnBuild=True"));
-      $build_future->setCWD(
-        Filesystem::resolvePath($test_assembly));
+      $build_future->setCWD(Filesystem::resolvePath(
+        $this->projectRoot."/".$test_assembly));
       $build_futures[$test_assembly] = $build_future;
     }
     foreach (Futures($build_futures) as $test_assembly => $future) {
@@ -252,12 +273,14 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
       // FIXME: Can't use TempFile here as xUnit doesn't like
       // UNIX-style full paths.  It sees the leading / as the
       // start of an option flag, even when quoted.
-      $xunit_temp = $test_assembly."/bin/Debug/".$test_assembly.".results.xml";
+      $xunit_temp = $this->projectRoot.
+        "/".$test_assembly."/bin/Debug/".$test_assembly.".results.xml";
       $future = new ExecFuture(csprintf("%C %s /xml %s /silent",
         $this->runtimeEngine.$this->testEngine,
         $test_assembly."/bin/Debug/".$test_assembly.".dll",
         $xunit_temp
         ));
+      $future->setCWD(Filesystem::resolvePath($this->projectRoot));
       $futures[$test_assembly] = $future;
       $outputs[$test_assembly] = $xunit_temp;
     }
