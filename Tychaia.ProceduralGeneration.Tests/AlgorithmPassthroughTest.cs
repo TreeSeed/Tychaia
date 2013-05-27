@@ -10,19 +10,19 @@ namespace Tychaia.ProceduralGeneration.Tests
 {
     public class AlgorithmPassthroughTest
     {
-        [Fact(Skip="Broken"), TestFor(typeof(AlgorithmPassthrough))]
+        [Fact, TestFor(typeof(AlgorithmPassthrough))]
         public void TestRuntimePassthroughNoBorder()
         {
             this.TestRuntimePassthrough(0, 0);
         }
 
-        [Fact(Skip="Broken"), TestFor(typeof(AlgorithmPassthrough))]
+        [Fact, TestFor(typeof(AlgorithmPassthrough))]
         public void TestRuntimePassthroughOnePositiveBorder()
         {
             this.TestRuntimePassthrough(1, 1);
         }
 
-        [Fact(Skip="Broken"), TestFor(typeof(AlgorithmPassthrough))]
+        [Fact, TestFor(typeof(AlgorithmPassthrough))]
         public void TestRuntimePassthroughOneCombinationBorder()
         {
             this.TestRuntimePassthrough(0, 1);
@@ -30,25 +30,25 @@ namespace Tychaia.ProceduralGeneration.Tests
             this.TestRuntimePassthrough(1, 1);
         }
 
-        [Fact(Skip="Broken"), TestFor(typeof(AlgorithmPassthrough))]
+        [Fact, TestFor(typeof(AlgorithmPassthrough))]
         public void TestRuntimePassthroughSmallPositiveBorder()
         {
             this.TestRuntimePassthrough(2, 2);
         }
 
-        [Fact(Skip="Broken"), TestFor(typeof(AlgorithmPassthrough))]
+        [Fact, TestFor(typeof(AlgorithmPassthrough))]
         public void TestRuntimePassthroughMediumPositiveBorder()
         {
             this.TestRuntimePassthrough(5, 5);
         }
 
-        [Fact(Skip="Broken"), TestFor(typeof(AlgorithmPassthrough))]
+        [Fact, TestFor(typeof(AlgorithmPassthrough))]
         public void TestRuntimePassthroughLargePositiveBorder()
         {
             this.TestRuntimePassthrough(20, 20);
         }
 
-        [Fact(Skip="Broken"), TestFor(typeof(AlgorithmPassthrough))]
+        [Fact, TestFor(typeof(AlgorithmPassthrough))]
         public void TestRuntimePassthroughUnevenPositiveBorder()
         {
             this.TestRuntimePassthrough(4, 7);

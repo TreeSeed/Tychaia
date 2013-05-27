@@ -10,7 +10,7 @@ namespace Tychaia.ProceduralGeneration.Tests
 {
     public class SkewTests
     {
-        [Fact(Skip="Broken")]
+        [Fact]
         public void TestXSkew()
         {
             int computations;
@@ -57,7 +57,7 @@ namespace Tychaia.ProceduralGeneration.Tests
                     }
         }
 
-        [Fact(Skip="Broken")]
+        [Fact]
         public void TestYSkew()
         {
             int computations;
@@ -104,7 +104,7 @@ namespace Tychaia.ProceduralGeneration.Tests
                     }
         }
 
-        [Fact(Skip="Broken")]
+        [Fact]
         public void TestZSkew()
         {
             int computations;

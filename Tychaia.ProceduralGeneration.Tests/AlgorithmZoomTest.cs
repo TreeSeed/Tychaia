@@ -10,7 +10,7 @@ namespace Tychaia.ProceduralGeneration.Tests
 {
     public class AlgorithmZoomTest
     {
-        [Fact(Skip="Broken"), TestFor(typeof(AlgorithmZoom2D))]
+        [Fact, TestFor(typeof(AlgorithmZoom2D))]
         public void ZoomSquareTest()
         {
             int computations1, computations2;
