@@ -66,15 +66,15 @@ EOTEXT
     $console->writeOut("Resetting changes... ");
     execx("git reset --hard HEAD");
     $this->writeOutOkay($console);
- 
+
     $console->writeOut("Cleaning changes... ");
     execx("git clean -xdf");
     $this->writeOutOkay($console);
- 
+
     $console->writeOut("Force checking out master... ");
     execx("git checkout master -f");
     $this->writeOutOkay($console);
-  
+
     $console->writeOut("Pulling latest version... ");
     execx("git pull");
     $this->writeOutOkay($console);
