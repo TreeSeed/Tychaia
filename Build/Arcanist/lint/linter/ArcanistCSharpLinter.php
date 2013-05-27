@@ -88,6 +88,9 @@ final class ArcanistCSharpLinter extends ArcanistFutureLinter {
       $message->setLine($issue->LineNumber);
       $message->setCode("CS".$issue->Index->Code);
       $message->setName($issue->Index->Name);
+      $message->setChar($issue->Column);
+      $message->setOriginalText($issue->OriginalText);
+      $message->setReplacementText($issue->ReplacementText);
       $message->setDescription(
         vsprintf($issue->Index->Message, $issue->Parameters));
       $severity = ArcanistLintSeverity::SEVERITY_ADVICE;
