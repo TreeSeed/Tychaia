@@ -53,6 +53,7 @@
     <Definition Include="Tychaia.Content" />
     <Definition Include="Phabricator.Conduit" />
     <Definition Include="Razor" />
+    <Definition Include="cslint" />
   </ItemGroup>
   
   <Target Name="Build">

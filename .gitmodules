@@ -19,3 +19,6 @@
 [submodule "Libraries/Phabricator.Conduit"]
 	path = Libraries/Phabricator.Conduit
 	url = git://github.com/hach-que/Phabricator.Conduit.git
+[submodule "Build/cslint"]
+	path = Build/cslint
+	url = git://github.com/hach-que/cslint.git

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ExternalProject Name="cslint">
+  
+  <Project 
+    Name="cslint"
+    Guid="3D8B0C12-81C8-4D46-8EDD-309CF41EAC18"
+    Path="Build/cslint/cslint.csproj" />
+  
+</ExternalProject>

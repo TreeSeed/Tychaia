@@ -10,6 +10,8 @@ phutil_register_library_map(array(
   '__library_version__' => 2,
   'class' =>
   array(
+    'ArcanistCSharpLinter' => 'lint/linter/ArcanistCSharpLinter.php',
+    'RedpointLintEngine' => 'lint/engine/RedpointLintEngine.php',
     'RedpointUpgradeWebsitesWorkflow' => 'workflow/RedpointUpgradeWebsitesWorkflow.php',
     'xUnitTestEngine' => 'unit/engine/xUnitTestEngine.php',
   ),
@@ -18,6 +20,8 @@ phutil_register_library_map(array(
   ),
   'xmap' =>
   array(
+    'ArcanistCSharpLinter' => 'ArcanistFutureLinter',
+    'RedpointLintEngine' => 'ArcanistLintEngine',
     'RedpointUpgradeWebsitesWorkflow' => 'ArcanistBaseWorkflow',
     'xUnitTestEngine' => 'ArcanistBaseUnitTestEngine',
   ),
