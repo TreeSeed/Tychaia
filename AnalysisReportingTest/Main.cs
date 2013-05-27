@@ -26,7 +26,7 @@ namespace AnalysisReportingTest
                 if (layer.Reports.Count > 0)
                     analysis.Layers.Add(layer);
             }
-            
+
             using (var writer = new StreamWriter("test.xml"))
             {
                 AnalysisIO.Save(analysis, writer);

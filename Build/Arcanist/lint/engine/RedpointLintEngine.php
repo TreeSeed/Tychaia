@@ -21,6 +21,11 @@ final class RedpointLintEngine extends ArcanistLintEngine {
         // against it.
         unset($paths[$key]);
       }
+      if (preg_match('@\.Designer\.cs$@', $path)) {
+        // Designer files are automatically generated.
+        unset($paths[$key]);
+      }
+
     }
 
     $text_paths = preg_grep('/\.(php|cs|css|hpp|cpp|l|y|py|pl)$/', $paths);

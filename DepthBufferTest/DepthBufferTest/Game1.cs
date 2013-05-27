@@ -197,7 +197,9 @@ namespace DepthBufferTest
             }
 
             // Draw player sprite.
-            occludingSpriteBatch.DrawOccludable(this.personSprite, new Vector2(this.squareX, this.squareY), Color.White, squareDepth);
+            occludingSpriteBatch.DrawOccludable(
+                this.personSprite,
+                new Vector2(this.squareX, this.squareY), Color.White, squareDepth);
 
             occludingSpriteBatch.End();
 

@@ -45,7 +45,10 @@ namespace DepthBufferTest
 
         public void Draw(Texture2D texture, Vector2 dst, Color color, float z)
         {
-            this.Draw(texture, texture.Bounds, new Rectangle((int)dst.X, (int)dst.Y, texture.Bounds.Width, texture.Bounds.Height), color, z);
+            this.Draw(
+                texture,
+                texture.Bounds,
+                new Rectangle((int)dst.X, (int)dst.Y, texture.Bounds.Width, texture.Bounds.Height), color, z);
         }
 
         public void Draw(Texture2D texture, Rectangle dst, Color color, float z)
