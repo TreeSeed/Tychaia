@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Tychaia.Website
 {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
+    // Note: For instructions on enabling IIS6 or IIS7 classic mode,
     // visit http://go.microsoft.com/?LinkId=9394801
 
     public class MvcApplication : System.Web.HttpApplication
@@ -21,7 +21,8 @@ namespace Tychaia.Website
 
             routes.MapRoute("Home", "", new { controller = "Home", action = "Index" });
             routes.MapRoute("Download", "download", new { controller = "Download", action = "Index" });
-            routes.MapRoute("Wiki", "w/{*slug}", new { controller = "Wiki", action = "Index", slug = UrlParameter.Optional });
+            routes.MapRoute("Wiki", "w/{*slug}",
+                new { controller = "Wiki", action = "Index", slug = UrlParameter.Optional });
             routes.MapRoute("Cache", "clear-cache", new { controller = "Cache", action = "Index" });
         }
 
@@ -39,7 +40,7 @@ namespace Tychaia.Website
             var ob = typeof(
                 AspNetRequestScopeStorageProvider).Assembly.GetType(
                 "System.Web.WebPages.WebPageHttpModule").GetProperty
-                ("AppStartExecuteCompleted", 
+                ("AppStartExecuteCompleted",
             BindingFlags.NonPublic | BindingFlags.Static);
             ob.SetValue(null, true, null);
         }

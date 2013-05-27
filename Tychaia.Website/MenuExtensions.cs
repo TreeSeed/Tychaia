@@ -12,9 +12,9 @@ namespace Tychaia.Website
     public static class MenuExtensions
     {
         public static MvcHtmlString MenuItem(
-            this HtmlHelper htmlHelper, 
+            this HtmlHelper htmlHelper,
             string text,
-            string action, 
+            string action,
             string controller
         )
         {

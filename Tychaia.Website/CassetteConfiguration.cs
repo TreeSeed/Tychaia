@@ -7,7 +7,7 @@ namespace Tychaia.Website
     /// <summary>
     /// Configures the Cassette asset bundles for the web application.
     /// </summary>
-    public class CassetteBundleConfiguration : IConfiguration<BundleCollection>
+    public class CassetteConfiguration : IConfiguration<BundleCollection>
     {
         public void Configure(BundleCollection bundles)
         {
@@ -23,7 +23,7 @@ namespace Tychaia.Website
             // To combine files, try something like this instead:
             //   bundles.Add<StylesheetBundle>("Content");
             // In production mode, all of ~/Content will be combined into a single bundle.
-            
+
             // If you want a bundle per folder, try this:
             //   bundles.AddPerSubDirectory<ScriptBundle>("Scripts");
             // Each immediate sub-directory of ~/Scripts will be combined into its own bundle.

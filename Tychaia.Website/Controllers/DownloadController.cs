@@ -22,7 +22,7 @@ namespace Tychaia.Website.Controllers
             public MyWebClient()
             {
             }
-            
+
             protected override WebRequest GetWebRequest(Uri uri)
             {
                 WebRequest w = base.GetWebRequest(uri);

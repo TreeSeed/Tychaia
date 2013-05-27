@@ -6,10 +6,10 @@
  * Assumes that when modifying a file with a path like `SomeAssembly/MyFile.cs`,
  * that the test assembly that verifies the functionality of `SomeAssembly` is
  * located at `SomeAssembly.Tests`.
- * 
+ *
  * @group unitrun
  */
-final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
+final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
 
   private $runtimeEngine;
   private $buildEngine;
@@ -166,16 +166,16 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
    * IDE and then forgotten to add them to the respective `.definitions` file.
    * By regenerating the projects we ensure that any missing definition entries
    * will cause the build to fail.
-   * 
+   *
    * @return array   Array of test results.
    */
   private function generateProjects() {
-    
+
     // No "Build" directory; so skip generation of projects.
     if (!is_dir(Filesystem::resolvePath($this->projectRoot."/Build"))) {
       return array();
     }
-  
+
     // Work out what platform the user is building for already.
     $platform = "Linux";
     $files = Filesystem::listDirectory($this->projectRoot);
@@ -192,6 +192,7 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
       csprintf("xbuild /p:TargetPlatform=$platform"));
     $regenerate_future->setCWD(Filesystem::resolvePath(
       $this->projectRoot."/Build"));
+    $results = array();
     $result = new ArcanistUnitTestResult();
     $result->setName("(regenerate projects for $platform)");
 
@@ -226,6 +227,7 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
     $build_futures = array();
     $build_failed = false;
     $build_start = microtime(true);
+    $results = array();
     foreach ($test_assemblies as $test_assembly) {
       $build_future = new ExecFuture(
         csprintf("xbuild /p:SkipTestsOnBuild=True"));
@@ -258,7 +260,7 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
   /**
    * Run the xUnit test runner on each of the assemblies and parse the
    * resulting XML.
-   * 
+   *
    * @param  array   Array of test assemblies.
    * @return array   Array of test results.
    */
@@ -278,8 +280,7 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
       $future = new ExecFuture(csprintf("%C %s /xml %s /silent",
         $this->runtimeEngine.$this->testEngine,
         $test_assembly."/bin/Debug/".$test_assembly.".dll",
-        $xunit_temp
-        ));
+        $xunit_temp));
       $future->setCWD(Filesystem::resolvePath($this->projectRoot));
       $futures[$test_assembly] = $future;
       $outputs[$test_assembly] = $xunit_temp;
@@ -342,5 +343,5 @@ final class xUnitTestEngine extends ArcanistBaseUnitTestEngine {
 
     return $results;
   }
-  
+
 }

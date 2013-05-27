@@ -40,7 +40,8 @@ namespace Tychaia.Website
         private static string SHA1(string input)
         {
             var algorithm = new SHA1Managed();
-            return BitConverter.ToString(algorithm.ComputeHash(Encoding.ASCII.GetBytes(input))).Replace("-", string.Empty);
+            return BitConverter.ToString(algorithm.ComputeHash(
+                Encoding.ASCII.GetBytes(input))).Replace("-", string.Empty);
         }
 
         public static string ProcessRemarkup(ConduitClient client, string remarkup)

@@ -13,7 +13,7 @@ phutil_register_library_map(array(
     'ArcanistCSharpLinter' => 'lint/linter/ArcanistCSharpLinter.php',
     'RedpointLintEngine' => 'lint/engine/RedpointLintEngine.php',
     'RedpointUpgradeWebsitesWorkflow' => 'workflow/RedpointUpgradeWebsitesWorkflow.php',
-    'xUnitTestEngine' => 'unit/engine/xUnitTestEngine.php',
+    'XUnitTestEngine' => 'unit/engine/XUnitTestEngine.php',
   ),
   'function' =>
   array(
@@ -23,6 +23,6 @@ phutil_register_library_map(array(
     'ArcanistCSharpLinter' => 'ArcanistFutureLinter',
     'RedpointLintEngine' => 'ArcanistLintEngine',
     'RedpointUpgradeWebsitesWorkflow' => 'ArcanistBaseWorkflow',
-    'xUnitTestEngine' => 'ArcanistBaseUnitTestEngine',
+    'XUnitTestEngine' => 'ArcanistBaseUnitTestEngine',
   ),
 ));

@@ -10,7 +10,7 @@ namespace Tychaia.Website
     public static class DateTimeHelper
     {
         public static string ToPreformatted(this DateTime date)
-        {            
+        {
             var dateAppend = "th";
             if (date.Day % 10 == 1 && date.Day != 11)
                 dateAppend = "st";
