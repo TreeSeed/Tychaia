@@ -280,7 +280,7 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
       $future = new ExecFuture(csprintf("%C %s /xml %s /silent",
         $this->runtimeEngine.$this->testEngine,
         $test_assembly."/bin/Debug/".$test_assembly.".dll",
-        $xunit_temp));
+        $test_assembly."/bin/Debug/".$test_assembly.".results.xml"));
       $future->setCWD(Filesystem::resolvePath($this->projectRoot));
       $futures[$test_assembly] = $future;
       $outputs[$test_assembly] = $xunit_temp;
