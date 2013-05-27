@@ -292,24 +292,24 @@ namespace ProceduralGenPerformance
 
                 // Because there are 1000 tests, and 1000 microseconds in a millisecond..
                 Console.Write("Test #" + x);
-                this.PrintStatus(
+                PrintStatus(
                     "LEGACY",
                     legacyFailed,
                     legacyStartTime,
                     legacyEndTime);
-                this.PrintStatus(
+                PrintStatus(
                     "ALGORITHM RUNTIME",
                     algorithmRuntimeFailed,
                     algorithmRuntimeStartTime,
                     algorithmRuntimeEndTime);
-                this.PrintStatus(
+                PrintStatus(
                     "ALGORITHM COMPILED",
                     algorithmCompiledFailed,
                     algorithmCompiledStartTime,
                     algorithmCompiledEndTime);
-                this.PrintStatus(
+                PrintStatus(
                     "ALGORITHM COMPILED BUILTIN",
-                    algorihtmCompiledBuiltin != null,
+                    algorithmCompiledBuiltin != null,
                     algorithmCompiledBuiltinStartTime,
                     algorithmCompiledBuiltinEndTime);
                 Console.WriteLine(
@@ -318,15 +318,15 @@ namespace ProceduralGenPerformance
                     * 100 + "% "
                 );
             }
+        }
 
-            private void PrintStatus(string name, bool display, DateTime start, DateTime end)
-            {
-                if (!display)
-                    return;
-                var u = "\ub5c2";
-                Console.Write(name + ": ");
-                Console.Write((end - start).TotalMilliseconds + u + "s ");
-            }
+        private static void PrintStatus(string name, bool display, DateTime start, DateTime end)
+        {
+            if (!display)
+                return;
+            var u = "\ub5c2";
+            Console.Write(name + ": ");
+            Console.Write((end - start).TotalMilliseconds + u + "s ");
         }
     }
 }
