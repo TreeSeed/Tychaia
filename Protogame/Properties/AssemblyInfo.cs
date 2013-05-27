@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Swinburne University of Technology")]
 [assembly: AssemblyProduct("Protogame")]
-[assembly: AssemblyCopyright("Copyright © Swinburne University of Technology 2012")]
+[assembly: AssemblyCopyright("Copyright Swinburne University of Technology 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

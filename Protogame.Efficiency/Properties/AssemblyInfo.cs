@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Protogame.Efficiency")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("Redpoint Software")]
-[assembly: AssemblyCopyright("Copyright © Redpoint Software 2012")]
+[assembly: AssemblyCopyright("Copyright Redpoint Software 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

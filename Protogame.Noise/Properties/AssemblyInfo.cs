@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Databar Data Solutions")]
 [assembly: AssemblyProduct("Protogame.Noise")]
-[assembly: AssemblyCopyright("Copyright © Databar Data Solutions 2012")]
+[assembly: AssemblyCopyright("Copyright Databar Data Solutions 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

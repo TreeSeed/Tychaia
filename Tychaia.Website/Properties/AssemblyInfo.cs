@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Redpoint Software")]
 [assembly: AssemblyProduct("Tychaia.Website")]
-[assembly: AssemblyCopyright("Copyright © Redpoint Software 2013")]
+[assembly: AssemblyCopyright("Copyright Redpoint Software 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

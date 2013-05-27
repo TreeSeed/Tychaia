@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("UT-ADLab")]
 [assembly: AssemblyProduct("MIConvexHull")]
-[assembly: AssemblyCopyright("Copyright © UT-ADLab 2010")]
+[assembly: AssemblyCopyright("Copyright UT-ADLab 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

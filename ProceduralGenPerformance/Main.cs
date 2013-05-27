@@ -140,12 +140,14 @@ namespace ProceduralGenPerformance
                 int[] compiledData = algorithmCompiled.GenerateData(0, 0, 0, 16, 16, 1, out vcomputations);
                 if (runtimeData.Length != legacyData.Length)
                 {
-                    Console.WriteLine("STOP: Runtime data evaluation results in a different array size than the legacy system.");
+                    Console.WriteLine("STOP: Runtime data evaluation results in a " +
+                                      "different array size than the legacy system.");
                     return;
                 }
                 if (compiledData.Length != legacyData.Length)
                 {
-                    Console.WriteLine("STOP: Compiled data evaluation results in a different array size than the legacy system.");
+                    Console.WriteLine("STOP: Compiled data evaluation results in a " +
+                                      "different array size than the legacy system.");
                     return;
                 }
                 for (var i = 0; i < legacyData.Length; i++)
@@ -287,16 +289,45 @@ namespace ProceduralGenPerformance
                         algorithmCompiled.GenerateData(0, 0, 0, 128, 128, 1, out computations);
                     algorithmCompiledBuiltinEndTime = DateTime.Now;
                 }
+
                 // Because there are 1000 tests, and 1000 microseconds in a millisecond..
+                Console.Write("Test #" + x);
+                this.PrintStatus(
+                    "LEGACY",
+                    legacyFailed,
+                    legacyStartTime,
+                    legacyEndTime);
+                this.PrintStatus(
+                    "ALGORITHM RUNTIME",
+                    algorithmRuntimeFailed,
+                    algorithmRuntimeStartTime,
+                    algorithmRuntimeEndTime);
+                this.PrintStatus(
+                    "ALGORITHM COMPILED",
+                    algorithmCompiledFailed,
+                    algorithmCompiledStartTime,
+                    algorithmCompiledEndTime);
+                this.PrintStatus(
+                    "ALGORITHM COMPILED BUILTIN",
+                    algorihtmCompiledBuiltin != null,
+                    algorithmCompiledBuiltinStartTime,
+                    algorithmCompiledBuiltinEndTime);
                 Console.WriteLine(
-                    "Test #" + x + " "
-                    + (legacyFailed ? "" : ("LEGACY: " + (legacyEndTime - legacyStartTime).TotalMilliseconds + "µs "))
-                    + (algorithmRuntimeFailed ? "" : ("ALGORITHM RUNTIME: " + (algorithmRuntimeEndTime - algorithmRuntimeStartTime).TotalMilliseconds + "µs "))
-                    + (algorithmCompiledFailed ? "" : ("ALGORITHM COMPILED: " + (algorithmCompiledEndTime - algorithmCompiledStartTime).TotalMilliseconds + "µs "))
-                    + ((algorithmCompiledBuiltin != null) ? ("ALGORITHM COMPILED BUILTIN: " + (algorithmCompiledBuiltinEndTime - algorithmCompiledBuiltinStartTime).TotalMilliseconds + "µs ") : "")
-                    + "LC%: " + ((legacyEndTime - legacyStartTime).TotalMilliseconds / (algorithmCompiledEndTime - algorithmCompiledStartTime).TotalMilliseconds) * 100 + "% "
+                    "LC%: " + ((legacyEndTime - legacyStartTime).TotalMilliseconds /
+                        (algorithmCompiledEndTime - algorithmCompiledStartTime).TotalMilliseconds)
+                    * 100 + "% "
                 );
+            }
+
+            private void PrintStatus(string name, bool display, DateTime start, DateTime end)
+            {
+                if (!display)
+                    return;
+                var u = "\ub5c2";
+                Console.Write(name + ": ");
+                Console.Write((end - start).TotalMilliseconds + u + "s ");
             }
         }
     }
 }
+
