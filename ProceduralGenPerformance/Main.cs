@@ -218,7 +218,7 @@ namespace ProceduralGenPerformance
 
             var ranged = new RangedLayer(algorithmRuntime);
             Console.WriteLine(ranged.GetPrintableStructure());
-            
+
             ICSharpCode.NRefactory.CSharp.Expression ix, iy, iz, iwidth, iheight, idepth;
             RangedLayer.FindMaximumBounds(ranged, out ix, out iy, out iz, out iwidth, out iheight, out idepth);
             Console.WriteLine("The X expression is: " + ix.ToString());

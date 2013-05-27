@@ -235,9 +235,9 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
     #endregion
 
     #region Randomness
-    
+
     private long m_Seed;
-    
+
     /// <summary>
     /// The world seed.
     /// </summary>
@@ -262,7 +262,7 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
     {
         this.Seed = seed;
     }
-    
+
     /// <summary>
     /// Returns a random positive integer between the specified 0 and
     /// the exclusive end value.
@@ -277,7 +277,7 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
             return a % end;
         }
     }
-    
+
     /// <summary>
     /// Returns a random positive integer between the specified inclusive start
     /// value and the exclusive end value.
@@ -292,7 +292,7 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
             return a % (end - start) + start;
         }
     }
-    
+
     /// <summary>
     /// Returns a random integer over the range of valid integers based
     /// on the provided X and Y position, and the specified modifier.
@@ -304,7 +304,7 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
             return (int)(this.GetRandomNumber(x, y, z, modifier) % int.MaxValue);
         }
     }
-    
+
     /// <summary>
     /// Returns a random long integer over the range of valid long integers based
     /// on the provided X and Y position, and the specified modifier.
@@ -313,7 +313,7 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
     {
         return this.GetRandomNumber(x, y, z, modifier);
     }
-    
+
     /// <summary>
     /// Returns a random double between the range of 0.0 and 1.0 based on
     /// the provided X and Y position, and the specified modifier.
@@ -325,7 +325,7 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
             a += long.MaxValue;
         return (double)a / (double)long.MaxValue;
     }
-    
+
     private long GetRandomNumber(long x, long y, long z, long modifier)
     {
         /* From: http://stackoverflow.com/questions/2890040/implementing-gethashcode
@@ -347,7 +347,7 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
             seed += modifier;
             // Prevents the seed from being 0 along an axis.
             seed += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
-            
+
             long rng = seed * seed;
             rng += (x - 11) * 2990430311017;
             rng *= (y - 12) * 14475080218213;
@@ -360,7 +360,7 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
             rng += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
             rng += modifier;
             rng += 3661988493967;
-            
+
             return rng;
         }
         /*
@@ -378,15 +378,15 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
         seed += modifier;
         // Prevents the seed from being 0 along an axis.
         seed += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
-            
+
         return seed;
         */
     }
-    
+
     #endregion
-    
+
     #region Other
-    
+
     /// <summary>
     /// Smoothes the specified data according to smoothing logic.  Apparently
     /// inlining this functionality causes the algorithms to run slower, so we
@@ -396,7 +396,7 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
     {
         // Parent-based Smoothing
         int selected = 0;
-        
+
         if (x % 2 == 0)
         {
             if (y % 2 == 0)
@@ -460,11 +460,11 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
                 }
             }
         }
-        
+
         // Select one of the four options if we couldn't otherwise
         // determine a value.
         selected = this.GetRandomRange(x, y, 0, 4);
-        
+
         switch (selected)
         {
             case 0:
@@ -476,10 +476,10 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
             case 3:
                 return westValue;
         }
-        
+
         throw new InvalidOperationException();
     }
-    
+
     #endregion
 
 }

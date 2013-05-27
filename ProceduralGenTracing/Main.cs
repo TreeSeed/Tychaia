@@ -69,7 +69,7 @@ namespace ProceduralGenTracing
                 runtimeZoom2DIteration4.DataGenerated += HandleDataGenerated;
                 runtimeIncrementWaterDistance4.DataGenerated += HandleDataGenerated;
             };
-            
+
             DisableHandler = () =>
             {
                 runtimeInitial.DataGenerated -= HandleDataGenerated;
@@ -120,7 +120,7 @@ namespace ProceduralGenTracing
                               e.GSAbsoluteZ - e.GSMaxOffsetZ,
                               e.GSArrayWidth,
                               e.GSArrayHeight,
-                              e.GSArrayDepth, out computations); 
+                              e.GSArrayDepth, out computations);
             var alt = AlgorithmTraceImageGeneration.RenderTraceResult(
                     sender as RuntimeLayer,
                     data,
