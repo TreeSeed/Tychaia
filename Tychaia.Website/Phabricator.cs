@@ -9,17 +9,23 @@ using Phabricator.Conduit;
 using System.Security.Cryptography;
 using System.Text;
 using System.Collections.Generic;
+using Argotic.Syndication;
 
 namespace Tychaia.Website
 {
-    public static class Phabricator
+    public class Phabricator : IPhabricator
     {
-        public static MemoryCache WikiPageCache = new MemoryCache("wiki-page-cache");
-        public static MemoryCache WikiHierarchyCache = new MemoryCache("wiki-hierarchy-cache");
-        public static MemoryCache BlogCache = new MemoryCache("blog-cache");
-        public static MemoryCache RemarkupCache = new MemoryCache("remarkup-cache");
+        public MemoryCache m_WikiPageCache = new MemoryCache("wiki-page-cache");
+        public MemoryCache m_WikiHierarchyCache = new MemoryCache("wiki-hierarchy-cache");
+        public MemoryCache m_BlogCache = new MemoryCache("blog-cache");
+        public MemoryCache m_RemarkupCache = new MemoryCache("remarkup-cache");
 
-        public static void ClearCache()
+        public MemoryCache WikiPageCache { get { return this.m_WikiPageCache; } }
+        public MemoryCache WikiHierarchyCache { get { return this.m_WikiHierarchyCache; } }
+        public MemoryCache BlogCache { get { return this.m_BlogCache; } }
+        public MemoryCache RemarkupCache { get { return this.m_RemarkupCache; } }
+
+        public void ClearCache()
         {
             // Switch using temporary variable so that we don't have
             // any threading issues accessing a disposed cache.
@@ -27,10 +33,10 @@ namespace Tychaia.Website
             var oldWikiHierarchy = WikiHierarchyCache;
             var oldBlog = BlogCache;
             var oldRemarkup = RemarkupCache;
-            WikiPageCache = new MemoryCache("wiki-page-cache");
-            WikiHierarchyCache = new MemoryCache("wiki-hierarchy-cache");
-            BlogCache = new MemoryCache("blog-cache");
-            RemarkupCache = new MemoryCache("remarkup-cache");
+            this.m_WikiPageCache = new MemoryCache("wiki-page-cache");
+            this.m_WikiHierarchyCache = new MemoryCache("wiki-hierarchy-cache");
+            this.m_BlogCache = new MemoryCache("blog-cache");
+            this.m_RemarkupCache = new MemoryCache("remarkup-cache");
             oldWikiPage.Dispose();
             oldWikiHierarchy.Dispose();
             oldBlog.Dispose();
@@ -44,7 +50,7 @@ namespace Tychaia.Website
                 Encoding.ASCII.GetBytes(input))).Replace("-", string.Empty);
         }
 
-        public static string ProcessRemarkup(ConduitClient client, string remarkup)
+        public string ProcessRemarkup(ConduitClient client, string remarkup)
         {
             var sha1 = SHA1(remarkup);
             var html = RemarkupCache.Get(sha1) as string;
@@ -54,7 +60,7 @@ namespace Tychaia.Website
                     context = "phriction",
                     content = remarkup
                 }).content;
-                Phabricator.RemarkupCache.Add(
+                this.RemarkupCache.Add(
                     new CacheItem(sha1, html),
                     new CacheItemPolicy { SlidingExpiration = new TimeSpan(1, 0, 0) }
                 );
@@ -62,15 +68,15 @@ namespace Tychaia.Website
             return html;
         }
 
-        public static dynamic GetWikiPage(ConduitClient client, string slug)
+        public dynamic GetWikiPage(ConduitClient client, string slug)
         {
-            var page = Phabricator.WikiPageCache.Get(slug);
+            var page = this.WikiPageCache.Get(slug);
             if (page == null)
             {
                 page = client.Do("phriction.info", new {
                     slug = slug
                 });
-                Phabricator.WikiPageCache.Add(
+                this.WikiPageCache.Add(
                     new CacheItem(slug, page),
                     new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) }
                 );
@@ -78,9 +84,9 @@ namespace Tychaia.Website
             return page;
         }
 
-        public static dynamic GetWikiHierarchy(ConduitClient client, string slug)
+        public dynamic GetWikiHierarchy(ConduitClient client, string slug)
         {
-            var hierarchy = Phabricator.WikiHierarchyCache.Get(slug);
+            var hierarchy = this.WikiHierarchyCache.Get(slug);
             if (hierarchy == null)
             {
                 try
@@ -98,12 +104,26 @@ namespace Tychaia.Website
                 }
                 if (hierarchy == null)
                     throw new NotImplementedException(slug);
-                Phabricator.WikiHierarchyCache.Add(
+                this.WikiHierarchyCache.Add(
                     new CacheItem(slug, hierarchy),
                     new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) }
                 );
             }
             return hierarchy;
+        }
+
+        public AtomFeed GetFeed(string id)
+        {
+            var feed = this.BlogCache.Get("summary-feed-" + id) as AtomFeed;
+            if (feed == null)
+            {
+                feed = AtomFeed.Create(new Uri("http://code.redpointsoftware.com.au/phame/blog/feed/1/"));
+                this.BlogCache.Add(
+                    new CacheItem("summary-feed-" + id, feed),
+                    new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) }
+                );
+            }
+            return feed;
         }
     }
 }

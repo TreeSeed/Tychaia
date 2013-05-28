@@ -82,6 +82,9 @@ final class ArcanistCSharpLinter extends ArcanistFutureLinter {
   protected function resolveFuture($path, Future $future) {
     list($rc, $stdout) = $future->resolve();
     $results = json_decode($stdout);
+    if ($results === null || $results->Issues === null) {
+      return;
+    }
     foreach ($results->Issues as $issue) {
       $message = new ArcanistLintMessage();
       $message->setPath($path);

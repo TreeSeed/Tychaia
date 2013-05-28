@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ExternalProject Name="Ninject.MockingKernel">
+ 
+  <Binary
+    Name="Ninject.MockingKernel" 
+    Path="Libraries/Ninject.MockingKernel/Ninject.MockingKernel.dll" />
+  <Binary
+    Name="Ninject.MockingKernel.Moq" 
+    Path="Libraries/Ninject.MockingKernel/Ninject.MockingKernel.Moq.dll" />
+  <Binary
+    Name="Moq" 
+    Path="Libraries/Ninject.MockingKernel/Moq.dll" />
+
+</ExternalProject>

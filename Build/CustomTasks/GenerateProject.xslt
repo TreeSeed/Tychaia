@@ -53,6 +53,9 @@
             <xsl:when test="$project/@Type = 'XNA'">
               <xsl:text>Exe</xsl:text>
             </xsl:when>
+            <xsl:when test="$project/@Type = 'Console'">
+              <xsl:text>Exe</xsl:text>
+            </xsl:when>
             <xsl:when test="$project/@Type = 'GUI'">
               <xsl:text>Exe</xsl:text>
             </xsl:when>
@@ -415,8 +418,8 @@ select="/Input/Projects/Project[@Name=$include-path]/@Guid" />}</Project>
           </xsl:if>
         </xsl:for-each>
       </ItemGroup>
-    
-      <xsl:if test="$project/@Type = 'Tests'">   
+   
+      <xsl:if test="$project/@Type = 'Tests'">
       	<UsingTask
     	  AssemblyFile="xunit.runner.msbuild.dll"
           TaskName="Xunit.Runner.MSBuild.xunit">
@@ -426,10 +429,23 @@ select="/Input/Projects/Project[@Name=$include-path]/@Guid" />}</Project>
 'packages/xunit.runners.1.9.1/tools/xunit.runner.msbuild.dll')" />
           </xsl:attribute>
         </UsingTask>
-        <Target Name="AfterBuild" Condition="$(SkipTestsOnBuild) != 'True'">
+        <!--
+
+          Disabling the automatic-test-on-build functionality as the MSBuild
+          task seems to occasionally crash XBuild when it runs.  We should
+          replace the MSBuild task with a task that executes the XUnit runner
+          externally and reads in the XML file so that if the XUnit runner
+          crashes it won't crash the Mono runtime used for XBuild.
+
+          Change the Condition below to be "$(SkipTestsOnBuild) != 'True'" to
+          reenable the test-on-build functionality.
+
+        -->
+        <Target Name="AfterBuild" Condition="1 = 0">
           <xunit Assembly="$(TargetPath)" />
         </Target>
       </xsl:if>
+      -->
           
     </Project>
     

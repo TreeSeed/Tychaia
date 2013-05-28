@@ -1,18 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Runtime.Caching;
 using System.Web.Mvc;
 using Phabricator.Conduit;
 using Tychaia.Website.Models;
 using Tychaia.Website.ViewModels;
-using System.Web;
-using System.Web.Script.Serialization;
 
 namespace Tychaia.Website.Controllers
 {
     public class WikiController : Controller
     {
+        private IPhabricator m_Phabricator;
+
+        public WikiController(IPhabricator phabricator)
+        {
+            this.m_Phabricator = phabricator;
+        }
+
         public ActionResult Index(string slug)
         {
             if (slug == null)
@@ -38,9 +42,9 @@ namespace Tychaia.Website.Controllers
 
         private WikiPageModel GetContentFor(ConduitClient client, string slug)
         {
-            var page = Phabricator.GetWikiPage(client, slug);
-            var remarkup = Phabricator.ProcessRemarkup(client, page.content);
-            var hierarchy = Phabricator.GetWikiHierarchy(client, slug);
+            var page = this.m_Phabricator.GetWikiPage(client, slug);
+            var remarkup = this.m_Phabricator.ProcessRemarkup(client, page.content);
+            var hierarchy = this.m_Phabricator.GetWikiHierarchy(client, slug);
             return new WikiPageModel
             {
                 Title = page.title,
@@ -96,14 +100,14 @@ namespace Tychaia.Website.Controllers
                 if (slugBuilt.Length > 0)
                     slugBuilt += "/";
                 slugBuilt += parts[i];
-                page = Phabricator.GetWikiPage(client, slugBuilt);
+                page = this.m_Phabricator.GetWikiPage(client, slugBuilt);
                 breadcrumbs.Add(new BreadcrumbModel
                 {
                     Text = page.title,
                     Slug = this.RewriteSlug(page.slug)
                 });
             }
-            page = Phabricator.GetWikiPage(client, slug);
+            page = this.m_Phabricator.GetWikiPage(client, slug);
             breadcrumbs.Add(new BreadcrumbModel
             {
                 Text = page.title,

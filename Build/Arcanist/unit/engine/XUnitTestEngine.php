@@ -47,7 +47,7 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
     if (phutil_is_windows()) {
       $this->runtimeEngine = "";
     } else if (Filesystem::binaryExists("mono")) {
-      $this->runtimeEngine = "mono ";
+      $this->runtimeEngine = "mono --debug ";
     } else {
       throw new Exception("Unable to find Mono and you are not on Windows!");
     }
@@ -275,12 +275,14 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
       // FIXME: Can't use TempFile here as xUnit doesn't like
       // UNIX-style full paths.  It sees the leading / as the
       // start of an option flag, even when quoted.
-      $xunit_temp = $this->projectRoot.
-        "/".$test_assembly."/bin/Debug/".$test_assembly.".results.xml";
+      $xunit_temp = $test_assembly.".results.xml";
+      if (file_exists($xunit_temp)) {
+        unlink($xunit_temp);
+      }
       $future = new ExecFuture(csprintf("%C %s /xml %s /silent",
         $this->runtimeEngine.$this->testEngine,
         $test_assembly."/bin/Debug/".$test_assembly.".dll",
-        $test_assembly."/bin/Debug/".$test_assembly.".results.xml"));
+        $xunit_temp));
       $future->setCWD(Filesystem::resolvePath($this->projectRoot));
       $futures[$test_assembly] = $future;
       $outputs[$test_assembly] = $xunit_temp;
@@ -295,7 +297,16 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
         // return code, so we just ignore this.
       }
 
-      $results[] = $this->parseTestResult($outputs[$test_assembly]);
+      if (file_exists($outputs[$test_assembly])) {
+        $results[] = $this->parseTestResult($outputs[$test_assembly]);
+        unlink($outputs[$test_assembly]);
+      } else {
+        $result = new ArcanistUnitTestResult();
+        $result->setName("(execute) ".$test_assembly);
+        $result->setResult(ArcanistUnitTestResult::RESULT_BROKEN);
+        $result->setUserData($outputs[$test_assembly]." not found on disk.");
+        $results[] = array($result);
+      }
     }
 
     return array_mergev($results);
@@ -330,6 +341,10 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
         $message = $node->item(0)->getElementsByTagName("message");
         if ($message->length > 0) {
           $userdata = $message->item(0)->nodeValue;
+        }
+        $stacktrace = $node->item(0)->getElementsByTagName("stack-trace");
+        if ($stacktrace->length > 0) {
+          $userdata .= "\n".$stacktrace->item(0)->nodeValue;
         }
       }
 

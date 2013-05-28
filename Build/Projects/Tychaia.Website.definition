@@ -26,6 +26,8 @@
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="Phabricator.Conduit" />
     <Reference Include="Razor" />
+    <Reference Include="Ninject" />
+    <Reference Include="Tychaia.Globals" />
   </References>
   <Files>
     <Compile Include="Controllers\HomeController.cs" />
@@ -40,8 +42,12 @@
     <Compile Include="Controllers\WikiController.cs" />
     <Compile Include="Models\WikiPageModel.cs" />
     <Compile Include="ViewModels\WikiPageViewModel.cs" />
+    <Compile Include="ViewModels\FeedViewModel.cs" />
     <Compile Include="Models\BreadcrumbModel.cs" />
     <Compile Include="Phabricator.cs" />
+    <Compile Include="IPhabricator.cs" />
+    <Compile Include="IoCModule.cs" />
+    <Compile Include="DependencyControllerFactory.cs" />
     <Compile Include="Controllers\CacheController.cs" />
     <Content Include="Global.asax" />
     <Content Include="Content\themes\base\jquery-ui.css" />

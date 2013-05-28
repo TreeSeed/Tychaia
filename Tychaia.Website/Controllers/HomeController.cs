@@ -1,25 +1,24 @@
 using System.Web.Mvc;
-using Argotic.Syndication;
-using System;
-using System.Runtime.Caching;
+using Tychaia.Website.ViewModels;
 
 namespace Tychaia.Website.Controllers
 {
     public class HomeController : Controller
     {
+        private IPhabricator m_Phabricator;
+
+        public HomeController(IPhabricator phabricator)
+        {
+            this.m_Phabricator = phabricator;
+        }
+
         public ActionResult Index()
         {
-            AtomFeed feed = Phabricator.BlogCache.Get("summary-feed") as AtomFeed;
-            if (feed == null)
-            {
-                feed = AtomFeed.Create(new System.Uri("http://code.redpointsoftware.com.au/phame/blog/feed/1/"));
-                Phabricator.BlogCache.Add(
-                    new CacheItem("summary-feed", feed),
-                    new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) }
-                );
-            }
-
-            return View(new { Feed = feed });
+            return View(
+                new FeedViewModel
+                {
+                    Feed = this.m_Phabricator.GetFeed("1")
+                });
         }
     }
 }

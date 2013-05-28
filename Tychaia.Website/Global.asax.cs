@@ -32,6 +32,8 @@ namespace Tychaia.Website
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+
+            ControllerBuilder.Current.SetControllerFactory(new DependencyControllerFactory());
         }
 
         protected void Application_BeginRequest()

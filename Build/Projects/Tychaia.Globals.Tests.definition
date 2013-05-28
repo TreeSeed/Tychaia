@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project
-  Name="Tychaia.Globals"
-  Path="Tychaia.Globals"
-  Type="Library">
+  Name="Tychaia.Globals.Tests"
+  Path="Tychaia.Globals.Tests"
+  Type="Tests">
   
   <References>
     <Reference Include="System" />
@@ -12,15 +12,14 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Tychaia.Globals" />
     <Reference Include="Ninject" />
   </References>
   <Files>
-    <Compile Include="FilteredConsole.cs" />
-    <Compile Include="FilteredFeatures.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.cs" 
-/>
-    <Compile Include="IoC.cs" />
+    <Compile Include="IoCTests.cs" />
+    <Compile Include="Dummies\IFoo.cs" />
+    <Compile Include="Dummies\Foo.cs" />
+    <Compile Include="Dummies\IBar.cs" />
+    <Compile Include="Dummies\Bar.cs" />
   </Files>
 </Project>
