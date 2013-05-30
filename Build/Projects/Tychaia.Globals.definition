@@ -6,12 +6,7 @@
   
   <References>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+	<Reference Include="System.Drawing" />
     <Reference Include="Ninject" />
   </References>
   <Files>
@@ -22,5 +17,6 @@
     <Compile Include="TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.cs" 
 />
     <Compile Include="IoC.cs" />
+    <Compile Include="ResourceHelper.cs" />
   </Files>
 </Project>

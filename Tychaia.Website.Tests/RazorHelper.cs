@@ -170,23 +170,34 @@ public static class RazorHelper<T>
             codeProvider.GenerateCodeFromCompileUnit(razorResult.GeneratedCode, sw, new CodeGeneratorOptions());
         }
 
-        var compParams = new CompilerParameters(new string[] {
-                typeof(RazorHelper<>).Assembly.CodeBase.Replace("file://", "")//.Replace("/", "\\")
-            });
+        var assemblyName = typeof(RazorHelper<>).Assembly.CodeBase.Replace("file:///", "").Replace("/", "\\");
+        var windows = true;
+        if (assemblyName[1] != ':' || assemblyName[2] != '\\')
+        {
+            assemblyName = typeof(RazorHelper<>).Assembly.CodeBase.Replace("file://", "");
+            windows = false;
+        }
+        var compParams = new CompilerParameters(new string[] { assemblyName });
         compParams.GenerateInMemory = true;
         compParams.ReferencedAssemblies.Add("System.dll");
         compParams.ReferencedAssemblies.Add("System.Core.dll");
         compParams.ReferencedAssemblies.Add("System.Net.dll");
         compParams.ReferencedAssemblies.Add("System.Web.dll");
-        compParams.ReferencedAssemblies.Add("System.Web.WebPages.dll");
-        compParams.ReferencedAssemblies.Add("System.Web.Mvc.dll");
+        if (windows)
+        {
+            compParams.ReferencedAssemblies.Add(@"..\..\..\Tychaia.Website\bin\System.Web.WebPages.dll");
+            compParams.ReferencedAssemblies.Add(@"..\..\..\Tychaia.Website\bin\System.Web.Mvc.dll");
+        }
+        else
+        {
+            compParams.ReferencedAssemblies.Add("System.Web.WebPages.dll");
+            compParams.ReferencedAssemblies.Add("System.Web.Mvc.dll");
+        }
         compParams.ReferencedAssemblies.Add("Microsoft.CSharp.dll");
         compParams.ReferencedAssemblies.Add("Tychaia.Website.dll");
         compParams.ReferencedAssemblies.Add("Argotic.Core.dll");
         compParams.ReferencedAssemblies.Add("Argotic.Common.dll");
         compParams.ReferencedAssemblies.Add("Argotic.Extensions.dll");
-        //compParams.ReferencedAssemblies.Add("Northwind.Web.Controllers.dll");
-        // TODO: add your assemblies here
         compParams.IncludeDebugInformation = true;
 
         // Compile the generated code into an assembly

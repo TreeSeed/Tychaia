@@ -441,11 +441,10 @@ select="/Input/Projects/Project[@Name=$include-path]/@Guid" />}</Project>
           reenable the test-on-build functionality.
 
         -->
-        <Target Name="AfterBuild" Condition="1 = 0">
+        <Target Name="AfterBuild" Condition="1 == 0">
           <xunit Assembly="$(TargetPath)" />
         </Target>
       </xsl:if>
-      -->
           
     </Project>
     

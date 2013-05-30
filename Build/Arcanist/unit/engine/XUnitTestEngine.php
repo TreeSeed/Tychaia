@@ -63,6 +63,22 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
       throw new Exception("Unable to locate xUnit console runner.");
     }
   }
+  
+  /**
+   * Returns the maximum parallelization permitted for futures when
+   * building the unit tests.  Windows locks files as they're being
+   * written out, which means that on Windows we can't parallelize the
+   * build at all, while on Linux we can parallelize everything.
+   *
+   * @return int     Either 1 or null, depending on the platform.
+   */
+  private function getBuildParallelizationLimit() {
+    if (phutil_is_windows()) {
+      return 1;
+    } else {
+      return null;
+    }
+  }
 
   /**
    * Main entry point for the test engine.  Determines what assemblies to
@@ -189,7 +205,9 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
 
     $regenerate_start = microtime(true);
     $regenerate_future = new ExecFuture(
-      csprintf("xbuild /p:TargetPlatform=$platform"));
+      csprintf("%C %s",
+        $this->runtimeEngine.$this->buildEngine,
+        "/p:TargetPlatform=$platform"));
     $regenerate_future->setCWD(Filesystem::resolvePath(
       $this->projectRoot."/Build"));
     $results = array();
@@ -230,12 +248,16 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
     $results = array();
     foreach ($test_assemblies as $test_assembly) {
       $build_future = new ExecFuture(
-        csprintf("xbuild /p:SkipTestsOnBuild=True"));
+        csprintf("%C %s",
+          $this->runtimeEngine.$this->buildEngine,
+          "/p:SkipTestsOnBuild=True"));
       $build_future->setCWD(Filesystem::resolvePath(
         $this->projectRoot."/".$test_assembly));
       $build_futures[$test_assembly] = $build_future;
     }
-    foreach (Futures($build_futures) as $test_assembly => $future) {
+    $iterator = Futures($build_futures)->limit(
+      $this->getBuildParallelizationLimit());
+    foreach ($iterator as $test_assembly => $future) {
       $result = new ArcanistUnitTestResult();
       $result->setName("(build) ".$test_assembly);
 

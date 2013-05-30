@@ -290,7 +290,7 @@ namespace TychaiaWorldGenViewer
             // c_LoadConfigurationButton
             // 
             this.c_LoadConfigurationButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.c_LoadConfigurationButton.Image = ((System.Drawing.Image)(resources.GetObject("c_LoadConfigurationButton.Image")));
+            this.c_LoadConfigurationButton.Image = Tychaia.Globals.ResourceHelper.GetImageResource("TychaiaWorldGenViewer.folder-open-document.png");
             this.c_LoadConfigurationButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.c_LoadConfigurationButton.Name = "c_LoadConfigurationButton";
             this.c_LoadConfigurationButton.Size = new System.Drawing.Size(23, 22);
@@ -301,7 +301,7 @@ namespace TychaiaWorldGenViewer
             // 
             this.c_SaveConfigurationButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.c_SaveConfigurationButton.Enabled = false;
-            this.c_SaveConfigurationButton.Image = ((System.Drawing.Image)(resources.GetObject("c_SaveConfigurationButton.Image")));
+            this.c_SaveConfigurationButton.Image = Tychaia.Globals.ResourceHelper.GetImageResource("TychaiaWorldGenViewer.disk.png");
             this.c_SaveConfigurationButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.c_SaveConfigurationButton.Name = "c_SaveConfigurationButton";
             this.c_SaveConfigurationButton.Size = new System.Drawing.Size(23, 22);
@@ -311,7 +311,7 @@ namespace TychaiaWorldGenViewer
             // c_SaveConfigurationAsButton
             // 
             this.c_SaveConfigurationAsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.c_SaveConfigurationAsButton.Image = ((System.Drawing.Image)(resources.GetObject("c_SaveConfigurationAsButton.Image")));
+            this.c_SaveConfigurationAsButton.Image = Tychaia.Globals.ResourceHelper.GetImageResource("TychaiaWorldGenViewer.disk-rename.png");
             this.c_SaveConfigurationAsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.c_SaveConfigurationAsButton.Name = "c_SaveConfigurationAsButton";
             this.c_SaveConfigurationAsButton.Size = new System.Drawing.Size(23, 22);
