@@ -11,9 +11,10 @@ phutil_register_library_map(array(
   'class' =>
   array(
     'ArcanistCSharpLinter' => 'lint/linter/ArcanistCSharpLinter.php',
+    'RedpointCheckEnvironmentWorkflow' => 'workflow/RedpointCheckEnvironmentWorkflow.php',
+    'RedpointCleanupWorkflow' => 'workflow/RedpointCleanupWorkflow.php',
     'RedpointLintEngine' => 'lint/engine/RedpointLintEngine.php',
     'RedpointUpgradeWebsitesWorkflow' => 'workflow/RedpointUpgradeWebsitesWorkflow.php',
-    'RedpointCheckEnvironmentWorkflow' => 'workflow/RedpointCheckEnvironmentWorkflow.php',
     'XUnitTestEngine' => 'unit/engine/XUnitTestEngine.php',
   ),
   'function' =>
@@ -22,9 +23,10 @@ phutil_register_library_map(array(
   'xmap' =>
   array(
     'ArcanistCSharpLinter' => 'ArcanistFutureLinter',
+    'RedpointCheckEnvironmentWorkflow' => 'ArcanistBaseWorkflow',
+    'RedpointCleanupWorkflow' => 'ArcanistBaseWorkflow',
     'RedpointLintEngine' => 'ArcanistLintEngine',
     'RedpointUpgradeWebsitesWorkflow' => 'ArcanistBaseWorkflow',
-    'RedpointCheckEnvironmentWorkflow' => 'ArcanistBaseWorkflow',
     'XUnitTestEngine' => 'ArcanistBaseUnitTestEngine',
   ),
 ));
