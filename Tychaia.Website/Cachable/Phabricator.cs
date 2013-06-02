@@ -11,7 +11,7 @@ using System.Text;
 using System.Collections.Generic;
 using Argotic.Syndication;
 
-namespace Tychaia.Website
+namespace Tychaia.Website.Cachable
 {
     public class Phabricator : IPhabricator
     {

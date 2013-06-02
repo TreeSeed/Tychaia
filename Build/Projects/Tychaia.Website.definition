@@ -43,9 +43,12 @@
     <Compile Include="Models\WikiPageModel.cs" />
     <Compile Include="ViewModels\WikiPageViewModel.cs" />
     <Compile Include="ViewModels\FeedViewModel.cs" />
+    <Compile Include="ViewModels\DownloadViewModel.cs" />
     <Compile Include="Models\BreadcrumbModel.cs" />
-    <Compile Include="Phabricator.cs" />
-    <Compile Include="IPhabricator.cs" />
+    <Compile Include="Cachable\Phabricator.cs" />
+    <Compile Include="Cachable\IPhabricator.cs" />
+    <Compile Include="Cachable\BuildServer.cs" />
+    <Compile Include="Cachable\IBuildServer.cs" />
     <Compile Include="IoCModule.cs" />
     <Compile Include="DependencyControllerFactory.cs" />
     <Compile Include="Controllers\CacheController.cs" />

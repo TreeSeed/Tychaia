@@ -4,6 +4,7 @@
 // license on the website apply retroactively.
 //
 using Ninject.Modules;
+using Tychaia.Website.Cachable;
 
 namespace Tychaia.Website
 {
@@ -11,7 +12,8 @@ namespace Tychaia.Website
     {
         public override void Load()
         {
-            this.Bind<IPhabricator>().To<Phabricator>();
+            this.Bind<IPhabricator>().To<Cachable.Phabricator>().InSingletonScope();
+            this.Bind<IBuildServer>().To<BuildServer>().InSingletonScope();
         }
     }
 }

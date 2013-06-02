@@ -7,7 +7,7 @@ using System.Runtime.Caching;
 using Phabricator.Conduit;
 using Argotic.Syndication;
 
-namespace Tychaia.Website
+namespace Tychaia.Website.Cachable
 {
     public interface IPhabricator
     {

@@ -33,6 +33,7 @@
   </References>
   <Files>
     <Compile Include="HomeTests.cs" />
+    <Compile Include="DownloadTests.cs" />
     <Compile Include="RazorHelper.cs" />
   </Files>
 </Project>

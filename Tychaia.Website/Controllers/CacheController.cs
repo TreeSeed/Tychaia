@@ -1,4 +1,5 @@
 using System.Web.Mvc;
+using Tychaia.Website.Cachable;
 
 namespace Tychaia.Website.Controllers
 {
