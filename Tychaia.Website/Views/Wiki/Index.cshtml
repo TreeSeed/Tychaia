@@ -5,15 +5,18 @@
 }
 
 <h2>
-    @foreach (var breadcrumb in Model.Breadcrumbs)
+    @if (Model.Breadcrumbs != null)
     {
-        if (breadcrumb.Slug != null)
+        @foreach (var breadcrumb in Model.Breadcrumbs)
         {
-            @:<a href="/w/@breadcrumb.Slug">@breadcrumb.Text</a> &gt;
-        }
-        else
-        {
-            @breadcrumb.Text
+            if (breadcrumb.Slug != null)
+            {
+                @:<a href="/w/@breadcrumb.Slug">@breadcrumb.Text</a> &gt;
+            }
+            else
+            {
+                @breadcrumb.Text
+            }
         }
     }
     <span class="actions">
