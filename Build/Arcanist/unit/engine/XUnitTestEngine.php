@@ -193,7 +193,7 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
     }
 
     // Work out what platform the user is building for already.
-    $platform = "Linux";
+    $platform = phutil_is_windows() ? "Windows" : "Linux";
     $files = Filesystem::listDirectory($this->projectRoot);
     foreach ($files as $file) {
       if (strtolower(substr($file, -4)) == ".sln") {
