@@ -79,6 +79,8 @@ namespace Tychaia.Website.Controllers
 
         private string RewriteSlug(string slug)
         {
+            if (string.IsNullOrWhiteSpace(slug))
+                return null;
             if (slug.StartsWith("tychaia/", StringComparison.Ordinal))
                 return slug.Substring("tychaia/".Length);
             return slug;

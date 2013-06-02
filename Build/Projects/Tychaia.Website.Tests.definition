@@ -36,5 +36,7 @@
     <Compile Include="DownloadTests.cs" />
     <Compile Include="RazorHelper.cs" />
     <Compile Include="TychaiaTuesdayTests.cs" />
+    <Compile Include="WikiTests.cs" />
+    <Compile Include="HierarchyScenarioChildType.cs" />
   </Files>
 </Project>
