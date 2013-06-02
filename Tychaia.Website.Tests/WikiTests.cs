@@ -322,6 +322,8 @@ namespace Tychaia.Website.Tests
 
         #endregion
 
+        #region Coverage Tests
+
         [Fact]
         public void IndexDoesNotCrashInAnyScenario()
         {
@@ -390,6 +392,8 @@ namespace Tychaia.Website.Tests
                     new WikiPageViewModel { Page = page, Breadcrumbs = null }));
             }
         }
+        
+        #endregion
     }
 }
 
