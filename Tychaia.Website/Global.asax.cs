@@ -2,6 +2,9 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.WebPages.Scope;
 using System.Reflection;
+using System.Web.WebPages;
+using RazorGenerator.Mvc;
+using System.Web;
 
 namespace Tychaia.Website
 {
@@ -29,6 +32,16 @@ namespace Tychaia.Website
 
         protected void Application_Start()
         {
+            var engine = new PrecompiledMvcEngine(typeof(MvcApplication).Assembly) {
+                UsePhysicalViewsIfNewer = false,
+                PreemptPhysicalFiles = true
+            };
+
+            ViewEngines.Engines.Insert(0, engine);
+
+            // StartPage lookups are done by WebPages. 
+            VirtualPathFactoryManager.RegisterVirtualPathFactory(engine);
+            
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);

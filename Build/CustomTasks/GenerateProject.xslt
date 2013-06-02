@@ -138,9 +138,19 @@
             <xsl:attribute name="Project">
               <xsl:text>$(MSBuildExtensionsPath)\Microsoft\</xsl:text>
               <xsl:text>VisualStudio\v10.0\WebApplications\</xsl:text>
-              <xsl:text>\Microsoft.WebApplication.targets</xsl:text>
+              <xsl:text>Microsoft.WebApplication.targets</xsl:text>
             </xsl:attribute>
           </Import>
+          <Import>
+            <xsl:attribute name="Project">
+              <xsl:text>..\packages\</xsl:text>
+              <xsl:text>RazorGenerator.MsBuild.2.0.1\tools\</xsl:text>
+              <xsl:text>RazorGenerator.targets</xsl:text>
+            </xsl:attribute>
+          </Import>
+          <Target Name="BeforeBuild">
+            <CallTarget Targets="PrecompileRazorFiles" />
+          </Target>
         </xsl:when>
       </xsl:choose>
       

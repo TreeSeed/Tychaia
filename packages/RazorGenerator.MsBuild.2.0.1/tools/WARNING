@@ -1,0 +1,6 @@
+These DLLs have been specially built for Mono using the fix
+described at https://razorgenerator.codeplex.com/workitem/112.
+They have been built from the source code located at:
+https://razorgenerator.codeplex.com/SourceControl/network/forks/hachque/monofixes
+
+DO NOT OTHERWISE UPDATE THEM UNTIL THIS FIX IS IN UPSTREAM!

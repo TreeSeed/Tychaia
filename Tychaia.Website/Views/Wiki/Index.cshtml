@@ -1,3 +1,5 @@
+@* Generator: MvcView *@
+@* VirtualPath: ~/Views/Wiki/Index.cshtml *@
 @model Tychaia.Website.ViewModels.WikiPageViewModel
 @using Tychaia.Website;
 @{
@@ -7,7 +9,7 @@
 <h2>
     @if (Model.Breadcrumbs != null)
     {
-        @foreach (var breadcrumb in Model.Breadcrumbs)
+        foreach (var breadcrumb in Model.Breadcrumbs)
         {
             if (breadcrumb.Slug != null)
             {
