@@ -3,14 +3,13 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
 //
-using Argotic.Syndication;
+using Phabricator.Conduit;
 
-namespace Tychaia.Website.ViewModels
+namespace Tychaia.Website
 {
-    public class FeedViewModel
+    public interface IConduitClientProvider
     {
-        public AtomFeed Feed;
-        public int? PostID;
+        ConduitClient GetConduitClient();
     }
 }
 

@@ -14,6 +14,7 @@ namespace Tychaia.Website
         {
             this.Bind<IPhabricator>().To<Cachable.Phabricator>().InSingletonScope();
             this.Bind<IBuildServer>().To<BuildServer>().InSingletonScope();
+            this.Bind<IConduitClientProvider>().To<ConduitClientProvider>().InSingletonScope();
         }
     }
 }

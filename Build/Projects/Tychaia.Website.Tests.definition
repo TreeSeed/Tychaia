@@ -35,5 +35,6 @@
     <Compile Include="HomeTests.cs" />
     <Compile Include="DownloadTests.cs" />
     <Compile Include="RazorHelper.cs" />
+    <Compile Include="TychaiaTuesdayTests.cs" />
   </Files>
 </Project>

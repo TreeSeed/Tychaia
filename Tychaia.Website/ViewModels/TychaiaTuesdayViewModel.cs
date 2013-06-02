@@ -3,14 +3,14 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
 //
-using Argotic.Syndication;
+using Tychaia.Website.Models;
 
 namespace Tychaia.Website.ViewModels
 {
-    public class FeedViewModel
+    public class TychaiaTuesdayViewModel
     {
-        public AtomFeed Feed;
-        public int? PostID;
+        public int IssueNo;
+        public TychaiaTuesdayIssueModel Issue;
     }
 }
 

@@ -12,10 +12,12 @@ namespace Tychaia.Website.Controllers
     public class WikiController : Controller
     {
         private IPhabricator m_Phabricator;
+        private IConduitClientProvider m_ConduitClientProvider;
 
-        public WikiController(IPhabricator phabricator)
+        public WikiController(IPhabricator phabricator, IConduitClientProvider conduitClientProvider)
         {
             this.m_Phabricator = phabricator;
+            this.m_ConduitClientProvider = conduitClientProvider;
         }
 
         public ActionResult Index(string slug)
@@ -25,20 +27,12 @@ namespace Tychaia.Website.Controllers
             if (!string.IsNullOrWhiteSpace(slug))
                 slug = "/" + slug;
             slug = "tychaia" + slug;
-            var conduit = this.GetConduitClient();
+            var conduit = this.m_ConduitClientProvider.GetConduitClient();
             return View(new WikiPageViewModel
             {
                 Page = GetContentFor(conduit, slug),
                 Breadcrumbs = this.GenerateBreadcrumbs(conduit, slug)
             });
-        }
-
-        private ConduitClient GetConduitClient()
-        {
-            var client = new ConduitClient("http://code.redpointsoftware.com.au/api");
-            client.Certificate = ConfigurationManager.AppSettings["ConduitCertificate"];
-            client.User = ConfigurationManager.AppSettings["ConduitUser"];
-            return client;
         }
 
         private WikiPageModel GetContentFor(ConduitClient client, string slug)

@@ -10,6 +10,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Collections.Generic;
 using Argotic.Syndication;
+using Tychaia.Website.Models;
+using System.Linq;
 
 namespace Tychaia.Website.Cachable
 {
@@ -112,14 +114,30 @@ namespace Tychaia.Website.Cachable
             return hierarchy;
         }
 
+        public TychaiaTuesdayIssueModel GetTychaiaTuesdayIssue(ConduitClient client, int issue)
+        {
+            // Doesn't use ConduitClient yet, waiting on feedback to see whether there's a way
+            // to get a specific issue out of Phame.  My concern is that the feed only returns the
+            // last 10 or so items, so if someone tries to visit an ID more than 10 posts ago, we
+            // won't be able to display it :/
+            var feed = this.GetFeed("2");
+            var entry = feed.Entries.FirstOrDefault(
+                x => x.Id.Uri == new Uri("http://code.redpointsoftware.com.au/phame/post/view/" + issue + "/"));
+            return new TychaiaTuesdayIssueModel
+            {
+                Title = entry.Title.Content,
+                Content = entry.Content.Content
+            };
+        }
+
         public AtomFeed GetFeed(string id)
         {
-            var feed = this.BlogCache.Get("summary-feed-" + id) as AtomFeed;
+            var feed = this.BlogCache.Get("feed-" + id) as AtomFeed;
             if (feed == null)
             {
-                feed = AtomFeed.Create(new Uri("http://code.redpointsoftware.com.au/phame/blog/feed/1/"));
+                feed = AtomFeed.Create(new Uri("http://code.redpointsoftware.com.au/phame/blog/feed/" + id + "/"));
                 this.BlogCache.Add(
-                    new CacheItem("summary-feed-" + id, feed),
+                    new CacheItem("feed-" + id, feed),
                     new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) }
                 );
             }

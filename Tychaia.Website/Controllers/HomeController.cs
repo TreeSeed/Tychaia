@@ -18,7 +18,8 @@ namespace Tychaia.Website.Controllers
             return View(
                 new FeedViewModel
                 {
-                    Feed = this.m_Phabricator.GetFeed("1")
+                    Feed = this.m_Phabricator.GetFeed("1"),
+                    PostID = null
                 });
         }
     }
