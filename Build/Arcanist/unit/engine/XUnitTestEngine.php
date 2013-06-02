@@ -206,7 +206,7 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
     $regenerate_start = microtime(true);
     $regenerate_future = new ExecFuture(
       csprintf("%C %s",
-        $this->runtimeEngine.$this->buildEngine,
+        $this->buildEngine,
         "/p:TargetPlatform=$platform"));
     $regenerate_future->setCWD(Filesystem::resolvePath(
       $this->projectRoot."/Build"));
@@ -249,7 +249,7 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
     foreach ($test_assemblies as $test_assembly) {
       $build_future = new ExecFuture(
         csprintf("%C %s",
-          $this->runtimeEngine.$this->buildEngine,
+          $this->buildEngine,
           "/p:SkipTestsOnBuild=True"));
       $build_future->setCWD(Filesystem::resolvePath(
         $this->projectRoot."/".$test_assembly));
