@@ -256,9 +256,13 @@ namespace Tychaia.CustomTasks
             var rootName = doc.CreateElement("RootPath");
             rootName.AppendChild(doc.CreateTextNode(
                 new DirectoryInfo(this.m_RootPath).FullName));
+            var useCSCJVM = doc.CreateElement("UseCSCJVM");
+            useCSCJVM.AppendChild(doc.CreateTextNode(
+                this.IsUsingCSCJVM(platform) ? "True" : "False"));
             generation.AppendChild(projectName);
             generation.AppendChild(platformName);
             generation.AppendChild(rootName);
+            generation.AppendChild(useCSCJVM);
             input.AppendChild(generation);
 
             var nuget = doc.CreateElement("NuGet");
@@ -438,6 +442,13 @@ namespace Tychaia.CustomTasks
             return result;
         }
 
+        private bool IsUsingCSCJVM(string platform)
+        {
+            if (platform.ToLower() == "java")
+                return true;
+            return false;
+        }
+
         private XmlDocument CreateInputFor(string platform)
         {
             var doc = new XmlDocument();
@@ -448,6 +459,10 @@ namespace Tychaia.CustomTasks
             var generation = doc.CreateElement("Generation");
             var platformName = doc.CreateElement("Platform");
             platformName.AppendChild(doc.CreateTextNode(platform));
+            var useCSCJVM = doc.CreateElement("UseCSCJVM");
+            useCSCJVM.AppendChild(doc.CreateTextNode(
+                this.IsUsingCSCJVM(platform) ? "True" : "False"));
+            generation.AppendChild(useCSCJVM);
             generation.AppendChild(platformName);
             input.AppendChild(generation);
 

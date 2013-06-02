@@ -9,6 +9,7 @@
     
   <Target Name="Build">
     <MSBuild Projects="CustomTasks\CustomTasks.csproj" />
+    <MSBuild Projects="$(RootPath)\Libraries\cscjvm\cscjvm\cscjvm.csproj" />
     <MSBuild
       Projects="CustomTasks\GenerateProjects.proj"
       Properties="RootPath=$(RootPath)" />

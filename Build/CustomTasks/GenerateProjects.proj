@@ -58,6 +58,7 @@
     <Definition Include="cslint" />
     <Definition Include="Ninject" />
     <Definition Include="Ninject.MockingKernel" />
+    <Definition Include="cscjvm" />
   </ItemGroup>
   
   <Target Name="Build">
@@ -67,10 +68,11 @@
           ('$(TargetPlatform)' == '') Or
           (
             ('$(TargetPlatform)' != 'Windows') And
-            ('$(TargetPlatform)' != 'Linux')
+            ('$(TargetPlatform)' != 'Linux') And
+            ('$(TargetPlatform)' != 'Java')
           )
         )"
-      Text="You must set the TargetPlatform property to Windows or Linux!" />
+      Text="You must set the TargetPlatform property to Windows, Linux or Java!" />
     <Error
       Condition="'$(RootPath)' == ''"
       Text="RootPath property is not set.  Build 'Main.proj' instead." />

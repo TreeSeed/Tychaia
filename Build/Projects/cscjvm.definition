@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ExternalProject Name="cscjvm">
+  
+  <Platform Target="Java">
+    <Project 
+      Name="java"
+      Guid="5446696E-C700-4807-8754-18D0799A9066"
+      Path="Libraries/cscjvm/cscjvm/java.csproj" />
+  </Platform>
+ 
+</ExternalProject>

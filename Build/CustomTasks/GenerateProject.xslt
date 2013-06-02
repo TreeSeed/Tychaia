@@ -122,6 +122,15 @@
         Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
       </PropertyGroup>
       
+      <xsl:if test="/Input/Generation/UseCSCJVM = 'True'">
+        <PropertyGroup>
+          <CscToolExe>
+            <xsl:text>$(SolutionDir)\Libraries\cscjvm\</xsl:text>
+            <xsl:text>cscjvm\bin\Debug\cscjvm.exe</xsl:text>
+          </CscToolExe>
+        </PropertyGroup>
+      </xsl:if>
+
       <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />      
       <xsl:choose>
         <xsl:when test="$project/@Type = 'Website'">    

@@ -28,9 +28,11 @@ Thumbs.db
 
 # Generated solution and project files
 *.Linux.csproj
-*.Windows.csproj
 *.Linux.sln
+*.Windows.csproj
 *.Windows.sln
+*.Java.sln
+*.Java.csproj
 _UpgradeReport_Files/*
 Backup*/*
 UpgradeLog*.*
