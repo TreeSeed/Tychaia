@@ -11,7 +11,7 @@
     <Reference Include="Razor" />
   </References>
   <Files>
-    <Compile Include="Properties/AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConduitClient.cs" />
     <Compile Include="ConduitException.cs" />
   </Files>
