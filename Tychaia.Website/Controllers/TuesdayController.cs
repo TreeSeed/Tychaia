@@ -24,7 +24,6 @@ namespace Tychaia.Website.Controllers
             return View(
                 new TychaiaTuesdayViewModel
                 {
-                    IssueNo = issue,
                     Issue = content
                 });
         }

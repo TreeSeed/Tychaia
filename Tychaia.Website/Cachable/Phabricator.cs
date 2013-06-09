@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Argotic.Syndication;
 using Tychaia.Website.Models;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Tychaia.Website.Cachable
 {
@@ -121,12 +122,24 @@ namespace Tychaia.Website.Cachable
             // last 10 or so items, so if someone tries to visit an ID more than 10 posts ago, we
             // won't be able to display it :/
             var feed = this.GetFeed("2");
+            var entries = feed.Entries.ToList();
             var entry = feed.Entries.FirstOrDefault(
                 x => x.Id.Uri == new Uri("http://code.redpointsoftware.com.au/phame/post/view/" + issue + "/"));
+            int? next = null;
+            int? previous = null;
+            var regex = new Regex("http\\:\\/\\/code.redpointsoftware.com.au\\/phame\\/post\\/view\\/(?<id>[0-9]+)");
+            if (entries.IndexOf(entry) != 0)
+                next = Convert.ToInt32(regex.Match(
+                    entries[entries.IndexOf(entry) - 1].Id.Uri.ToString()).Groups["id"].ToString());
+            if (entries.IndexOf(entry) != entries.Count - 1)
+                previous = Convert.ToInt32(regex.Match(
+                    entries[entries.IndexOf(entry) + 1].Id.Uri.ToString()).Groups["id"].ToString());
             return new TychaiaTuesdayIssueModel
             {
                 Title = entry.Title.Content,
-                Content = entry.Content.Content
+                Content = entry.Content.Content,
+                Previous = previous,
+                Next = next
             };
         }
 

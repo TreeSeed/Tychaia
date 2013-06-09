@@ -38,5 +38,6 @@
     <Compile Include="TychaiaTuesdayTests.cs" />
     <Compile Include="WikiTests.cs" />
     <Compile Include="HierarchyScenarioChildType.cs" />
+    <Compile Include="AssemblyVerifyTests.cs" />
   </Files>
 </Project>

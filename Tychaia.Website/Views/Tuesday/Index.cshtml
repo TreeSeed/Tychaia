@@ -9,7 +9,7 @@
 @if (Model.Issue == null) 
 {
 	<h2>
-	    Issue #@Model.IssueNo Not Found!
+	    Issue Not Found!
 	    <span class="actions">(<a href="http://code.redpointsoftware.com.au/phame/blog/feed/2/">Atom Feed</a>)</span>
 	</h2>
 	<div class="block phame">
@@ -19,8 +19,22 @@
 else
 {
 	<h2>
-	    @Model.Issue.Title &bull; Issue #@Model.IssueNo
-	    <span class="actions">(<a href="http://code.redpointsoftware.com.au/phame/blog/feed/2/">Atom Feed</a>)</span>
+	    @Model.Issue.Title
+	    <span class="actions">(
+            @if (Model.Issue.Previous != null)
+            {
+                <text>
+                <a href="/tuesday/@Model.Issue.Previous">Previous Issue</a> &bull; 
+                </text>
+            }
+            @if (Model.Issue.Next != null)
+            {
+                <text>
+                <a href="/tuesday/@Model.Issue.Next">Next Issue</a> &bull; 
+                </text>
+            }
+            <a href="http://code.redpointsoftware.com.au/phame/blog/feed/2/">Atom Feed</a>
+        )</span>
 	</h2>
 	<div class="block phame">
 		@Html.Raw(Model.Issue.Content)

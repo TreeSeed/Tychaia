@@ -22,7 +22,9 @@ namespace Tychaia.Website.Tests
             var issue = new TychaiaTuesdayIssueModel
             {
                 Title = "Test Title",
-                Content = "Test Content"
+                Content = "Test Content",
+                Next = null,
+                Previous = null
             };
             var kernel = new MoqMockingKernel();
             IoC.ReplaceKernel(kernel);
@@ -35,7 +37,6 @@ namespace Tychaia.Website.Tests
             var viewResult = result as ViewResult;
             Assert.IsType<TychaiaTuesdayViewModel>(viewResult.Model);
             Assert.Equal(issue, ((TychaiaTuesdayViewModel)viewResult.Model).Issue);
-            Assert.Equal(1, ((TychaiaTuesdayViewModel)viewResult.Model).IssueNo);
         }
 
         private string GetIndexView()
@@ -58,7 +59,7 @@ namespace Tychaia.Website.Tests
             Assert.DoesNotThrow(() =>
                 RazorHelper<TychaiaTuesdayViewModel>.GenerateAndExecuteTemplate(
                 this.GetIndexView(),
-                new TychaiaTuesdayViewModel { Issue = issue, IssueNo = 1 }));
+                new TychaiaTuesdayViewModel { Issue = issue }));
         }
 
         [Fact]
@@ -67,7 +68,7 @@ namespace Tychaia.Website.Tests
             Assert.DoesNotThrow(() =>
                 RazorHelper<TychaiaTuesdayViewModel>.GenerateAndExecuteTemplate(
                 this.GetIndexView(),
-                new TychaiaTuesdayViewModel { Issue = null, IssueNo = 1 }));
+                new TychaiaTuesdayViewModel { Issue = null }));
         }
 
         [Fact]
@@ -76,13 +77,52 @@ namespace Tychaia.Website.Tests
             var issue = new TychaiaTuesdayIssueModel
             {
                 Title = "Test Title",
-                Content = "Test Content"
+                Content = "Test Content",
+                Next = null,
+                Previous = null
             };
 
             var html = RazorHelper<TychaiaTuesdayViewModel>.GenerateAndExecuteTemplate(
                 this.GetIndexView(),
-                new TychaiaTuesdayViewModel { Issue = issue, IssueNo = 1 });
-            Assert.Contains("Issue #1", html.Text);
+                new TychaiaTuesdayViewModel { Issue = issue });
+            Assert.Contains(issue.Title, html.Text);
+            Assert.Contains(issue.Content, html.Text);
+        }
+
+        [Fact]
+        public void IndexDisplaysNextLinkWhenNextIssueExists()
+        {
+            var issue = new TychaiaTuesdayIssueModel
+            {
+                Title = "Test Title",
+                Content = "Test Content",
+                Next = 2,
+                Previous = null
+            };
+
+            var html = RazorHelper<TychaiaTuesdayViewModel>.GenerateAndExecuteTemplate(
+                this.GetIndexView(),
+                new TychaiaTuesdayViewModel { Issue = issue });
+            Assert.Contains("Next Issue", html.Text);
+            Assert.Contains(issue.Title, html.Text);
+            Assert.Contains(issue.Content, html.Text);
+        }
+
+        [Fact]
+        public void IndexDisplaysPreviousLinkWhenPreviousIssueExists()
+        {
+            var issue = new TychaiaTuesdayIssueModel
+            {
+                Title = "Test Title",
+                Content = "Test Content",
+                Next = null,
+                Previous = 2
+            };
+
+            var html = RazorHelper<TychaiaTuesdayViewModel>.GenerateAndExecuteTemplate(
+                this.GetIndexView(),
+                new TychaiaTuesdayViewModel { Issue = issue });
+            Assert.Contains("Previous Issue", html.Text);
             Assert.Contains(issue.Title, html.Text);
             Assert.Contains(issue.Content, html.Text);
         }
@@ -92,7 +132,7 @@ namespace Tychaia.Website.Tests
         {
             var html = RazorHelper<TychaiaTuesdayViewModel>.GenerateAndExecuteTemplate(
                 this.GetIndexView(),
-                new TychaiaTuesdayViewModel { Issue = null, IssueNo = 1 });
+                new TychaiaTuesdayViewModel { Issue = null });
             Assert.Contains("Sorry, but this issue of Tychaia Tuesdays could not be found", html.Text);
         }
     }

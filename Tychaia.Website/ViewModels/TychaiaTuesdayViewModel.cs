@@ -9,7 +9,6 @@ namespace Tychaia.Website.ViewModels
 {
     public class TychaiaTuesdayViewModel
     {
-        public int IssueNo;
         public TychaiaTuesdayIssueModel Issue;
     }
 }
