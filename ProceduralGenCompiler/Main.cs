@@ -13,11 +13,15 @@ namespace ProceduralGenCompiler
     {
         public static void Main(string[] args)
         {
-            var initialBool = new RuntimeLayer(new AlgorithmInitialBool());
-            var passthrough = new RuntimeLayer(new AlgorithmPassthrough());
-            passthrough.SetInput(0, initialBool);
+            var perlin = new RuntimeLayer(new AlgorithmPerlin());
+            var zoom3D1 = new RuntimeLayer(new AlgorithmZoom3D());
+            var zoom3D2 = new RuntimeLayer(new AlgorithmZoom3D());
+            var zoom3D3 = new RuntimeLayer(new AlgorithmZoom3D());
+            zoom3D1.SetInput(0, perlin);
+            zoom3D2.SetInput(0, zoom3D1);
+            zoom3D3.SetInput(0, zoom3D2);
 
-            var runtime = passthrough;
+            var runtime = zoom3D3;
             var compiledCode = LayerCompiler.GenerateCode(runtime);
             var compiled = LayerCompiler.Compile(runtime);
             Console.WriteLine(compiledCode);
