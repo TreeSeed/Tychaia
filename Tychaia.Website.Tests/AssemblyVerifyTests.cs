@@ -6,6 +6,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Mono.Cecil;
 
 namespace Tychaia.Website.Tests
 {
@@ -17,7 +18,7 @@ namespace Tychaia.Website.Tests
             var basePath = new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, "../../..")).FullName;
             var libPath = new DirectoryInfo(Path.Combine(basePath, "Libraries/Microsoft")).FullName;
             var allAssemblies = RecursiveDirectorySearch(basePath, "*.dll").ToList();
-            var assemblyVersions = new Dictionary<string, Version>();
+            var assemblyVersions = new Dictionary<string, string>();
             foreach (var dll in new DirectoryInfo(libPath).GetFiles("*.dll"))
             {
                 foreach (var entry in allAssemblies)
@@ -25,18 +26,18 @@ namespace Tychaia.Website.Tests
                     if (new FileInfo(entry).Name == dll.Name)
                     {
                         // Matches filename, check version.
-                        var assembly = Assembly.ReflectionOnlyLoadFrom(entry);
+                        var version = GetAssemblyVersion(dll.FullName);
                         if (!assemblyVersions.ContainsKey(dll.Name))
                         {
-                            assemblyVersions[dll.Name] = assembly.GetName().Version;
+                            assemblyVersions[dll.Name] = version;
                         }
-                        else
+                        else 
                         {
                             Assert.True(
-                                assemblyVersions[dll.Name].ToString() == assembly.GetName().Version.ToString(),
+                                assemblyVersions[dll.Name] == version,
                                 entry.Substring(basePath.Length + 1) +
                                 " is version " +
-                                assembly.GetName().Version +
+                                version +
                                 ", but needs to be " +
                                 assemblyVersions[dll.Name]
                             );
@@ -44,6 +45,15 @@ namespace Tychaia.Website.Tests
                     }
                 }
             }
+        }
+
+        private static string GetAssemblyVersion(string path)
+        {
+            var value = string.Empty;
+            var attributeFileVersionType = typeof(AssemblyFileVersionAttribute);
+            var attributeVersionType = typeof(AssemblyFileVersionAttribute);
+            var assembly = AssemblyDefinition.ReadAssembly(path);
+            return assembly.FullName;
         }
 
         private static IEnumerable<string> RecursiveDirectorySearch(string root, string pattern)

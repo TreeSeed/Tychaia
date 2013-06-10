@@ -30,6 +30,7 @@
     <Reference Include="Ninject.MockingKernel" />
     <Reference Include="Tychaia.Globals" />
     <Reference Include="Tychaia.Website" />
+    <Reference Include="ICSharpCode.NRefactory" />
   </References>
   <Files>
     <Compile Include="HomeTests.cs" />
