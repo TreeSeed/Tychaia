@@ -16,6 +16,7 @@
     <Reference Include="Tychaia.Globals" />
     <Reference Include="Redpoint.FlowGraph" />
     <Reference Include="Protogame.Noise" />
+    <Reference Include="Ninject" />
   </References>
   <Files>
     <Compile Include="AssemblyInfo.cs" />

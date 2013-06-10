@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tychaia.Globals;
 using System.Threading;
+using Ninject;
 
 namespace Tychaia.ProceduralGeneration.Flow
 {
@@ -113,6 +114,7 @@ namespace Tychaia.ProceduralGeneration.Flow
 
         private void RefreshImageSync()
         {
+            var provider = IoC.Kernel.Get<IRenderingLocationProvider>();
             try
             {
                 if (this.m_PerformanceThread != null)
@@ -133,9 +135,9 @@ namespace Tychaia.ProceduralGeneration.Flow
                 return;
             }
             this.m_RuntimeBitmap = AlgorithmFlowImageGeneration.RegenerateImageForLayer(this.m_Layer,
-                TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.X,
-                TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Y,
-                TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Z,
+                provider.X,
+                provider.Y,
+                provider.Z,
                 64, 64, 64);
             this.m_CompiledBitmap = this.m_RuntimeBitmap;
             this.m_Control.Invalidate(this.InvalidatingRegion.Apply(this.m_Control.Zoom));
@@ -264,11 +266,12 @@ namespace Tychaia.ProceduralGeneration.Flow
             // TEMPORARY: Use the compiled layer to re-render the output.
             if (compiled != null)
             {
+                var provider = IoC.Kernel.Get<IRenderingLocationProvider>();
                 this.m_CompiledBitmap = AlgorithmFlowImageGeneration.RegenerateImageForLayer(this.m_Layer,
-                                                                                     TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.X,
-                                                                                     TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Y,
-                                                                                     TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Z,
-                                                                                     64, 64, 64, true);
+                                             provider.X,
+                                             provider.Y,
+                                             provider.Z,
+                                             64, 64, 64, true);
             }
         }
 

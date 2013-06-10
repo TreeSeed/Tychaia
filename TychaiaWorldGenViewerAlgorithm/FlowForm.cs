@@ -13,14 +13,16 @@ using System.Reflection;
 using Tychaia.ProceduralGeneration;
 using Tychaia.ProceduralGeneration.Flow;
 using Tychaia.Globals;
+using Ninject;
 
 namespace TychaiaWorldGenViewerAlgorithm
 {
-    public partial class FlowForm : Form
+    public partial class FlowForm : Form, IRenderingLocationProvider
     {
         public FlowForm()
         {
             InitializeComponent();
+            IoC.Kernel.Bind<IRenderingLocationProvider>().ToMethod(context => this);
         }
 
         #region Loading and Saving
@@ -243,9 +245,23 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.c_FlowInterfaceControl.Invalidate();
         }
 
+        public long X
+        {
+            get { return (long)this.c_XNumericUpDown.Value; }
+        }
+
+        public long Y
+        {
+            get { return (long)this.c_YNumericUpDown.Value; }
+        }
+
+        public long Z
+        {
+            get { return (long)this.c_ZNumericUpDown.Value; }
+        }
+
         private void c_XNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.X = (int)this.c_XNumericUpDown.Value;
             if (this.c_FlowInterfaceControl.SelectedElement != null)
                 this.c_FlowInterfaceControl.PushForReprocessing(this.c_FlowInterfaceControl.SelectedElement);
             foreach (var el in this.c_FlowInterfaceControl.Elements)
@@ -255,7 +271,6 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         private void c_YNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Y = (int)this.c_YNumericUpDown.Value;
             if (this.c_FlowInterfaceControl.SelectedElement != null)
                 this.c_FlowInterfaceControl.PushForReprocessing(this.c_FlowInterfaceControl.SelectedElement);
             foreach (var el in this.c_FlowInterfaceControl.Elements)
@@ -265,7 +280,6 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         private void c_ZNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Z = (int)this.c_ZNumericUpDown.Value;
             if (this.c_FlowInterfaceControl.SelectedElement != null)
                 this.c_FlowInterfaceControl.PushForReprocessing(this.c_FlowInterfaceControl.SelectedElement);
             foreach (var el in this.c_FlowInterfaceControl.Elements)

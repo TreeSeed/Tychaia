@@ -7,12 +7,11 @@ using System;
 
 namespace Tychaia.Globals
 {
-    [Obsolete("this is badly designed.")]
-    public static class TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell
+    public interface IRenderingLocationProvider
     {
-        public static long X;
-        public static long Y;
-        public static long Z;
+        long X { get; }
+        long Y { get; }
+        long Z { get; }
     }
 }
 

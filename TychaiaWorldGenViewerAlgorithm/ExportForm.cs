@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 using Tychaia.Globals;
 using Redpoint.FlowGraph;
 using Tychaia.ProceduralGeneration.Flow;
+using Ninject;
 
 namespace TychaiaWorldGenViewerAlgorithm
 {
@@ -141,7 +142,10 @@ namespace TychaiaWorldGenViewerAlgorithm
             try
             {
                 int computations;
-                data = layer.GenerateData(TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.X + sx, TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Y + sy, TemporaryCrapBecauseIDidNotReallyDesignThingsVeryWell.Z + sz, width, height, depth, out computations);
+                var provider = IoC.Kernel.Get<IRenderingLocationProvider>();
+                data = layer.GenerateData(
+                    provider.X + sx, provider.Y + sy, provider.Z + sz,
+                    width, height, depth, out computations);
 
                 var render = GetCellRenderOrder(RenderToNE, width, height);
                 var ztop = layer.Algorithm.Is2DOnly ? 1 : depth;

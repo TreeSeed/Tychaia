@@ -19,6 +19,7 @@
     <Reference Include="Tychaia.ProceduralGeneration" />
     <Reference Include="Redpoint.FlowGraph" />
     <Reference Include="Tychaia.Globals" />
+    <Reference Include="Ninject" />
   </References>
   <Files>
     <Compile Include="AnalyseForm.cs">
@@ -40,6 +41,7 @@
       <DependentUpon>FlowForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="RenderingLocationProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenameDialog.cs">
       <SubType>Form</SubType>
