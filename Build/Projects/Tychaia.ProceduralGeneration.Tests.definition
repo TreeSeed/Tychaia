@@ -16,6 +16,7 @@
     <Compile Include="AlgorithmPassthroughTest.cs" />
     <Compile Include="AlgorithmZoomTest.cs" />
     <Compile Include="CompilerTest.cs" />
+    <Compile Include="CompilerTests.cs" />
     <Compile Include="SkewTests.cs" />
     <Compile Include="TestForAttribute.cs" />
     <Compile Include="AlgorithmConstantTest.cs" />

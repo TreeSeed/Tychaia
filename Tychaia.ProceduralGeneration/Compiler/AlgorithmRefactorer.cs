@@ -65,22 +65,37 @@ namespace Tychaia.ProceduralGeneration.Compiler
         /// </summary>
         public static void InlineMethod(IAlgorithm algorithm, MethodDeclaration method, string outputName, string[] inputNames,
                                         string xStartOffset, string yStartOffset, string zStartOffset,
-                                        string width, string height, string depth)
+                                        string width, string height, string depth,
+                                        int ox, int oy, int oz)
         {
+            if (algorithm == null) throw new ArgumentNullException("algorithm");
+            if (method == null) throw new ArgumentNullException("method");
+            if (outputName == null) throw new ArgumentNullException("outputName");
+            if (inputNames == null) throw new ArgumentNullException("inputNames");
+            if (xStartOffset == null) throw new ArgumentNullException("xStartOffset");
+            if (yStartOffset == null) throw new ArgumentNullException("yStartOffset");
+            if (zStartOffset == null) throw new ArgumentNullException("zStartOffset");
+            if (width == null) throw new ArgumentNullException("width");
+            if (height == null) throw new ArgumentNullException("height");
+            if (depth == null) throw new ArgumentNullException("depth");
+
             var parameterContext = method.Parameters.ElementAt(0);
-            var parameterInputs = new ParameterDeclaration[method.Parameters.Count - 11];
-            for (var i = 1; i < method.Parameters.Count - 10; i++)
+            var parameterInputs = new ParameterDeclaration[method.Parameters.Count - 14];
+            for (var i = 1; i < method.Parameters.Count - 13; i++)
                 parameterInputs[i - 1] = method.Parameters.ElementAt(i);
-            var parameterOutput = method.Parameters.Reverse().ElementAt(9);
-            var parameterX = method.Parameters.Reverse().ElementAt(8);
-            var parameterY = method.Parameters.Reverse().ElementAt(7);
-            var parameterZ = method.Parameters.Reverse().ElementAt(6);
-            var parameterI = method.Parameters.Reverse().ElementAt(5);
-            var parameterJ = method.Parameters.Reverse().ElementAt(4);
-            var parameterK = method.Parameters.Reverse().ElementAt(3);
-            var parameterWidth = method.Parameters.Reverse().ElementAt(2);
-            var parameterHeight = method.Parameters.Reverse().ElementAt(1);
-            var parameterDepth = method.Parameters.Reverse().ElementAt(0);
+            var parameterOutput = method.Parameters.Reverse().ElementAt(12);
+            var parameterX = method.Parameters.Reverse().ElementAt(11);
+            var parameterY = method.Parameters.Reverse().ElementAt(10);
+            var parameterZ = method.Parameters.Reverse().ElementAt(9);
+            var parameterI = method.Parameters.Reverse().ElementAt(8);
+            var parameterJ = method.Parameters.Reverse().ElementAt(7);
+            var parameterK = method.Parameters.Reverse().ElementAt(6);
+            var parameterWidth = method.Parameters.Reverse().ElementAt(5);
+            var parameterHeight = method.Parameters.Reverse().ElementAt(4);
+            var parameterDepth = method.Parameters.Reverse().ElementAt(3);
+            var parameterOZ = method.Parameters.Reverse().ElementAt(2);
+            var parameterOY = method.Parameters.Reverse().ElementAt(1);
+            var parameterOX = method.Parameters.Reverse().ElementAt(0);
 
             // Replace properties.
             method.AcceptVisitor(new FindPropertiesVisitor { Algorithm = algorithm, ParameterContextName = parameterContext.Name });
@@ -151,6 +166,12 @@ namespace Tychaia.ProceduralGeneration.Compiler
                     i.Identifier = height;
                 else if (i.Identifier == parameterDepth.Name)
                     i.Identifier = depth;
+                else if (i.Identifier == parameterOX.Name)
+                    i.ReplaceWith(new PrimitiveExpression(ox));
+                else if (i.Identifier == parameterOY.Name)
+                    i.ReplaceWith(new PrimitiveExpression(oy));
+                else if (i.Identifier == parameterOZ.Name)
+                    i.ReplaceWith(new PrimitiveExpression(oz));
                 else if (i.Identifier == parameterOutput.Name)
                     i.Identifier = outputName;
                 else if (parameterInputs.Count(v => v.Name == i.Identifier) > 0)

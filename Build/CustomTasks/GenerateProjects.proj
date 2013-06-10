@@ -17,6 +17,7 @@
     <Definition Include="ProceduralGenPerformance" />
     <Definition Include="ProceduralGenStorage" />
     <Definition Include="ProceduralGenTracing" />
+    <Definition Include="ProceduralGenCompiler" />
     <Definition Include="Protogame" />
     <Definition Include="Protogame.Efficiency" />
     <Definition Include="Protogame.Math" />

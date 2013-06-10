@@ -73,13 +73,13 @@ namespace Tychaia.ProceduralGeneration
 
                 if (!xmod && !ymod)
                 if (this.Mode == ZoomType.Fuzzy)
-                    selected = context.GetRandomRange(x, y, 0, 4);
+                    selected = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, 4);
                 else
-                    selected = context.GetRandomRange(x, y, 0, 3);
+                    selected = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, 3);
                 else if (xmod && ymod)
                     selected = 4;
                 else
-                    selected = context.GetRandomRange(x, y, 0, 2);
+                    selected = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, 2);
 
                 int ocx_e = ((x - Math.Abs(i)) % 2 == 0 ? 0 : Math.Abs((i + 1) % 2)) - ((i + 1) % 2 == -1 ? 1 : 0);
                 int east = input[((i + 1) / 2 + ox + ocx_e) + (j / 2 + oy + ocy) * width + ((k) + oz + ocz) * width * height];

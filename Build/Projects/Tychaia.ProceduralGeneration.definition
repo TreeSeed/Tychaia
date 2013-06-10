@@ -28,6 +28,7 @@
     <Compile Include="IGenerator.cs" />
     <Compile Include="Compiler\ArrayPool.cs" />
     <Compile Include="Compiler\AlgorithmRefactorer.cs" />
+    <Compile Include="Compiler\AstVisitors\SimplifyExpressionsVisitor.cs" />
     <Compile Include="AlgorithmConstant.cs" />
     <Compile Include="AlgorithmUtility.cs" />
     <Compile Include="StorageLayer.cs" />
@@ -84,16 +85,14 @@
     <Compile Include="Analysis\Output\TrackingOutputFormatter.cs" />
     <Compile Include="Tracing\AlgorithmTraceImageGeneration.cs" />
     <Compile Include="AlgorithmReduceWaterDepth.cs" />
-    <None Include="Compiler\CompiledLayerTemplate.cs">
+    <EmbeddedResource Include="Compiler\CompiledLayerTemplate.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </EmbeddedResource>
     <None Include="Analysis\Reporting\reports.xsl" />
-    <None 
-Include="Analysis\Reporting\bootstrap\css\bootstrap-responsive.min.css" />
+    <None Include="Analysis\Reporting\bootstrap\css\bootstrap-responsive.min.css" />
     <None Include="Analysis\Reporting\bootstrap\css\bootstrap.min.css" />
     <None Include="Analysis\Reporting\bootstrap\css\prettify.css" />
-    <None 
-Include="Analysis\Reporting\bootstrap\img\glyphicons-halflings-white.png" />
+    <None Include="Analysis\Reporting\bootstrap\img\glyphicons-halflings-white.png" />
     <None Include="Analysis\Reporting\bootstrap\img\glyphicons-halflings.png" />
     <None Include="Analysis\Reporting\bootstrap\js\bootstrap.min.js" />
     <None Include="Analysis\Reporting\bootstrap\js\jquery-1.9.1.min.js" />

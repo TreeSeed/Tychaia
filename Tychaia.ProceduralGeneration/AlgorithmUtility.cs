@@ -110,6 +110,105 @@ namespace Tychaia.ProceduralGeneration
                 return rng;
             }
         }
+
+
+        /// <summary>
+        /// Smoothes the specified data according to smoothing logic.  Apparently
+        /// inlining this functionality causes the algorithms to run slower, so we
+        /// leave this function on it's own.
+        /// </summary>
+        public static int Smooth(
+            long seed, bool isFuzzy,
+            long x, long y,
+            int northValue, int southValue, int westValue, int eastValue, int southEastValue,
+            int currentValue,
+            long i, long j, long ox, long oy, long rw, int[] parent)
+        {
+            // Parent-based Smoothing
+            var selected = 0;
+
+            if (x % 2 == 0)
+            {
+                if (y % 2 == 0)
+                {
+                    return currentValue;
+                }
+                else
+                {
+                    selected = GetRandomRange(seed, x, y, 0, 2);
+                    switch (selected)
+                    {
+                        case 0:
+                            return currentValue;
+                        case 1:
+                            return southValue;
+                    }
+                }
+            }
+            else
+            {
+                if (y % 2 == 0)
+                {
+                    selected = GetRandomRange(seed, x, y, 0, 2);
+                    switch (selected)
+                    {
+                        case 0:
+                            return currentValue;
+                        case 1:
+                            return eastValue;
+                    }
+                }
+                else
+                {
+                    if (!isFuzzy)
+                    {
+                        selected = GetRandomRange(seed, x, y, 0, 3);
+                        switch (selected)
+                        {
+                            case 0:
+                                return currentValue;
+                            case 1:
+                                return southValue;
+                            case 2:
+                                return eastValue;
+                        }
+                    }
+                    else
+                    {
+                        selected = GetRandomRange(seed, x, y, 0, 4);
+                        switch (selected)
+                        {
+                            case 0:
+                                return currentValue;
+                            case 1:
+                                return southValue;
+                            case 2:
+                                return eastValue;
+                            case 3:
+                                return southEastValue;
+                        }
+                    }
+                }
+            }
+
+            // Select one of the four options if we couldn't otherwise
+            // determine a value.
+            selected = GetRandomRange(seed, x, y, 0, 4);
+
+            switch (selected)
+            {
+                case 0:
+                    return northValue;
+                case 1:
+                    return southValue;
+                case 2:
+                    return eastValue;
+                case 3:
+                    return westValue;
+            }
+
+            throw new InvalidOperationException();
+        }
     }
 }
 

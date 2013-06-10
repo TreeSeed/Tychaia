@@ -15,6 +15,7 @@ using Mono.Cecil;
 using System.Text;
 using System.Linq;
 using ICSharpCode.NRefactory.CSharp;
+using Tychaia.ProceduralGeneration.AstVisitors;
 
 namespace Tychaia.ProceduralGeneration.Compiler
 {
@@ -22,14 +23,14 @@ namespace Tychaia.ProceduralGeneration.Compiler
     {
         public static IGenerator Compile(RuntimeLayer layer)
         {
-            // TODO: Work out the tree of runtime layers to determine what to compile.
-            // TODO: Determine the actual code to generate by using Mono.Cecil on the assemblies.
-            // TODO: Generate the code and return the type for use.
-
-            //Console.WriteLine("Tracing compilation...");
-
             var result = ProcessRuntimeLayer(layer);
             return GenerateType(result);
+        }
+
+        public static string GenerateCode(RuntimeLayer layer)
+        {
+            var result = ProcessRuntimeLayer(layer);
+            return GenerateCode(result);
         }
 
         private class ProcessedResult
@@ -67,17 +68,14 @@ namespace Tychaia.ProceduralGeneration.Compiler
             var algorithmType = algorithm.GetType();
 
             // If the runtime layer has inputs, we need to process them first.
-            if (layer.Algorithm.InputTypes.Length > 0)
+            var inputs = layer.GetInputs();
+            result.InputVariableNames = new string[inputs.Length];
+            for (var i = 0; i < inputs.Length; i++)
             {
-                var inputs = layer.GetInputs();
-                result.InputVariableNames = new string[inputs.Length];
-                for (var i = 0; i < inputs.Length; i++)
-                {
-                    var inputResult = CompileRuntimeLayer(inputs[i], ranged.Inputs[i], layer.Algorithm);
-                    result.ProcessedCode += inputResult.ProcessedCode;
-                    result.InputVariableNames[i] = inputResult.OutputVariableName;
-                    result.Declarations += inputResult.Declarations;
-                }
+                var inputResult = CompileRuntimeLayer(inputs[i], ranged.Inputs[i], layer.Algorithm);
+                result.ProcessedCode += inputResult.ProcessedCode;
+                result.InputVariableNames[i] = inputResult.OutputVariableName;
+                result.Declarations += inputResult.Declarations;
             }
 
             // Create the storage array.
@@ -107,7 +105,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
             var method = DecompileUtil.GetAlgorithmCode(algorithmType, out astBuilder);
             AlgorithmRefactorer.InlineMethod(algorithm, method, result.OutputVariableName, result.InputVariableNames,
                                              "__cx", "__cy", "__cz",
-                                             "__cwidth", "__cheight", "__cdepth");
+                                             "__cwidth", "__cheight", "__cdepth",
+                                             0, 0, 0);
             AlgorithmRefactorer.RemoveUsingStatements(astBuilder.CompilationUnit, result.UsingStatements);
             code += method.Body.GetText();
 
@@ -162,15 +161,13 @@ for (var j = (int)((" + iy.GetText(null) + ") - y); j < " + ioutery.GetText(null
             return result;
         }
 
-
-        /// <summary>
-        /// Generates the compiled type.
-        /// </summary>
-        private static IGenerator GenerateType(ProcessedResult result)
+        private static string GenerateCode(ProcessedResult result)
         {
             // Create the code using the template file.
+            var templateName = "Tychaia.ProceduralGeneration.Compiler.CompiledLayerTemplate.cs";
+            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(templateName);
             string template = null;
-            using (var reader = new StreamReader("Compiler/CompiledLayerTemplate.cs"))
+            using (var reader = new StreamReader(stream))
                 template = reader.ReadToEnd();
             var final = template
                 .Replace("/****** %CODE% ******/", result.ProcessedCode)
@@ -182,18 +179,38 @@ for (var j = (int)((" + iy.GetText(null) + ") - y); j < " + ioutery.GetText(null
                         .Select(v => "using " + v + ";")
                         .DefaultIfEmpty("")
                         .Aggregate((a, b) => a + "\n" + b));
+            var parser = new CSharpParser();
+            var tree = parser.Parse(final, "layer.cs");
+            tree.AcceptVisitor(new SimplifyExpressionsVisitor());
+            var stringWriter = new StringWriter();
+            var formatter = FormattingOptionsFactory.CreateMono();
+            formatter.SpaceBeforeMethodCallParentheses = false;
+            formatter.SpaceBeforeIndexerDeclarationBracket = false;
+            tree.AcceptVisitor(new CSharpOutputVisitor(new TextWriterOutputFormatter(stringWriter) {
+                IndentationString = "  "
+            }, formatter));
+            final = stringWriter.ToString();
+            return final;
+        }
+
+        /// <summary>
+        /// Generates the compiled type.
+        /// </summary>
+        private static IGenerator GenerateType(ProcessedResult result)
+        {
+            var final = GenerateCode(result);
 
             // Create the type.
             var parameters = new CompilerParameters(new string[]
             {
-                "Tychaia.ProceduralGeneration.dll",
+                Assembly.GetExecutingAssembly().Location,
                 "System.Core.dll"
             });
             parameters.GenerateExecutable = false;
             parameters.GenerateInMemory = true;
             parameters.IncludeDebugInformation = false;
             parameters.CompilerOptions = "/optimize";
-            var compiler = CSharpCodeProvider.CreateProvider("CSharp");
+            var compiler = CodeDomProvider.CreateProvider("CSharp");
             var results = compiler.CompileAssemblyFromSource(parameters, final);
             using (var writer = new StreamWriter("code.tmp.cs"))
             {

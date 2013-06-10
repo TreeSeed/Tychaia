@@ -9,6 +9,8 @@ using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Ast;
 using ICSharpCode.NRefactory.CSharp;
 using System.Linq;
+using System.Reflection;
+using System.IO;
 
 namespace Tychaia.ProceduralGeneration.Compiler
 {
@@ -21,8 +23,17 @@ namespace Tychaia.ProceduralGeneration.Compiler
         /// <param name="algorithmType">Algorithm type.</param>
         public static MethodDeclaration GetAlgorithmCode(Type algorithmType, out AstBuilder astBuilder)
         {
+            var resolver = new DefaultAssemblyResolver();
+            resolver.AddSearchDirectory(new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName);
+            var parameters = new ReaderParameters
+            {
+                AssemblyResolver = resolver,
+            };
+
             // Load Tychaia.ProceduralGeneration into Mono.Cecil.
-            var module = AssemblyDefinition.ReadAssembly("Tychaia.ProceduralGeneration.dll").MainModule;
+            var module = AssemblyDefinition.ReadAssembly(
+                Assembly.GetExecutingAssembly().Location,
+                parameters).MainModule;
 
             // Now we have a reference to the method we want to decompile.
             TypeDefinition cecilType;
@@ -31,7 +42,16 @@ namespace Tychaia.ProceduralGeneration.Compiler
             var decompilerSettings = new DecompilerSettings();
             astBuilder = new AstBuilder(new DecompilerContext(module) { CurrentType = cecilType, Settings = decompilerSettings });
             astBuilder.AddMethod(processCell);
-            astBuilder.RunTransformations();
+            try
+            {
+                astBuilder.RunTransformations();
+            }
+            catch (AssemblyResolutionException ex)
+            {
+                throw new Exception(
+                    "Unable to decompile algorithm source code for " + algorithmType.FullName + ".",
+                    ex);
+            }
             astBuilder.CompilationUnit.AcceptVisitor(new InsertParenthesesVisitor {
                 InsertParenthesesForReadability = true
             });

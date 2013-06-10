@@ -41,7 +41,7 @@ namespace Tychaia.ProceduralGeneration
         // Anything else?
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            int selected = context.GetRandomRange(x, y, 0, 8, context.Modifier);
+            var selected = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, 8, context.Modifier);
 
             switch (selected)
             {
