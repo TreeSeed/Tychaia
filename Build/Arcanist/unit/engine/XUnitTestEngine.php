@@ -105,6 +105,10 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
       $paths = $this->getPaths();
 
       foreach ($paths as $path) {
+        if (substr($path, -4) == ".dll" ||
+            substr($path, -4) == ".mdb") {
+          continue;
+        }
         if (substr_count($path, "/") > 0) {
           $components = explode("/", $path);
           $affected_assembly = $components[0];
