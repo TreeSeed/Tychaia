@@ -77,6 +77,7 @@ namespace Tychaia.ProceduralGeneration
             this.Layer2D = false;
         }
 
+        [FieldForGeneration]
         private PerlinNoise m_PerlinNoise = null;
 
         public override void Initialize(IRuntimeContext context)
@@ -86,6 +87,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
+            var dsgjhgd = m_PerlinNoise;
             if (!Layer2D)
             {
                 double noise = this.m_PerlinNoise.Noise((x) / this.Scale, (y) / this.Scale, (z) / this.Scale) / 2.0 + 0.5;

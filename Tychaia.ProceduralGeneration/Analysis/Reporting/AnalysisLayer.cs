@@ -3,11 +3,11 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
 //
-using System.Runtime.Serialization;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using ICSharpCode.Decompiler.Ast;
-using Tychaia.ProceduralGeneration.Compiler;
 using Tychaia.ProceduralGeneration.Analysis.Output;
+using Tychaia.ProceduralGeneration.Compiler;
 
 namespace Tychaia.ProceduralGeneration.Analysis.Reporting
 {
@@ -65,7 +65,7 @@ namespace Tychaia.ProceduralGeneration.Analysis.Reporting
         public AnalysisLayer(StorageLayer layer)
         {
             AstBuilder astBuilder;
-            var method = DecompileUtil.GetAlgorithmCode(layer.Algorithm.GetType(), out astBuilder);
+            var method = DecompileUtil.GetMethodCode(layer.Algorithm.GetType(), out astBuilder, "ProcessCell");
             this.Name = layer.Algorithm.GetType().Name;
             this.Code = method.Body.GetTrackedText();
             this.Algorithm = layer.Algorithm;

@@ -4,13 +4,13 @@
 // license on the website apply retroactively.
 //
 using System;
-using Mono.Cecil;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Ast;
 using ICSharpCode.NRefactory.CSharp;
-using System.Linq;
-using System.Reflection;
-using System.IO;
+using Mono.Cecil;
 
 namespace Tychaia.ProceduralGeneration.Compiler
 {
@@ -21,7 +21,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
         /// </summary>
         /// <returns>The algorithm code.</returns>
         /// <param name="algorithmType">Algorithm type.</param>
-        public static MethodDeclaration GetAlgorithmCode(Type algorithmType, out AstBuilder astBuilder)
+        public static MethodDeclaration GetMethodCode(Type algorithmType, out AstBuilder astBuilder, string methodName)
         {
             var resolver = new DefaultAssemblyResolver();
             resolver.AddSearchDirectory(new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName);
@@ -38,7 +38,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             // Now we have a reference to the method we want to decompile.
             TypeDefinition cecilType;
             MethodDefinition processCell;
-            DecompileUtil.FindProcessCell(module, algorithmType, out processCell, out cecilType);
+            DecompileUtil.FindMethodName(module, algorithmType, methodName, out processCell, out cecilType);
             var decompilerSettings = new DecompilerSettings();
             astBuilder = new AstBuilder(new DecompilerContext(module) { CurrentType = cecilType, Settings = decompilerSettings });
             astBuilder.AddMethod(processCell);
@@ -63,8 +63,9 @@ namespace Tychaia.ProceduralGeneration.Compiler
         /// <summary>
         /// Finds the Mono.Cecil.MethodDefinition for ProcessCell in the specified algorithm type.
         /// </summary>
-        public static void FindProcessCell(ModuleDefinition module,
+        public static void FindMethodName(ModuleDefinition module,
                                             Type algorithmType,
+                                            string methodName,
                                             out MethodDefinition methodDefinition,
                                             out TypeDefinition typeDefinition)
         {
@@ -74,7 +75,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 {
                     foreach (var m in t.Methods)
                     {
-                        if (m.Name == "ProcessCell")
+                        if (m.Name == methodName)
                         {
                             methodDefinition = m;
                             typeDefinition = t;

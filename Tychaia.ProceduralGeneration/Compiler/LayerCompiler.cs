@@ -5,15 +5,11 @@
 //
 using System;
 using System.CodeDom.Compiler;
-using System.Reflection;
-using Microsoft.CSharp;
-using System.IO;
 using System.Collections.Generic;
-using ICSharpCode.Decompiler;
-using ICSharpCode.Decompiler.Ast;
-using Mono.Cecil;
-using System.Text;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using ICSharpCode.Decompiler.Ast;
 using ICSharpCode.NRefactory.CSharp;
 using Tychaia.ProceduralGeneration.AstVisitors;
 
@@ -36,6 +32,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
         private class ProcessedResult
         {
             public string ProcessedCode = null;
+            public string InitializationCode = null;
             public string OutputVariableType = null;
             public string OutputVariableName = null;
             public string[] InputVariableNames = null;
@@ -46,7 +43,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
         }
 
         private static Random m_Random = new Random();
-        private static string GenerateRandomIdentifier()
+        internal static string GenerateRandomIdentifier()
         {
             var result = "";
             for (var i = 0; i < 8; i++)
@@ -60,6 +57,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             // somewhere to accumulate code.
             var result = new ProcessedResult();
             result.ProcessedCode = "";
+            result.InitializationCode = "";
 
             // Get a reference to the algorithm that the runtime layer is using.
             var algorithm = layer.Algorithm;
@@ -74,8 +72,10 @@ namespace Tychaia.ProceduralGeneration.Compiler
             {
                 var inputResult = CompileRuntimeLayer(inputs[i], ranged.Inputs[i], layer.Algorithm);
                 result.ProcessedCode += inputResult.ProcessedCode;
+                result.InitializationCode += inputResult.InitializationCode;
                 result.InputVariableNames[i] = inputResult.OutputVariableName;
                 result.Declarations += inputResult.Declarations;
+                result.UsingStatements.AddRange(inputResult.UsingStatements);
             }
 
             // Create the storage array.
@@ -102,18 +102,31 @@ namespace Tychaia.ProceduralGeneration.Compiler
 
             // Refactor the method.
             AstBuilder astBuilder;
-            var method = DecompileUtil.GetAlgorithmCode(algorithmType, out astBuilder);
+            var method = DecompileUtil.GetMethodCode(algorithmType, out astBuilder, "ProcessCell");
+            MethodDeclaration initialize = null;
+            try
+            {
+                initialize = DecompileUtil.GetMethodCode(algorithmType, out astBuilder, "Initialize");
+            }
+            catch (MissingMethodException)
+            {
+            }
             AlgorithmRefactorer.InlineMethod(algorithm, method, result.OutputVariableName, result.InputVariableNames,
                                              "__cx", "__cy", "__cz",
                                              "__cwidth", "__cheight", "__cdepth",
                                              0, 0, 0);
+            if (initialize != null)
+                AlgorithmRefactorer.InlineInitialize(algorithm, initialize);
             AlgorithmRefactorer.RemoveUsingStatements(astBuilder.CompilationUnit, result.UsingStatements);
+            AlgorithmRefactorer.FactorOutAlgorithmFields(algorithmType, method, initialize, ref result.Declarations);
             code += method.Body.GetText();
 
             // Terminate the conditional container and return.
             code += "computations += 1;";
             code += "}\n";
             result.ProcessedCode += code;
+            if (initialize != null)
+                result.InitializationCode += initialize.Body.GetText();
             return result;
         }
 
@@ -123,6 +136,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             // somewhere to accumulate code.
             var result = new ProcessedResult();
             result.ProcessedCode = "";
+            result.InitializationCode = "";
 
             // Get a reference to the algorithm that the runtime layer is using.
             var algorithm = layer.Algorithm;
@@ -152,9 +166,11 @@ for (var j = (int)((" + iy.GetText(null) + ") - y); j < " + ioutery.GetText(null
             // Now add the code for the layer.
             var inputResult = CompileRuntimeLayer(layer, ranged, null);
             result.ProcessedCode += inputResult.ProcessedCode;
+            result.InitializationCode += inputResult.InitializationCode;
             result.OutputVariableName = inputResult.OutputVariableName;
             result.OutputVariableType = inputResult.OutputVariableType;
             result.Declarations += inputResult.Declarations;
+            result.UsingStatements.AddRange(inputResult.UsingStatements);
 
             // Terminate the for loop and return the result.
             result.ProcessedCode += "}";
@@ -171,6 +187,7 @@ for (var j = (int)((" + iy.GetText(null) + ") - y); j < " + ioutery.GetText(null
                 template = reader.ReadToEnd();
             var final = template
                 .Replace("/****** %CODE% ******/", result.ProcessedCode)
+                .Replace("/****** %INIT% ******/", result.InitializationCode)
                 .Replace("/****** %RETURN% ******/", "return " + result.OutputVariableName + ";")
                 .Replace("/****** %DECLS% ******/", result.Declarations)
                 .Replace("/****** %USING% ******/",
@@ -181,7 +198,11 @@ for (var j = (int)((" + iy.GetText(null) + ") - y); j < " + ioutery.GetText(null
                         .Aggregate((a, b) => a + "\n" + b));
             var parser = new CSharpParser();
             var tree = parser.Parse(final, "layer.cs");
-            tree.AcceptVisitor(new SimplifyExpressionsVisitor());
+            tree.AcceptVisitor(new SimplifyCombinedMathExpressionsVisitor());
+            tree.AcceptVisitor(new SimplifyZeroAndConditionalExpressionsVisitor());
+            tree.AcceptVisitor(new SimplifyRedundantMathExpressionsVisitor());
+            tree.AcceptVisitor(new RemoveRedundantPrimitiveCastsVisitor());
+            tree.AcceptVisitor(new RemoveParenthesisVisitor());
             var stringWriter = new StringWriter();
             var formatter = FormattingOptionsFactory.CreateMono();
             formatter.SpaceBeforeMethodCallParentheses = false;
@@ -204,6 +225,7 @@ for (var j = (int)((" + iy.GetText(null) + ") - y); j < " + ioutery.GetText(null
             var parameters = new CompilerParameters(new string[]
             {
                 Assembly.GetExecutingAssembly().Location,
+                typeof(Protogame.Noise.PerlinNoise).Assembly.Location,
                 "System.Core.dll"
             });
             parameters.GenerateExecutable = false;

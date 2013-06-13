@@ -43,6 +43,8 @@ public class CompiledLayer : IRuntimeContext, IGenerator
 
         /****** %DECLS% ******/
 
+        /****** %INIT% ******/
+
         /****** %CODE% ******/
 
         /****** %RETURN% ******/

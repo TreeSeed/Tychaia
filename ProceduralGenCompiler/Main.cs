@@ -23,8 +23,9 @@ namespace ProceduralGenCompiler
 
             var runtime = zoom3D3;
             var compiledCode = LayerCompiler.GenerateCode(runtime);
-            var compiled = LayerCompiler.Compile(runtime);
             Console.WriteLine(compiledCode);
+
+            var compiled = LayerCompiler.Compile(runtime);
 
             int computations;
             var runtimeData = runtime.GenerateData(-10, -10, -10, 20, 20, 20, out computations);

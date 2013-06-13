@@ -29,7 +29,11 @@
     <Compile Include="IGenerator.cs" />
     <Compile Include="Compiler\ArrayPool.cs" />
     <Compile Include="Compiler\AlgorithmRefactorer.cs" />
-    <Compile Include="Compiler\AstVisitors\SimplifyExpressionsVisitor.cs" />
+    <Compile Include="Compiler\AstVisitors\SimplifyCombinedMathExpressionsVisitor.cs" />
+    <Compile Include="Compiler\AstVisitors\SimplifyRedundantMathExpressionsVisitor.cs" />
+    <Compile Include="Compiler\AstVisitors\SimplifyZeroAndConditionalExpressionsVisitor.cs" />
+    <Compile Include="Compiler\AstVisitors\RemoveRedundantPrimitiveCastsVisitor.cs" />
+    <Compile Include="Compiler\AstVisitors\RemoveParenthesisVisitor.cs" />
     <Compile Include="AlgorithmConstant.cs" />
     <Compile Include="AlgorithmUtility.cs" />
     <Compile Include="StorageLayer.cs" />
@@ -86,6 +90,7 @@
     <Compile Include="Analysis\Output\TrackingOutputFormatter.cs" />
     <Compile Include="Tracing\AlgorithmTraceImageGeneration.cs" />
     <Compile Include="AlgorithmReduceWaterDepth.cs" />
+    <Compile Include="FieldForGenerationAttribute.cs" />
     <EmbeddedResource Include="Compiler\CompiledLayerTemplate.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>

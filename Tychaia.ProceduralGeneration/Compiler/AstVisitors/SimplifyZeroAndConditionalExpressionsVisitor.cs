@@ -1,10 +1,15 @@
-using ICSharpCode.NRefactory.CSharp;
-using System.Linq;
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
 using System;
+using System.Linq;
+using ICSharpCode.NRefactory.CSharp;
 
 namespace Tychaia.ProceduralGeneration.AstVisitors
 {
-    public class SimplifyExpressionsVisitor : DepthFirstAstVisitor
+    public class SimplifyZeroAndConditionalExpressionsVisitor : DepthFirstAstVisitor
     {
         private bool ReplaceConditionalAnd(AstNode root, Expression a, AstNode b)
         {
