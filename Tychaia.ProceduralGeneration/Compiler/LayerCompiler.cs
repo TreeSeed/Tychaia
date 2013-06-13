@@ -234,13 +234,6 @@ for (var j = (int)((" + iy.GetText(null) + ") - y); j < " + ioutery.GetText(null
             parameters.CompilerOptions = "/optimize";
             var compiler = CodeDomProvider.CreateProvider("CSharp");
             var results = compiler.CompileAssemblyFromSource(parameters, final);
-            using (var writer = new StreamWriter("code.tmp.cs"))
-            {
-                //int i = 1;
-                foreach (var line in final.Split('\n'))
-                    //i++.ToString().PadLeft(4) + ":  " +
-                    writer.WriteLine(line);
-            }
             if (results.Errors.HasErrors)
             {
                 foreach (var error in results.Errors)
