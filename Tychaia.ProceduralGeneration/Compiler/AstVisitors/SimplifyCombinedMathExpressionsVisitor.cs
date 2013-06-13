@@ -66,6 +66,8 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
                                 case BinaryOperatorType.Divide:
                                     resultValue = (object)((dynamic)aValue * (dynamic)bValue);
                                     break;
+                                default:
+                                    return;
                             }
                             binaryOperatorExpression.ReplaceWith(new BinaryOperatorExpression(
                                 (match.Get("left").First() as Expression).Clone(),
