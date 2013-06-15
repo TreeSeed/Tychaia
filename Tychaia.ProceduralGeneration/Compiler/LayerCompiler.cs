@@ -198,6 +198,7 @@ for (var j = (int)((" + iy.GetText(null) + ") - y); j < " + ioutery.GetText(null
                         .Aggregate((a, b) => a + "\n" + b));
             var parser = new CSharpParser();
             var tree = parser.Parse(final, "layer.cs");
+            tree.AcceptVisitor(new InlineTemporaryCVariablesVisitor());
             tree.AcceptVisitor(new SimplifyCombinedMathExpressionsVisitor());
             tree.AcceptVisitor(new SimplifyZeroAndConditionalExpressionsVisitor());
             tree.AcceptVisitor(new SimplifyRedundantMathExpressionsVisitor());

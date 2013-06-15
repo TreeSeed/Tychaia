@@ -34,6 +34,7 @@
     <Compile Include="Compiler\AstVisitors\SimplifyZeroAndConditionalExpressionsVisitor.cs" />
     <Compile Include="Compiler\AstVisitors\RemoveRedundantPrimitiveCastsVisitor.cs" />
     <Compile Include="Compiler\AstVisitors\RemoveParenthesisVisitor.cs" />
+    <Compile Include="Compiler\AstVisitors\InlineTemporaryCVariablesVisitor.cs" />
     <Compile Include="AlgorithmConstant.cs" />
     <Compile Include="AlgorithmUtility.cs" />
     <Compile Include="StorageLayer.cs" />
