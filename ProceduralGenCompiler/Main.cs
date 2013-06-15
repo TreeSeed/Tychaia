@@ -21,7 +21,16 @@ namespace ProceduralGenCompiler
             zoom3D2.SetInput(0, zoom3D1);
             zoom3D3.SetInput(0, zoom3D2);
 
-            var runtime = zoom3D3;
+            //var runtime = perlin;
+
+            var passthrough = new RuntimeLayer(new AlgorithmPassthrough { XBorder = 2 });
+            passthrough.SetInput(0, perlin);
+            var runtime = passthrough;
+
+
+            // ------- TEST CODE -------
+
+
             var compiledCode = LayerCompiler.GenerateCode(runtime);
             Console.WriteLine(compiledCode);
 

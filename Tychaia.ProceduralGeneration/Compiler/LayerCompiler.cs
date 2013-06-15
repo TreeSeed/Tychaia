@@ -84,11 +84,9 @@ namespace Tychaia.ProceduralGeneration.Compiler
             result.Declarations += result.OutputVariableType + "[] " + result.OutputVariableName +
                 " = new " + result.OutputVariableType + "[__cwidth * __cheight * __cdepth];\n";
 
-            Console.WriteLine(ranged.ToString());
-
             // Add the conditional container.
-            string code = "if (k >= (int)((" + ranged.Z.GetText(null) + ") - z) && i >= (int)((" + ranged.X.GetText(null) + ") - x) && j >= (int)((" + ranged.Y.GetText(null) + ") - y)" +
-                " && k < " + ranged.OuterZ.GetText(null) + " && i < " + ranged.OuterX.GetText(null) + " && j < " + ranged.OuterY.GetText(null) + @")
+            var code = "if (k >= (int)((" + ranged.Z.GetText(null) + ") - z + __cz) && i >= (int)((" + ranged.X.GetText(null) + ") - x + __cx) && j >= (int)((" + ranged.Y.GetText(null) + ") - y + __cy)" +
+                " && k < " + ranged.OuterZ.GetText(null) + " + __cz && i < " + ranged.OuterX.GetText(null) + " + __cx && j < " + ranged.OuterY.GetText(null) + @" + __cy)
 {
 ";
 
@@ -157,9 +155,9 @@ namespace Tychaia.ProceduralGeneration.Compiler
             result.Declarations += "int __cdepth = " + idepth.GetText(null) + ";\n";
 
             // Create the for loop that our calculations are done within.
-            result.ProcessedCode += @"for (var k = (int)((" + iz.GetText(null) + ") - z); k < " + iouterz.GetText(null) + @"; k++)
-for (var i = (int)((" + ix.GetText(null) + ") - x); i < " + iouterx.GetText(null) + @"; i++)
-for (var j = (int)((" + iy.GetText(null) + ") - y); j < " + ioutery.GetText(null) + @"; j++)
+            result.ProcessedCode += @"for (var k = (int)((" + iz.GetText(null) + ") - z + __cz); k < " + iouterz.GetText(null) + @" + __cz; k++)
+for (var i = (int)((" + ix.GetText(null) + ") - x) + __cx; i < " + iouterx.GetText(null) + @" + __cx; i++)
+for (var j = (int)((" + iy.GetText(null) + ") - y) + __cy; j < " + ioutery.GetText(null) + @" + __cy; j++)
 {
 ";
 
@@ -199,11 +197,21 @@ for (var j = (int)((" + iy.GetText(null) + ") - y); j < " + ioutery.GetText(null
             var parser = new CSharpParser();
             var tree = parser.Parse(final, "layer.cs");
             tree.AcceptVisitor(new InlineTemporaryCVariablesVisitor());
-            tree.AcceptVisitor(new SimplifyCombinedMathExpressionsVisitor());
-            tree.AcceptVisitor(new SimplifyZeroAndConditionalExpressionsVisitor());
-            tree.AcceptVisitor(new SimplifyRedundantMathExpressionsVisitor());
-            tree.AcceptVisitor(new RemoveRedundantPrimitiveCastsVisitor());
-            tree.AcceptVisitor(new RemoveParenthesisVisitor());
+            var visitors = new DepthFirstAstVisitor[] {
+                new RemoveRedundantPrimitiveCastsVisitor(),
+                new RemoveParenthesisVisitor(),
+                new SimplifyConstantMathExpressionsVisitor(),
+                new SimplifyCombinedMathExpressionsVisitor(),
+                new SimplifyZeroAndConditionalExpressionsVisitor(),
+                new SimplifyRedundantMathExpressionsVisitor(),
+            };
+            string oldText = null;
+            while (tree.GetText() != oldText)
+            {
+                oldText = tree.GetText();
+                foreach (var visitor in visitors)
+                    tree.AcceptVisitor(visitor);
+            }
             var stringWriter = new StringWriter();
             var formatter = FormattingOptionsFactory.CreateMono();
             formatter.SpaceBeforeMethodCallParentheses = false;

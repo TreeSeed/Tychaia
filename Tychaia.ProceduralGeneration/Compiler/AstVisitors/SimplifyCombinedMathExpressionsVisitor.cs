@@ -19,6 +19,8 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             //
             // (x - 2) - 2
             // (x / 2) / 2
+            // (x - 2) + 4
+            // (x * 2) / 3
 
             var pattern = new BinaryOperatorExpression {
                 Left = new ParenthesizedExpression {
@@ -43,39 +45,64 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             if (pattern.IsMatch(binaryOperatorExpression))
             {
                 var match = pattern.Match(binaryOperatorExpression);
-                if (binaryOperatorExpression.Operator ==
-                    ((binaryOperatorExpression.Left as ParenthesizedExpression).Expression
-                    as BinaryOperatorExpression).Operator)
+                var outerOperator = binaryOperatorExpression.Operator;
+                var innerOperator = (BinaryOperatorType)((dynamic)binaryOperatorExpression.Left).Expression.Operator;
+                var innerValue = AstHelpers.GetValueFromExpression((Expression)match.Get("rightA").First());
+                var outerValue = AstHelpers.GetValueFromExpression((Expression)match.Get("rightB").First());
+                if (innerValue == null && outerValue == null)
+                    return;
+
+                // If the operators are equal, then we handle expression like (x - 2) - 4.
+                if (innerOperator == outerOperator)
                 {
-                    if (match.Get("rightA").First() is PrimitiveExpression &&
-                        match.Get("rightB").First() is PrimitiveExpression)
+                    dynamic resultValue;
+                    switch (binaryOperatorExpression.Operator)
                     {
-                        var aValue = (match.Get("rightA").First() as PrimitiveExpression).Value;
-                        var bValue = (match.Get("rightB").First() as PrimitiveExpression).Value;
-                        if ((aValue is int || aValue is long || aValue is double || aValue is float) &&
-                            (bValue is int || bValue is long || bValue is double || bValue is float))
-                        {
-                            object resultValue;
-                            switch (binaryOperatorExpression.Operator)
-                            {
-                                case BinaryOperatorType.Add:
-                                case BinaryOperatorType.Subtract:
-                                    resultValue = (object)((dynamic)aValue + (dynamic)bValue);
-                                    break;
-                                case BinaryOperatorType.Multiply:
-                                case BinaryOperatorType.Divide:
-                                    resultValue = (object)((dynamic)aValue * (dynamic)bValue);
-                                    break;
-                                default:
-                                    return;
-                            }
-                            binaryOperatorExpression.ReplaceWith(new BinaryOperatorExpression(
-                                (match.Get("left").First() as Expression).Clone(),
-                                binaryOperatorExpression.Operator,
-                                new PrimitiveExpression(resultValue)));
+                        case BinaryOperatorType.Add:
+                        case BinaryOperatorType.Subtract:
+                            resultValue = innerValue + outerValue;
+                            break;
+                        case BinaryOperatorType.Multiply:
+                        case BinaryOperatorType.Divide:
+                            resultValue = innerValue * outerValue;
+                            break;
+                        default:
                             return;
-                        }
                     }
+                    binaryOperatorExpression.ReplaceWith(new BinaryOperatorExpression(
+                        (match.Get("left").First() as Expression).Clone(),
+                        binaryOperatorExpression.Operator,
+                        new PrimitiveExpression(resultValue)));
+                    return;
+                }
+
+                // Otherwise handle the slightly more complex cases.
+                PrimitiveExpression result;
+                switch (innerOperator)
+                {
+                    case BinaryOperatorType.Add:
+                        switch (outerOperator)
+                        {
+                            case BinaryOperatorType.Subtract:
+                                result = new PrimitiveExpression(innerValue - outerValue);
+                                break;
+                        }
+                        break;
+                    case BinaryOperatorType.Subtract:
+                        switch (outerOperator)
+                        {
+                            case BinaryOperatorType.Add:
+                                result = new PrimitiveExpression(innerValue - outerValue);
+                                break;
+                        }
+                        break;
+                }
+                if (result != null)
+                {
+                    binaryOperatorExpression.ReplaceWith(new BinaryOperatorExpression(
+                        (match.Get("left").First() as Expression).Clone(),
+                        binaryOperatorExpression.Operator,
+                        result));
                 }
             }
         }

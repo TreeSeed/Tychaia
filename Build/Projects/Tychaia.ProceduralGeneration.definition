@@ -29,7 +29,9 @@
     <Compile Include="IGenerator.cs" />
     <Compile Include="Compiler\ArrayPool.cs" />
     <Compile Include="Compiler\AlgorithmRefactorer.cs" />
+    <Compile Include="Compiler\AstVisitors\AstHelpers.cs" />
     <Compile Include="Compiler\AstVisitors\SimplifyCombinedMathExpressionsVisitor.cs" />
+    <Compile Include="Compiler\AstVisitors\SimplifyConstantMathExpressionsVisitor.cs" />
     <Compile Include="Compiler\AstVisitors\SimplifyRedundantMathExpressionsVisitor.cs" />
     <Compile Include="Compiler\AstVisitors\SimplifyZeroAndConditionalExpressionsVisitor.cs" />
     <Compile Include="Compiler\AstVisitors\RemoveRedundantPrimitiveCastsVisitor.cs" />

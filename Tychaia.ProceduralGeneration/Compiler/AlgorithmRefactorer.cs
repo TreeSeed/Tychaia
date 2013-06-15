@@ -176,57 +176,63 @@ namespace Tychaia.ProceduralGeneration.Compiler
                         new BinaryOperatorExpression(
                         new IdentifierExpression("x"),
                         BinaryOperatorType.Add,
-                        new BinaryOperatorExpression(
-                        new IdentifierExpression("i"),
-                        BinaryOperatorType.Add,
-                        new IdentifierExpression(xStartOffset)
-                    ))));
+                        //new BinaryOperatorExpression(
+                        new IdentifierExpression("i")//,
+                        //BinaryOperatorType.Add,
+                        //new IdentifierExpression(xStartOffset)
+                    //)
+                    )));
                 else if (i.Identifier == parameterY.Name)
                     i.ReplaceWith(
                         new ParenthesizedExpression(
                         new BinaryOperatorExpression(
                         new IdentifierExpression("y"),
                         BinaryOperatorType.Add,
-                        new BinaryOperatorExpression(
-                        new IdentifierExpression("j"),
-                        BinaryOperatorType.Add,
-                        new IdentifierExpression(yStartOffset)
-                    ))));
+                        //new BinaryOperatorExpression(
+                        new IdentifierExpression("j")//,
+                        //BinaryOperatorType.Add,
+                        //new IdentifierExpression(yStartOffset)
+                    //)
+                    )));
                 else if (i.Identifier == parameterZ.Name)
                     i.ReplaceWith(
                         new ParenthesizedExpression(
                         new BinaryOperatorExpression(
                         new IdentifierExpression("z"),
                         BinaryOperatorType.Add,
-                        new BinaryOperatorExpression(
-                        new IdentifierExpression("k"),
-                        BinaryOperatorType.Add,
-                        new IdentifierExpression(zStartOffset)
-                    ))));
+                        //new BinaryOperatorExpression(
+                        new IdentifierExpression("k")//,
+                        //BinaryOperatorType.Add,
+                        //new IdentifierExpression(zStartOffset)
+                    //)
+                    )));
                 else if (i.Identifier == parameterI.Name)
                     i.ReplaceWith(
                         new ParenthesizedExpression(
-                        new BinaryOperatorExpression(
-                        new IdentifierExpression("i"),
-                        BinaryOperatorType.Add,
-                        new IdentifierExpression(xStartOffset)
-                    )));
+                        //new BinaryOperatorExpression(
+                        new IdentifierExpression("i")//,
+                        //BinaryOperatorType.Add,
+                        //new IdentifierExpression(xStartOffset)
+                    //)
+                    ));
                 else if (i.Identifier == parameterJ.Name)
                     i.ReplaceWith(
                         new ParenthesizedExpression(
-                        new BinaryOperatorExpression(
-                        new IdentifierExpression("j"),
-                        BinaryOperatorType.Add,
-                        new IdentifierExpression(yStartOffset)
-                    )));
+                        //new BinaryOperatorExpression(
+                        new IdentifierExpression("j")//,
+                        //BinaryOperatorType.Add,
+                        //new IdentifierExpression(yStartOffset)
+                    //)
+                    ));
                 else if (i.Identifier == parameterK.Name)
                     i.ReplaceWith(
                         new ParenthesizedExpression(
-                        new BinaryOperatorExpression(
-                        new IdentifierExpression("k"),
-                        BinaryOperatorType.Add,
-                        new IdentifierExpression(zStartOffset)
-                    )));
+                        //new BinaryOperatorExpression(
+                        new IdentifierExpression("k")//,
+                        //BinaryOperatorType.Add,
+                        //new IdentifierExpression(zStartOffset)
+                    //)
+                    ));
                 else if (i.Identifier == parameterWidth.Name)
                     i.Identifier = width;
                 else if (i.Identifier == parameterHeight.Name)
