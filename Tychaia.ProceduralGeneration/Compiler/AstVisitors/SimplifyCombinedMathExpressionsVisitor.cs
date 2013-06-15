@@ -77,7 +77,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
                 }
 
                 // Otherwise handle the slightly more complex cases.
-                PrimitiveExpression result;
+                PrimitiveExpression result = null;
                 switch (innerOperator)
                 {
                     case BinaryOperatorType.Add:
