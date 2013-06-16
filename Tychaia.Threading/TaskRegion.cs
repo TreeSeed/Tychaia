@@ -68,7 +68,7 @@ namespace Tychaia.Threading
         {
             // Only run while Process() was called on the main thread in the
             // last 5 seconds.
-            this.m_Pipeline.Connect();
+            this.m_Pipeline.OutputConnect();
             this.m_Processor = new TProcessor();
             while ((DateTime.Now - this.m_LastProcess).TotalSeconds < 5)
             {
@@ -79,7 +79,7 @@ namespace Tychaia.Threading
                     this.m_Processor.Process(value);
                 }
             }
-            this.m_Pipeline.Disconnect();
+            this.m_Pipeline.OutputDisconnect();
         }
 
         public void ComputeRegion(

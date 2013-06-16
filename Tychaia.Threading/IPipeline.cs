@@ -8,8 +8,10 @@ namespace Tychaia.Threading
 {
     public interface IPipeline<T>
     {
-        void Connect();
-        void Disconnect();
+        void InputConnect();
+        void InputDisconnect();
+        void OutputConnect();
+        void OutputDisconnect();
         void Put(T value);
         T Take();
         T Take(out bool retrieved);

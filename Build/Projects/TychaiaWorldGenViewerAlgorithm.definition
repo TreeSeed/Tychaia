@@ -20,8 +20,11 @@
     <Reference Include="Redpoint.FlowGraph" />
     <Reference Include="Tychaia.Globals" />
     <Reference Include="Ninject" />
+    <Reference Include="Tychaia.Threading" />
   </References>
   <Files>
+    <Compile Include="IoCModule.cs" />
+    <Compile Include="FlowProcessingPipeline.cs" />
     <Compile Include="AnalyseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -56,8 +59,9 @@
       <DependentUpon>TraceForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UsefulExtensions.cs" />
-	<EmbeddedResource Include="disk.png" />
-	<EmbeddedResource Include="disk-rename.png" />
+    <EmbeddedResource Include="disk.png" />
+    <EmbeddedResource Include="disk-rename.png" />
+    <EmbeddedResource Include="time.png" />
     <EmbeddedResource Include="folder-open-document.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

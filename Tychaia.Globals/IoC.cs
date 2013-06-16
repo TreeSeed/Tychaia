@@ -14,7 +14,7 @@ namespace Tychaia.Globals
         {
             return from assembly in AppDomain.CurrentDomain.GetAssemblies()
                    where !assembly.IsDynamic
-                   where assembly.FullName.StartsWith("Tychaia.", StringComparison.Ordinal)
+                   where assembly.FullName.StartsWith("Tychaia", StringComparison.Ordinal)
                    from type in assembly.GetTypes()
                    where typeof(INinjectModule).IsAssignableFrom(type)
                    where !type.IsAbstract

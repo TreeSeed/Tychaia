@@ -1,29 +1,144 @@
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Runtime.Serialization;
 using System.IO;
-using System.Xml;
+using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
+using Ninject;
+using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
 using Tychaia.ProceduralGeneration.Flow;
-using Tychaia.Globals;
-using Ninject;
 
 namespace TychaiaWorldGenViewerAlgorithm
 {
-    public partial class FlowForm : Form, IRenderingLocationProvider
+    public partial class FlowForm : Form, IRenderingLocationProvider, ICurrentWorldSeedProvider
     {
+        private FlowProcessingPipeline m_FlowProcessingPipeline;
+        private int m_PerformanceResultsLeftToCalculate = 0;
+        private ToolStripItem c_PerformanceTestStart;
+
         public FlowForm()
         {
+            // TODO: Expose this in the UI.
+            this.Seed = 0xDEADBEEF;
+
             InitializeComponent();
             IoC.Kernel.Bind<IRenderingLocationProvider>().ToMethod(context => this);
+            IoC.Kernel.Bind<ICurrentWorldSeedProvider>().ToMethod(context => this);
+            this.m_FlowProcessingPipeline = IoC.Kernel.Get<IFlowProcessingPipeline>() as FlowProcessingPipeline;
+            if (this.m_FlowProcessingPipeline == null)
+                throw new Exception("IFlowProcessingPipeline is not of type FlowProcessingPipeline.");
+            this.m_FlowProcessingPipeline.FormConnect(this);
+            this.CreateAnalysisActions();
+            this.UpdateStatusArea();
         }
+
+        public long Seed
+        {
+            get; private set;
+        }
+
+        #region Analysis Actions
+
+        public void CreateAnalysisActions()
+        {
+            this.c_ToolStrip.Items.Add("-");
+            this.c_PerformanceTestStart =
+                this.c_ToolStrip.Items.Add(
+                    null,
+                    ResourceHelper.GetImageResource("TychaiaWorldGenViewerAlgorithm.time.png"),
+                    (sender, e) =>
+                        {
+                            foreach (var element in this.c_FlowInterfaceControl.Elements
+                                .Where(x => x is AlgorithmFlowElement)
+                                .Cast<AlgorithmFlowElement>())
+                            {
+                                element.RequestPerformanceStatistics();
+                                this.m_PerformanceResultsLeftToCalculate++;
+                            }
+                            this.UpdateStatusArea();
+                        });
+        }
+
+        #endregion
+
+        #region Threaded Responses
+
+        private void UpdateStatusArea()
+        {
+            if (this.m_PerformanceResultsLeftToCalculate > 0)
+                this.c_QueueStatus.Text =
+                    this.m_PerformanceResultsLeftToCalculate +
+                    " items left for performance testing.";
+            else
+                this.c_QueueStatus.Text = "No performance test in progress.";
+            this.c_PerformanceTestStart.Enabled =
+                this.c_FlowInterfaceControl.Elements.Count != 0 &&
+                this.m_PerformanceResultsLeftToCalculate == 0;
+        }
+
+        private void c_Timer_OnTick(object sender, EventArgs e)
+        {
+            this.m_FlowProcessingPipeline.FormCheck();
+        }
+
+        public void OnGenerateRuntimeBitmapStart(StorageLayer layer, Bitmap bitmap)
+        {
+            var element = this.c_FlowInterfaceControl.Elements
+                .Where(x => x is AlgorithmFlowElement)
+                .Cast<AlgorithmFlowElement>()
+                .FirstOrDefault(x => x.Layer == layer);
+            if (element == null)
+                return;
+            element.UpdateBitmaps(null, null, bitmap);
+        }
+
+        public void OnGenerateRuntimeBitmapResponse(StorageLayer layer, Bitmap bitmap)
+        {
+            var element = this.c_FlowInterfaceControl.Elements
+                .Where(x => x is AlgorithmFlowElement)
+                .Cast<AlgorithmFlowElement>()
+                .FirstOrDefault(x => x.Layer == layer);
+            if (element == null)
+                return;
+            element.ClearBitmaps();
+            element.UpdateBitmaps(bitmap, null, null);
+        }
+
+        public void OnGeneratePerformanceResultsStart(StorageLayer layer, Bitmap bitmap)
+        {
+            var element = this.c_FlowInterfaceControl.Elements
+                .Where(x => x is AlgorithmFlowElement)
+                .Cast<AlgorithmFlowElement>()
+                .FirstOrDefault(x => x.Layer == layer);
+            if (element == null)
+                return;
+            element.UpdateBitmaps(null, null, bitmap);
+        }
+
+        public void OnGeneratePerformanceResultsResponse(
+            StorageLayer layer,
+            Bitmap resultsBitmap,
+            Bitmap compiledBitmap)
+        {
+            var element = this.c_FlowInterfaceControl.Elements
+                .Where(x => x is AlgorithmFlowElement)
+                .Cast<AlgorithmFlowElement>()
+                .FirstOrDefault(x => x.Layer == layer);
+            if (element == null)
+                return;
+            element.UpdateBitmaps(null, compiledBitmap, resultsBitmap);
+            this.m_PerformanceResultsLeftToCalculate--;
+            this.UpdateStatusArea();
+        }
+
+        #endregion
 
         #region Loading and Saving
 
@@ -68,15 +183,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                     layers.Where(v => v != null)
                           .Select(v => new AlgorithmFlowElement(this.c_FlowInterfaceControl, v) { X = v.EditorX, Y = v.EditorY })
                 );
-
-                /*foreach (var el in layers)
-                {
-                    el.SetDeserializationData(this.c_FlowInterfaceControl);
-                    this.c_FlowInterfaceControl.Elements.Add(el);
-                }
-                foreach (FlowElement el in config)
-                    this.c_FlowInterfaceControl.PushForReprocessing(el);
-                this.c_FlowInterfaceControl.Invalidate();*/
+                this.UpdateStatusArea();
             }
         }
 
@@ -146,11 +253,6 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.c_FlowInterfaceControl.Zoom /= (float)Math.Pow(2, -e.Delta / 120);
             this.c_FlowInterfaceControl.Pan(e.X, e.Y);
             this.c_ZoomStatus.Text = (this.c_FlowInterfaceControl.Zoom * 100.0f).ToString() + "%";
-        }
-
-        private void c_FlowInterfaceControl_ElementsInQueueCountChanged(object sender, Redpoint.FlowGraph.FlowInterfaceControl.ElementsInQueueCountChangedEventArgs e)
-        {
-            this.c_QueueStatus.Text = e.Count.ToString() + " elements in queue.";
         }
 
         private void c_FlowInterfaceControl_SelectedElementChanged(object sender, EventArgs e)

@@ -65,6 +65,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.c_YNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.c_ZLabel = new System.Windows.Forms.Label();
             this.c_FlowInterfaceControl = new FlowInterfaceControl();
+            this.c_Timer = new System.Windows.Forms.Timer();
             this.c_StatusStrip.SuspendLayout();
             this.c_ContextMenuStrip.SuspendLayout();
             this.c_ToolStrip.SuspendLayout();
@@ -182,7 +183,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             // c_LoadConfigurationButton
             // 
             this.c_LoadConfigurationButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.c_LoadConfigurationButton.Image = Tychaia.Globals.ResourceHelper.GetImageResource("TychaiaWorldGenViewerAlgorithm.folder-open-document.png"); ;
+            this.c_LoadConfigurationButton.Image = Tychaia.Globals.ResourceHelper.GetImageResource("TychaiaWorldGenViewerAlgorithm.folder-open-document.png");
             this.c_LoadConfigurationButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.c_LoadConfigurationButton.Name = "c_LoadConfigurationButton";
             this.c_LoadConfigurationButton.Size = new System.Drawing.Size(23, 22);
@@ -193,7 +194,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             // 
             this.c_SaveConfigurationButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.c_SaveConfigurationButton.Enabled = false;
-            this.c_SaveConfigurationButton.Image = Tychaia.Globals.ResourceHelper.GetImageResource("TychaiaWorldGenViewerAlgorithm.disk.png"); ;
+            this.c_SaveConfigurationButton.Image = Tychaia.Globals.ResourceHelper.GetImageResource("TychaiaWorldGenViewerAlgorithm.disk.png");
             this.c_SaveConfigurationButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.c_SaveConfigurationButton.Name = "c_SaveConfigurationButton";
             this.c_SaveConfigurationButton.Size = new System.Drawing.Size(23, 22);
@@ -203,7 +204,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             // c_SaveConfigurationAsButton
             // 
             this.c_SaveConfigurationAsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.c_SaveConfigurationAsButton.Image = Tychaia.Globals.ResourceHelper.GetImageResource("TychaiaWorldGenViewerAlgorithm.disk-rename.png"); ;
+            this.c_SaveConfigurationAsButton.Image = Tychaia.Globals.ResourceHelper.GetImageResource("TychaiaWorldGenViewerAlgorithm.disk-rename.png");
             this.c_SaveConfigurationAsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.c_SaveConfigurationAsButton.Name = "c_SaveConfigurationAsButton";
             this.c_SaveConfigurationAsButton.Size = new System.Drawing.Size(23, 22);
@@ -336,6 +337,12 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.c_ZLabel.TabIndex = 4;
             this.c_ZLabel.Text = "Z:";
             // 
+            // c_Timer
+            // 
+            this.c_Timer.Tick += c_Timer_OnTick;
+            this.c_Timer.Interval = 50;
+            this.c_Timer.Enabled = true;
+            // 
             // c_FlowInterfaceControl
             // 
             this.c_FlowInterfaceControl.ContextMenuStrip = this.c_ContextMenuStrip;
@@ -347,7 +354,6 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.c_FlowInterfaceControl.TabIndex = 0;
             this.c_FlowInterfaceControl.Zoom = 1F;
             this.c_FlowInterfaceControl.SelectedElementChanged += new System.EventHandler(this.c_FlowInterfaceControl_SelectedElementChanged);
-            this.c_FlowInterfaceControl.ElementsInQueueCountChanged += new FlowInterfaceControl.ElementsInQueueCountChangedHandler(this.c_FlowInterfaceControl_ElementsInQueueCountChanged);
             this.c_FlowInterfaceControl.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.c_FlowInterfaceControl_MouseWheel);
             // 
             // FlowForm
@@ -404,5 +410,6 @@ namespace TychaiaWorldGenViewerAlgorithm
         private System.Windows.Forms.ToolStripMenuItem c_AnalyseSelectedMenuItem;
         private System.Windows.Forms.NumericUpDown c_ZNumericUpDown;
         private System.Windows.Forms.Label c_ZLabel;
+        private System.Windows.Forms.Timer c_Timer;
     }
 }

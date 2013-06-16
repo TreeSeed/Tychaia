@@ -74,7 +74,9 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public static IGenerator ToCompiled(RuntimeLayer layer)
         {
-            return LayerCompiler.Compile(layer);
+            var result = LayerCompiler.Compile(layer);
+            result.SetSeed(layer.Seed);
+            return result;
         }
 
         #endregion

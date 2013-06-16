@@ -23,16 +23,36 @@ namespace Tychaia.Threading
         /// considered to be the input side of the pipeline.  The
         /// output thread should call Connect().
         /// </summary>
-        public ThreadedTaskPipeline()
+        public ThreadedTaskPipeline(bool autoconnect = true)
         {
-            this.m_InputThread = Thread.CurrentThread.ManagedThreadId;
+            this.m_InputThread = autoconnect ? (int?)Thread.CurrentThread.ManagedThreadId : null;
             this.m_OutputThread = null;
+        }
+
+        /// <summary>
+        /// Connects the current thread as the input of the pipeline.
+        /// </summary>
+        public void InputConnect()
+        {
+            if (this.m_InputThread != null)
+                throw new InvalidOperationException("TaskPipeline can only have one input thread connected.");
+            this.m_InputThread = Thread.CurrentThread.ManagedThreadId;
+        }
+
+        /// <summary>
+        /// Disconnects the current thread as the input of the pipeline.
+        /// </summary>
+        public void InputDisconnect()
+        {
+            if (this.m_InputThread != Thread.CurrentThread.ManagedThreadId)
+                throw new InvalidOperationException("Only the input thread may disconnect from TaskPipeline.");
+            this.m_InputThread = null;
         }
 
         /// <summary>
         /// Connects the current thread as the output of the pipeline.
         /// </summary>
-        public void Connect()
+        public void OutputConnect()
         {
             if (this.m_OutputThread != null)
                 throw new InvalidOperationException("TaskPipeline can only have one output thread connected.");
@@ -42,7 +62,7 @@ namespace Tychaia.Threading
         /// <summary>
         /// Disconnects the current thread as the output of the pipeline.
         /// </summary>
-        public void Disconnect()
+        public void OutputDisconnect()
         {
             if (this.m_OutputThread != Thread.CurrentThread.ManagedThreadId)
                 throw new InvalidOperationException("Only the output thread may disconnect from TaskPipeline.");
@@ -55,6 +75,8 @@ namespace Tychaia.Threading
         /// <param name="value">Value.</param>
         public void Put(T value)
         {
+            if (this.m_InputThread == null)
+                throw new InvalidOperationException("The input thread has not been connected yet.");
             if (this.m_InputThread != Thread.CurrentThread.ManagedThreadId)
                 throw new InvalidOperationException("Only the input thread may place items into TaskPipeline.");
 
@@ -81,6 +103,8 @@ namespace Tychaia.Threading
         /// <returns>The next item.</returns>
         public T Take()
         {
+            if (this.m_OutputThread == null)
+                throw new InvalidOperationException("The output thread has not been connected yet.");
             if (this.m_OutputThread != Thread.CurrentThread.ManagedThreadId)
                 throw new InvalidOperationException("Only the output thread may retrieve items from TaskPipeline.");
 

@@ -17,6 +17,7 @@
     <Reference Include="Redpoint.FlowGraph" />
     <Reference Include="Protogame.Noise" />
     <Reference Include="Ninject" />
+    <Reference Include="Tychaia.Threading" />
   </References>
   <Files>
     <Compile Include="AssemblyInfo.cs" />
@@ -44,6 +45,15 @@
     <Compile Include="Flow\AlgorithmFlowConnector.cs" />
     <Compile Include="Flow\AlgorithmFlowElement.cs" />
     <Compile Include="Flow\AlgorithmFlowImageGeneration.cs" />
+    <Compile Include="Flow\IFlowProcessingPipeline.cs" />
+    <Compile Include="Flow\FlowProcessingRequest.cs" />
+    <Compile Include="Flow\FlowProcessingRequestType.cs" />
+    <Compile Include="Flow\FlowProcessingResponse.cs" />
+    <Compile Include="Flow\IFlowProcessingRequestHandler.cs" />
+    <Compile Include="Flow\FlowProcessingRequestHandler.cs" />
+    <Compile Include="Flow\Handlers\GeneratePerformanceResultsHandler.cs" />
+    <Compile Include="Flow\Handlers\GenerateRuntimeBitmapHandler.cs" />
+    <Compile Include="Flow\Handlers\HandlerHelper.cs" />
     <Compile Include="AlgorithmColors.cs" />
     <Compile Include="Compiler\RangedLayer.cs" />
     <Compile Include="Biomes\Biome.cs" />
@@ -93,6 +103,8 @@
     <Compile Include="Analysis\Output\TrackingOutputFormatter.cs" />
     <Compile Include="Tracing\AlgorithmTraceImageGeneration.cs" />
     <Compile Include="AlgorithmReduceWaterDepth.cs" />
+    <Compile Include="IoCModule.cs" />
+    <Compile Include="ICurrentWorldSeedProvider.cs" />
     <Compile Include="FieldForGenerationAttribute.cs" />
     <EmbeddedResource Include="Compiler\CompiledLayerTemplate.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

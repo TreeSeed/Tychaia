@@ -277,6 +277,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             {
                 Assembly.GetExecutingAssembly().Location,
                 typeof(Protogame.Noise.PerlinNoise).Assembly.Location,
+                typeof(Tychaia.Threading.InlineTaskPipeline<>).Assembly.Location,
                 "System.Core.dll"
             });
             parameters.GenerateExecutable = false;

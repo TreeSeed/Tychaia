@@ -87,7 +87,6 @@ namespace Tychaia.ProceduralGeneration
 
         public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            var dsgjhgd = m_PerlinNoise;
             if (!Layer2D)
             {
                 double noise = this.m_PerlinNoise.Noise((x) / this.Scale, (y) / this.Scale, (z) / this.Scale) / 2.0 + 0.5;
@@ -103,9 +102,12 @@ namespace Tychaia.ProceduralGeneration
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return Color.FromArgb(
-                (int)(255 * ((value - this.MinValue) / (float)(this.MaxValue - this.MinValue))),
-                (int)(255 * ((value - this.MinValue) / (float)(this.MaxValue - this.MinValue))),
-                (int)(255 * ((value - this.MinValue) / (float)(this.MaxValue - this.MinValue))));
+                Math.Max(0, Math.Min(255,
+                    (int)(255 * ((value - this.MinValue) / (float)(this.MaxValue - this.MinValue))))),
+                Math.Max(0, Math.Min(255,
+                    (int)(255 * ((value - this.MinValue) / (float)(this.MaxValue - this.MinValue))))),
+                Math.Max(0, Math.Min(255,
+                    (int)(255 * ((value - this.MinValue) / (float)(this.MaxValue - this.MinValue))))));
         }
     }
 }

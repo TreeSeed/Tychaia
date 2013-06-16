@@ -16,11 +16,19 @@ namespace Tychaia.Threading
             this.m_InternalQueue = new Queue<T>();
         }
 
-        public void Connect()
+        public void InputConnect()
         {
         }
 
-        public void Disconnect()
+        public void InputDisconnect()
+        {
+        }
+
+        public void OutputConnect()
+        {
+        }
+
+        public void OutputDisconnect()
         {
         }
 

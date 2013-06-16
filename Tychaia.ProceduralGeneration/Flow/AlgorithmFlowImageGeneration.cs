@@ -1,23 +1,48 @@
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
 using Tychaia.ProceduralGeneration;
-using System.Threading.Tasks;
-using System.Threading;
 
 namespace Tychaia.ProceduralGeneration.Flow
 {
     public static class AlgorithmFlowImageGeneration
     {
-        public static Bitmap RegenerateImageForLayer(StorageLayer layer, long ox, long oy, long oz, int width, int height, int depth, bool compiled = false)
+        public static Bitmap RegenerateImageForLayer(
+            StorageLayer layer,
+            long seed,
+            long ox, long oy, long oz,
+            int width, int height, int depth,
+            bool compiled = false)
         {
-            var runtime = StorageAccess.ToRuntime(layer);
-            //if (compiled)
-            //    return Regenerate3DImageForLayer(runtime, ox, oy, oz, width, height, depth, StorageAccess.ToCompiled(layer));
-            //else
-            return Regenerate3DImageForLayer(runtime, ox, oy, oz, width, height, depth);
+            try
+            {
+                var runtime = StorageAccess.ToRuntime(layer);
+                runtime.SetSeed(seed);
+                if (compiled)
+                {
+                    try
+                    {
+                        return Regenerate3DImageForLayer(
+                            runtime,
+                            ox, oy, oz,
+                            width, height, depth,
+                            StorageAccess.ToCompiled(runtime));
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+                }
+                return Regenerate3DImageForLayer(runtime, ox, oy, oz, width, height, depth);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         #region Cell Render Ordering

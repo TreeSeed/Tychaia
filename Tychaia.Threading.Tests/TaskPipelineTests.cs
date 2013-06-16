@@ -17,7 +17,7 @@ namespace Tychaia.Threading.Tests
             var pipeline = new ThreadedTaskPipeline<int>();
             ThreadStart processor = () =>
             {
-                pipeline.Connect();
+                pipeline.OutputConnect();
                 Assert.Equal(pipeline.Take(), 1);
                 Assert.Equal(pipeline.Take(), 2);
                 Assert.Equal(pipeline.Take(), 3);
@@ -36,7 +36,7 @@ namespace Tychaia.Threading.Tests
             var pipeline = new ThreadedTaskPipeline<int>();
             ThreadStart processor = () =>
             {
-                pipeline.Connect();
+                pipeline.OutputConnect();
                 Assert.Equal(pipeline.Take(), 1);
                 Assert.Equal(pipeline.Take(), 2);
                 Assert.Equal(pipeline.Take(), 3);
@@ -58,7 +58,7 @@ namespace Tychaia.Threading.Tests
             int expected = 0, actual = 0;
             ThreadStart processor = () =>
             {
-                pipeline.Connect();
+                pipeline.OutputConnect();
                 for (int i = 0; i < 1000; i++)
                 {
                     var v = pipeline.Take();
@@ -93,7 +93,7 @@ namespace Tychaia.Threading.Tests
             int expected = 0, actual = 0;
             ThreadStart processor = () =>
             {
-                pipeline.Connect();
+                pipeline.OutputConnect();
                 for (int i = 0; i < 1000; i++)
                 {
                     var v = pipeline.Take();
@@ -128,7 +128,7 @@ namespace Tychaia.Threading.Tests
             int expected = 0, actual = 0;
             ThreadStart processor = () =>
             {
-                pipeline.Connect();
+                pipeline.OutputConnect();
                 for (int i = 0; i < 1000; i++)
                 {
                     var v = pipeline.Take();
@@ -163,7 +163,7 @@ namespace Tychaia.Threading.Tests
             int expected = 0, actual = 0;
             ThreadStart processor = () =>
             {
-                pipeline.Connect();
+                pipeline.OutputConnect();
                 for (int i = 0; i < 100; i++)
                 {
                     var v = pipeline.Take();
@@ -202,7 +202,7 @@ namespace Tychaia.Threading.Tests
                 var pipeline = new ThreadedTaskPipeline<int>();
                 ThreadStart processor = () =>
                 {
-                    pipeline.Connect();
+                    pipeline.OutputConnect();
                     for (int i = 0; i < 100; i++)
                     {
                         var v = pipeline.Take();
