@@ -11,6 +11,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Core" />
     <Reference Include="Tychaia.ProceduralGeneration" />
+    <Reference Include="ICSharpCode.NRefactory" />
   </References>
   <Files>
     <Compile Include="AlgorithmPassthroughTest.cs" />
@@ -24,5 +25,6 @@
     <Compile Include="BorderTests.cs" />
     <Compile Include="AlgorithmIncrementWaterDistanceTest.cs" />
     <Compile Include="ContinuityTests.cs" />
+    <Compile Include="RangedLayerTests.cs" />
   </Files>
 </Project>

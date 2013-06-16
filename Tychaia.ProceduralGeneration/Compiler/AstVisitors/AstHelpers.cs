@@ -43,6 +43,45 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
                 return GetValueFromParenthesizedExpression((ParenthesizedExpression)expr);
             return null;
         }
+
+        private static DepthFirstAstVisitor[] GetVisitors()
+        {
+            return new DepthFirstAstVisitor[] {
+                new RemoveRedundantPrimitiveCastsVisitor(),
+                new RemoveParenthesisVisitor(),
+                new SimplifyConstantMathExpressionsVisitor(),
+                new SimplifyCombinedMathExpressionsVisitor(),
+                new SimplifyZeroAndConditionalExpressionsVisitor(),
+                new SimplifyRedundantMathExpressionsVisitor(),
+            };
+        }
+
+        public static void OptimizeCompilationUnit(CompilationUnit tree)
+        {
+            tree.AcceptVisitor(new InlineTemporaryCVariablesVisitor());
+            var visitors = GetVisitors();
+            string oldText = null;
+            while (tree.GetText() != oldText)
+            {
+                oldText = tree.GetText();
+                foreach (var visitor in visitors)
+                    tree.AcceptVisitor(visitor);
+            }
+        }
+
+        public static Expression OptimizeExpression(Expression node)
+        {
+            var root = new ParenthesizedExpression(node.Clone());
+            var visitors = GetVisitors();
+            string oldText = null;
+            while (root.GetText() != oldText)
+            {
+                oldText = root.GetText();
+                foreach (var visitor in visitors)
+                    root.Expression.AcceptVisitor(visitor);
+            }
+            return root.Expression;
+        }
     }
 }
 

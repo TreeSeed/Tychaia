@@ -131,25 +131,32 @@ namespace Tychaia.ProceduralGeneration.Compiler
         /// method body can be copied directly into the output.
         /// </summary>
         public static void InlineMethod(IAlgorithm algorithm, MethodDeclaration method, string outputName, string[] inputNames,
-                                        string xStartOffset, string yStartOffset, string zStartOffset,
-                                        string width, string height, string depth,
-                                        int ox, int oy, int oz)
+                                        Expression x, Expression y, Expression z,
+                                        Expression i, Expression j, Expression k,
+                                        Expression width, Expression height, Expression depth,
+                                        Expression ox, Expression oy, Expression oz)
         {
             if (algorithm == null) throw new ArgumentNullException("algorithm");
             if (method == null) throw new ArgumentNullException("method");
             if (outputName == null) throw new ArgumentNullException("outputName");
             if (inputNames == null) throw new ArgumentNullException("inputNames");
-            if (xStartOffset == null) throw new ArgumentNullException("xStartOffset");
-            if (yStartOffset == null) throw new ArgumentNullException("yStartOffset");
-            if (zStartOffset == null) throw new ArgumentNullException("zStartOffset");
+            if (x == null) throw new ArgumentNullException("x");
+            if (y == null) throw new ArgumentNullException("y");
+            if (z == null) throw new ArgumentNullException("z");
+            if (i == null) throw new ArgumentNullException("i");
+            if (j == null) throw new ArgumentNullException("j");
+            if (k == null) throw new ArgumentNullException("k");
             if (width == null) throw new ArgumentNullException("width");
             if (height == null) throw new ArgumentNullException("height");
             if (depth == null) throw new ArgumentNullException("depth");
+            if (ox == null) throw new ArgumentNullException("ox");
+            if (oy == null) throw new ArgumentNullException("oy");
+            if (oz == null) throw new ArgumentNullException("oz");
 
             var parameterContext = method.Parameters.ElementAt(0);
             var parameterInputs = new ParameterDeclaration[method.Parameters.Count - 14];
-            for (var i = 1; i < method.Parameters.Count - 13; i++)
-                parameterInputs[i - 1] = method.Parameters.ElementAt(i);
+            for (var idx = 1; idx < method.Parameters.Count - 13; idx++)
+                parameterInputs[idx - 1] = method.Parameters.ElementAt(idx);
             var parameterOutput = method.Parameters.Reverse().ElementAt(12);
             var parameterX = method.Parameters.Reverse().ElementAt(11);
             var parameterY = method.Parameters.Reverse().ElementAt(10);
@@ -160,97 +167,53 @@ namespace Tychaia.ProceduralGeneration.Compiler
             var parameterWidth = method.Parameters.Reverse().ElementAt(5);
             var parameterHeight = method.Parameters.Reverse().ElementAt(4);
             var parameterDepth = method.Parameters.Reverse().ElementAt(3);
-            var parameterOZ = method.Parameters.Reverse().ElementAt(2);
+            var parameterOX = method.Parameters.Reverse().ElementAt(2);
             var parameterOY = method.Parameters.Reverse().ElementAt(1);
-            var parameterOX = method.Parameters.Reverse().ElementAt(0);
+            var parameterOZ = method.Parameters.Reverse().ElementAt(0);
 
             // Replace properties.
             method.AcceptVisitor(new FindPropertiesVisitor { Algorithm = algorithm, ParameterContextName = parameterContext.Name });
 
             // Replace identifiers.
-            foreach (var i in method.Body.Descendants.Where(v => v is IdentifierExpression).Cast<IdentifierExpression>())
+            var identifiers =
+                method
+                    .Body
+                    .Descendants
+                    .Where(v => v is IdentifierExpression)
+                    .Cast<IdentifierExpression>()
+                    .ToArray();
+            foreach (var e in identifiers)
             {
-                if (i.Identifier == parameterX.Name)
-                    i.ReplaceWith(
-                        new ParenthesizedExpression(
-                        new BinaryOperatorExpression(
-                        new IdentifierExpression("x"),
-                        BinaryOperatorType.Add,
-                        //new BinaryOperatorExpression(
-                        new IdentifierExpression("i")//,
-                        //BinaryOperatorType.Add,
-                        //new IdentifierExpression(xStartOffset)
-                    //)
-                    )));
-                else if (i.Identifier == parameterY.Name)
-                    i.ReplaceWith(
-                        new ParenthesizedExpression(
-                        new BinaryOperatorExpression(
-                        new IdentifierExpression("y"),
-                        BinaryOperatorType.Add,
-                        //new BinaryOperatorExpression(
-                        new IdentifierExpression("j")//,
-                        //BinaryOperatorType.Add,
-                        //new IdentifierExpression(yStartOffset)
-                    //)
-                    )));
-                else if (i.Identifier == parameterZ.Name)
-                    i.ReplaceWith(
-                        new ParenthesizedExpression(
-                        new BinaryOperatorExpression(
-                        new IdentifierExpression("z"),
-                        BinaryOperatorType.Add,
-                        //new BinaryOperatorExpression(
-                        new IdentifierExpression("k")//,
-                        //BinaryOperatorType.Add,
-                        //new IdentifierExpression(zStartOffset)
-                    //)
-                    )));
-                else if (i.Identifier == parameterI.Name)
-                    i.ReplaceWith(
-                        new ParenthesizedExpression(
-                        //new BinaryOperatorExpression(
-                        new IdentifierExpression("i")//,
-                        //BinaryOperatorType.Add,
-                        //new IdentifierExpression(xStartOffset)
-                    //)
-                    ));
-                else if (i.Identifier == parameterJ.Name)
-                    i.ReplaceWith(
-                        new ParenthesizedExpression(
-                        //new BinaryOperatorExpression(
-                        new IdentifierExpression("j")//,
-                        //BinaryOperatorType.Add,
-                        //new IdentifierExpression(yStartOffset)
-                    //)
-                    ));
-                else if (i.Identifier == parameterK.Name)
-                    i.ReplaceWith(
-                        new ParenthesizedExpression(
-                        //new BinaryOperatorExpression(
-                        new IdentifierExpression("k")//,
-                        //BinaryOperatorType.Add,
-                        //new IdentifierExpression(zStartOffset)
-                    //)
-                    ));
-                else if (i.Identifier == parameterWidth.Name)
-                    i.Identifier = width;
-                else if (i.Identifier == parameterHeight.Name)
-                    i.Identifier = height;
-                else if (i.Identifier == parameterDepth.Name)
-                    i.Identifier = depth;
-                else if (i.Identifier == parameterOX.Name)
-                    i.ReplaceWith(new PrimitiveExpression(ox));
-                else if (i.Identifier == parameterOY.Name)
-                    i.ReplaceWith(new PrimitiveExpression(oy));
-                else if (i.Identifier == parameterOZ.Name)
-                    i.ReplaceWith(new PrimitiveExpression(oz));
-                else if (i.Identifier == parameterOutput.Name)
-                    i.Identifier = outputName;
-                else if (parameterInputs.Count(v => v.Name == i.Identifier) > 0)
-                    i.Identifier = inputNames.ElementAt(Array.FindIndex(parameterInputs, v => v.Name == i.Identifier));
-                else if (i.Identifier == "context")
-                    i.ReplaceWith(new ThisReferenceExpression());
+                if (e.Identifier == parameterX.Name)
+                    e.ReplaceWith(x.Clone());
+                else if (e.Identifier == parameterY.Name)
+                    e.ReplaceWith(y.Clone());
+                else if (e.Identifier == parameterZ.Name)
+                    e.ReplaceWith(z.Clone());
+                else if (e.Identifier == parameterI.Name)
+                    e.ReplaceWith(i.Clone());
+                else if (e.Identifier == parameterJ.Name)
+                    e.ReplaceWith(j.Clone());
+                else if (e.Identifier == parameterK.Name)
+                    e.ReplaceWith(k.Clone());
+                else if (e.Identifier == parameterWidth.Name)
+                    e.ReplaceWith(width.Clone());
+                else if (e.Identifier == parameterHeight.Name)
+                    e.ReplaceWith(height.Clone());
+                else if (e.Identifier == parameterDepth.Name)
+                    e.ReplaceWith(depth.Clone());
+                else if (e.Identifier == parameterOX.Name)
+                    e.ReplaceWith(ox.Clone());
+                else if (e.Identifier == parameterOY.Name)
+                    e.ReplaceWith(oy.Clone());
+                else if (e.Identifier == parameterOZ.Name)
+                    e.ReplaceWith(oz.Clone());
+                else if (e.Identifier == parameterOutput.Name)
+                    e.Identifier = outputName;
+                else if (parameterInputs.Count(v => v.Name == e.Identifier) > 0)
+                    e.Identifier = inputNames.ElementAt(Array.FindIndex(parameterInputs, v => v.Name == e.Identifier));
+                else if (e.Identifier == "context")
+                    e.ReplaceWith(new ThisReferenceExpression());
             }
         }
 

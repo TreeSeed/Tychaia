@@ -24,21 +24,21 @@ namespace Tychaia.ProceduralGeneration.Tests
         }
 
         [Fact]
-        private void ValidateInitialBoolTest()
+        private void ValidateInitialBool()
         {
             var initialBool = new RuntimeLayer(new AlgorithmInitialBool());
             ValidateLayer(initialBool);
         }
 
         [Fact]
-        private void ValidatePerlinTest()
+        private void ValidatePerlin()
         {
             var perlin = new RuntimeLayer(new AlgorithmPerlin());
             ValidateLayer(perlin);
         }
 
         [Fact]
-        private void ValidatePassthroughTest()
+        private void ValidatePassthrough()
         {
             var initialBool = new RuntimeLayer(new AlgorithmInitialBool());
             var passthrough = new RuntimeLayer(new AlgorithmPassthrough());
@@ -47,7 +47,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         }
 
         [Fact]
-        private void ValidateHeightChangeTest()
+        private void ValidateHeightChange()
         {
             var initialBool = new RuntimeLayer(new AlgorithmInitialBool());
             var heightChange = new RuntimeLayer(new AlgorithmHeightChange());
@@ -56,7 +56,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         }
 
         [Fact]
-        private void ValidateZoom2DTest()
+        private void ValidateZoom2D()
         {
             var initialBool = new RuntimeLayer(new AlgorithmInitialBool());
             var zoom2D = new RuntimeLayer(new AlgorithmZoom2D());
@@ -65,7 +65,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         }
 
         [Fact]
-        private void ValidateZoom2DDoubleTest()
+        private void ValidateZoom2DDouble()
         {
             var initialBool = new RuntimeLayer(new AlgorithmInitialBool());
             var zoom2D1 = new RuntimeLayer(new AlgorithmZoom2D());
@@ -76,7 +76,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         }
 
         [Fact]
-        private void ValidateZoom2DTripleTest()
+        private void ValidateZoom2DTriple()
         {
             var initialBool = new RuntimeLayer(new AlgorithmInitialBool());
             var zoom2D1 = new RuntimeLayer(new AlgorithmZoom2D());
@@ -89,7 +89,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         }
 
         [Fact]
-        private void ValidateZoom3DTest()
+        private void ValidateZoom3D()
         {
             var perlin = new RuntimeLayer(new AlgorithmPerlin());
             var zoom3D = new RuntimeLayer(new AlgorithmZoom3D());
@@ -98,7 +98,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         }
 
         [Fact]
-        private void ValidateZoom3DDoubleTest()
+        private void ValidateZoom3DDouble()
         {
             var perlin = new RuntimeLayer(new AlgorithmPerlin());
             var zoom3D1 = new RuntimeLayer(new AlgorithmZoom3D());
@@ -109,7 +109,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         }
 
         [Fact]
-        private void ValidateZoom3DTripleTest()
+        private void ValidateZoom3DTriple()
         {
             var perlin = new RuntimeLayer(new AlgorithmPerlin());
             var zoom3D1 = new RuntimeLayer(new AlgorithmZoom3D());
@@ -122,12 +122,27 @@ namespace Tychaia.ProceduralGeneration.Tests
         }
 
         [Fact]
-        private void ValidateExtend2DTest()
+        private void ValidateExtend2D()
         {
             var initialBool = new RuntimeLayer(new AlgorithmInitialBool());
             var extend2D = new RuntimeLayer(new AlgorithmExtend2D());
             extend2D.SetInput(0, initialBool);
             ValidateLayer(extend2D);
+        }
+
+        [Fact]
+        private void ValidateComplexStructureWithoutZooms()
+        {
+            var perlin = new RuntimeLayer(new AlgorithmPerlin());
+            var add = new RuntimeLayer(new AlgorithmAdd());
+            var perlin2 = new RuntimeLayer(new AlgorithmPerlin());
+            var passthrough = new RuntimeLayer(new AlgorithmPassthrough { XBorder = 7, YBorder = 9, ZBorder = 11 });
+            var heightC = new RuntimeLayer(new AlgorithmHeightChange());
+            passthrough.SetInput(0, perlin2);
+            add.SetInput(0, perlin);
+            add.SetInput(1, passthrough);
+            heightC.SetInput(0, add);
+            ValidateLayer(heightC);
         }
     }
 }

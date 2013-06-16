@@ -17,16 +17,16 @@ namespace Tychaia.ProceduralGeneration.Compiler
 {
     public static class LayerCompiler
     {
-        public static IGenerator Compile(RuntimeLayer layer)
+        public static IGenerator Compile(RuntimeLayer layer, bool optimize = true)
         {
             var result = ProcessRuntimeLayer(layer);
-            return GenerateType(result);
+            return GenerateType(result, optimize);
         }
 
-        public static string GenerateCode(RuntimeLayer layer)
+        public static string GenerateCode(RuntimeLayer layer, bool optimize = true)
         {
             var result = ProcessRuntimeLayer(layer);
-            return GenerateCode(result);
+            return GenerateCode(result, optimize);
         }
 
         private class ProcessedResult
@@ -85,18 +85,12 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 " = new " + result.OutputVariableType + "[__cwidth * __cheight * __cdepth];\n";
 
             // Add the conditional container.
-            var code = "if (k >= (int)((" + ranged.Z.GetText(null) + ") - z + __cz) && i >= (int)((" + ranged.X.GetText(null) + ") - x + __cx) && j >= (int)((" + ranged.Y.GetText(null) + ") - y + __cy)" +
-                " && k < " + ranged.OuterZ.GetText(null) + " + __cz && i < " + ranged.OuterX.GetText(null) + " + __cx && j < " + ranged.OuterY.GetText(null) + @" + __cy)
-{
-";
-
-            /*result.Declarations += "Console.WriteLine(\"COMPILED: \" + " +
-                "" + ranged.X + " + \" \" + " +
-                "" + ranged.Y + " + \" \" + " +
-                "" + ranged.Z + " + \" \" + " +
-                "" + ranged.Width + " + \" \" + " +
-                "" + ranged.Height + " + \" \" + " +
-                "" + ranged.Depth + ");";*/
+            var code = "if (i >= " + ranged.CalculationStartI.GetText(null) + " && " +
+                       "    j >= " + ranged.CalculationStartJ.GetText(null) + " && " +
+                       "    k >= " + ranged.CalculationStartK.GetText(null) + " && " +
+                       "    i <= " + ranged.CalculationEndI.GetText(null) + " && " +
+                       "    j <= " + ranged.CalculationEndJ.GetText(null) + " && " +
+                       "    k <= " + ranged.CalculationEndK.GetText(null) + ") {";
 
             // Refactor the method.
             AstBuilder astBuilder;
@@ -109,10 +103,65 @@ namespace Tychaia.ProceduralGeneration.Compiler
             catch (MissingMethodException)
             {
             }
-            AlgorithmRefactorer.InlineMethod(algorithm, method, result.OutputVariableName, result.InputVariableNames,
-                                             "__cx", "__cy", "__cz",
-                                             "__cwidth", "__cheight", "__cdepth",
-                                             0, 0, 0);
+            AlgorithmRefactorer.InlineMethod(
+                algorithm,
+                method,
+                result.OutputVariableName,
+                result.InputVariableNames,
+                new ParenthesizedExpression(
+                    new BinaryOperatorExpression(
+                        new BinaryOperatorExpression(
+                            new IdentifierExpression("x"),
+                            BinaryOperatorType.Add,
+                            ranged.OffsetX.Clone()),
+                        BinaryOperatorType.Add,
+                        new BinaryOperatorExpression(
+                            new IdentifierExpression("i"),
+                            BinaryOperatorType.Add,
+                            ranged.OffsetI.Clone()))),
+                new ParenthesizedExpression(
+                    new BinaryOperatorExpression(
+                        new BinaryOperatorExpression(
+                            new IdentifierExpression("y"),
+                            BinaryOperatorType.Add,
+                            ranged.OffsetY.Clone()),
+                        BinaryOperatorType.Add,
+                        new BinaryOperatorExpression(
+                            new IdentifierExpression("j"),
+                            BinaryOperatorType.Add,
+                            ranged.OffsetJ.Clone()))),
+                new ParenthesizedExpression(
+                    new BinaryOperatorExpression(
+                        new BinaryOperatorExpression(
+                            new IdentifierExpression("z"),
+                            BinaryOperatorType.Add,
+                            ranged.OffsetZ.Clone()),
+                        BinaryOperatorType.Add,
+                        new BinaryOperatorExpression(
+                            new IdentifierExpression("k"),
+                            BinaryOperatorType.Add,
+                            ranged.OffsetK.Clone()))),
+                new ParenthesizedExpression(
+                    new BinaryOperatorExpression(
+                        new IdentifierExpression("i"),
+                        BinaryOperatorType.Add,
+                        ranged.OffsetI.Clone())),
+                new ParenthesizedExpression(
+                    new BinaryOperatorExpression(
+                        new IdentifierExpression("j"),
+                        BinaryOperatorType.Add,
+                        ranged.OffsetJ.Clone())),
+                new ParenthesizedExpression(
+                    new BinaryOperatorExpression(
+                        new IdentifierExpression("k"),
+                        BinaryOperatorType.Add,
+                        ranged.OffsetK.Clone())),
+                new IdentifierExpression("__cwidth"),
+                new IdentifierExpression("__cheight"),
+                new IdentifierExpression("__cdepth"),
+                new PrimitiveExpression(0),
+                new PrimitiveExpression(0),
+                new PrimitiveExpression(0));
             if (initialize != null)
                 AlgorithmRefactorer.InlineInitialize(algorithm, initialize);
             AlgorithmRefactorer.RemoveUsingStatements(astBuilder.CompilationUnit, result.UsingStatements);
@@ -144,22 +193,26 @@ namespace Tychaia.ProceduralGeneration.Compiler
             // Use RangedLayer to work out the metrics.
             var ranged = new RangedLayer(layer);
             Expression ix, iy, iz, iwidth, iheight, idepth, iouterx, ioutery, iouterz;
-            RangedLayer.FindMaximumBounds(ranged, out ix, out iy, out iz, out iwidth, out iheight, out idepth, out iouterx, out ioutery, out iouterz);
+            RangedLayer.FindMaximumBounds(
+                ranged,
+                out ix, out iy, out iz,
+                out iwidth, out iheight, out idepth,
+                out iouterx, out ioutery, out iouterz);
 
             // Add __cwidth, __cheight and __cdepth declarations.
-            result.Declarations += "int __cx = (int)((x - (" + ix.GetText(null) + ")));\n";
-            result.Declarations += "int __cy = (int)((y - (" + iy.GetText(null) + ")));\n";
-            result.Declarations += "int __cz = (int)((z - (" + iz.GetText(null) + ")));\n";
+            result.Declarations += "int __cx = (int)(" + ix.GetText(null) + ");\n";
+            result.Declarations += "int __cy = (int)(" + iy.GetText(null) + ");\n";
+            result.Declarations += "int __cz = (int)(" + iz.GetText(null) + ");\n";
             result.Declarations += "int __cwidth = " + iwidth.GetText(null) + ";\n";
             result.Declarations += "int __cheight = " + iheight.GetText(null) + ";\n";
             result.Declarations += "int __cdepth = " + idepth.GetText(null) + ";\n";
 
             // Create the for loop that our calculations are done within.
-            result.ProcessedCode += @"for (var k = (int)((" + iz.GetText(null) + ") - z + __cz); k < " + iouterz.GetText(null) + @" + __cz; k++)
-for (var i = (int)((" + ix.GetText(null) + ") - x) + __cx; i < " + iouterx.GetText(null) + @" + __cx; i++)
-for (var j = (int)((" + iy.GetText(null) + ") - y) + __cy; j < " + ioutery.GetText(null) + @" + __cy; j++)
-{
-";
+            result.ProcessedCode +=
+                "for (var k = 0; k < " + idepth.GetText(null) + @"; k++)" +
+                "for (var i = 0; i < " + iwidth.GetText(null) + @"; i++)" +
+                "for (var j = 0; j < " + iheight.GetText(null) + @"; j++)" +
+                "{";
 
             // Now add the code for the layer.
             var inputResult = CompileRuntimeLayer(layer, ranged, null);
@@ -175,7 +228,7 @@ for (var j = (int)((" + iy.GetText(null) + ") - y) + __cy; j < " + ioutery.GetTe
             return result;
         }
 
-        private static string GenerateCode(ProcessedResult result)
+        private static string GenerateCode(ProcessedResult result, bool optimize)
         {
             // Create the code using the template file.
             var templateName = "Tychaia.ProceduralGeneration.Compiler.CompiledLayerTemplate.cs";
@@ -186,7 +239,8 @@ for (var j = (int)((" + iy.GetText(null) + ") - y) + __cy; j < " + ioutery.GetTe
             var final = template
                 .Replace("/****** %CODE% ******/", result.ProcessedCode)
                 .Replace("/****** %INIT% ******/", result.InitializationCode)
-                .Replace("/****** %RETURN% ******/", "return " + result.OutputVariableName + ";")
+                .Replace("/****** %OUTPUT_VAR% ******/", result.OutputVariableName)
+                .Replace("/****** %OUTPUT_TYPE% ******/", result.OutputVariableType)
                 .Replace("/****** %DECLS% ******/", result.Declarations)
                 .Replace("/****** %USING% ******/",
                      result.UsingStatements
@@ -196,21 +250,9 @@ for (var j = (int)((" + iy.GetText(null) + ") - y) + __cy; j < " + ioutery.GetTe
                         .Aggregate((a, b) => a + "\n" + b));
             var parser = new CSharpParser();
             var tree = parser.Parse(final, "layer.cs");
-            tree.AcceptVisitor(new InlineTemporaryCVariablesVisitor());
-            var visitors = new DepthFirstAstVisitor[] {
-                new RemoveRedundantPrimitiveCastsVisitor(),
-                new RemoveParenthesisVisitor(),
-                new SimplifyConstantMathExpressionsVisitor(),
-                new SimplifyCombinedMathExpressionsVisitor(),
-                new SimplifyZeroAndConditionalExpressionsVisitor(),
-                new SimplifyRedundantMathExpressionsVisitor(),
-            };
-            string oldText = null;
-            while (tree.GetText() != oldText)
+            if (optimize)
             {
-                oldText = tree.GetText();
-                foreach (var visitor in visitors)
-                    tree.AcceptVisitor(visitor);
+                AstHelpers.OptimizeCompilationUnit(tree);
             }
             var stringWriter = new StringWriter();
             var formatter = FormattingOptionsFactory.CreateMono();
@@ -226,9 +268,9 @@ for (var j = (int)((" + iy.GetText(null) + ") - y) + __cy; j < " + ioutery.GetTe
         /// <summary>
         /// Generates the compiled type.
         /// </summary>
-        private static IGenerator GenerateType(ProcessedResult result)
+        private static IGenerator GenerateType(ProcessedResult result, bool optimize = true)
         {
-            var final = GenerateCode(result);
+            var final = GenerateCode(result, optimize);
 
             // Create the type.
             var parameters = new CompilerParameters(new string[]

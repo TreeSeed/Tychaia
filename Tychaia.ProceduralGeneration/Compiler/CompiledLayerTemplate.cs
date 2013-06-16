@@ -47,7 +47,20 @@ public class CompiledLayer : IRuntimeContext, IGenerator
 
         /****** %CODE% ******/
 
-        /****** %RETURN% ******/
+        //
+        // Now we copy the result data into an array that matches the
+        // requested size.
+        //
+        var result = new /****** %OUTPUT_TYPE% ******/[width * height * depth];
+        for (var k = z - __cz; k < (z - __cz) + depth; k++)
+        for (var i = x - __cx; i < (x - __cx) + width; i++)
+        for (var j = y - __cy; j < (y - __cy) + height; j++)
+            result[
+                (i - (x - __cx)) +
+                (j - (y - __cy)) * width +
+                (k - (z - __cz)) * width * height] =
+                /****** %OUTPUT_VAR% ******/[i + j * __cwidth + k * __cwidth * __cheight];
+        return result;
     }
 
     #endregion

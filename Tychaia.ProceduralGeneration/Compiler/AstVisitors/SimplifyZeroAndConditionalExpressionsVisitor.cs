@@ -63,6 +63,16 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             return false;
         }
 
+        public override void VisitUnaryOperatorExpression(UnaryOperatorExpression unaryOperatorExpression)
+        {
+            base.VisitUnaryOperatorExpression(unaryOperatorExpression);
+
+            if (unaryOperatorExpression.Operator == UnaryOperatorType.Minus &&
+                unaryOperatorExpression.Expression is PrimitiveExpression &&
+                (dynamic)((PrimitiveExpression)unaryOperatorExpression.Expression).Value == 0)
+                unaryOperatorExpression.ReplaceWith(new PrimitiveExpression(0));
+        }
+
         public override void VisitBinaryOperatorExpression(BinaryOperatorExpression binaryOperatorExpression)
         {
             base.VisitBinaryOperatorExpression(binaryOperatorExpression);
