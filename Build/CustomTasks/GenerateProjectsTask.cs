@@ -95,7 +95,9 @@ namespace Tychaia.CustomTasks
                     continue;
                 var path = Path.Combine(
                     this.RootPath,
-                    projectDoc.DocumentElement.Attributes["Path"].Value,
+                    projectDoc.DocumentElement.Attributes["Path"].Value
+                        .Replace('\\', Path.DirectorySeparatorChar)
+                        .Replace('/', Path.DirectorySeparatorChar),
                     projectDoc.DocumentElement.Attributes["Name"].Value + "." +
                     this.Platform + ".csproj");
                 if (File.Exists(path))
@@ -176,7 +178,9 @@ namespace Tychaia.CustomTasks
             // Work out what path to save at.
             var path = Path.Combine(
                 this.m_RootPath,
-                projectDoc.DocumentElement.Attributes["Path"].Value,
+                projectDoc.DocumentElement.Attributes["Path"].Value
+                    .Replace('\\', Path.DirectorySeparatorChar)
+                    .Replace('/', Path.DirectorySeparatorChar),
                 projectDoc.DocumentElement.Attributes["Name"].Value + "." +
                 this.m_Platform + ".csproj");
             path = new FileInfo(path).FullName;

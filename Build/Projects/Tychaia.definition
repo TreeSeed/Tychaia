@@ -19,6 +19,8 @@
     <Reference Include="Tychaia.Disk" />
     <Reference Include="Tychaia.ProceduralGeneration" />
     <Reference Include="Tychaia.Content" />
+    <Reference Include="Tychaia.Assets" />
+    <Reference Include="TychaiaAssetManager" />
     <Reference Include="MonoGame" />
   </References>
   <Files>

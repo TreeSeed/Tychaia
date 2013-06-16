@@ -25,6 +25,7 @@
     <Definition Include="Protogame.Noise" />
     <Definition Include="Protogame.Structure" />
     <Definition Include="Tychaia" />
+    <Definition Include="Tychaia.Assets" />
     <Definition Include="Tychaia.Disk" />
     <Definition Include="Tychaia.Disk.Minecraft" />
     <Definition Include="Tychaia.Disk.Tychaia" />
@@ -40,6 +41,7 @@
     <Definition Include="Tychaia.Threading.Tests" />
     <Definition Include="Tychaia.Website" />
     <Definition Include="Tychaia.Website.Tests" />
+    <Definition Include="TychaiaAssetManager" />
     <Definition Include="TychaiaPuzzleEditor" />
     <Definition Include="TychaiaWorldGenViewer" />
     <Definition Include="TychaiaWorldGenViewerAlgorithm" />

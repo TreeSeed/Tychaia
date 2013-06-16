@@ -1,6 +1,13 @@
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
 using System;
-using Tychaia.Generators;
 using System.Windows.Forms;
+using NDesk.Options;
+using TychaiaAssetManager;
+using System.Diagnostics;
 
 namespace Tychaia
 {
@@ -11,6 +18,29 @@ namespace Tychaia
         /// </summary>
         static void Main(string[] args)
         {
+            var startAssetManager = false;
+            var options = new OptionSet
+            {
+                { "asset-manager", "Start the asset manager with the game.", v => startAssetManager = true }
+            };
+            try
+            {
+                options.Parse(args);
+            }
+            catch (OptionException ex)
+            {
+                Console.Write("Tychaia.exe: ");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Try `Tychaia.exe --help` for more information.");
+                return;
+            }
+
+            Process assetManager = null;
+            if (startAssetManager)
+            {
+                assetManager = AssetManager.RunAndConnect();
+            }
+
             using (RuntimeGame game = new RuntimeGame())
             {
                 try
@@ -26,6 +56,11 @@ namespace Tychaia
 #endif
                         throw;
                 }
+            }
+
+            if (assetManager != null)
+            {
+                assetManager.Kill();
             }
         }
     }
