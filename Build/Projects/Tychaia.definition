@@ -3,7 +3,10 @@
   Name="Tychaia"
   Path="Tychaia"
   Type="XNA">
-  
+
+  <Properties>
+    <Property Name="PostProcessWithDx" Value="True" />
+  </Properties>
   <References>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -22,6 +25,8 @@
     <Reference Include="Tychaia.Assets" />
     <Reference Include="TychaiaAssetManager" />
     <Reference Include="MonoGame" />
+    <Reference Include="Dx" />
+    <Reference Include="Ninject" />
   </References>
   <Files>
     <Compile Include="Cube.cs" />

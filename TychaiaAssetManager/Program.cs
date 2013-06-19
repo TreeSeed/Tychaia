@@ -4,20 +4,59 @@
 // license on the website apply retroactively.
 //
 using System;
+using Process4;
+using Tychaia.Network;
+using Tychaia.Globals;
+using Tychaia.Assets;
+using Ninject;
+using NDesk.Options;
+using Process4.Attributes;
 
 namespace TychaiaAssetManager
 {
+    [Distributed(Architecture.ServerClient, Caching.PushOnChange)]
     static class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            using (var manager = new AssetManager())
+            var connectToRunningGame = false;
+            var options = new OptionSet
             {
-                manager.Run();
+                { "connect", "Connect to a game running on the local machine.", v => connectToRunningGame = true }
+            };
+            try
+            {
+                options.Parse(args);
+            }
+            catch (OptionException ex)
+            {
+                Console.Write("TychaiaAssetManager.exe: ");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Try `Tychaia.exe --help` for more information.");
+                return;
+            }
+
+            if (connectToRunningGame)
+            {
+                var node = new LocalNode();
+                node.Network = new TychaiaAssetManagerNetwork(node, true);
+                node.Join();
+                var assetManagerProvider = new NetworkedAssetManagerProvider(node);
+                IoC.Kernel.Bind<IAssetManagerProvider>().ToMethod(x => assetManagerProvider);
+            }
+            else
+            {
+                var assetManagerProvider = new LocalAssetManagerProvider();
+                IoC.Kernel.Bind<IAssetManagerProvider>().ToMethod(x => assetManagerProvider);
+            }
+
+            using (var game = new AssetManagerGame(IoC.Kernel.Get<IAssetManagerProvider>().GetAssetManager(true)))
+            {
+                game.Run();
             }
         }
     }

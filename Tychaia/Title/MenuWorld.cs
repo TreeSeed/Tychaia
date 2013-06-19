@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Protogame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Ninject;
+using Protogame;
+using Tychaia.Assets;
+using Tychaia.Globals;
 using Tychaia.UI;
 
 namespace Tychaia.Title
@@ -18,6 +19,14 @@ namespace Tychaia.Title
         private int m_PreviousX = 800;
         private int m_MenuItemY = 300;
         private ScatterBackground m_ScatterBackground;
+        private IAssetManager m_AssetManager = null;
+
+        protected MenuWorld()
+        {
+            var provider = IoC.Kernel.TryGet<IAssetManagerProvider>();
+            if (provider != null)
+                this.m_AssetManager = provider.GetAssetManager(false);
+        }
 
         public void AddMenuItem(string name, Action handler)
         {
@@ -80,6 +89,15 @@ namespace Tychaia.Title
             MouseState state = Mouse.GetState();
             foreach (TitleButton b in this.m_Buttons)
                 b.Process(xna, state);
+
+            if (this.m_AssetManager != null)
+            {
+                xna.DrawStringCentered(
+                context.ScreenBounds.Width / 2,
+                10,
+                "Asset Manager: " + this.m_AssetManager.Status,
+                "Arial");
+            }
 
             /*xna.DrawStringCentered(
                 context.ScreenBounds.Width / 2,

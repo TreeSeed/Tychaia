@@ -8,9 +8,11 @@ using System.Windows.Forms;
 using NDesk.Options;
 using TychaiaAssetManager;
 using System.Diagnostics;
+using Process4.Attributes;
 
 namespace Tychaia
 {
+    [Distributed(Architecture.ServerClient, Caching.PushOnChange)]
     static class Program
     {
         /// <summary>
@@ -35,10 +37,10 @@ namespace Tychaia
                 return;
             }
 
-            Process assetManager = null;
+            Process assetManagerProcess = null;
             if (startAssetManager)
             {
-                assetManager = AssetManager.RunAndConnect();
+                assetManagerProcess = AssetManagerClient.RunAndConnect();
             }
 
             using (RuntimeGame game = new RuntimeGame())
@@ -58,9 +60,9 @@ namespace Tychaia
                 }
             }
 
-            if (assetManager != null)
+            if (assetManagerProcess != null)
             {
-                assetManager.Kill();
+                assetManagerProcess.Kill();
             }
         }
     }

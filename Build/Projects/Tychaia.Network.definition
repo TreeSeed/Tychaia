@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project
-  Name="Tychaia.Assets"
-  Path="Tychaia.Assets"
+  Name="Tychaia.Network"
+  Path="Tychaia.Network"
   Type="Library">
 
   <Properties>
@@ -14,11 +14,6 @@
     <Reference Include="Dx" />
   </References>
   <Files>
-    <Compile Include="Asset.cs" />
-    <Compile Include="IAssetManager.cs" />
-    <Compile Include="GameAssetManager.cs" />
-    <Compile Include="LocalAssetManager.cs" />
-    <Compile Include="NetworkAssetManager.cs" />
-    <Compile Include="IAssetManagerProvider.cs" />
+    <Compile Include="TychaiaAssetManagerNetwork.cs" />
   </Files>
 </Project>

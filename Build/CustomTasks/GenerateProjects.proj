@@ -32,6 +32,7 @@
     <Definition Include="Tychaia.Game" />
     <Definition Include="Tychaia.Globals" />
     <Definition Include="Tychaia.Globals.Tests" />
+    <Definition Include="Tychaia.Network" />
     <Definition Include="Tychaia.ProceduralGeneration" />
     <Definition Include="Tychaia.ProceduralGeneration.Legacy" />
     <Definition Include="Tychaia.ProceduralGeneration.Tests" />
@@ -50,7 +51,7 @@
     <Definition Include="voxeliq" />
     <Definition Include="ICSharpCode.NRefactory" />
     <Definition Include="AStarPathFinder" />
-    <Definition Include="Process4" />
+    <Definition Include="Dx" />
     <Definition Include="MIConvexHull" />
     <Definition Include="NGif" />
     <Definition Include="FortuneVoronoi" />

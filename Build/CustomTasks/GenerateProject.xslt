@@ -440,7 +440,6 @@ select="/Input/Projects/Project[@Name=$include-path]/@Guid" />}</Project>
    
       <xsl:if test="$project/@Type = 'Tests'">
       	<UsingTask
-    	  AssemblyFile="xunit.runner.msbuild.dll"
           TaskName="Xunit.Runner.MSBuild.xunit">
           <xsl:attribute name="AssemblyFile">
           	<xsl:value-of select="concat(
@@ -464,7 +463,21 @@ select="/Input/Projects/Project[@Name=$include-path]/@Guid" />}</Project>
           <xunit Assembly="$(TargetPath)" />
         </Target>
       </xsl:if>
-          
+      
+      <xsl:if test="/Input/Properties/PostProcessWithDx = 'True'">
+        <UsingTask
+          TaskName="Process4Assembler">
+          <xsl:attribute name="AssemblyFile">
+          	<xsl:value-of select="concat(
+/Input/Generation/RootPath,
+'Libraries/Dx/Process4.Task/bin/Debug/Process4.Task.exe')" />
+          </xsl:attribute>
+        </UsingTask>
+        <Target Name="AfterBuild">
+          <Process4Assembler AssemblyFile="$(TargetPath)" />
+        </Target>
+      </xsl:if>
+
     </Project>
     
   </xsl:template>

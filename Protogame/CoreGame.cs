@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace Protogame
 {
-    public abstract class CoreGame<InitialWorld, WorldManagerType> : Game where InitialWorld : World, new() where WorldManagerType : WorldManager, new()
+    public abstract class CoreGame<TInitialWorld, TWorldManager> : Game where TInitialWorld : World, new() where TWorldManager : WorldManager, new()
     {
         protected GameContext m_GameContext = null;
         private WorldManager m_WorldManager = null;
@@ -29,11 +24,11 @@ namespace Protogame
             this.m_GameContext = new GameContext
             {
                 Content = this.Content,
-                World = new InitialWorld(),
+                World = new TInitialWorld(),
                 Graphics = new GraphicsDeviceManager(this),
                 Game = this
             };
-            this.m_WorldManager = new WorldManagerType();
+            this.m_WorldManager = new TWorldManager();
             this.m_GameContext.WorldManager = this.m_WorldManager;
             this.World.GameContext = this.m_GameContext;
             this.World.Game = this;

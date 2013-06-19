@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Protogame;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using Tychaia.UI;
+using Protogame;
 using Tychaia.Disk;
 
 namespace Tychaia.Title

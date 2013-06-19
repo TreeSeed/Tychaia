@@ -22,3 +22,6 @@
 [submodule "Libraries/cscjvm"]
 	path = Libraries/cscjvm
 	url = git://github.com/hach-que/cscjvm.git
+[submodule "Libraries/Dx"]
+	path = Libraries/Dx
+	url = git://github.com/hach-que/Dx.git

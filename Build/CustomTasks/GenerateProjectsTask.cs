@@ -195,7 +195,13 @@ namespace Tychaia.CustomTasks
             var input = this.CreateInputFor(
                 project,
                 this.m_Platform,
-                packagesPath);
+                packagesPath,
+                projectDoc.DocumentElement.ChildNodes
+                    .Cast<XmlElement>()
+                    .Where(x => x.Name.ToLower() == "properties")
+                    .SelectMany(x => x.ChildNodes
+                        .Cast<XmlElement>()
+                        .Where(y => y.Name.ToLower() == "property")));
 
             // Transform the input document using the XSLT transform.
             var settings = new XmlWriterSettings();
@@ -245,7 +251,8 @@ namespace Tychaia.CustomTasks
         private XmlDocument CreateInputFor(
             string project,
             string platform,
-            string packagesPath)
+            string packagesPath,
+            IEnumerable<XmlElement> properties)
         {
             var doc = new XmlDocument();
             doc.AppendChild(doc.CreateXmlDeclaration("1.0", "UTF-8", null));
@@ -268,6 +275,16 @@ namespace Tychaia.CustomTasks
             generation.AppendChild(rootName);
             generation.AppendChild(useCSCJVM);
             input.AppendChild(generation);
+
+            var propertiesNode = doc.CreateElement("Properties");
+            foreach (var property in properties)
+            {
+                var nodeName = doc.CreateElement(property.GetAttribute("Name"));
+                nodeName.AppendChild(doc.CreateTextNode(
+                    property.GetAttribute("Value")));
+                propertiesNode.AppendChild(nodeName);
+            }
+            input.AppendChild(propertiesNode);
 
             var nuget = doc.CreateElement("NuGet");
             input.AppendChild(nuget);
