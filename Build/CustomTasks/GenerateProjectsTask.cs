@@ -1,3 +1,8 @@
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -402,21 +407,27 @@ namespace Tychaia.CustomTasks
 
         private XmlDocument GenerateContentProject(XmlDocument source)
         {
-            var sourceFolder = source
+            var allFiles = new Dictionary<string, IEnumerable<string>>();
+            foreach (var element in source
                 .DocumentElement
                 .ChildNodes
                 .Cast<XmlElement>()
-                .First(x => x.Name == "Source")
-                .GetAttribute("Include");
-            var originalSourceFolder = sourceFolder;
-            sourceFolder = Path.Combine(this.m_RootPath, sourceFolder);
-
-            var allFiles = this.GetListOfFilesInDirectory(sourceFolder);
-            this.m_Log.LogMessage(
-              "Scanning: " +
-              originalSourceFolder +
-              " (" + allFiles.Count + " total XNB files)"
-              );
+                .Where(x => x.Name == "Source"))
+            {
+                var sourceFolder = element.GetAttribute("Include");
+                var matchFiles = element.GetAttribute("Match");
+                var originalSourceFolder = sourceFolder;
+                sourceFolder = Path.Combine(this.m_RootPath, sourceFolder);
+                var files = this.GetListOfFilesInDirectory(sourceFolder, matchFiles);
+                allFiles.Add(
+                    originalSourceFolder,
+                    files);
+                this.m_Log.LogMessage(
+                  "Scanning: " +
+                  originalSourceFolder +
+                  " (" + files.Count + " total files)"
+                  );
+            }
 
             var doc = new XmlDocument();
             doc.AppendChild(doc.CreateXmlDeclaration("1.0", "UTF-8", null));
@@ -426,37 +437,41 @@ namespace Tychaia.CustomTasks
                 "Name",
                 source.DocumentElement.GetAttribute("Name"));
 
-            foreach (var file in allFiles)
+            foreach (var kv in allFiles)
             {
-                var fileNode = doc.CreateElement("Compiled");
-                var fullPathNode = doc.CreateElement("FullPath");
-                var relativePathNode = doc.CreateElement("RelativePath");
-                fullPathNode.AppendChild(doc.CreateTextNode(file));
-                var index = file.Replace("\\", "/")
-                    .LastIndexOf(originalSourceFolder.Replace("\\", "/"));
-                var relativePath = "Content\\" + file
-                    .Substring(index + originalSourceFolder.Length)
-                    .Replace("/", "\\")
-                    .Trim('\\');
-                relativePathNode.AppendChild(doc.CreateTextNode(relativePath));
-                fileNode.AppendChild(fullPathNode);
-                fileNode.AppendChild(relativePathNode);
-                projectNode.AppendChild(fileNode);
+                var originalSourceFolder = kv.Key;
+                foreach (var file in kv.Value)
+                {
+                    var fileNode = doc.CreateElement("Compiled");
+                    var fullPathNode = doc.CreateElement("FullPath");
+                    var relativePathNode = doc.CreateElement("RelativePath");
+                    fullPathNode.AppendChild(doc.CreateTextNode(file));
+                    var index = file.Replace("\\", "/")
+                        .LastIndexOf(originalSourceFolder.Replace("\\", "/"));
+                    var relativePath = "Content\\" + file
+                        .Substring(index + originalSourceFolder.Length)
+                        .Replace("/", "\\")
+                        .Trim('\\');
+                    relativePathNode.AppendChild(doc.CreateTextNode(relativePath));
+                    fileNode.AppendChild(fullPathNode);
+                    fileNode.AppendChild(relativePathNode);
+                    projectNode.AppendChild(fileNode);
+                }
             }
 
             return doc;
         }
 
-        private List<string> GetListOfFilesInDirectory(string folder)
+        private List<string> GetListOfFilesInDirectory(string folder, string match)
         {
             var result = new List<string>();
             var directoryInfo = new DirectoryInfo(folder);
             foreach (var directory in directoryInfo.GetDirectories())
             {
                 result.AddRange(
-                    this.GetListOfFilesInDirectory(directory.FullName));
+                    this.GetListOfFilesInDirectory(directory.FullName, match));
             }
-            foreach (var file in directoryInfo.GetFiles("*.xnb"))
+            foreach (var file in directoryInfo.GetFiles(match))
             {
                 result.Add(file.FullName);
             }

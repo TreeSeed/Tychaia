@@ -116,7 +116,6 @@ final class ArcanistCSharpLinter extends ArcanistFutureLinter {
       }
       $message->setSeverity($severity);
       $this->addLintMessage($message);
-
     }
   }
 

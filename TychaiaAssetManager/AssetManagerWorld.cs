@@ -7,6 +7,8 @@ using System;
 using Microsoft.Xna.Framework;
 using Protogame;
 using Tychaia.Assets;
+using Microsoft.Xna.Framework.Input;
+using System.Linq;
 
 namespace TychaiaAssetManager
 {
@@ -33,6 +35,16 @@ namespace TychaiaAssetManager
                 10,
                 this.AssetManager.Status,
                 "Arial");
+
+            var i = 0;
+            foreach (var asset in this.AssetManager.GetAll().Cast<NetworkAsset>())
+            {
+                var dirtyMark = asset.Dirty ? "*" : "";
+                xna.DrawStringLeft(20, 40 + i, asset.Name + dirtyMark);
+                i += 16;
+            }
+            i += 16;
+            xna.DrawStringLeft(20, 40 + i, "Assets marked with * are dirty; click to dirty all items.");
         }
 
         public override bool Update(GameContext context)
@@ -42,6 +54,13 @@ namespace TychaiaAssetManager
                 " seconds";
             if (this.AssetManager.Status != newStatus)
                 this.AssetManager.Status = newStatus;
+
+            var state = Mouse.GetState();
+            if (state.LeftButton == ButtonState.Pressed)
+            {
+                foreach (var asset in this.AssetManager.GetAll())
+                    this.AssetManager.Dirty(asset.Name);
+            }
 
             return true;
         }

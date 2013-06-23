@@ -9,6 +9,8 @@ using NDesk.Options;
 using TychaiaAssetManager;
 using System.Diagnostics;
 using Process4.Attributes;
+using Tychaia.Globals;
+using Tychaia.Assets;
 
 namespace Tychaia
 {
@@ -41,6 +43,22 @@ namespace Tychaia
             if (startAssetManager)
             {
                 assetManagerProcess = AssetManagerClient.RunAndConnect();
+            }
+            else
+            {
+                IoC.Kernel.Bind<IAssetManagerProvider>().To<GameAssetManagerProvider>().InSingletonScope();
+            }
+
+            if (assetManagerProcess != null)
+            {
+                AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+                {
+                    // Make sure we close down the asset manager process if it's there.
+                    if (assetManagerProcess != null)
+                    {
+                        assetManagerProcess.Kill();
+                    }
+                };
             }
 
             using (RuntimeGame game = new RuntimeGame())

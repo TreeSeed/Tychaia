@@ -1,24 +1,27 @@
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Protogame;
+using Tychaia.Assets;
 
 namespace Tychaia.UI
 {
     class TitleButton
     {
         private static Random m_Random = new Random();
-        private string m_Text;
+        private TextAsset m_Text;
         private Rectangle m_Area;
         private Action m_OnClick;
         private double m_PulseValue;
         private bool m_PulseModeUp;
         private bool m_IsDown;
 
-        public TitleButton(string text, Rectangle area, Action onClick)
+        public TitleButton(TextAsset text, Rectangle area, Action onClick)
         {
             this.m_Text = text;
             this.m_Area = area;
@@ -57,10 +60,18 @@ namespace Tychaia.UI
                 }
             }
             if (this.m_Area.Contains(mouse.X, mouse.Y))
-                xna.FillRectangle(this.m_Area, new Color(1f, 1f, 1f, 0.25f + (float)(this.m_PulseValue / 2.0)).ToPremultiplied());
+                xna.FillRectangle(
+                    this.m_Area,
+                    new Color(1f, 1f, 1f, 0.25f + (float)(this.m_PulseValue / 2.0)).ToPremultiplied());
             else
-                xna.FillRectangle(this.m_Area, new Color(1f, 1f, 1f, 0.1f + (float)(this.m_PulseValue / 32.0)).ToPremultiplied());
-            xna.DrawStringCentered(this.m_Area.X + this.m_Area.Width / 2, this.m_Area.Y + 4, this.m_Text, "ButtonFont");
+                xna.FillRectangle(
+                    this.m_Area,
+                    new Color(1f, 1f, 1f, 0.1f + (float)(this.m_PulseValue / 32.0)).ToPremultiplied());
+            xna.DrawStringCentered(
+                this.m_Area.X + this.m_Area.Width / 2,
+                this.m_Area.Y + 4,
+                this.m_Text.Value,
+                "ButtonFont");
         }
     }
 }

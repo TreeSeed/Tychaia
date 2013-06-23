@@ -26,7 +26,7 @@ namespace TychaiaAssetManager
             var connectToRunningGame = false;
             var options = new OptionSet
             {
-                { "connect", "Connect to a game running on the local machine.", v => connectToRunningGame = true }
+                { "connect", "Internal use only (used by the Tychaia game client).", v => connectToRunningGame = true }
             };
             try
             {
@@ -54,7 +54,8 @@ namespace TychaiaAssetManager
                 IoC.Kernel.Bind<IAssetManagerProvider>().ToMethod(x => assetManagerProvider);
             }
 
-            using (var game = new AssetManagerGame(IoC.Kernel.Get<IAssetManagerProvider>().GetAssetManager(true)))
+            using (var game = new AssetManagerGame(
+                IoC.Kernel.Get<IAssetManagerProvider>().GetAssetManager(true)))
             {
                 game.Run();
             }

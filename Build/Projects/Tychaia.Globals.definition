@@ -9,6 +9,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="Ninject" />
     <Reference Include="cscjvm" />
+    <Reference Include="System.Web.Extensions" />
   </References>
   <Files>
     <Compile Include="FilteredConsole.cs" />
@@ -18,5 +19,7 @@
     <Compile Include="IoC.cs" />
     <Compile Include="ResourceHelper.cs" />
     <Compile Include="IRenderingLocationProvider.cs" />
+    <Compile Include="DynamicJsonConverter.cs" />
+    <Compile Include="DynamicJsonUnconverter.cs" />
   </Files>
 </Project>

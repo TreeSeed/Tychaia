@@ -68,6 +68,7 @@
     <Compile Include="Title\ScatterBackground.cs" />
     <Compile Include="Title\BackgroundCubeEntity.cs" />
     <Compile Include="UI\TitleButton.cs" />
+    <Compile Include="GameAssetManagerProvider.cs" />
     <None Include="app.config" />
     <None Include="Game.ico" />
     <None Include="GameThumbnail.png" />

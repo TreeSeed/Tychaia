@@ -10,6 +10,7 @@ using Tychaia.Network;
 using Tychaia.Globals;
 using Tychaia.Assets;
 using System;
+using System.Threading;
 
 namespace TychaiaAssetManager
 {
@@ -41,6 +42,10 @@ namespace TychaiaAssetManager
 
             var assetManagerProvider = new NetworkedAssetManagerProvider(node);
             IoC.Kernel.Bind<IAssetManagerProvider>().ToMethod(x => assetManagerProvider);
+
+            // Wait until the networked asset manager is ready.
+            while (!assetManagerProvider.IsReady && !process.HasExited)
+                Thread.Sleep(100);
 
             return process;
         }

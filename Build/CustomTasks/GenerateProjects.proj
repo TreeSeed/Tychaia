@@ -26,6 +26,7 @@
     <Definition Include="Protogame.Structure" />
     <Definition Include="Tychaia" />
     <Definition Include="Tychaia.Assets" />
+    <Definition Include="Tychaia.Assets.Tests" />
     <Definition Include="Tychaia.Disk" />
     <Definition Include="Tychaia.Disk.Minecraft" />
     <Definition Include="Tychaia.Disk.Tychaia" />

@@ -6,7 +6,10 @@
 
 namespace Tychaia.Assets
 {
-    public class Asset
+    public interface IAsset
     {
+        string Name { get; }
+
+        T Resolve<T>() where T : class, IAsset;
     }
 }

@@ -3,9 +3,8 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
 //
-using Microsoft.Xna.Framework;
-using Tychaia.Assets;
 using Protogame;
+using Tychaia.Assets;
 
 namespace TychaiaAssetManager
 {

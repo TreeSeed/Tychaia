@@ -28,6 +28,14 @@ final class RedpointLintEngine extends ArcanistLintEngine {
 
     }
 
+    // Determine the list of Tychaia licensed files (we exclude Protogame, etc.)
+    $licensed = preg_grep('/\.cs$/', $paths);
+    foreach ($licensed as $key => $path) {
+      if (preg_match('@^Protogame@', $path)) {
+        unset($licensed[$key]);
+      }
+    }
+
     $text_paths = preg_grep('/\.(php|cs|css|hpp|cpp|l|y|py|pl)$/', $paths);
     $linters[] = id(new ArcanistGeneratedLinter())->setPaths($text_paths);
     $linters[] = id(new ArcanistNoLintLinter())->setPaths($text_paths);
@@ -36,6 +44,8 @@ final class RedpointLintEngine extends ArcanistLintEngine {
       ->setMaxLineLength(120);
 
     $linters[] = id(new ArcanistFilenameLinter())->setPaths($paths);
+    $linters[] = id(new ArcanistTychaiaLicenseLinter())
+      ->setPaths(preg_grep('/\.cs$/', $licensed));
 
     $linters[] = id(new ArcanistXHPASTLinter())
       ->setPaths(preg_grep('/\.php$/', $paths));

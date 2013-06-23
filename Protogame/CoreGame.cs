@@ -32,6 +32,7 @@ namespace Protogame
             this.m_GameContext.WorldManager = this.m_WorldManager;
             this.World.GameContext = this.m_GameContext;
             this.World.Game = this;
+            this.Window.Title = "Protogame!";
         }
 
         /// <summary>
@@ -42,8 +43,6 @@ namespace Protogame
         /// </summary>
         protected override void Initialize()
         {
-            this.Window.Title = "Protogame!";
-
             base.Initialize();
             this.m_GameContext.Camera = new Camera(this.m_GameContext.Graphics.GraphicsDevice.Viewport.Width, this.m_GameContext.Graphics.GraphicsDevice.Viewport.Height);
             this.m_GameContext.Window = this.Window;

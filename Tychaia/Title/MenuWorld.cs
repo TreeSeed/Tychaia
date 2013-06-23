@@ -1,3 +1,8 @@
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -28,7 +33,7 @@ namespace Tychaia.Title
                 this.m_AssetManager = provider.GetAssetManager(false);
         }
 
-        public void AddMenuItem(string name, Action handler)
+        public void AddMenuItem(TextAsset name, Action handler)
         {
             this.m_Buttons.Add(new TitleButton(name, new Rectangle(this.m_PreviousX - 100, this.m_MenuItemY, 200, 30), handler));
             this.m_MenuItemY += 40;
@@ -90,7 +95,7 @@ namespace Tychaia.Title
             foreach (TitleButton b in this.m_Buttons)
                 b.Process(xna, state);
 
-            if (this.m_AssetManager != null)
+            if (this.m_AssetManager != null && this.m_AssetManager.IsRemoting)
             {
                 xna.DrawStringCentered(
                 context.ScreenBounds.Width / 2,

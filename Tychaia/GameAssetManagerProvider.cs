@@ -7,8 +7,10 @@ using Tychaia.Assets;
 
 namespace TychaiaAssetManager
 {
-    public class LocalAssetManagerProvider : IAssetManagerProvider
+    public class GameAssetManagerProvider : IAssetManagerProvider
     {
+        private LocalAssetManager m_AssetManager = new LocalAssetManager();
+
         public bool IsReady
         {
             get
@@ -19,7 +21,7 @@ namespace TychaiaAssetManager
 
         public IAssetManager GetAssetManager(bool permitCreate)
         {
-            return new LocalAssetManager();
+            return this.m_AssetManager;
         }
     }
 }

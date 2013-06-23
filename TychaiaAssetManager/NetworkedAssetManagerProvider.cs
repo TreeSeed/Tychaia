@@ -13,6 +13,18 @@ namespace TychaiaAssetManager
     {
         private LocalNode m_Node;
 
+        public bool IsReady
+        {
+            get
+            {
+                var assetManager = (NetworkAssetManager)
+                    new Distributed<NetworkAssetManager>("asset-manager", true);
+                if (assetManager == null)
+                    return false;
+                return assetManager.IsReady();
+            }
+        }
+
         public NetworkedAssetManagerProvider(LocalNode node)
         {
             this.m_Node = node;

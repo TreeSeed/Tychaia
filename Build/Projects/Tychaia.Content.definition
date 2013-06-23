@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentProject Name="Tychaia.Content">
   
-  <Source Include="Tychaia.Content/compiled/Content" />
+  <Source Include="Tychaia.Content/compiled/Content" Match="*.xnb" />
+  <Source Include="Tychaia.Content/assets" Match="*.asset" />
   
 </ContentProject>

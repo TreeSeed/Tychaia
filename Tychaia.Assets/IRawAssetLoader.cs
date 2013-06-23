@@ -6,13 +6,9 @@
 
 namespace Tychaia.Assets
 {
-    /// <summary>
-    /// An implementation of an asset manager that is designed
-    /// to load assets for a running game.
-    /// </summary>
-    public class GameAssetManager : IAssetManager
+    public interface IRawAssetLoader
     {
-        public string Status { get; set; }
+        object LoadRawAsset(string name);
     }
 }
 

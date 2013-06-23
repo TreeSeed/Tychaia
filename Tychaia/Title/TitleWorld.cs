@@ -1,6 +1,14 @@
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
 using Microsoft.Xna.Framework;
+using Ninject;
 using Protogame;
+using Tychaia.Assets;
 using Tychaia.Disk;
+using Tychaia.Globals;
 
 namespace Tychaia.Title
 {
@@ -16,21 +24,27 @@ namespace Tychaia.Title
                 this.m_FadeAmount = 1.0f;
             }
 
-            this.AddMenuItem("Generate World", () =>
+            var manager = IoC.Kernel.Get<IAssetManagerProvider>().GetAssetManager(false);
+            var textGenerateWorld = manager.Get("language.GENERATE_WORLD").Resolve<TextAsset>();
+            var textLoadExistingWorld = manager.Get("language.LOAD_EXISTING_WORLD").Resolve<TextAsset>();
+            var textRandomizeSeed = manager.Get("language.RANDOMIZE_SEED").Resolve<TextAsset>();
+            var textExit = manager.Get("language.EXIT").Resolve<TextAsset>();
+
+            this.AddMenuItem(textGenerateWorld, () =>
             {
                 this.m_TargetWorld = new RPGWorld(LevelAPI.NewLevel("Tychaia Demo World"));
             });
-            this.AddMenuItem("Load Existing World", () =>
+            this.AddMenuItem(textLoadExistingWorld, () =>
             {
-                this.m_TargetWorld = new LoadWorld();
+                this.m_TargetWorld = IoC.Kernel.Get<LoadWorld>();
             });
-            this.AddMenuItem("Randomize Seed", () =>
+            this.AddMenuItem(textRandomizeSeed, () =>
             {
                 m_StaticSeed = m_Random.Next();
             });
-            this.AddMenuItem("Exit", () =>
+            this.AddMenuItem(textExit, () =>
             {
-                (this.Game as RuntimeGame).Exit();
+                this.Game.Exit();
             });
         }
 

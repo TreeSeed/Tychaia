@@ -6,14 +6,11 @@
 
 namespace Tychaia.Assets
 {
-    public interface IAssetManager
+    public interface IAssetLoader
     {
-        string Status { get; set; }
-        bool IsRemoting { get; }
-
-        void Dirty(string asset);
-        IAsset Get(string asset);
-        IAsset[] GetAll();
+        bool CanHandle(dynamic data);
+        IAsset Handle(string name, dynamic data);
+        IAsset GetDefault(string name);
     }
 }
 
