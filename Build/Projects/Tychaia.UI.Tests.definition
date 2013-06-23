@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project
+  Name="Tychaia.UI.Tests"
+  Path="Tychaia.UI.Tests"
+  Type="Tests">
+
+  <References>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="Ninject" />
+    <Reference Include="Tychaia.Globals" />
+    <Reference Include="Tychaia.UI" />
+    <Reference Include="Microsoft.CSharp" />
+  </References>
+  <Files>
+    <Compile Include="ContainerTests.cs" />
+  </Files>
+</Project>

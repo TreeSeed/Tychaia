@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame.Particles;
@@ -148,30 +145,45 @@ namespace Protogame
         {
         }
 
+        protected virtual void SetupGraphicsMode(XnaGraphics graphics)
+        {
+        }
+
         public void Draw(GameContext context)
         {
+            // Set the ActiveEffect to BasicEffect if it's null.
+            if (this.ActiveEffect == null)
+                this.ActiveEffect = new BasicEffect(context.Graphics.GraphicsDevice);
+
             this.PreBegin(context);
 
-            // Clear the screen.
-            context.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, context.Camera.GetTransformationMatrix());
+            // Start rendering with the sprite batch.
+            var xna = new XnaGraphics(context);
+            this.SetupGraphicsMode(xna);
+            xna.StartSpriteBatch();
 
-            // Draw world below.
-            context.World.DrawBelow(context);
+            foreach (var pass in this.ActiveEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
 
-            // Render tiles below.
-            this.DrawTilesBelow(context);
+                // Draw world below.
+                context.World.DrawBelow(context);
 
-            // Render all of the entities.
-            this.DrawEntities(context);
+                // Render tiles below.
+                this.DrawTilesBelow(context);
 
-            // Render tiles above.
-            this.DrawTilesAbove(context);
+                // Render all of the entities.
+                this.DrawEntities(context);
 
-            // Draw world above.
-            context.World.DrawAbove(context);
+                // Render tiles above.
+                this.DrawTilesAbove(context);
+
+                // Draw world above.
+                context.World.DrawAbove(context);
+            }
 
             // Finish rendering.
-            context.SpriteBatch.End();
+            xna.EndSpriteBatch();
         }
 
         public void Update(GameContext context)

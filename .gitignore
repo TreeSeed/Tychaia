@@ -25,6 +25,7 @@ Tychaia.Website/Local.config
 Thumbs.db
 !MakeMeAWorld/bin
 !Tychaia.Website/bin
+MakeMeAWorld/bin/Compiler/CompiledLayerTemplate.cs
 
 # Generated solution and project files
 *.Linux.csproj

@@ -4,11 +4,14 @@
 // license on the website apply retroactively.
 //
 using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Protogame;
 using Tychaia.Assets;
-using Microsoft.Xna.Framework.Input;
-using System.Linq;
+using Tychaia.UI;
+using Tychaia.Globals;
+using Ninject;
 
 namespace TychaiaAssetManager
 {
@@ -16,35 +19,38 @@ namespace TychaiaAssetManager
     {
         public IAssetManager AssetManager { get; set; }
         private DateTime m_Start;
+        private AssetManagerLayout m_Layout;
 
         public AssetManagerWorld()
         {
             this.m_Start = DateTime.Now;
+
+            // Add the asset manager layout.
+            this.Entities.Add(new CanvasEntity(
+                IoC.Kernel.Get<ISkin>(),
+                this.m_Layout = new AssetManagerLayout()));
+
+            this.m_Layout.MarkDirty.Click += (sender, e) =>
+            {
+                foreach (var asset in this.AssetManager.GetAll())
+                    this.AssetManager.Dirty(asset.Name);
+            };
         }
 
         public override void DrawBelow(GameContext context)
         {
-            context.Graphics.GraphicsDevice.Clear(Color.Black);
         }
 
         public override void DrawAbove(GameContext context)
         {
-            var xna = new XnaGraphics(context);
-            xna.DrawStringCentered(
-                context.ScreenBounds.Width / 2,
-                10,
-                this.AssetManager.Status,
-                "Arial");
-
-            var i = 0;
+            this.m_Layout.Assets.Text = "";
             foreach (var asset in this.AssetManager.GetAll().Cast<NetworkAsset>())
             {
                 var dirtyMark = asset.Dirty ? "*" : "";
-                xna.DrawStringLeft(20, 40 + i, asset.Name + dirtyMark);
-                i += 16;
+                this.m_Layout.Assets.Text += asset.Name + dirtyMark + "\r\n";
             }
-            i += 16;
-            xna.DrawStringLeft(20, 40 + i, "Assets marked with * are dirty; click to dirty all items.");
+            this.m_Layout.Assets.Text +=
+                "Assets marked with * are dirty; click button above to dirty all items.";
         }
 
         public override bool Update(GameContext context)
@@ -54,13 +60,7 @@ namespace TychaiaAssetManager
                 " seconds";
             if (this.AssetManager.Status != newStatus)
                 this.AssetManager.Status = newStatus;
-
-            var state = Mouse.GetState();
-            if (state.LeftButton == ButtonState.Pressed)
-            {
-                foreach (var asset in this.AssetManager.GetAll())
-                    this.AssetManager.Dirty(asset.Name);
-            }
+            this.m_Layout.Status.Text = this.AssetManager.Status;
 
             return true;
         }

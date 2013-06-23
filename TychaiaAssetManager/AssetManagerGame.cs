@@ -11,7 +11,6 @@ namespace TychaiaAssetManager
     public class AssetManagerGame : CoreGame<AssetManagerWorld, WorldManager>
     {
         private IAssetManager m_AssetManager;
-        private int m_Test = 0;
 
         private AssetManagerWorld AssetWorld
         {

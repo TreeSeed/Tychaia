@@ -34,6 +34,25 @@ namespace Protogame
             this.Effects = new Dictionary<string, Effect>();
         }
 
+        // Copied from GameContext; TODO: unify this.
+        public void EndSpriteBatch()
+        {
+            this.SpriteBatch.End();
+        }
+
+        // Copied from GameContext; TODO: unify this.
+        public void StartSpriteBatch()
+        {
+            this.SpriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                null,
+                null,
+                null,
+                null,
+                null,
+                this.Camera.GetTransformationMatrix());
+        }
+
         public Rectangle ScreenBounds
         {
             get { return this.Window.ClientBounds; }
@@ -76,16 +95,6 @@ namespace Protogame
             {
                 this.Effects.Add(name, null);
             }
-        }
-
-        public void EndSpriteBatch()
-        {
-            this.SpriteBatch.End();
-        }
-
-        public void StartSpriteBatch()
-        {
-            this.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, this.Camera.GetTransformationMatrix());
         }
     }
 }

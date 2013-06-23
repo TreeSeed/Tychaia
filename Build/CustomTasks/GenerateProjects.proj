@@ -43,6 +43,8 @@
     <Definition Include="Tychaia.Threading.Tests" />
     <Definition Include="Tychaia.Website" />
     <Definition Include="Tychaia.Website.Tests" />
+    <Definition Include="Tychaia.UI" />
+    <Definition Include="Tychaia.UI.Tests" />
     <Definition Include="TychaiaAssetManager" />
     <Definition Include="TychaiaPuzzleEditor" />
     <Definition Include="TychaiaWorldGenViewer" />

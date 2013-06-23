@@ -22,12 +22,9 @@ namespace Protogame
         public static string RuntimeDirectory = "";
 
         /// <summary>
-        /// The current game context.  Only used by audio entities so that they can
-        /// access the Sounds property on creation without the developer having to specify
-        /// the GameContext (and without the world having to expose a copy of the Sounds
-        /// list).
+        /// The current game context.
         /// </summary>
-        internal GameContext GameContext { get; set; }
+        public GameContext GameContext { get; set; }
 
         /// <summary>
         /// The current game reference.

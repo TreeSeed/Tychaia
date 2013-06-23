@@ -19,15 +19,19 @@
     <Reference Include="Tychaia.Network" />
     <Reference Include="Tychaia.Globals" />
     <Reference Include="Tychaia.Content" />
+    <Reference Include="Tychaia.UI" />
     <Reference Include="Protogame" />
     <Reference Include="MonoGame" />
     <Reference Include="Dx" />
     <Reference Include="Ninject" />
   </References>
   <Files>
+    <Compile Include="AssetManagerBasicSkin.cs" />
     <Compile Include="AssetManagerGame.cs" />
     <Compile Include="AssetManagerWorld.cs" />
     <Compile Include="AssetManagerClient.cs" />
+    <Compile Include="AssetManagerLayout.cs" />
+    <Compile Include="IoCModule.cs" />
     <Compile Include="LocalAssetManagerProvider.cs" />
     <Compile Include="NetworkedAssetManagerProvider.cs" />
     <Compile Include="Program.cs" />
