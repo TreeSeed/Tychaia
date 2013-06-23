@@ -13,7 +13,7 @@ final class RedpointForceResetWorkflow extends ArcanistBaseWorkflow {
 
   public function getCommandSynopses() {
     return phutil_console_format(<<<EOTEXT
-      **force-reset**
+      **force-reset** [--fetch]
 EOTEXT
       );
   }
@@ -31,6 +31,10 @@ EOTEXT
 
   public function getArguments() {
     return array(
+      'fetch' => array(
+        'help' =>
+          "Perform 'git fetch --all' in all of the submodules."
+      ),
     );
   }
 
@@ -72,6 +76,12 @@ EOTEXT
     $console->writeOut("Updating submodules... ");
     execx("git submodule update --init --recursive");
     $this->writeOutOkay($console);
+
+    if ($this->getArgument('fetch')) {
+      $console->writeOut("Fetching submodules... ");
+      execx("git submodule foreach --recursive git fetch --all");
+      $this->writeOutOkay($console);
+    }
 
     $console->writeOut("Resetting submodules... ");
     execx("git submodule foreach --recursive git reset --hard HEAD");
