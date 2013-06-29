@@ -11,6 +11,7 @@ namespace Tychaia.UI
     {
         Color LightEdgeColor { get; }
         Color SurfaceColor { get; }
+        Color DarkSurfaceColor { get; }
         Color BackSurfaceColor { get; }
         Color DarkEdgeColor { get; }
         Color TextColor { get; }

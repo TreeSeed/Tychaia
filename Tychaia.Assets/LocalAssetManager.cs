@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ninject;
 using Tychaia.Globals;
+using System.IO;
 
 namespace Tychaia.Assets
 {
@@ -23,9 +24,32 @@ namespace Tychaia.Assets
 
         private IRawAssetLoader m_RawAssetLoader;
         private Dictionary<string, IAsset> m_Assets = new Dictionary<string, IAsset>();
+        private string m_Path;
+
+        public LocalAssetManager(string path)
+        {
+            this.m_Path = new DirectoryInfo(path).FullName;
+        }
 
         public void Dirty(string asset)
         {
+        }
+
+        private void RescanAssets(string prefixes = "")
+        {
+            var directoryInfo = new DirectoryInfo(this.m_Path + "/" + prefixes.Replace('.', '/'));
+            foreach (var file in directoryInfo.GetFiles())
+            {
+                if (file.Extension != ".asset")
+                    continue;
+                var name = file.Name.Substring(0, file.Name.Length - ".asset".Length);
+                var asset = (prefixes.Trim('.') + "." + name).Trim('.');
+                this.Get(asset);
+            }
+            foreach (var directory in directoryInfo.GetDirectories())
+            {
+                this.RescanAssets(prefixes + directory.Name + ".");
+            }
         }
 
         public IAsset Get(string asset)
@@ -67,6 +91,7 @@ namespace Tychaia.Assets
         {
             lock (this.m_Assets)
             {
+                this.RescanAssets();
                 return this.m_Assets.Values.ToArray();
             }
         }

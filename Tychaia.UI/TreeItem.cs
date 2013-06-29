@@ -24,8 +24,7 @@ namespace Tychaia.UI
         public void Update(ISkin skin, Rectangle layout, ref bool stealFocus)
         {
             var mouse = Mouse.GetState();
-            if (layout.Contains(mouse.X, mouse.Y) &&
-                mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            if (layout.Contains(mouse.X, mouse.Y) && mouse.LeftPressed(this))
                 (this.Parent as TreeView).SelectedItem = this;
         }
 

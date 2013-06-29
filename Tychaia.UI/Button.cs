@@ -27,9 +27,10 @@ namespace Tychaia.UI
         public void Update(ISkin skin, Rectangle layout, ref bool stealFocus)
         {
             var mouse = Mouse.GetState();
+            var leftPressed = mouse.LeftPressed(this);
             if (layout.Contains(mouse.X, mouse.Y))
             {
-                if (mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                if (leftPressed)
                 {
                     if (this.Click != null && this.State != ButtonState.Clicked)
                         this.Click(this, new EventArgs());

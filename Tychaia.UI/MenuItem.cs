@@ -16,48 +16,15 @@ namespace Tychaia.UI
     {
         protected List<MenuItem> m_Items = new List<MenuItem>();
 
-        public IContainer[] Children
-        {
-            get { return this.m_Items.Cast<IContainer>().ToArray(); }
-        }
-
-        public IContainer Parent
-        {
-            get;
-            set;
-        }
-
+        public IContainer[] Children { get { return this.m_Items.Cast<IContainer>().ToArray(); } }
+        public IContainer Parent { get; set; }
         public int Order { get; set; }
-
-        public string Text
-        {
-            get;
-            set;
-        }
-
-        public bool Hovered
-        {
-            get;
-            set;
-        }
-
-        public int HoverCountdown
-        {
-            get;
-            set;
-        }
-
-        public bool Active
-        {
-            get;
-            set;
-        }
-
-        public int TextWidth
-        {
-            get;
-            set;
-        }
+        public string Text { get; set; }
+        public bool Hovered { get; set; }
+        public int HoverCountdown { get; set; }
+        public bool Active { get; set; }
+        public int TextWidth { get; set; }
+        public event EventHandler Click;
 
         public MenuItem()
         {
@@ -132,13 +99,18 @@ namespace Tychaia.UI
         public virtual void Update(ISkin skin, Rectangle layout, ref bool stealFocus)
         {
             var mouse = Mouse.GetState();
+            var leftPressed = mouse.LeftPressed(this);
 
             if (layout.Contains(mouse.X, mouse.Y))
             {
                 this.Hovered = true;
                 this.HoverCountdown = 5;
-                if (mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                if (leftPressed)
+                {
+                    if (this.Click != null)
+                        this.Click(this, new EventArgs());
                     this.Active = true;
+                }
             }
             var deactivate = true;
             foreach (var activeLayout in this.GetActiveChildrenLayouts(skin, layout))
@@ -150,7 +122,7 @@ namespace Tychaia.UI
                 }
             }
             this.Hovered = !deactivate;
-            if (mouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+            if (leftPressed)
                 this.Active = !deactivate;
 
             if (this.HoverCountdown == 0)

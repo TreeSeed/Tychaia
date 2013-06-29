@@ -47,7 +47,7 @@ namespace Tychaia.UI
 
         private void DrawSunken(XnaGraphics graphics, Rectangle layout)
         {
-            graphics.FillRectangle(layout, this.m_BasicSkin.SurfaceColor);
+            graphics.FillRectangle(layout, this.m_BasicSkin.DarkSurfaceColor);
             graphics.DrawLine(
                 new Vector2(layout.X, layout.Y + layout.Height - 1),
                 new Vector2(layout.X + layout.Width, layout.Y + layout.Height - 1),
@@ -164,6 +164,11 @@ namespace Tychaia.UI
                 layout.X + 5,
                 layout.Y,
                 treeItem.Text);
+        }
+
+        public void DrawSingleContainer(XnaGraphics graphics, Rectangle layout, SingleContainer singleContainer)
+        {
+            this.DrawSunken(graphics, layout);
         }
 
         public int HeightForTreeItem

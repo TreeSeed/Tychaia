@@ -8,22 +8,52 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Protogame;
+using Microsoft.Xna.Framework.Input;
 
 namespace Tychaia.UI
 {
     public class TreeView : IContainer
     {
         private List<TreeItem> m_Items = new List<TreeItem>();
+        private TreeItem p_SelectedItem;
 
         public IContainer[] Children { get { return this.m_Items.Cast<IContainer>().ToArray(); } }
         public IContainer Parent { get; set; }
         public int Order { get; set; }
-        public TreeItem SelectedItem { get; set; }
+
+        public TreeItem SelectedItem
+        {
+            get
+            {
+                return this.p_SelectedItem;
+            }
+            set
+            {
+                this.p_SelectedItem = value;
+                if (this.SelectedItemChanged != null)
+                    this.SelectedItemChanged(this, new SelectedItemChangedEventArgs(value));
+            }
+        }
+
+        public event SelectedItemChangedEventHandler SelectedItemChanged;
 
         public void AddChild(TreeItem item)
         {
             this.m_Items.Add(item);
             item.Parent = this;
+        }
+
+        public void RemoveChild(TreeItem item)
+        {
+            this.m_Items.Remove(item);
+            item.Parent = null;
+        }
+
+        public void RemoveAllChildren()
+        {
+            foreach (var item in this.m_Items)
+                item.Parent = null;
+            this.m_Items.Clear();
         }
 
         public class TreeEntry
@@ -149,6 +179,22 @@ namespace Tychaia.UI
         {
             foreach (var kv in this.GetChildrenWithLayouts(skin, layout))
                 kv.Item.Update(skin, kv.Layout.Value, ref stealFocus);
+
+            var keyboard = Keyboard.GetState();
+            var upPressed = keyboard.IsKeyPressed(Keys.Up);
+            var downPressed = keyboard.IsKeyPressed(Keys.Down);
+            if (this.SelectedItem != null && (upPressed || downPressed))
+            {
+                var tree = this.BuildEntryGraph(layout);
+                var list = this.NormalizeTree(tree, true);
+                var current = list.IndexOf(list.First(x => this.SelectedItem == x.Item));
+                if (upPressed)
+                    current -= 1;
+                else if (downPressed)
+                    current += 1;
+                if (current >= 0 && current < list.Count)
+                    this.SelectedItem = list[current].Item;
+            }
         }
 
         public void Draw(XnaGraphics graphics, ISkin skin, Rectangle layout)

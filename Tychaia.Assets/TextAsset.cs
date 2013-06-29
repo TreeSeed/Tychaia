@@ -20,7 +20,7 @@ namespace Tychaia.Assets
 
         public T Resolve<T>() where T : class, IAsset
         {
-            if (typeof(T) == typeof(TextAsset))
+            if (typeof(T).IsAssignableFrom(typeof(TextAsset)))
                 return this as T;
             throw new InvalidOperationException("Asset already resolved to TextAsset.");
         }

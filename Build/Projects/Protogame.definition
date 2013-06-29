@@ -33,6 +33,8 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="ExampleContent\OgmoRunner.cs" />
     <Compile Include="ExampleContent\OgmoState.cs" />
+    <Compile Include="KeyboardStateExtensions.cs" />
+    <Compile Include="MouseStateExtensions.cs" />
     <Compile Include="MultiLevel\IMultiLevelEntity.cs" />
     <Compile Include="MultiLevel\Level.cs" />
     <Compile Include="MultiLevel\MultiLevelEntity.cs" />
