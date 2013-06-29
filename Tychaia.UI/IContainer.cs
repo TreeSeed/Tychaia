@@ -12,8 +12,9 @@ namespace Tychaia.UI
     {
         IContainer[] Children { get; }
         IContainer Parent { get; set; }
+        int Order { get; set; }
 
-        void Update(Rectangle layout);
+        void Update(Rectangle layout, ref bool stealFocus);
         void Draw(XnaGraphics graphics, ISkin skin, Rectangle layout);
     }
 }

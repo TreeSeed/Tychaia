@@ -10,18 +10,47 @@ namespace TychaiaAssetManager
     public class AssetManagerLayout : Canvas
     {
         public Label Status { get; private set; }
-        public Label Assets { get; private set; }
         public Button MarkDirty { get; private set; }
+        public MainMenu MainMenu { get; private set; }
+        //public TreeView AssetTree { get; private set; }
 
         public AssetManagerLayout()
         {
-            var verticalContainer = new VerticalContainer();
-            verticalContainer.AddChild(Status = new Label { Text = "Current Status" }, "40");
-            verticalContainer.AddChild(MarkDirty = new Button { Text = "Mark Dirty" }, "40");
-            verticalContainer.AddChild(Assets = new Label { Text = "Assets" }, "50%");
-            verticalContainer.AddChild(new Button { Text = "Second" }, "*");
-            verticalContainer.AddChild(new Label { Text = "25%" }, "25%");
-            this.SetChild(verticalContainer);
+            var assetContainer = new VerticalContainer();
+            assetContainer.AddChild(this.MarkDirty = new Button { Text = "Mark Dirty" }, "20");
+
+            var contentContainer = new HorizontalContainer();
+            //contentContainer.AddChild(AssetTree = new TreeView(), "50%");
+            contentContainer.AddChild(assetContainer, "50%");
+
+            var menuContainer = new VerticalContainer();
+            menuContainer.AddChild(this.MainMenu = new MainMenu(), "24");
+            menuContainer.AddChild(contentContainer, "*");
+            menuContainer.AddChild(this.Status = new Label { Text = "..." }, "24");
+            this.SetChild(menuContainer);
+
+            var openLocalItem = new MenuItem { Text = "Open Local Folder" };
+            var connectItem = new MenuItem { Text = "Connect to Game" };
+            var assetManagerMenuItem = new MenuItem { Text = "Asset Manager" };
+            assetManagerMenuItem.AddChild(openLocalItem);
+            assetManagerMenuItem.AddChild(connectItem);
+            this.MainMenu.AddChild(assetManagerMenuItem);
+
+            this.MainMenu.AddChild(this.GenerateTestMenu());
+        }
+
+        public MenuItem GenerateTestMenu(int level = 0, string state = "")
+        {
+            if (level > 3)
+                return null;
+            var menu = new MenuItem { Text = state == "" ? "Test Menu" : ("Level " + state) };
+            for (var i = 0; i < 5; i++)
+            {
+                var item = this.GenerateTestMenu(level + 1, (state + ", " + (i + 1)).Trim(',', ' '));
+                if (item != null)
+                    menu.AddChild(item);
+            }
+            return menu;
         }
     }
 }

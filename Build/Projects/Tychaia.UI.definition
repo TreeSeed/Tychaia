@@ -22,6 +22,8 @@
     <Compile Include="Canvas.cs" />
     <Compile Include="CanvasEntity.cs" />
     <Compile Include="FixedContainer.cs" />
+    <Compile Include="FlowContainer.cs" />
+    <Compile Include="HorizontalContainer.cs" />
     <Compile Include="HorizontalAlign.cs" />
     <Compile Include="IBasicSkin.cs" />
     <Compile Include="IContainer.cs" />
@@ -30,6 +32,8 @@
     <Compile Include="Label.cs" />
     <Compile Include="Link.cs" />
     <Compile Include="LinkState.cs" />
+    <Compile Include="MainMenu.cs" />
+    <Compile Include="MenuItem.cs" />
     <Compile Include="VerticalAlign.cs" />
     <Compile Include="VerticalContainer.cs" />
   </Files>

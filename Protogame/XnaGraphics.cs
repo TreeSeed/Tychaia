@@ -40,17 +40,32 @@ namespace Protogame
                 this.m_Context.Camera.GetTransformationMatrix());
         }
 
-        public void DrawStringLeft(int x, int y, string text)
-        {
-            this.DrawStringLeft(x, y, text, "Arial");
-        }
-
-        public void DrawStringLeft(int x, int y, string text, string font)
+        public void DrawStringLeft(
+            int x,
+            int y,
+            string text,
+            string font = "Arial",
+            bool centerVertical = false)
         {
             if (string.IsNullOrEmpty(text))
                 return;
-            this.m_Context.SpriteBatch.DrawString(this.m_Context.Fonts[font], text, new Vector2((int)(x + 1), (int)(y + 1)), Color.Black);
-            this.m_Context.SpriteBatch.DrawString(this.m_Context.Fonts[font], text, new Vector2((int)x, (int)y), Color.White);
+            var size = this.m_Context.Fonts[font].MeasureString(text);
+            var yy = centerVertical ? (int)(y - size.Y / 2) : y;
+            this.m_Context.SpriteBatch.DrawString(
+                this.m_Context.Fonts[font],
+                text,
+                new Vector2((int)(x + 1), (int)(yy + 1)),
+                Color.Black);
+            this.m_Context.SpriteBatch.DrawString(
+                this.m_Context.Fonts[font],
+                text,
+                new Vector2((int)x, (int)yy),
+                Color.White);
+        }
+
+        public Vector2 MeasureString(string text, string font = "Arial")
+        {
+            return this.m_Context.Fonts[font].MeasureString(text ?? "");
         }
 
         public void DrawStringCentered(

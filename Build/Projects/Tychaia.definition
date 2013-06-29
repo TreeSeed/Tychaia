@@ -72,7 +72,8 @@
     <None Include="app.config" />
     <None Include="Game.ico" />
     <None Include="GameThumbnail.png" />
-    <None Include="OpenTK.dll.config">
+    <None Include="..\Other\OpenTK.dll.config">
+      <Link>OpenTK.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\Other\WorldConfig.xml">

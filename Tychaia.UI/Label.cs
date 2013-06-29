@@ -12,9 +12,10 @@ namespace Tychaia.UI
     {
         public IContainer[] Children { get { return new IContainer[0]; } }
         public IContainer Parent { get; set; }
+        public int Order { get; set; }
         public string Text { get; set; }
 
-        public void Update(Rectangle layout)
+        public void Update(Rectangle layout, ref bool stealFocus)
         {
         }
 

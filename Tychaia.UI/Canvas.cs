@@ -33,6 +33,8 @@ namespace Tychaia.UI
             }
         }
 
+        public int Order { get; set; }
+
         public void SetChild(IContainer child)
         {
             if (child == null)
@@ -41,10 +43,10 @@ namespace Tychaia.UI
             this.m_Child.Parent = this;
         }
 
-        public void Update(Rectangle layout)
+        public void Update(Rectangle layout, ref bool stealFocus)
         {
             if (this.m_Child != null)
-                this.m_Child.Update(layout);
+                this.m_Child.Update(layout, ref stealFocus);
         }
 
         public void Draw(XnaGraphics graphics, ISkin skin, Rectangle layout)

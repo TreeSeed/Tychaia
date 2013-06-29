@@ -43,6 +43,7 @@ namespace TychaiaAssetManager
 
         public override void DrawAbove(GameContext context)
         {
+        /*
             this.m_Layout.Assets.Text = "";
             foreach (var asset in this.AssetManager.GetAll().Cast<NetworkAsset>())
             {
@@ -51,6 +52,7 @@ namespace TychaiaAssetManager
             }
             this.m_Layout.Assets.Text +=
                 "Assets marked with * are dirty; click button above to dirty all items.";
+                */
         }
 
         public override bool Update(GameContext context)

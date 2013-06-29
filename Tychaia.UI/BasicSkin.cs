@@ -114,6 +114,36 @@ namespace Tychaia.UI
         public void DrawVerticalContainer(XnaGraphics graphics, Rectangle layout, VerticalContainer verticalContainer)
         {
         }
+
+        public void DrawHorizontalContainer(
+            XnaGraphics graphics,
+            Rectangle layout,
+            HorizontalContainer horizontalContainer)
+        {
+        }
+
+        public void DrawMenuItem(XnaGraphics graphics, Rectangle layout, MenuItem menuItem)
+        {
+            if (menuItem.Active)
+                this.DrawRaised(graphics, layout);
+            else
+                this.DrawFlat(graphics, layout);
+            graphics.DrawStringLeft(
+                layout.X + 5,
+                layout.Center.Y,
+                menuItem.Text,
+                centerVertical: true);
+        }
+
+        public void DrawMenuList(XnaGraphics graphics, Rectangle layout, MenuItem menuItem)
+        {
+            this.DrawRaised(graphics, layout);
+        }
+
+        public void DrawMainMenu(XnaGraphics graphics, Rectangle layout, MainMenu mainMenu)
+        {
+            this.DrawFlat(graphics, layout);
+        }
     }
 }
 

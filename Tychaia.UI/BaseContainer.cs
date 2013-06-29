@@ -20,6 +20,7 @@ namespace Tychaia.UI
         }
 
         public IContainer Parent { get; set; }
+        public int Order { get; set; }
 
         public void SetChild(IContainer child)
         {

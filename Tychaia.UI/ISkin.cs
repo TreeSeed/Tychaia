@@ -16,6 +16,10 @@ namespace Tychaia.UI
         void DrawLabel(XnaGraphics graphics, Rectangle layout, Label label);
         void DrawLink(XnaGraphics graphics, Rectangle layout, Link link);
         void DrawVerticalContainer(XnaGraphics graphics, Rectangle layout, VerticalContainer verticalContainer);
+        void DrawHorizontalContainer(XnaGraphics graphics, Rectangle layout, HorizontalContainer horizontalContainer);
+        void DrawMenuItem(XnaGraphics graphics, Rectangle layout, MenuItem menuItem);
+        void DrawMenuList(XnaGraphics graphics, Rectangle layout, MenuItem menuItem);
+        void DrawMainMenu(XnaGraphics graphics, Rectangle layout, MainMenu mainMenu);
     }
 }
 

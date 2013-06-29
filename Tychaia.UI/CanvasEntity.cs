@@ -5,7 +5,6 @@
 //
 using System;
 using Protogame;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Tychaia.UI
 {
@@ -32,7 +31,10 @@ namespace Tychaia.UI
             base.Update(world);
 
             if (this.Canvas != null)
-                this.Canvas.Update(world.GameContext.Window.ClientBounds);
+            {
+                var stealFocus = false;
+                this.Canvas.Update(world.GameContext.Window.ClientBounds, ref stealFocus);
+            }
         }
 
         public override void Draw(World world, XnaGraphics graphics)

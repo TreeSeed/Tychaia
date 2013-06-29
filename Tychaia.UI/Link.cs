@@ -14,6 +14,7 @@ namespace Tychaia.UI
     {
         public IContainer[] Children { get { return new IContainer[0]; } }
         public IContainer Parent { get; set; }
+        public int Order { get; set; }
         public LinkState State { get; private set; }
         public string Text { get; set; }
         public event EventHandler Click;
@@ -23,7 +24,7 @@ namespace Tychaia.UI
             this.State = LinkState.None;
         }
 
-        public void Update(Rectangle layout)
+        public void Update(Rectangle layout, ref bool stealFocus)
         {
             var mouse = Mouse.GetState();
             if (layout.Contains(mouse.X, mouse.Y))

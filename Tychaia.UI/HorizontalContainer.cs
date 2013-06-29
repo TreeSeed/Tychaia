@@ -10,26 +10,26 @@ using System.Linq;
 
 namespace Tychaia.UI
 {
-    public class VerticalContainer : FlowContainer
+    public class HorizontalContainer : FlowContainer
     {
         protected override int GetMaximumContainerSize(Rectangle layout)
         {
-            return layout.Height;
+            return layout.Width;
         }
 
         protected override Rectangle CreateChildLayout(Rectangle layout, int accumulated, int size)
         {
             return new Rectangle(
-                layout.X,
-                layout.Y + accumulated,
-                layout.Width,
-                size);
+                layout.X + accumulated,
+                layout.Y,
+                size,
+                layout.Height);
         }
 
         public override void Draw(XnaGraphics graphics, ISkin skin, Rectangle layout)
         {
-            skin.DrawVerticalContainer(graphics, layout, this);
-            foreach (var kv in this.ChildrenWithLayouts(layout).OrderBy(x => x.Key.Order))
+            skin.DrawHorizontalContainer(graphics, layout, this);
+            foreach (var kv in this.ChildrenWithLayouts(layout).OrderByDescending(x => x.Key.Order))
                 kv.Key.Draw(graphics, skin, kv.Value);
         }
     }
