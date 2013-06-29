@@ -12,7 +12,7 @@ namespace TychaiaAssetManager
         public Label Status { get; private set; }
         public Button MarkDirty { get; private set; }
         public MainMenu MainMenu { get; private set; }
-        //public TreeView AssetTree { get; private set; }
+        public TreeView AssetTree { get; private set; }
 
         public AssetManagerLayout()
         {
@@ -20,7 +20,7 @@ namespace TychaiaAssetManager
             assetContainer.AddChild(this.MarkDirty = new Button { Text = "Mark Dirty" }, "20");
 
             var contentContainer = new HorizontalContainer();
-            //contentContainer.AddChild(AssetTree = new TreeView(), "50%");
+            contentContainer.AddChild(this.AssetTree = new TreeView(), "50%");
             contentContainer.AddChild(assetContainer, "50%");
 
             var menuContainer = new VerticalContainer();
@@ -37,6 +37,15 @@ namespace TychaiaAssetManager
             this.MainMenu.AddChild(assetManagerMenuItem);
 
             this.MainMenu.AddChild(this.GenerateTestMenu());
+
+            this.AssetTree.AddChild(new TreeItem { Text = "language.TEST" });
+            this.AssetTree.AddChild(new TreeItem { Text = "language.ANOTHER" });
+            this.AssetTree.AddChild(new TreeItem { Text = "image.player.walk" });
+            this.AssetTree.AddChild(new TreeItem { Text = "image.player.run" });
+            this.AssetTree.AddChild(new TreeItem { Text = "image.player.attack" });
+            this.AssetTree.AddChild(new TreeItem { Text = "image.enemy.walk" });
+            this.AssetTree.AddChild(new TreeItem { Text = "image.enemy.run" });
+            this.AssetTree.AddChild(new TreeItem { Text = "image.enemy.attack" });
         }
 
         public MenuItem GenerateTestMenu(int level = 0, string state = "")

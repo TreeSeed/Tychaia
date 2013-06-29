@@ -79,11 +79,11 @@ namespace Tychaia.UI
             this.m_Sizes.Insert(index, size);
         }
 
-        public void Update(Rectangle layout, ref bool stealFocus)
+        public void Update(ISkin skin, Rectangle layout, ref bool stealFocus)
         {
             foreach (var kv in this.ChildrenWithLayouts(layout))
             {
-                kv.Key.Update(kv.Value, ref stealFocus);
+                kv.Key.Update(skin, kv.Value, ref stealFocus);
                 if (stealFocus)
                     break;
             }

@@ -73,20 +73,20 @@ namespace Tychaia.UI
             item.Parent = this;
         }
 
-        public Rectangle? GetMenuListLayout(Rectangle layout)
+        public Rectangle? GetMenuListLayout(ISkin skin, Rectangle layout)
         {
             // The location of the child items depends on whether we're owned
             // by a main menu or not.
             if (this.m_Items.Count == 0)
                 return null;
-            var maxWidth = this.m_Items.Max(x => x.TextWidth) + 20;
-            var maxHeight = this.m_Items.Count * 24;
+            var maxWidth = this.m_Items.Max(x => x.TextWidth) + skin.AdditionalMenuItemWidth;
+            var maxHeight = this.m_Items.Count * skin.MenuItemHeight;
             if (this.Parent is MainMenu)
             {
                 return new Rectangle(
                     layout.X,
                     layout.Y + layout.Height,
-                    maxWidth + 10,
+                    maxWidth,
                     maxHeight);
             }
             return new Rectangle(
@@ -96,9 +96,9 @@ namespace Tychaia.UI
                 maxHeight);
         }
 
-        public IEnumerable<KeyValuePair<MenuItem, Rectangle>> GetMenuChildren(Rectangle layout)
+        public IEnumerable<KeyValuePair<MenuItem, Rectangle>> GetMenuChildren(ISkin skin, Rectangle layout)
         {
-            var childLayout = this.GetMenuListLayout(layout);
+            var childLayout = this.GetMenuListLayout(skin, layout);
             if (childLayout == null)
                 yield break;
             var accumulated = 0;
@@ -110,26 +110,26 @@ namespace Tychaia.UI
                         childLayout.Value.X,
                         childLayout.Value.Y + accumulated,
                         childLayout.Value.Width,
-                        24));
-                accumulated += 24;
+                        skin.MenuItemHeight));
+                accumulated += skin.MenuItemHeight;
             }
         }
 
-        public IEnumerable<Rectangle> GetActiveChildrenLayouts(Rectangle layout)
+        public IEnumerable<Rectangle> GetActiveChildrenLayouts(ISkin skin, Rectangle layout)
         {
             yield return layout;
             if (!this.Active)
                 yield break;
-            var childrenLayout = this.GetMenuListLayout(layout);
+            var childrenLayout = this.GetMenuListLayout(skin, layout);
             if (childrenLayout == null)
                 yield break;
             yield return childrenLayout.Value;
-            foreach (var kv in this.GetMenuChildren(layout))
-                foreach (var childLayout in kv.Key.GetActiveChildrenLayouts(kv.Value))
+            foreach (var kv in this.GetMenuChildren(skin, layout))
+                foreach (var childLayout in kv.Key.GetActiveChildrenLayouts(skin, kv.Value))
                     yield return childLayout;
         }
 
-        public virtual void Update(Rectangle layout, ref bool stealFocus)
+        public virtual void Update(ISkin skin, Rectangle layout, ref bool stealFocus)
         {
             var mouse = Mouse.GetState();
 
@@ -141,7 +141,7 @@ namespace Tychaia.UI
                     this.Active = true;
             }
             var deactivate = true;
-            foreach (var activeLayout in this.GetActiveChildrenLayouts(layout))
+            foreach (var activeLayout in this.GetActiveChildrenLayouts(skin, layout))
             {
                 if (activeLayout.Contains(mouse.X, mouse.Y))
                 {
@@ -162,8 +162,8 @@ namespace Tychaia.UI
             }
 
             if (this.Active)
-                foreach (var kv in this.GetMenuChildren(layout))
-                    kv.Key.Update(kv.Value, ref stealFocus);
+                foreach (var kv in this.GetMenuChildren(skin, layout))
+                    kv.Key.Update(skin, kv.Value, ref stealFocus);
 
             // If the menu item is active, we steal focus from any further updating by our parent.
             if (this.Active)
@@ -175,11 +175,11 @@ namespace Tychaia.UI
             this.TextWidth = (int)Math.Ceiling(graphics.MeasureString(this.Text).X);
             skin.DrawMenuItem(graphics, layout, this);
 
-            var childrenLayout = this.GetMenuListLayout(layout);
+            var childrenLayout = this.GetMenuListLayout(skin, layout);
             if (this.Active && childrenLayout != null)
             {
                 skin.DrawMenuList(graphics, childrenLayout.Value, this);
-                foreach (var kv in this.GetMenuChildren(layout))
+                foreach (var kv in this.GetMenuChildren(skin, layout))
                 {
                     kv.Key.Draw(graphics, skin, kv.Value);
                 }

@@ -24,7 +24,7 @@ namespace Tychaia.UI
             this.State = LinkState.None;
         }
 
-        public void Update(Rectangle layout, ref bool stealFocus)
+        public void Update(ISkin skin, Rectangle layout, ref bool stealFocus)
         {
             var mouse = Mouse.GetState();
             if (layout.Contains(mouse.X, mouse.Y))

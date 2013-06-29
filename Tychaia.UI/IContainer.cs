@@ -14,7 +14,7 @@ namespace Tychaia.UI
         IContainer Parent { get; set; }
         int Order { get; set; }
 
-        void Update(Rectangle layout, ref bool stealFocus);
+        void Update(ISkin skin, Rectangle layout, ref bool stealFocus);
         void Draw(XnaGraphics graphics, ISkin skin, Rectangle layout);
     }
 }

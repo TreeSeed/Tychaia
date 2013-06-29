@@ -144,6 +144,47 @@ namespace Tychaia.UI
         {
             this.DrawFlat(graphics, layout);
         }
+
+        public void DrawTreeView(XnaGraphics graphics, Rectangle layout, TreeView treeView)
+        {
+            this.DrawSunken(graphics, layout);
+        }
+
+        public void DrawTreeItem(XnaGraphics graphics, Rectangle layout, TreeItem treeItem)
+        {
+            if (treeItem.Parent is TreeView)
+            {
+                var view = (treeItem.Parent as TreeView);
+                if (view.SelectedItem == treeItem)
+                {
+                    this.DrawRaised(graphics, layout);
+                }
+            }
+            graphics.DrawStringLeft(
+                layout.X + 5,
+                layout.Y,
+                treeItem.Text);
+        }
+
+        public int HeightForTreeItem
+        {
+            get { return 16; }
+        }
+
+        public int MainMenuHorizontalPadding
+        {
+            get { return 10; }
+        }
+
+        public int AdditionalMenuItemWidth
+        {
+            get { return 20; }
+        }
+
+        public int MenuItemHeight
+        {
+            get { return 24; }
+        }
     }
 }
 

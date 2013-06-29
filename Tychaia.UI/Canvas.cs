@@ -43,10 +43,10 @@ namespace Tychaia.UI
             this.m_Child.Parent = this;
         }
 
-        public void Update(Rectangle layout, ref bool stealFocus)
+        public void Update(ISkin skin, Rectangle layout, ref bool stealFocus)
         {
             if (this.m_Child != null)
-                this.m_Child.Update(layout, ref stealFocus);
+                this.m_Child.Update(skin, layout, ref stealFocus);
         }
 
         public void Draw(XnaGraphics graphics, ISkin skin, Rectangle layout)

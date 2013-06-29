@@ -34,6 +34,8 @@
     <Compile Include="LinkState.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="MenuItem.cs" />
+    <Compile Include="TreeItem.cs" />
+    <Compile Include="TreeView.cs" />
     <Compile Include="VerticalAlign.cs" />
     <Compile Include="VerticalContainer.cs" />
   </Files>

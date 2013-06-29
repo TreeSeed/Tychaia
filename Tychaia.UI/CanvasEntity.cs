@@ -33,7 +33,7 @@ namespace Tychaia.UI
             if (this.Canvas != null)
             {
                 var stealFocus = false;
-                this.Canvas.Update(world.GameContext.Window.ClientBounds, ref stealFocus);
+                this.Canvas.Update(this.m_Skin, world.GameContext.Window.ClientBounds, ref stealFocus);
             }
         }
 
