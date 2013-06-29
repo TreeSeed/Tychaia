@@ -10,7 +10,7 @@ namespace Tychaia.Assets
     public class TextAsset : MarshalByRefObject, IAsset
     {
         public string Name { get; private set; }
-        public string Value { get; private set; }
+        public string Value { get; set; }
 
         public TextAsset(string name, string value)
         {

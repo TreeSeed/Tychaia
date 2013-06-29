@@ -18,6 +18,7 @@ namespace Tychaia.UI
         public IContainer[] Children { get { return this.m_Children.ToArray(); } }
         public IContainer Parent { get; set; }
         public int Order { get; set; }
+        public bool Focused { get; set; }
 
         protected abstract int GetMaximumContainerSize(Rectangle layout);
         protected abstract Rectangle CreateChildLayout(Rectangle layout, int accumulated, int size);
@@ -62,14 +63,20 @@ namespace Tychaia.UI
 
         public void AddChild(IContainer child, string size)
         {
+            if (child == null)
+                throw new ArgumentNullException("child");
+            if (child.Parent != null)
+                throw new InvalidOperationException();
             this.m_Children.Add(child);
             this.m_Sizes.Add(size);
+            child.Parent = this;
         }
 
         public void RemoveChild(IContainer child)
         {
             this.m_Sizes.RemoveAt(this.m_Children.IndexOf(child));
             this.m_Children.Remove(child);
+            child.Parent = null;
         }
 
         public void SetChildSize(IContainer child, string size)
@@ -79,11 +86,11 @@ namespace Tychaia.UI
             this.m_Sizes.Insert(index, size);
         }
 
-        public void Update(ISkin skin, Rectangle layout, ref bool stealFocus)
+        public void Update(ISkin skin, Rectangle layout, GameTime gameTime, ref bool stealFocus)
         {
             foreach (var kv in this.ChildrenWithLayouts(layout))
             {
-                kv.Key.Update(skin, kv.Value, ref stealFocus);
+                kv.Key.Update(skin, kv.Value, gameTime, ref stealFocus);
                 if (stealFocus)
                     break;
             }

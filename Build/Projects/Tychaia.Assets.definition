@@ -27,8 +27,14 @@
     <Compile Include="IAssetLoader.cs" />
     <Compile Include="TextAssetLoader.cs" />
 
+    <Compile Include="IAssetSaver.cs" />
+    <Compile Include="TextAssetSaver.cs" />
+
     <Compile Include="IRawAssetLoader.cs" />
     <Compile Include="RawAssetLoader.cs" />
+
+    <Compile Include="IRawAssetSaver.cs" />
+    <Compile Include="RawAssetSaver.cs" />
 
     <Compile Include="AssetNotFoundException.cs" />
 

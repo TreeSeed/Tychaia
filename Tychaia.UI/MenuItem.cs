@@ -23,6 +23,7 @@ namespace Tychaia.UI
         public bool Hovered { get; set; }
         public int HoverCountdown { get; set; }
         public bool Active { get; set; }
+        public bool Focused { get; set; }
         public int TextWidth { get; set; }
         public event EventHandler Click;
 
@@ -36,6 +37,10 @@ namespace Tychaia.UI
 
         public void AddChild(MenuItem item)
         {
+            if (item == null)
+                throw new ArgumentNullException("item");
+            if (item.Parent != null)
+                throw new InvalidOperationException();
             this.m_Items.Add(item);
             item.Parent = this;
         }
@@ -96,7 +101,7 @@ namespace Tychaia.UI
                     yield return childLayout;
         }
 
-        public virtual void Update(ISkin skin, Rectangle layout, ref bool stealFocus)
+        public virtual void Update(ISkin skin, Rectangle layout, GameTime gameTime, ref bool stealFocus)
         {
             var mouse = Mouse.GetState();
             var leftPressed = mouse.LeftPressed(this);
@@ -134,8 +139,11 @@ namespace Tychaia.UI
             }
 
             if (this.Active)
+            {
                 foreach (var kv in this.GetMenuChildren(skin, layout))
-                    kv.Key.Update(skin, kv.Value, ref stealFocus);
+                    kv.Key.Update(skin, kv.Value, gameTime, ref stealFocus);
+                this.Focus();
+            }
 
             // If the menu item is active, we steal focus from any further updating by our parent.
             if (this.Active)

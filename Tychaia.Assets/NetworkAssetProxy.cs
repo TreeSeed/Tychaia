@@ -19,7 +19,7 @@ namespace Tychaia.Assets
         private readonly string m_AssetName;
 
         public NetworkAssetProxy(NetworkAssetManager manager, NetworkAsset networkAsset, string name, T instance)
-             : base(typeof(T))
+             : base(instance.GetType())
         {
             this.m_Instance = instance;
             this.m_Manager = manager;

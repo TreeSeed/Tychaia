@@ -11,6 +11,7 @@ namespace TychaiaAssetManager
     public class AssetManagerLayout : Canvas
     {
         public Label Status { get; private set; }
+        public Button Bake { get; private set; }
         public Button MarkDirty { get; private set; }
         public MainMenu MainMenu { get; private set; }
         public TreeView AssetTree { get; private set; }
@@ -20,6 +21,7 @@ namespace TychaiaAssetManager
         {
             var toolbarContainer = new HorizontalContainer();
             toolbarContainer.AddChild(new SingleContainer(), "*");
+            toolbarContainer.AddChild(this.Bake = new Button { Text = "Bake" }, "50");
             toolbarContainer.AddChild(this.MarkDirty = new Button { Text = "Mark Dirty" }, "80");
 
             var assetContainer = new VerticalContainer();

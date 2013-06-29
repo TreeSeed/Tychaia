@@ -23,7 +23,15 @@ namespace TychaiaAssetManager
             return typeof(T);
         }
 
-        public abstract void BuildLayout(SingleContainer editorContainer);
+        public abstract void BuildLayout(SingleContainer editorContainer, IAssetManager assetManager);
+
+        public virtual void FinishLayout(SingleContainer editorContainer, IAssetManager assetManager)
+        {
+        }
+
+        public virtual void Bake()
+        {
+        }
     }
 }
 

@@ -20,6 +20,7 @@ namespace Tychaia.UI
         public IContainer[] Children { get { return this.m_Items.Cast<IContainer>().ToArray(); } }
         public IContainer Parent { get; set; }
         public int Order { get; set; }
+        public bool Focused { get; set; }
 
         public TreeItem SelectedItem
         {
@@ -32,6 +33,7 @@ namespace Tychaia.UI
                 this.p_SelectedItem = value;
                 if (this.SelectedItemChanged != null)
                     this.SelectedItemChanged(this, new SelectedItemChangedEventArgs(value));
+                this.Focus();
             }
         }
 
@@ -39,6 +41,10 @@ namespace Tychaia.UI
 
         public void AddChild(TreeItem item)
         {
+            if (item == null)
+                throw new ArgumentNullException("item");
+            if (item.Parent != null)
+                throw new InvalidOperationException();
             this.m_Items.Add(item);
             item.Parent = this;
         }
@@ -175,10 +181,10 @@ namespace Tychaia.UI
             }
         }
 
-        public void Update(ISkin skin, Rectangle layout, ref bool stealFocus)
+        public void Update(ISkin skin, Rectangle layout, GameTime gameTime, ref bool stealFocus)
         {
             foreach (var kv in this.GetChildrenWithLayouts(skin, layout))
-                kv.Item.Update(skin, kv.Layout.Value, ref stealFocus);
+                kv.Item.Update(skin, kv.Layout.Value, gameTime, ref stealFocus);
 
             var keyboard = Keyboard.GetState();
             var upPressed = keyboard.IsKeyPressed(Keys.Up);

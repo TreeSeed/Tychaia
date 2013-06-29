@@ -23,6 +23,7 @@ namespace TychaiaAssetManager
         private DateTime m_Start;
         private AssetManagerLayout m_Layout;
         private static Dictionary<Type, IAssetEditor> m_Editors;
+        private IAssetEditor m_CurrentEditor;
 
         static AssetManagerWorld()
         {
@@ -61,17 +62,30 @@ namespace TychaiaAssetManager
                     this.AssetManager.Dirty(asset.Name);
             };
 
+            this.m_Layout.Bake.Click += (sender, e) =>
+            {
+                if (this.m_CurrentEditor != null)
+                    this.m_CurrentEditor.Bake();
+                var item = this.m_Layout.AssetTree.SelectedItem as AssetTreeItem;
+                if (item == null)
+                    return;
+                this.AssetManager.Bake(item.Asset);
+            };
+
             this.m_Layout.AssetTree.SelectedItemChanged += (sender, e) =>
             {
+                if (this.m_CurrentEditor != null)
+                    this.m_CurrentEditor.FinishLayout(this.m_Layout.EditorContainer, this.AssetManager);
                 var item = this.m_Layout.AssetTree.SelectedItem as AssetTreeItem;
                 if (item != null && m_Editors.ContainsKey(item.Asset.GetType()))
                 {
-                    var editor = m_Editors[item.Asset.GetType()];
-                    editor.SetAsset(item.Asset);
-                    editor.BuildLayout(this.m_Layout.EditorContainer);
+                    this.m_CurrentEditor = m_Editors[item.Asset.GetType()];
+                    this.m_CurrentEditor.SetAsset(item.Asset);
+                    this.m_CurrentEditor.BuildLayout(this.m_Layout.EditorContainer, this.AssetManager);
                 }
                 else
                 {
+                    this.m_CurrentEditor = null;
                     this.m_Layout.EditorContainer.SetChild(
                         new Label { Text = "No editor for this asset" });
                 }
@@ -95,9 +109,11 @@ namespace TychaiaAssetManager
 
         public override bool Update(GameContext context)
         {
-            var newStatus = "Connected for " +
-                (int)((DateTime.Now - this.m_Start).TotalSeconds) +
-                " seconds";
+            var newStatus = this.AssetManager.IsRemoting ?
+                ("Connected for " +
+                    (int)((DateTime.Now - this.m_Start).TotalSeconds) +
+                    " seconds") :
+                "Running Locally";
             if (this.AssetManager.Status != newStatus)
                 this.AssetManager.Status = newStatus;
             this.m_Layout.Status.Text = this.AssetManager.Status;

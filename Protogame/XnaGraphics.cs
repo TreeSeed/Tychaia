@@ -45,8 +45,12 @@ namespace Protogame
             int y,
             string text,
             string font = "Arial",
-            bool centerVertical = false)
+            bool centerVertical = false,
+            Color? textColor = null,
+            Color? shadowColor = null)
         {
+            if (textColor == null) textColor = Color.White;
+            if (shadowColor == null) shadowColor = Color.Black;
             if (string.IsNullOrEmpty(text))
                 return;
             var size = this.m_Context.Fonts[font].MeasureString(text);
@@ -55,12 +59,12 @@ namespace Protogame
                 this.m_Context.Fonts[font],
                 text,
                 new Vector2((int)(x + 1), (int)(yy + 1)),
-                Color.Black);
+                shadowColor.Value);
             this.m_Context.SpriteBatch.DrawString(
                 this.m_Context.Fonts[font],
                 text,
                 new Vector2((int)x, (int)yy),
-                Color.White);
+                textColor.Value);
         }
 
         public Vector2 MeasureString(string text, string font = "Arial")

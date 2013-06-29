@@ -27,10 +27,10 @@ namespace Tychaia.UI
             }
         }
 
-        public override void Update(ISkin skin, Rectangle layout, ref bool stealFocus)
+        public override void Update(ISkin skin, Rectangle layout, GameTime gameTime, ref bool stealFocus)
         {
             foreach (var kv in GetChildLocations(skin, layout))
-                kv.Key.Update(skin, kv.Value, ref stealFocus);
+                kv.Key.Update(skin, kv.Value, gameTime, ref stealFocus);
         }
 
         public override void Draw(XnaGraphics graphics, ISkin skin, Rectangle layout)

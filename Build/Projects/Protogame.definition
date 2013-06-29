@@ -15,6 +15,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="AStarPathFinder" />
     <Reference Include="MonoGame" />
+    <Reference Include="System.Windows.Forms" />
   </References>
   <Files>
     <Compile Include="AudioEntity.cs" />
@@ -34,6 +35,7 @@
     <Compile Include="ExampleContent\OgmoRunner.cs" />
     <Compile Include="ExampleContent\OgmoState.cs" />
     <Compile Include="KeyboardStateExtensions.cs" />
+    <Compile Include="KeyboardStringReader.cs" />
     <Compile Include="MouseStateExtensions.cs" />
     <Compile Include="MultiLevel\IMultiLevelEntity.cs" />
     <Compile Include="MultiLevel\Level.cs" />

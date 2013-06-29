@@ -23,6 +23,7 @@ namespace Tychaia.UI
         void DrawTreeView(XnaGraphics graphics, Rectangle layout, TreeView treeView);
         void DrawTreeItem(XnaGraphics graphics, Rectangle layout, TreeItem treeItem);
         void DrawSingleContainer(XnaGraphics graphics, Rectangle layout, SingleContainer singleContainer);
+        void DrawTextBox(XnaGraphics graphics, Rectangle layout, TextBox textBox);
 
         int HeightForTreeItem { get; }
         int MainMenuHorizontalPadding { get; }

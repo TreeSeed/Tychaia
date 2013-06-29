@@ -23,7 +23,9 @@ namespace Tychaia.Assets
         public bool IsRemoting { get { return false; } }
 
         private IRawAssetLoader m_RawAssetLoader;
+        private IRawAssetSaver m_RawAssetSaver;
         private Dictionary<string, IAsset> m_Assets = new Dictionary<string, IAsset>();
+        private Dictionary<string, object> m_RawAssets = new Dictionary<string, object>();
         private string m_Path;
 
         public LocalAssetManager(string path)
@@ -58,7 +60,14 @@ namespace Tychaia.Assets
                 return this.m_Assets[asset];
             if (this.m_RawAssetLoader == null)
                 this.m_RawAssetLoader = IoC.Kernel.Get<IRawAssetLoader>();
-            var obj = this.m_RawAssetLoader.LoadRawAsset(asset);
+            object obj;
+            if (this.m_RawAssets.ContainsKey(asset))
+                obj = this.m_RawAssets[asset];
+            else
+            {
+                obj = this.m_RawAssetLoader.LoadRawAsset(asset);
+                this.m_RawAssets.Add(asset, obj);
+            }
             var loaders = IoC.Kernel.GetAll<IAssetLoader>().ToArray();
             if (obj != null)
             {
@@ -94,6 +103,41 @@ namespace Tychaia.Assets
                 this.RescanAssets();
                 return this.m_Assets.Values.ToArray();
             }
+        }
+
+        public void Save(IAsset asset)
+        {
+            if (this.m_RawAssetSaver == null)
+                this.m_RawAssetSaver = IoC.Kernel.Get<IRawAssetSaver>();
+            var savers = IoC.Kernel.GetAll<IAssetSaver>().ToArray();
+            foreach (var saver in savers)
+            {
+                var canSave = false;
+                try
+                {
+                    canSave = saver.CanHandle(asset);
+                }
+                catch (Exception)
+                {
+                }
+                if (canSave)
+                {
+                    var result = saver.Handle(asset);
+                    this.m_RawAssets[asset.Name] = result;
+                    return;
+                }
+            }
+            throw new InvalidOperationException(
+                "Unable to save asset '" + asset + "'.  " +
+                "No saver for this asset could be found.");
+        }
+
+        public void Bake(IAsset asset)
+        {
+            this.Save(asset);
+            if (this.m_RawAssetSaver == null)
+                this.m_RawAssetSaver = IoC.Kernel.Get<IRawAssetSaver>();
+            this.m_RawAssetSaver.SaveRawAsset(asset.Name, this.m_RawAssets[asset.Name]);
         }
     }
 }

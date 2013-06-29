@@ -171,6 +171,23 @@ namespace Tychaia.UI
             this.DrawSunken(graphics, layout);
         }
 
+        public void DrawTextBox(XnaGraphics graphics, Rectangle layout, TextBox textBox)
+        {
+            this.DrawSunken(graphics, layout);
+            var textToRender = textBox.Text;
+            if (textBox.Focused && (textBox.UpdateCounter / 15) % 2 == 0)
+                textToRender += "_";
+            if (string.IsNullOrEmpty(textBox.Text) && !textBox.Focused)
+                graphics.DrawStringLeft(
+                    layout.X,
+                    layout.Center.Y,
+                    textBox.Hint,
+                    centerVertical: true,
+                    textColor: Color.DimGray);
+            else
+                graphics.DrawStringLeft(layout.X, layout.Center.Y, textToRender, centerVertical: true);
+        }
+
         public int HeightForTreeItem
         {
             get { return 16; }

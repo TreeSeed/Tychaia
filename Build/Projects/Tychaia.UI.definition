@@ -23,6 +23,7 @@
     <Compile Include="CanvasEntity.cs" />
     <Compile Include="FixedContainer.cs" />
     <Compile Include="FlowContainer.cs" />
+    <Compile Include="FocusExtensions.cs" />
     <Compile Include="HorizontalContainer.cs" />
     <Compile Include="HorizontalAlign.cs" />
     <Compile Include="IBasicSkin.cs" />
@@ -37,6 +38,7 @@
     <Compile Include="SelectedItemChangedEventArgs.cs" />
     <Compile Include="SelectedItemChangedEventHandler.cs" />
     <Compile Include="SingleContainer.cs" />
+    <Compile Include="TextBox.cs" />
     <Compile Include="TreeItem.cs" />
     <Compile Include="TreeView.cs" />
     <Compile Include="VerticalAlign.cs" />

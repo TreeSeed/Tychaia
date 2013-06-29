@@ -12,7 +12,9 @@ namespace Tychaia.Assets
         public override void Load()
         {
             this.Bind<IAssetLoader>().To<TextAssetLoader>();
+            this.Bind<IAssetSaver>().To<TextAssetSaver>();
             this.Bind<IRawAssetLoader>().To<RawAssetLoader>();
+            this.Bind<IRawAssetSaver>().To<RawAssetSaver>();
         }
     }
 }

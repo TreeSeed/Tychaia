@@ -17,6 +17,7 @@ namespace Tychaia.UI
         public int Order { get; set; }
         public ButtonState State { get; private set; }
         public string Text { get; set; }
+        public bool Focused { get; set; }
         public event EventHandler Click;
 
         public Button()
@@ -24,7 +25,7 @@ namespace Tychaia.UI
             this.State = ButtonState.None;
         }
 
-        public void Update(ISkin skin, Rectangle layout, ref bool stealFocus)
+        public void Update(ISkin skin, Rectangle layout, GameTime gameTime, ref bool stealFocus)
         {
             var mouse = Mouse.GetState();
             var leftPressed = mouse.LeftPressed(this);
@@ -35,6 +36,7 @@ namespace Tychaia.UI
                     if (this.Click != null && this.State != ButtonState.Clicked)
                         this.Click(this, new EventArgs());
                     this.State = ButtonState.Clicked;
+                    this.Focus();
                 }
                 else
                     this.State = ButtonState.Hover;

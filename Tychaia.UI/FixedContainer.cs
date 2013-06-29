@@ -17,10 +17,10 @@ namespace Tychaia.UI
             this.AbsoluteRectangle = absolute;
         }
 
-        public void Update(ISkin skin, Rectangle layout, ref bool stealFocus)
+        public void Update(ISkin skin, Rectangle layout, GameTime gameTime, ref bool stealFocus)
         {
             if (this.Child != null)
-                this.Child.Update(skin, this.AbsoluteRectangle, ref stealFocus);
+                this.Child.Update(skin, this.AbsoluteRectangle, gameTime, ref stealFocus);
         }
 
         public void Draw(XnaGraphics graphics, ISkin skin, Rectangle layout)

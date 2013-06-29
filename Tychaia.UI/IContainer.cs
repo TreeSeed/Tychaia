@@ -13,8 +13,9 @@ namespace Tychaia.UI
         IContainer[] Children { get; }
         IContainer Parent { get; set; }
         int Order { get; set; }
+        bool Focused { get; set; }
 
-        void Update(ISkin skin, Rectangle layout, ref bool stealFocus);
+        void Update(ISkin skin, Rectangle layout, GameTime gameTime, ref bool stealFocus);
         void Draw(XnaGraphics graphics, ISkin skin, Rectangle layout);
     }
 }

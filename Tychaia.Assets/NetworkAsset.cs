@@ -92,10 +92,10 @@ namespace Tychaia.Assets
         [Local]
         private T FormProxyIfPossible<T>(T obj) where T : class, IAsset
         {
-            if (!typeof(MarshalByRefObject).IsAssignableFrom(typeof(T)))
+            if (!typeof(MarshalByRefObject).IsAssignableFrom(obj.GetType()))
             {
                 Console.WriteLine(
-                    "WARNING: Asset type '" + typeof(T).FullName + "' " +
+                    "WARNING: Asset type '" + obj.GetType().FullName + "' " +
                     "does not inherit from MarshalByRefObject; it will " +
                     "not automatically update in the game when changed " +
                     "from the asset manager.");
