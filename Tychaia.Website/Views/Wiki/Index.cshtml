@@ -2,8 +2,10 @@
 @* VirtualPath: ~/Views/Wiki/Index.cshtml *@
 @model Tychaia.Website.ViewModels.WikiPageViewModel
 @using Tychaia.Website;
+@using Cassette.Views;
 @{
     ViewBag.Title = @Model.Page.Title;
+    Bundles.Reference("Syntax");
 }
 
 <h2>
