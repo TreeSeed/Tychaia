@@ -16,7 +16,7 @@ namespace Tychaia.Website
             
             bundles.AddUrlWithAlias<StylesheetBundle>(
                 "http://code.redpointsoftware.com.au/rsrc/css/core/syntax.css",
-                "Scripts");
+                "Syntax");
         }
     }
 }
