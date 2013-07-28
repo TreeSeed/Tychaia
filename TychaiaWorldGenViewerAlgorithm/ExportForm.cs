@@ -12,16 +12,20 @@ namespace TychaiaWorldGenViewerAlgorithm
 {
     public partial class ExportForm : Form
     {
+        private IRenderingLocationProvider m_RenderingLocationProvider;
         private RuntimeLayer m_Layer;
         private int m_X = 0;
         private int m_Y = 0;
         private int m_Z = 0;
         private Bitmap m_Bitmap;
 
-        public ExportForm(FlowElement flowElement)
+        public ExportForm(
+            IRenderingLocationProvider renderingLocationProvider,
+            FlowElement flowElement)
         {
             InitializeComponent();
 
+            this.m_RenderingLocationProvider = renderingLocationProvider;
             this.m_Layer = StorageAccess.ToRuntime((flowElement as AlgorithmFlowElement).Layer);
             this.m_Bitmap = new Bitmap(1024 + 32, 1024 + 256);
             this.c_RenderBox.Image = this.m_Bitmap;
@@ -133,7 +137,7 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         #endregion
 
-        private static Bitmap RenderPartial3D(RuntimeLayer layer, int sx, int sy, int sz, int width, int height, int depth)
+        private Bitmap RenderPartial3D(RuntimeLayer layer, int sx, int sy, int sz, int width, int height, int depth)
         {
             var bitmap = new Bitmap(width * 2, height * 3);
             var graphics = Graphics.FromImage(bitmap);
@@ -142,9 +146,10 @@ namespace TychaiaWorldGenViewerAlgorithm
             try
             {
                 int computations;
-                var provider = IoC.Kernel.Get<IRenderingLocationProvider>();
                 data = layer.GenerateData(
-                    provider.X + sx, provider.Y + sy, provider.Z + sz,
+                    this.m_RenderingLocationProvider.X + sx,
+                    this.m_RenderingLocationProvider.Y + sy,
+                    this.m_RenderingLocationProvider.Z + sz,
                     width, height, depth, out computations);
 
                 var render = GetCellRenderOrder(RenderToNE, width, height);
@@ -205,7 +210,7 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         private void c_Timer_Tick(object sender, EventArgs e)
         {
-            Bitmap temp = RenderPartial3D(this.m_Layer, this.m_X, this.m_Y, this.m_Z, 32, 32, 32);
+            Bitmap temp = this.RenderPartial3D(this.m_Layer, this.m_X, this.m_Y, this.m_Z, 32, 32, 32);
             Graphics g = Graphics.FromImage(this.m_Bitmap);
             int rcx = 32 / 2 + 512 - 48 + 16;
             int rcy = 32 / 2 - 15 - 32 + 256;

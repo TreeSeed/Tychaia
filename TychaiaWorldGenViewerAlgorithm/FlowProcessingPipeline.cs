@@ -18,13 +18,12 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         private FlowForm m_Form = null;
 
-        public FlowProcessingPipeline()
+        public FlowProcessingPipeline(IFlowProcessingRequestHandler flowProcessingRequestHandler)
         {
             this.InputPipeline = new ThreadedTaskPipeline<FlowProcessingRequest>(false);
             this.OutputPipeline = new ThreadedTaskPipeline<FlowProcessingResponse>(false);
 
-            var handler = IoC.Kernel.Get<IFlowProcessingRequestHandler>();
-            handler.SetPipelineAndStart(this);
+            flowProcessingRequestHandler.SetPipelineAndStart(this);
         }
 
         public void FormConnect(FlowForm form)

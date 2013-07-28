@@ -3,21 +3,29 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
 //
-using Tychaia.Assets;
-using System.Reflection;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
+using Protogame;
+using System;
 
-namespace TychaiaAssetManager
+namespace Tychaia
 {
     public class GameAssetManagerProvider : IAssetManagerProvider
     {
         private LocalAssetManager m_AssetManager;
 
-        public GameAssetManagerProvider()
+        public GameAssetManagerProvider(
+            IRawAssetLoader rawLoader,
+            IRawAssetSaver rawSaver,
+            IEnumerable<IAssetLoader> loaders,
+            IEnumerable<IAssetSaver> savers)
         {
-            var file = new FileInfo(Assembly.GetExecutingAssembly().Location);
             this.m_AssetManager = new LocalAssetManager(
-                Path.Combine(file.Directory.FullName, "Content"));
+                rawLoader,
+                rawSaver,
+                loaders,
+                savers);
         }
 
         public bool IsReady

@@ -12,23 +12,31 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
 {
     public class GenerateRuntimeBitmapHandler
     {
+        private ICurrentWorldSeedProvider m_CurrentWorldSeedProvider;
+        private IRenderingLocationProvider m_RenderingLocationProvider;
+    
+        public GenerateRuntimeBitmapHandler(
+            ICurrentWorldSeedProvider currentWorldSeedProvider,
+            IRenderingLocationProvider renderingLocationProvider)
+        {
+            this.m_CurrentWorldSeedProvider = currentWorldSeedProvider;
+            this.m_RenderingLocationProvider = renderingLocationProvider;
+        }
+        
         public void Handle(StorageLayer layer, Action<FlowProcessingResponse> put)
         {
-            var seedProvider = IoC.Kernel.Get<ICurrentWorldSeedProvider>();
-
             HandlerHelper.SendStartMessage(
                 "Generating...",
                 FlowProcessingRequestType.GenerateRuntimeBitmap,
                 layer,
                 put);
 
-            var provider = IoC.Kernel.Get<IRenderingLocationProvider>();
             var runtime = AlgorithmFlowImageGeneration.RegenerateImageForLayer(
                 layer,
-                seedProvider.Seed,
-                provider.X,
-                provider.Y,
-                provider.Z,
+                this.m_CurrentWorldSeedProvider.Seed,
+                this.m_RenderingLocationProvider.X,
+                this.m_RenderingLocationProvider.Y,
+                this.m_RenderingLocationProvider.Z,
                 64, 64, 64);
 
             put(new FlowProcessingResponse

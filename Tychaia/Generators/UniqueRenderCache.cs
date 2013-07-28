@@ -1,11 +1,15 @@
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Tychaia.Globals;
 
-namespace Tychaia.Generators
+namespace Tychaia
 {
     /// <summary>
     /// Maintains a hash tablet of resulting renders for input data.  If the input data

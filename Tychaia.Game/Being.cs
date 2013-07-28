@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Protogame;
 
 namespace Tychaia.Game
 {
     public class Being : ChunkEntity
     {
-        public Being(Protogame.World world)
+        public Being(IWorld world)
             : base(world)
         {
         }

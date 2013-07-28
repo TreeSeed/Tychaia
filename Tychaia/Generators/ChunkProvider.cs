@@ -1,12 +1,16 @@
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
-using System.IO;
 
-namespace Tychaia.Generators
+namespace Tychaia
 {
     public static class ChunkProvider
     {
@@ -68,7 +72,7 @@ namespace Tychaia.Generators
         private class ProvideState
         {
             //public int Z;
-            public Block[, ,] Blocks;
+            public BlockAsset[, ,] Blocks;
             public int[] RawData;
             public ChunkInfo Info;
             public Action OnSkipCallback;
@@ -140,7 +144,8 @@ namespace Tychaia.Generators
                         {
                             try
                             {
-                                m_CurrentProvideState.Blocks[i, j, k] = Block.BlockIDMapping[data[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height]];
+                                m_CurrentProvideState.Blocks[i, j, k] = null;
+                                //Block.BlockIDMapping[data[i + j * m_CurrentProvideState.Info.Bounds.Width + k * m_CurrentProvideState.Info.Bounds.Width * m_CurrentProvideState.Info.Bounds.Height]];
                             }
                             catch (KeyNotFoundException)
                             {
@@ -162,7 +167,7 @@ namespace Tychaia.Generators
 
         public class ProvideTask
         {
-            public Block[,,] Blocks;
+            public BlockAsset[,,] Blocks;
             public int[] RawData;
             public ChunkInfo Info;
             public Chunk Chunk;
@@ -222,7 +227,7 @@ namespace Tychaia.Generators
             */
         }
 
-        public static ProvideTask FillChunk(Chunk chunk, int[] rawdata, Block[, ,] blocks, ChunkInfo info, Action onSkip, Action onGeneration)
+        public static ProvideTask FillChunk(Chunk chunk, int[] rawdata, BlockAsset[, ,] blocks, ChunkInfo info, Action onSkip, Action onGeneration)
         {
             ProvideTask rt = new ProvideTask()
             {

@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Project
-  Name="Tychaia"
-  Path="Tychaia"
-  Type="XNA">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="Tychaia" Path="Tychaia" Type="XNA">
   <Properties>
     <Property Name="PostProcessWithDx" Value="True" />
   </Properties>
@@ -15,63 +11,49 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Protogame" />
-    <Reference Include="Protogame.Efficiency" />
-    <Reference Include="Protogame.Structure" />
+    <Reference Include="ProtogameAssetManager" />
     <Reference Include="Tychaia.Globals" />
     <Reference Include="Tychaia.Game" />
     <Reference Include="Tychaia.Disk" />
     <Reference Include="Tychaia.ProceduralGeneration" />
     <Reference Include="Tychaia.Content" />
-    <Reference Include="Tychaia.Assets" />
-    <Reference Include="TychaiaAssetManager" />
     <Reference Include="MonoGame" />
     <Reference Include="Dx" />
     <Reference Include="Ninject" />
   </References>
   <Files>
-    <Compile Include="Cube.cs" />
-    <Compile Include="DebugTracker.cs" />
-    <Compile Include="Direction.cs" />
-    <Compile Include="IsometricWorldManager.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="RandomExtensions.cs" />
-    <Compile Include="RenderTargetFactory.cs" />
-    <Compile Include="RPGWorld.cs" />
-    <Compile Include="RuntimeGame.cs" />
-    <Compile Include="Static.cs" />
-    <Compile Include="Elements\Region.cs" />
-    <Compile Include="Elements\World.cs" />
-    <Compile Include="Generators\Block.cs" />
+    <Compile Include="Assets\BlockAsset.cs" />
+    <Compile Include="Assets\BlockAssetLoader.cs" />
+    <Compile Include="Assets\BlockAssetSaver.cs" />
+    <Compile Include="Assets\IsometricCubeAsset.cs" />
+    <Compile Include="Assets\IsometricCubeAssetLoader.cs" />
+    <Compile Include="Assets\IsometricCubeAssetSaver.cs" />
+    <Compile Include="Assets\TychaiaAssetIoCModule.cs" />
+    <Compile Include="DefaultChunkSizePolicy.cs" />
+    <Compile Include="DefaultPerformancePolicy.cs" />
+    <Compile Include="DefaultRelativeChunkRendering.cs" />
+    <Compile Include="GameAssetManagerProvider.cs" />
     <Compile Include="Generators\Chunk.cs" />
     <Compile Include="Generators\ChunkOctree.cs" />
-    <Compile Include="Generators\ChunkProvider.cs" />
-    <Compile Include="Generators\ChunkRenderer.cs" />
-    <Compile Include="Generators\RenderingBuffers.cs" />
     <Compile Include="Generators\TileIsometricifier.cs" />
-    <Compile Include="Generators\UniqueRenderCache.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tiles\DirtTile.cs" />
-    <Compile Include="Tiles\GrassLeafTile.cs" />
-    <Compile Include="Tiles\GrassTile.cs" />
-    <Compile Include="Tiles\LavaTile.cs" />
-    <Compile Include="Tiles\LeafGreyTile.cs" />
-    <Compile Include="Tiles\LeafTile.cs" />
-    <Compile Include="Tiles\SandGrassTile.cs" />
-    <Compile Include="Tiles\SandTile.cs" />
-    <Compile Include="Tiles\SnowTile.cs" />
-    <Compile Include="Tiles\StoneTile.cs" />
-    <Compile Include="Tiles\TrunkTile.cs" />
-    <Compile Include="Tiles\WaterTile.cs" />
-    <Compile Include="Title\LoadWorld.cs" />
-    <Compile Include="Title\MenuWorld.cs" />
-    <Compile Include="Title\TitleWorld.cs" />
-    <Compile Include="Title\ScatterBackground.cs" />
-    <Compile Include="Title\BackgroundCubeEntity.cs" />
-    <Compile Include="UI\TitleButton.cs" />
-    <Compile Include="GameAssetManagerProvider.cs" />
-    <None Include="app.config" />
-    <None Include="Game.ico" />
-    <None Include="GameThumbnail.png" />
+    <Compile Include="IChunkSizePolicy.cs" />
+    <Compile Include="IPerformancePolicy.cs" />
+    <Compile Include="IRelativeChunkRendering.cs" />
+    <Compile Include="MainMenu\BackgroundCubeEntity.cs" />
+    <Compile Include="MainMenu\LoadWorld.cs" />
+    <Compile Include="MainMenu\MenuWorld.cs" />
+    <Compile Include="MainMenu\ScatterBackground.cs" />
+    <Compile Include="MainMenu\TitleMenu.cs" />
+    <Compile Include="MainMenu\TitleWorld.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="RelativeRenderInformation.cs" />
+    <Compile Include="TychaiaGame.cs" />
+    <Compile Include="TychaiaGameWorld.cs" />
+    <Compile Include="TychaiaIoCModule.cs" />
+    <Compile Include="TychaiaSkin.cs" />
+    <Compile Include="TychaiaWorldManager.cs" />
+    <Compile Include="Utility\Cube.cs" />
+    <Compile Include="Utility\Direction.cs" />
     <None Include="..\Other\OpenTK.dll.config">
       <Link>OpenTK.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -80,5 +62,32 @@
       <Link>WorldConfig.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="app.config" />
+    <None Include="Game.ico" />
+    <None Include="GameThumbnail.png" />
+    <None Include="Generators\ChunkProvider.cs" />
+    <None Include="Generators\ChunkRenderer.cs" />
+    <None Include="Generators\RenderingBuffers.cs" />
+    <None Include="Generators\UniqueRenderCache.cs" />
+    <None Include="Legacy\DebugTracker.cs" />
+    <None Include="Legacy\Elements\Region.cs" />
+    <None Include="Legacy\Elements\World.cs" />
+    <None Include="Legacy\IsometricWorldManager.cs" />
+    <None Include="Legacy\RenderTargetFactory.cs" />
+    <None Include="Legacy\RPGWorld.cs" />
+    <None Include="Legacy\RuntimeGame.cs" />
+    <None Include="Legacy\Tiles\DirtTile.cs" />
+    <None Include="Legacy\Tiles\GrassLeafTile.cs" />
+    <None Include="Legacy\Tiles\GrassTile.cs" />
+    <None Include="Legacy\Tiles\LavaTile.cs" />
+    <None Include="Legacy\Tiles\LeafGreyTile.cs" />
+    <None Include="Legacy\Tiles\LeafTile.cs" />
+    <None Include="Legacy\Tiles\SandGrassTile.cs" />
+    <None Include="Legacy\Tiles\SandTile.cs" />
+    <None Include="Legacy\Tiles\SnowTile.cs" />
+    <None Include="Legacy\Tiles\StoneTile.cs" />
+    <None Include="Legacy\Tiles\TrunkTile.cs" />
+    <None Include="Legacy\Tiles\WaterTile.cs" />
+    <None Include="Legacy\TitleButton.cs" />
   </Files>
 </Project>

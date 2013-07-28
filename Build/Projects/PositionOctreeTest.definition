@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Project
-  Name="PositionOctreeTest"
-  Path="PositionOctreeTest"
-  Type="Console">
-  
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="PositionOctreeTest" Path="PositionOctreeTest" Type="Console">
   <References>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -12,7 +8,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Protogame.Structure" />
+    <Reference Include="Protogame" />
   </References>
   <Files>
     <Compile Include="Program.cs" />

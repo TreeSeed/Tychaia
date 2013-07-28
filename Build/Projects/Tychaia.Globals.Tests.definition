@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Project
-  Name="Tychaia.Globals.Tests"
-  Path="Tychaia.Globals.Tests"
-  Type="Tests">
-  
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="Tychaia.Globals.Tests" Path="Tychaia.Globals.Tests" Type="Tests">
   <References>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -16,10 +12,10 @@
     <Reference Include="Ninject" />
   </References>
   <Files>
-    <Compile Include="IoCTests.cs" />
-    <Compile Include="Dummies\IFoo.cs" />
+    <Compile Include="Dummies\Bar.cs" />
     <Compile Include="Dummies\Foo.cs" />
     <Compile Include="Dummies\IBar.cs" />
-    <Compile Include="Dummies\Bar.cs" />
+    <Compile Include="Dummies\IFoo.cs" />
+    <Compile Include="IoCTests.cs" />
   </Files>
 </Project>

@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Project
-  Name="TychaiaWorldGenViewerAlgorithm"
-  Path="TychaiaWorldGenViewerAlgorithm"
-  Type="GUI">
-  
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="TychaiaWorldGenViewerAlgorithm" Path="TychaiaWorldGenViewerAlgorithm" Type="GUI">
   <References>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -23,8 +19,6 @@
     <Reference Include="Tychaia.Threading" />
   </References>
   <Files>
-    <Compile Include="IoCModule.cs" />
-    <Compile Include="FlowProcessingPipeline.cs" />
     <Compile Include="AnalyseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -43,44 +37,46 @@
     <Compile Include="FlowForm.Designer.cs">
       <DependentUpon>FlowForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FlowProcessingPipeline.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="RenderingLocationProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
     <Compile Include="RenameDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="RenameDialog.Designer.cs">
       <DependentUpon>RenameDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="RenderingLocationProvider.cs" />
     <Compile Include="TraceForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="TraceForm.Designer.cs">
       <DependentUpon>TraceForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TychaiaWorldGenViewerAlgorithmIoCModule.cs" />
     <Compile Include="UsefulExtensions.cs" />
     <EmbeddedResource Include="disk.png" />
     <EmbeddedResource Include="disk-rename.png" />
-    <EmbeddedResource Include="time.png" />
     <EmbeddedResource Include="folder-open-document.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <EmbeddedResource Include="time.png" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
   </Files>
 </Project>

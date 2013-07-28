@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Substrate;
 using Substrate.Core;
 using System.IO;
 using Substrate.Nbt;
-using Tychaia.Generators;
 
 namespace MinecraftExport
 {
@@ -116,6 +112,8 @@ namespace MinecraftExport
 
         static void FlatChunk(ChunkRef chunk, int height)
         {
+            #if NOT_MIGRATED
+        
             // Get the data from the generator.
             int[] data = ChunkProvider.GetData(chunk.LocalX * 16, chunk.LocalZ * 16, 0);
 
@@ -162,6 +160,8 @@ namespace MinecraftExport
                     }
                 }
             }
+            
+            #endif
         }
     }
 }

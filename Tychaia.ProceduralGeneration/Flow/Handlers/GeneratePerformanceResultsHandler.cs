@@ -12,10 +12,19 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
 {
     public class GeneratePerformanceResultsHandler
     {
+        private ICurrentWorldSeedProvider m_CurrentWorldSeedProvider;
+        private IRenderingLocationProvider m_RenderingLocationProvider;
+    
+        public GeneratePerformanceResultsHandler(
+            ICurrentWorldSeedProvider currentWorldSeedProvider,
+            IRenderingLocationProvider renderingLocationProvider)
+        {
+            this.m_CurrentWorldSeedProvider = currentWorldSeedProvider;
+            this.m_RenderingLocationProvider = renderingLocationProvider;
+        }
+    
         public void Handle(StorageLayer layer, Action<FlowProcessingResponse> put)
         {
-            var seedProvider = IoC.Kernel.Get<ICurrentWorldSeedProvider>();
-
             HandlerHelper.SendStartMessage(
                 "Performance\r\ntesting...",
                 FlowProcessingRequestType.GenerateRuntimeBitmap,
@@ -29,7 +38,7 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
 
             // Perform conversions.
             var runtime = StorageAccess.ToRuntime(layer);
-            runtime.SetSeed(seedProvider.Seed);
+            runtime.SetSeed(this.m_CurrentWorldSeedProvider.Seed);
             IGenerator compiled = null;
             try
             {
@@ -129,13 +138,12 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
             // Use the compiled layer to re-render the output.
             if (compiled != null)
             {
-                var provider = IoC.Kernel.Get<IRenderingLocationProvider>();
                 compiledBitmap = AlgorithmFlowImageGeneration.RegenerateImageForLayer(
                     layer,
-                    seedProvider.Seed,
-                    provider.X,
-                    provider.Y,
-                    provider.Z,
+                    this.m_CurrentWorldSeedProvider.Seed,
+                    this.m_RenderingLocationProvider.X,
+                    this.m_RenderingLocationProvider.Y,
+                    this.m_RenderingLocationProvider.Z,
                     64, 64, 64, true);
             }
 

@@ -276,7 +276,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             var parameters = new CompilerParameters(new string[]
             {
                 Assembly.GetExecutingAssembly().Location,
-                typeof(Protogame.Noise.PerlinNoise).Assembly.Location,
+                typeof(Protogame.PerlinNoise).Assembly.Location,
                 typeof(Tychaia.Threading.InlineTaskPipeline<>).Assembly.Location,
                 "System.Core.dll"
             });

@@ -1,15 +1,16 @@
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Graphics;
-using Tychaia.Globals;
-using Protogame;
 using Microsoft.Xna.Framework;
-using System.Collections.Concurrent;
-using System.Threading;
+using Microsoft.Xna.Framework.Graphics;
+using Protogame;
+using Tychaia.Globals;
 
-namespace Tychaia.Generators
+namespace Tychaia
 {
     public static class ChunkRenderer
     {
@@ -137,7 +138,7 @@ namespace Tychaia.Generators
         private static RenderState m_CurrentRenderState = null;
         private static Random m_DebugRandomizer = new Random();
 
-        private static void RenderTilesToTexture(RenderTask task, GameTime gt, GameContext context)
+        private static void RenderTilesToTexture(RenderTask task, GameTime gt, IGameContext gameContext)
         {
             /* Our world is laid out in memory in terms of X / Y, but
              * we are rendering isometric, which means that the rendering
@@ -338,9 +339,9 @@ namespace Tychaia.Generators
                 bs.ColorBlendFunction = BlendFunction.Max;
                 bs.ColorSourceBlend = Blend.One;
                 bs.ColorDestinationBlend = Blend.One;
-                m_CurrentRenderState.SpriteBatch.Begin(SpriteSortMode.Immediate, bs, null, null, null, context.Effects["IsometricDepthMap"]);
-                context.Effects["IsometricDepthMap"].Parameters["RotationMode"].SetValue(RenderToNE);
-                context.Effects["IsometricDepthMap"].CurrentTechnique.Passes[0].Apply();
+                m_CurrentRenderState.SpriteBatch.Begin(SpriteSortMode.Immediate, bs, null, null, null, gameContext.Effects["IsometricDepthMap"]);
+                gameContext.Effects["IsometricDepthMap"].Parameters["RotationMode"].SetValue(RenderToNE);
+                gameContext.Effects["IsometricDepthMap"].CurrentTechnique.Passes[0].Apply();
                 int count = 0;
                 int zcount = 0;
                 while (m_CurrentRenderState.CurrentZ < m_CurrentRenderState.ZTop && gt.ElapsedGameTime.TotalMilliseconds < Performance.RENDERING_MILLISECONDS)
@@ -371,8 +372,8 @@ namespace Tychaia.Generators
 
                         if (t.Image == null)
                             continue;
-                        context.Effects["IsometricDepthMap"].Parameters["CellDepth"].SetValue((float)Math.Min(depth / 255f, 1.0f));
-                        context.Effects["IsometricDepthMap"].CurrentTechnique.Passes[0].Apply();
+                        gameContext.Effects["IsometricDepthMap"].Parameters["CellDepth"].SetValue((float)Math.Min(depth / 255f, 1.0f));
+                        gameContext.Effects["IsometricDepthMap"].CurrentTechnique.Passes[0].Apply();
                         m_CurrentRenderState.SpriteBatch.Draw(
                             task.Textures[t.Image + ".isometric.top"],
                             new Rectangle(rx, ry, TileIsometricifier.TILE_TOP_WIDTH, TileIsometricifier.TILE_TOP_HEIGHT),
@@ -549,7 +550,7 @@ namespace Tychaia.Generators
             m_GraphicsDevice = device;
         }
 
-        public static void ProcessSingle(GameTime gt, GameContext context)
+        public static void ProcessSingle(GameTime gt, IGameContext gameContext)
         {
             RenderTask rt;
             if (m_Tasks.Count == 0 && m_CurrentRenderState == null)
@@ -564,10 +565,10 @@ namespace Tychaia.Generators
                 m_Tasks.RemoveAt(0);
             }
 
-            RenderTilesToTexture(rt, gt, context);
+            RenderTilesToTexture(rt, gt, gameContext);
         }
 
-        public static RenderTask PushForRendering(Chunk chunk, GameContext context)
+        public static RenderTask PushForRendering(Chunk chunk, IGameContext gameContext)
         {
             RenderTask rt = new RenderTask()
             {
@@ -575,7 +576,7 @@ namespace Tychaia.Generators
                 Result = null,
                 DepthMap = null,
                 Chunk = chunk,
-                Textures = context.Textures
+                Textures = gameContext.Textures
             };
             m_Tasks.Add(rt);
             return rt;

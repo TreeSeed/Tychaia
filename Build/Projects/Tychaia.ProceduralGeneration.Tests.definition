@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Project
-  Name="Tychaia.ProceduralGeneration.Tests"
-  Path="Tychaia.ProceduralGeneration.Tests"
-  Type="Tests">
-  
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="Tychaia.ProceduralGeneration.Tests" Path="Tychaia.ProceduralGeneration.Tests" Type="Tests">
   <References>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
@@ -14,17 +10,17 @@
     <Reference Include="ICSharpCode.NRefactory" />
   </References>
   <Files>
+    <Compile Include="AlgorithmConstantTest.cs" />
+    <Compile Include="AlgorithmIncrementWaterDistanceTest.cs" />
+    <Compile Include="AlgorithmInitialBoolTest.cs" />
     <Compile Include="AlgorithmPassthroughTest.cs" />
     <Compile Include="AlgorithmZoomTest.cs" />
+    <Compile Include="BorderTests.cs" />
     <Compile Include="CompilerTest.cs" />
     <Compile Include="CompilerTests.cs" />
-    <Compile Include="SkewTests.cs" />
-    <Compile Include="TestForAttribute.cs" />
-    <Compile Include="AlgorithmConstantTest.cs" />
-    <Compile Include="AlgorithmInitialBoolTest.cs" />
-    <Compile Include="BorderTests.cs" />
-    <Compile Include="AlgorithmIncrementWaterDistanceTest.cs" />
     <Compile Include="ContinuityTests.cs" />
     <Compile Include="RangedLayerTests.cs" />
+    <Compile Include="SkewTests.cs" />
+    <Compile Include="TestForAttribute.cs" />
   </Files>
 </Project>

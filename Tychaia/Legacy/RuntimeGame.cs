@@ -1,0 +1,141 @@
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
+using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Protogame;
+using Tychaia.Globals;
+using Tychaia.Generators;
+using Tychaia.Title;
+
+namespace Tychaia
+{
+    /// <summary>
+    /// This is the main type for your game
+    /// </summary>
+    public class RuntimeGame : CoreGame<TitleWorld, IsometricWorldManager>
+    {
+        public static GraphicsDevice DeviceForStateValidationOutput = null;
+        public static IGameContext ContextForStateValidationOutput = null;
+        public static object LockForStateValidationOutput = new object();
+
+        public bool HasTicked { get; private set; }
+
+        public RuntimeGame() : base(IoC.Kernel)
+        {
+            this.m_GameContext.SetScreenSize(1024, 768);
+            //this.m_GameContext.Graphics.ToggleFullScreen();
+            Static.GraphicsDevice = this.m_GameContext.Graphics.GraphicsDevice;
+            Static.GameContext = this.m_GameContext;
+
+            // Set the Ogmo Editor to focus on this object.
+            //OgmoConnect.FocusedObject = new OgmoState(this);
+        }
+
+        /// <summary>
+        /// Allows the game to perform any initialization it needs to before starting to run.
+        /// This is where it can query for any required services and load any non-graphic
+        /// related content.  Calling base.Initialize will enumerate through any components
+        /// and initialize them as well.
+        /// </summary>
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            this.Window.Title = "Tychaia";
+            this.IsMouseVisible = true;
+            //this.IsFixedTimeStep = false;
+            DeviceForStateValidationOutput = this.GraphicsDevice;
+            ContextForStateValidationOutput = this.m_GameContext;
+            RenderingBuffers.Initialize(this.m_GameContext);
+            ChunkRenderer.Initialize(this.m_GameContext.Graphics.GraphicsDevice);
+            ChunkProvider.Initialize();
+            this.Window.ClientSizeChanged += HandleClientSizeChanged;
+        }
+
+        /// <summary>
+        /// Handles when the client screen size changes, reinitializing any backing buffers.
+        /// </summary>
+        protected virtual void HandleClientSizeChanged (object sender, EventArgs e)
+        {
+            RenderingBuffers.Initialize(this.m_GameContext);
+        }
+
+        /// <summary>
+        /// LoadContent will be called once per game and is the place to load
+        /// all of your content.
+        /// </summary>
+        protected override void LoadContent()
+        {
+            // Load protogame's content.
+            base.LoadContent();
+
+            // Load all the textures.
+            this.m_GameContext.LoadFont("Arial");
+            this.m_GameContext.LoadFont("SmallArial");
+            this.m_GameContext.LoadFont("TitleFont");
+            this.m_GameContext.LoadFont("SubtitleFont");
+            this.m_GameContext.LoadFont("ButtonFont");
+            this.m_GameContext.LoadEffect("IsometricDepthMap");
+            this.m_GameContext.LoadTexture("tiles.water");
+            this.m_GameContext.LoadTexture("tiles.grass");
+            this.m_GameContext.LoadTexture("tiles.grass_back");
+            this.m_GameContext.LoadTexture("tiles.snow");
+            this.m_GameContext.LoadTexture("tiles.lava");
+            this.m_GameContext.LoadTexture("tiles.stone");
+            this.m_GameContext.LoadTexture("tiles.dirt");
+            this.m_GameContext.LoadTexture("tiles.sand");
+            this.m_GameContext.LoadTexture("tiles.trunk");
+            this.m_GameContext.LoadTexture("tiles.leaf");
+            this.m_GameContext.LoadTexture("tiles.leafgrey");
+            this.m_GameContext.LoadTexture("tiles.grassleaf");
+            this.m_GameContext.LoadTexture("tiles.sandgrass");
+            this.m_GameContext.LoadTexture("ui.frame");
+            this.m_GameContext.LoadTexture("ui.health");
+            this.m_GameContext.LoadTexture("ui.mana");
+            this.m_GameContext.LoadTexture("chars.player.player");
+
+            // Isometricify tiles.
+            TileIsometricifier.Isometricify("tiles.water", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.grass", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.snow", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.lava", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.stone", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.dirt", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.sand", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.trunk", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.leaf", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.leafgrey", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.grassleaf", this.m_GameContext);
+            TileIsometricifier.Isometricify("tiles.sandgrass", this.m_GameContext);
+        }
+
+        /// <summary>
+        /// UnloadContent will be called once per game and is the place to unload
+        /// all content.
+        /// </summary>
+        protected override void UnloadContent()
+        {
+            // TODO: Unload any non ContentManager content here
+            base.UnloadContent();
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            lock (LockForStateValidationOutput)
+            {
+ 	            base.Draw(gameTime);
+            }
+
+            // Indicate that we have drawn at least one frame.
+            this.HasTicked = true;
+
+            // Unload unused chunks from memory.
+            ChunkProvider.DiscardUnneededChunks();
+            ChunkRenderer.DiscardUnusedChunks();
+        }
+    }
+}

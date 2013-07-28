@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Protogame;
-using Microsoft.Xna.Framework.Input;
 using Tychaia.Globals;
 
 namespace Tychaia.Game
@@ -18,8 +13,7 @@ namespace Tychaia.Game
             private set;
         }
 
-        public Player(World world)
-            : base(world)
+        public Player(IWorld world) : base(world)
         {
             this.Images = this.GetTexture("chars.player.player");
             this.Width = 16;
@@ -28,8 +22,8 @@ namespace Tychaia.Game
             this.ImageOffsetY = 15;
             this.MovementSpeed = 2;
         }
-
-        public override void Update(World world)
+        
+        public override void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
             //this.X = 0;// (float)(0 + Math.Sin(this.m_RotateCounter) * 100);
             //this.Y = 0;
@@ -43,7 +37,7 @@ namespace Tychaia.Game
             this.m_RotateCounter += 0.1;
             FilteredConsole.WriteLine(FilterCategory.Player, "player x/y/z is " + X + ", " + Y + "," + Z + ".");
 
-            base.Update(world);
+            base.Update(gameContext, updateContext);
         }
 
         public bool SearchForTerrain { get; set; }

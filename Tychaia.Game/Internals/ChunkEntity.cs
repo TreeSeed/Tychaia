@@ -1,18 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Protogame;
-using Microsoft.Xna.Framework;
 
 namespace Tychaia.Game
 {
     public class ChunkEntity : Entity
     {
-        private World m_World = null;
+        private IWorld m_World = null;
         private float m_Z = 0;
 
-        protected ChunkEntity(World world)
+        protected ChunkEntity(IWorld world)
         {
             this.m_World = world;
             base.X = 0;
@@ -41,11 +37,6 @@ namespace Tychaia.Game
         {
             get;
             set;
-        }
-
-        public override T CollidesAt<T>(World world, int x, int y)
-        {
-            throw new InvalidOperationException();
         }
     }
 }

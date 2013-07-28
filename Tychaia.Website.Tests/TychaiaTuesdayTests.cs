@@ -27,7 +27,6 @@ namespace Tychaia.Website.Tests
                 Previous = null
             };
             var kernel = new MoqMockingKernel();
-            IoC.ReplaceKernel(kernel);
             kernel.Unbind<IPhabricator>();
             var mock = kernel.GetMock<IPhabricator>();
             mock.Setup(m => m.GetTychaiaTuesdayIssue(It.IsAny<ConduitClient>(), 1)).Returns(issue);

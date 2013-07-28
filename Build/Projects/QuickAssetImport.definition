@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="QuickAssetImport" Path="QuickAssetImport" Type="Console">
+  <References>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Protogame" />
+    <Reference Include="System" />
+  </References>
+  <Files>
+    <Compile Include="Main.cs" />
+  </Files>
+</Project>

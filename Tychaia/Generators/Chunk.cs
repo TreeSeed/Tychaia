@@ -1,17 +1,15 @@
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Protogame;
-using System.Threading;
-using Microsoft.Xna.Framework;
-using Tychaia.Title;
 using Microsoft.Xna.Framework.Graphics;
-using Tychaia.Globals;
-using Protogame.Structure;
 using Tychaia.Disk;
+using Tychaia.Globals;
 
-namespace Tychaia.Generators
+namespace Tychaia
 {
     public class Chunk
     {
@@ -24,14 +22,16 @@ namespace Tychaia.Generators
         public readonly long X;
         public readonly long Y;
         public readonly long Z;
-        public Block[, ,] m_Blocks = null;
+        public BlockAsset[, ,] m_Blocks = null;
         public int[] m_RawData = null;
         private static object m_AccessLock = new object();
         private int m_Seed = MenuWorld.m_StaticSeed; // All chunks are generated from the same seed.
         private bool m_IsGenerating = false;
         private bool m_IsGenerated = false;
+        #if NOT_MIGRATED
         private ChunkRenderer.RenderTask m_RenderTask = null;
         private UniqueRenderCache.UniqueRender m_UniqueRender = null;
+        #endif
         private ChunkOctree m_Octree = null;
         private ILevel m_DiskLevel = null;
 
@@ -42,7 +42,7 @@ namespace Tychaia.Generators
             this.Y = y;
             this.Z = z;
             this.m_Octree.Set(this);
-            this.m_Blocks = new Block[Chunk.Width, Chunk.Height, Chunk.Depth];
+            this.m_Blocks = new BlockAsset[Chunk.Width, Chunk.Height, Chunk.Depth];
             this.m_RawData = new int[Chunk.Width * Chunk.Height * Chunk.Depth];
             this.m_DiskLevel = level;
             FilteredConsole.WriteLine(FilterCategory.ChunkValidation, "Chunk created for " + x + ", " + y + ", " + z + ".");
@@ -61,6 +61,7 @@ namespace Tychaia.Generators
         {
             get
             {
+                #if NOT_MIGRATED
                 if (!this.m_IsGenerated)
                 {
                     this.Generate();
@@ -90,7 +91,7 @@ namespace Tychaia.Generators
                                 // The unique render cache thinks we're rendering, but
                                 // in reality it's been previously optimized out.  Therefore
                                 // we need to restart the rendering task.
-                                this.m_RenderTask = ChunkRenderer.PushForRendering(this, Static.GameContext);
+                                this.m_RenderTask = ChunkRenderer.PushForRendering(this, null/*Static.GameContext*/);
                             }
                         }
                         else
@@ -104,7 +105,7 @@ namespace Tychaia.Generators
                         // There is no render even available for this data; start
                         // processing for it.
                         UniqueRenderCache.StoreWaiting(this.m_RawData);
-                        this.m_RenderTask = ChunkRenderer.PushForRendering(this, Static.GameContext);
+                        this.m_RenderTask = ChunkRenderer.PushForRendering(this, null/*Static.GameContext*/);
                     }
                 }
                 if (this.m_UniqueRender != null)
@@ -115,6 +116,9 @@ namespace Tychaia.Generators
                 this.m_UniqueRender = UniqueRenderCache.Store(this.m_RawData, this.m_RenderTask.Result, this.m_RenderTask.DepthMap);
                 this.m_RenderTask = null;
                 return this.m_UniqueRender.Target;
+                #else
+                return null;
+                #endif
             }
         }
 
@@ -122,6 +126,7 @@ namespace Tychaia.Generators
         {
             get
             {
+                #if NOT_MIGRATED
                 if (!this.m_IsGenerated)
                 {
                     this.Generate();
@@ -148,7 +153,7 @@ namespace Tychaia.Generators
                         // There is no render even available for this data; start
                         // processing for it.
                         UniqueRenderCache.StoreWaiting(this.m_RawData);
-                        this.m_RenderTask = ChunkRenderer.PushForRendering(this, Static.GameContext);
+                        this.m_RenderTask = ChunkRenderer.PushForRendering(this, null/*Static.GameContext*/);
                     }
                 }
                 if (this.m_UniqueRender != null)
@@ -159,11 +164,15 @@ namespace Tychaia.Generators
                 this.m_UniqueRender = UniqueRenderCache.Store(this.m_RawData, this.m_RenderTask.Result, this.m_RenderTask.DepthMap);
                 this.m_RenderTask = null;
                 return this.m_UniqueRender.DepthMap;
+                #else
+                return null;
+                #endif
             }
         }
 
         public void DiscardTexture()
         {
+            #if NOT_MIGRATED
             // Force the graphics texture to be discarded.
             if (this.m_RenderTask != null)
             {
@@ -183,6 +192,7 @@ namespace Tychaia.Generators
 
             // Send message about texture being discarded.
             FilteredConsole.WriteLine(FilterCategory.GraphicsMemoryUsage, "Textures discarded for chunk " + this.X + ", " + this.Y + ".");
+            #endif
         }
 
         public Chunk West
@@ -300,6 +310,7 @@ namespace Tychaia.Generators
                 Bounds = new Cube(this.X / Scale.CUBE_X, this.Y / Scale.CUBE_Y, this.Z / Scale.CUBE_Z,
                     Chunk.Width, Chunk.Height, Chunk.Depth)
             };
+            #if NOT_MIGRATED
             ChunkProvider.FillChunk(this, this.m_RawData, this.m_Blocks, i, () =>
                 {
                     this.m_IsGenerating = false;
@@ -308,6 +319,7 @@ namespace Tychaia.Generators
                     this.m_IsGenerated = true;
                     this.m_IsGenerating = false;
                 });
+            #endif
         }
     }
 

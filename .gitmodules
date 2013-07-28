@@ -25,3 +25,6 @@
 [submodule "Libraries/Dx"]
 	path = Libraries/Dx
 	url = git://github.com/hach-que/Dx.git
+[submodule "Protogame"]
+	path = Protogame
+	url = git://github.com/hach-que/Protogame.git

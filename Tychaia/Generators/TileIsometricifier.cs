@@ -1,12 +1,14 @@
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
-using Microsoft.Xna.Framework;
 
-namespace Tychaia.Generators
+namespace Tychaia
 {
     public static class TileIsometricifier
     {
@@ -24,25 +26,26 @@ namespace Tychaia.Generators
         public static int TILE_LEFT = -23 * 2;
         public static int TILE_TOP = 10 * 2;
 
-        public static void Isometricify(string name, GameContext context)
+        #if NOT_MIGRATED
+        public static void Isometricify(string name, IGameContext gameContext)
         {
-            Texture2D original = context.Textures[name];
+            Texture2D original = gameContext.Textures[name];
 
             #region Top Tile Generation
 
             // First rotate.
             int rotSize = (int)Math.Sqrt(Math.Pow(original.Width, 2) + Math.Pow(original.Height, 2));
             RenderTarget2D rotatedTarget = RenderTargetFactory.Create(
-                context.Graphics.GraphicsDevice,
+                gameContext.Graphics.GraphicsDevice,
                 31,
                 31,
                 true,
-                context.Graphics.GraphicsDevice.DisplayMode.Format,
+                gameContext.Graphics.GraphicsDevice.DisplayMode.Format,
                 DepthFormat.Depth24);
-            context.Graphics.GraphicsDevice.SetRenderTarget(rotatedTarget);
-            context.Graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
-            context.SpriteBatch.Begin();
-            context.SpriteBatch.Draw(
+            gameContext.Graphics.GraphicsDevice.SetRenderTarget(rotatedTarget);
+            gameContext.Graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
+            gameContext.SpriteBatch.Begin();
+            gameContext.SpriteBatch.Draw(
                 original,
                 new Rectangle(0, 0, rotSize, rotSize),
                 null,
@@ -52,28 +55,28 @@ namespace Tychaia.Generators
                 new Vector2(-8, 8),
                 SpriteEffects.None,
                 0);
-            context.SpriteBatch.End();
-            context.Graphics.GraphicsDevice.SetRenderTarget(null);
+            gameContext.SpriteBatch.End();
+            gameContext.Graphics.GraphicsDevice.SetRenderTarget(null);
 
             // Then squash.
             RenderTarget2D squashedTarget = RenderTargetFactory.Create(
-                context.Graphics.GraphicsDevice,
+                gameContext.Graphics.GraphicsDevice,
                 TILE_TOP_WIDTH,
                 TILE_TOP_HEIGHT,
                 true,
-                context.Graphics.GraphicsDevice.DisplayMode.Format,
+                gameContext.Graphics.GraphicsDevice.DisplayMode.Format,
                 DepthFormat.Depth24);
-            context.Graphics.GraphicsDevice.SetRenderTarget(squashedTarget);
-            context.Graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
-            context.SpriteBatch.Begin();
-            context.SpriteBatch.Draw(
+            gameContext.Graphics.GraphicsDevice.SetRenderTarget(squashedTarget);
+            gameContext.Graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
+            gameContext.SpriteBatch.Begin();
+            gameContext.SpriteBatch.Draw(
                 rotatedTarget,
                 new Rectangle(0, 0, TILE_TOP_WIDTH, TILE_TOP_HEIGHT),
                 new Rectangle(0, 0, rotatedTarget.Width, rotatedTarget.Height),
                 Color.White
             );
-            context.SpriteBatch.End();
-            context.Graphics.GraphicsDevice.SetRenderTarget(null);
+            gameContext.SpriteBatch.End();
+            gameContext.Graphics.GraphicsDevice.SetRenderTarget(null);
 
             #endregion
 
@@ -86,24 +89,24 @@ namespace Tychaia.Generators
             m.M21 = 0.0f;
             m.M22 = 1.0f;
             RenderTarget2D shearedLeftTarget = RenderTargetFactory.Create(
-                context.Graphics.GraphicsDevice,
+                gameContext.Graphics.GraphicsDevice,
                 TILE_SIDE_WIDTH,
                 TILE_SIDE_HEIGHT,
                 true,
-                context.Graphics.GraphicsDevice.DisplayMode.Format,
+                gameContext.Graphics.GraphicsDevice.DisplayMode.Format,
                 DepthFormat.Depth24);
-            context.Graphics.GraphicsDevice.SetRenderTarget(shearedLeftTarget);
-            context.Graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
-            context.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, m);
-            context.SpriteBatch.Draw(
+            gameContext.Graphics.GraphicsDevice.SetRenderTarget(shearedLeftTarget);
+            gameContext.Graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
+            gameContext.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, m);
+            gameContext.SpriteBatch.Draw(
                 original,
                 new Rectangle(0, 0,
                     original.Width * SKEW_SCALE, original.Height * SKEW_SCALE),
                 null,
                 new Color(63, 63, 63)
             );
-            context.SpriteBatch.End();
-            context.Graphics.GraphicsDevice.SetRenderTarget(null);
+            gameContext.SpriteBatch.End();
+            gameContext.Graphics.GraphicsDevice.SetRenderTarget(null);
 
             // Skew with matrix.
             m = Matrix.Identity;
@@ -112,30 +115,31 @@ namespace Tychaia.Generators
             m.M21 = 0.0f;
             m.M22 = 1.0f;
             RenderTarget2D shearedRightTarget = RenderTargetFactory.Create(
-                context.Graphics.GraphicsDevice,
+                gameContext.Graphics.GraphicsDevice,
                 TILE_SIDE_WIDTH,
                 TILE_SIDE_HEIGHT,
                 true,
-                context.Graphics.GraphicsDevice.DisplayMode.Format,
+                gameContext.Graphics.GraphicsDevice.DisplayMode.Format,
                 DepthFormat.Depth24);
-            context.Graphics.GraphicsDevice.SetRenderTarget(shearedRightTarget);
-            context.Graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
-            context.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, m);
-            context.SpriteBatch.Draw(
+            gameContext.Graphics.GraphicsDevice.SetRenderTarget(shearedRightTarget);
+            gameContext.Graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
+            gameContext.SpriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, m);
+            gameContext.SpriteBatch.Draw(
                 original,
                 new Rectangle(0, (int)(original.Height * SKEW_MAGIC),
                     original.Width * SKEW_SCALE, original.Height * SKEW_SCALE),
                 null,
                 new Color(127, 127, 127)
             );
-            context.SpriteBatch.End();
-            context.Graphics.GraphicsDevice.SetRenderTarget(null);
+            gameContext.SpriteBatch.End();
+            gameContext.Graphics.GraphicsDevice.SetRenderTarget(null);
 
             #endregion
 
-            context.Textures.Add(name + ".isometric.top", squashedTarget);
-            context.Textures.Add(name + ".isometric.sideL", shearedLeftTarget);
-            context.Textures.Add(name + ".isometric.sideR", shearedRightTarget);
+            gameContext.Textures.Add(name + ".isometric.top", squashedTarget);
+            gameContext.Textures.Add(name + ".isometric.sideL", shearedLeftTarget);
+            gameContext.Textures.Add(name + ".isometric.sideR", shearedRightTarget);
         }
+        #endif
     }
 }

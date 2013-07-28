@@ -19,7 +19,6 @@ namespace Tychaia.Website.Tests
         public void BuildStatusIsPassedThroughFromBuildServerClass()
         {
             var kernel = new MoqMockingKernel();
-            IoC.ReplaceKernel(kernel);
             kernel.Unbind<IBuildServer>();
             var mock = kernel.GetMock<IBuildServer>();
 

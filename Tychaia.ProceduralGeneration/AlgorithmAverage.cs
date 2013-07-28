@@ -7,7 +7,6 @@ using System;
 using System.Runtime.Serialization;
 using System.ComponentModel;
 using System.Drawing;
-using Protogame.Noise;
 
 namespace Tychaia.ProceduralGeneration
 {

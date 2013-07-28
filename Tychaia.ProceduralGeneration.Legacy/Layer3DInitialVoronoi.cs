@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-using Protogame.Noise;
+using Protogame;
 using MIConvexHull;
-using Protogame.Math;
 
 namespace Tychaia.ProceduralGeneration
 {

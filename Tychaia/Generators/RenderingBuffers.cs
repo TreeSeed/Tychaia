@@ -1,33 +1,34 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
-using Microsoft.Xna.Framework;
 
-namespace Tychaia.Generators
+namespace Tychaia
 {
     public static class RenderingBuffers
     {
         public static RenderTarget2D ScreenBuffer = null;
         public static RenderTarget2D DepthBuffer = null;
 
-        public static void Initialize(GameContext context)
+        public static void Initialize(IGameContext gameContext)
         {
-            ScreenBuffer = RenderTargetFactory.Create(context.Graphics.GraphicsDevice, context.Window.ClientBounds.Width,
-                context.Window.ClientBounds.Height);
-            DepthBuffer = RenderTargetFactory.Create(context.Graphics.GraphicsDevice, context.Window.ClientBounds.Width,
-                context.Window.ClientBounds.Height);
+            ScreenBuffer = RenderTargetFactory.Create(gameContext.Graphics.GraphicsDevice, gameContext.Window.ClientBounds.Width,
+                gameContext.Window.ClientBounds.Height);
+            DepthBuffer = RenderTargetFactory.Create(gameContext.Graphics.GraphicsDevice, gameContext.Window.ClientBounds.Width,
+                gameContext.Window.ClientBounds.Height);
 
             // Forcibly clear the targets to make them transparent.  Under at least Linux,
             // the textures aren't initialized to anything, so they contain garbage graphics
             // data.
-            context.Graphics.GraphicsDevice.SetRenderTarget(ScreenBuffer);
-            context.Graphics.GraphicsDevice.Clear(Color.Transparent);
-            context.Graphics.GraphicsDevice.SetRenderTarget(DepthBuffer);
-            context.Graphics.GraphicsDevice.Clear(Color.Transparent);
-            context.Graphics.GraphicsDevice.SetRenderTarget(null);
+            gameContext.Graphics.GraphicsDevice.SetRenderTarget(ScreenBuffer);
+            gameContext.Graphics.GraphicsDevice.Clear(Color.Transparent);
+            gameContext.Graphics.GraphicsDevice.SetRenderTarget(DepthBuffer);
+            gameContext.Graphics.GraphicsDevice.Clear(Color.Transparent);
+            gameContext.Graphics.GraphicsDevice.SetRenderTarget(null);
         }
     }
 }

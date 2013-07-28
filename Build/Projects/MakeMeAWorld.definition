@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Project
-  Name="MakeMeAWorld"
-  Path="MakeMeAWorld"
-  Type="Website">
-  
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="MakeMeAWorld" Path="MakeMeAWorld" Type="Website">
   <References>
     <Reference Include="System" />
     <Reference Include="System.Web" />
@@ -16,54 +12,54 @@
     <Reference Include="Tychaia.Globals" />
   </References>
   <Files>
+    <Compile Include="BaseGenerator.cs" />
+    <Compile Include="BaseHandler.cs" />
+    <Compile Include="CacheManifestHandler.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ImageGenerator.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BaseHandler.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="BaseGenerator.cs" />
+    <Compile Include="ImageGenerator.cs" />
     <Compile Include="JsonGenerator.cs" />
-    <Compile Include="CacheManifestHandler.cs" />
-    <Content Include="Default.aspx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="_css\bootstrap.min.css" />
     <Content Include="_css\browser.css">
       <DeployService-Deploy>True</DeployService-Deploy>
     </Content>
     <Content Include="_css\main.css" />
     <Content Include="_css\platformer.css" />
-    <Content Include="_js\bootstrap.min.js" />
-    <Content Include="_js\jquery-1.8.3.min.js" />
     <Content Include="_js\BlobBuilder.js" />
-    <Content Include="_js\FileSaver.js" />
+    <Content Include="_js\bootstrap.min.js" />
     <Content Include="_js\canvas-toBlob.js" />
-    <Content Include="_css\bootstrap.min.css" />
-    <Content Include="Web.config" />
-    <Content Include="Global.asax" />
-    <Content Include="_js\mmaw-settings.js" />
-    <Content Include="_js\mmaw-misc.js" />
-    <Content Include="_js\mmaw-rendering.js" />
-    <Content Include="_js\mmaw-ui-main.js" />
+    <Content Include="_js\FileSaver.js" />
+    <Content Include="_js\jquery-1.8.3.min.js" />
     <Content Include="_js\mmaw.js" />
-    <Content Include="_js\mmaw-ui-results.js" />
-    <Content Include="_js\mmaw-ui-processing.js" />
-    <Content Include="_js\mmaw-ui-results-and-processing.js" />
-    <Content Include="_js\mmaw-controller.js" />
-    <Content Include="_js\mmaw-processor.js" />
-    <Content Include="_js\mmaw-server-retriever.js" />
-    <Content Include="_js\mmaw-server-renderer.js" />
     <Content Include="_js\mmaw-client-renderer.js" />
     <Content Include="_js\mmaw-client-retriever.js" />
-    <Content Include="_js\mmaw-sizes.js" />
-    <Content Include="_js\mmaw-ui-main-and-processing.js" />
     <Content Include="_js\mmaw-client-webworker.js" />
-    <Content Include="gmap\index.htm" />
-    <Content Include="gmap\default.css" />
+    <Content Include="_js\mmaw-controller.js" />
+    <Content Include="_js\mmaw-misc.js" />
+    <Content Include="_js\mmaw-processor.js" />
+    <Content Include="_js\mmaw-rendering.js" />
+    <Content Include="_js\mmaw-server-renderer.js" />
+    <Content Include="_js\mmaw-server-retriever.js" />
+    <Content Include="_js\mmaw-settings.js" />
+    <Content Include="_js\mmaw-sizes.js" />
+    <Content Include="_js\mmaw-ui-main.js" />
+    <Content Include="_js\mmaw-ui-main-and-processing.js" />
+    <Content Include="_js\mmaw-ui-processing.js" />
+    <Content Include="_js\mmaw-ui-results.js" />
+    <Content Include="_js\mmaw-ui-results-and-processing.js" />
     <Content Include="api-v1\index.htm" />
+    <Content Include="Default.aspx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Global.asax" />
+    <Content Include="gmap\default.css" />
+    <Content Include="gmap\index.htm" />
+    <Content Include="Web.config" />
     <None Include="..\Other\WorldConfig.xml">
       <Link>WorldConfig.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

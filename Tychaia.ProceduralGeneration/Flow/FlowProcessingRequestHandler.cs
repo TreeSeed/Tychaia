@@ -5,6 +5,7 @@
 //
 using System.Threading;
 using Tychaia.ProceduralGeneration.Flow.Handlers;
+using Tychaia.Globals;
 
 namespace Tychaia.ProceduralGeneration.Flow
 {
@@ -12,12 +13,18 @@ namespace Tychaia.ProceduralGeneration.Flow
     {
         private Thread m_ProcessingThread;
         private volatile IFlowProcessingPipeline m_ProcessingPipeline;
+        private ICurrentWorldSeedProvider m_CurrentWorldSeedProvider;
+        private IRenderingLocationProvider m_RenderingLocationProvider;
 
-        public FlowProcessingRequestHandler()
+        public FlowProcessingRequestHandler(
+            ICurrentWorldSeedProvider currentWorldSeedProvider,
+            IRenderingLocationProvider renderingLocationProvider)
         {
             System.Console.WriteLine("Request handler created.");
             this.m_ProcessingThread = new Thread(this.Run);
             this.m_ProcessingThread.IsBackground = true;
+            this.m_CurrentWorldSeedProvider = currentWorldSeedProvider;
+            this.m_RenderingLocationProvider = renderingLocationProvider;
         }
 
         public void SetPipelineAndStart(IFlowProcessingPipeline pipeline)
@@ -28,8 +35,12 @@ namespace Tychaia.ProceduralGeneration.Flow
 
         public void Run()
         {
-            var generateRuntimeBitmapHandler = new GenerateRuntimeBitmapHandler();
-            var generatePerformanceResultsHandler = new GeneratePerformanceResultsHandler();
+            var generateRuntimeBitmapHandler = new GenerateRuntimeBitmapHandler(
+                this.m_CurrentWorldSeedProvider,
+                this.m_RenderingLocationProvider);
+            var generatePerformanceResultsHandler = new GeneratePerformanceResultsHandler(
+                this.m_CurrentWorldSeedProvider,
+                this.m_RenderingLocationProvider);
             this.m_ProcessingPipeline.OutputPipeline.InputConnect();
             this.m_ProcessingPipeline.InputPipeline.OutputConnect();
 

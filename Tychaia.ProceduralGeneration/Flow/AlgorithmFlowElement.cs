@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Threading;
 using Ninject;
 using Redpoint.FlowGraph;
 using Tychaia.Globals;
@@ -22,6 +21,7 @@ namespace Tychaia.ProceduralGeneration.Flow
         private StorageLayer
             m_Layer;
         private FlowInterfaceControl m_Control;
+        private IFlowProcessingPipeline m_FlowProcessingPipeline;
         [DataMember]
         private List<FlowConnector>
             m_InputConnectors = new List<FlowConnector>();
@@ -52,9 +52,10 @@ namespace Tychaia.ProceduralGeneration.Flow
         private volatile Bitmap m_RuntimeBitmap = null;
         private volatile Bitmap m_CompiledBitmap = null;
 
-        public AlgorithmFlowElement(FlowInterfaceControl control, StorageLayer l)
+        public AlgorithmFlowElement(FlowInterfaceControl control, IFlowProcessingPipeline processingPipeline, StorageLayer l)
         {
             this.m_Control = control;
+            this.m_FlowProcessingPipeline = processingPipeline;
             this.m_Layer = l;
             var attrs = l.Algorithm.GetType().GetCustomAttributes(typeof(FlowDesignerNameAttribute), true);
             this.Name = attrs.Length > 0 ? (attrs[0] as FlowDesignerNameAttribute).Name : l.Algorithm.ToString();
@@ -97,8 +98,8 @@ namespace Tychaia.ProceduralGeneration.Flow
             //this.m_CompiledViewToggleThread.Abort();
         }
 
-        public AlgorithmFlowElement(FlowInterfaceControl control, IAlgorithm algorithm)
-            : this(control, new StorageLayer { Algorithm = algorithm })
+        public AlgorithmFlowElement(FlowInterfaceControl control, IFlowProcessingPipeline processingPipeline, IAlgorithm algorithm)
+            : this(control, processingPipeline, new StorageLayer { Algorithm = algorithm })
         {
         }
 
@@ -114,6 +115,11 @@ namespace Tychaia.ProceduralGeneration.Flow
         public override void SetDeserializationData(FlowInterfaceControl control)
         {
             this.m_Control = control;
+        }
+        
+        public void SetPipeline(IFlowProcessingPipeline processingPipeline)
+        {
+            this.m_FlowProcessingPipeline = processingPipeline;
         }
 
         public FlowConnector[] GetConnectorsForLayer(FlowConnector connector, bool isInput)
@@ -208,9 +214,8 @@ namespace Tychaia.ProceduralGeneration.Flow
         public override void ObjectReprocessRequested()
         {
             // Use pipeline to put a request on for both the runtime
-            // image generation and the performance measurements.
-            var pipeline = IoC.Kernel.Get<IFlowProcessingPipeline>();
-            pipeline.InputPipeline.Put(new FlowProcessingRequest
+                                                                             // image generation and the performance measurements.
+            this.m_FlowProcessingPipeline.InputPipeline.Put(new FlowProcessingRequest
             {
                 RequestType = FlowProcessingRequestType.GenerateRuntimeBitmap,
                 Parameters = new object[] { this.m_Layer }
@@ -219,8 +224,7 @@ namespace Tychaia.ProceduralGeneration.Flow
 
         public void RequestPerformanceStatistics()
         {
-            var pipeline = IoC.Kernel.Get<IFlowProcessingPipeline>();
-            pipeline.InputPipeline.Put(new FlowProcessingRequest
+            this.m_FlowProcessingPipeline.InputPipeline.Put(new FlowProcessingRequest
             {
                 RequestType = FlowProcessingRequestType.GeneratePerformanceResults,
                 Parameters = new object[] { this.m_Layer }

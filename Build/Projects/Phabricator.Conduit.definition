@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Project
-  Name="Phabricator.Conduit"
-  Path="Phabricator.Conduit"
-  Type="Library">
-  
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="Phabricator.Conduit" Path="Phabricator.Conduit" Type="Library">
   <References>
     <Reference Include="System" />
     <Reference Include="System.Web.Extensions" />
@@ -11,8 +7,8 @@
     <Reference Include="Razor" />
   </References>
   <Files>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConduitClient.cs" />
     <Compile Include="ConduitException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </Files>
 </Project>

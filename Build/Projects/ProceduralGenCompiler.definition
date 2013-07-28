@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Project
-  Name="ProceduralGenCompiler"
-  Path="ProceduralGenCompiler"
-  Type="Console">
-  
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="ProceduralGenCompiler" Path="ProceduralGenCompiler" Type="Console">
   <References>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
@@ -11,7 +7,7 @@
     <Reference Include="Tychaia.ProceduralGeneration" />
   </References>
   <Files>
-    <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Main.cs" />
   </Files>
 </Project>

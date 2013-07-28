@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Project
-  Name="Tychaia.Disk.Tychaia"
-  Path="Tychaia.Disk.Tychaia"
-  Type="Library">
-  
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="Tychaia.Disk.Tychaia" Path="Tychaia.Disk.Tychaia" Type="Library">
   <References>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -17,9 +13,9 @@
     <Reference Include="Tychaia.Globals" />
   </References>
   <Files>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TerrainOctree.cs" />
     <Compile Include="TychaiaLevel.cs" />
     <Compile Include="TychaiaLevelAPI.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </Files>
 </Project>

@@ -23,15 +23,15 @@ namespace TychaiaWorldGenViewerAlgorithm
         private int m_PerformanceResultsLeftToCalculate = 0;
         private ToolStripItem c_PerformanceTestStart;
 
-        public FlowForm()
+        public FlowForm(IKernel kernel, FlowProcessingPipeline flowProcessingPipeline)
         {
             // TODO: Expose this in the UI.
             this.Seed = 0xDEADBEEF;
 
             InitializeComponent();
-            IoC.Kernel.Bind<IRenderingLocationProvider>().ToMethod(context => this);
-            IoC.Kernel.Bind<ICurrentWorldSeedProvider>().ToMethod(context => this);
-            this.m_FlowProcessingPipeline = IoC.Kernel.Get<IFlowProcessingPipeline>() as FlowProcessingPipeline;
+            kernel.Bind<IRenderingLocationProvider>().ToMethod(context => this);
+            kernel.Bind<ICurrentWorldSeedProvider>().ToMethod(context => this);
+            this.m_FlowProcessingPipeline = flowProcessingPipeline;
             if (this.m_FlowProcessingPipeline == null)
                 throw new Exception("IFlowProcessingPipeline is not of type FlowProcessingPipeline.");
             this.m_FlowProcessingPipeline.FormConnect(this);
@@ -181,7 +181,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                 // Create algorithm flow elements.
                 this.c_FlowInterfaceControl.Elements.AddRange(
                     layers.Where(v => v != null)
-                          .Select(v => new AlgorithmFlowElement(this.c_FlowInterfaceControl, v) { X = v.EditorX, Y = v.EditorY })
+                          .Select(v => new AlgorithmFlowElement(this.c_FlowInterfaceControl, this.m_FlowProcessingPipeline, v) { X = v.EditorX, Y = v.EditorY })
                 );
                 this.UpdateStatusArea();
             }
@@ -291,7 +291,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             if (this.c_FlowInterfaceControl.SelectedElement == null)
                 return;
 
-            var ef = new ExportForm(this.c_FlowInterfaceControl.SelectedElement);
+            var ef = new ExportForm(this, this.c_FlowInterfaceControl.SelectedElement);
             ef.Show();
         }
 
@@ -413,10 +413,9 @@ namespace TychaiaWorldGenViewerAlgorithm
             object o = ci.Invoke(lo.ToArray());
             this.c_FlowInterfaceControl.AddElementAtMouse(
                 new AlgorithmFlowElement(
-                this.c_FlowInterfaceControl,
-                o as IAlgorithm
-            )
-            );
+                    this.c_FlowInterfaceControl,
+                    this.m_FlowProcessingPipeline,
+                    o as IAlgorithm));
         }
 
         private void CreateMenuItems(ContextMenuStrip menu)

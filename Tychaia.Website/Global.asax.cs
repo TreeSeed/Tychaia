@@ -1,18 +1,20 @@
+using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Routing;
-using System.Web.WebPages.Scope;
-using System.Reflection;
 using System.Web.WebPages;
+using System.Web.WebPages.Scope;
+using Ninject;
 using RazorGenerator.Mvc;
-using System.Web;
 
 namespace Tychaia.Website
 {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode,
-    // visit http://go.microsoft.com/?LinkId=9394801
-
     public class MvcApplication : System.Web.HttpApplication
     {
+        private void RegisterIoC(IKernel kernel)
+        {
+            kernel.Load<TychaiaWebsiteIoCModule>();
+        }
+    
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
@@ -46,8 +48,11 @@ namespace Tychaia.Website
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+            
+            var kernel = new StandardKernel();
+            this.RegisterIoC(kernel);
 
-            ControllerBuilder.Current.SetControllerFactory(new DependencyControllerFactory());
+            ControllerBuilder.Current.SetControllerFactory(new DependencyControllerFactory(kernel));
         }
 
         protected void Application_BeginRequest()

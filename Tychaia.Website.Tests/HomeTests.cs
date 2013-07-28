@@ -19,7 +19,6 @@ namespace Tychaia.Website.Tests
         public void NullFeedIsPassedThroughFromPhabricator()
         {
             var kernel = new MoqMockingKernel();
-            IoC.ReplaceKernel(kernel);
             kernel.Unbind<IPhabricator>();
             var mock = kernel.GetMock<IPhabricator>();
             mock.Setup(m => m.GetFeed("1")).Returns((AtomFeed)null);
@@ -42,7 +41,6 @@ namespace Tychaia.Website.Tests
             expectedFeed.AddEntry(entry);
 
             var kernel = new MoqMockingKernel();
-            IoC.ReplaceKernel(kernel);
             kernel.Unbind<IPhabricator>();
             var mock = kernel.GetMock<IPhabricator>();
             mock.Setup(m => m.GetFeed("1")).Returns(expectedFeed);

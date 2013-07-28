@@ -1,17 +1,17 @@
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Protogame.Structure;
+using Protogame;
 using Tychaia.Globals;
 
-namespace Tychaia.Generators
+namespace Tychaia
 {
     public class ChunkOctree
     {
         private PositionOctree<Chunk> m_Octree = new PositionOctree<Chunk>();
-
-        #region IAlgorithm Members
 
         public Chunk Get(long x, long y, long z)
         {
@@ -30,7 +30,5 @@ namespace Tychaia.Generators
                     throw new InvalidOperationException("Octree did not store data correctly for " + chunk.X / 256 + ", " + chunk.Y / 256 + ", " + chunk.Z / 256 + ".");
             }
         }
-
-        #endregion
     }
 }

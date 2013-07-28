@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Project
-  Name="Tychaia.Disk.Minecraft"
-  Path="Tychaia.Disk.Minecraft"
-  Type="Library">
-  
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="Tychaia.Disk.Minecraft" Path="Tychaia.Disk.Minecraft" Type="Library">
   <References>
     <Reference Include="System" />
     <Reference Include="System.Core" />
