@@ -209,9 +209,9 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
 
     $regenerate_start = microtime(true);
     $regenerate_future = new ExecFuture(
-      csprintf("%C %s",
-        $this->buildEngine,
-        "/p:TargetPlatform=$platform"));
+      "%C %s",
+      $this->buildEngine,
+      "/p:TargetPlatform=$platform");
     $regenerate_future->setCWD(Filesystem::resolvePath(
       $this->projectRoot."/Build"));
     $results = array();
@@ -252,9 +252,9 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
     $results = array();
     foreach ($test_assemblies as $test_assembly) {
       $build_future = new ExecFuture(
-        csprintf("%C %s",
-          $this->buildEngine,
-          "/p:SkipTestsOnBuild=True"));
+        "%C %s",
+        $this->buildEngine,
+        "/p:SkipTestsOnBuild=True");
       $build_future->setCWD(Filesystem::resolvePath(
         $this->projectRoot."/".$test_assembly));
       $build_futures[$test_assembly] = $build_future;
@@ -305,10 +305,11 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
       if (file_exists($xunit_temp)) {
         unlink($xunit_temp);
       }
-      $future = new ExecFuture(csprintf("%C %s /xml %s /silent",
+      $future = new ExecFuture(
+        "%C %s /xml %s /silent",
         $this->runtimeEngine.$this->testEngine,
         $test_assembly."/bin/Debug/".$test_assembly.".dll",
-        $xunit_temp));
+        $xunit_temp);
       $future->setCWD(Filesystem::resolvePath($this->projectRoot));
       $futures[$test_assembly] = $future;
       $outputs[$test_assembly] = $xunit_temp;
