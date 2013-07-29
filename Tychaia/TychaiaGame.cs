@@ -14,6 +14,13 @@ namespace Tychaia
         {
             this.IsMouseVisible = true;
         }
+
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+
+            this.Window.Title = "Tychaia";
+        }
     }
 }
 
