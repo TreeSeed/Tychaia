@@ -12,12 +12,12 @@
   <Files>
     <Compile Include="Descriptions.cs" />
     <Compile Include="Elements\AcidElement.cs" />
-    <Compile Include="Elements\DeathElement.cs" />
+    <Compile Include="Elements\DarkElement.cs" />
     <Compile Include="Elements\EarthElement.cs" />
     <Compile Include="Elements\Element.cs" />
     <Compile Include="Elements\FireElement.cs" />
     <Compile Include="Elements\ForceElement.cs" />
-    <Compile Include="Elements\LifeElement.cs" />
+    <Compile Include="Elements\IceElement.cs" />
     <Compile Include="Elements\LightningElement.cs" />
     <Compile Include="Elements\WaterElement.cs" />
     <Compile Include="Program.cs" />
