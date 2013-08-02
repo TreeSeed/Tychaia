@@ -46,11 +46,11 @@ namespace Tychaia.RuntimeGeneration.Spells
             double rand = r.NextDouble();
             if (rand >= 0.5)
             {
-                return (mod + this.Element.GetWeaponPrefix() + " " + this.Type).Replace("  ", " ");
+                return (mod + this.Element.ToString() + " " + this.Type).Replace("  ", " ");
             }
             else
             {
-                return (mod + this.Element.GetElementName() + " " + this.Type).Replace("  ", " ");
+                return (mod + this.Element.ToString() + " " + this.Type).Replace("  ", " ");
 
             }
         }

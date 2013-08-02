@@ -18,6 +18,5 @@ namespace Tychaia.RuntimeGeneration.Elements
         {
             get { return "--- Error: " + this.ToString() + " Description not set ---"; }
         }
-
     }
 }
