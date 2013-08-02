@@ -14,8 +14,7 @@ namespace Tychaia.Game
         }
 
         public Player(IWorld world) : base(world)
-        {
-            this.Images = this.GetTexture("chars.player.player");
+		{
             this.Width = 16;
             this.Height = 16;
             this.ImageOffsetX = 8;
