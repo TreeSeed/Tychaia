@@ -6,19 +6,19 @@ using System.Text;
 namespace Tychaia.RuntimeGeneration.Elements
 {
     [Rarity(1)]
-    public class LightningElement : Element
+    public class IceElement : Element
     {
         public override string ElementTerm
         {
             get
             {
-                return "Lightning";
+                return "Ice";
             }
         }
 
         public override string ToString()
         {
-            return "Lightning";
+            return "Ice";
         }
     }
 }

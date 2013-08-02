@@ -8,27 +8,11 @@ namespace Tychaia.RuntimeGeneration.Elements
     [Rarity(1)]
     public class FireElement : Element
     {
-        public override string[] WeaponPrefix
+        public override string ElementTerm
         {
             get
             {
-                return new string[] { "Burning", "Flaming", "Searing" };
-            }
-        }
-
-        public override string[] ItemPrefixDamaged
-        {
-            get
-            {
-                return new string[] { "Burnt", "Charred", "Seared" };
-            }
-        }
-
-        public override string[] ElementName
-        {
-            get
-            {
-                return new string[] { "Fire", "Flame", "Inferno", "Heat" };
+                return "Fire";
             }
         }
 

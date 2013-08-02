@@ -8,33 +8,11 @@ namespace Tychaia.RuntimeGeneration.Elements
     [Rarity(1)]
     public class AcidElement : Element
     {
-        public override string[] WeaponPrefix
+        public override string ElementTerm
         {
             get
             {
-                return new string[] { "Corroding", "Acidic", "Venomous" };
-            }
-        }
-
-        public override string[] ItemPrefixDamaged
-        {
-            get
-            {
-                return new string[]
-                {
-                    "Corroded",
-                    "Eroded",
-                    "Poisoned",
-                    "Deteriorated"
-                };
-            }
-        }
-
-        public override string[] ElementName
-        {
-            get
-            {
-                return new string[] { "Acid", "Corrosive", "Caustic", "Toxic"};
+                return "Acid";
             }
         }
 

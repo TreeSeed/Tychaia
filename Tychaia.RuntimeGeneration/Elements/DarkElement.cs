@@ -5,20 +5,20 @@ using System.Text;
 
 namespace Tychaia.RuntimeGeneration.Elements
 {
-    [Rarity(1)]
-    public class LightningElement : Element
+    [Rarity(0.5)]
+    public class DarkElement : Element
     {
         public override string ElementTerm
         {
             get
             {
-                return "Lightning";
+                return "Darkness";
             }
         }
-
+        
         public override string ToString()
         {
-            return "Lightning";
+            return "Dark";
         }
     }
 }
