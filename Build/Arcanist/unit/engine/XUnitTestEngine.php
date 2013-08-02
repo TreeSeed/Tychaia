@@ -80,6 +80,33 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
     }
   }
 
+  public function getAllAvailableTestsAndRelatedProjects($path = null) {
+    if ($path == null) {
+      $path = $this->projectRoot;
+    }
+    $entries = Filesystem::listDirectory($path);
+    $mappings = array();
+    foreach ($entries as $entry) {
+      if (substr($entry, -6) === ".Tests") {
+        if (is_dir($path."/".$entry)) {
+          $mappings[$path."/".$entry] = $path."/".
+            substr($entry, 0, strlen($entry) - 6); 
+        }
+      } elseif (is_dir($path."/".$entry."/Build")) {
+        if (file_exists($path."/".$entry."/Build/Module.xml")) {
+          // The entry is a Protobuild submodule, which we should
+          // also recurse into.
+          $submappings =
+            $this->getAllAvailableTestsAndRelatedProjects($path."/".$entry);
+          foreach ($submappings as $key => $value) {
+            $mappings[$key] = $value;
+          }
+        }
+      }
+    }
+    return $mappings;
+  }
+
   /**
    * Main entry point for the test engine.  Determines what assemblies to
    * build and test based on the files that have changed.
@@ -92,14 +119,11 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
 
     $affected_tests = array();
     if ($this->getRunAllTests()) {
-      // Find all of the .Tests folders in the project root.
-      $entries = Filesystem::listDirectory($this->projectRoot);
-      foreach ($entries as $entry) {
-        if (substr($entry, -6) === ".Tests") {
-          if (is_dir($this->projectRoot."/".$entry)) {
-            $affected_tests[] = $entry;
-          }
-        }
+      echo "Loading tests..."."\n";
+      $entries = $this->getAllAvailableTestsAndRelatedProjects();
+      foreach ($entries as $key => $value) {
+        echo "Test: ".substr($key, strlen($this->projectRoot)+1)."\n";
+        $affected_tests[] = substr($key, strlen($this->projectRoot)+1);
       }
     } else {
       $paths = $this->getPaths();
@@ -308,7 +332,10 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
       $future = new ExecFuture(
         "%C %s /xml %s /silent",
         $this->runtimeEngine.$this->testEngine,
-        $test_assembly."/bin/Debug/".$test_assembly.".dll",
+        str_replace('/', '_', $test_assembly).
+          "/bin/Debug/".
+          str_replace('/', '_', $test_assembly).
+          ".dll",
         $xunit_temp);
       $future->setCWD(Filesystem::resolvePath($this->projectRoot));
       $futures[$test_assembly] = $future;
