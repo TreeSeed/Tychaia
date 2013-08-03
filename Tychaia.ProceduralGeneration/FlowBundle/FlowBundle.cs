@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Tychaia.ProceduralGeneration.FlowBundle
+namespace Tychaia.ProceduralGeneration.FlowBundles
 {
     public struct FlowBundle
     {

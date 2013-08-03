@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Drawing;
 using ICSharpCode.NRefactory.TypeSystem;
 using Mono.CSharp;
-using Tychaia.ProceduralGeneration.FlowBundle;
+using Tychaia.ProceduralGeneration.FlowBundles;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -17,7 +17,7 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Struct)]
     [FlowDesignerName("Initialize Struct")]
-    public class AlgorithmInitialStruct : Algorithm<FlowBundle>
+    public class AlgorithmInitialStruct : Algorithm<FlowBundles>
     {
         [DataMember]
         [DefaultValue(4)]
@@ -48,7 +48,7 @@ namespace Tychaia.ProceduralGeneration
             this.StructSize = 4;
         }
 
-        public override void ProcessCell(IRuntimeContext context, FlowBundle[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(IRuntimeContext context, FlowBundles[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = new FlowBundle(StructSize);
         }
