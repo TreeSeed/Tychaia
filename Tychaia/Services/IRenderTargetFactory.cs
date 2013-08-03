@@ -9,6 +9,9 @@ namespace Tychaia
 {
     public interface IRenderTargetFactory
     {
+        int RenderTargetsUsed { get; }
+        long RenderTargetMemory { get; }
+        
         RenderTarget2D Create(GraphicsDevice graphicsDevice, int width, int height);
         RenderTarget2D Create(GraphicsDevice graphicsDevice, int width, int height, bool mipMap,
             SurfaceFormat preferredFormat, DepthFormat preferredDepthFormat);

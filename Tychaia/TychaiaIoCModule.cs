@@ -3,8 +3,10 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
 //
-using Ninject.Modules;
+using Ninject;
 using Ninject.Extensions.Factory;
+using Ninject.Extensions.Interception.Infrastructure.Language;
+using Ninject.Modules;
 using Protogame;
 
 namespace Tychaia
@@ -24,6 +26,18 @@ namespace Tychaia
             this.Bind<IChunkFactory>().ToFactory();
             this.Bind<ISkin>().To<TychaiaSkin>();
             this.Bind<IRenderTargetFactory>().To<DefaultRenderTargetFactory>().InSingletonScope();
+            
+#if DEBUG
+            var profiler = this.Kernel.Get<TychaiaProfiler>();
+            this.Bind<IProfiler>().ToMethod(x => profiler);
+            this.Bind<TychaiaProfiler>().ToMethod(x => profiler);
+            this.Kernel.Intercept(p => p.Request.Service.IsInterface)
+                .With(new TychaiaProfilingInterceptor(profiler));
+#elif RELEASE
+            this.Bind<IProfiler>().To<NullProfiler>().InSingletonScope();
+#else
+            throw new System.InvalidOperationException("Not in Debug or Release mode.");
+#endif
         }
     }
 }

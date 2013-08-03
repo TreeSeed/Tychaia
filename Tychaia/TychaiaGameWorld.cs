@@ -67,19 +67,6 @@ namespace Tychaia
 
         public void RenderAbove(IGameContext gameContext, IRenderContext renderContext)
         {
-            this.m_RenderUtilities.RenderText(
-                renderContext,
-                new Vector2(8, 8),
-                "FPS: " + gameContext.FPS,
-                this.m_DefaultFont);
-
-            // Draw UI.
-            /*xna.DrawSprite(gameContext.Camera.Width / 2 - xna.SpriteWidth("ui.frame") / 2,
-                gameContext.Camera.Height - xna.SpriteHeight("ui.frame"),
-                "ui.frame");*/
-
-            // Draw debug information.
-            //DebugTracker.Draw(gameContext, this);
         }
 
         public void Update(IGameContext gameContext, IUpdateContext updateContext)
