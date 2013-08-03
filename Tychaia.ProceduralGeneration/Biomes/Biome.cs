@@ -94,5 +94,16 @@ namespace Tychaia.ProceduralGeneration.Biomes
             else
                 return Biomes[hold];
         }
+
+        public static Biome GetSimpleBiomeForCell()
+        {
+            Random r = new Random();
+
+            int b = r.Next(Biomes.Count);
+            
+            Biome biome = Biomes[b];
+
+            return biome;
+        }
     }
 }

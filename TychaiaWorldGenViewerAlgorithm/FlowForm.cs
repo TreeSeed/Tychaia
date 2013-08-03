@@ -23,7 +23,7 @@ namespace TychaiaWorldGenViewerAlgorithm
         private int m_PerformanceResultsLeftToCalculate = 0;
         private ToolStripItem c_PerformanceTestStart;
 
-        public FlowForm(IKernel kernel, FlowProcessingPipeline flowProcessingPipeline)
+        public FlowForm(IKernel kernel, Lazy<FlowProcessingPipeline> flowProcessingPipeline)
         {
             // TODO: Expose this in the UI.
             this.Seed = 0xDEADBEEF;
@@ -31,7 +31,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             InitializeComponent();
             kernel.Bind<IRenderingLocationProvider>().ToMethod(context => this);
             kernel.Bind<ICurrentWorldSeedProvider>().ToMethod(context => this);
-            this.m_FlowProcessingPipeline = flowProcessingPipeline;
+            this.m_FlowProcessingPipeline = flowProcessingPipeline.Value;
             if (this.m_FlowProcessingPipeline == null)
                 throw new Exception("IFlowProcessingPipeline is not of type FlowProcessingPipeline.");
             this.m_FlowProcessingPipeline.FormConnect(this);

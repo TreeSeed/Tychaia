@@ -8,11 +8,11 @@ using System.Drawing;
 
 namespace Tychaia.ProceduralGeneration.Biomes
 {
-    public class WaterBiome : Biome
+    public class PlainsBiome : Biome
     {
-        public WaterBiome()
+        public PlainsBiome()
         {
-            this.BrushColor = Color.Blue;
+            this.BrushColor = Color.YellowGreen;
         }
     }
 }

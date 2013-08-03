@@ -12,8 +12,6 @@ namespace Tychaia.ProceduralGeneration.Biomes
     {
         public GrasslandBiome()
         {
-            this.Rainfall = 0.5;
-            this.Temperature = 0.5;
             this.BrushColor = Color.Green;
         }
     }
