@@ -20,6 +20,8 @@ namespace Tychaia
             this.Bind<IRenderingBuffers>().To<DefaultRenderingBuffers>().InSingletonScope();
             this.Bind<IUniqueRenderCache>().To<DefaultUniqueRenderCache>().InSingletonScope();
             this.Bind<IBackgroundCubeEntityFactory>().ToFactory();
+            this.Bind<IChunkOctreeFactory>().ToFactory();
+            this.Bind<IChunkFactory>().ToFactory();
             this.Bind<ISkin>().To<TychaiaSkin>();
             this.Bind<IRenderTargetFactory>().To<DefaultRenderTargetFactory>().InSingletonScope();
         }

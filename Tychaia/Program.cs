@@ -9,6 +9,7 @@ using Ninject;
 using Process4.Attributes;
 using Protogame;
 using ProtogameAssetManager;
+using Tychaia.Globals;
 
 namespace Tychaia
 {
@@ -22,6 +23,8 @@ namespace Tychaia
             kernel.Load<ProtogameAssetIoCModule>();
             kernel.Load<TychaiaIoCModule>();
             kernel.Load<TychaiaAssetIoCModule>();
+            kernel.Load<TychaiaIsometricIoCModule>();
+            kernel.Load<TychaiaGlobalIoCModule>();
             AssetManagerClient.AcceptArgumentsAndSetup<LocalAssetManagerProvider>(kernel, args);
         
             using (var game = new TychaiaGame(kernel))
