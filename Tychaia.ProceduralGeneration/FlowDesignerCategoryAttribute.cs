@@ -27,6 +27,8 @@ namespace Tychaia.ProceduralGeneration
         Manipulation,
         Debugging,
         Output,
+        [Description("Flow Bundles")]
+        FlowBundle,
         Undefined,
         [Description("Bugged Layers")]
         Buggy,
