@@ -3,15 +3,17 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
 //
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Protogame;
 
 namespace Tychaia
 {
-    public interface IRelativeChunkRendering
+    public interface IRenderingBuffers
     {
-        IEnumerable<RelativeRenderInformation> GetRelativeRenderInformation(IGameContext context, Chunk center, Vector3 focus);
+        RenderTarget2D ScreenBuffer { get; }
+        RenderTarget2D DepthBuffer { get; }
+        
+        void Initialize(IGameContext gameContext);
     }
 }
 

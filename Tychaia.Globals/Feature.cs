@@ -1,0 +1,29 @@
+//
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+//
+
+namespace Tychaia.Globals
+{
+    public enum Feature
+    {
+        RenderEntities,
+        RenderWorld,
+        AutomaticChunkValidation,
+        DepthBuffer,
+        OptimizeChunkProviding,
+        OptimizeChunkRendering,
+        DiscardChunkTextures,
+        IsometricOcclusion,
+        RenderingBuffers,
+        DebugChunkBackground,
+        DebugChunkTiles,
+        DebugMovement,
+        DebugOctreeValidation,
+        DebugOctreeLookup,
+        RenderCellSides,
+        RenderCellTops,
+    }
+}
+

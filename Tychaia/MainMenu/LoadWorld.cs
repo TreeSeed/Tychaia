@@ -13,8 +13,9 @@ namespace Tychaia
         public LoadWorld(
             IRenderUtilities renderUtilities,
             IAssetManagerProvider assetManagerProvider,
+            IBackgroundCubeEntityFactory backgroundCubeEntityFactory,
             ISkin skin)
-            : base(renderUtilities, assetManagerProvider, skin)
+            : base(renderUtilities, assetManagerProvider, backgroundCubeEntityFactory, skin)
         {
             var assetManager = assetManagerProvider.GetAssetManager();
             var returnText = assetManager.Get<LanguageAsset>("language.RETURN");

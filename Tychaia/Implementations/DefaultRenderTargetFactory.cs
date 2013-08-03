@@ -1,40 +1,36 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Tychaia
 {
-    public static class RenderTargetFactory
+    public class DefaultRenderTargetFactory : IRenderTargetFactory
     {
-        //private static List<WeakReference> m_RenderTargets;
-        public static int RenderTargetsUsed
+        public int RenderTargetsUsed
         {
             get;
             private set;
         }
 
-        public static long RenderTargetMemory
+        public long RenderTargetMemory
         {
             get;
             private set;
         }
 
-        private static void rt_Disposing(object sender, EventArgs e)
+        private void rt_Disposing(object sender, EventArgs e)
         {
             RenderTarget2D rt = sender as RenderTarget2D;
             RenderTargetsUsed -= 1;
             RenderTargetMemory -= GetFormatSize(rt.Format) * rt.Width * rt.Height;
         }
 
-        private static void rt_Assign(RenderTarget2D rt)
+        private void rt_Assign(Texture2D rt)
         {
             RenderTargetsUsed += 1;
             RenderTargetMemory += GetFormatSize(rt.Format) * rt.Width * rt.Height;
         }
 
-        private static int GetFormatSize(SurfaceFormat surfaceFormat)
+        private int GetFormatSize(SurfaceFormat surfaceFormat)
         {
             int BITS_IN_BYTE = 8;
             switch (surfaceFormat)
@@ -69,8 +65,8 @@ namespace Tychaia
                     throw new InvalidOperationException();
             }
         }
-
-        public static RenderTarget2D Create(GraphicsDevice graphicsDevice, int width, int height)
+        
+        public RenderTarget2D Create(GraphicsDevice graphicsDevice, int width, int height)
         {
             RenderTarget2D rt = new RenderTarget2D(graphicsDevice, width, height);
             rt.Disposing += new EventHandler<EventArgs>(rt_Disposing);
@@ -78,7 +74,7 @@ namespace Tychaia
             return rt;
         }
 
-        public static RenderTarget2D Create(GraphicsDevice graphicsDevice, int width, int height, bool mipMap,
+        public RenderTarget2D Create(GraphicsDevice graphicsDevice, int width, int height, bool mipMap,
             SurfaceFormat preferredFormat, DepthFormat preferredDepthFormat)
         {
             RenderTarget2D rt = new RenderTarget2D(graphicsDevice, width, height, mipMap,
@@ -88,7 +84,7 @@ namespace Tychaia
             return rt;
         }
 
-        public static RenderTarget2D Create(GraphicsDevice graphicsDevice, int width, int height, bool mipMap,
+        public RenderTarget2D Create(GraphicsDevice graphicsDevice, int width, int height, bool mipMap,
             SurfaceFormat preferredFormat, DepthFormat preferredDepthFormat, int preferredMultiSampleCount, RenderTargetUsage usage)
         {
             RenderTarget2D rt = new RenderTarget2D(graphicsDevice, width, height, mipMap,
@@ -99,3 +95,4 @@ namespace Tychaia
         }
     }
 }
+

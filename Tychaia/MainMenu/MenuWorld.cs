@@ -26,26 +26,31 @@ namespace Tychaia
         private FontAsset m_DefaultFont;
         private TextureAsset m_PlayerTexture;
         protected IGameContext m_GameContext;
+        private IBackgroundCubeEntityFactory m_BackgroundCubeEntityFactory;
+        private CanvasEntity m_CanvasEntity;
         
         public List<IEntity> Entities { get; private set; }
         
         public MenuWorld(
             IRenderUtilities renderUtilities,
             IAssetManagerProvider assetManagerProvider,
+            IBackgroundCubeEntityFactory backgroundCubeEntityFactory,
             ISkin skin)
         {
             this.m_RenderUtilities = renderUtilities;
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
+            this.m_BackgroundCubeEntityFactory = backgroundCubeEntityFactory;
             this.m_TitleFont = this.m_AssetManager.Get<FontAsset>("font.Title");
             this.m_DefaultFont = this.m_AssetManager.Get<FontAsset>("font.Default");
             this.m_PlayerTexture = this.m_AssetManager.Get<TextureAsset>("chars.player.Player");
             
             this.Entities = new List<IEntity>();
             
-            var canvasEntity = new CanvasEntity(skin);
-            canvasEntity.Canvas = new Canvas();
-            canvasEntity.Canvas.SetChild(this.m_TitleMenu = new TitleMenu());
-            this.Entities.Add(canvasEntity);
+            this.m_CanvasEntity = new CanvasEntity(skin);
+            this.m_CanvasEntity.Canvas = new Canvas();
+            this.m_CanvasEntity.Canvas.SetChild(this.m_TitleMenu = new TitleMenu());
+            // Don't add the canvas to the entities list; that way we can explicitly
+            // order it's depth.
         }
         
         protected void AddMenuItem(LanguageAsset language, Action handler)
@@ -64,6 +69,8 @@ namespace Tychaia
 
         public void RenderAbove(IGameContext gameContext, IRenderContext renderContext)
         {
+            this.m_CanvasEntity.Render(gameContext, renderContext);
+        
             this.m_RenderUtilities.RenderText(
                 renderContext,
                 new Vector2(gameContext.Window.ClientBounds.Center.X, 50),
@@ -94,12 +101,14 @@ namespace Tychaia
             this.m_GameContext = gameContext;
             
             if (this.m_ScatterBackground == null && gameContext.FrameCount > 60)
-                this.m_ScatterBackground = new ScatterBackground(this.m_RenderUtilities, this.m_AssetManager, this);
+                this.m_ScatterBackground = new ScatterBackground(this.m_BackgroundCubeEntityFactory, this);
             if (this.m_ScatterBackground != null)
                 this.m_ScatterBackground.Update(this);
 
             if (this.m_TargetWorld != null)
                 gameContext.SwitchWorld(this.m_TargetWorld);
+                
+            this.m_CanvasEntity.Update(gameContext, updateContext);
         }
     }
 }

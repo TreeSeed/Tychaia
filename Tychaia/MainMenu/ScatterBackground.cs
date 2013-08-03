@@ -10,16 +10,16 @@ namespace Tychaia
 {
     public class ScatterBackground
     {
-        private IRenderUtilities m_RenderUtilities;
-        private IAssetManager m_AssetManager;
+        private IBackgroundCubeEntityFactory m_BackgroundCubeEntityFactory;
     
-        public ScatterBackground(IRenderUtilities renderUtilities, IAssetManager assetManager, IWorld world)
+        public ScatterBackground(
+            IBackgroundCubeEntityFactory backgroundCubeEntityFactory,
+            IWorld world)
         {
-            this.m_RenderUtilities = renderUtilities;
-            this.m_AssetManager = assetManager;
+            this.m_BackgroundCubeEntityFactory = backgroundCubeEntityFactory;
             while (world.Entities.Count(x => x is BackgroundCubeEntity) < 100)
             {
-                world.Entities.Add(new BackgroundCubeEntity(this.m_RenderUtilities, this.m_AssetManager));
+                world.Entities.Add(this.m_BackgroundCubeEntityFactory.CreateBackgroundCubeEntity(false));
             }
         }
 
@@ -27,7 +27,7 @@ namespace Tychaia
         {
             while (world.Entities.Count(x => x is BackgroundCubeEntity) < 100)
             {
-                world.Entities.Add(new BackgroundCubeEntity(this.m_RenderUtilities, this.m_AssetManager, true));
+                world.Entities.Add(this.m_BackgroundCubeEntityFactory.CreateBackgroundCubeEntity(true));
             }
         }
     }
