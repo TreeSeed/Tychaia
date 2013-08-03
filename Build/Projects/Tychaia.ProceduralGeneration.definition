@@ -45,7 +45,7 @@
     <Compile Include="AlgorithmHeightChange.cs" />
     <Compile Include="AlgorithmIncrementWaterDistance.cs" />
     <Compile Include="AlgorithmInitialBool.cs" />
-    <Compile Include="AlgorithmInitialStruct.cs" />
+    <Compile Include="AlgorithmInitialFlowBundle.cs" />
     <Compile Include="AlgorithmInitialTowns.cs" />
     <Compile Include="AlgorithmMultiply.cs" />
     <Compile Include="AlgorithmNPCStats.cs" />

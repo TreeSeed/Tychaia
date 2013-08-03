@@ -15,9 +15,9 @@ namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
-    [FlowDesignerCategory(FlowCategory.Struct)]
-    [FlowDesignerName("Initialize Struct")]
-    public class AlgorithmInitialStruct : Algorithm<FlowBundle>
+    [FlowDesignerCategory(FlowCategory.FlowBundle)]
+    [FlowDesignerName("Initialize FlowBundle")]
+    public class AlgorithmInitialFlowBundle : Algorithm<FlowBundle>
     {
         [DataMember]
         [DefaultValue(4)]
@@ -42,7 +42,7 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
 
-        public AlgorithmInitialStruct()
+        public AlgorithmInitialFlowBundle()
         {
             this.Layer2D = true;
             this.BundleSize = 4;
