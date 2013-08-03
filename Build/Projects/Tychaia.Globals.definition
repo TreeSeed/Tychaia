@@ -8,11 +8,16 @@
     <Reference Include="System.Web.Extensions" />
   </References>
   <Files>
-    <Compile Include="FilteredConsole.cs" />
-    <Compile Include="FilteredFeatures.cs" />
+    <Compile Include="DefaultFilteredConsole.cs" />
+    <Compile Include="DefaultFilteredFeatures.cs" />
+    <Compile Include="Feature.cs" />
+    <Compile Include="FilterCategory.cs" />
+    <Compile Include="IFilteredConsole.cs" />
+    <Compile Include="IFilteredFeatures.cs" />
     <Compile Include="IRenderingLocationProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceHelper.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="TychaiaGlobalIoCModule.cs" />
   </Files>
 </Project>

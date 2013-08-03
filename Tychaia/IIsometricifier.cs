@@ -3,15 +3,13 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
 //
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Protogame;
 
 namespace Tychaia
 {
-    public interface IRelativeChunkRendering
+    public interface IIsometricifier
     {
-        IEnumerable<RelativeRenderInformation> GetRelativeRenderInformation(IGameContext context, Chunk center, Vector3 focus);
+        IsometricCubeAsset Isometricify(IGameContext gameContext, TextureAsset flatTexture);
     }
 }
 

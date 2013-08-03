@@ -5,13 +5,21 @@
 //
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Protogame;
 
 namespace Tychaia
 {
     public class DefaultRelativeChunkRendering : IRelativeChunkRendering
     {
-        public IEnumerable<RelativeRenderInformation> GetRelativeRenderInformation(IGameContext context, Chunk center)
+        private IChunkSizePolicy m_ChunkSizePolicy;
+    
+        public DefaultRelativeChunkRendering(IChunkSizePolicy chunkSizePolicy)
+        {
+            this.m_ChunkSizePolicy = chunkSizePolicy;
+        }
+    
+        public IEnumerable<RelativeRenderInformation> GetRelativeRenderInformation(IGameContext context, Chunk center, Vector3 focus)
         {
             List<RelativeRenderInformation> renders = new List<RelativeRenderInformation>();
 
@@ -29,48 +37,42 @@ namespace Tychaia
              * can be determined by the distance between G - K
              */
 
-            int HORIZ_EXTRA = 2;
-            int VERT_EXTRA = 2;
-            int VERT_EXTRA_EXTRA = 2;
-
-            int innerHorizontalChunksToRender = (int)Math.Ceiling(context.Camera.Width / (double)TileIsometricifier.CHUNK_TOP_WIDTH) + HORIZ_EXTRA;
+            int innerHorizontalChunksToRender = (int)Math.Ceiling(context.Camera.Width / (double)this.m_ChunkSizePolicy.ChunkTopWidth);
 
             /* The total number of vertical chunks that will need to be rendered
              * can be found using the vertical distance from D - X.
              */
 
-            int innerVerticalChunksToRender = (int)Math.Ceiling(context.Camera.Height / (double)TileIsometricifier.CHUNK_TOP_HEIGHT) + VERT_EXTRA;
-
-            #if NOT_MIGRATED
+            int innerVerticalChunksToRender = (int)Math.Ceiling(context.Camera.Height / (double)this.m_ChunkSizePolicy.ChunkTopHeight);
 
             /* We need to determine the pixel offset from where the chunk needs to
              * be drawn to the focus point.
              */
-            long cx = this.Chunk.X;
-            long cy = this.Chunk.Y;
-            long cz = this.Chunk.Z;
+            long cx = center.X;
+            long cy = center.Y;
+            long cz = center.Z;
             double ix = 0;
             double iy = 0;
-            ix += (this.m_CurrentX - cx);
-            iy += (this.m_CurrentX - cx) * 0.75f;
-            ix -= (this.m_CurrentY - cy);
-            iy += (this.m_CurrentY - cy) * 0.75f;
-            iy -= (this.m_CurrentZ - cz) / 2f;
+            ix += (focus.X - cx);
+            iy += (focus.X - cx) * 0.75f;
+            ix -= (focus.Y - cy);
+            iy += (focus.Y - cy) * 0.75f;
+            iy -= (focus.Z - cz) / 2f;
 
             /* We need to store the position where we're drawing the center chunk so
              * that positions of entities in the isometric world can be resolved
              * to the screen.
              */
-            this.m_ChunkCenterX = context.Camera.Width / 2 - TileIsometricifier.CHUNK_TOP_WIDTH / 2 - (int)ix;
-            this.m_ChunkCenterY = context.Camera.Height / 2 + UNKNOWN_Y_OFFSET - (int)iy;
+            var chunkCenterX = context.Camera.Width / 2 - this.m_ChunkSizePolicy.ChunkTopWidth / 2 - (int)ix;
+            var chunkCenterY = context.Camera.Height / 2 - (int)iy;
 
             /* Iterate through the horizontal dimension.
              */
 
             for (int j = -1; j < innerHorizontalChunksToRender + 1; j++)
             {
-                int x = this.m_ChunkCenterX;
-                int y = this.m_ChunkCenterY;
+                int x = chunkCenterX;
+                int y = chunkCenterY;
 
                 /* Now we must start at N and go back leftwise, half of the inner chunks
                  * to render (rounded upward)
@@ -83,7 +85,7 @@ namespace Tychaia
                     {
                         /* We need to go from N -> H -> M which is N.Left.Down */
                         c = c.West.South;
-                        x -= TileIsometricifier.CHUNK_TOP_WIDTH;
+                        x -= this.m_ChunkSizePolicy.ChunkTopWidth;
                     }
                 }
                 else
@@ -92,7 +94,7 @@ namespace Tychaia
                     {
                         /* We need to go from N -> I -> O which is N.Up.Right */
                         c = c.North.East;
-                        x += TileIsometricifier.CHUNK_TOP_WIDTH;
+                        x += this.m_ChunkSizePolicy.ChunkTopWidth;
                     }
                 }
 
@@ -103,8 +105,8 @@ namespace Tychaia
                 {
                     /* We need to go from N -> I which is N.Up */
                     c = c.North;
-                    x += TileIsometricifier.CHUNK_TOP_WIDTH / 2;
-                    y -= TileIsometricifier.CHUNK_TOP_HEIGHT / 2;
+                    x += this.m_ChunkSizePolicy.ChunkTopWidth / 2;
+                    y -= this.m_ChunkSizePolicy.ChunkTopHeight / 2;
                 }
 
                 /* Now we traverse downwards, diagonally left through the chunks; in the
@@ -113,7 +115,7 @@ namespace Tychaia
 
                 int oldX = x;
                 int oldY = y;
-                for (int i = 0; i < innerVerticalChunksToRender + VERT_EXTRA_EXTRA; i++)
+                for (int i = 0; i < innerVerticalChunksToRender; i++)
                 {
                     /* Loop -2 to +2 on the Z axis */
                     for (int k = -2; k <= 0; k++)
@@ -128,19 +130,18 @@ namespace Tychaia
                         RelativeRenderInformation ri = new RelativeRenderInformation();
                         ri.Target = zc;
                         ri.X = x;
-                        ri.Y = y - k * (TileIsometricifier.TILE_TOP_HEIGHT * Chunk.Width + TileIsometricifier.TILE_CUBE_HEIGHT * Chunk.Depth);
+                        ri.Y = y - k * (this.m_ChunkSizePolicy.ChunkTextureTopHeight * Chunk.Width + this.m_ChunkSizePolicy.ChunkCubeHeight * Chunk.Depth);
                         renders.Add(ri);
                     }
 
                     /* We need to go from D -> I which is D.Down */
                     c = c.South;
-                    x -= TileIsometricifier.CHUNK_TOP_WIDTH / 2;
-                    y += TileIsometricifier.CHUNK_TOP_HEIGHT / 2;
+                    x -= this.m_ChunkSizePolicy.ChunkTopWidth / 2;
+                    y += this.m_ChunkSizePolicy.ChunkTopHeight / 2;
                 }
                 x = oldX;
                 y = oldY;
             }
-            #endif
 
             /* Now return the list of renders as an array */
             return renders;

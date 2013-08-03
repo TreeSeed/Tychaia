@@ -15,8 +15,9 @@ namespace Tychaia
         public TitleWorld(
             IRenderUtilities renderUtilities,
             IAssetManagerProvider assetManagerProvider,
+            IBackgroundCubeEntityFactory backgroundCubeEntityFactory,
             ISkin skin)
-            : base(renderUtilities, assetManagerProvider, skin)
+            : base(renderUtilities, assetManagerProvider, backgroundCubeEntityFactory, skin)
         {
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
             
@@ -32,6 +33,14 @@ namespace Tychaia
                     if (this.m_GameContext != null)
                         this.m_TargetWorld = this.m_GameContext.CreateWorld<LoadWorld>();
                 });
+            #if DEBUG
+            this.AddMenuItem(
+                this.m_AssetManager.Get<LanguageAsset>("language.ISOMETRIC_TEST_WORLD"),
+                () => {
+                    if (this.m_GameContext != null)
+                        this.m_TargetWorld = this.m_GameContext.CreateWorld<IsometricPreviewWorld>();
+                });
+            #endif
             this.AddMenuItem(
                 this.m_AssetManager.Get<LanguageAsset>("language.RANDOMIZE_SEED"),
                 () => {

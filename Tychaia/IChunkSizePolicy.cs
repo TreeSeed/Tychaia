@@ -37,6 +37,15 @@ namespace Tychaia
         /// How many cells deep is a single chunk.
         /// </summary>
         int ChunkCellDepth { get; }
+        
+        int ChunkTextureSideWidth { get; }
+        int ChunkTextureSideHeight { get; }
+        int ChunkTextureTopWidth { get; }
+        int ChunkTextureTopHeight { get; }
+        int ChunkCubeHeight { get; }
+        
+        int ChunkTopWidth { get; }
+        int ChunkTopHeight { get; }
     }
 }
 

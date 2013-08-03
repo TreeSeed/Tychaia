@@ -20,6 +20,7 @@ namespace Tychaia
             base.LoadContent();
 
             this.Window.Title = "Tychaia";
+            this.GameContext.ResizeWindow(1024, 768);
         }
     }
 }

@@ -40,9 +40,9 @@ namespace Tychaia
             return new IsometricCubeAsset(
                 assetManager,
                 name,
-                null,
-                null,
-                null);
+                (string)null,
+                (string)null,
+                (string)null);
         }
     }
 }

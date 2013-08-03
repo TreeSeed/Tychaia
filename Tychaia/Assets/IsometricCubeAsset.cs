@@ -63,6 +63,20 @@ namespace Tychaia
             this.m_LeftTextureName = leftTextureName;
             this.m_RightTextureName = rightTextureName;
         }
+
+        public IsometricCubeAsset(
+            IAssetManager assetManager,
+            string name,
+            TextureAsset topTexture,
+            TextureAsset leftTexture,
+            TextureAsset rightTexture)
+        {
+            this.Name = name;
+            this.m_AssetManager = assetManager;
+            this.m_TopTexture = topTexture;
+            this.m_LeftTexture = leftTexture;
+            this.m_RightTexture = rightTexture;
+        }
         
         public T Resolve<T>() where T : class, IAsset
         {

@@ -13,6 +13,10 @@ namespace Tychaia
 {
     public class Chunk
     {
+        private IFilteredConsole m_FilteredConsole;
+        private IFilteredFeatures m_FilteredFeatures;
+        private IChunkFactory m_ChunkFactory;
+    
         public const int CHUNK_SIZE = 16;
 
         public const int Width = ChunkSize.Width;
@@ -35,9 +39,20 @@ namespace Tychaia
         private ChunkOctree m_Octree = null;
         private ILevel m_DiskLevel = null;
 
-        public Chunk(ILevel level, ChunkOctree octree, long x, long y, long z)
+        public Chunk(
+            ILevel level,
+            ChunkOctree octree,
+            IChunkFactory chunkFactory,
+            IFilteredConsole filteredConsole,
+            IFilteredFeatures filteredFeatures,
+            long x,
+            long y,
+            long z)
         {
             this.m_Octree = octree;
+            this.m_FilteredConsole = filteredConsole;
+            this.m_FilteredFeatures = filteredFeatures;
+            this.m_ChunkFactory = chunkFactory;
             this.X = x;
             this.Y = y;
             this.Z = z;
@@ -45,7 +60,7 @@ namespace Tychaia
             this.m_Blocks = new BlockAsset[Chunk.Width, Chunk.Height, Chunk.Depth];
             this.m_RawData = new int[Chunk.Width * Chunk.Height * Chunk.Depth];
             this.m_DiskLevel = level;
-            FilteredConsole.WriteLine(FilterCategory.ChunkValidation, "Chunk created for " + x + ", " + y + ", " + z + ".");
+            this.m_FilteredConsole.WriteLine(FilterCategory.ChunkValidation, "Chunk created for " + x + ", " + y + ", " + z + ".");
             this.Generate();
         }
 
@@ -203,8 +218,8 @@ namespace Tychaia
                 {
                     Chunk c = this.m_Octree.Get(this.X - (Chunk.Width * Scale.CUBE_X), this.Y, this.Z);
                     if (c == null)
-                        return new Chunk(this.m_DiskLevel, this.m_Octree, this.X - (Chunk.Width * Scale.CUBE_X), this.Y, this.Z);
-                    else if (FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        return this.m_ChunkFactory.CreateChunk(this.m_DiskLevel, this.m_Octree, this.X - (Chunk.Width * Scale.CUBE_X), this.Y, this.Z);
+                    else if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
                         throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
                     else
                         return c;
@@ -220,8 +235,8 @@ namespace Tychaia
                 {
                     Chunk c = this.m_Octree.Get(this.X + (Chunk.Width * Scale.CUBE_X), this.Y, this.Z);
                     if (c == null)
-                        return new Chunk(this.m_DiskLevel, this.m_Octree, this.X + (Chunk.Width * Scale.CUBE_X), this.Y, this.Z);
-                    else if (FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        return this.m_ChunkFactory.CreateChunk(this.m_DiskLevel, this.m_Octree, this.X + (Chunk.Width * Scale.CUBE_X), this.Y, this.Z);
+                    else if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
                         throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
                     else
                         return c;
@@ -237,8 +252,8 @@ namespace Tychaia
                 {
                     Chunk c = this.m_Octree.Get(this.X, this.Y - (Chunk.Height * Scale.CUBE_Y), this.Z);
                     if (c == null)
-                        return new Chunk(this.m_DiskLevel, this.m_Octree, this.X, this.Y - (Chunk.Height * Scale.CUBE_Y), this.Z);
-                    else if (FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        return this.m_ChunkFactory.CreateChunk(this.m_DiskLevel, this.m_Octree, this.X, this.Y - (Chunk.Height * Scale.CUBE_Y), this.Z);
+                    else if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
                         throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
                     else
                         return c;
@@ -254,8 +269,8 @@ namespace Tychaia
                 {
                     Chunk c = this.m_Octree.Get(this.X, this.Y + (Chunk.Height * Scale.CUBE_Y), this.Z);
                     if (c == null)
-                        return new Chunk(this.m_DiskLevel, this.m_Octree, this.X, this.Y + (Chunk.Height * Scale.CUBE_Y), this.Z);
-                    else if (FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        return this.m_ChunkFactory.CreateChunk(this.m_DiskLevel, this.m_Octree, this.X, this.Y + (Chunk.Height * Scale.CUBE_Y), this.Z);
+                    else if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
                         throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
                     else
                         return c;
@@ -271,8 +286,8 @@ namespace Tychaia
                 {
                     Chunk c = this.m_Octree.Get(this.X, this.Y, this.Z - (Chunk.Depth * Scale.CUBE_Z));
                     if (c == null)
-                        return new Chunk(this.m_DiskLevel, this.m_Octree, this.X, this.Y, this.Z - (Chunk.Depth * Scale.CUBE_Z));
-                    else if (FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        return this.m_ChunkFactory.CreateChunk(this.m_DiskLevel, this.m_Octree, this.X, this.Y, this.Z - (Chunk.Depth * Scale.CUBE_Z));
+                    else if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
                         throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
                     else
                         return c;
@@ -288,8 +303,8 @@ namespace Tychaia
                 {
                     Chunk c = this.m_Octree.Get(this.X, this.Y, this.Z + (Chunk.Depth * Scale.CUBE_Z));
                     if (c == null)
-                        return new Chunk(this.m_DiskLevel, this.m_Octree, this.X, this.Y, this.Z + (Chunk.Depth * Scale.CUBE_Z));
-                    else if (FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        return this.m_ChunkFactory.CreateChunk(this.m_DiskLevel, this.m_Octree, this.X, this.Y, this.Z + (Chunk.Depth * Scale.CUBE_Z));
+                    else if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
                         throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
                     else
                         return c;
