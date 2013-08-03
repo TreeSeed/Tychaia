@@ -8,7 +8,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Serialization;
 using Tychaia.ProceduralGeneration.Biomes;
-using Tychaia.ProceduralGeneration.FlowBundle;
+using Tychaia.ProceduralGeneration.FlowBundles;
 
 namespace Tychaia.ProceduralGeneration
 {

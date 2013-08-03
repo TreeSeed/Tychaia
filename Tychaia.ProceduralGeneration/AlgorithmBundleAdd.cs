@@ -16,7 +16,7 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.FlowBundle)]
     [FlowDesignerName("Bundle Add Int32")]
-    public class AlgorithmBundleAddInt32 : Algorithm<FlowBundles, Int32, FlowBundles>
+    public class AlgorithmBundleAddInt32 : Algorithm<FlowBundle, Int32, FlowBundle>
     {
         [DataMember]
         [DefaultValue("Unassigned")]
@@ -55,7 +55,7 @@ namespace Tychaia.ProceduralGeneration
             this.Identifier = "Unassigned";
         }
 
-        public override void ProcessCell(IRuntimeContext context, FlowBundles[] inputA, Int32[] inputB, FlowBundles[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, Int32[] inputB, FlowBundle[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].AddValue(inputB[(i + ox) + (j + oy) * width + (k + oz) * width * height]);
 
@@ -72,7 +72,7 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.FlowBundle)]
     [FlowDesignerName("Bundle Add Biome")]
-    public class AlgorithmBundleAddBiome : Algorithm<FlowBundles, Biome, FlowBundles>
+    public class AlgorithmBundleAddBiome : Algorithm<FlowBundle, Biome, FlowBundle>
     {
         [DataMember]
         [DefaultValue("Unassigned")]
@@ -111,7 +111,7 @@ namespace Tychaia.ProceduralGeneration
             this.Identifier = "Unassigned";
         }
 
-        public override void ProcessCell(IRuntimeContext context, FlowBundles[] inputA, Biome[] inputB, FlowBundles[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, Biome[] inputB, FlowBundle[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].AddValue(inputB[(i + ox) + (j + oy) * width + (k + oz) * width * height]);
 

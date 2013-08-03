@@ -17,12 +17,12 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Struct)]
     [FlowDesignerName("Initialize Struct")]
-    public class AlgorithmInitialStruct : Algorithm<FlowBundles>
+    public class AlgorithmInitialStruct : Algorithm<FlowBundle>
     {
         [DataMember]
         [DefaultValue(4)]
         [Description("The maximum amount of data stored within the struct.")]
-        public int StructSize
+        public int BundleSize
         {
             get;
             set;
@@ -45,12 +45,12 @@ namespace Tychaia.ProceduralGeneration
         public AlgorithmInitialStruct()
         {
             this.Layer2D = true;
-            this.StructSize = 4;
+            this.BundleSize = 4;
         }
 
-        public override void ProcessCell(IRuntimeContext context, FlowBundles[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(IRuntimeContext context, FlowBundle[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = new FlowBundle(StructSize);
+            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = new FlowBundle(BundleSize);
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
