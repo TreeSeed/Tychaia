@@ -2,6 +2,6 @@
 <ContentProject Name="Tychaia.Content">
   
   <Source Include="Tychaia.Content/compiled/Content" Match="*.xnb" />
-  <Source Include="Tychaia.Content/assets" Match="*.asset" />
+  <Source Include="Tychaia.Content/assets" Match="*.asset" Primary="true" />
   
 </ContentProject>
