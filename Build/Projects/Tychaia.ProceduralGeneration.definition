@@ -103,7 +103,7 @@
     <Compile Include="Flow\Handlers\HandlerHelper.cs" />
     <Compile Include="Flow\IFlowProcessingPipeline.cs" />
     <Compile Include="Flow\IFlowProcessingRequestHandler.cs" />
-    <Compile Include="FlowBundle\FlowBundle.cs" />
+    <Compile Include="FlowBundles\FlowBundle.cs" />
     <Compile Include="FlowDesignerCategoryAttribute.cs" />
     <Compile Include="FlowDesignerNameAttribute.cs" />
     <Compile Include="IAlgorithm.cs" />

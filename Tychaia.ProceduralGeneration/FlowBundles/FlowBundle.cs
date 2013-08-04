@@ -18,11 +18,12 @@ namespace Tychaia.ProceduralGeneration.FlowBundles
             Count = 0;
         }
 
-        public void AddValue(dynamic value)
+        public void AddValue(dynamic value, string name)
         {
             if (Count < Data.Length)
             {
                 Data[Count] = value;
+                Name[Count] = name;
                 Count++;
             }
         }
@@ -34,7 +35,7 @@ namespace Tychaia.ProceduralGeneration.FlowBundles
                 Console.WriteLine("Check " + i);
                 if(Name[i] == name)
                 {
-                    Console.WriteLine("Found " + name); //DOESN'T GET HERE, DAMN YOU JAMES
+                    Console.WriteLine("Found " + name);
                     dynamic datareturn = Data[i];
                     if (i + 1 < Count)
                     {

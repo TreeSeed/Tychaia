@@ -57,7 +57,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, Int32[] inputB, FlowBundle[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].AddValue(inputB[(i + ox) + (j + oy) * width + (k + oz) * width * height]);
+            inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].AddValue(inputB[(i + ox) + (j + oy) * width + (k + oz) * width * height], Identifier);
 
             output[(i + ox) + (j + oy)*width + (k + oz)*width*height] = inputA[(i + ox) + (j + oy)*width + (k + oz)*width*height];
         }
@@ -113,7 +113,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, Biome[] inputB, FlowBundle[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].AddValue(inputB[(i + ox) + (j + oy) * width + (k + oz) * width * height]);
+            inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].AddValue(inputB[(i + ox) + (j + oy) * width + (k + oz) * width * height], Identifier);
 
             output[(i + ox) + (j + oy)*width + (k + oz)*width*height] = inputA[(i + ox) + (j + oy)*width + (k + oz)*width*height];
         }
