@@ -17,6 +17,7 @@
     <Reference Include="Tychaia.Disk" />
     <Reference Include="Tychaia.ProceduralGeneration" />
     <Reference Include="Tychaia.Content" />
+    <Reference Include="Tychaia.Threading" />
     <Reference Include="MonoGame" />
     <Reference Include="Dx" />
     <Reference Include="Ninject" />
@@ -63,6 +64,10 @@
     <Compile Include="MainMenu\TitleMenu.cs" />
     <Compile Include="MainMenu\TitleWorld.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Profiling\TychaiaPerformanceProfiler.cs" />
+    <Compile Include="Profiling\TychaiaProfiler.cs" />
+    <Compile Include="Profiling\TychaiaProfilerEntity.cs" />
+    <Compile Include="Profiling\TychaiaProfilingInterceptor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Provider\ChunkProvider.cs" />
     <Compile Include="Provider\IChunkProviderFactory.cs" />
