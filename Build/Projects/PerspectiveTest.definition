@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="PerspectiveTest" Path="PerspectiveTest" Type="XNA">
+  <References>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Protogame" />
+    <Reference Include="ProtogameAssetManager" />
+    <Reference Include="Tychaia.Globals" />
+    <Reference Include="Tychaia.Game" />
+    <Reference Include="Tychaia.Disk" />
+    <Reference Include="Tychaia.ProceduralGeneration" />
+    <Reference Include="Tychaia.Content" />
+    <Reference Include="Tychaia.Threading" />
+    <Reference Include="MonoGame" />
+    <Reference Include="Dx" />
+    <Reference Include="Ninject" />
+  </References>
+  <Files>
+    <Compile Include="PerspectiveGame.cs" />
+    <Compile Include="Program.cs" />
+    <None Include="..\Other\OpenTK.dll.config">
+      <Link>OpenTK.dll.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </Files>
+</Project>
