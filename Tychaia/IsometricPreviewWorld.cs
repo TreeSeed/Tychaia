@@ -180,6 +180,10 @@ namespace Tychaia
                 rotatedTarget.Dispose();
             });
         }
+        
+        public void Dispose()
+        {
+        }
 
         public void RenderBelow(IGameContext gameContext, IRenderContext renderContext)
         {

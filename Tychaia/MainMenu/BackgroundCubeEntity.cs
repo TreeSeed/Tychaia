@@ -51,8 +51,8 @@ namespace Tychaia
             this.X = (float)(this.m_ScreenX * gameContext.Window.ClientBounds.Width);
             this.Y = (float)(this.m_ScreenY * gameContext.Window.ClientBounds.Height);
 
-            if ((int)this.Y + (int)(this.m_ChunkSizePolicy.ChunkTextureTopHeight / this.m_Distance) +
-                (int)(this.m_ChunkSizePolicy.ChunkTextureSideHeight * 2.0 / this.m_Distance) < 0)
+            if ((int)this.Y + (int)(this.m_ChunkSizePolicy.CellTextureTopPixelHeight / this.m_Distance) +
+                (int)(this.m_ChunkSizePolicy.CellTextureSidePixelHeight * 2.0 / this.m_Distance) < 0)
                 gameContext.World.Entities.Remove(this);
 
             base.Update(gameContext, updateContext);
@@ -69,28 +69,28 @@ namespace Tychaia
                     (int)this.Y),
                 this.m_CubeAsset.TopTexture,
                 size: new Vector2(
-                    (int)(this.m_ChunkSizePolicy.ChunkTextureTopWidth * 2.0 / this.m_Distance),
-                    (int)(this.m_ChunkSizePolicy.ChunkTextureTopHeight * 2.0 / this.m_Distance)),
+                    (int)(this.m_ChunkSizePolicy.CellTextureTopPixelWidth * 2.0 / this.m_Distance),
+                    (int)(this.m_ChunkSizePolicy.CellTextureTopPixelHeight * 2.0 / this.m_Distance)),
                 color: new Color(1.0f, 1.0f, 1.0f, 1.0f - (m_Distance / 100.0f)));
             this.m_RenderUtilities.RenderTexture(
                 renderContext,
                 new Vector2(
-                    (int)this.X + (int)(this.m_ChunkSizePolicy.ChunkTextureSideWidth * 2.0 / this.m_Distance),
-                    (int)this.Y + (int)(this.m_ChunkSizePolicy.ChunkTextureTopHeight / this.m_Distance)),
+                    (int)this.X + (int)(this.m_ChunkSizePolicy.CellTextureSidePixelWidth * 2.0 / this.m_Distance),
+                    (int)this.Y + (int)(this.m_ChunkSizePolicy.CellTextureTopPixelHeight / this.m_Distance)),
                 this.m_CubeAsset.LeftTexture,
                 size: new Vector2(
-                    (int)(this.m_ChunkSizePolicy.ChunkTextureSideWidth * 2.0 / this.m_Distance),
-                    (int)(this.m_ChunkSizePolicy.ChunkTextureSideHeight * 2.0 / this.m_Distance)),
+                    (int)(this.m_ChunkSizePolicy.CellTextureSidePixelWidth * 2.0 / this.m_Distance),
+                    (int)(this.m_ChunkSizePolicy.CellTextureSidePixelHeight * 2.0 / this.m_Distance)),
                 color: new Color(1.0f, 1.0f, 1.0f, 1.0f - (m_Distance / 100.0f)));
             this.m_RenderUtilities.RenderTexture(
                 renderContext,
                 new Vector2(
                     (int)this.X,
-                    (int)this.Y + (int)(this.m_ChunkSizePolicy.ChunkTextureTopHeight / this.m_Distance)),
+                    (int)this.Y + (int)(this.m_ChunkSizePolicy.CellTextureTopPixelHeight / this.m_Distance)),
                 this.m_CubeAsset.RightTexture,
                 size: new Vector2(
-                    (int)(this.m_ChunkSizePolicy.ChunkTextureSideWidth * 2.0 / this.m_Distance),
-                    (int)(this.m_ChunkSizePolicy.ChunkTextureSideHeight * 2.0 / this.m_Distance)),
+                    (int)(this.m_ChunkSizePolicy.CellTextureSidePixelWidth * 2.0 / this.m_Distance),
+                    (int)(this.m_ChunkSizePolicy.CellTextureSidePixelHeight * 2.0 / this.m_Distance)),
                 color: new Color(1.0f, 1.0f, 1.0f, 1.0f - (m_Distance / 100.0f)));
         }
     }

@@ -34,8 +34,10 @@
     <Compile Include="Generators\ChunkOctree.cs" />
     <Compile Include="Generators\IChunkFactory.cs" />
     <Compile Include="Generators\IChunkOctreeFactory.cs" />
+    <Compile Include="Implementations\DefaultCellRenderOrderCalculator.cs" />
     <Compile Include="Implementations\DefaultChunkSizePolicy.cs" />
     <Compile Include="Implementations\DefaultIsometricifier.cs" />
+    <Compile Include="Implementations\DefaultIsometricRenderUtilities.cs" />
     <Compile Include="Implementations\DefaultPerformancePolicy.cs" />
     <Compile Include="Implementations\DefaultRelativeChunkRendering.cs" />
     <Compile Include="Implementations\DefaultRenderingBuffers.cs" />
@@ -46,7 +48,10 @@
     <Compile Include="Isometric\DefaultIsometricBoundingBoxUtilities.cs" />
     <Compile Include="Isometric\IIsometricBoundingBox.cs" />
     <Compile Include="Isometric\IIsometricBoundingBoxUtilities.cs" />
+    <Compile Include="Isometric\IIsometricCamera.cs" />
+    <Compile Include="Isometric\IIsometricCameraFactory.cs" />
     <Compile Include="Isometric\IsometricBoundingBox.cs" />
+    <Compile Include="Isometric\IsometricCamera.cs" />
     <Compile Include="Isometric\IsometricEntity.cs" />
     <Compile Include="Isometric\TychaiaIsometricIoCModule.cs" />
     <Compile Include="IsometricPreviewWorld.cs" />
@@ -59,9 +64,16 @@
     <Compile Include="MainMenu\TitleWorld.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Provider\ChunkProvider.cs" />
+    <Compile Include="Provider\IChunkProviderFactory.cs" />
+    <Compile Include="Renderer\ChunkRenderer.cs" />
+    <Compile Include="Renderer\IChunkRendererFactory.cs" />
+    <Compile Include="Services\ICellRenderOrderCalculator.cs" />
     <Compile Include="Services\IChunkSizePolicy.cs" />
     <Compile Include="Services\IIntelligenceComponent.cs" />
     <Compile Include="Services\IIsometricifier.cs" />
+    <Compile Include="Services\IIsometricRenderUtilities.cs" />
+    <Compile Include="Services\IOccludableSpriteBatch.cs" />
     <Compile Include="Services\IPerformancePolicy.cs" />
     <Compile Include="Services\IRelativeChunkRendering.cs" />
     <Compile Include="Services\IRenderingBuffers.cs" />
@@ -90,7 +102,6 @@
     <None Include="Generators\ChunkProvider.cs" />
     <None Include="Generators\ChunkRenderer.cs" />
     <None Include="Generators\UniqueRenderCache.cs" />
-    <None Include="Legacy\DebugTracker.cs" />
     <None Include="Legacy\Elements\Region.cs" />
     <None Include="Legacy\Elements\World.cs" />
     <None Include="Legacy\IsometricWorldManager.cs" />

@@ -6,6 +6,7 @@
 using Protogame;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace Tychaia
 {
@@ -22,33 +23,42 @@ namespace Tychaia
         
         public void Render<T>(T game) where T : Microsoft.Xna.Framework.Game, ICoreGame
         {
-            if (this.m_Effect == null)
-                this.m_Effect = new BasicEffect(game.GraphicsDevice);
-            
             game.RenderContext.Render(game.GameContext);
             
-            game.RenderContext.SpriteBatch.Begin();
-            
-            foreach (var pass in this.m_Effect.CurrentTechnique.Passes)
+            if (game.GameContext.World is TychaiaGameWorld)
             {
-                pass.Apply();
-            
+                // The tychaia game world has to own all of the rendering since it
+                // does advanced and funky things with render targets and occlusion.
                 game.GameContext.World.RenderBelow(game.GameContext, game.RenderContext);
-            
-                foreach (var entity in game.GameContext.World.Entities.ToArray())
-                    entity.Render(game.GameContext, game.RenderContext);
-            
-                game.GameContext.World.RenderAbove(game.GameContext, game.RenderContext);
-                
-                this.m_TychaiaProfilerEntity.RenderMaximums(game.GameContext, game.RenderContext);
             }
+            else
+            {
+                if (this.m_Effect == null)
+                    this.m_Effect = new BasicEffect(game.GraphicsDevice);
             
-            game.RenderContext.SpriteBatch.End();
+                game.RenderContext.SpriteBatch.Begin();
+                
+                foreach (var pass in this.m_Effect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
+                
+                    game.GameContext.World.RenderBelow(game.GameContext, game.RenderContext);
+                
+                    foreach (var entity in game.GameContext.World.Entities.ToArray())
+                        entity.Render(game.GameContext, game.RenderContext);
+                
+                    game.GameContext.World.RenderAbove(game.GameContext, game.RenderContext);
+                    
+                    this.m_TychaiaProfilerEntity.RenderMaximums(game.GameContext, game.RenderContext);
+                }
+                
+                game.RenderContext.SpriteBatch.End();
+            }
             
             this.m_Effect.LightingEnabled = false;
             this.m_Effect.VertexColorEnabled = true;
-            this.m_Effect.Projection = Matrix.CreateOrthographicOffCenter
-                (0, game.GraphicsDevice.Viewport.Width,     // left, right
+            this.m_Effect.Projection = Matrix.CreateOrthographicOffCenter(
+                0, game.GraphicsDevice.Viewport.Width,     // left, right
                 game.GraphicsDevice.Viewport.Height, 0,    // bottom, top
                 0, 1);
             foreach (var pass in this.m_Effect.CurrentTechnique.Passes)
@@ -62,10 +72,19 @@ namespace Tychaia
         {
             game.UpdateContext.Update(game.GameContext);
             
-            foreach (var entity in game.GameContext.World.Entities.ToArray())
-                entity.Update(game.GameContext, game.UpdateContext);
-            
-            game.GameContext.World.Update(game.GameContext, game.UpdateContext);
+            if (game.GameContext.World is TychaiaGameWorld)
+            {
+                // The tychaia game world has to own all of the updating since it
+                // does advanced and funky things with chunk providing.
+                game.GameContext.World.Update(game.GameContext, game.UpdateContext);
+            }
+            else
+            {
+                foreach (var entity in game.GameContext.World.Entities.ToArray())
+                    entity.Update(game.GameContext, game.UpdateContext);
+                
+                game.GameContext.World.Update(game.GameContext, game.UpdateContext);
+            }
             
             this.m_TychaiaProfilerEntity.Update(game.GameContext, game.UpdateContext);
         }

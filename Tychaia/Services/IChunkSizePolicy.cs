@@ -38,14 +38,14 @@ namespace Tychaia
         /// </summary>
         int ChunkCellDepth { get; }
         
-        int ChunkTextureSideWidth { get; }
-        int ChunkTextureSideHeight { get; }
-        int ChunkTextureTopWidth { get; }
-        int ChunkTextureTopHeight { get; }
-        int ChunkCubeHeight { get; }
+        int CellTextureSidePixelWidth { get; }
+        int CellTextureSidePixelHeight { get; }
+        int CellTextureTopPixelWidth { get; }
+        int CellTextureTopPixelHeight { get; }
+        int CellCubePixelHeight { get; }
         
-        int ChunkTopWidth { get; }
-        int ChunkTopHeight { get; }
+        int ChunkTopPixelWidth { get; }
+        int ChunkTopPixelHeight { get; }
     }
 }
 

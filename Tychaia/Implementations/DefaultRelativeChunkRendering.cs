@@ -37,13 +37,13 @@ namespace Tychaia
              * can be determined by the distance between G - K
              */
 
-            int innerHorizontalChunksToRender = (int)Math.Ceiling(context.Camera.Width / (double)this.m_ChunkSizePolicy.ChunkTopWidth);
+            int innerHorizontalChunksToRender = (int)Math.Ceiling(context.Camera.Width / (double)this.m_ChunkSizePolicy.ChunkTopPixelWidth);
 
             /* The total number of vertical chunks that will need to be rendered
              * can be found using the vertical distance from D - X.
              */
 
-            int innerVerticalChunksToRender = (int)Math.Ceiling(context.Camera.Height / (double)this.m_ChunkSizePolicy.ChunkTopHeight);
+            int innerVerticalChunksToRender = (int)Math.Ceiling(context.Camera.Height / (double)this.m_ChunkSizePolicy.ChunkTopPixelHeight);
 
             /* We need to determine the pixel offset from where the chunk needs to
              * be drawn to the focus point.
@@ -63,7 +63,7 @@ namespace Tychaia
              * that positions of entities in the isometric world can be resolved
              * to the screen.
              */
-            var chunkCenterX = context.Camera.Width / 2 - this.m_ChunkSizePolicy.ChunkTopWidth / 2 - (int)ix;
+            var chunkCenterX = context.Camera.Width / 2 - this.m_ChunkSizePolicy.ChunkTopPixelWidth / 2 - (int)ix;
             var chunkCenterY = context.Camera.Height / 2 - (int)iy;
 
             /* Iterate through the horizontal dimension.
@@ -85,7 +85,7 @@ namespace Tychaia
                     {
                         /* We need to go from N -> H -> M which is N.Left.Down */
                         c = c.West.South;
-                        x -= this.m_ChunkSizePolicy.ChunkTopWidth;
+                        x -= this.m_ChunkSizePolicy.ChunkTopPixelWidth;
                     }
                 }
                 else
@@ -94,7 +94,7 @@ namespace Tychaia
                     {
                         /* We need to go from N -> I -> O which is N.Up.Right */
                         c = c.North.East;
-                        x += this.m_ChunkSizePolicy.ChunkTopWidth;
+                        x += this.m_ChunkSizePolicy.ChunkTopPixelWidth;
                     }
                 }
 
@@ -105,8 +105,8 @@ namespace Tychaia
                 {
                     /* We need to go from N -> I which is N.Up */
                     c = c.North;
-                    x += this.m_ChunkSizePolicy.ChunkTopWidth / 2;
-                    y -= this.m_ChunkSizePolicy.ChunkTopHeight / 2;
+                    x += this.m_ChunkSizePolicy.ChunkTopPixelWidth / 2;
+                    y -= this.m_ChunkSizePolicy.ChunkTopPixelHeight / 2;
                 }
 
                 /* Now we traverse downwards, diagonally left through the chunks; in the
@@ -130,14 +130,14 @@ namespace Tychaia
                         RelativeRenderInformation ri = new RelativeRenderInformation();
                         ri.Target = zc;
                         ri.X = x;
-                        ri.Y = y - k * (this.m_ChunkSizePolicy.ChunkTextureTopHeight * Chunk.Width + this.m_ChunkSizePolicy.ChunkCubeHeight * Chunk.Depth);
+                        ri.Y = y - k * (this.m_ChunkSizePolicy.CellTextureTopPixelHeight * this.m_ChunkSizePolicy.ChunkCellWidth + this.m_ChunkSizePolicy.CellCubePixelHeight * this.m_ChunkSizePolicy.ChunkCellDepth);
                         renders.Add(ri);
                     }
 
                     /* We need to go from D -> I which is D.Down */
                     c = c.South;
-                    x -= this.m_ChunkSizePolicy.ChunkTopWidth / 2;
-                    y += this.m_ChunkSizePolicy.ChunkTopHeight / 2;
+                    x -= this.m_ChunkSizePolicy.ChunkTopPixelWidth / 2;
+                    y += this.m_ChunkSizePolicy.ChunkTopPixelHeight / 2;
                 }
                 x = oldX;
                 y = oldY;

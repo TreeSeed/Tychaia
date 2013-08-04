@@ -53,6 +53,10 @@ namespace Tychaia
             // order it's depth.
         }
         
+        public void Dispose()
+        {
+        }
+        
         protected void AddMenuItem(LanguageAsset language, Action handler)
         {
             this.m_TitleMenu.AddChild(language.Value, (sender, e) => { handler(); });

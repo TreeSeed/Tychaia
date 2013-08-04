@@ -12,6 +12,9 @@ namespace Tychaia
         public virtual float Z { get; set; }
         public virtual float Depth { get; set; }
         public virtual float ZSpeed { get; set; }
+        
+        public virtual int ImageOffsetX { get; set; }
+        public virtual int ImageOffsetY { get; set; }
 
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
         {

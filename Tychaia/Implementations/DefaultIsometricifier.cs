@@ -71,15 +71,15 @@ namespace Tychaia
             // Then squash.
             var squashedTarget = this.m_RenderTargetFactory.Create(
                 gameContext.Graphics.GraphicsDevice,
-                this.m_ChunkSizePolicy.ChunkTextureTopWidth,
-                this.m_ChunkSizePolicy.ChunkTextureTopHeight
+                this.m_ChunkSizePolicy.CellTextureTopPixelWidth,
+                this.m_ChunkSizePolicy.CellTextureTopPixelHeight
                 );
             gameContext.Graphics.GraphicsDevice.SetRenderTarget(squashedTarget);
             gameContext.Graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
             spriteBatch.Begin();
             spriteBatch.Draw(
                 rotatedTarget,
-                new Rectangle(0, 0, this.m_ChunkSizePolicy.ChunkTextureTopWidth, this.m_ChunkSizePolicy.ChunkTextureTopHeight),
+                new Rectangle(0, 0, this.m_ChunkSizePolicy.CellTextureTopPixelWidth, this.m_ChunkSizePolicy.CellTextureTopPixelHeight),
                 new Rectangle(0, 0, rotatedTarget.Width, rotatedTarget.Height),
                 Color.White
             );
@@ -100,8 +100,8 @@ namespace Tychaia
             m.M22 = 1.0f;
             RenderTarget2D shearedLeftTarget = this.m_RenderTargetFactory.Create(
                 gameContext.Graphics.GraphicsDevice,
-                this.m_ChunkSizePolicy.ChunkTextureSideWidth,
-                this.m_ChunkSizePolicy.ChunkTextureSideHeight
+                this.m_ChunkSizePolicy.CellTextureSidePixelWidth,
+                this.m_ChunkSizePolicy.CellTextureSidePixelHeight
                 );
             gameContext.Graphics.GraphicsDevice.SetRenderTarget(shearedLeftTarget);
             gameContext.Graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);
@@ -124,8 +124,8 @@ namespace Tychaia
             m.M22 = 1.0f;
             RenderTarget2D shearedRightTarget = this.m_RenderTargetFactory.Create(
                 gameContext.Graphics.GraphicsDevice,
-                this.m_ChunkSizePolicy.ChunkTextureSideWidth,
-                this.m_ChunkSizePolicy.ChunkTextureSideHeight
+                this.m_ChunkSizePolicy.CellTextureSidePixelWidth,
+                this.m_ChunkSizePolicy.CellTextureSidePixelHeight
                 );
             gameContext.Graphics.GraphicsDevice.SetRenderTarget(shearedRightTarget);
             gameContext.Graphics.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Transparent, 1.0f, 0);

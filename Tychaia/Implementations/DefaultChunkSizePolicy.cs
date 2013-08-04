@@ -15,14 +15,14 @@ namespace Tychaia
         public int ChunkCellHeight { get { return 8; } }
         public int ChunkCellDepth { get { return 8; } }
         
-        public int ChunkTextureSideWidth { get { return 16 * 2; } }
-        public int ChunkTextureSideHeight { get { return 48 * 2; } }
-        public int ChunkTextureTopWidth { get { return 32 * 2; } }
-        public int ChunkTextureTopHeight { get { return 24 * 2; } }
-        public int ChunkCubeHeight { get { return this.ChunkTextureSideHeight / 2 - 16; } }
+        public int CellTextureSidePixelWidth { get { return 16 * 2; } }
+        public int CellTextureSidePixelHeight { get { return 48 * 2; } }
+        public int CellTextureTopPixelWidth { get { return 32 * 2; } }
+        public int CellTextureTopPixelHeight { get { return 24 * 2; } }
+        public int CellCubePixelHeight { get { return this.CellTextureSidePixelHeight / 2 - 16; } }
         
-        public int ChunkTopWidth { get { return this.ChunkTextureTopWidth * this.ChunkCellWidth; } }
-        public int ChunkTopHeight { get { return this.ChunkTextureTopHeight * this.ChunkCellHeight; } }
+        public int ChunkTopPixelWidth { get { return this.CellTextureTopPixelWidth * this.ChunkCellWidth; } }
+        public int ChunkTopPixelHeight { get { return this.CellTextureTopPixelHeight * this.ChunkCellHeight; } }
     }
 }
 
