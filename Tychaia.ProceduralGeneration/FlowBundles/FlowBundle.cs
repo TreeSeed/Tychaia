@@ -32,10 +32,10 @@ namespace Tychaia.ProceduralGeneration.FlowBundles
         {
             for (int i = 0; i < Count; i++)
             {
-                Console.WriteLine("Check " + i);
+                //Console.WriteLine("Check " + i);
                 if(Name[i] == name)
                 {
-                    Console.WriteLine("Found " + name);
+                    //Console.WriteLine("Found " + name);
                     dynamic datareturn = Data[i];
                     if (i + 1 < Count)
                     {

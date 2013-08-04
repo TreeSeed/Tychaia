@@ -58,10 +58,6 @@
     <Compile Include="MainMenu\TitleMenu.cs" />
     <Compile Include="MainMenu\TitleWorld.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="Profiling\TychaiaPerformanceProfiler.cs" />
-    <Compile Include="Profiling\TychaiaProfiler.cs" />
-    <Compile Include="Profiling\TychaiaProfilerEntity.cs" />
-    <Compile Include="Profiling\TychaiaProfilingInterceptor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Services\IChunkSizePolicy.cs" />
     <Compile Include="Services\IIntelligenceComponent.cs" />
