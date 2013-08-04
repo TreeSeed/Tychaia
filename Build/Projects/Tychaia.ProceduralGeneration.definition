@@ -19,6 +19,18 @@
     <Compile Include="AlgorithmAdd.cs" />
     <Compile Include="AlgorithmAverage.cs" />
     <Compile Include="AlgorithmBiomes.cs" />
+    <Compile Include="AlgorithmBiomesSimple.cs" />
+    <Compile Include="AlgorithmBundleAdd.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AlgorithmBundleAdd.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AlgorithmBundleExtract.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AlgorithmBundleExtract.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AlgorithmClamp.cs" />
     <Compile Include="AlgorithmColors.cs" />
     <Compile Include="AlgorithmCompare.cs" />
     <Compile Include="AlgorithmConstant.cs" />
@@ -33,6 +45,7 @@
     <Compile Include="AlgorithmHeightChange.cs" />
     <Compile Include="AlgorithmIncrementWaterDistance.cs" />
     <Compile Include="AlgorithmInitialBool.cs" />
+    <Compile Include="AlgorithmInitialFlowBundle.cs" />
     <Compile Include="AlgorithmInitialTowns.cs" />
     <Compile Include="AlgorithmMultiply.cs" />
     <Compile Include="AlgorithmNPCStats.cs" />
@@ -40,11 +53,13 @@
     <Compile Include="AlgorithmPerlin.cs" />
     <Compile Include="AlgorithmReduceWaterDepth.cs" />
     <Compile Include="AlgorithmResult.cs" />
+    <Compile Include="AlgorithmResultBlocks.cs" />
     <Compile Include="AlgorithmSmooth.cs" />
     <Compile Include="AlgorithmSmoothByInput.cs" />
     <Compile Include="AlgorithmUtility.cs" />
     <Compile Include="AlgorithmValueTo3D.cs" />
     <Compile Include="AlgorithmZoom2D.cs" />
+    <Compile Include="AlgorithmZoom2DBundle.cs" />
     <Compile Include="AlgorithmZoom3D.cs" />
     <Compile Include="Analysis\AnalysisEngine.cs" />
     <Compile Include="Analysis\Output\AstNodeExtensions.cs" />
@@ -62,6 +77,7 @@
     <Compile Include="Biomes\Biome.cs" />
     <Compile Include="Biomes\GrasslandBiome.cs" />
     <Compile Include="Biomes\WaterBiome.cs" />
+    <Compile Include="Blocks\BlockInfo.cs" />
     <Compile Include="Buildings\Building.cs" />
     <Compile Include="Compiler\AlgorithmRefactorer.cs" />
     <Compile Include="Compiler\ArrayPool.cs" />
@@ -106,6 +122,14 @@
     <EmbeddedResource Include="Compiler\CompiledLayerTemplate.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <None Include="AlgorithmBundleAdd.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AlgorithmBundleAdd.cs</LastGenOutput>
+    </None>
+    <None Include="AlgorithmBundleExtract.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AlgorithmBundleExtract.cs</LastGenOutput>
+    </None>
     <None Include="Analysis\Reporting\bootstrap\css\bootstrap.min.css" />
     <None Include="Analysis\Reporting\bootstrap\css\bootstrap-responsive.min.css" />
     <None Include="Analysis\Reporting\bootstrap\css\docs.css" />
