@@ -1,4 +1,5 @@
 using System;
+using Ninject;
 
 namespace PerspectiveTest
 {
@@ -6,7 +7,12 @@ namespace PerspectiveTest
     {
         public static void Main(string[] args)
         {
-            using (var game = new PerspectiveGame())
+            var kernel = new StandardKernel();
+            kernel.Bind<IRenderDemo>().To<UncachedChunkDemo>();
+            kernel.Bind<IRenderDemo>().To<EverythingDemo>();
+            kernel.Bind<IRenderDemo>().To<SingleCubeDemo>();
+        
+            using (var game = new PerspectiveGame(kernel.GetAll<IRenderDemo>()))
             {
                 game.Run();
             }
