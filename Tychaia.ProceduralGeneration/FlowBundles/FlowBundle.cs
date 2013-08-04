@@ -31,8 +31,10 @@ namespace Tychaia.ProceduralGeneration.FlowBundles
         {
             for (int i = 0; i < Count; i++)
             {
+                Console.WriteLine("Check " + i);
                 if(Name[i] == name)
                 {
+                    Console.WriteLine("Found " + name); //DOESN'T GET HERE, DAMN YOU JAMES
                     dynamic datareturn = Data[i];
                     if (i + 1 < Count)
                     {
@@ -49,6 +51,7 @@ namespace Tychaia.ProceduralGeneration.FlowBundles
 
                     return datareturn;
                 }
+                Console.WriteLine(i + " is not " + name);
             }
 
             return null;
