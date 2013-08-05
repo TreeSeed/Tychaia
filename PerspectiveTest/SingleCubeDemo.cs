@@ -27,14 +27,15 @@ namespace PerspectiveTest
         public void Draw(Game game)
         {
             game.GraphicsDevice.Clear(Color.GreenYellow);
-            game.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+            game.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
             
             this.m_Effect.VertexColorEnabled = true;
             this.m_Effect.TextureEnabled = false;
             this.m_Effect.LightingEnabled = false;
             this.m_Effect.View = Matrix.CreateLookAt(new Vector3(0.0f, -10.0f, 10.0f), Vector3.Zero, Vector3.Up);
             this.m_Effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 4f / 3f, 1.0f, 1000.0f);
-            this.m_Effect.World = Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation));
+            this.m_Effect.World = Matrix.CreateRotationX(MathHelper.ToRadians(this.m_Rotation)) *
+                Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation));
             this.m_Rotation++;
             
             var vertexes = new VertexPositionColor[]
@@ -51,7 +52,12 @@ namespace PerspectiveTest
             
             var indicies = new short[]
             {
-                0, 1, 2, 1, 2, 3,
+                0, 2, 1, 1, 2, 3,
+                4, 5, 6, 5, 7, 6,
+                0, 4, 6, 0, 6, 2,
+                1, 7, 5, 1, 3, 7,
+                0, 1, 4, 5, 4, 1,
+                6, 3, 2, 7, 3, 6
             };
             
             foreach (var pass in this.m_Effect.CurrentTechnique.Passes)
