@@ -20,8 +20,12 @@
     <Reference Include="Ninject" />
   </References>
   <Files>
+    <Compile Include="EverythingDemo.cs" />
+    <Compile Include="IRenderDemo.cs" />
     <Compile Include="PerspectiveGame.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="SingleCubeDemo.cs" />
+    <Compile Include="UncachedChunkDemo.cs" />
     <None Include="..\Other\OpenTK.dll.config">
       <Link>OpenTK.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
