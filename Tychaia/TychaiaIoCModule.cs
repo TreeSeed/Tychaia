@@ -24,11 +24,19 @@ namespace Tychaia
             this.Bind<IChunkProviderFactory>().ToFactory();
             
 #if DEBUG
-            var profiler = this.Kernel.Get<TychaiaProfiler>();
-            this.Bind<IProfiler>().ToMethod(x => profiler);
-            this.Bind<TychaiaProfiler>().ToMethod(x => profiler);
-            this.Kernel.Intercept(p => p.Request.Service.IsInterface)
-                .With(new TychaiaProfilingInterceptor(profiler));
+            // Presence of the interception library interferes with the Mono Debugger because
+            // it can't seem to handle the intercepted call stack.  Therefore, under Mono, we
+            // disable the profiler if the debugger is attached.
+            if (!System.Diagnostics.Debugger.IsAttached || System.Type.GetType("Mono.Runtime") == null)
+            {
+                var profiler = this.Kernel.Get<TychaiaProfiler>();
+                this.Bind<IProfiler>().ToMethod(x => profiler);
+                this.Bind<TychaiaProfiler>().ToMethod(x => profiler);
+                this.Kernel.Intercept(p => p.Request.Service.IsInterface)
+                    .With(new TychaiaProfilingInterceptor(profiler));
+            }
+            else
+                this.Bind<IProfiler>().To<NullProfiler>().InSingletonScope();
 #else
             this.Bind<IProfiler>().To<NullProfiler>().InSingletonScope();
 #endif
