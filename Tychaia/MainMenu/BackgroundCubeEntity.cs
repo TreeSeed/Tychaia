@@ -39,8 +39,11 @@ namespace Tychaia
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
             this.m_ScreenY -= (100.0f / m_Distance) / 5000.0f;
-            this.X = (float)(this.m_ScreenX * gameContext.Window.ClientBounds.Width);
-            this.Y = (float)(this.m_ScreenY * gameContext.Window.ClientBounds.Height);
+            this.X = (float)(5 - this.m_ScreenX * 10);//(float)(this.m_ScreenX * gameContext.Window.ClientBounds.Width);
+            this.Z = (float)(5 - this.m_ScreenY * 10);//(float)(this.m_ScreenY * gameContext.Window.ClientBounds.Height);
+
+            if (this.Z > 10)
+                gameContext.World.Entities.Remove(this);
 
             //if ((int)this.Y + (int)(this.m_ChunkSizePolicy.CellTextureTopPixelHeight / this.m_Distance) +
             //    (int)(this.m_ChunkSizePolicy.CellTextureSidePixelHeight * 2.0 / this.m_Distance) < 0)
@@ -78,8 +81,10 @@ namespace Tychaia
                 0, 1, 4, 5, 4, 1,
                 6, 3, 2, 7, 3, 6
             };
-                
-            renderContext.World = Matrix.CreateTranslation(this.X, this.Y, this.Z);
+            
+            renderContext.EnableTextures();
+            renderContext.SetActiveTexture(this.m_GrassAsset.Texture);
+            renderContext.World = Matrix.CreateTranslation(new Vector3(this.X, this.Y, this.Z));
             
             foreach (var pass in renderContext.Effect.CurrentTechnique.Passes)
             {

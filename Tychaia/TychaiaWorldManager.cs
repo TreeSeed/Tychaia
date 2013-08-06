@@ -29,7 +29,7 @@ namespace Tychaia
             
             game.GameContext.World.RenderBelow(game.GameContext, game.RenderContext);
         
-            foreach (var entity in game.GameContext.World.Entities)
+            foreach (var entity in game.GameContext.World.Entities.ToArray())
                 entity.Render(game.GameContext, game.RenderContext);
         
             game.GameContext.World.RenderAbove(game.GameContext, game.RenderContext);
@@ -44,7 +44,7 @@ namespace Tychaia
             
                 game.GameContext.World.RenderBelow(game.GameContext, game.RenderContext);
             
-                foreach (var entity in game.GameContext.World.Entities.OrderBy(x => x.Z))
+                foreach (var entity in game.GameContext.World.Entities.OrderBy(x => x.Z).ToArray())
                     entity.Render(game.GameContext, game.RenderContext);
             
                 game.GameContext.World.RenderAbove(game.GameContext, game.RenderContext);
@@ -63,7 +63,7 @@ namespace Tychaia
         {
             game.UpdateContext.Update(game.GameContext);
             
-            foreach (var entity in game.GameContext.World.Entities)
+            foreach (var entity in game.GameContext.World.Entities.ToArray())
                 entity.Update(game.GameContext, game.UpdateContext);
             
             game.GameContext.World.Update(game.GameContext, game.UpdateContext);

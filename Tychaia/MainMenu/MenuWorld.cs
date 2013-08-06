@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Protogame;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Tychaia
 {
@@ -28,6 +29,7 @@ namespace Tychaia
         protected IGameContext m_GameContext;
         private IBackgroundCubeEntityFactory m_BackgroundCubeEntityFactory;
         private CanvasEntity m_CanvasEntity;
+        private int m_Rotation;
         
         public List<IEntity> Entities { get; private set; }
         
@@ -65,13 +67,54 @@ namespace Tychaia
         public void RenderBelow(IGameContext gameContext, IRenderContext renderContext)
         {
             if (renderContext.Is3DContext)
-                return;
-        
-            this.m_2DRenderUtilities.RenderRectangle(
-                renderContext,
-                gameContext.Window.ClientBounds,
-                Color.Black,
-                filled: true);
+            {
+                renderContext.GraphicsDevice.Clear(Color.CornflowerBlue);
+                
+                renderContext.EnableVertexColors();
+                (renderContext.Effect as BasicEffect).LightingEnabled = false;
+                renderContext.View = Matrix.CreateLookAt(new Vector3(0.0f, -10.0f, 10.0f), Vector3.Zero, Vector3.Up);
+                renderContext.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 4f / 3f, 1.0f, 1000.0f);
+                renderContext.World = Matrix.CreateTranslation(new Vector3(-0.5f, -0.5f, -0.5f)) *
+                    Matrix.CreateRotationX(MathHelper.ToRadians(this.m_Rotation)) *
+                    Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation));
+                this.m_Rotation++;
+            
+                var vertexes = new VertexPositionColor[]
+                {
+                    new VertexPositionColor(new Vector3(0, 0, 0), Color.Black),
+                    new VertexPositionColor(new Vector3(0, 0, 1), Color.Blue),
+                    new VertexPositionColor(new Vector3(0, 1, 0), Color.Green),
+                    new VertexPositionColor(new Vector3(0, 1, 1), Color.Yellow),
+                    new VertexPositionColor(new Vector3(1, 0, 0), Color.Purple),
+                    new VertexPositionColor(new Vector3(1, 0, 1), Color.Red),
+                    new VertexPositionColor(new Vector3(1, 1, 0), Color.Orange),
+                    new VertexPositionColor(new Vector3(1, 1, 1), Color.White),
+                };
+                
+                var indicies = new short[]
+                {
+                    0, 2, 1, 1, 2, 3,
+                    4, 5, 6, 5, 7, 6,
+                    0, 4, 6, 0, 6, 2,
+                    1, 7, 5, 1, 3, 7,
+                    0, 1, 4, 5, 4, 1,
+                    6, 3, 2, 7, 3, 6
+                };
+                
+                foreach (var pass in renderContext.Effect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
+                
+                    renderContext.GraphicsDevice.DrawUserIndexedPrimitives(
+                        PrimitiveType.TriangleList,
+                        vertexes,
+                        0,   // vertex buffer offset to add to each element of the index buffer
+                        8,   // number of vertices to draw
+                        indicies,
+                        0,   // first index element to read
+                        indicies.Length / 3);
+                }
+            }
         }
 
         public void RenderAbove(IGameContext gameContext, IRenderContext renderContext)
