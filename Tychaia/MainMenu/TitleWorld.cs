@@ -33,14 +33,6 @@ namespace Tychaia
                     if (this.m_GameContext != null)
                         this.m_TargetWorld = this.m_GameContext.CreateWorld<LoadWorld>();
                 });
-            #if DEBUG
-            this.AddMenuItem(
-                this.m_AssetManager.Get<LanguageAsset>("language.ISOMETRIC_TEST_WORLD"),
-                () => {
-                    if (this.m_GameContext != null)
-                        this.m_TargetWorld = this.m_GameContext.CreateWorld<IsometricPreviewWorld>();
-                });
-            #endif
             this.AddMenuItem(
                 this.m_AssetManager.Get<LanguageAsset>("language.RANDOMIZE_SEED"),
                 () => {
