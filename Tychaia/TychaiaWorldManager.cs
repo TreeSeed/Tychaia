@@ -13,6 +13,7 @@ namespace Tychaia
 {
     public class TychaiaWorldManager : IWorldManager
     {
+#if DEBUG
         private TychaiaProfilerEntity m_TychaiaProfilerEntity;
         
         public TychaiaWorldManager(
@@ -20,6 +21,7 @@ namespace Tychaia
         {
             this.m_TychaiaProfilerEntity = tychaiaProfilerEntity;
         }
+#endif
         
         public void Render<T>(T game) where T : Microsoft.Xna.Framework.Game, ICoreGame
         {
@@ -49,11 +51,14 @@ namespace Tychaia
 
                 game.GameContext.World.RenderAbove(game.GameContext, game.RenderContext);
 
+#if DEBUG
                 this.m_TychaiaProfilerEntity.RenderMaximums(game.GameContext, game.RenderContext);
+#endif
             }
             
             game.RenderContext.SpriteBatch.End();
 
+#if DEBUG
             // Cache the matrixes because we need to render the profiler UI.
             var oldView = game.RenderContext.View;
             var oldProjection = game.RenderContext.Projection;
@@ -77,6 +82,7 @@ namespace Tychaia
             game.RenderContext.View = oldView;
             game.RenderContext.Projection = oldProjection;
             game.RenderContext.World = oldWorld;
+#endif
         }
         
         public void Update<T>(T game) where T : Microsoft.Xna.Framework.Game, ICoreGame
@@ -88,7 +94,9 @@ namespace Tychaia
             
             game.GameContext.World.Update(game.GameContext, game.UpdateContext);
             
+#if DEBUG
             this.m_TychaiaProfilerEntity.Update(game.GameContext, game.UpdateContext);
+#endif
         }
     }
 }
