@@ -46,17 +46,37 @@ namespace Tychaia
             
                 foreach (var entity in game.GameContext.World.Entities.OrderBy(x => x.Z).ToArray())
                     entity.Render(game.GameContext, game.RenderContext);
-            
+
                 game.GameContext.World.RenderAbove(game.GameContext, game.RenderContext);
+
+                this.m_TychaiaProfilerEntity.RenderMaximums(game.GameContext, game.RenderContext);
             }
             
             game.RenderContext.SpriteBatch.End();
+
+            // Cache the matrixes because we need to render the profiler UI.
+            var oldView = game.RenderContext.View;
+            var oldProjection = game.RenderContext.Projection;
+            var oldWorld = game.RenderContext.World;
+
+            // Set up the matrix to match the sprite batch.
+            var projection = Matrix.CreateOrthographicOffCenter(0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height, 0, 0, 1);
+            var halfPixelOffset = Matrix.CreateTranslation(-0.5f, -0.5f, 0);
+            game.RenderContext.World = Matrix.Identity;
+            game.RenderContext.View = Matrix.Identity;
+            game.RenderContext.Projection = halfPixelOffset * projection;
             
+            // Render profiler.
             foreach (var pass in game.RenderContext.Effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
                 this.m_TychaiaProfilerEntity.Render(game.GameContext, game.RenderContext);
             }
+
+            // Restore matrixes.
+            game.RenderContext.View = oldView;
+            game.RenderContext.Projection = oldProjection;
+            game.RenderContext.World = oldWorld;
         }
         
         public void Update<T>(T game) where T : Microsoft.Xna.Framework.Game, ICoreGame

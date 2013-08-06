@@ -108,6 +108,8 @@ namespace Tychaia
             };
             Action<VertexPositionColor[], short[]> renderLine = (vertexList, lsi) =>
             {
+                if (vertexList.Length == 0)
+                    return;
                 gameContext.Graphics.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionColor>(
                     PrimitiveType.LineStrip,
                     vertexList,
