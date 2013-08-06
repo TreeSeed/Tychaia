@@ -13,14 +13,14 @@ using Tychaia.ProceduralGeneration.FlowBundles;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
-    [FlowDesignerCategory(FlowCategory.FlowBundle)]
-    [FlowDesignerName("Bundle Extract Int32")]
-    public class AlgorithmBundleExtractInt32 : Algorithm<FlowBundle, Int32, Int32>
+    [FlowDesignerMajorCategory(FlowMajorCategory.FlowBundle)]
+    [FlowDesignerCategory(FlowCategory.Add)]
+    [FlowDesignerName("Bundle Set Int32")]
+    public class AlgorithmBundleSetInt32 : Algorithm<FlowBundle, Int32, FlowBundle>
     {
         [DataMember]
         [DefaultValue("Unassigned")]
-        [Description("The identifier for the instance you wish to retrieve from the bundle.")]
+        [Description("The identifier for this instance in the bundle.")]
         public string Identifier
         {
             get;
@@ -40,7 +40,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get
             {
-                return new[] { "FlowBundle", "Color" };
+                return new[] { "FlowBundle", "Int32" };
             }
         }
 
@@ -49,32 +49,35 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
 
-        public AlgorithmBundleExtractInt32()
+        public AlgorithmBundleSetInt32()
         {
             this.Layer2D = true;
             this.Identifier = "Unassigned";
         }
 
-        public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, Int32[] inputB, Int32[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, Int32[] inputB, FlowBundle[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-             output[(i + ox) + (j + oy)*width + (k + oz)*width*height] = inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].ExtractValue(Identifier);
+            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
+				inputA[(i + ox) + (j + oy) * width + (k + oz) * width* height].Set(
+					this.Identifier, 
+					inputB[(i + ox) + (j + oy) * width + (k + oz) * width* height]);
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            return this.DelegateColorForValueToParent(parent, value, 1);
+            return Color.FromArgb(value.Hash());
         }
     }
 
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
-    [FlowDesignerCategory(FlowCategory.FlowBundle)]
-    [FlowDesignerName("Bundle Extract Biome")]
-    public class AlgorithmBundleExtractBiome : Algorithm<FlowBundle, Biome, Biome>
+    [FlowDesignerMajorCategory(FlowMajorCategory.FlowBundle)]
+    [FlowDesignerCategory(FlowCategory.Add)]
+    [FlowDesignerName("Bundle Set Biome")]
+    public class AlgorithmBundleSetBiome : Algorithm<FlowBundle, Biome, FlowBundle>
     {
         [DataMember]
         [DefaultValue("Unassigned")]
-        [Description("The identifier for the instance you wish to retrieve from the bundle.")]
+        [Description("The identifier for this instance in the bundle.")]
         public string Identifier
         {
             get;
@@ -94,7 +97,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get
             {
-                return new[] { "FlowBundle", "Color" };
+                return new[] { "FlowBundle", "Biome" };
             }
         }
 
@@ -103,20 +106,23 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
 
-        public AlgorithmBundleExtractBiome()
+        public AlgorithmBundleSetBiome()
         {
             this.Layer2D = true;
             this.Identifier = "Unassigned";
         }
 
-        public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, Biome[] inputB, Biome[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, Biome[] inputB, FlowBundle[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-             output[(i + ox) + (j + oy)*width + (k + oz)*width*height] = inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].ExtractValue(Identifier);
+            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
+				inputA[(i + ox) + (j + oy) * width + (k + oz) * width* height].Set(
+					this.Identifier, 
+					inputB[(i + ox) + (j + oy) * width + (k + oz) * width* height]);
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            return this.DelegateColorForValueToParent(parent, value, 1);
+            return Color.FromArgb(value.Hash());
         }
     }
 

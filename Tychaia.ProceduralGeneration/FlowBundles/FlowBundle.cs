@@ -5,57 +5,109 @@ using System.Text;
 
 namespace Tychaia.ProceduralGeneration.FlowBundles
 {
-    public struct FlowBundle
+    public class FlowBundle
     {
-        public dynamic[] Data;
-        public string[] Name;
-        public int Count;
+        public readonly dynamic[] Data;
+        public readonly string[] Name;
+        public readonly int Count;
 
-        public FlowBundle(int structsize)
+        public FlowBundle()
         {
-            Data = new dynamic[structsize];
-            Name = new string[structsize];
-            Count = 0;
+            this.Name = new string[0];
+            this.Data = new dynamic[0];
+            this.Count = 0;
         }
 
-        public void AddValue(dynamic value, string name)
+        private FlowBundle(string[] names, dynamic[] values, int valueCount)
         {
-            if (Count < Data.Length)
-            {
-                Data[Count] = value;
-                Name[Count] = name;
-                Count++;
-            }
+            this.Name = names;
+            this.Data = values;
+            this.Count = valueCount;
         }
 
-        public dynamic ExtractValue(string name)
+        private FlowBundle Add(string name, dynamic value)
         {
-            for (int i = 0; i < Count; i++)
-            {
-                //Console.WriteLine("Check " + i);
-                if(Name[i] == name)
-                {
-                    //Console.WriteLine("Found " + name);
-                    dynamic datareturn = Data[i];
-                    if (i + 1 < Count)
-                    {
-                        Data[i] = Data[i + 1];
-                        Data[i + 1] = null;
-                        Name[i] = Name[i + 1];
-                        Name[i + 1] = null;
-                    }
-                    else
-                    {
-                        Data[i] = null;
-                        Name[i] = null;
-                    }
+            var dataCopy = new dynamic[this.Count + 1];
+            var nameCopy = new string[this.Count + 1];
+            this.Data.CopyTo(dataCopy, 0);
+            this.Name.CopyTo(nameCopy, 0);
+            dataCopy[this.Count] = value;
+            nameCopy[this.Count] = name;
+            return new FlowBundle(nameCopy, dataCopy, this.Count + 1);
+        }
 
-                    return datareturn;
-                }
-                Console.WriteLine(i + " is not " + name);
-            }
+        private int IndexOf(string name)
+        {
+            for (var i = 0; i < this.Count; i++)
+                if (this.Name[i] == name)
+                    return i;
+            return -1;
+        }
 
+        public bool Exists(string name)
+        {
+            return this.IndexOf(name) != -1;
+        }
+
+        public FlowBundle Set(string name, dynamic value)
+        {
+            if (!this.Exists(name))
+                return this.Add(name, value);
+            var idx = this.IndexOf(name);
+            var nameCopy = this.Name.ToArray();
+            var dataCopy = this.Data.ToArray();
+            dataCopy[idx] = value;
+            return new FlowBundle(nameCopy, dataCopy, this.Count);
+        }
+
+        public dynamic Get(string name)
+        {
+            for (int i = 0; i < this.Count; i++)
+                if (this.Name[i] == name)
+                    return this.Data[i];
             return null;
+        }
+
+        public FlowBundle Delete(string name)
+        {
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (this.Name[i] == name)
+                {
+                    var dataCopy = new dynamic[this.Count - 1];
+                    var nameCopy = new string[this.Count - 1];
+                    for (var x = 0; x < i; x++)
+                    {
+                        dataCopy[x] = this.Data[x];
+                        nameCopy[x] = this.Name[x];
+                    }
+                    for (var x = i + 1; x < this.Count; x++)
+                    {
+                        dataCopy[x - 1] = this.Data[x];
+                        nameCopy[x - 1] = this.Name[x];
+                    }
+                    return new FlowBundle(nameCopy, dataCopy, this.Count + 1);
+                }
+            }
+            return new FlowBundle(this.Name.ToArray(), this.Data.ToArray(), this.Count);
+        }
+
+        public int Hash()
+        {
+            var result = 0;
+            foreach (var blob in this.Data)
+            {
+                if (blob is int)
+                    result += (blob - 73903) * 12927;
+                else if (blob is string)
+                {
+                    for (var a = 0; a < blob.Length; a++)
+                        result += (blob[a] + 21299) * 73703;
+                }
+                else
+                    result += blob.GetHashCode() * 21299;
+            }
+            return result;
         }
     }
 }

@@ -12,7 +12,7 @@ using Tychaia.ProceduralGeneration.Towns;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.Specific)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Towns)]
     [FlowDesignerName("Initial Towns")]
     public class AlgorithmInitialTowns : Algorithm<Town>

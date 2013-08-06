@@ -13,8 +13,10 @@ namespace Tychaia.ProceduralGeneration
     {
         [Description("General Layers")]
         General,
-        [Description("Specific Layers")]
-        Specific,
+		/*[Description("Specific Layers")]
+        Specific,*/
+		[Description("Flow Bundles")]
+		FlowBundle,
         Undefined
     }
 
@@ -26,9 +28,11 @@ namespace Tychaia.ProceduralGeneration
         Zooming,
         Manipulation,
         Debugging,
-        Output,
-        [Description("Flow Bundles")]
-        FlowBundle,
+
+		//FlowBundles Options
+		Add,
+		Extract,
+
         Undefined,
         [Description("Bugged Layers")]
         Buggy,
@@ -42,7 +46,10 @@ namespace Tychaia.ProceduralGeneration
         Rivers,
         Trees,
         Towns,
-        FamilyTrees
+        FamilyTrees,
+
+		//Output should always be at the bottom
+		Output
     }
 
     public class FlowDesignerCategoryAttribute : Attribute
