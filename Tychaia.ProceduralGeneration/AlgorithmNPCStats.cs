@@ -12,7 +12,7 @@ using System.Drawing;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.Specific)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.NPCs)]
     [FlowDesignerName("NPC Stats")]
     public class AlgorithmNPCStats : Algorithm<int, int>

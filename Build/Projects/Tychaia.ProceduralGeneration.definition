@@ -20,15 +20,20 @@
     <Compile Include="AlgorithmAverage.cs" />
     <Compile Include="AlgorithmBiomes.cs" />
     <Compile Include="AlgorithmBiomesSimple.cs" />
-    <Compile Include="AlgorithmBundleAdd.cs">
+    <Compile Include="AlgorithmBundleCreate.cs">
+      <DependentUpon>AlgorithmBundleCreate.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AlgorithmBundleAdd.tt</DependentUpon>
     </Compile>
-    <Compile Include="AlgorithmBundleExtract.cs">
+    <Compile Include="AlgorithmBundleGet.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AlgorithmBundleExtract.tt</DependentUpon>
+      <DependentUpon>AlgorithmBundleGet.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AlgorithmBundleSet.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AlgorithmBundleSet.tt</DependentUpon>
     </Compile>
     <Compile Include="AlgorithmClamp.cs" />
     <Compile Include="AlgorithmColors.cs" />
@@ -45,7 +50,6 @@
     <Compile Include="AlgorithmHeightChange.cs" />
     <Compile Include="AlgorithmIncrementWaterDistance.cs" />
     <Compile Include="AlgorithmInitialBool.cs" />
-    <Compile Include="AlgorithmInitialFlowBundle.cs" />
     <Compile Include="AlgorithmInitialTowns.cs" />
     <Compile Include="AlgorithmMultiply.cs" />
     <Compile Include="AlgorithmNPCStats.cs" />
@@ -122,13 +126,17 @@
     <EmbeddedResource Include="Compiler\CompiledLayerTemplate.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <None Include="AlgorithmBundleAdd.tt">
+    <None Include="AlgorithmBundleCreate.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AlgorithmBundleAdd.cs</LastGenOutput>
+      <LastGenOutput>AlgorithmBundleCreate.cs</LastGenOutput>
     </None>
-    <None Include="AlgorithmBundleExtract.tt">
+    <None Include="AlgorithmBundleGet.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AlgorithmBundleExtract.cs</LastGenOutput>
+      <LastGenOutput>AlgorithmBundleGet.cs</LastGenOutput>
+    </None>
+    <None Include="AlgorithmBundleSet.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AlgorithmBundleSet.cs</LastGenOutput>
     </None>
     <None Include="Analysis\Reporting\bootstrap\css\bootstrap.min.css" />
     <None Include="Analysis\Reporting\bootstrap\css\bootstrap-responsive.min.css" />

@@ -29,10 +29,10 @@ namespace Tychaia.ProceduralGeneration
 	{
 #>
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
-    [FlowDesignerCategory(FlowCategory.FlowBundle)]
-    [FlowDesignerName("Bundle Extract <#=type#>")]
-    public class AlgorithmBundleExtract<#=type#> : Algorithm<FlowBundle, <#=type#>, <#=type#>>
+    [FlowDesignerMajorCategory(FlowMajorCategory.FlowBundle)]
+    [FlowDesignerCategory(FlowCategory.Extract)]
+    [FlowDesignerName("Bundle Get <#=type#>")]
+    public class AlgorithmBundleGet<#=type#> : Algorithm<FlowBundle, <#=type#>, <#=type#>>
     {
         [DataMember]
         [DefaultValue("Unassigned")]
@@ -65,7 +65,7 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
 
-        public AlgorithmBundleExtract<#=type#>()
+        public AlgorithmBundleGet<#=type#>()
         {
             this.Layer2D = true;
             this.Identifier = "Unassigned";
@@ -73,7 +73,8 @@ namespace Tychaia.ProceduralGeneration
 
         public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, <#=type#>[] inputB, <#=type#>[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-             output[(i + ox) + (j + oy)*width + (k + oz)*width*height] = inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].ExtractValue(Identifier);
+             output[(i + ox) + (j + oy) * width + (k + oz) * width* height] =
+				inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].Get(this.Identifier);
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)

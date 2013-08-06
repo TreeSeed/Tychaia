@@ -11,7 +11,7 @@ using System.Drawing;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.Specific)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Terrain)]
     [FlowDesignerName("Reduce Water Depth")]
     public class AlgorithmReduceWaterDepth : Algorithm<int, int>

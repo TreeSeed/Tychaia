@@ -29,10 +29,10 @@ namespace Tychaia.ProceduralGeneration
 	{
 #>
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
-    [FlowDesignerCategory(FlowCategory.FlowBundle)]
-    [FlowDesignerName("Bundle Add <#=type#>")]
-    public class AlgorithmBundleAdd<#=type#> : Algorithm<FlowBundle, <#=type#>, FlowBundle>
+    [FlowDesignerMajorCategory(FlowMajorCategory.FlowBundle)]
+    [FlowDesignerCategory(FlowCategory.Add)]
+    [FlowDesignerName("Bundle Set <#=type#>")]
+    public class AlgorithmBundleSet<#=type#> : Algorithm<FlowBundle, <#=type#>, FlowBundle>
     {
         [DataMember]
         [DefaultValue("Unassigned")]
@@ -65,7 +65,7 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
 
-        public AlgorithmBundleAdd<#=type#>()
+        public AlgorithmBundleSet<#=type#>()
         {
             this.Layer2D = true;
             this.Identifier = "Unassigned";
@@ -73,14 +73,15 @@ namespace Tychaia.ProceduralGeneration
 
         public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, <#=type#>[] inputB, FlowBundle[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].AddValue(inputB[(i + ox) + (j + oy) * width + (k + oz) * width * height], Identifier);
-
-            output[(i + ox) + (j + oy)*width + (k + oz)*width*height] = inputA[(i + ox) + (j + oy)*width + (k + oz)*width*height];
+            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
+				inputA[(i + ox) + (j + oy) * width + (k + oz) * width* height].Set(
+					this.Identifier, 
+					inputB[(i + ox) + (j + oy) * width + (k + oz) * width* height]);
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            return this.DelegateColorForValueToParent(parent, value);
+            return Color.FromArgb(value.Hash());
         }
     }
 

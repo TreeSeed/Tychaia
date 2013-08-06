@@ -172,12 +172,7 @@ namespace Tychaia.ProceduralGeneration.Flow
             else
                 data = runtimeLayer.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth, out computations);
 
-            StorageLayer parent;
-            if (runtimeLayer.GetInputs().Length == 0)
-                parent = null;
-            else
-                parent = StorageAccess.FromRuntime(runtimeLayer.GetInputs()[0]);
-
+            var storageLayer = StorageAccess.FromRuntime(runtimeLayer);
             int[] render = GetCellRenderOrder(RenderToNE, RenderWidth, RenderHeight);
             int ztop = runtimeLayer.Algorithm.Is2DOnly ? 1 : RenderDepth;
             int zbottom = 0;
@@ -202,7 +197,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                         try
                         {
                             Color lc = runtimeLayer.Algorithm.GetColorForValue(
-                                parent,
+                                storageLayer,
                                 data[x + y * owidth + z * owidth * oheight]);
                             SolidBrush sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
                             g.FillRectangle(

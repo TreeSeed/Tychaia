@@ -179,16 +179,17 @@ namespace Tychaia.ProceduralGeneration
         }
 
         /// <summary>
-        /// Delegates the color logic to the primary input of this algorithm.
+        /// Delegates the color logic to one of the parents of this algorithm.
         /// </summary>
-        /// <param name="parent">The primary input.</param>
+        /// <param name="layer">The storage layer holding this algorithm.</param>
         /// <param name="value">The value to determine.</param>
+        /// <param name="index">The index of the parent to delegate to.</param>
         /// <returns>The color determined by the parent.</returns>
-        public Color DelegateColorForValueToParent(StorageLayer parent, dynamic value, int index = 0)
+        public Color DelegateColorForValueToParent(StorageLayer layer, dynamic value, int index = 0)
         {
-            if (parent != null)
-                return parent.Algorithm.GetColorForValue(parent.Inputs.Length >= (index + 1) ? parent.Inputs[index] : null, value);
-            return Color.Gray;
+            if (layer.Inputs[index] == null)
+                return Color.Gray;
+            return layer.Inputs[index].Algorithm.GetColorForValue(layer.Inputs[index], value);
         }
     }
 
