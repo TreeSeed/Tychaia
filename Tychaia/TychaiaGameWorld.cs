@@ -16,24 +16,22 @@ using System.Linq;
 
 namespace Tychaia
 {
-    public class TychaiaGameWorld : IWorld, IOccludingSpriteBatchContainer
+    public class TychaiaGameWorld : IWorld
     {
         private IKernel m_Kernel;
         private IAssetManager m_AssetManager;
-        private IRenderUtilities m_RenderUtilities;
+        private I2DRenderUtilities m_2DRenderUtilities;
+        private I3DRenderUtilities m_3DRenderUtilities;
         private IFilteredFeatures m_FilteredFeatures;
         private IFilteredConsole m_FilteredConsole;
         private IIntelligenceComponent[] m_IntelligenceComponents;
-        private IRelativeChunkRendering m_RelativeChunkRendering;
-        private IIsometricRenderUtilities m_IsometricRenderUtilities;
         private IChunkSizePolicy m_ChunkSizePolicy;
-        private IRenderingBuffers m_RenderingBuffers;
         
         private FontAsset m_DefaultFont;
     
         private Player m_Player = null;
         private ILevel m_DiskLevel = null;
-        private ChunkRenderer m_ChunkRenderer = null;
+        //private ChunkRenderer m_ChunkRenderer = null;
         private ChunkProvider m_ChunkProvider = null;
         
         public List<IEntity> Entities { get; private set; }
@@ -42,33 +40,26 @@ namespace Tychaia
         public OccludingSpriteBatch OccludingSpriteBatch { get; private set; }
         
         public TychaiaGameWorld(
-            IKernel kernel,
             IAssetManagerProvider assetManagerProvider,
-            IRenderUtilities renderUtilities,
+            I2DRenderUtilities _2dRenderUtilities,
+            I3DRenderUtilities _3dRenderUtilities,
             IFilteredFeatures filteredFeatures,
             IFilteredConsole filteredConsole,
             IIntelligenceComponent[] intelligenceComponents,
             IChunkOctreeFactory chunkOctreeFactory,
             IChunkFactory chunkFactory,
             IIsometricCameraFactory isometricCameraFactory,
-            IRelativeChunkRendering relativeChunkRendering,
-            IIsometricRenderUtilities isometricRenderingUtilities,
             IChunkProviderFactory chunkProviderFactory,
-            IChunkRendererFactory chunkRendererFactory,
-            IChunkSizePolicy chunkSizePolicy,
-            IRenderingBuffers renderingBuffers)
+           // IChunkRendererFactory chunkRendererFactory,
+            IChunkSizePolicy chunkSizePolicy)
         {
-            this.m_Kernel = kernel;
-            kernel.Rebind<IOccludingSpriteBatchContainer>().ToMethod(x => this);
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
-            this.m_RenderUtilities = renderUtilities;
+            this.m_2DRenderUtilities = _2dRenderUtilities;
+            this.m_3DRenderUtilities = _3dRenderUtilities;
             this.m_FilteredFeatures = filteredFeatures;
             this.m_FilteredConsole = filteredConsole;
             this.m_IntelligenceComponents = intelligenceComponents;
-            this.m_RelativeChunkRendering = relativeChunkRendering;
-            this.m_IsometricRenderUtilities = isometricRenderingUtilities;
             this.m_ChunkSizePolicy = chunkSizePolicy;
-            this.m_RenderingBuffers = renderingBuffers;
          
             this.m_DiskLevel = null;
             this.ChunkOctree = chunkOctreeFactory.CreateChunkOctree();
@@ -77,21 +68,19 @@ namespace Tychaia
             this.IsometricCamera = isometricCameraFactory.CreateIsometricCamera(this.ChunkOctree, chunk);
             
             this.m_ChunkProvider = chunkProviderFactory.CreateChunkProvider();
-            this.m_ChunkRenderer = chunkRendererFactory.CreateChunkRenderer();
+            //this.m_ChunkRenderer = chunkRendererFactory.CreateChunkRenderer();
         
             this.m_Player = new Player(
                 this,
                 this.m_AssetManager,
-                this.m_RenderUtilities,
-                this.m_FilteredFeatures,
-                this.m_IsometricRenderUtilities);
+                this.m_3DRenderUtilities,
+                this.m_FilteredFeatures);
             this.Entities = new List<IEntity>();
             this.Entities.Add(this.m_Player);
         }
         
         public void Dispose()
         {
-            this.m_Kernel.Unbind<IOccludingSpriteBatchContainer>();
         }
 
         public void RenderBelow(IGameContext gameContext, IRenderContext renderContext)
@@ -109,6 +98,8 @@ namespace Tychaia
                 gameContext.Graphics.GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Target, Color.Black, 1f, 0);
             
             #endregion
+            
+            #if FALSE
             
             #region IsometricWorldManager.DrawTilesBelow
             
@@ -201,6 +192,8 @@ namespace Tychaia
             }
             
             #endregion
+            
+            #endif
         }
 
         public void RenderAbove(IGameContext gameContext, IRenderContext renderContext)
@@ -214,7 +207,7 @@ namespace Tychaia
             // Perform chunk provider / renderer updates.  Ideally we want to expose these
             // to the intelligence components, but not too sure how to do this yet.
             this.m_ChunkProvider.Process(gameContext);
-            this.m_ChunkRenderer.Process(gameContext);
+            //this.m_ChunkRenderer.Process(gameContext);
         
             var keyboard = Keyboard.GetState();
         

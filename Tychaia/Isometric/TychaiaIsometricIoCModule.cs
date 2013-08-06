@@ -12,7 +12,6 @@ namespace Tychaia
     {
         public override void Load()
         {
-            this.Bind<IIsometricBoundingBoxUtilities>().To<DefaultIsometricBoundingBoxUtilities>();
             this.Bind<IIsometricCameraFactory>().ToFactory();
         }
     }

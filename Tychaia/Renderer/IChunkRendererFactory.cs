@@ -1,5 +1,7 @@
 using System;
 
+#if NO_LONGER_NEEDED
+
 namespace Tychaia
 {
     public interface IChunkRendererFactory
@@ -8,3 +10,4 @@ namespace Tychaia
     }
 }
 
+#endif

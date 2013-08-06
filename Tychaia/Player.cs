@@ -11,10 +11,9 @@ using Tychaia.Globals;
 
 namespace Tychaia
 {
-    public class Player : IsometricEntity
+    public class Player : Entity
     {
-        private IRenderUtilities m_RenderUtilities;
-        private IIsometricRenderUtilities m_IsometricRenderingUtilities;
+        private I3DRenderUtilities m_3DRenderUtilities;
         private IFilteredFeatures m_FilteredFeatures;
     
         private TychaiaGameWorld m_World;
@@ -25,13 +24,11 @@ namespace Tychaia
         public Player(
             TychaiaGameWorld world,
             IAssetManager assetManager,
-            IRenderUtilities renderUtilities,
-            IFilteredFeatures filteredFeatures,
-            IIsometricRenderUtilities isometricRenderingUtilities)
+            I3DRenderUtilities _3dRenderUtilities,
+            IFilteredFeatures filteredFeatures)
         {
             this.m_World = world;
-            this.m_RenderUtilities = renderUtilities;
-            this.m_IsometricRenderingUtilities = isometricRenderingUtilities;
+            this.m_3DRenderUtilities = _3dRenderUtilities;
             this.m_FilteredFeatures = filteredFeatures;
             this.m_PlayerAsset = assetManager.Get<TextureAsset>("chars.player.Player");
             
@@ -86,7 +83,10 @@ namespace Tychaia
 
         public override void Render(IGameContext gameContext, IRenderContext renderContext)
         {
-            this.m_IsometricRenderingUtilities.RenderEntity(
+            if (!renderContext.Is3DContext)
+                return;
+        
+            /*this.m_IsometricRenderingUtilities.RenderEntity(
                 renderContext,
                 this.m_World,
                 this,
@@ -97,7 +97,7 @@ namespace Tychaia
             this.m_RenderUtilities.RenderTexture(
                 renderContext,
                 new Vector2(this.X, this.Y),
-                this.m_PlayerAsset);
+                this.m_PlayerAsset);*/
         }
     }
 }

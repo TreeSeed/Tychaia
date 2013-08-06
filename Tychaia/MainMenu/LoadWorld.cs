@@ -11,11 +11,11 @@ namespace Tychaia
     public class LoadWorld : MenuWorld
     {
         public LoadWorld(
-            IRenderUtilities renderUtilities,
+            I2DRenderUtilities _2dRenderUtilities,
             IAssetManagerProvider assetManagerProvider,
             IBackgroundCubeEntityFactory backgroundCubeEntityFactory,
             ISkin skin)
-            : base(renderUtilities, assetManagerProvider, backgroundCubeEntityFactory, skin)
+            : base(_2dRenderUtilities, assetManagerProvider, backgroundCubeEntityFactory, skin)
         {
             var assetManager = assetManagerProvider.GetAssetManager();
             var returnText = assetManager.Get<LanguageAsset>("language.RETURN");

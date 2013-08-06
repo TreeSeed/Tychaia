@@ -13,11 +13,11 @@ namespace Tychaia
         private float m_FadeAmount = 0.0f;
         
         public TitleWorld(
-            IRenderUtilities renderUtilities,
+            I2DRenderUtilities _2dRenderUtilities,
             IAssetManagerProvider assetManagerProvider,
             IBackgroundCubeEntityFactory backgroundCubeEntityFactory,
             ISkin skin)
-            : base(renderUtilities, assetManagerProvider, backgroundCubeEntityFactory, skin)
+            : base(_2dRenderUtilities, assetManagerProvider, backgroundCubeEntityFactory, skin)
         {
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
             

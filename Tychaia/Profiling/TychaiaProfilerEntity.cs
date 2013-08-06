@@ -15,24 +15,21 @@ namespace Tychaia
     public class TychaiaProfilerEntity : Entity
     {
         private TychaiaProfiler m_Profiler;
-        private IUniqueRenderCache m_UniqueRenderCache;
         private IRenderTargetFactory m_RenderStateFactory;
-        private IRenderUtilities m_RenderUtilities;
+        private I2DRenderUtilities m_2DRenderUtilities;
         private IAssetManager m_AssetManager;
         private FontAsset m_DefaultFontAsset;
         private List<FrameProfileInfo> m_ProfilingInformation;
     
         public TychaiaProfilerEntity(
             TychaiaProfiler profiler,
-            IUniqueRenderCache uniqueRenderCache,
             IRenderTargetFactory renderStateFactory,
-            IRenderUtilities renderUtilities,
+            I2DRenderUtilities _2dRenderUtilities,
             IAssetManagerProvider assetManagerProvider)
         {
             this.m_Profiler = profiler;
-            this.m_UniqueRenderCache = uniqueRenderCache;
             this.m_RenderStateFactory = renderStateFactory;
-            this.m_RenderUtilities = renderUtilities;
+            this.m_2DRenderUtilities = _2dRenderUtilities;
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
             this.m_DefaultFontAsset = this.m_AssetManager.Get<FontAsset>("font.Default");
             this.m_ProfilingInformation = new List<FrameProfileInfo>();
@@ -65,7 +62,7 @@ namespace Tychaia
         {
             Action<int, double, Color> drawMaximum = (offset, maximum, color) =>
             {
-                this.m_RenderUtilities.RenderText(
+                this.m_2DRenderUtilities.RenderText(
                     renderContext,
                     new Vector2(4 + offset, 4),
                     maximum.ToString(),
@@ -73,7 +70,7 @@ namespace Tychaia
                     textColor: color);
             };
             
-            this.m_RenderUtilities.RenderRectangle(
+            this.m_2DRenderUtilities.RenderRectangle(
                 renderContext,
                 new Rectangle(0, 0, 300, 224),
                 new Color(0, 0, 0, 0.5f),

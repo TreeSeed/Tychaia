@@ -21,7 +21,7 @@ namespace Tychaia
         private ScatterBackground m_ScatterBackground;
         protected IAssetManager m_AssetManager = null;
         private TitleMenu m_TitleMenu;
-        private IRenderUtilities m_RenderUtilities;
+        private I2DRenderUtilities m_2DRenderUtilities;
         private FontAsset m_TitleFont;
         private FontAsset m_DefaultFont;
         private TextureAsset m_PlayerTexture;
@@ -32,12 +32,12 @@ namespace Tychaia
         public List<IEntity> Entities { get; private set; }
         
         public MenuWorld(
-            IRenderUtilities renderUtilities,
+            I2DRenderUtilities _2dRenderUtilities,
             IAssetManagerProvider assetManagerProvider,
             IBackgroundCubeEntityFactory backgroundCubeEntityFactory,
             ISkin skin)
         {
-            this.m_RenderUtilities = renderUtilities;
+            this.m_2DRenderUtilities = _2dRenderUtilities;
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
             this.m_BackgroundCubeEntityFactory = backgroundCubeEntityFactory;
             this.m_TitleFont = this.m_AssetManager.Get<FontAsset>("font.Title");
@@ -64,7 +64,10 @@ namespace Tychaia
 
         public void RenderBelow(IGameContext gameContext, IRenderContext renderContext)
         {
-            this.m_RenderUtilities.RenderRectangle(
+            if (renderContext.Is3DContext)
+                return;
+        
+            this.m_2DRenderUtilities.RenderRectangle(
                 renderContext,
                 gameContext.Window.ClientBounds,
                 Color.Black,
@@ -73,16 +76,19 @@ namespace Tychaia
 
         public void RenderAbove(IGameContext gameContext, IRenderContext renderContext)
         {
+            if (renderContext.Is3DContext)
+                return;
+                
             this.m_CanvasEntity.Render(gameContext, renderContext);
         
-            this.m_RenderUtilities.RenderText(
+            this.m_2DRenderUtilities.RenderText(
                 renderContext,
                 new Vector2(gameContext.Window.ClientBounds.Center.X, 50),
                 "Tychaia",
                 this.m_TitleFont,
                 horizontalAlignment: HorizontalAlignment.Center);
                 
-            this.m_RenderUtilities.RenderTexture(
+            this.m_2DRenderUtilities.RenderTexture(
                 renderContext,
                 new Vector2(
                     gameContext.Window.ClientBounds.Center.X,
@@ -91,7 +97,7 @@ namespace Tychaia
 
             if (this.m_AssetManager != null && this.m_AssetManager.IsRemoting)
             {
-                this.m_RenderUtilities.RenderText(
+                this.m_2DRenderUtilities.RenderText(
                     renderContext,
                     new Vector2(gameContext.Window.ClientBounds.Center.X, 10),
                     "Asset Manager: " + this.m_AssetManager.Status,

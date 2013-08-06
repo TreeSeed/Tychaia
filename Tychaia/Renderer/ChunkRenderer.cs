@@ -7,6 +7,8 @@ using System.Collections;
 using Tychaia.Globals;
 using Microsoft.Xna.Framework;
 
+#if NO_LONGER_NEEDED
+
 namespace Tychaia
 {
     public class ChunkRenderer
@@ -624,4 +626,6 @@ namespace Tychaia
         #endif
     }
 }
+
+#endif
 

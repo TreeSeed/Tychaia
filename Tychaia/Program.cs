@@ -19,7 +19,7 @@ namespace Tychaia
         static void Main(string[] args)
         {
             var kernel = new StandardKernel();
-            kernel.Load<ProtogameIoCModule>();
+            kernel.Load<Protogame3DIoCModule>();
             kernel.Load<ProtogameAssetIoCModule>();
             kernel.Load<TychaiaIoCModule>();
             kernel.Load<TychaiaAssetIoCModule>();

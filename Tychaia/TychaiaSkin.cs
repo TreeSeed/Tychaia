@@ -11,25 +11,25 @@ namespace Tychaia
 {
     public class TychaiaSkin : ISkin
     {
-        private IRenderUtilities m_RenderUtilities;
+        private I2DRenderUtilities m_2DRenderUtilities;
         private IAssetManager m_AssetManager;
 
         public TychaiaSkin(
-            IRenderUtilities renderUtilities,
+            I2DRenderUtilities _2dRenderUtilities,
             IAssetManagerProvider assetManagerProvider)
         {
-            this.m_RenderUtilities = renderUtilities;
+            this.m_2DRenderUtilities = _2dRenderUtilities;
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
         }
         
         public void DrawButton(IRenderContext context, Rectangle layout, Button button)
         {
-            this.m_RenderUtilities.RenderRectangle(
+            this.m_2DRenderUtilities.RenderRectangle(
                 context,
                 layout,
                 Color.White,
                 filled: true);
-            this.m_RenderUtilities.RenderText(
+            this.m_2DRenderUtilities.RenderText(
                 context,
                 new Vector2(
                     layout.Center.X,
@@ -136,7 +136,7 @@ namespace Tychaia
         
         public Vector2 MeasureText(IRenderContext context, string text)
         {
-            return this.m_RenderUtilities.MeasureText(
+            return this.m_2DRenderUtilities.MeasureText(
                 context,
                 text,
                 this.m_AssetManager.Get<FontAsset>("font.Default"));

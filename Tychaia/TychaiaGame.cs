@@ -8,7 +8,7 @@ using Protogame;
 
 namespace Tychaia
 {
-    public class TychaiaGame : CoreGame<TitleWorld, TychaiaWorldManager>
+    public class TychaiaGame : CoreGame<TitleWorld, Default3DWorldManager>
     {
         public TychaiaGame(IKernel kernel) : base(kernel)
         {

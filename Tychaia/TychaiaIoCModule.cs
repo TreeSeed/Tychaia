@@ -14,20 +14,20 @@ namespace Tychaia
         public override void Load()
         {
             this.Bind<IChunkSizePolicy>().To<DefaultChunkSizePolicy>();
-            this.Bind<IIsometricifier>().To<DefaultIsometricifier>();
-            this.Bind<IPerformancePolicy>().To<DefaultPerformancePolicy>();
-            this.Bind<IRelativeChunkRendering>().To<DefaultRelativeChunkRendering>();
-            this.Bind<IRenderingBuffers>().To<DefaultRenderingBuffers>().InSingletonScope();
-            this.Bind<IUniqueRenderCache>().To<DefaultUniqueRenderCache>().InSingletonScope();
+            //this.Bind<IIsometricifier>().To<DefaultIsometricifier>();
+            //this.Bind<IPerformancePolicy>().To<DefaultPerformancePolicy>();
+            //this.Bind<IRelativeChunkRendering>().To<DefaultRelativeChunkRendering>();
+            //this.Bind<IRenderingBuffers>().To<DefaultRenderingBuffers>().InSingletonScope();
+            //this.Bind<IUniqueRenderCache>().To<DefaultUniqueRenderCache>().InSingletonScope();
             this.Bind<IBackgroundCubeEntityFactory>().ToFactory();
             this.Bind<IChunkOctreeFactory>().ToFactory();
             this.Bind<IChunkFactory>().ToFactory();
             this.Bind<ISkin>().To<TychaiaSkin>();
             this.Bind<IRenderTargetFactory>().To<DefaultRenderTargetFactory>().InSingletonScope();
-            this.Bind<IIsometricRenderUtilities>().To<DefaultIsometricRenderUtilities>();
-            this.Bind<IChunkRendererFactory>().ToFactory();
+            //this.Bind<IIsometricRenderUtilities>().To<DefaultIsometricRenderUtilities>();
+            //this.Bind<IChunkRendererFactory>().ToFactory();
             this.Bind<IChunkProviderFactory>().ToFactory();
-            this.Bind<ICellRenderOrderCalculator>().To<DefaultCellRenderOrderCalculator>();
+            //this.Bind<ICellRenderOrderCalculator>().To<DefaultCellRenderOrderCalculator>();
             
 #if DEBUG && FALSE
             var profiler = this.Kernel.Get<TychaiaProfiler>();
