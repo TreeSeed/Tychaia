@@ -20,7 +20,12 @@ namespace Tychaia
             return new BlockAsset(
                 assetManager,
                 name,
-                data.IsometricCubeName,
+                data.TopTextureName,
+                data.BottomTextureName,
+                data.LeftTextureName,
+                data.RightTextureName,
+                data.FrontTextureName,
+                data.BackTextureName,
                 data.Impassable);
         }
 
@@ -39,6 +44,11 @@ namespace Tychaia
             return new BlockAsset(
                 assetManager,
                 name,
+                null,
+                null,
+                null,
+                null,
+                null,
                 null,
                 true);
         }

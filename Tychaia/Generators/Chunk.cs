@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Tychaia.Disk;
 using Tychaia.Globals;
+using Protogame;
+using Microsoft.Xna.Framework;
 
 namespace Tychaia
 {
@@ -17,6 +19,8 @@ namespace Tychaia
         private IFilteredFeatures m_FilteredFeatures;
         private IChunkFactory m_ChunkFactory;
         private IChunkSizePolicy m_ChunkSizePolicy;
+        private IRenderCache m_RenderCache;
+        private IAssetManager m_AssetManager;
 
         public readonly long X;
         public readonly long Y;
@@ -26,10 +30,6 @@ namespace Tychaia
         private int m_Seed = MenuWorld.m_StaticSeed; // All chunks are generated from the same seed.
         private bool m_IsGenerating = false;
         private bool m_IsGenerated = false;
-        #if NOT_MIGRATED
-        private ChunkRenderer.RenderTask m_RenderTask = null;
-        private UniqueRenderCache.UniqueRender m_UniqueRender = null;
-        #endif
         private ChunkOctree m_Octree = null;
         private ILevel m_DiskLevel = null;
 
@@ -40,6 +40,8 @@ namespace Tychaia
             IFilteredConsole filteredConsole,
             IFilteredFeatures filteredFeatures,
             IChunkSizePolicy chunkSizePolicy,
+            IRenderCache renderCache,
+            IAssetManagerProvider assetManagerProvider,
             long x,
             long y,
             long z)
@@ -49,6 +51,8 @@ namespace Tychaia
             this.m_FilteredFeatures = filteredFeatures;
             this.m_ChunkFactory = chunkFactory;
             this.m_ChunkSizePolicy = chunkSizePolicy;
+            this.m_RenderCache = renderCache;
+            this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
             this.X = x;
             this.Y = y;
             this.Z = z;
@@ -67,144 +71,56 @@ namespace Tychaia
             }
         }
 
-        public Texture2D Texture
+        private void Generate()
         {
-            get
+            if (this.m_IsGenerated || this.m_IsGenerating)
+                return;
+            this.m_IsGenerating = true;
+            
+            // TODO: Properly implement chunk generation.
+            for (var x = 0; x < this.m_ChunkSizePolicy.ChunkCellWidth; x++)
+            for (var y = 0; y < this.m_ChunkSizePolicy.ChunkCellHeight; y++)
+            for (var z = 0; z < this.m_ChunkSizePolicy.ChunkCellDepth; z++)
             {
-                #if NOT_MIGRATED
-                if (!this.m_IsGenerated)
-                {
-                    this.Generate();
-                    return null;
-                }
-                if (this.m_UniqueRender != null && this.m_UniqueRender.Target == null &&
-                    this.m_RenderTask != null && this.m_RenderTask.Result != null)
-                {
-                    // FIXME: Unsure how this situation occurs; we have a render task that we should
-                    // release.
-                    this.DiscardTexture();
-                }
-                if ((this.m_UniqueRender == null || this.m_UniqueRender.Target == null) &&
-                    (this.m_RenderTask == null || (this.m_RenderTask.Result == null && this.m_RenderTask.HasResult)))
-                {
-                    if (UniqueRenderCache.Has(this.m_RawData))
-                    {
-                        if (UniqueRenderCache.IsWaiting(this.m_RawData))
-                        {
-                            if (ChunkRenderer.IsTasked(this))
-                            {
-                                // We're waiting on the render to finish.
-                                return null;
-                            }
-                            else
-                            {
-                                // The unique render cache thinks we're rendering, but
-                                // in reality it's been previously optimized out.  Therefore
-                                // we need to restart the rendering task.
-                                this.m_RenderTask = ChunkRenderer.PushForRendering(this, null/*Static.GameContext*/);
-                            }
-                        }
-                        else
-                        {
-                            // The render is ready.
-                            this.m_UniqueRender = UniqueRenderCache.Grab(this.m_RawData);
-                        }
-                    }
-                    else
-                    {
-                        // There is no render even available for this data; start
-                        // processing for it.
-                        UniqueRenderCache.StoreWaiting(this.m_RawData);
-                        this.m_RenderTask = ChunkRenderer.PushForRendering(this, null/*Static.GameContext*/);
-                    }
-                }
-                if (this.m_UniqueRender != null)
-                    return this.m_UniqueRender.Target;
-                if (!this.m_RenderTask.HasResult)
-                    return null;
-                // Move into unique render storage.
-                this.m_UniqueRender = UniqueRenderCache.Store(this.m_RawData, this.m_RenderTask.Result, this.m_RenderTask.DepthMap);
-                this.m_RenderTask = null;
-                return this.m_UniqueRender.Target;
-                #else
-                return null;
-                #endif
+                this.m_Blocks[x, y, z] = this.m_AssetManager.Get<BlockAsset>("block.Grass");
             }
-        }
-
-        public Texture2D DepthMap
-        {
-            get
-            {
-                #if NOT_MIGRATED
-                if (!this.m_IsGenerated)
-                {
-                    this.Generate();
-                    return null;
-                }
-                if ((this.m_UniqueRender == null || this.m_UniqueRender.DepthMap == null) &&
-                    (this.m_RenderTask == null || (this.m_RenderTask.Result == null && this.m_RenderTask.HasResult)))
-                {
-                    if (UniqueRenderCache.Has(this.m_RawData))
-                    {
-                        if (UniqueRenderCache.IsWaiting(this.m_RawData))
-                        {
-                            // We're waiting on the render to finish.
-                            return null;
-                        }
-                        else
-                        {
-                            // The render is ready.
-                            this.m_UniqueRender = UniqueRenderCache.Grab(this.m_RawData);
-                        }
-                    }
-                    else
-                    {
-                        // There is no render even available for this data; start
-                        // processing for it.
-                        UniqueRenderCache.StoreWaiting(this.m_RawData);
-                        this.m_RenderTask = ChunkRenderer.PushForRendering(this, null/*Static.GameContext*/);
-                    }
-                }
-                if (this.m_UniqueRender != null)
-                    return this.m_UniqueRender.DepthMap;
-                if (!this.m_RenderTask.HasResult)
-                    return null;
-                // Move into unique render storage.
-                this.m_UniqueRender = UniqueRenderCache.Store(this.m_RawData, this.m_RenderTask.Result, this.m_RenderTask.DepthMap);
-                this.m_RenderTask = null;
-                return this.m_UniqueRender.DepthMap;
-                #else
-                return null;
-                #endif
-            }
-        }
-
-        public void DiscardTexture()
-        {
+            
             #if NOT_MIGRATED
-            // Force the graphics texture to be discarded.
-            if (this.m_RenderTask != null)
+            ChunkInfo i = new ChunkInfo()
             {
-                // The texture was rendered, but not pushed into the unique
-                // render cache so we free it directly.
-                RenderTarget2D target = this.m_RenderTask.Result;
-                RenderTarget2D depth = this.m_RenderTask.DepthMap;
-                this.m_RenderTask = null;
-                if (target != null)
-                    target.Dispose();
-                if (depth != null)
-                    depth.Dispose();
-            }
-            else if (this.m_UniqueRender != null && (this.m_UniqueRender.Target != null || this.m_UniqueRender.DepthMap != null))
-                // Release from the unique render cache.
-                UniqueRenderCache.Release(this.m_RawData);
-
-            // Send message about texture being discarded.
-            FilteredConsole.WriteLine(FilterCategory.GraphicsMemoryUsage, "Textures discarded for chunk " + this.X + ", " + this.Y + ".");
+                LevelDisk = this.m_DiskLevel,
+                Seed = this.m_Seed,
+                Random = new Random(this.m_Seed),
+                Bounds = new Cube(this.X / Scale.CUBE_X, this.Y / Scale.CUBE_Y, this.Z / Scale.CUBE_Z,
+                    Chunk.Width, Chunk.Height, Chunk.Depth)
+            };
+            ChunkProvider.FillChunk(this, this.m_RawData, this.m_Blocks, i, () =>
+                {
+                    this.m_IsGenerating = false;
+                }, () =>
+                {
+                    this.m_IsGenerated = true;
+                    this.m_IsGenerating = false;
+                });
             #endif
         }
-
+        
+        public void Render(IGameContext gameContext, IRenderContext renderContext)
+        {
+            // TODO: Determine the structure of a chunk and cache it in the render cache.
+            for (var x = 0; x < this.m_ChunkSizePolicy.ChunkCellWidth; x++)
+            for (var y = 0; y < this.m_ChunkSizePolicy.ChunkCellHeight; y++)
+            for (var z = 0; z < this.m_ChunkSizePolicy.ChunkCellDepth; z++)
+            {
+                var block = this.m_Blocks[x, y, z];
+                if (block == null)
+                    continue;
+                block.Render(renderContext, this.m_RenderCache, new Vector3(x, y, z) + new Vector3(this.X, this.Y, this.Z));
+            }
+        }
+        
+        #region Relative Addressing
+        
         public Chunk West
         {
             get
@@ -306,31 +222,8 @@ namespace Tychaia
                 }
             }
         }
-
-        private void Generate()
-        {
-            if (this.m_IsGenerated || this.m_IsGenerating)
-                return;
-            this.m_IsGenerating = true;
-            #if NOT_MIGRATED
-            ChunkInfo i = new ChunkInfo()
-            {
-                LevelDisk = this.m_DiskLevel,
-                Seed = this.m_Seed,
-                Random = new Random(this.m_Seed),
-                Bounds = new Cube(this.X / Scale.CUBE_X, this.Y / Scale.CUBE_Y, this.Z / Scale.CUBE_Z,
-                    Chunk.Width, Chunk.Height, Chunk.Depth)
-            };
-            ChunkProvider.FillChunk(this, this.m_RawData, this.m_Blocks, i, () =>
-                {
-                    this.m_IsGenerating = false;
-                }, () =>
-                {
-                    this.m_IsGenerated = true;
-                    this.m_IsGenerating = false;
-                });
-            #endif
-        }
+        
+        #endregion
     }
 
     public class ChunkInfo

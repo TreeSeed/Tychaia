@@ -18,18 +18,6 @@ namespace Tychaia.Globals
             {
                 Feature.RenderEntities,
                 Feature.RenderWorld,
-                //Feature.AutomaticChunkValidation,
-                Feature.DepthBuffer,
-                //Feature.OptimizeChunkProviding,
-                //Feature.OptimizeChunkRendering, BUGGY!
-                Feature.DiscardChunkTextures,
-                //Feature.IsometricOcclusion,
-                Feature.RenderingBuffers,
-                //Feature.DebugChunkBackground,
-                //Feature.DebugChunkTiles,
-                //Feature.DebugMovement,
-                //Feature.DebugOctreeValidation,
-                //Feature.DebugOctreeLookup,
                 Feature.RenderCellSides,
                 Feature.RenderCellTops
             };

@@ -31,7 +31,6 @@ namespace Tychaia
     
         private Player m_Player = null;
         private ILevel m_DiskLevel = null;
-        //private ChunkRenderer m_ChunkRenderer = null;
         private ChunkProvider m_ChunkProvider = null;
         
         public List<IEntity> Entities { get; private set; }
@@ -50,7 +49,6 @@ namespace Tychaia
             IChunkFactory chunkFactory,
             IIsometricCameraFactory isometricCameraFactory,
             IChunkProviderFactory chunkProviderFactory,
-           // IChunkRendererFactory chunkRendererFactory,
             IChunkSizePolicy chunkSizePolicy)
         {
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
@@ -68,7 +66,6 @@ namespace Tychaia
             this.IsometricCamera = isometricCameraFactory.CreateIsometricCamera(this.ChunkOctree, chunk);
             
             this.m_ChunkProvider = chunkProviderFactory.CreateChunkProvider();
-            //this.m_ChunkRenderer = chunkRendererFactory.CreateChunkRenderer();
         
             this.m_Player = new Player(
                 this,
@@ -85,128 +82,32 @@ namespace Tychaia
 
         public void RenderBelow(IGameContext gameContext, IRenderContext renderContext)
         {
-            #region IsometricWorldManager.PreBegin
+            if (!renderContext.Is3DContext)
+                return;
         
-            // Ensure we have an occluding sprite batch.
-            if (this.m_FilteredFeatures.IsEnabled(Feature.IsometricOcclusion))
-            {
-                if (this.OccludingSpriteBatch == null)
-                    this.OccludingSpriteBatch = new OccludingSpriteBatch(gameContext.Graphics.GraphicsDevice);
-                this.OccludingSpriteBatch.Begin(true);
-            }
-            else
-                gameContext.Graphics.GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Target, Color.Black, 1f, 0);
+            if (this.m_FilteredFeatures.IsEnabled(Feature.RenderWireframe))
+                renderContext.GraphicsDevice.RasterizerState = new RasterizerState { FillMode = FillMode.WireFrame };
+        
+            this.IsometricCamera.InitializeRenderContext(renderContext);
             
-            #endregion
+            renderContext.GraphicsDevice.Clear(Color.Black);
             
-            #if FALSE
-            
-            #region IsometricWorldManager.DrawTilesBelow
-            
-            // Determine our Z offset.
-            int zlevel = 0;
-            int zoffset = -(this.m_ChunkSizePolicy.ChunkCellDepth - 0) * this.m_ChunkSizePolicy.CellCubePixelHeight;
-
-            // Get rendering information.
-            //this.m_ChunkRenderer.ResetNeeded();
-            var renders = this.m_RelativeChunkRendering.GetRelativeRenderInformation(gameContext, this.IsometricCamera.Chunk, this.IsometricCamera.CurrentFocus).ToArray();
-            //this.m_ChunkRenderer.LastRenderedCountOnScreen = renders.Count();
-
-            // Render chunks.
-            if (this.m_FilteredFeatures.IsEnabled(Feature.DepthBuffer))
-                gameContext.Graphics.GraphicsDevice.SetRenderTarget(this.m_RenderingBuffers.ScreenBuffer);
-            renderContext.SpriteBatch.Begin();
-            foreach (var ri in renders)
-            {
-                if (ri.Target == this.IsometricCamera.Chunk)
-                {
-                    this.IsometricCamera.ChunkCenterX = ri.X + this.m_ChunkSizePolicy.CellTextureTopPixelWidth / 2;
-                    this.IsometricCamera.ChunkCenterY = ri.Y;
-                }
-                Texture2D tex = ri.Target.Texture;
-                //ChunkRenderer.MarkNeeded(ri.Target);
-                if (tex != null)
-                {
-                    //ChunkRenderer.MarkUsed(ri.Target);
-                    if (this.m_FilteredFeatures.IsEnabled(Feature.DepthBuffer))
-                        renderContext.SpriteBatch.Draw(tex, new Vector2(ri.X, ri.Y + zoffset), Color.White);
-                    else
-                    {
-                        if (this.m_FilteredFeatures.IsEnabled(Feature.RenderingBuffers))
-                            gameContext.Graphics.GraphicsDevice.SetRenderTarget(this.m_RenderingBuffers.ScreenBuffer);
-                        renderContext.SpriteBatch.Draw(tex, new Vector2(ri.X, ri.Y + zoffset), Color.White);
-                    }
-                    this.m_FilteredConsole.WriteLine(FilterCategory.RenderingActive, "Rendering chunk at " + ri.X + ", " + ri.Y + ".");
-                }
-                else
-                    this.m_FilteredConsole.WriteLine(FilterCategory.Rendering, "No texture yet for chunk to render at " + ri.X + ", " + ri.Y + ".");
-            }
-            renderContext.SpriteBatch.End();
-
-            // Render depth maps.
-            if (this.m_FilteredFeatures.IsEnabled(Feature.DepthBuffer))
-            {
-                gameContext.Graphics.GraphicsDevice.SetRenderTarget(this.m_RenderingBuffers.DepthBuffer);
-                renderContext.SpriteBatch.Begin();
-                foreach (RelativeRenderInformation ri in renders)
-                {
-                    Texture2D depth = ri.Target.DepthMap;
-                    if (depth != null)
-                    {
-                        //ChunkRenderer.MarkUsed(ri.Target);
-                        if (this.m_FilteredFeatures.IsEnabled(Feature.DepthBuffer))
-                        {
-                            renderContext.SpriteBatch.Draw(depth, new Vector2(ri.X, ri.Y + zoffset), Color.White);
-                        }
-                    }
-                }
-                renderContext.SpriteBatch.End();
-            }
-
-            // Finish drawing.
-            gameContext.Graphics.GraphicsDevice.SetRenderTarget(null);
-            
-            #endregion
-            
-            #region IsometricWorldManager.DrawTilesAbove
-            
-            // Draw the current rendering buffers.
-            if (this.m_FilteredFeatures.IsEnabled(Feature.IsometricOcclusion))
-            {
-                if (this.OccludingSpriteBatch.DepthTexture != this.m_RenderingBuffers.DepthBuffer &&
-                    this.m_RenderingBuffers.DepthBuffer != null)
-                    this.OccludingSpriteBatch.DepthTexture = this.m_RenderingBuffers.DepthBuffer;
-                if (this.m_RenderingBuffers.ScreenBuffer != null &&
-                    this.m_FilteredFeatures.IsEnabled(Feature.RenderWorld))
-                    this.OccludingSpriteBatch.DrawOccluding(this.m_RenderingBuffers.ScreenBuffer, Vector2.Zero, Color.White);
-                this.OccludingSpriteBatch.End();
-            }
-            else
-            {
-                if (this.m_FilteredFeatures.IsEnabled(Feature.RenderWorld))
-                {
-                    if (this.m_FilteredFeatures.IsEnabled(Feature.RenderingBuffers))
-                        renderContext.SpriteBatch.Draw(this.m_RenderingBuffers.ScreenBuffer, Vector2.Zero, Color.White);
-                }
-                //context.SpriteBatch.End();
-            }
-            
-            #endregion
-            
-            #endif
+            // Begin rendering the terrain.
+            var chunk = this.IsometricCamera.Chunk;
+            chunk.Render(gameContext, renderContext);
         }
 
         public void RenderAbove(IGameContext gameContext, IRenderContext renderContext)
         {
-            // This function is *NEVER* called by TychaiaWorldManager since the game world
-            // owns all of the rendering logic in RenderBelow.
+            if (this.m_FilteredFeatures.IsEnabled(Feature.RenderWireframe))
+                renderContext.GraphicsDevice.RasterizerState = new RasterizerState { FillMode = FillMode.Solid };
         }
 
         public void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
             // Perform chunk provider / renderer updates.  Ideally we want to expose these
             // to the intelligence components, but not too sure how to do this yet.
-            this.m_ChunkProvider.Process(gameContext);
+            //this.m_ChunkProvider.Process(gameContext);
             //this.m_ChunkRenderer.Process(gameContext);
         
             var keyboard = Keyboard.GetState();
@@ -219,13 +120,13 @@ namespace Tychaia
             }
             
             // Focus the camera.
-            this.IsometricCamera.Focus(this.m_Player.X, this.m_Player.Y, this.m_Player.Z);
+            //this.IsometricCamera.Focus(this.m_Player.X, this.m_Player.Y, this.m_Player.Z);
             
             //this.m_Player.Z = this.GetSurfaceZ(context, this.m_Player.X, this.m_Player.Y) * Scale.CUBE_Z;
             
             // Run the intelligence components.
-            foreach (var component in this.m_IntelligenceComponents)
-                component.Update(gameContext, updateContext);
+            //foreach (var component in this.m_IntelligenceComponents)
+             //   component.Update(gameContext, updateContext);
         }
 
         private float GetSurfaceZ(IGameContext context, float xx, float yy)

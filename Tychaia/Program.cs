@@ -21,6 +21,7 @@ namespace Tychaia
             var kernel = new StandardKernel();
             kernel.Load<Protogame3DIoCModule>();
             kernel.Load<ProtogameAssetIoCModule>();
+            kernel.Load<ProtogameCachingIoCModule>();
             kernel.Load<TychaiaIoCModule>();
             kernel.Load<TychaiaAssetIoCModule>();
             kernel.Load<TychaiaIsometricIoCModule>();

@@ -12,8 +12,6 @@ namespace Tychaia
     {
         public override void Load()
         {
-            this.Bind<IAssetLoader>().To<IsometricCubeAssetLoader>();
-            this.Bind<IAssetSaver>().To<IsometricCubeAssetSaver>();
             this.Bind<IAssetLoader>().To<BlockAssetLoader>();
             this.Bind<IAssetSaver>().To<BlockAssetSaver>();
         }

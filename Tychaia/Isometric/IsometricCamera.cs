@@ -5,6 +5,7 @@
 //
 using System;
 using Microsoft.Xna.Framework;
+using Protogame;
 
 namespace Tychaia
 {
@@ -112,6 +113,15 @@ namespace Tychaia
         public void Focus(double x, double y, double z)
         {
             this.Pan(x - this.m_CurrentX, y - this.m_CurrentY, z - this.m_CurrentZ);
+        }
+        
+        public void InitializeRenderContext(IRenderContext renderContext)
+        {
+            renderContext.View = Matrix.CreateLookAt(
+                this.CurrentFocus + new Vector3(15, 30, 15),
+                this.CurrentFocus,
+                Vector3.Up);
+            renderContext.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 4f / 3f, 1.0f, 1000.0f);
         }
     }
 }

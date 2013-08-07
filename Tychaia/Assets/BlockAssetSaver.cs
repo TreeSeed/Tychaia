@@ -21,7 +21,12 @@ namespace Tychaia
             return new
             {
                 Loader = typeof(BlockAssetLoader).FullName,
-                TopTextureName = blockAsset.IsometricCube != null ? blockAsset.IsometricCube.Name : null,
+                TopTextureName = blockAsset.TopTexture != null ? blockAsset.TopTexture.Name : null,
+                BottomTextureName = blockAsset.BottomTexture != null ? blockAsset.BottomTexture.Name : null,
+                LeftTextureName = blockAsset.LeftTexture != null ? blockAsset.LeftTexture.Name : null,
+                RightTextureName = blockAsset.RightTexture != null ? blockAsset.RightTexture.Name : null,
+                FrontTextureName = blockAsset.FrontTexture != null ? blockAsset.FrontTexture.Name : null,
+                BackTextureName = blockAsset.BackTexture != null ? blockAsset.BackTexture.Name : null,
                 Impassable = blockAsset.Impassable
             };
         }

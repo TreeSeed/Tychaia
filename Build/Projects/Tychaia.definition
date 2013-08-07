@@ -24,11 +24,9 @@
   </References>
   <Files>
     <Compile Include="Assets\BlockAsset.cs" />
+    <Compile Include="Assets\BlockAssetEditor.cs" />
     <Compile Include="Assets\BlockAssetLoader.cs" />
     <Compile Include="Assets\BlockAssetSaver.cs" />
-    <Compile Include="Assets\IsometricCubeAsset.cs" />
-    <Compile Include="Assets\IsometricCubeAssetLoader.cs" />
-    <Compile Include="Assets\IsometricCubeAssetSaver.cs" />
     <Compile Include="Assets\TychaiaAssetIoCModule.cs" />
     <Compile Include="GameAssetManagerProvider.cs" />
     <Compile Include="Generators\Chunk.cs" />

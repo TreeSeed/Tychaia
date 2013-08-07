@@ -11,12 +11,7 @@ namespace Tychaia.Globals
         RenderEntities,
         RenderWorld,
         AutomaticChunkValidation,
-        DepthBuffer,
         OptimizeChunkProviding,
-        OptimizeChunkRendering,
-        DiscardChunkTextures,
-        IsometricOcclusion,
-        RenderingBuffers,
         DebugChunkBackground,
         DebugChunkTiles,
         DebugMovement,
@@ -24,6 +19,7 @@ namespace Tychaia.Globals
         DebugOctreeLookup,
         RenderCellSides,
         RenderCellTops,
+        RenderWireframe
     }
 }
 
