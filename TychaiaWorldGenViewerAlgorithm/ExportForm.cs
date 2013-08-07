@@ -146,6 +146,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             try
             {
                 int computations;
+                layer.SetSeed(12345);
                 data = layer.GenerateData(
                     this.m_RenderingLocationProvider.X + sx,
                     this.m_RenderingLocationProvider.Y + sy,
