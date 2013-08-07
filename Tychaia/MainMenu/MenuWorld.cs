@@ -70,9 +70,14 @@ namespace Tychaia
             {
                 renderContext.GraphicsDevice.Clear(Color.CornflowerBlue);
                 
-                renderContext.EnableVertexColors();
-                (renderContext.Effect as BasicEffect).LightingEnabled = false;
-                renderContext.View = Matrix.CreateLookAt(new Vector3(0.0f, -10.0f, 10.0f), Vector3.Zero, Vector3.Up);
+                var basicEffect = renderContext.Effect as BasicEffect;
+                //basicEffect.LightingEnabled = true;
+                basicEffect.DirectionalLight0.Direction = new Vector3(1, 1, 1);
+                basicEffect.DirectionalLight0.Enabled = true;
+                renderContext.View = Matrix.CreateLookAt(
+                    Vector3.Transform(new Vector3(0.0f, 10.0f, 10.0f), Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation))),
+                    Vector3.Zero,
+                    Vector3.Up);
                 renderContext.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 4f / 3f, 1.0f, 1000.0f);
                 renderContext.World = Matrix.CreateTranslation(new Vector3(-0.5f, -0.5f, -0.5f)) *
                     Matrix.CreateRotationX(MathHelper.ToRadians(this.m_Rotation)) *
