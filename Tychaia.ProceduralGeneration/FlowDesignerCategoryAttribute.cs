@@ -25,6 +25,8 @@ namespace Tychaia.ProceduralGeneration
         // General Layers
         General,
         Initials,
+        [Description("Chanced Initials")]
+        Chanced,
         Zooming,
         Manipulation,
         Debugging,
