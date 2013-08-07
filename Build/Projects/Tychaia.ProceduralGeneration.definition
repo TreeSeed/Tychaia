@@ -35,6 +35,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AlgorithmBundleSet.tt</DependentUpon>
     </Compile>
+    <Compile Include="AlgorithmChancedBool.cs" />
     <Compile Include="AlgorithmClamp.cs" />
     <Compile Include="AlgorithmColors.cs" />
     <Compile Include="AlgorithmCompare.cs" />
