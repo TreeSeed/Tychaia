@@ -16,6 +16,7 @@ namespace Tychaia
         private static Random m_Random = new Random();
         private double m_ScreenX;
         private double m_ScreenY;
+        private float m_Rotation;
         private I3DRenderUtilities m_3DRenderUtilities;
         private TextureAsset m_GrassAsset;
         private IChunkSizePolicy m_ChunkSizePolicy;
@@ -32,17 +33,25 @@ namespace Tychaia
             this.m_ScreenX = m_Random.NextDouble();
             this.m_ScreenY = atBottom ? 1.0 : m_Random.NextDouble();
             this.m_Distance = m_Random.Next(1, 50);
+            this.m_Rotation = m_Random.Next(0, 360);
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
             this.m_GrassAsset = this.m_AssetManager.Get<TextureAsset>("texture.Grass");
+            
+            this.X = (float)(m_Random.NextDouble() - 0.5) * 25;
+            this.Z = (float)(m_Random.NextDouble() - 0.5) * 25;
+            if (atBottom)
+                this.Y = 10;
+            else
+                this.Y = ((float)m_Random.NextDouble() * 60) - 50;
         }
 
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
-            this.m_ScreenY -= (100.0f / m_Distance) / 5000.0f;
-            this.X = (float)(5 - this.m_ScreenX * 10);//(float)(this.m_ScreenX * gameContext.Window.ClientBounds.Width);
-            this.Z = (float)(5 - this.m_ScreenY * 10);//(float)(this.m_ScreenY * gameContext.Window.ClientBounds.Height);
+            this.Y -= (100.0f / m_Distance) / 50.0f;
+            //this.X = (float)(5 - this.m_ScreenX * 10);//(float)(this.m_ScreenX * gameContext.Window.ClientBounds.Width);
+            //this.Z = (float)(5 - this.m_ScreenY * 10);//(float)(this.m_ScreenY * gameContext.Window.ClientBounds.Height);
 
-            if (this.Z > 10)
+            if (this.Y < -50)
                 gameContext.World.Entities.Remove(this);
 
             //if ((int)this.Y + (int)(this.m_ChunkSizePolicy.CellTextureTopPixelHeight / this.m_Distance) +
@@ -84,7 +93,9 @@ namespace Tychaia
             
             renderContext.EnableTextures();
             renderContext.SetActiveTexture(this.m_GrassAsset.Texture);
-            renderContext.World = Matrix.CreateTranslation(new Vector3(this.X, this.Y, this.Z));
+            renderContext.World = 
+                Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation)) *
+                Matrix.CreateTranslation(new Vector3(this.X, this.Y, this.Z));
             
             foreach (var pass in renderContext.Effect.CurrentTechnique.Passes)
             {
