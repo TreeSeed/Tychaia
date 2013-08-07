@@ -103,7 +103,7 @@ namespace Tychaia
             {
                 var sample = this.m_ProfilingInformation[i];
                 vertexList[i] = new VertexPositionColor(
-                    new Vector3(i, (float)(224 - (value(sample) / maximum) * (200 - offset)), 0),
+                    new Vector3(i, (float)(224 - (value(sample) / (maximum < 1 ? 1 : maximum)) * (200 - offset)), 0),
                     color);
             };
             Action<VertexPositionColor[], short[]> renderLine = (vertexList, lsi) =>
