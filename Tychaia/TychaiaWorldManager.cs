@@ -71,6 +71,7 @@ namespace Tychaia
             game.RenderContext.View = Matrix.Identity;
             game.RenderContext.Projection = halfPixelOffset * projection;
             (game.RenderContext.Effect as BasicEffect).LightingEnabled = false;
+            game.RenderContext.EnableVertexColors();
             
             // Render profiler.
             foreach (var pass in game.RenderContext.Effect.CurrentTechnique.Passes)
