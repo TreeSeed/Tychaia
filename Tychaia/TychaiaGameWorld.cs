@@ -26,6 +26,7 @@ namespace Tychaia
         private IFilteredConsole m_FilteredConsole;
         private IIntelligenceComponent[] m_IntelligenceComponents;
         private IChunkSizePolicy m_ChunkSizePolicy;
+        private ChunkManagerEntity m_ChunkManagerEntity;
         
         private FontAsset m_DefaultFont;
     
@@ -36,7 +37,6 @@ namespace Tychaia
         public List<IEntity> Entities { get; private set; }
         public ChunkOctree ChunkOctree { get; private set; }
         public IsometricCamera IsometricCamera { get; private set; }
-        public OccludingSpriteBatch OccludingSpriteBatch { get; private set; }
         
         public TychaiaGameWorld(
             IAssetManagerProvider assetManagerProvider,
@@ -49,7 +49,8 @@ namespace Tychaia
             IChunkFactory chunkFactory,
             IIsometricCameraFactory isometricCameraFactory,
             IChunkProviderFactory chunkProviderFactory,
-            IChunkSizePolicy chunkSizePolicy)
+            IChunkSizePolicy chunkSizePolicy,
+            IChunkManagerEntityFactory chunkManagerEntityFactory)
         {
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
             this.m_2DRenderUtilities = _2dRenderUtilities;
@@ -64,6 +65,7 @@ namespace Tychaia
             var chunk = chunkFactory.CreateChunk(this.m_DiskLevel, this.ChunkOctree, 0, 0, 0);
             this.m_DefaultFont = this.m_AssetManager.Get<FontAsset>("font.Default");
             this.IsometricCamera = isometricCameraFactory.CreateIsometricCamera(this.ChunkOctree, chunk);
+            this.m_ChunkManagerEntity = chunkManagerEntityFactory.CreateChunkManagerEntity(this);
             
             this.m_ChunkProvider = chunkProviderFactory.CreateChunkProvider();
         
@@ -73,6 +75,7 @@ namespace Tychaia
                 this.m_3DRenderUtilities,
                 this.m_FilteredFeatures);
             this.Entities = new List<IEntity>();
+            this.Entities.Add(this.m_ChunkManagerEntity);
             this.Entities.Add(this.m_Player);
         }
         
@@ -91,10 +94,6 @@ namespace Tychaia
             this.IsometricCamera.InitializeRenderContext(renderContext);
             
             renderContext.GraphicsDevice.Clear(Color.Black);
-            
-            // Begin rendering the terrain.
-            var chunk = this.IsometricCamera.Chunk;
-            chunk.Render(gameContext, renderContext);
         }
 
         public void RenderAbove(IGameContext gameContext, IRenderContext renderContext)

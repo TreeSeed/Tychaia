@@ -148,7 +148,7 @@ namespace Tychaia
             throw new InvalidOperationException("Asset already resolved to BlockAsset.");
         }
         
-        public void Render(IRenderContext context, IRenderCache cache, Vector3 position)
+        public void Render(IRenderContext context, IRenderCache cache, IChunkSizePolicy chunkSizePolicy, Vector3 position)
         {
             var vertexes = cache.GetOrSet<VertexBuffer>("block.vertexes", () =>
             {
@@ -196,7 +196,11 @@ namespace Tychaia
             context.GraphicsDevice.Indices = indices;
             context.GraphicsDevice.SetVertexBuffer(vertexes);
             
-            context.World = Matrix.CreateTranslation(position);
+            context.World = Matrix.CreateScale(
+                chunkSizePolicy.CellVoxelWidth,
+                chunkSizePolicy.CellVoxelHeight,
+                chunkSizePolicy.CellVoxelDepth) *
+                Matrix.CreateTranslation(position);
             
             foreach (var pass in context.Effect.CurrentTechnique.Passes)
             {

@@ -37,23 +37,18 @@ namespace Tychaia.ProceduralGeneration
         }
 
         public override void ProcessCell(IRuntimeContext context, int[] input, BlockInfo[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
-            {
-            if (input[(i + ox) + (j + oy)*width + (k + oz)*width*height] == Int32.MaxValue && z > 0)
-            {
-                output[(i + ox) + (j + oy)*width + (k + oz)*width*height] = new BlockInfo(null);
-            }
-            else if (input[(i + ox) + (j + oy)*width + (k + oz)*width*height] >= 0)
-            {
-                output[(i + ox) + (j + oy)*width + (k + oz)*width*height] = new BlockInfo("block.Grass");
-            }
-            else if (input[(i + ox) + (j + oy) * width + (k + oz) * width * height] < 0 && input[(i + ox) + (j + oy) * width + (k + oz) * width * height] == Int32.MaxValue)
-            {
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = new BlockInfo("block.Water");
-            }
+        {
+            BlockInfo result;
+            var value = input[(i + ox) + (j + oy) * width + (k + oz) * width * height];
+            if (value <= 0)
+                result = new BlockInfo("block.Water");
+            else if (value == Int32.MaxValue)
+                result = new BlockInfo(null);
+            else if (z < 0)
+                result = new BlockInfo("block.Dirt");
             else
-            {
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = new BlockInfo("block.Dirt");
-            }
+                result = new BlockInfo("block.Grass");
+            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = result;
         }
 
         public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)

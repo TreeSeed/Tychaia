@@ -28,11 +28,14 @@
     <Compile Include="Assets\BlockAssetLoader.cs" />
     <Compile Include="Assets\BlockAssetSaver.cs" />
     <Compile Include="Assets\TychaiaAssetIoCModule.cs" />
+    <Compile Include="ChunkManagement\ChunkManagerEntity.cs" />
+    <Compile Include="ChunkManagement\IChunkManagerEntityFactory.cs" />
     <Compile Include="GameAssetManagerProvider.cs" />
     <Compile Include="Generators\Chunk.cs" />
     <Compile Include="Generators\ChunkOctree.cs" />
     <Compile Include="Generators\IChunkFactory.cs" />
     <Compile Include="Generators\IChunkOctreeFactory.cs" />
+    <Compile Include="Implementations\DefaultChunkGenerator.cs" />
     <Compile Include="Implementations\DefaultChunkSizePolicy.cs" />
     <Compile Include="Implementations\DefaultRenderTargetFactory.cs" />
     <Compile Include="IntelligenceComponents\ProvidingOptimizerComponent.cs" />
@@ -58,6 +61,7 @@
     <Compile Include="Provider\IChunkProviderFactory.cs" />
     <Compile Include="Renderer\ChunkRenderer.cs" />
     <Compile Include="Renderer\IChunkRendererFactory.cs" />
+    <Compile Include="Services\IChunkGenerator.cs" />
     <Compile Include="Services\IChunkSizePolicy.cs" />
     <Compile Include="Services\IIntelligenceComponent.cs" />
     <Compile Include="Services\IRenderTargetFactory.cs" />

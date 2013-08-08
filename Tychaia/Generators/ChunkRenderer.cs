@@ -239,7 +239,7 @@ namespace Tychaia
                         int rx = rcx + (int)((x - y) / 2.0 * rw);
                         int ry = rcy + (x + y) * rh - (rh / 2 * (RenderWidth + RenderHeight)) - (z * TileIsometricifier.TILE_CUBE_HEIGHT);
 
-                        Block b = task.Chunk.m_Blocks[x, y, z];
+                        Block b = task.Chunk.Blocks[x, y, z];
                         if (b == null)
                         {
                             if (FilteredFeatures.IsEnabled(Feature.DebugChunkTiles))
@@ -365,7 +365,7 @@ namespace Tychaia
                         int rx = rcx + (int)((x - y) / 2.0 * rw);
                         int ry = rcy + (x + y) * rh - (rh / 2 * (RenderWidth + RenderHeight)) - (z * TileIsometricifier.TILE_CUBE_HEIGHT);
 
-                        Block b = task.Chunk.m_Blocks[x, y, z];
+                        Block b = task.Chunk.Blocks[x, y, z];
                         if (b == null)
                             continue;
                         Tile t = b.Tile;

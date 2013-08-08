@@ -22,6 +22,8 @@ namespace Tychaia
             this.Bind<ISkin>().To<TychaiaSkin>();
             this.Bind<IRenderTargetFactory>().To<DefaultRenderTargetFactory>().InSingletonScope();
             this.Bind<IChunkProviderFactory>().ToFactory();
+            this.Bind<IChunkManagerEntityFactory>().ToFactory();
+            this.Bind<IChunkGenerator>().To<DefaultChunkGenerator>().InSingletonScope();
             
 #if DEBUG
             // Presence of the interception library interferes with the Mono Debugger because

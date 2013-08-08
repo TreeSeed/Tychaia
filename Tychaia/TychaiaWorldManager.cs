@@ -57,6 +57,11 @@ namespace Tychaia
             }
             
             game.RenderContext.SpriteBatch.End();
+            
+            game.GraphicsDevice.BlendState = BlendState.Opaque;
+            game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            game.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
+            game.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
 
 #if DEBUG
             // Cache the matrixes because we need to render the profiler UI.

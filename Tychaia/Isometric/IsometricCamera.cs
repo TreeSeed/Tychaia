@@ -118,10 +118,10 @@ namespace Tychaia
         public void InitializeRenderContext(IRenderContext renderContext)
         {
             renderContext.View = Matrix.CreateLookAt(
-                this.CurrentFocus + new Vector3(15, 30, 15),
+                this.CurrentFocus + new Vector3(15, 30, 15) * 35,
                 this.CurrentFocus,
                 Vector3.Up);
-            renderContext.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 4f / 3f, 1.0f, 1000.0f);
+            renderContext.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 4f / 3f, 1.0f, 5000.0f);
         }
     }
 }
