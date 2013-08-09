@@ -14,6 +14,7 @@ namespace Tychaia
         {
             this.Bind<IAssetLoader>().To<BlockAssetLoader>();
             this.Bind<IAssetSaver>().To<BlockAssetSaver>();
+            this.Bind<IAssetSaver>().To<TextureAtlasAssetSaver>();
         }
     }
 }

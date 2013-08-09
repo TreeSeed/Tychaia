@@ -27,6 +27,9 @@
     <Compile Include="Assets\BlockAssetEditor.cs" />
     <Compile Include="Assets\BlockAssetLoader.cs" />
     <Compile Include="Assets\BlockAssetSaver.cs" />
+    <Compile Include="Assets\DefaultTextureAtlasAssetFactory.cs" />
+    <Compile Include="Assets\ITextureAtlasAssetFactory.cs" />
+    <Compile Include="Assets\TextureAtlasAsset.cs" />
     <Compile Include="Assets\TychaiaAssetIoCModule.cs" />
     <Compile Include="ChunkManagement\ChunkManagerEntity.cs" />
     <Compile Include="ChunkManagement\IChunkManagerEntityFactory.cs" />

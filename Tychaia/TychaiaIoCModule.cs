@@ -25,6 +25,7 @@ namespace Tychaia
             this.Bind<IRenderTargetFactory>().To<DefaultRenderTargetFactory>().InSingletonScope();
             this.Bind<IChunkManagerEntityFactory>().ToFactory();
             this.Bind<IChunkGenerator>().To<DefaultChunkGenerator>().InSingletonScope();
+            this.Bind<ITextureAtlasAssetFactory>().To<DefaultTextureAtlasAssetFactory>();
 
 #if DEBUG
             // Presence of the interception library interferes with the Mono Debugger because

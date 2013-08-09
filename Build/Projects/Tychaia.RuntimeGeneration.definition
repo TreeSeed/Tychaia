@@ -65,11 +65,11 @@
     <Compile Include="Weapons\Modifiers\RestoringModifier.cs" />
     <Compile Include="Weapons\Modifiers\ShieldingModifier.cs" />
     <Compile Include="Weapons\Modifiers\SpellInfusedModifier.cs" />
+    <Compile Include="Weapons\Types\SwordType.cs" />
     <Compile Include="Weapons\Weapon.cs" />
     <Compile Include="Weapons\WeaponGenerator.cs" />
     <Compile Include="Weapons\WeaponModifier.cs" />
     <Compile Include="Weapons\WeaponType.cs" />
-    <Compile Include="Weapons\Types\SwordType.cs" />
     <Compile Include="WeightManager.cs" />
   </Files>
 </Project>

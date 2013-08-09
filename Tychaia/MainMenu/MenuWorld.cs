@@ -19,6 +19,9 @@ namespace Tychaia
         private readonly CanvasEntity m_CanvasEntity;
         private readonly FontAsset m_DefaultFont;
         private readonly TextureAsset m_PlayerTexture;
+#if DEBUG
+        private readonly TextureAtlasAsset m_TextureAtlas;
+#endif
         private readonly FontAsset m_TitleFont;
         private readonly TitleMenu m_TitleMenu;
         protected IAssetManager AssetManager = null;
@@ -39,6 +42,9 @@ namespace Tychaia
             this.m_TitleFont = this.AssetManager.Get<FontAsset>("font.Title");
             this.m_DefaultFont = this.AssetManager.Get<FontAsset>("font.Default");
             this.m_PlayerTexture = this.AssetManager.Get<TextureAsset>("chars.player.Player");
+#if DEBUG
+            this.m_TextureAtlas = this.AssetManager.Get<TextureAtlasAsset>("atlas");
+#endif
 
             this.Entities = new List<IEntity>();
 
@@ -90,6 +96,13 @@ namespace Tychaia
                     gameContext.Window.ClientBounds.Center.X,
                     gameContext.Window.ClientBounds.Center.Y),
                 this.m_PlayerTexture);
+
+#if DEBUG
+            this.m_2DRenderUtilities.RenderTexture(
+                renderContext,
+                new Vector2(10, 10), 
+                this.m_TextureAtlas.TextureAtlas);
+#endif
 
             if (this.AssetManager != null && this.AssetManager.IsRemoting)
             {
