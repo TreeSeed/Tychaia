@@ -23,6 +23,10 @@ namespace TychaiaWorldGenViewerAlgorithm
         private int m_PerformanceResultsLeftToCalculate = 0;
         private ToolStripItem c_PerformanceTestStart;
 
+        private long m_X;
+        private long m_Y;
+        private long m_Z;
+
         public FlowForm(IKernel kernel, Lazy<FlowProcessingPipeline> flowProcessingPipeline)
         {
             // TODO: Expose this in the UI.
@@ -349,23 +353,24 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         public long X
         {
-            get { return (long)this.c_XNumericUpDown.Value; }
+            get { return this.m_X; }
         }
 
         public long Y
         {
-            get { return (long)this.c_YNumericUpDown.Value; }
+            get { return this.m_Y; }
         }
 
         public long Z
         {
-            get { return (long)this.c_ZNumericUpDown.Value; }
+            get { return this.m_Z; }
         }
 
         private void c_XNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             if (this.c_FlowInterfaceControl.SelectedElement != null)
                 this.c_FlowInterfaceControl.PushForReprocessing(this.c_FlowInterfaceControl.SelectedElement);
+            this.m_X = (long)this.c_XNumericUpDown.Value;
             foreach (var el in this.c_FlowInterfaceControl.Elements)
                 if (el != this.c_FlowInterfaceControl.SelectedElement)
                     this.c_FlowInterfaceControl.PushForReprocessing(el);
@@ -375,6 +380,7 @@ namespace TychaiaWorldGenViewerAlgorithm
         {
             if (this.c_FlowInterfaceControl.SelectedElement != null)
                 this.c_FlowInterfaceControl.PushForReprocessing(this.c_FlowInterfaceControl.SelectedElement);
+            this.m_Y = (long)this.c_YNumericUpDown.Value;
             foreach (var el in this.c_FlowInterfaceControl.Elements)
                 if (el != this.c_FlowInterfaceControl.SelectedElement)
                     this.c_FlowInterfaceControl.PushForReprocessing(el);
@@ -384,6 +390,7 @@ namespace TychaiaWorldGenViewerAlgorithm
         {
             if (this.c_FlowInterfaceControl.SelectedElement != null)
                 this.c_FlowInterfaceControl.PushForReprocessing(this.c_FlowInterfaceControl.SelectedElement);
+            this.m_Z = (long)this.c_ZNumericUpDown.Value;
             foreach (var el in this.c_FlowInterfaceControl.Elements)
                 if (el != this.c_FlowInterfaceControl.SelectedElement)
                     this.c_FlowInterfaceControl.PushForReprocessing(el);
