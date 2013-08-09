@@ -5,7 +5,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="ICSharpCode.NRefactory" />
     <Reference Include="Tychaia.ProceduralGeneration" />
-    <Reference Include="Tychaia.ProceduralGeneration.Legacy" />
   </References>
   <Files>
     <Compile Include="AssemblyInfo.cs" />

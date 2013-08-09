@@ -1,41 +1,34 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using Tychaia.ProceduralGeneration;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Xml;
-using System.IO;
+using Tychaia.ProceduralGeneration.Blocks;
 
 namespace MinecraftExport
 {
-    public static class ChunkProvider
+    public class ChunkProvider
     {
-        private static Layer m_ResultLayer = null;
-        private static Type[] m_SerializableTypes = null;
-        private const string m_WorldConfig = "WorldConfig.xml";
+        private readonly IGenerator m_ExportGenerator;
 
-        #region Initialization
-
-        static ChunkProvider()
+        public ChunkProvider(
+            IGeneratorResolver generatorResolver)
         {
-            // FIXME: Use StorageAccess to load reference
-            // to world generation.
-            throw new NotImplementedException();
+            this.m_ExportGenerator = generatorResolver.GetGeneratorForExport();
         }
 
-        #endregion
-
-        public static int[] GetData(int x, int y, int z)
+        public BlockInfo[] GetData(int x, int y, int z)
         {
-            return m_ResultLayer.GenerateData(
-                 x,
-                 y,
-                 z,
-                 16,
-                 16,
-                 256);
+            int computations;
+            return this.m_ExportGenerator.GenerateData(
+                x,
+                y,
+                z,
+                16,
+                16,
+                256,
+                out computations);
         }
     }
 }

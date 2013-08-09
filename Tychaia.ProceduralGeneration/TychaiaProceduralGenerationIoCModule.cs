@@ -8,11 +8,12 @@ using Tychaia.ProceduralGeneration.Flow;
 
 namespace Tychaia.ProceduralGeneration
 {
-    public class IoCModule : NinjectModule
+    public class TychaiaProceduralGenerationIoCModule : NinjectModule
     {
         public override void Load()
         {
             this.Bind<IFlowProcessingRequestHandler>().To<FlowProcessingRequestHandler>().InSingletonScope();
+            this.Bind<IGeneratorResolver>().To<DefaultGeneratorResolver>();
         }
     }
 }

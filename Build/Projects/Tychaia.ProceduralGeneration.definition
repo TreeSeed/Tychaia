@@ -97,6 +97,7 @@
     <Compile Include="Compiler\DecompileUtil.cs" />
     <Compile Include="Compiler\LayerCompiler.cs" />
     <Compile Include="Compiler\RangedLayer.cs" />
+    <Compile Include="DefaultGeneratorResolver.cs" />
     <Compile Include="FieldForGenerationAttribute.cs" />
     <Compile Include="Flow\AlgorithmFlowConnector.cs" />
     <Compile Include="Flow\AlgorithmFlowElement.cs" />
@@ -116,7 +117,7 @@
     <Compile Include="IAlgorithm.cs" />
     <Compile Include="ICurrentWorldSeedProvider.cs" />
     <Compile Include="IGenerator.cs" />
-    <Compile Include="IoCModule.cs" />
+    <Compile Include="IGeneratorResolver.cs" />
     <Compile Include="IRuntimeContext.cs" />
     <Compile Include="Professions\Professions.cs" />
     <Compile Include="RuntimeLayer.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="StorageLayer.cs" />
     <Compile Include="Towns\Town.cs" />
     <Compile Include="Tracing\AlgorithmTraceImageGeneration.cs" />
+    <Compile Include="TychaiaProceduralGenerationIoCModule.cs" />
     <EmbeddedResource Include="Compiler\CompiledLayerTemplate.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
