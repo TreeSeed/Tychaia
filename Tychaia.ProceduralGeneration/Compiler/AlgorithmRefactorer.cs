@@ -1,114 +1,20 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using System.Collections.Generic;
-using ICSharpCode.NRefactory.CSharp;
 using System.Linq;
 using System.Reflection;
+using ICSharpCode.NRefactory.CSharp;
 
 namespace Tychaia.ProceduralGeneration.Compiler
 {
     public static class AlgorithmRefactorer
     {
-        /// <summary>
-        /// Visitor that fixes up properties.
-        /// </summary>
-        private class FindPropertiesVisitor : DepthFirstAstVisitor
-        {
-            public IAlgorithm Algorithm;
-            public string ParameterContextName;
-
-            public override void VisitVariableDeclarationStatement(VariableDeclarationStatement v)
-            {
-                base.VisitVariableDeclarationStatement(v);
-
-                // Visit variable initializers.
-                foreach (var vv in v.Variables)
-                {
-                    vv.Initializer.AcceptVisitor(new FindPropertiesVisitor { Algorithm = Algorithm, ParameterContextName = ParameterContextName });
-                }
-            }
-
-            public override void VisitAnonymousMethodExpression(AnonymousMethodExpression a)
-            {
-                base.VisitAnonymousMethodExpression(a);
-
-                // Replace properties.
-                a.Body.AcceptVisitor(new FindPropertiesVisitor { Algorithm = Algorithm, ParameterContextName = ParameterContextName });
-            }
-
-            public override void VisitMemberReferenceExpression(MemberReferenceExpression p)
-            {
-                base.VisitMemberReferenceExpression(p);
-
-                // Check to see whether this is on the owner of the ProcessCell method.
-                if (p.Target is ThisReferenceExpression)
-                {
-                    // Replace the AST node with the current value.
-                    var field = this.Algorithm.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
-                                    .Where(v => v.Name == p.MemberName).DefaultIfEmpty(null).First();
-                    var prop = this.Algorithm.GetType().GetProperties().Where(v => v.Name == p.MemberName).DefaultIfEmpty(null).First();
-                    if (prop == null && field == null)
-                        throw new NotSupportedException("Unable to inline ProcessCell methods that invoke other methods on this algorithm.");
-                    if (field != null)
-                        return;
-                    var value = prop.GetGetMethod().Invoke(this.Algorithm, null);
-                    if (value is Enum)
-                        p.ReplaceWith(new PrimitiveExpression(value, value.GetType().FullName.Replace("+", ".") + "." + value));
-                    else
-                        p.ReplaceWith(new PrimitiveExpression(value));
-                }
-                else if (p.Target is IdentifierExpression && (p.Target as IdentifierExpression).Identifier == ParameterContextName)
-                {
-                    // This is a reference to the runtime context, which we replace with this.
-                    p.Target.ReplaceWith(new ThisReferenceExpression());
-                }
-            }
-        }
-
-        private class FactorOutAlgorithmFieldsVisitor : DepthFirstAstVisitor
-        {
-            Dictionary<string, string> m_Mappings;
-
-            public FactorOutAlgorithmFieldsVisitor(Dictionary<string, string> mappings)
-            {
-                this.m_Mappings = mappings;
-            }
-
-            public override void VisitMemberReferenceExpression(MemberReferenceExpression memberReferenceExpression)
-            {
-                if (this.m_Mappings.ContainsKey(memberReferenceExpression.MemberName))
-                {
-                    if (memberReferenceExpression.Target is ThisReferenceExpression)
-                    {
-                        memberReferenceExpression.ReplaceWith(
-                            new IdentifierExpression(
-                                this.m_Mappings[memberReferenceExpression.MemberName]));
-                        return;
-                    }
-                }
-
-                base.VisitMemberReferenceExpression(memberReferenceExpression);
-            }
-
-            public override void VisitIdentifierExpression(IdentifierExpression identifierExpression)
-            {
-                if (this.m_Mappings.ContainsKey(identifierExpression.Identifier))
-                {
-                    identifierExpression.ReplaceWith(
-                        new IdentifierExpression(
-                            this.m_Mappings[identifierExpression.Identifier]));
-                }
-
-                base.VisitIdentifierExpression(identifierExpression);
-            }
-        }
-
         public static void FactorOutAlgorithmFields(Type algorithmType, MethodDeclaration method,
-                                                    MethodDeclaration initialize, ref string declarations)
+            MethodDeclaration initialize, ref string declarations)
         {
             var mappings = new Dictionary<string, string>();
             foreach (var field in algorithmType.GetFields(BindingFlags.NonPublic | BindingFlags.Instance))
@@ -130,11 +36,12 @@ namespace Tychaia.ProceduralGeneration.Compiler
         /// Refactors the names of parameters and their references so the
         /// method body can be copied directly into the output.
         /// </summary>
-        public static void InlineMethod(IAlgorithm algorithm, MethodDeclaration method, string outputName, string[] inputNames,
-                                        Expression x, Expression y, Expression z,
-                                        Expression i, Expression j, Expression k,
-                                        Expression width, Expression height, Expression depth,
-                                        Expression ox, Expression oy, Expression oz)
+        public static void InlineMethod(IAlgorithm algorithm, MethodDeclaration method, string outputName,
+            string[] inputNames,
+            Expression x, Expression y, Expression z,
+            Expression i, Expression j, Expression k,
+            Expression width, Expression height, Expression depth,
+            Expression ox, Expression oy, Expression oz)
         {
             if (algorithm == null) throw new ArgumentNullException("algorithm");
             if (method == null) throw new ArgumentNullException("method");
@@ -172,7 +79,11 @@ namespace Tychaia.ProceduralGeneration.Compiler
             var parameterOZ = method.Parameters.Reverse().ElementAt(0);
 
             // Replace properties.
-            method.AcceptVisitor(new FindPropertiesVisitor { Algorithm = algorithm, ParameterContextName = parameterContext.Name });
+            method.AcceptVisitor(new FindPropertiesVisitor
+            {
+                Algorithm = algorithm,
+                ParameterContextName = parameterContext.Name
+            });
 
             // Replace identifiers.
             var identifiers =
@@ -229,10 +140,15 @@ namespace Tychaia.ProceduralGeneration.Compiler
             var parameterContext = method.Parameters.ElementAt(0);
 
             // Replace properties.
-            method.AcceptVisitor(new FindPropertiesVisitor { Algorithm = algorithm, ParameterContextName = parameterContext.Name });
+            method.AcceptVisitor(new FindPropertiesVisitor
+            {
+                Algorithm = algorithm,
+                ParameterContextName = parameterContext.Name
+            });
 
             // Replace identifiers.
-            foreach (var i in method.Body.Descendants.Where(v => v is IdentifierExpression).Cast<IdentifierExpression>())
+            foreach (var i in method.Body.Descendants.Where(v => v is IdentifierExpression).Cast<IdentifierExpression>()
+                )
             {
                 if (i.Identifier == "context")
                     i.ReplaceWith(new ThisReferenceExpression());
@@ -251,6 +167,116 @@ namespace Tychaia.ProceduralGeneration.Compiler
             {
                 output.Add(u.Import.GetText());
                 u.Remove();
+            }
+        }
+
+        private class FactorOutAlgorithmFieldsVisitor : DepthFirstAstVisitor
+        {
+            private Dictionary<string, string> m_Mappings;
+
+            public FactorOutAlgorithmFieldsVisitor(Dictionary<string, string> mappings)
+            {
+                this.m_Mappings = mappings;
+            }
+
+            public override void VisitMemberReferenceExpression(MemberReferenceExpression memberReferenceExpression)
+            {
+                if (this.m_Mappings.ContainsKey(memberReferenceExpression.MemberName))
+                {
+                    if (memberReferenceExpression.Target is ThisReferenceExpression)
+                    {
+                        memberReferenceExpression.ReplaceWith(
+                            new IdentifierExpression(
+                                this.m_Mappings[memberReferenceExpression.MemberName]));
+                        return;
+                    }
+                }
+
+                base.VisitMemberReferenceExpression(memberReferenceExpression);
+            }
+
+            public override void VisitIdentifierExpression(IdentifierExpression identifierExpression)
+            {
+                if (this.m_Mappings.ContainsKey(identifierExpression.Identifier))
+                {
+                    identifierExpression.ReplaceWith(
+                        new IdentifierExpression(
+                            this.m_Mappings[identifierExpression.Identifier]));
+                }
+
+                base.VisitIdentifierExpression(identifierExpression);
+            }
+        }
+
+        /// <summary>
+        /// Visitor that fixes up properties.
+        /// </summary>
+        private class FindPropertiesVisitor : DepthFirstAstVisitor
+        {
+            public IAlgorithm Algorithm;
+            public string ParameterContextName;
+
+            public override void VisitVariableDeclarationStatement(VariableDeclarationStatement v)
+            {
+                base.VisitVariableDeclarationStatement(v);
+
+                // Visit variable initializers.
+                foreach (var vv in v.Variables)
+                {
+                    vv.Initializer.AcceptVisitor(new FindPropertiesVisitor
+                    {
+                        Algorithm = Algorithm,
+                        ParameterContextName = ParameterContextName
+                    });
+                }
+            }
+
+            public override void VisitAnonymousMethodExpression(AnonymousMethodExpression a)
+            {
+                base.VisitAnonymousMethodExpression(a);
+
+                // Replace properties.
+                a.Body.AcceptVisitor(new FindPropertiesVisitor
+                {
+                    Algorithm = Algorithm,
+                    ParameterContextName = ParameterContextName
+                });
+            }
+
+            public override void VisitMemberReferenceExpression(MemberReferenceExpression p)
+            {
+                base.VisitMemberReferenceExpression(p);
+
+                // Check to see whether this is on the owner of the ProcessCell method.
+                if (p.Target is ThisReferenceExpression)
+                {
+                    // Replace the AST node with the current value.
+                    var field = this.Algorithm.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
+                        .Where(v => v.Name == p.MemberName).DefaultIfEmpty(null).First();
+                    var prop =
+                        this.Algorithm.GetType()
+                            .GetProperties()
+                            .Where(v => v.Name == p.MemberName)
+                            .DefaultIfEmpty(null)
+                            .First();
+                    if (prop == null && field == null)
+                        throw new NotSupportedException(
+                            "Unable to inline ProcessCell methods that invoke other methods on this algorithm.");
+                    if (field != null)
+                        return;
+                    var value = prop.GetGetMethod().Invoke(this.Algorithm, null);
+                    if (value is Enum)
+                        p.ReplaceWith(new PrimitiveExpression(value,
+                            value.GetType().FullName.Replace("+", ".") + "." + value));
+                    else
+                        p.ReplaceWith(new PrimitiveExpression(value));
+                }
+                else if (p.Target is IdentifierExpression &&
+                         (p.Target as IdentifierExpression).Identifier == ParameterContextName)
+                {
+                    // This is a reference to the runtime context, which we replace with this.
+                    p.Target.ReplaceWith(new ThisReferenceExpression());
+                }
             }
         }
     }

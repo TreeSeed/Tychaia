@@ -1,13 +1,13 @@
-using Ninject;
-using System;
-using Xunit;
-using Tychaia.Globals;
-
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 namespace Tychaia.Globals.Tests.Dummies
 {
     public class Bar : IBar
     {
-        private IFoo m_Foo;
+        private readonly IFoo m_Foo;
 
         public Bar(IFoo foo)
         {
@@ -20,4 +20,3 @@ namespace Tychaia.Globals.Tests.Dummies
         }
     }
 }
-

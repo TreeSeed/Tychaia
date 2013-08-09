@@ -1,18 +1,14 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
-using System;
-using Xunit;
-using Tychaia.ProceduralGeneration.Compiler;
-
+// 
 namespace Tychaia.ProceduralGeneration.Tests
 {
     // These tests are disabled until the compiler implementation is fixed to match
     // the runtime implementation.
 
-    #if DISABLED
+#if DISABLED
 
 
     public class CompilerTest
@@ -72,4 +68,3 @@ namespace Tychaia.ProceduralGeneration.Tests
 
     #endif
 }
-

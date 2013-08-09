@@ -1,23 +1,24 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
-using System.Collections.Generic;
 
 namespace Tychaia.ProceduralGeneration.Analysis.Reporting
 {
     public class AnalysisIO
     {
-        private static Type[] m_SerializableTypes = null;
+        private static readonly Type[] m_SerializableTypes;
 
         static AnalysisIO()
         {
-            List<Type> types = new List<Type> {
+            var types = new List<Type>
+            {
                 typeof(Analysis),
                 typeof(AnalysisLayer),
                 typeof(AnalysisReport),
@@ -62,9 +63,10 @@ namespace Tychaia.ProceduralGeneration.Analysis.Reporting
         public static Analysis Load(StreamReader input)
         {
             var x = new DataContractSerializer(typeof(Analysis), m_SerializableTypes);
-            using (var reader = XmlDictionaryReader.CreateTextReader(input.BaseStream, new XmlDictionaryReaderQuotas() { MaxDepth = 1000 }))
+            using (
+                var reader = XmlDictionaryReader.CreateTextReader(input.BaseStream,
+                    new XmlDictionaryReaderQuotas { MaxDepth = 1000 }))
                 return x.ReadObject(reader, true) as Analysis;
         }
     }
 }
-

@@ -1,32 +1,37 @@
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using System;
 using System.Drawing;
-using System.Windows.Forms;
-using Tychaia.ProceduralGeneration;
 using System.Drawing.Imaging;
-using Tychaia.Globals;
+using System.Drawing.Text;
+using System.Windows.Forms;
 using Redpoint.FlowGraph;
+using Tychaia.Globals;
+using Tychaia.ProceduralGeneration;
 using Tychaia.ProceduralGeneration.Flow;
-using Ninject;
 
 namespace TychaiaWorldGenViewerAlgorithm
 {
     public partial class ExportForm : Form
     {
-        private IRenderingLocationProvider m_RenderingLocationProvider;
-        private RuntimeLayer m_Layer;
-        private int m_X = 0;
-        private int m_Y = 0;
-        private int m_Z = 0;
-        private Bitmap m_Bitmap;
+        private readonly Bitmap m_Bitmap;
+        private readonly RuntimeLayer m_Layer;
+        private readonly IRenderingLocationProvider m_RenderingLocationProvider;
+        private int m_X;
+        private int m_Y;
+        private int m_Z;
 
         public ExportForm(
             IRenderingLocationProvider renderingLocationProvider,
             FlowElement flowElement)
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             this.m_RenderingLocationProvider = renderingLocationProvider;
-            this.m_Layer = StorageAccess.ToRuntime((flowElement as AlgorithmFlowElement).Layer);
+            this.m_Layer = StorageAccess.ToRuntime(((AlgorithmFlowElement)flowElement).Layer);
             this.m_Bitmap = new Bitmap(1024 + 32, 1024 + 256);
             this.c_RenderBox.Image = this.m_Bitmap;
             this.c_Timer.Start();
@@ -36,17 +41,18 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         #region Cell Render Ordering
 
-        private static int[][] m_CellRenderOrder = new int[4][]
-            {
-                null,
-                null,
-                null,
-                null
-            };
         private const int RenderToNE = 0;
         private const int RenderToNW = 1;
         private const int RenderToSE = 2;
         private const int RenderToSW = 3;
+
+        private static readonly int[][] m_CellRenderOrder = new int[4][]
+        {
+            null,
+            null,
+            null,
+            null
+        };
 
         private static int[] CalculateCellRenderOrder(int targetDir, int width, int height)
         {
@@ -141,7 +147,7 @@ namespace TychaiaWorldGenViewerAlgorithm
         {
             var bitmap = new Bitmap(width * 2, height * 3);
             var graphics = Graphics.FromImage(bitmap);
-            graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+            graphics.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
             int[] data;
             try
             {
@@ -169,7 +175,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                         var y = render[i] / width;
 
                         // Calculate the render position on screen.
-                        var rx = rcx + (int)((x - y) / 2.0 * rw);// (int)(x / ((RenderWidth + 1) / 2.0) * rw);
+                        var rx = rcx + (int) ((x - y) / 2.0 * rw); // (int)(x / ((RenderWidth + 1) / 2.0) * rw);
                         var ry = rcy + (x + y) * rh - (rh / 2 * (width + height)) - (z - zbottom) * 1;
 
                         while (true)
@@ -179,8 +185,8 @@ namespace TychaiaWorldGenViewerAlgorithm
                                 Color lc;
                                 if (layer.GetInputs().Length > 0)
                                     lc = layer.Algorithm.GetColorForValue(
-                                    StorageAccess.FromRuntime(layer.GetInputs()[0]),
-                                    data[x + y * width + z * width * height]);
+                                        StorageAccess.FromRuntime(layer.GetInputs()[0]),
+                                        data[x + y * width + z * width * height]);
                                 else
                                     lc = layer.Algorithm.GetColorForValue(
                                         null,
@@ -189,7 +195,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                                 graphics.FillRectangle(
                                     sb,
                                     new Rectangle(rx, ry, rw, rh)
-                                );
+                                    );
                                 break;
                             }
                             catch (InvalidOperationException)
@@ -211,12 +217,13 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         private void c_Timer_Tick(object sender, EventArgs e)
         {
-            Bitmap temp = this.RenderPartial3D(this.m_Layer, this.m_X, this.m_Y, this.m_Z, 32, 32, 32);
-            Graphics g = Graphics.FromImage(this.m_Bitmap);
-            int rcx = 32 / 2 + 512 - 48 + 16;
-            int rcy = 32 / 2 - 15 - 32 + 256;
-            int rx = rcx + (int)((this.m_X / 32 - this.m_Y / 32) / 2.0 * 64);// (int)(x / ((RenderWidth + 1) / 2.0) * rw);
-            int ry = rcy + (this.m_X / 32 + this.m_Y / 32) * 32 /*- (32 / 2 * (32 + 32))*/ - (this.m_Z / 32 - 0) * 32;
+            var temp = this.RenderPartial3D(this.m_Layer, this.m_X, this.m_Y, this.m_Z, 32, 32, 32);
+            var g = Graphics.FromImage(this.m_Bitmap);
+            var rcx = 32 / 2 + 512 - 48 + 16;
+            var rcy = 32 / 2 - 15 - 32 + 256;
+            var rx = rcx + (int) ((this.m_X / 32 - this.m_Y / 32) / 2.0 * 64);
+                // (int)(x / ((RenderWidth + 1) / 2.0) * rw);
+            var ry = rcy + (this.m_X / 32 + this.m_Y / 32) * 32 /*- (32 / 2 * (32 + 32))*/- (this.m_Z / 32 - 0) * 32;
             g.DrawImage(temp, rx, ry);
             temp.Dispose();
 
@@ -237,7 +244,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                 this.c_Timer.Stop();
                 var sfd = new SaveFileDialog();
                 sfd.Filter = "PNG File|*.png";
-                if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (sfd.ShowDialog() == DialogResult.OK)
                 {
                     this.m_Bitmap.Save(sfd.FileName, ImageFormat.Png);
                     MessageBox.Show("Layer render exported to file successfully.");

@@ -1,11 +1,11 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
+using System.Drawing;
 using System.Runtime.Serialization;
-using System.ComponentModel;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -15,28 +15,60 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Smooth 2D By Input")]
     public class AlgorithmSmooth2DByInput : Algorithm<int, int, int>
     {
-        public override int[] RequiredXBorder { get { return new int[] {2, 2}; } }
-        public override int[] RequiredYBorder { get { return new int[] {2, 2}; } }
-        public override int[] RequiredZBorder { get { return new int[] {0, 0}; } }
-        public override bool[] InputWidthAtHalfSize { get { return new bool[]
+        public override int[] RequiredXBorder
+        {
+            get { return new[] { 2, 2 }; }
+        }
+
+        public override int[] RequiredYBorder
+        {
+            get { return new[] { 2, 2 }; }
+        }
+
+        public override int[] RequiredZBorder
+        {
+            get { return new[] { 0, 0 }; }
+        }
+
+        public override bool[] InputWidthAtHalfSize
+        {
+            get
+            {
+                return new[]
                 {
                     false,
                     false
-                }; } }
-        public override bool[] InputHeightAtHalfSize { get { return new bool[]
+                };
+            }
+        }
+
+        public override bool[] InputHeightAtHalfSize
+        {
+            get
+            {
+                return new[]
                 {
                     false,
                     false
-                }; } }
-        public override bool[] InputDepthAtHalfSize { get { return new bool[]
+                };
+            }
+        }
+
+        public override bool[] InputDepthAtHalfSize
+        {
+            get
+            {
+                return new[]
                 {
                     false,
                     false
-                }; } }
+                };
+            }
+        }
 
         public override string[] InputNames
         {
-            get { return new string[] { "Input", "Perlin" }; }
+            get { return new[] { "Input", "Perlin" }; }
         }
 
         public override bool Is2DOnly
@@ -44,7 +76,8 @@ namespace Tychaia.ProceduralGeneration
             get { return true; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] output, long x,
+            long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             var ck = (k + oz) * width * height;
             var iox = i + ox;
@@ -100,7 +133,7 @@ namespace Tychaia.ProceduralGeneration
             var p43 = Math.Max(0, inputB[(iox + 2) + (joy + 1) * width + ck]);
             var p44 = Math.Max(0, inputB[(iox + 2) + (joy + 2) * width + ck]);
 
-            var sample = new int[,]
+            var sample = new[,]
             {
                 { v00, v01, v02, v03, v04 },
                 { v10, v11, v12, v13, v14 },
@@ -108,7 +141,7 @@ namespace Tychaia.ProceduralGeneration
                 { v30, v31, v32, v33, v34 },
                 { v40, v41, v42, v43, v44 }
             };
-            var applier = new int[,]
+            var applier = new[,]
             {
                 { p00, p01, p02, p03, p04 },
                 { p10, p11, p12, p13, p14 },
@@ -121,7 +154,7 @@ namespace Tychaia.ProceduralGeneration
             var total = 0;
             var storage = new int[5, 5];
 
-            foreach (int v in applier)
+            foreach (var v in applier)
                 total += v;
             for (var ii = 0; ii < 5; ii++)
                 for (var jj = 0; jj < 5; jj++)
@@ -129,16 +162,15 @@ namespace Tychaia.ProceduralGeneration
             foreach (var v in storage)
                 result += v;
 
-            var rounded = (int)((double)result / (double)total);
+            var rounded = (int) (result / (double) total);
             if (rounded < 0)
                 rounded = v22;
             output[i + ox + (j + oy) * width + (k + oz) * width * height] = rounded;
         }
 
-        public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
+        public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);
         }
     }
 }
-

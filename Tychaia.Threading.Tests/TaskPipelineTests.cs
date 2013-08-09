@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using System.Threading;
 using Xunit;
@@ -59,7 +59,7 @@ namespace Tychaia.Threading.Tests
             ThreadStart processor = () =>
             {
                 pipeline.OutputConnect();
-                for (int i = 0; i < 1000; i++)
+                for (var i = 0; i < 1000; i++)
                 {
                     var v = pipeline.Take();
                     if (v != i)
@@ -74,7 +74,7 @@ namespace Tychaia.Threading.Tests
             };
             var thread = new Thread(processor);
             thread.Start();
-            for (int i = 0; i < 1000; i++)
+            for (var i = 0; i < 1000; i++)
             {
                 pipeline.Put(i);
                 Thread.Sleep(random.Next(1, 2));
@@ -94,7 +94,7 @@ namespace Tychaia.Threading.Tests
             ThreadStart processor = () =>
             {
                 pipeline.OutputConnect();
-                for (int i = 0; i < 1000; i++)
+                for (var i = 0; i < 1000; i++)
                 {
                     var v = pipeline.Take();
                     if (v != i)
@@ -109,7 +109,7 @@ namespace Tychaia.Threading.Tests
             };
             var thread = new Thread(processor);
             thread.Start();
-            for (int i = 0; i < 1000; i++)
+            for (var i = 0; i < 1000; i++)
             {
                 pipeline.Put(i);
                 Thread.Sleep(random.Next(1, 2));
@@ -129,7 +129,7 @@ namespace Tychaia.Threading.Tests
             ThreadStart processor = () =>
             {
                 pipeline.OutputConnect();
-                for (int i = 0; i < 1000; i++)
+                for (var i = 0; i < 1000; i++)
                 {
                     var v = pipeline.Take();
                     if (v != i)
@@ -144,7 +144,7 @@ namespace Tychaia.Threading.Tests
             };
             var thread = new Thread(processor);
             thread.Start();
-            for (int i = 0; i < 1000; i++)
+            for (var i = 0; i < 1000; i++)
             {
                 pipeline.Put(i);
                 Thread.Sleep(1);
@@ -164,7 +164,7 @@ namespace Tychaia.Threading.Tests
             ThreadStart processor = () =>
             {
                 pipeline.OutputConnect();
-                for (int i = 0; i < 100; i++)
+                for (var i = 0; i < 100; i++)
                 {
                     var v = pipeline.Take();
                     if (v != i)
@@ -179,7 +179,7 @@ namespace Tychaia.Threading.Tests
             };
             var thread = new Thread(processor);
             thread.Start();
-            for (int i = 0; i < 100; i++)
+            for (var i = 0; i < 100; i++)
             {
                 pipeline.Put(i);
                 Thread.Sleep(random.Next(1, 10));
@@ -194,16 +194,16 @@ namespace Tychaia.Threading.Tests
         {
             var success = true;
             int expected = 0, actual = 0;
-            bool[] finished = new bool[100];
-            ParameterizedThreadStart container = (index) =>
+            var finished = new bool[100];
+            ParameterizedThreadStart container = index =>
             {
-                finished[(int)index] = true;
+                finished[(int) index] = true;
                 var random = new Random();
                 var pipeline = new ThreadedTaskPipeline<int>();
                 ThreadStart processor = () =>
                 {
                     pipeline.OutputConnect();
-                    for (int i = 0; i < 100; i++)
+                    for (var i = 0; i < 100; i++)
                     {
                         var v = pipeline.Take();
                         if (v != i)
@@ -218,19 +218,19 @@ namespace Tychaia.Threading.Tests
                 };
                 var thread = new Thread(processor);
                 thread.Start();
-                for (int i = 0; i < 100; i++)
+                for (var i = 0; i < 100; i++)
                 {
                     pipeline.Put(i);
                     Thread.Sleep(random.Next(1, 10));
                 }
                 thread.Join();
             };
-            for (int i = 0; i < 100; i++)
+            for (var i = 0; i < 100; i++)
                 new Thread(container).Start(i);
             while (true)
             {
-                bool allFinished = true;
-                for (int i = 0; i < 100; i++)
+                var allFinished = true;
+                for (var i = 0; i < 100; i++)
                     allFinished = allFinished && finished[i];
                 if (allFinished)
                     break;
@@ -240,4 +240,3 @@ namespace Tychaia.Threading.Tests
         }
     }
 }
-

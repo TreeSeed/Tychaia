@@ -1,9 +1,11 @@
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using System.Reflection;
 
 namespace Tychaia.ProceduralGeneration.Professions
 {
@@ -24,11 +26,11 @@ namespace Tychaia.ProceduralGeneration.Professions
         //Turns out not as easy as copy pasting
         static ProfessionEngine()
         {
-            ProfessionEngine.Professions = new List<Profession>();
-            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
-                foreach (Type t in a.GetTypes())
+            Professions = new List<Profession>();
+            foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
+                foreach (var t in a.GetTypes())
                     if (typeof(Profession).IsAssignableFrom(t) && !t.IsAbstract)
-                        ProfessionEngine.Professions.Add(NewProfession(t));
+                        Professions.Add(NewProfession(t));
         }
 
         private static Profession NewProfession(Type t)
@@ -41,7 +43,6 @@ namespace Tychaia.ProceduralGeneration.Professions
             throw new NotImplementedException("GetProfessionForCell not implemented");
 
             return null;
-
         }
     }
 }

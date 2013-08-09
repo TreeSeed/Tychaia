@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System.Linq;
 using Protogame;
 
@@ -10,8 +10,8 @@ namespace Tychaia
 {
     public class ScatterBackground
     {
-        private IBackgroundCubeEntityFactory m_BackgroundCubeEntityFactory;
-    
+        private readonly IBackgroundCubeEntityFactory m_BackgroundCubeEntityFactory;
+
         public ScatterBackground(
             IBackgroundCubeEntityFactory backgroundCubeEntityFactory,
             IWorld world)
@@ -32,4 +32,3 @@ namespace Tychaia
         }
     }
 }
-

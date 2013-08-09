@@ -1,9 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
-using System;
+// 
 using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
@@ -35,25 +34,43 @@ namespace Tychaia.ProceduralGeneration.Tests
 
                         // Test the area where we should be filled.
                         for (var x = 0; x < 32; x += 1)
-                            Assert.True(result[x + 16 * 32 + 16 * 32 * 32] == 1, "Skew present on the X axis with borders (" + i + ", " + j + ", " + k + "), value missing.");
+                            Assert.True(result[x + 16*32 + 16*32*32] == 1,
+                                "Skew present on the X axis with borders (" + i + ", " + j + ", " + k +
+                                "), value missing.");
 
                         // Test the areas where we should not be filled.
                         for (var x = 0; x < 32; x += 1)
-                            Assert.False(result[x + 17 * 32 + 15 * 32 * 32] == 1, "Skew present on the X axis with borders (" + i + ", " + j + ", " + k + "), value present at (" + x + ", 1, -1).");
+                            Assert.False(result[x + 17*32 + 15*32*32] == 1,
+                                "Skew present on the X axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (" + x + ", 1, -1).");
                         for (var x = 0; x < 32; x += 1)
-                            Assert.False(result[x + 16 * 32 + 15 * 32 * 32] == 1, "Skew present on the X axis with borders (" + i + ", " + j + ", " + k + "), value present at (" + x + ", 0, -1).");
+                            Assert.False(result[x + 16*32 + 15*32*32] == 1,
+                                "Skew present on the X axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (" + x + ", 0, -1).");
                         for (var x = 0; x < 32; x += 1)
-                            Assert.False(result[x + 15 * 32 + 15 * 32 * 32] == 1, "Skew present on the X axis with borders (" + i + ", " + j + ", " + k + "), value present at (" + x + ", -1, -1).");
+                            Assert.False(result[x + 15*32 + 15*32*32] == 1,
+                                "Skew present on the X axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (" + x + ", -1, -1).");
                         for (var x = 0; x < 32; x += 1)
-                            Assert.False(result[x + 17 * 32 + 16 * 32 * 32] == 1, "Skew present on the X axis with borders (" + i + ", " + j + ", " + k + "), value present at (" + x + ", 1, 0).");
+                            Assert.False(result[x + 17*32 + 16*32*32] == 1,
+                                "Skew present on the X axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (" + x + ", 1, 0).");
                         for (var x = 0; x < 32; x += 1)
-                            Assert.False(result[x + 15 * 32 + 16 * 32 * 32] == 1, "Skew present on the X axis with borders (" + i + ", " + j + ", " + k + "), value present at (" + x + ", -1, 0).");
+                            Assert.False(result[x + 15*32 + 16*32*32] == 1,
+                                "Skew present on the X axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (" + x + ", -1, 0).");
                         for (var x = 0; x < 32; x += 1)
-                            Assert.False(result[x + 17 * 32 + 17 * 32 * 32] == 1, "Skew present on the X axis with borders (" + i + ", " + j + ", " + k + "), value present at (" + x + ", 1, 1).");
+                            Assert.False(result[x + 17*32 + 17*32*32] == 1,
+                                "Skew present on the X axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (" + x + ", 1, 1).");
                         for (var x = 0; x < 32; x += 1)
-                            Assert.False(result[x + 16 * 32 + 17 * 32 * 32] == 1, "Skew present on the X axis with borders (" + i + ", " + j + ", " + k + "), value present at (" + x + ", 0, 1).");
+                            Assert.False(result[x + 16*32 + 17*32*32] == 1,
+                                "Skew present on the X axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (" + x + ", 0, 1).");
                         for (var x = 0; x < 32; x += 1)
-                            Assert.False(result[x + 15 * 32 + 17 * 32 * 32] == 1, "Skew present on the X axis with borders (" + i + ", " + j + ", " + k + "), value present at (" + x + ", -1, 1).");
+                            Assert.False(result[x + 15*32 + 17*32*32] == 1,
+                                "Skew present on the X axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (" + x + ", -1, 1).");
                     }
         }
 
@@ -82,25 +99,43 @@ namespace Tychaia.ProceduralGeneration.Tests
 
                         // Test the area where we should be filled.
                         for (var y = 0; y < 32; y += 1)
-                            Assert.True(result[16 + y * 32 + 16 * 32 * 32] == 1, "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k + "), value missing.");
+                            Assert.True(result[16 + y*32 + 16*32*32] == 1,
+                                "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k +
+                                "), value missing.");
 
                         // Test the areas where we should not be filled.
                         for (var y = 0; y < 32; y += 1)
-                            Assert.False(result[17 + y * 32 + 15 * 32 * 32] == 1, "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k + "), value present at (1, " + y + ", -1).");
+                            Assert.False(result[17 + y*32 + 15*32*32] == 1,
+                                "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (1, " + y + ", -1).");
                         for (var y = 0; y < 32; y += 1)
-                            Assert.False(result[16 + y * 32 + 15 * 32 * 32] == 1, "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k + "), value present at (0, " + y + ", -1).");
+                            Assert.False(result[16 + y*32 + 15*32*32] == 1,
+                                "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (0, " + y + ", -1).");
                         for (var y = 0; y < 32; y += 1)
-                            Assert.False(result[15 + y * 32 + 15 * 32 * 32] == 1, "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k + "), value present at (-1, " + y + ", -1).");
+                            Assert.False(result[15 + y*32 + 15*32*32] == 1,
+                                "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (-1, " + y + ", -1).");
                         for (var y = 0; y < 32; y += 1)
-                            Assert.False(result[17 + y * 32 + 16 * 32 * 32] == 1, "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k + "), value present at (1, " + y + ", 0).");
+                            Assert.False(result[17 + y*32 + 16*32*32] == 1,
+                                "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (1, " + y + ", 0).");
                         for (var y = 0; y < 32; y += 1)
-                            Assert.False(result[15 + y * 32 + 16 * 32 * 32] == 1, "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k + "), value present at (-1, " + y + ", 0).");
+                            Assert.False(result[15 + y*32 + 16*32*32] == 1,
+                                "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (-1, " + y + ", 0).");
                         for (var y = 0; y < 32; y += 1)
-                            Assert.False(result[17 + y * 32 + 17 * 32 * 32] == 1, "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k + "), value present at (1, " + y + ", 1).");
+                            Assert.False(result[17 + y*32 + 17*32*32] == 1,
+                                "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (1, " + y + ", 1).");
                         for (var y = 0; y < 32; y += 1)
-                            Assert.False(result[16 + y * 32 + 17 * 32 * 32] == 1, "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k + "), value present at (0, " + y + ", 1).");
+                            Assert.False(result[16 + y*32 + 17*32*32] == 1,
+                                "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (0, " + y + ", 1).");
                         for (var y = 0; y < 32; y += 1)
-                            Assert.False(result[15 + y * 32 + 17 * 32 * 32] == 1, "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k + "), value present at (-1, " + y + ", 1).");
+                            Assert.False(result[15 + y*32 + 17*32*32] == 1,
+                                "Skew present on the Y axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (-1, " + y + ", 1).");
                     }
         }
 
@@ -129,27 +164,44 @@ namespace Tychaia.ProceduralGeneration.Tests
 
                         // Test the area where we should be filled.
                         for (var z = 0; z < 32; z += 1)
-                            Assert.True(result[16 + 16 * 32 + z * 32 * 32] == 1, "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k + "), value missing.");
+                            Assert.True(result[16 + 16*32 + z*32*32] == 1,
+                                "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k +
+                                "), value missing.");
 
                         // Test the areas where we should not be filled.
                         for (var z = 0; z < 32; z += 1)
-                            Assert.False(result[15 + 17 * 32 + z * 32 * 32] == 1, "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k + "), value present at (-1, 1, " + z + ").");
+                            Assert.False(result[15 + 17*32 + z*32*32] == 1,
+                                "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (-1, 1, " + z + ").");
                         for (var z = 0; z < 32; z += 1)
-                            Assert.False(result[15 + 16 * 32 + z * 32 * 32] == 1, "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k + "), value present at (-1, 0, " + z + ").");
+                            Assert.False(result[15 + 16*32 + z*32*32] == 1,
+                                "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (-1, 0, " + z + ").");
                         for (var z = 0; z < 32; z += 1)
-                            Assert.False(result[15 + 15 * 32 + z * 32 * 32] == 1, "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k + "), value present at (-1, -1, " + z + ").");
+                            Assert.False(result[15 + 15*32 + z*32*32] == 1,
+                                "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (-1, -1, " + z + ").");
                         for (var z = 0; z < 32; z += 1)
-                            Assert.False(result[16 + 17 * 32 + z * 32 * 32] == 1, "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k + "), value present at (0, 1, " + z + ").");
+                            Assert.False(result[16 + 17*32 + z*32*32] == 1,
+                                "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (0, 1, " + z + ").");
                         for (var z = 0; z < 32; z += 1)
-                            Assert.False(result[16 + 15 * 32 + z * 32 * 32] == 1, "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k + "), value present at (0, -1, " + z + ").");
+                            Assert.False(result[16 + 15*32 + z*32*32] == 1,
+                                "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (0, -1, " + z + ").");
                         for (var z = 0; z < 32; z += 1)
-                            Assert.False(result[17 + 17 * 32 + z * 32 * 32] == 1, "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k + "), value present at (1, 1, " + z + ").");
+                            Assert.False(result[17 + 17*32 + z*32*32] == 1,
+                                "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (1, 1, " + z + ").");
                         for (var z = 0; z < 32; z += 1)
-                            Assert.False(result[17 + 16 * 32 + z * 32 * 32] == 1, "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k + "), value present at (1, 0, " + z + ").");
+                            Assert.False(result[17 + 16*32 + z*32*32] == 1,
+                                "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (1, 0, " + z + ").");
                         for (var z = 0; z < 32; z += 1)
-                            Assert.False(result[17 + 15 * 32 + z * 32 * 32] == 1, "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k + "), value present at (1, -1, " + z + ").");
+                            Assert.False(result[17 + 15*32 + z*32*32] == 1,
+                                "Skew present on the Z axis with borders (" + i + ", " + j + ", " + k +
+                                "), value present at (1, -1, " + z + ").");
                     }
         }
     }
 }
-

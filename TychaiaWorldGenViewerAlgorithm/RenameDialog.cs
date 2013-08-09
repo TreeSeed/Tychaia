@@ -1,43 +1,36 @@
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace TychaiaWorldGenViewerAlgorithm
 {
     public partial class RenameDialog : Form
     {
-        public new string Name
-        {
-            get
-            {
-                return this.c_NameTextBox.Text;
-            }
-            set
-            {
-                this.c_NameTextBox.Text = value;
-            }
-        }
-
         public RenameDialog(string initial)
         {
-            InitializeComponent();
+            this.InitializeComponent();
             this.c_NameTextBox.Text = initial;
+        }
+
+        public new string Name
+        {
+            get { return this.c_NameTextBox.Text; }
+            set { this.c_NameTextBox.Text = value; }
         }
 
         private void c_OKButton_Click(object sender, EventArgs e)
         {
-            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
         private void c_CancelButton_Click(object sender, EventArgs e)
         {
-            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
 

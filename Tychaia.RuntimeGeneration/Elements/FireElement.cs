@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 namespace Tychaia.RuntimeGeneration.Elements
 {
     [Rarity(1)]
@@ -10,10 +10,7 @@ namespace Tychaia.RuntimeGeneration.Elements
     {
         public override string ElementTerm
         {
-            get
-            {
-                return "Fire";
-            }
+            get { return "Fire"; }
         }
 
         public override string ToString()

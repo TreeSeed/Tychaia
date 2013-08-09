@@ -6,7 +6,6 @@
   </References>
   <Files>
     <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskPipelineTests.cs" />
     <Compile Include="TaskRegionTests.cs" />
   </Files>

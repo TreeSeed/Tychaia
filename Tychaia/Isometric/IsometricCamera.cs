@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using Microsoft.Xna.Framework;
 using Protogame;
@@ -11,6 +11,34 @@ namespace Tychaia
 {
     public class IsometricCamera : IIsometricCamera
     {
+        /// <summary>
+        /// The X position in 3D space where we are focusing the camera.
+        /// </summary>
+        private double m_CurrentX;
+
+        /// <summary>
+        /// The Y position in 3D space where we are focusing the camera.
+        /// </summary>
+        private double m_CurrentY;
+
+        /// <summary>
+        /// The Z position in 3D space where we are focusing the camera.
+        /// </summary>
+        private double m_CurrentZ;
+
+        public IsometricCamera(ChunkOctree octree, Chunk chunk)
+        {
+            if (octree == null) throw new ArgumentNullException("octree");
+            if (chunk == null) throw new ArgumentNullException("chunk");
+            this.ChunkOctree = octree;
+            this.Chunk = chunk;
+        }
+
+        public Vector3 CurrentFocus
+        {
+            get { return new Vector3((float) this.m_CurrentX, (float) this.m_CurrentY, (float) this.m_CurrentZ); }
+        }
+
         /// <summary>
         /// The X position on the screen of the current chunk.
         /// </summary>
@@ -22,42 +50,14 @@ namespace Tychaia
         public int ChunkCenterY { get; set; }
 
         /// <summary>
-        /// The X position in 3D space where we are focusing the camera.
-        /// </summary>
-        private double m_CurrentX = 0;
-
-        /// <summary>
-        /// The Y position in 3D space where we are focusing the camera.
-        /// </summary>
-        private double m_CurrentY = 0;
-
-        /// <summary>
-        /// The Z position in 3D space where we are focusing the camera.
-        /// </summary>
-        private double m_CurrentZ = 0;
-        
-        /// <summary>
         /// The chunk that is currently the focus of the camera.
         /// </summary>
         public Chunk Chunk { get; private set; }
-        
+
         /// <summary>
         /// The octree that holds all of the chunks.
         /// </summary>
         public ChunkOctree ChunkOctree { get; private set; }
-        
-        public Vector3 CurrentFocus
-        {
-            get { return new Vector3((float)this.m_CurrentX, (float)this.m_CurrentY, (float)this.m_CurrentZ); }
-        }
-
-        public IsometricCamera(ChunkOctree octree, Chunk chunk)
-        {
-            if (octree == null) throw new ArgumentNullException("octree");
-            if (chunk == null) throw new ArgumentNullException("chunk");
-            this.ChunkOctree = octree;
-            this.Chunk = chunk;
-        }
 
         /// <summary>
         /// Translates a point in the 3D isometric world to a 2D point
@@ -99,9 +99,9 @@ namespace Tychaia
 
             // Pan current chunk.
             var newChunk = this.ChunkOctree.Get(
-                (long)this.m_CurrentX,
-                (long)this.m_CurrentY,
-                (long)this.m_CurrentZ);
+                (long) this.m_CurrentX,
+                (long) this.m_CurrentY,
+                (long) this.m_CurrentZ);
             if (newChunk != null)
                 this.Chunk = newChunk;
         }
@@ -114,7 +114,7 @@ namespace Tychaia
         {
             this.Pan(x - this.m_CurrentX, y - this.m_CurrentY, z - this.m_CurrentZ);
         }
-        
+
         public void InitializeRenderContext(IRenderContext renderContext)
         {
             renderContext.View = Matrix.CreateLookAt(
@@ -125,4 +125,3 @@ namespace Tychaia
         }
     }
 }
-

@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using System.Threading;
 
@@ -14,9 +14,9 @@ namespace Tychaia.Threading
     /// </summary>
     public class ThreadedTaskPipeline<T> : IPipeline<T>
     {
+        private volatile TaskPipelineEntry<T> m_Head;
         private int? m_InputThread;
         private int? m_OutputThread;
-        private volatile TaskPipelineEntry<T> m_Head;
 
         /// <summary>
         /// Creates a new TaskPipeline with the current thread being
@@ -25,7 +25,7 @@ namespace Tychaia.Threading
         /// </summary>
         public ThreadedTaskPipeline(bool autoconnect = true)
         {
-            this.m_InputThread = autoconnect ? (int?)Thread.CurrentThread.ManagedThreadId : null;
+            this.m_InputThread = autoconnect ? (int?) Thread.CurrentThread.ManagedThreadId : null;
             this.m_OutputThread = null;
         }
 
@@ -87,7 +87,7 @@ namespace Tychaia.Threading
                     head = head.Next;
                 if (head == null)
                 {
-                    m_Head = new TaskPipelineEntry<T> { Value = value };
+                    this.m_Head = new TaskPipelineEntry<T> { Value = value };
                 }
                 else
                 {
@@ -116,8 +116,8 @@ namespace Tychaia.Threading
             T value;
             lock (this)
             {
-                value = m_Head.Value;
-                m_Head = m_Head.Next;
+                value = this.m_Head.Value;
+                this.m_Head = this.m_Head.Next;
             }
             return value;
         }
@@ -142,8 +142,8 @@ namespace Tychaia.Threading
             T value;
             lock (this)
             {
-                value = m_Head.Value;
-                m_Head = m_Head.Next;
+                value = this.m_Head.Value;
+                this.m_Head = this.m_Head.Next;
             }
             retrieved = true;
             return value;

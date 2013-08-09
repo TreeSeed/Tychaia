@@ -1,24 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using System.Drawing;
-using System.Reflection;
-using Tychaia.ProceduralGeneration.Professions;
 
 namespace Tychaia.ProceduralGeneration.Towns
 {
     public class Town
     {
         // Placement
-        public int TownSize;
-
-        // Info
-        public string TownName;
 
 
         // Color that this town draws
         public Color BrushColor;
+        public string TownName;
+        public int TownSize;
 
         public Town()
         {

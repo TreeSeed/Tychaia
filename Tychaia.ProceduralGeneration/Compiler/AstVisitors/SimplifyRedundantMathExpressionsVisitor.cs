@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System.Linq;
 using ICSharpCode.NRefactory.CSharp;
 using ICSharpCode.NRefactory.PatternMatching;
@@ -19,10 +19,14 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             //
             // (x - 2) - x
 
-            var pattern = new BinaryOperatorExpression {
-                Left = new ParenthesizedExpression {
-                    Expression = new BinaryOperatorExpression {
-                        Left = new NamedNode("ident", new IdentifierExpression {
+            var pattern = new BinaryOperatorExpression
+            {
+                Left = new ParenthesizedExpression
+                {
+                    Expression = new BinaryOperatorExpression
+                    {
+                        Left = new NamedNode("ident", new IdentifierExpression
+                        {
                             Identifier = Pattern.AnyString
                         }),
                         Operator = BinaryOperatorType.Any,
@@ -36,7 +40,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             if (pattern.IsMatch(binaryOperatorExpression))
             {
                 var match = pattern.Match(binaryOperatorExpression);
-                var innerOperator = (BinaryOperatorType)((dynamic)binaryOperatorExpression).Left.Expression.Operator;
+                var innerOperator = (BinaryOperatorType) ((dynamic) binaryOperatorExpression).Left.Expression.Operator;
                 var outerOperator = binaryOperatorExpression.Operator;
                 switch (outerOperator)
                 {
@@ -44,12 +48,12 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
                         switch (innerOperator)
                         {
                             case BinaryOperatorType.Add:
-                                binaryOperatorExpression.ReplaceWith(((AstNode)match.Get("other").First()).Clone());
+                                binaryOperatorExpression.ReplaceWith(((AstNode) match.Get("other").First()).Clone());
                                 return;
                             case BinaryOperatorType.Subtract:
                                 binaryOperatorExpression.ReplaceWith(new UnaryOperatorExpression(
                                     UnaryOperatorType.Minus,
-                                    ((Expression)match.Get("other").First()).Clone()));
+                                    ((Expression) match.Get("other").First()).Clone()));
                                 return;
                         }
                         break;
@@ -60,12 +64,16 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             //
             // (2 - x) + x
 
-            pattern = new BinaryOperatorExpression {
-                Left = new ParenthesizedExpression {
-                    Expression = new BinaryOperatorExpression {
+            pattern = new BinaryOperatorExpression
+            {
+                Left = new ParenthesizedExpression
+                {
+                    Expression = new BinaryOperatorExpression
+                    {
                         Left = new AnyNode("other"),
                         Operator = BinaryOperatorType.Any,
-                        Right = new NamedNode("ident", new IdentifierExpression {
+                        Right = new NamedNode("ident", new IdentifierExpression
+                        {
                             Identifier = Pattern.AnyString
                         })
                     }
@@ -77,7 +85,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             if (pattern.IsMatch(binaryOperatorExpression))
             {
                 var match = pattern.Match(binaryOperatorExpression);
-                var innerOperator = (BinaryOperatorType)((dynamic)binaryOperatorExpression).Left.Expression.Operator;
+                var innerOperator = (BinaryOperatorType) ((dynamic) binaryOperatorExpression).Left.Expression.Operator;
                 var outerOperator = binaryOperatorExpression.Operator;
                 switch (outerOperator)
                 {
@@ -85,7 +93,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
                         switch (innerOperator)
                         {
                             case BinaryOperatorType.Subtract:
-                                binaryOperatorExpression.ReplaceWith(((AstNode)match.Get("other").First()).Clone());
+                                binaryOperatorExpression.ReplaceWith(((AstNode) match.Get("other").First()).Clone());
                                 return;
                         }
                         break;
@@ -93,7 +101,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
                         switch (innerOperator)
                         {
                             case BinaryOperatorType.Add:
-                                binaryOperatorExpression.ReplaceWith(((AstNode)match.Get("other").First()).Clone());
+                                binaryOperatorExpression.ReplaceWith(((AstNode) match.Get("other").First()).Clone());
                                 return;
                         }
                         break;
@@ -104,13 +112,17 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             //
             // (x - (2 + x))
 
-            pattern = new BinaryOperatorExpression {
-                Left = new NamedNode("ident", new IdentifierExpression {
+            pattern = new BinaryOperatorExpression
+            {
+                Left = new NamedNode("ident", new IdentifierExpression
+                {
                     Identifier = Pattern.AnyString
                 }),
                 Operator = BinaryOperatorType.Any,
-                Right = new ParenthesizedExpression {
-                    Expression = new BinaryOperatorExpression {
+                Right = new ParenthesizedExpression
+                {
+                    Expression = new BinaryOperatorExpression
+                    {
                         Left = new AnyNode("other"),
                         Operator = BinaryOperatorType.Any,
                         Right = new IdentifierExpressionBackreference("ident")
@@ -121,7 +133,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             if (pattern.IsMatch(binaryOperatorExpression))
             {
                 var match = pattern.Match(binaryOperatorExpression);
-                var innerOperator = (BinaryOperatorType)((dynamic)binaryOperatorExpression).Right.Expression.Operator;
+                var innerOperator = (BinaryOperatorType) ((dynamic) binaryOperatorExpression).Right.Expression.Operator;
                 var outerOperator = binaryOperatorExpression.Operator;
                 switch (outerOperator)
                 {
@@ -129,7 +141,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
                         switch (innerOperator)
                         {
                             case BinaryOperatorType.Add:
-                                binaryOperatorExpression.ReplaceWith(((AstNode)match.Get("other").First()).Clone());
+                                binaryOperatorExpression.ReplaceWith(((AstNode) match.Get("other").First()).Clone());
                                 return;
                         }
                         break;
@@ -140,13 +152,17 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             //
             // (x - (x - 2))
 
-            pattern = new BinaryOperatorExpression {
-                Left = new NamedNode("ident", new IdentifierExpression {
+            pattern = new BinaryOperatorExpression
+            {
+                Left = new NamedNode("ident", new IdentifierExpression
+                {
                     Identifier = Pattern.AnyString
                 }),
                 Operator = BinaryOperatorType.Any,
-                Right = new ParenthesizedExpression {
-                    Expression = new BinaryOperatorExpression {
+                Right = new ParenthesizedExpression
+                {
+                    Expression = new BinaryOperatorExpression
+                    {
                         Left = new IdentifierExpressionBackreference("ident"),
                         Operator = BinaryOperatorType.Any,
                         Right = new AnyNode("other")
@@ -157,7 +173,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             if (pattern.IsMatch(binaryOperatorExpression))
             {
                 var match = pattern.Match(binaryOperatorExpression);
-                var innerOperator = (BinaryOperatorType)((dynamic)binaryOperatorExpression).Right.Expression.Operator;
+                var innerOperator = (BinaryOperatorType) ((dynamic) binaryOperatorExpression).Right.Expression.Operator;
                 var outerOperator = binaryOperatorExpression.Operator;
                 switch (outerOperator)
                 {
@@ -165,7 +181,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
                         switch (innerOperator)
                         {
                             case BinaryOperatorType.Subtract:
-                                binaryOperatorExpression.ReplaceWith(((AstNode)match.Get("other").First()).Clone());
+                                binaryOperatorExpression.ReplaceWith(((AstNode) match.Get("other").First()).Clone());
                                 return;
                         }
                         break;
@@ -174,4 +190,3 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
         }
     }
 }
-

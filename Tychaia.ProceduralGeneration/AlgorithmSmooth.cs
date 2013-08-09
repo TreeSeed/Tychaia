@@ -1,11 +1,11 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
-using System;
-using System.Runtime.Serialization;
+// 
 using System.ComponentModel;
+using System.Drawing;
+using System.Runtime.Serialization;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -15,30 +15,60 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Smooth 2D")]
     public class AlgorithmSmooth2D : Algorithm<int, int>
     {
-        [DataMember]
-        [DefaultValue(SmoothType.Linear)]
-        [Description("The smoothing algorithm to use.")]
-        public SmoothType Mode
+        /// <summary>
+        /// An enumeration defining the type of smooth to perform.
+        /// </summary>
+        public enum SmoothType
         {
-            get;
-            set;
+            None,
+            Linear,
+            Parabolic,
+            Cubic,
         }
-
-        public override int[] RequiredXBorder { get { return new int[] {2}; } }
-        public override int[] RequiredYBorder { get { return new int[] {2}; } }
-        public override int[] RequiredZBorder { get { return new int[] {0}; } }
-        public override bool[] InputWidthAtHalfSize { get { return new bool[] {false}; } }
-        public override bool[] InputHeightAtHalfSize { get { return new bool[] {false}; } }
-        public override bool[] InputDepthAtHalfSize { get { return new bool[] {false}; } }
 
         public AlgorithmSmooth2D()
         {
             this.Mode = SmoothType.Linear;
         }
 
+        [DataMember]
+        [DefaultValue(SmoothType.Linear)]
+        [Description("The smoothing algorithm to use.")]
+        public SmoothType Mode { get; set; }
+
+        public override int[] RequiredXBorder
+        {
+            get { return new[] { 2 }; }
+        }
+
+        public override int[] RequiredYBorder
+        {
+            get { return new[] { 2 }; }
+        }
+
+        public override int[] RequiredZBorder
+        {
+            get { return new[] { 0 }; }
+        }
+
+        public override bool[] InputWidthAtHalfSize
+        {
+            get { return new[] { false }; }
+        }
+
+        public override bool[] InputHeightAtHalfSize
+        {
+            get { return new[] { false }; }
+        }
+
+        public override bool[] InputDepthAtHalfSize
+        {
+            get { return new[] { false }; }
+        }
+
         public override string[] InputNames
         {
-            get { return new string[] { "Input" }; }
+            get { return new[] { "Input" }; }
         }
 
         public override bool Is2DOnly
@@ -46,7 +76,8 @@ namespace Tychaia.ProceduralGeneration
             get { return true; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
+            int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             var ck = (k + oz) * width * height;
             var iox = i + ox;
@@ -83,7 +114,7 @@ namespace Tychaia.ProceduralGeneration
             switch (this.Mode)
             {
                 case SmoothType.None:
-                    applier = new int[,]
+                    applier = new[,]
                     {
                         { 0, 0, 0, 0, 0 },
                         { 0, 0, 0, 0, 0 },
@@ -93,7 +124,7 @@ namespace Tychaia.ProceduralGeneration
                     };
                     break;
                 case SmoothType.Linear:
-                    applier = new int[,]
+                    applier = new[,]
                     {
                         { 1, 1, 1, 1, 1 },
                         { 1, 1, 1, 1, 1 },
@@ -103,7 +134,7 @@ namespace Tychaia.ProceduralGeneration
                     };
                     break;
                 case SmoothType.Parabolic:
-                    applier = new int[,]
+                    applier = new[,]
                     {
                         { 1, 4, 9, 4, 1 },
                         { 4, 9, 16, 9, 4 },
@@ -113,7 +144,7 @@ namespace Tychaia.ProceduralGeneration
                     };
                     break;
                 case SmoothType.Cubic:
-                    applier = new int[,]
+                    applier = new[,]
                     {
                         { 1, 8, 27, 8, 1 },
                         { 8, 27, 64, 27, 8 },
@@ -123,7 +154,7 @@ namespace Tychaia.ProceduralGeneration
                     };
                     break;
             }
-            var sample = new int[,]
+            var sample = new[,]
             {
                 { v00, v01, v02, v03, v04 },
                 { v10, v11, v12, v13, v14 },
@@ -133,7 +164,7 @@ namespace Tychaia.ProceduralGeneration
             };
             var storage = new int[5, 5];
 
-            foreach (int v in applier)
+            foreach (var v in applier)
                 total += v;
             for (var ii = 0; ii < 5; ii++)
                 for (var jj = 0; jj < 5; jj++)
@@ -141,24 +172,12 @@ namespace Tychaia.ProceduralGeneration
             foreach (var v in storage)
                 result += v;
 
-            output[i + ox + (j + oy) * width + (k + oz) * width * height] = (int)((double)result / (double)total);
+            output[i + ox + (j + oy) * width + (k + oz) * width * height] = (int) (result / (double) total);
         }
 
-        /// <summary>
-        /// An enumeration defining the type of smooth to perform.
-        /// </summary>
-        public enum SmoothType
-        {
-            None,
-            Linear,
-            Parabolic,
-            Cubic,
-        }
-
-        public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
+        public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);
         }
     }
 }
-

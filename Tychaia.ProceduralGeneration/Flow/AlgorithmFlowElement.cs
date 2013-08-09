@@ -1,58 +1,37 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Serialization;
-using Ninject;
 using Redpoint.FlowGraph;
-using Tychaia.Globals;
 
 namespace Tychaia.ProceduralGeneration.Flow
 {
     [DataContract]
     public class AlgorithmFlowElement : FlowElement
     {
-        [DataMember]
-        private StorageLayer
-            m_Layer;
+        private volatile Bitmap m_CompiledBitmap = null;
         private FlowInterfaceControl m_Control;
         private IFlowProcessingPipeline m_FlowProcessingPipeline;
-        [DataMember]
-        private List<FlowConnector>
+
+        [DataMember] private List<FlowConnector>
             m_InputConnectors = new List<FlowConnector>();
-        [DataMember]
-        private List<FlowConnector>
+
+        [DataMember] private StorageLayer
+            m_Layer;
+
+        [DataMember] private List<FlowConnector>
             m_OutputConnectors = new List<FlowConnector>();
 
-        public override Bitmap Image
-        {
-            get
-            {
-                return this.m_RuntimeBitmap;
-            }
-            protected set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public StorageLayer Layer
-        {
-            get
-            {
-                return this.m_Layer;
-            }
-        }
-
         private volatile Bitmap m_RuntimeBitmap = null;
-        private volatile Bitmap m_CompiledBitmap = null;
 
-        public AlgorithmFlowElement(FlowInterfaceControl control, IFlowProcessingPipeline processingPipeline, StorageLayer l)
+        public AlgorithmFlowElement(FlowInterfaceControl control, IFlowProcessingPipeline processingPipeline,
+            StorageLayer l)
         {
             this.m_Control = control;
             this.m_FlowProcessingPipeline = processingPipeline;
@@ -93,20 +72,32 @@ namespace Tychaia.ProceduralGeneration.Flow
             this.m_CompiledViewToggleThread.Start();*/
         }
 
+        public AlgorithmFlowElement(FlowInterfaceControl control, IFlowProcessingPipeline processingPipeline,
+            IAlgorithm algorithm)
+            : this(control, processingPipeline, new StorageLayer { Algorithm = algorithm })
+        {
+        }
+
+        public override Bitmap Image
+        {
+            get { return this.m_RuntimeBitmap; }
+            protected set { throw new NotImplementedException(); }
+        }
+
+        public StorageLayer Layer
+        {
+            get { return this.m_Layer; }
+        }
+
         ~AlgorithmFlowElement()
         {
             //this.m_CompiledViewToggleThread.Abort();
         }
 
-        public AlgorithmFlowElement(FlowInterfaceControl control, IFlowProcessingPipeline processingPipeline, IAlgorithm algorithm)
-            : this(control, processingPipeline, new StorageLayer { Algorithm = algorithm })
-        {
-        }
-
         private int[] ParentsIndexOf(StorageLayer find)
         {
-            List<int> result = new List<int>();
-            for (int i = 0; i < this.m_Layer.Inputs.Length; i++)
+            var result = new List<int>();
+            for (var i = 0; i < this.m_Layer.Inputs.Length; i++)
                 if (this.m_Layer.Inputs[i] == find)
                     result.Add(i);
             return result.ToArray();
@@ -116,7 +107,7 @@ namespace Tychaia.ProceduralGeneration.Flow
         {
             this.m_Control = control;
         }
-        
+
         public void SetPipeline(IFlowProcessingPipeline processingPipeline)
         {
             this.m_FlowProcessingPipeline = processingPipeline;
@@ -132,27 +123,26 @@ namespace Tychaia.ProceduralGeneration.Flow
                     .Where(v => this.ParentsIndexOf(v.m_Layer).Contains(this.m_InputConnectors.IndexOf(connector)))
                     .Select(v => v.m_OutputConnectors[0])
                     .ToArray();
-            else
-            {
-                IEnumerable<AlgorithmFlowElement> lfe = this.m_Control.Elements
-                    .Where(v => v is AlgorithmFlowElement)
-                    .Select(v => v as AlgorithmFlowElement)
-                    .Where(v => v.m_Layer.Inputs == null ? false : v.m_Layer.Inputs.Contains(this.m_Layer));
+            IEnumerable<AlgorithmFlowElement> lfe = this.m_Control.Elements
+                .Where(v => v is AlgorithmFlowElement)
+                .Select(v => v as AlgorithmFlowElement)
+                .Where(v => v.m_Layer.Inputs == null ? false : v.m_Layer.Inputs.Contains(this.m_Layer));
 
-                // TODO: Probably can be moved into LINQ query above.
-                List<FlowConnector> fll = new List<FlowConnector>();
-                foreach (AlgorithmFlowElement el in lfe)
+            // TODO: Probably can be moved into LINQ query above.
+            var fll = new List<FlowConnector>();
+            foreach (var el in lfe)
+            {
+                for (var i = 0; i < el.m_InputConnectors.Count; i++)
                 {
-                    for (int i = 0; i < el.m_InputConnectors.Count; i++)
+                    if (
+                        (el.m_InputConnectors[i] as AlgorithmFlowConnector).ConnectedTo.Contains(
+                            this.m_OutputConnectors[0]))
                     {
-                        if ((el.m_InputConnectors[i] as AlgorithmFlowConnector).ConnectedTo.Contains(this.m_OutputConnectors[0]))
-                        {
-                            fll.Add(el.m_InputConnectors[i]);
-                        }
+                        fll.Add(el.m_InputConnectors[i]);
                     }
                 }
-                return fll.ToArray();
             }
+            return fll.ToArray();
         }
 
         public void SetConnectorsForLayer(AlgorithmFlowConnector connector, FlowConnector[] targets, bool isInput)
@@ -174,12 +164,12 @@ namespace Tychaia.ProceduralGeneration.Flow
             {
                 // We are an output connector, we must add ourselves as the target's
                 // parent.  We can do this as a reverse operation on our targets.
-                foreach (FlowConnector t in targets)
+                foreach (var t in targets)
                 {
                     (t.Owner as AlgorithmFlowElement).SetConnectorsForLayer(
                         t as AlgorithmFlowConnector,
-                        new AlgorithmFlowConnector[] { connector },
-                    true);
+                        new[] { connector },
+                        true);
                 }
             }
 
@@ -201,7 +191,7 @@ namespace Tychaia.ProceduralGeneration.Flow
             foreach (FlowConnector output in this.m_OutputConnectors)
             {
                 FlowConnector[] children = this.GetConnectorsForLayer(output, false);
-                foreach (FlowConnector fc in children)
+                foreach (var fc in children)
                 {
                     if (fc is AlgorithmFlowConnector)
                     {
@@ -214,7 +204,7 @@ namespace Tychaia.ProceduralGeneration.Flow
         public override void ObjectReprocessRequested()
         {
             // Use pipeline to put a request on for both the runtime
-                                                                             // image generation and the performance measurements.
+            // image generation and the performance measurements.
             this.m_FlowProcessingPipeline.InputPipeline.Put(new FlowProcessingRequest
             {
                 RequestType = FlowProcessingRequestType.GenerateRuntimeBitmap,
@@ -264,21 +254,14 @@ namespace Tychaia.ProceduralGeneration.Flow
 
         public override List<FlowConnector> InputConnectors
         {
-            get
-            {
-                return this.m_InputConnectors;
-            }
+            get { return this.m_InputConnectors; }
         }
 
         public override List<FlowConnector> OutputConnectors
         {
-            get
-            {
-                return this.m_OutputConnectors;
-            }
+            get { return this.m_OutputConnectors; }
         }
 
         #endregion
     }
 }
-

@@ -11,9 +11,9 @@
     <Reference Include="Substrate" />
     <Reference Include="Tychaia.Disk" />
     <Reference Include="Tychaia.Globals" />
+    <Reference Include="Ninject" />
   </References>
   <Files>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TerrainOctree.cs" />
     <Compile Include="TychaiaLevel.cs" />
     <Compile Include="TychaiaLevelAPI.cs" />

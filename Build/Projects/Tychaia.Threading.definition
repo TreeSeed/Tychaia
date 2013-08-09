@@ -9,7 +9,6 @@
     <Compile Include="IPipeline.cs" />
     <Compile Include="IRegionProcessor.cs" />
     <Compile Include="LockfreeThreadedTaskPipeline.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskPipelineEntry.cs" />
     <Compile Include="TaskRegion.cs" />
     <Compile Include="TaskRegionEntry.cs" />

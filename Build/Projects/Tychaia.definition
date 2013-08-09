@@ -38,8 +38,6 @@
     <Compile Include="Implementations\DefaultChunkGenerator.cs" />
     <Compile Include="Implementations\DefaultChunkSizePolicy.cs" />
     <Compile Include="Implementations\DefaultRenderTargetFactory.cs" />
-    <Compile Include="IntelligenceComponents\ProvidingOptimizerComponent.cs" />
-    <Compile Include="IntelligenceComponents\RenderingOptimizerComponent.cs" />
     <Compile Include="Isometric\IIsometricCamera.cs" />
     <Compile Include="Isometric\IIsometricCameraFactory.cs" />
     <Compile Include="Isometric\IsometricCamera.cs" />
@@ -52,18 +50,12 @@
     <Compile Include="MainMenu\TitleMenu.cs" />
     <Compile Include="MainMenu\TitleWorld.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="Profiling\TychaiaPerformanceProfiler.cs" />
     <Compile Include="Profiling\TychaiaProfiler.cs" />
     <Compile Include="Profiling\TychaiaProfilerEntity.cs" />
     <Compile Include="Profiling\TychaiaProfilingInterceptor.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Provider\ChunkProvider.cs" />
-    <Compile Include="Provider\IChunkProviderFactory.cs" />
-    <Compile Include="Renderer\ChunkRenderer.cs" />
-    <Compile Include="Renderer\IChunkRendererFactory.cs" />
     <Compile Include="Services\IChunkGenerator.cs" />
     <Compile Include="Services\IChunkSizePolicy.cs" />
-    <Compile Include="Services\IIntelligenceComponent.cs" />
     <Compile Include="Services\IRenderTargetFactory.cs" />
     <Compile Include="TychaiaGame.cs" />
     <Compile Include="TychaiaGameWorld.cs" />
@@ -71,8 +63,6 @@
     <Compile Include="TychaiaSkin.cs" />
     <Compile Include="TychaiaWorldManager.cs" />
     <Compile Include="UniqueRender.cs" />
-    <Compile Include="Utility\Cube.cs" />
-    <Compile Include="Utility\Direction.cs" />
     <None Include="..\Other\OpenTK.dll.config">
       <Link>OpenTK.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

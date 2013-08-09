@@ -1,18 +1,18 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Xml;
-using System.Linq;
 using Redpoint.FlowGraph;
-using Tychaia.ProceduralGeneration.Flow;
 using Tychaia.ProceduralGeneration.Compiler;
+using Tychaia.ProceduralGeneration.Flow;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -37,8 +37,8 @@ namespace Tychaia.ProceduralGeneration
             };
 
             // Convert inputs.
-            for (int i = 0; i < layer.GetInputs().Length; i++)
-                storage.Inputs[i] = StorageAccess.FromRuntime(layer.GetInputs()[i]);
+            for (var i = 0; i < layer.GetInputs().Length; i++)
+                storage.Inputs[i] = FromRuntime(layer.GetInputs()[i]);
 
             // Return storage.
             return storage;
@@ -57,7 +57,7 @@ namespace Tychaia.ProceduralGeneration
             var runtime = new RuntimeLayer(layer.Algorithm);
             if (layer.Inputs != null)
                 for (var i = 0; i < layer.Inputs.Length; i++)
-                    runtime.SetInput(i, StorageAccess.ToRuntime(layer.Inputs[i]));
+                    runtime.SetInput(i, ToRuntime(layer.Inputs[i]));
             return runtime;
         }
 
@@ -100,7 +100,7 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public static void SaveStorage(StorageLayer layer, StreamWriter output)
         {
-            SaveStorage(new StorageLayer[] { layer }, output);
+            SaveStorage(new[] { layer }, output);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Tychaia.ProceduralGeneration
                 AddRecursiveStorage(allLayers, layer);
 
             // Save all.
-            DataContractSerializer x = new DataContractSerializer(
+            var x = new DataContractSerializer(
                 typeof(StorageLayer[]),
                 SerializableTypes,
                 Int32.MaxValue,
@@ -129,8 +129,10 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public static StorageLayer[] LoadStorage(StreamReader input)
         {
-            DataContractSerializer x = new DataContractSerializer(typeof(StorageLayer[]), SerializableTypes);
-            using (XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(input.BaseStream, new XmlDictionaryReaderQuotas() { MaxDepth = 1000 }))
+            var x = new DataContractSerializer(typeof(StorageLayer[]), SerializableTypes);
+            using (
+                var reader = XmlDictionaryReader.CreateTextReader(input.BaseStream,
+                    new XmlDictionaryReaderQuotas { MaxDepth = 1000 }))
                 return x.ReadObject(reader, true) as StorageLayer[];
         }
 
@@ -144,7 +146,8 @@ namespace Tychaia.ProceduralGeneration
         {
             // Dynamically generate a list of serializable types for the
             // data contract.
-            List<Type> types = new List<Type> {
+            var types = new List<Type>
+            {
                 // Flow system classes
                 typeof(FlowConnector),
                 typeof(FlowElement),
@@ -153,7 +156,7 @@ namespace Tychaia.ProceduralGeneration
                 typeof(StorageLayer),
                 typeof(StorageLayer[]),
             };
-            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
             {
                 Type[] assemblyTypes;
                 try
@@ -173,14 +176,13 @@ namespace Tychaia.ProceduralGeneration
                         Console.WriteLine(exx);
                     }
                 }
-                foreach (Type t in assemblyTypes.Where(x => x != null))
+                foreach (var t in assemblyTypes.Where(x => x != null))
                     if (typeof(IAlgorithm).IsAssignableFrom(t) && !t.IsGenericType)
                         types.Add(t);
             }
-            StorageAccess.SerializableTypes = types.ToArray();
+            SerializableTypes = types.ToArray();
         }
 
         #endregion
     }
 }
-

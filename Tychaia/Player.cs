@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -13,36 +13,29 @@ namespace Tychaia
 {
     public class Player : Entity
     {
-        private I3DRenderUtilities m_3DRenderUtilities;
-        private IFilteredFeatures m_FilteredFeatures;
-    
-        private TychaiaGameWorld m_World;
-        private TextureAsset m_PlayerAsset;
-        
-        public float MovementSpeed { get { return 4; } }
-    
+        private readonly IFilteredFeatures m_FilteredFeatures;
+
         public Player(
-            TychaiaGameWorld world,
-            IAssetManager assetManager,
-            I3DRenderUtilities _3dRenderUtilities,
             IFilteredFeatures filteredFeatures)
         {
-            this.m_World = world;
-            this.m_3DRenderUtilities = _3dRenderUtilities;
             this.m_FilteredFeatures = filteredFeatures;
-            this.m_PlayerAsset = assetManager.Get<TextureAsset>("chars.player.Player");
-            
+
             this.Width = 16;
             this.Height = 16;
             this.Depth = 16;
         }
-        
+
+        public float MovementSpeed
+        {
+            get { return 4; }
+        }
+
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
             // Update player and refocus screen.
             var state = Keyboard.GetState();
             var gpstate = GamePad.GetState(PlayerIndex.One);
-            float mv = (float)Math.Sqrt(this.MovementSpeed);
+            var mv = (float) Math.Sqrt(this.MovementSpeed);
             if (state.IsKeyDown(Keys.W))
             {
                 this.Y -= mv;
@@ -71,21 +64,18 @@ namespace Tychaia
             {
                 this.Z -= 4f;
             }
-            Vector2 v = new Vector2(
+            var v = new Vector2(
                 gpstate.ThumbSticks.Left.X,
                 -gpstate.ThumbSticks.Left.Y
-            );
-            Matrix m = Matrix.CreateRotationZ(MathHelper.ToRadians(-45));
+                );
+            var m = Matrix.CreateRotationZ(MathHelper.ToRadians(-45));
             v = Vector2.Transform(v, m);
-            this.X += v.X * mv * (float)(Math.Sqrt(2) / 1.0);
-            this.Y += v.Y * mv * (float)(Math.Sqrt(2) / 1.0);
+            this.X += v.X * mv * (float) (Math.Sqrt(2) / 1.0);
+            this.Y += v.Y * mv * (float) (Math.Sqrt(2) / 1.0);
         }
 
         public override void Render(IGameContext gameContext, IRenderContext renderContext)
         {
-            if (!renderContext.Is3DContext)
-                return;
-        
             /*this.m_IsometricRenderingUtilities.RenderEntity(
                 renderContext,
                 this.m_World,
@@ -101,4 +91,3 @@ namespace Tychaia
         }
     }
 }
-

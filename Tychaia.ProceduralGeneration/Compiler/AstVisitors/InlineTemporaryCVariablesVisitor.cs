@@ -1,11 +1,11 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
-using ICSharpCode.NRefactory.CSharp;
-using System.Linq;
+// 
 using System.Collections.Generic;
+using System.Linq;
+using ICSharpCode.NRefactory.CSharp;
 
 namespace Tychaia.ProceduralGeneration.AstVisitors
 {
@@ -54,4 +54,3 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
         }
     }
 }
-

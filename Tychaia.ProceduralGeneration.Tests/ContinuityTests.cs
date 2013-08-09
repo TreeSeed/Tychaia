@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
@@ -20,14 +20,14 @@ namespace Tychaia.ProceduralGeneration.Tests
         private static void PerformSamplingIndividual(string name, IGenerator layer, int s, int o)
         {
             int computations;
-            int[] initial = layer.GenerateData(-s + o, -s + o, -s + o, s * 2, s * 2, s * 2, out computations);
+            int[] initial = layer.GenerateData(-s + o, -s + o, -s + o, s*2, s*2, s*2, out computations);
 
             for (var x = -s; x < s; x++)
                 for (var y = -s; y < s; y++)
                     for (var z = -s; z < s; z++)
                     {
                         int[] sample = layer.GenerateData(x + o, y + o, z + o, 1, 1, 1, out computations);
-                        Assert.Equal(sample[0], initial[(x + s) + (y + s) * s * 2 + (z + s) * s * 2 * s * 2]);//,
+                        Assert.Equal(sample[0], initial[(x + s) + (y + s)*s*2 + (z + s)*s*2*s*2]); //,
                         //name + " is not continuous.");
                     }
         }
@@ -69,7 +69,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         public static void TestAlgorithmIncrementWaterDistance1()
         {
             var algorithmInitial = new AlgorithmInitialBool();
-            var algorithmIncrementWaterDistance = new AlgorithmIncrementWaterDistance()
+            var algorithmIncrementWaterDistance = new AlgorithmIncrementWaterDistance
             {
                 Initial = true
             };
@@ -85,7 +85,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var algorithmInitial = new AlgorithmInitialBool();
             var algorithmZoom2DIteration1 = new AlgorithmZoom2D();
             var algorithmZoom2DIteration2 = new AlgorithmZoom2D();
-            var algorithmIncrementWaterDistance1 = new AlgorithmIncrementWaterDistance()
+            var algorithmIncrementWaterDistance1 = new AlgorithmIncrementWaterDistance
             {
                 Initial = true
             };
@@ -109,7 +109,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var algorithmZoom2DIteration1 = new AlgorithmZoom2D();
             var algorithmZoom2DIteration2 = new AlgorithmZoom2D();
             var algorithmZoom2DIteration3 = new AlgorithmZoom2D();
-            var algorithmIncrementWaterDistance1 = new AlgorithmIncrementWaterDistance()
+            var algorithmIncrementWaterDistance1 = new AlgorithmIncrementWaterDistance
             {
                 Initial = true
             };
@@ -139,7 +139,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var algorithmZoom2DIteration2 = new AlgorithmZoom2D();
             var algorithmZoom2DIteration3 = new AlgorithmZoom2D();
             var algorithmZoom2DIteration4 = new AlgorithmZoom2D();
-            var algorithmIncrementWaterDistance1 = new AlgorithmIncrementWaterDistance()
+            var algorithmIncrementWaterDistance1 = new AlgorithmIncrementWaterDistance
             {
                 Initial = true
             };
@@ -167,4 +167,3 @@ namespace Tychaia.ProceduralGeneration.Tests
         }
     }
 }
-

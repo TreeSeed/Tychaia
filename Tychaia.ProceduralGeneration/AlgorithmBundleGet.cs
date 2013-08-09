@@ -1,8 +1,8 @@
-﻿//
+﻿// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -18,30 +18,25 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Bundle Get Int32")]
     public class AlgorithmBundleGetInt32 : Algorithm<FlowBundle, Int32, Int32>
     {
+        public AlgorithmBundleGetInt32()
+        {
+            this.Layer2D = true;
+            this.Identifier = "Unassigned";
+        }
+
         [DataMember]
         [DefaultValue("Unassigned")]
         [Description("The identifier for the instance you wish to retrieve from the bundle.")]
-        public string Identifier
-        {
-            get;
-            set;
-        }
+        public string Identifier { get; set; }
 
         [DataMember]
         [DefaultValue(true)]
         [Description("Show this layer as 2D in the editor.")]
-        public bool Layer2D
-        {
-            get;
-            set;
-        }
+        public bool Layer2D { get; set; }
 
         public override string[] InputNames
         {
-            get
-            {
-                return new[] { "FlowBundle", "Color" };
-            }
+            get { return new[] { "FlowBundle", "Color" }; }
         }
 
         public override bool Is2DOnly
@@ -49,16 +44,11 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
 
-        public AlgorithmBundleGetInt32()
+        public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, Int32[] inputB, Int32[] output,
+            long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            this.Layer2D = true;
-            this.Identifier = "Unassigned";
-        }
-
-        public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, Int32[] inputB, Int32[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
-        {
-             output[(i + ox) + (j + oy) * width + (k + oz) * width* height] =
-				inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].Get(this.Identifier);
+            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
+                inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].Get(this.Identifier);
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
@@ -73,30 +63,25 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Bundle Get Biome")]
     public class AlgorithmBundleGetBiome : Algorithm<FlowBundle, Biome, Biome>
     {
+        public AlgorithmBundleGetBiome()
+        {
+            this.Layer2D = true;
+            this.Identifier = "Unassigned";
+        }
+
         [DataMember]
         [DefaultValue("Unassigned")]
         [Description("The identifier for the instance you wish to retrieve from the bundle.")]
-        public string Identifier
-        {
-            get;
-            set;
-        }
+        public string Identifier { get; set; }
 
         [DataMember]
         [DefaultValue(true)]
         [Description("Show this layer as 2D in the editor.")]
-        public bool Layer2D
-        {
-            get;
-            set;
-        }
+        public bool Layer2D { get; set; }
 
         public override string[] InputNames
         {
-            get
-            {
-                return new[] { "FlowBundle", "Color" };
-            }
+            get { return new[] { "FlowBundle", "Color" }; }
         }
 
         public override bool Is2DOnly
@@ -104,16 +89,11 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
 
-        public AlgorithmBundleGetBiome()
+        public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, Biome[] inputB, Biome[] output,
+            long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            this.Layer2D = true;
-            this.Identifier = "Unassigned";
-        }
-
-        public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, Biome[] inputB, Biome[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
-        {
-             output[(i + ox) + (j + oy) * width + (k + oz) * width* height] =
-				inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].Get(this.Identifier);
+            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
+                inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].Get(this.Identifier);
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
@@ -121,5 +101,4 @@ namespace Tychaia.ProceduralGeneration
             return this.DelegateColorForValueToParent(parent, value, 1);
         }
     }
-
 }

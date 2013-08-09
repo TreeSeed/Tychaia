@@ -1,22 +1,20 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using System.Runtime.Serialization;
-using System.ComponentModel;
 
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
     public class StorageLayer
     {
-        [DataMember]
-        private IAlgorithm
+        [DataMember] private IAlgorithm
             m_Algorithm;
-        [DataMember]
-        private StorageLayer[]
+
+        [DataMember] private StorageLayer[]
             m_Layers;
 
         /// <summary>
@@ -24,32 +22,21 @@ namespace Tychaia.ProceduralGeneration
         /// no other purpose.
         /// </summary>
         [DataMember]
-        public int EditorX
-        {
-            get;
-            set;
-        }
+        public int EditorX { get; set; }
 
         /// <summary>
         /// The Y position for rendering in the editor.  It serves
         /// no other purpose.
         /// </summary>
         [DataMember]
-        public int EditorY
-        {
-            get;
-            set;
-        }
+        public int EditorY { get; set; }
 
         /// <summary>
         /// The current algorithm for this layer.
         /// </summary>
         public IAlgorithm Algorithm
         {
-            get
-            {
-                return this.m_Algorithm;
-            }
+            get { return this.m_Algorithm; }
             set
             {
                 this.m_Algorithm = value;
@@ -76,11 +63,7 @@ namespace Tychaia.ProceduralGeneration
                 }
                 return this.m_Layers;
             }
-            set
-            {
-                throw new InvalidOperationException();
-            }
+            set { throw new InvalidOperationException(); }
         }
     }
 }
-

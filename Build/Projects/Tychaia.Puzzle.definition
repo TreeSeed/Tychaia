@@ -5,7 +5,6 @@
     <Reference Include="System.Drawing" />
   </References>
   <Files>
-    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="DDOPuzzle.cs" />
     <Compile Include="IPuzzle.cs" />
     <Compile Include="IPuzzleEnvironment.cs" />

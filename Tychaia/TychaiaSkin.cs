@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using Microsoft.Xna.Framework;
 using Protogame;
@@ -11,33 +11,30 @@ namespace Tychaia
 {
     public class TychaiaSkin : ISkin
     {
-        private I2DRenderUtilities m_2DRenderUtilities;
-        private IAssetManager m_AssetManager;
+        private readonly I2DRenderUtilities m_2DRenderUtilities;
+        private readonly IAssetManager m_AssetManager;
 
         public TychaiaSkin(
-            I2DRenderUtilities _2dRenderUtilities,
+            I2DRenderUtilities _2DRenderUtilities,
             IAssetManagerProvider assetManagerProvider)
         {
-            this.m_2DRenderUtilities = _2dRenderUtilities;
+            this.m_2DRenderUtilities = _2DRenderUtilities;
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
         }
-        
+
         public void DrawButton(IRenderContext context, Rectangle layout, Button button)
         {
             this.m_2DRenderUtilities.RenderRectangle(
                 context,
                 layout,
-                Color.White,
-                filled: true);
+                Color.White, true);
             this.m_2DRenderUtilities.RenderText(
                 context,
                 new Vector2(
                     layout.Center.X,
                     layout.Center.Y),
                 button.Text,
-                this.m_AssetManager.Get<FontAsset>("font.Default"),
-                horizontalAlignment: HorizontalAlignment.Center,
-                verticalAlignment: VerticalAlignment.Center);
+                this.m_AssetManager.Get<FontAsset>("font.Default"), HorizontalAlignment.Center, VerticalAlignment.Center);
         }
 
         public void DrawCanvas(IRenderContext context, Rectangle layout, Canvas canvas)
@@ -103,12 +100,12 @@ namespace Tychaia
         {
             throw new NotSupportedException();
         }
-        
+
         public void DrawForm(IRenderContext context, Rectangle layout, Form form)
         {
             throw new NotSupportedException();
         }
-        
+
         public void DrawFontViewer(IRenderContext context, Rectangle layout, FontViewer fontViewer)
         {
             throw new NotSupportedException();
@@ -118,12 +115,12 @@ namespace Tychaia
         {
             throw new NotSupportedException();
         }
-        
+
         public void DrawTextureViewer(IRenderContext context, Rectangle layout, TextureViewer textureViewer)
         {
             throw new NotSupportedException();
         }
-        
+
         public void DrawAudioPlayer(IRenderContext context, Rectangle layout, AudioPlayer audioPlayer)
         {
             throw new NotSupportedException();
@@ -133,7 +130,7 @@ namespace Tychaia
         {
             throw new NotSupportedException();
         }
-        
+
         public Vector2 MeasureText(IRenderContext context, string text)
         {
             return this.m_2DRenderUtilities.MeasureText(
@@ -163,4 +160,3 @@ namespace Tychaia
         }
     }
 }
-

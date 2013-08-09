@@ -1,9 +1,11 @@
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using System.Reflection;
 using Tychaia.ProceduralGeneration.Professions;
 
 namespace Tychaia.ProceduralGeneration.Buildings
@@ -11,11 +13,12 @@ namespace Tychaia.ProceduralGeneration.Buildings
     public abstract class Building
     {
         // Size of this building
-        public int Length;
-        public int Width;
+        public Color BrushColor;
         public int Height;
+        public int Length;
 
         public Profession[] Professions; // Jobs this building creates
+        public int Width;
         // NOTE: Each building doesn't actually provide anything to the player, those are provided by each professsion
         // This means that if you have a building that creates 2 blacksmiths it will naturally create more things
         // You can then create specializations etc to make each npc different in a single building
@@ -27,7 +30,6 @@ namespace Tychaia.ProceduralGeneration.Buildings
 
 
         // Color that this Building draws
-        public Color BrushColor;
     }
 
     public static class BuildingEngine
@@ -37,11 +39,11 @@ namespace Tychaia.ProceduralGeneration.Buildings
         //Turns out not as easy as copy pasting
         static BuildingEngine()
         {
-            BuildingEngine.Buildings = new List<Building>();
-            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
-                foreach (Type t in a.GetTypes())
+            Buildings = new List<Building>();
+            foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
+                foreach (var t in a.GetTypes())
                     if (typeof(Building).IsAssignableFrom(t) && !t.IsAbstract)
-                        BuildingEngine.Buildings.Add(NewBuilding(t));
+                        Buildings.Add(NewBuilding(t));
         }
 
         private static Building NewBuilding(Type t)
@@ -52,7 +54,7 @@ namespace Tychaia.ProceduralGeneration.Buildings
         public static Building GetBuildingForCell(double rainfall, double temperature, double terrain)
         {
             throw new NotImplementedException("GetBuildingForCell not implemented");
-                return null;
+            return null;
         }
     }
 }

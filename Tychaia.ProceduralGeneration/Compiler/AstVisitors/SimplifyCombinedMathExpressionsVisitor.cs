@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System.Linq;
 using ICSharpCode.NRefactory.CSharp;
 using ICSharpCode.NRefactory.PatternMatching;
@@ -22,9 +22,12 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             // (x - 2) + 4
             // (x * 2) / 3
 
-            var pattern = new BinaryOperatorExpression {
-                Left = new ParenthesizedExpression {
-                    Expression = new BinaryOperatorExpression {
+            var pattern = new BinaryOperatorExpression
+            {
+                Left = new ParenthesizedExpression
+                {
+                    Expression = new BinaryOperatorExpression
+                    {
                         Left = new AnyNode("left"),
                         Operator = BinaryOperatorType.Any,
                         Right = new AnyNode("rightA")
@@ -46,9 +49,9 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             {
                 var match = pattern.Match(binaryOperatorExpression);
                 var outerOperator = binaryOperatorExpression.Operator;
-                var innerOperator = (BinaryOperatorType)((dynamic)binaryOperatorExpression.Left).Expression.Operator;
-                var innerValue = AstHelpers.GetValueFromExpression((Expression)match.Get("rightA").First());
-                var outerValue = AstHelpers.GetValueFromExpression((Expression)match.Get("rightB").First());
+                var innerOperator = (BinaryOperatorType) ((dynamic) binaryOperatorExpression.Left).Expression.Operator;
+                var innerValue = AstHelpers.GetValueFromExpression((Expression) match.Get("rightA").First());
+                var outerValue = AstHelpers.GetValueFromExpression((Expression) match.Get("rightB").First());
                 if (innerValue == null && outerValue == null)
                     return;
 
@@ -108,4 +111,3 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
         }
     }
 }
-

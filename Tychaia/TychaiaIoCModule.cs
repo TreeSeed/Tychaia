@@ -1,13 +1,15 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
+using System;
+using System.Diagnostics;
+using Ninject;
 using Ninject.Extensions.Factory;
+using Ninject.Extensions.Interception.Infrastructure.Language;
 using Ninject.Modules;
 using Protogame;
-using Ninject;
-using Ninject.Extensions.Interception.Infrastructure.Language;
 
 namespace Tychaia
 {
@@ -21,15 +23,14 @@ namespace Tychaia
             this.Bind<IChunkFactory>().ToFactory();
             this.Bind<ISkin>().To<TychaiaSkin>();
             this.Bind<IRenderTargetFactory>().To<DefaultRenderTargetFactory>().InSingletonScope();
-            this.Bind<IChunkProviderFactory>().ToFactory();
             this.Bind<IChunkManagerEntityFactory>().ToFactory();
             this.Bind<IChunkGenerator>().To<DefaultChunkGenerator>().InSingletonScope();
-            
+
 #if DEBUG
             // Presence of the interception library interferes with the Mono Debugger because
             // it can't seem to handle the intercepted call stack.  Therefore, under Mono, we
             // disable the profiler if the debugger is attached.
-            if (!System.Diagnostics.Debugger.IsAttached || System.Type.GetType("Mono.Runtime") == null)
+            if (!Debugger.IsAttached || Type.GetType("Mono.Runtime") == null)
             {
                 var profiler = this.Kernel.Get<TychaiaProfiler>();
                 this.Bind<IProfiler>().ToMethod(x => profiler);
@@ -45,4 +46,3 @@ namespace Tychaia
         }
     }
 }
-

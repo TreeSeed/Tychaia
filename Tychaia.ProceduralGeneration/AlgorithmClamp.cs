@@ -1,11 +1,11 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
-using System.Runtime.Serialization;
+// 
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.Serialization;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -15,61 +15,6 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Value Clamp")]
     public class AlgorithmClamp : Algorithm<int, int>
     {
-        [DataMember]
-        [DefaultValue(0)]
-        [Description("The minimum value.")]
-        public int Minimum
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        [DefaultValue(100)]
-        [Description("The maximum value.")]
-        public int Maximum
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        [DefaultValue(false)]
-        [Description("Clamp minimum?")]
-        public bool ClampMinimum
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        [DefaultValue(false)]
-        [Description("Clamp maximum?")]
-        public bool ClampMaximum
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        [DefaultValue(false)]
-        [Description("Is this a 2D layer?")]
-        public bool Layer2D
-        {
-            get;
-            set;
-        }
-
-        public override bool Is2DOnly
-        {
-            get { return Layer2D; }
-        }
-
-        public override string[] InputNames
-        {
-            get { return new string[] { "Input" }; }
-        }
-
         public AlgorithmClamp()
         {
             this.Minimum = 0;
@@ -77,6 +22,41 @@ namespace Tychaia.ProceduralGeneration
             this.ClampMinimum = false;
             this.ClampMaximum = false;
             this.Layer2D = false;
+        }
+
+        [DataMember]
+        [DefaultValue(0)]
+        [Description("The minimum value.")]
+        public int Minimum { get; set; }
+
+        [DataMember]
+        [DefaultValue(100)]
+        [Description("The maximum value.")]
+        public int Maximum { get; set; }
+
+        [DataMember]
+        [DefaultValue(false)]
+        [Description("Clamp minimum?")]
+        public bool ClampMinimum { get; set; }
+
+        [DataMember]
+        [DefaultValue(false)]
+        [Description("Clamp maximum?")]
+        public bool ClampMaximum { get; set; }
+
+        [DataMember]
+        [DefaultValue(false)]
+        [Description("Is this a 2D layer?")]
+        public bool Layer2D { get; set; }
+
+        public override bool Is2DOnly
+        {
+            get { return this.Layer2D; }
+        }
+
+        public override string[] InputNames
+        {
+            get { return new[] { "Input" }; }
         }
 
         public override void ProcessCell(
@@ -102,4 +82,3 @@ namespace Tychaia.ProceduralGeneration
         }
     }
 }
-

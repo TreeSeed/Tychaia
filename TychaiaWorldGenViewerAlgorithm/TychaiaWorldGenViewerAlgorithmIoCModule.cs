@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using Ninject;
 using Ninject.Activation;
@@ -16,16 +16,11 @@ namespace TychaiaWorldGenViewerAlgorithm
         public override void Load()
         {
             FlowProcessingPipeline flowProcessingPipeline = null;
-            Func<IContext, FlowProcessingPipeline> load = x =>
-            {
-                if (flowProcessingPipeline == null)
-                    flowProcessingPipeline = new FlowProcessingPipeline(x.Kernel.Get<IFlowProcessingRequestHandler>());
-                return flowProcessingPipeline;
-            };
+            Func<IContext, FlowProcessingPipeline> load = x => flowProcessingPipeline ??
+                                                               (flowProcessingPipeline = new FlowProcessingPipeline(x.Kernel.Get<IFlowProcessingRequestHandler>()));
             this.Bind<FlowProcessingPipeline>().ToMethod(load);
             this.Bind<IFlowProcessingPipeline>().ToMethod(load);
             this.Bind<IFlowProcessingRequestHandler>().To<FlowProcessingRequestHandler>();
         }
     }
 }
-

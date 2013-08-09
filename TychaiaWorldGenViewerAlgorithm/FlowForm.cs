@@ -1,14 +1,13 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Forms;
 using Ninject;
 using Tychaia.Globals;
@@ -19,9 +18,9 @@ namespace TychaiaWorldGenViewerAlgorithm
 {
     public partial class FlowForm : Form, IRenderingLocationProvider, ICurrentWorldSeedProvider
     {
-        private FlowProcessingPipeline m_FlowProcessingPipeline;
-        private int m_PerformanceResultsLeftToCalculate = 0;
-        private ToolStripItem c_PerformanceTestStart;
+        private readonly FlowProcessingPipeline m_FlowProcessingPipeline;
+        private ToolStripItem m_PerformanceTestStart;
+        private int m_PerformanceResultsLeftToCalculate;
 
         private long m_X;
         private long m_Y;
@@ -32,7 +31,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             // TODO: Expose this in the UI.
             this.Seed = 0xDEADBEEF;
 
-            InitializeComponent();
+            this.InitializeComponent();
             kernel.Bind<IRenderingLocationProvider>().ToMethod(context => this);
             kernel.Bind<ICurrentWorldSeedProvider>().ToMethod(context => this);
             this.m_FlowProcessingPipeline = flowProcessingPipeline.Value;
@@ -43,31 +42,28 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.UpdateStatusArea();
         }
 
-        public long Seed
-        {
-            get; private set;
-        }
+        public long Seed { get; private set; }
 
         #region Analysis Actions
 
         public void CreateAnalysisActions()
         {
             this.c_ToolStrip.Items.Add("-");
-            this.c_PerformanceTestStart =
+            this.m_PerformanceTestStart =
                 this.c_ToolStrip.Items.Add(
                     null,
                     ResourceHelper.GetImageResource("TychaiaWorldGenViewerAlgorithm.time.png"),
                     (sender, e) =>
+                    {
+                        foreach (var element in this.c_FlowInterfaceControl.Elements
+                            .Where(x => x is AlgorithmFlowElement)
+                            .Cast<AlgorithmFlowElement>())
                         {
-                            foreach (var element in this.c_FlowInterfaceControl.Elements
-                                .Where(x => x is AlgorithmFlowElement)
-                                .Cast<AlgorithmFlowElement>())
-                            {
-                                element.RequestPerformanceStatistics();
-                                this.m_PerformanceResultsLeftToCalculate++;
-                            }
-                            this.UpdateStatusArea();
-                        });
+                            element.RequestPerformanceStatistics();
+                            this.m_PerformanceResultsLeftToCalculate++;
+                        }
+                        this.UpdateStatusArea();
+                    });
         }
 
         #endregion
@@ -79,10 +75,10 @@ namespace TychaiaWorldGenViewerAlgorithm
             if (this.m_PerformanceResultsLeftToCalculate > 0)
                 this.c_QueueStatus.Text =
                     this.m_PerformanceResultsLeftToCalculate +
-                    " items left for performance testing.";
+                    @" items left for performance testing.";
             else
-                this.c_QueueStatus.Text = "No performance test in progress.";
-            this.c_PerformanceTestStart.Enabled =
+                this.c_QueueStatus.Text = @"No performance test in progress.";
+            this.m_PerformanceTestStart.Enabled =
                 this.c_FlowInterfaceControl.Elements.Count != 0 &&
                 this.m_PerformanceResultsLeftToCalculate == 0;
         }
@@ -146,17 +142,17 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         #region Loading and Saving
 
-        private string m_LastSavePath = null;
+        private string m_LastSavePath;
 
         private void c_LoadConfigurationButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog()
+            var openFileDialog = new OpenFileDialog
             {
-                Filter = "XML Files|*.xml",
+                Filter = @"XML Files|*.xml",
                 CheckFileExists = true,
                 CheckPathExists = true
             };
-            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 StorageLayer[] layers;
                 try
@@ -166,13 +162,15 @@ namespace TychaiaWorldGenViewerAlgorithm
                         layers = StorageAccess.LoadStorage(stream);
                     if (layers == null)
                     {
-                        MessageBox.Show(this, "Unable to load configuration file.", "Configuration invalid.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(this, @"Unable to load configuration file.", @"Configuration invalid.",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    MessageBox.Show(this, "Unable to load configuration file.", "Configuration invalid.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, @"Unable to load configuration file.", @"Configuration invalid.",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -185,8 +183,14 @@ namespace TychaiaWorldGenViewerAlgorithm
                 // Create algorithm flow elements.
                 this.c_FlowInterfaceControl.Elements.AddRange(
                     layers.Where(v => v != null)
-                          .Select(v => new AlgorithmFlowElement(this.c_FlowInterfaceControl, this.m_FlowProcessingPipeline, v) { X = v.EditorX, Y = v.EditorY })
-                );
+                        .Select(
+                            v =>
+                                new AlgorithmFlowElement(this.c_FlowInterfaceControl, this.m_FlowProcessingPipeline, v)
+                                {
+                                    X = v.EditorX,
+                                    Y = v.EditorY
+                                })
+                    );
                 this.UpdateStatusArea();
             }
         }
@@ -223,23 +227,25 @@ namespace TychaiaWorldGenViewerAlgorithm
                             memory.CopyTo(file.BaseStream);
                     }
 
-                    MessageBox.Show(this, "Save successful.", "Configuration saved.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(this, @"Save successful.", @"Configuration saved.", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(this, "Save failure.", ex.Message + "\r\n" + ex.StackTrace, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, @"Save failure.", ex.Message + @"\r\n" + ex.StackTrace, MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                 }
             }
         }
 
         private void c_SaveConfigurationAsButton_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog()
+            var sfd = new SaveFileDialog
             {
-                Filter = "XML Files|*.xml",
+                Filter = @"XML Files|*.xml",
                 CheckPathExists = true
             };
-            if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (sfd.ShowDialog() == DialogResult.OK)
             {
                 this.m_LastSavePath = sfd.FileName;
                 this.c_SaveConfigurationButton.Enabled = true;
@@ -251,12 +257,27 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         #region Flow Interface Control
 
+        public long X
+        {
+            get { return this.m_X; }
+        }
+
+        public long Y
+        {
+            get { return this.m_Y; }
+        }
+
+        public long Z
+        {
+            get { return this.m_Z; }
+        }
+
         private void c_FlowInterfaceControl_MouseWheel(object sender, MouseEventArgs e)
         {
             this.c_FlowInterfaceControl.Pan(-e.X, -e.Y);
-            this.c_FlowInterfaceControl.Zoom /= (float)Math.Pow(2, -e.Delta / 120);
+            this.c_FlowInterfaceControl.Zoom /= (float) Math.Pow(2, -e.Delta / 120f);
             this.c_FlowInterfaceControl.Pan(e.X, e.Y);
-            this.c_ZoomStatus.Text = (this.c_FlowInterfaceControl.Zoom * 100.0f).ToString() + "%";
+            this.c_ZoomStatus.Text = (this.c_FlowInterfaceControl.Zoom * 100.0f) + @"%";
         }
 
         private void c_FlowInterfaceControl_SelectedElementChanged(object sender, EventArgs e)
@@ -280,7 +301,8 @@ namespace TychaiaWorldGenViewerAlgorithm
                 this.c_DeleteSelectedMenuItem.Enabled = true;
                 this.c_RenameSelectedMenuItem.Enabled = true;
                 this.c_DisableProcessingMenuItem.Enabled = true;
-                this.c_DisableProcessingMenuItem.Checked = this.c_FlowInterfaceControl.SelectedElement.ProcessingDisabled;
+                this.c_DisableProcessingMenuItem.Checked =
+                    this.c_FlowInterfaceControl.SelectedElement.ProcessingDisabled;
             }
         }
 
@@ -333,8 +355,8 @@ namespace TychaiaWorldGenViewerAlgorithm
             if (this.c_FlowInterfaceControl.SelectedElement == null)
                 return;
 
-            RenameDialog renameDialog = new RenameDialog(this.c_FlowInterfaceControl.SelectedElement.Name);
-            if (renameDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            var renameDialog = new RenameDialog(this.c_FlowInterfaceControl.SelectedElement.Name);
+            if (renameDialog.ShowDialog() == DialogResult.OK)
             {
                 this.c_FlowInterfaceControl.SelectedElement.Name = renameDialog.Name;
                 this.c_FlowInterfaceControl.Invalidate();
@@ -351,26 +373,11 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.c_FlowInterfaceControl.Invalidate();
         }
 
-        public long X
-        {
-            get { return this.m_X; }
-        }
-
-        public long Y
-        {
-            get { return this.m_Y; }
-        }
-
-        public long Z
-        {
-            get { return this.m_Z; }
-        }
-
         private void c_XNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             if (this.c_FlowInterfaceControl.SelectedElement != null)
                 this.c_FlowInterfaceControl.PushForReprocessing(this.c_FlowInterfaceControl.SelectedElement);
-            this.m_X = (long)this.c_XNumericUpDown.Value;
+            this.m_X = (long) this.c_XNumericUpDown.Value;
             foreach (var el in this.c_FlowInterfaceControl.Elements)
                 if (el != this.c_FlowInterfaceControl.SelectedElement)
                     this.c_FlowInterfaceControl.PushForReprocessing(el);
@@ -380,7 +387,7 @@ namespace TychaiaWorldGenViewerAlgorithm
         {
             if (this.c_FlowInterfaceControl.SelectedElement != null)
                 this.c_FlowInterfaceControl.PushForReprocessing(this.c_FlowInterfaceControl.SelectedElement);
-            this.m_Y = (long)this.c_YNumericUpDown.Value;
+            this.m_Y = (long) this.c_YNumericUpDown.Value;
             foreach (var el in this.c_FlowInterfaceControl.Elements)
                 if (el != this.c_FlowInterfaceControl.SelectedElement)
                     this.c_FlowInterfaceControl.PushForReprocessing(el);
@@ -390,7 +397,7 @@ namespace TychaiaWorldGenViewerAlgorithm
         {
             if (this.c_FlowInterfaceControl.SelectedElement != null)
                 this.c_FlowInterfaceControl.PushForReprocessing(this.c_FlowInterfaceControl.SelectedElement);
-            this.m_Z = (long)this.c_ZNumericUpDown.Value;
+            this.m_Z = (long) this.c_ZNumericUpDown.Value;
             foreach (var el in this.c_FlowInterfaceControl.Elements)
                 if (el != this.c_FlowInterfaceControl.SelectedElement)
                     this.c_FlowInterfaceControl.PushForReprocessing(el);
@@ -400,24 +407,16 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         #region Menu Generation
 
-        private struct SelectedType
-        {
-            public string Name;
-            public FlowCategory Category;
-            public FlowMajorCategory MajorCategory;
-            public Type Type;
-        }
-
         private void CreateDynamicLayer(Type t)
         {
-            ConstructorInfo[] cis = t.GetConstructors();
+            var cis = t.GetConstructors();
             if (cis.Length == 0)
-                MessageBox.Show("Unable to create specified layer; no available constructor!");
-            ConstructorInfo ci = cis[0];
+                MessageBox.Show(@"Unable to create specified layer; no available constructor!");
+            var ci = cis[0];
             var lo = new List<object>();
-            for (int ii = 0; ii < ci.GetParameters().Length; ii++)
+            for (var ii = 0; ii < ci.GetParameters().Length; ii++)
                 lo.Add(null);
-            object o = ci.Invoke(lo.ToArray());
+            var o = ci.Invoke(lo.ToArray());
             this.c_FlowInterfaceControl.AddElementAtMouse(
                 new AlgorithmFlowElement(
                     this.c_FlowInterfaceControl,
@@ -428,23 +427,22 @@ namespace TychaiaWorldGenViewerAlgorithm
         private void CreateMenuItems(ContextMenuStrip menu)
         {
             // Get list of layer types.
-            List<Type> types = new List<Type>();
-            foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
-                foreach (var t in a.GetTypes())
-                    if (typeof(IAlgorithm).IsAssignableFrom(t))
-                        types.Add(t);
+            var types = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                         from type in assembly.GetTypes()
+                         where typeof(IAlgorithm).IsAssignableFrom(type)
+                         select type).ToList();
 
             // For each of those layer types, find ones that have
             // FlowDesignerName, FlowDesignerCategory and FlowDesignerMajorCategory attributes.
-            List<SelectedType> selectedTypes = new List<SelectedType>();
+            var selectedTypes = new List<SelectedType>();
             foreach (var t in types)
             {
-                bool foundName = false;
-                bool foundCategory = false;
-                string currentName = "<unknown>";
-                FlowCategory currentCategory = FlowCategory.Undefined;
-                FlowMajorCategory currentMajorCategory = FlowMajorCategory.Undefined;
-                object[] o = t.GetCustomAttributes(true);
+                var foundName = false;
+                var foundCategory = false;
+                var currentName = "<unknown>";
+                var currentCategory = FlowCategory.Undefined;
+                var currentMajorCategory = FlowMajorCategory.Undefined;
+                var o = t.GetCustomAttributes(true);
                 foreach (var a in o)
                 {
                     if (a is FlowDesignerNameAttribute)
@@ -463,49 +461,48 @@ namespace TychaiaWorldGenViewerAlgorithm
                     }
                 }
                 if (foundName && foundCategory)
-                    selectedTypes.Add(new SelectedType { Name = currentName, MajorCategory = currentMajorCategory, Category = currentCategory, Type = t });
+                    selectedTypes.Add(new SelectedType
+                    {
+                        Name = currentName,
+                        MajorCategory = currentMajorCategory,
+                        Category = currentCategory,
+                        Type = t
+                    });
             }
 
             // Sort selected types into bins.
-            selectedTypes.OrderBy(v => v.Name);
+            selectedTypes = selectedTypes.OrderBy(v => v.Name).ToList();
             menu.Items.Add(new ToolStripMenuItem("Tychaia World Generator") { Enabled = false });
 
             foreach (FlowMajorCategory m in Enum.GetValues(typeof(FlowMajorCategory)))
             {
-                bool cont = false;
+                var cont = selectedTypes.Any(t => t.MajorCategory.ToString() == m.ToString());
+                if (!cont)
+                    continue;
 
-                foreach (var t in selectedTypes)
-                    if (t.MajorCategory.ToString() == m.ToString())
-                    {
-                        cont = true;
-                        break;
-                    }
-
-                if (cont)
+                menu.Items.Add("-");
+                menu.Items.Add(new ToolStripMenuItem(FlowDesignerMajorCategoryAttribute.GetDescription(m) + ":")
                 {
-                    menu.Items.Add("-");
-                    menu.Items.Add(new ToolStripMenuItem(FlowDesignerMajorCategoryAttribute.GetDescription(m) + ":") { Enabled = false });
+                    Enabled = false
+                });
 
-                    foreach (FlowCategory c in Enum.GetValues(typeof(FlowCategory)))
+                foreach (FlowCategory c in Enum.GetValues(typeof(FlowCategory)))
+                {
+                    cont = false;
+                    var cm = new ToolStripMenuItem(FlowDesignerCategoryAttribute.GetDescription(c));
+                    foreach (var t in selectedTypes)
                     {
-                        cont = false;
-                        var cm = new ToolStripMenuItem(FlowDesignerCategoryAttribute.GetDescription(c));
-                        foreach (var t in selectedTypes)
+                        if (t.MajorCategory.ToString() == m.ToString() && t.Category.ToString() == c.ToString())
                         {
-                            if (t.MajorCategory.ToString() == m.ToString() && t.Category.ToString() == c.ToString())
-                            {
-                                cont = true;
-                                var tempt = t;
-                                cm.DropDownItems.Add(new ToolStripMenuItem(t.Name, null, (sender, ev) =>
-                                {
-                                    this.CreateDynamicLayer(tempt.Type);
-                                }, "c_" + t.Name));
-                            }
+                            cont = true;
+                            var tempt = t;
+                            cm.DropDownItems.Add(new ToolStripMenuItem(t.Name, null,
+                                (sender, ev) => this.CreateDynamicLayer(tempt.Type), "c_" + t.Name));
                         }
-                        if (cont)
-                        {
-                            menu.Items.Add(cm);
-                        }
+                    }
+                    if (cont)
+                    {
+                        menu.Items.Add(cm);
                     }
                 }
             }
@@ -519,6 +516,14 @@ namespace TychaiaWorldGenViewerAlgorithm
             menu.Items.Add(this.c_TraceSelectedMenuItem);
             menu.Items.Add(this.c_RenameSelectedMenuItem);
             menu.Items.Add(this.c_DeleteSelectedMenuItem);
+        }
+
+        private struct SelectedType
+        {
+            public FlowCategory Category;
+            public FlowMajorCategory MajorCategory;
+            public string Name;
+            public Type Type;
         }
 
         #endregion

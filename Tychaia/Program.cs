@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using System.Windows.Forms;
 using Ninject;
@@ -14,9 +14,9 @@ using Tychaia.Globals;
 namespace Tychaia
 {
     [Distributed(Architecture.ServerClient, Caching.PushOnChange)]
-    static class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var kernel = new StandardKernel();
             kernel.Load<Protogame3DIoCModule>();
@@ -27,7 +27,7 @@ namespace Tychaia
             kernel.Load<TychaiaIsometricIoCModule>();
             kernel.Load<TychaiaGlobalIoCModule>();
             AssetManagerClient.AcceptArgumentsAndSetup<LocalAssetManagerProvider>(kernel, args);
-        
+
             using (var game = new TychaiaGame(kernel))
             {
                 try
@@ -46,4 +46,3 @@ namespace Tychaia
         }
     }
 }
-

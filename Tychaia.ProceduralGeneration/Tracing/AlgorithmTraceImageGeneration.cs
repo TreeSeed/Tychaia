@@ -1,11 +1,11 @@
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using Tychaia.ProceduralGeneration;
-using System.Threading.Tasks;
-using System.Threading;
+using System.Drawing.Text;
 
 namespace Tychaia.ProceduralGeneration.Flow
 {
@@ -13,17 +13,18 @@ namespace Tychaia.ProceduralGeneration.Flow
     {
         #region Cell Render Ordering
 
-        private static int[][] CellRenderOrder = new int[4][]
-            {
-                null,
-                null,
-                null,
-                null
-            };
         private const int RenderToNE = 0;
         private const int RenderToNW = 1;
         private const int RenderToSE = 2;
         private const int RenderToSW = 3;
+
+        private static int[][] CellRenderOrder = new int[4][]
+        {
+            null,
+            null,
+            null,
+            null
+        };
 
         private static int[] CalculateCellRenderOrder(int targetDir, int width, int height)
         {
@@ -63,15 +64,15 @@ namespace Tychaia.ProceduralGeneration.Flow
             if (targetDir != RenderToNE)
                 throw new InvalidOperationException();
 
-            int[] result = new int[width * height];
-            int count = 0;
-            int start = 0;
-            int maxx = width - 1;
-            int maxy = height - 1;
-            int last = maxx + maxy;
+            var result = new int[width * height];
+            var count = 0;
+            var start = 0;
+            var maxx = width - 1;
+            var maxy = height - 1;
+            var last = maxx + maxy;
             int x, y;
 
-            for (int atk = start; atk <= last; atk++)
+            for (var atk = start; atk <= last; atk++)
             {
                 // Attack from the left.
                 if (atk < maxy)
@@ -126,16 +127,16 @@ namespace Tychaia.ProceduralGeneration.Flow
             int height,
             int depth)
         {
-            int owidth = width;
-            int oheight = height;
+            var owidth = width;
+            var oheight = height;
             width = 128 * TraceScale;
             height = 128 * TraceScale;
             depth = 128 * TraceScale;
 
-            Bitmap b = new Bitmap(width, height);
-            Graphics g = Graphics.FromImage(b);
+            var b = new Bitmap(width, height);
+            var g = Graphics.FromImage(b);
             g.Clear(Color.White);
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+            g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
 
             StorageLayer parent;
             if (layer.GetInputs().Length == 0)
@@ -144,23 +145,23 @@ namespace Tychaia.ProceduralGeneration.Flow
                 parent = StorageAccess.FromRuntime(layer.GetInputs()[0]);
 
             int[] render = GetCellRenderOrder(RenderToNE, TraceRenderWidth, TraceRenderHeight);
-            int ztop = layer.Algorithm.Is2DOnly ? 1 : 128;
-            int zbottom = 0;
-            for (int z = zbottom; z < ztop; z++)
+            var ztop = layer.Algorithm.Is2DOnly ? 1 : 128;
+            var zbottom = 0;
+            for (var z = zbottom; z < ztop; z++)
             {
-                int rcx = width / 2 - 1;
-                int rcy = height / 2 - (height / 2 - 1);
-                int rw = 2;
-                int rh = 1;
-                for (int i = 0; i < render.Length; i++)
+                var rcx = width / 2 - 1;
+                var rcy = height / 2 - (height / 2 - 1);
+                var rw = 2;
+                var rh = 1;
+                for (var i = 0; i < render.Length; i++)
                 {
                     // Calculate the X / Y of the tile in the grid.
-                    int x = render[i] % TraceRenderWidth;
-                    int y = render[i] / TraceRenderWidth;
+                    var x = render[i] % TraceRenderWidth;
+                    var y = render[i] / TraceRenderWidth;
 
                     // Calculate the render position on screen.
-                    int rx = rcx + (int)((x - y) / 2.0 * rw);// (int)(x / ((RenderWidth + 1) / 2.0) * rw);
-                    int ry = rcy + (x + y) * rh - (rh / 2 * (TraceRenderWidth + TraceRenderHeight)) - (z - zbottom) * 1;
+                    var rx = rcx + (int) ((x - y) / 2.0 * rw); // (int)(x / ((RenderWidth + 1) / 2.0) * rw);
+                    var ry = rcy + (x + y) * rh - (rh / 2 * (TraceRenderWidth + TraceRenderHeight)) - (z - zbottom) * 1;
 
                     while (true)
                     {
@@ -169,11 +170,11 @@ namespace Tychaia.ProceduralGeneration.Flow
                             Color lc = layer.Algorithm.GetColorForValue(
                                 parent,
                                 data[x + y * owidth + z * owidth * oheight]);
-                            SolidBrush sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
+                            var sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
                             g.FillRectangle(
                                 sb,
                                 new Rectangle(rx, ry, rw, rh)
-                            );
+                                );
                             break;
                         }
                         catch (InvalidOperationException)

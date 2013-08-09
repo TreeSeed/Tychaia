@@ -1,7 +1,10 @@
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Reflection;
 
@@ -15,29 +18,33 @@ namespace Tychaia.Disk
 
     public static class LevelAPI
     {
-        private static List<ILevelAPI> m_LevelAPIs = new List<ILevelAPI>();
+        private static readonly List<ILevelAPI> m_LevelAPIs = new List<ILevelAPI>();
 
         static LevelAPI()
         {
-            foreach (FileInfo fi in new DirectoryInfo(Environment.CurrentDirectory).GetFiles("Tychaia.Disk.*.dll"))
+            foreach (var fi in new DirectoryInfo(Environment.CurrentDirectory).GetFiles("Tychaia.Disk.*.dll"))
             {
-                Assembly a = Assembly.LoadFile(fi.FullName);
-                foreach (Type t in a.GetTypes())
+                var a = Assembly.LoadFile(fi.FullName);
+                foreach (var t in a.GetTypes())
                     if (typeof(ILevelAPI).IsAssignableFrom(t))
-                        m_LevelAPIs.Add(t.GetConstructor(Type.EmptyTypes).Invoke(null) as ILevelAPI);
+                    {
+                        var constructorInfo = t.GetConstructor(Type.EmptyTypes);
+                        if (constructorInfo != null)
+                            m_LevelAPIs.Add(constructorInfo.Invoke(null) as ILevelAPI);
+                    }
             }
         }
 
         public static IEnumerable<LevelReference> GetAvailableLevels()
         {
-            foreach (ILevelAPI api in m_LevelAPIs)
-                foreach (string s in api.GetAvailableLevels())
+            foreach (var api in m_LevelAPIs)
+                foreach (var s in api.GetAvailableLevels())
                     yield return new LevelReference { Name = s, Source = api };
         }
 
         public static LevelReference NewLevel(string name)
         {
-            foreach (ILevelAPI api in m_LevelAPIs)
+            foreach (var api in m_LevelAPIs)
             {
                 if (api.GetType().Name.Contains("Tychaia"))
                 {

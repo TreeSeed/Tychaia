@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using System.Drawing;
 
@@ -18,7 +18,7 @@ namespace Tychaia.ProceduralGeneration.Flow
         {
             var info = new Bitmap(
                 128,
-                (message.Split(new[] { "\r\n"}, StringSplitOptions.None).Length) * 16);
+                (message.Split(new[] { "\r\n" }, StringSplitOptions.None).Length) * 16);
             var graphics = Graphics.FromImage(info);
             var font = new Font(SystemFonts.DefaultFont, FontStyle.Bold);
             var brush = new SolidBrush(Color.White);
@@ -34,4 +34,3 @@ namespace Tychaia.ProceduralGeneration.Flow
         }
     }
 }
-

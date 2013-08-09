@@ -1,25 +1,19 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
-using Tychaia.ProceduralGeneration.Analysis.Reporting;
-using Tychaia.ProceduralGeneration.Compiler;
-using ICSharpCode.Decompiler.Ast;
-using ICSharpCode.NRefactory.CSharp;
-using System.Collections.Generic;
+// 
 using System;
-using Tychaia.ProceduralGeneration.Analysis.Output;
+using System.Collections.Generic;
 using System.Linq;
+using ICSharpCode.NRefactory.CSharp;
+using Tychaia.ProceduralGeneration.Analysis.Output;
+using Tychaia.ProceduralGeneration.Analysis.Reporting;
 
 namespace Tychaia.ProceduralGeneration.Analysis
 {
     public class SimplificationAnalysisEngine : AnalysisEngine
     {
-        public int WarningLimit { get; set; }
-        public int ErrorLimit { get; set; }
-        public WarningGradientMode GradientMode { get; set; }
-
         public enum WarningGradientMode
         {
             BetweenLimits,
@@ -33,7 +27,11 @@ namespace Tychaia.ProceduralGeneration.Analysis
             this.GradientMode = WarningGradientMode.BetweenLimits;
         }
 
-        public override void Process(AnalysisLayer layer, ref Analysis.Reporting.Analysis analysis)
+        public int WarningLimit { get; set; }
+        public int ErrorLimit { get; set; }
+        public WarningGradientMode GradientMode { get; set; }
+
+        public override void Process(AnalysisLayer layer, ref Reporting.Analysis analysis)
         {
             // Create the report and the analysis layer to report on.
             var report = new AnalysisReport();
@@ -57,8 +55,10 @@ namespace Tychaia.ProceduralGeneration.Analysis
             // an issue entry.
             if (expressionTreeVisitor.UniqueNodes.Count(x => x.Value.Count >= this.WarningLimit) == 0)
                 return;
-            var minCounts = expressionTreeVisitor.UniqueNodes.Where(x => x.Value.Count >= this.WarningLimit).Min(x => x.Value.Count);
-            var maxCounts = expressionTreeVisitor.UniqueNodes.Where(x => x.Value.Count >= this.WarningLimit).Max(x => x.Value.Count);
+            var minCounts =
+                expressionTreeVisitor.UniqueNodes.Where(x => x.Value.Count >= this.WarningLimit).Min(x => x.Value.Count);
+            var maxCounts =
+                expressionTreeVisitor.UniqueNodes.Where(x => x.Value.Count >= this.WarningLimit).Max(x => x.Value.Count);
             if (maxCounts == 0)
                 return;
 
@@ -66,13 +66,16 @@ namespace Tychaia.ProceduralGeneration.Analysis
             var issue = new AnalysisIssue();
             issue.ID = "W0001";
             issue.Name = "Frequent expressions identified";
-            issue.Description = "The following frequent (occurring greater than " + this.WarningLimit + " times) expressions have been identified in the algorithm implementation.";
+            issue.Description = "The following frequent (occurring greater than " + this.WarningLimit +
+                                " times) expressions have been identified in the algorithm implementation.";
             foreach (var kv in expressionTreeVisitor.UniqueNodes)
             {
                 foreach (var node in kv.Value.AstNodes)
                 {
-                    var startTrackingInfo = node.Annotations.Where(x => x is StartTrackingInfo).Cast<StartTrackingInfo>().FirstOrDefault();
-                    var endTrackingInfo = node.Annotations.Where(x => x is EndTrackingInfo).Cast<EndTrackingInfo>().FirstOrDefault();
+                    var startTrackingInfo =
+                        node.Annotations.Where(x => x is StartTrackingInfo).Cast<StartTrackingInfo>().FirstOrDefault();
+                    var endTrackingInfo =
+                        node.Annotations.Where(x => x is EndTrackingInfo).Cast<EndTrackingInfo>().FirstOrDefault();
                     if (startTrackingInfo == null || endTrackingInfo == null)
                         continue;
                     if (kv.Value.Count < this.WarningLimit)
@@ -85,14 +88,15 @@ namespace Tychaia.ProceduralGeneration.Analysis
                         if (maxCounts - Math.Max(this.WarningLimit, minCounts) == 0)
                             location.Importance = 100;
                         else
-                            location.Importance = (int)Math.Round(
+                            location.Importance = (int) Math.Round(
                                 (kv.Value.Count - Math.Max(this.WarningLimit, minCounts)) /
-                                (double)(maxCounts - Math.Max(this.WarningLimit, minCounts)) * 100);
+                                (double) (maxCounts - Math.Max(this.WarningLimit, minCounts)) * 100);
                     }
                     else
                     {
                         var count = Math.Min(Math.Max(kv.Value.Count, this.WarningLimit), this.ErrorLimit);
-                        location.Importance = (int)(((count - this.WarningLimit) / (double)(this.ErrorLimit - this.WarningLimit)) * 100);
+                        location.Importance =
+                            (int) (((count - this.WarningLimit) / (double) (this.ErrorLimit - this.WarningLimit)) * 100);
                     }
                     location.Message = "Occurs " + kv.Value.Count + " times";
                     issue.Locations.Add(location);
@@ -108,14 +112,14 @@ namespace Tychaia.ProceduralGeneration.Analysis
 
         private class AstNodeCount
         {
-            public List<AstNode> AstNodes { get; set; }
-            public int Count { get; set; }
-
             public AstNodeCount(AstNode initial)
             {
                 this.AstNodes = new List<AstNode> { initial };
                 this.Count = 1;
             }
+
+            public List<AstNode> AstNodes { get; set; }
+            public int Count { get; set; }
         }
 
         private class CalculateExpressionTreeVisitor : DepthFirstAstVisitor
@@ -198,4 +202,3 @@ namespace Tychaia.ProceduralGeneration.Analysis
         #endregion
     }
 }
-

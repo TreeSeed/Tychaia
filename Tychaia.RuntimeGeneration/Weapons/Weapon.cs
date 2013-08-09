@@ -1,7 +1,9 @@
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Tychaia.RuntimeGeneration.Elements;
 
 namespace Tychaia.RuntimeGeneration.Weapons
@@ -17,42 +19,21 @@ namespace Tychaia.RuntimeGeneration.Weapons
             this.Modifier = modifier;
         }
 
-        public Element Element
-        {
-            get;
-            private set;
-        }
+        public Element Element { get; private set; }
 
-        public WeaponType Type
-        {
-            get;
-            private set;
-        }
+        public WeaponType Type { get; private set; }
 
-        public WeaponModifier Modifier
-        {
-            get;
-            private set;
-        }
+        public WeaponModifier Modifier { get; private set; }
 
         public override string ToString()
         {
-            string mod = "";
+            var mod = "";
             if (this.Modifier.ToString() != "")
             {
-                mod = this.Modifier.ToString() + " ";
+                mod = this.Modifier + " ";
             }
 
-            double rand = r.NextDouble();
-            if (rand >= 0.5)
-            {
-                return (mod + this.Element.ToString() + " " + this.Type).Replace("  ", " ");
-            }
-            else
-            {
-                return (mod + this.Element.ToString() + " " + this.Type).Replace("  ", " ");
-
-            }
+            return (mod + this.Element + " " + this.Type).Replace("  ", " ");
         }
     }
 }

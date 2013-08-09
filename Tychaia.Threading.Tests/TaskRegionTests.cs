@@ -1,22 +1,15 @@
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using System;
 using Xunit;
-using System.Threading;
 
 namespace Tychaia.Threading.Tests
 {
     public class TaskRegionTests
     {
-        private class LongProcessor : IRegionProcessor<long?>
-        {
-            public int TotalProcessed = 0;
-
-            public void Process(TaskRegionEntry<long?> entry)
-            {
-                entry.Result = entry.X + entry.Y + entry.Z;
-                TotalProcessed += 1;
-            }
-        }
-
         [Fact]
         public void RegionIsProcessedFullyInline()
         {
@@ -58,11 +51,21 @@ namespace Tychaia.Threading.Tests
             for (var x = -5; x < 5; x++)
                 for (var y = -5; y < 5; y++)
                     for (var z = -5; z < 5; z++)
-                {
-                    var value = region[x, y, z];
-                    Assert.Equal(value, x + y + z);
-                }
+                    {
+                        var value = region[x, y, z];
+                        Assert.Equal(value, x + y + z);
+                    }
+        }
+
+        private class LongProcessor : IRegionProcessor<long?>
+        {
+            public int TotalProcessed;
+
+            public void Process(TaskRegionEntry<long?> entry)
+            {
+                entry.Result = entry.X + entry.Y + entry.Z;
+                this.TotalProcessed += 1;
+            }
         }
     }
 }
-
