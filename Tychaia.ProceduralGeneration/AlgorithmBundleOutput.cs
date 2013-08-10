@@ -3,12 +3,9 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
 // 
-using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Serialization;
-using Tychaia.ProceduralGeneration.Blocks;
-using Tychaia.ProceduralGeneration.FlowBundles;
 
 namespace Tychaia.ProceduralGeneration
 {

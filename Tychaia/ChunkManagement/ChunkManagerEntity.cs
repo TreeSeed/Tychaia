@@ -31,12 +31,14 @@ namespace Tychaia
             this.m_TextureAtlasAsset = assetManagerProvider.GetAssetManager().Get<TextureAtlasAsset>("atlas");
             this.m_Profiler = profiler;
             
-            const int dist = 2;
-            this.m_CachedChunkPositions = new Vector3[(dist * 2 + 1) * (dist * 2 + 1) * (dist * 2 + 1)];
+            const int xdist = 3;
+            const int ydist = 2;
+            const int zdist = 3;
+            this.m_CachedChunkPositions = new Vector3[(xdist * 2 + 1) * (ydist * 2 + 1) * (zdist * 2 + 1)];
             var i = 0;
-            for (var x = -dist; x <= dist; x++)
-                for (var y = -dist; y <= dist; y++)
-                    for (var z = -dist; z <= dist; z++)
+            for (var x = -xdist; x <= xdist; x++)
+                for (var y = -ydist; y <= ydist; y++)
+                    for (var z = -zdist; z <= zdist; z++)
                     {
                         this.m_CachedChunkPositions[i] = new Vector3(
                             x * (this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.CellVoxelWidth),

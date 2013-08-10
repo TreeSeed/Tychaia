@@ -10,6 +10,7 @@ using Process4.Attributes;
 using Protogame;
 using ProtogameAssetManager;
 using Tychaia.Globals;
+using Tychaia.ProceduralGeneration;
 
 namespace Tychaia
 {
@@ -26,6 +27,7 @@ namespace Tychaia
             kernel.Load<TychaiaAssetIoCModule>();
             kernel.Load<TychaiaIsometricIoCModule>();
             kernel.Load<TychaiaGlobalIoCModule>();
+            kernel.Load<TychaiaProceduralGenerationIoCModule>();
             AssetManagerClient.AcceptArgumentsAndSetup<LocalAssetManagerProvider>(kernel, args);
 
             using (var game = new TychaiaGame(kernel))

@@ -21,31 +21,22 @@ namespace Tychaia
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
         private readonly TextureAtlasAsset m_TextureAtlasAsset;
         private readonly ThreadedTaskPipeline<Chunk> m_Pipeline;
-        private readonly RuntimeLayer m_ResultLayer;
+        private readonly IGenerator m_Generator;
 
         public DefaultChunkGenerator(
             IChunkSizePolicy chunkSizePolicy,
-            IAssetManagerProvider assetManagerProvider)
+            IAssetManagerProvider assetManagerProvider,
+            IGeneratorResolver generatorResolver)
         {
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_AssetManager = assetManagerProvider.GetAssetManager();
             this.m_TextureAtlasAsset = this.m_AssetManager.Get<TextureAtlasAsset>("atlas");
             this.m_Pipeline = new ThreadedTaskPipeline<Chunk>();
+            this.m_Generator = generatorResolver.GetGeneratorForGame();
+            this.m_Generator.SetSeed(10000);
             
             var thread = new Thread(this.Run) { IsBackground = true };
             thread.Start();
-
-            StorageLayer[] layers;
-            using (var reader = new StreamReader("WorldConfig.xml"))
-                layers = StorageAccess.LoadStorage(reader);
-            foreach (var layer in layers)
-                if (layer.Algorithm is AlgorithmGenerateBlockInfo)
-                {
-                    this.m_ResultLayer = StorageAccess.ToRuntime(layer);
-                    break;
-                }
-
-            this.m_ResultLayer.SetSeed(10000);
         }
 
         public void Generate(Chunk chunk)
@@ -63,7 +54,7 @@ namespace Tychaia
                 int computations;
 
                 // Generate the actual data using the procedural generation library.
-                var blocks = (BlockInfo[]) this.m_ResultLayer.GenerateData(
+                var blocks = (FlowBundle[]) this.m_Generator.GenerateData(
                     chunk.X / this.m_ChunkSizePolicy.CellVoxelWidth,
                     chunk.Z / this.m_ChunkSizePolicy.CellVoxelDepth,
                     chunk.Y / this.m_ChunkSizePolicy.CellVoxelHeight,
@@ -79,9 +70,11 @@ namespace Tychaia
                                 x +
                                 z * this.m_ChunkSizePolicy.ChunkCellWidth +
                                 y * this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.ChunkCellHeight];
-                            if (info.BlockAssetName == null)
+                            chunk.Cells[x, y, z] = info;
+                            var block = (BlockInfo)info.Get("BlockInfo");
+                            if (block.BlockAssetName == null)
                                 continue;
-                            chunk.Blocks[x, y, z] = this.m_AssetManager.Get<BlockAsset>(info.BlockAssetName);
+                            chunk.Blocks[x, y, z] = this.m_AssetManager.Get<BlockAsset>(block.BlockAssetName);
                         }
 
                 // Now also generate the vertexes / indices in this thread.

@@ -19,10 +19,17 @@ namespace Tychaia
         {
             this.m_FilteredFeatures = filteredFeatures;
         }
+        
+        private long Translate(long v)
+        {
+            if (v < 0)
+                return (v / 256) - 256;
+            return v / 256;
+        }
 
         public Chunk Get(long x, long y, long z)
         {
-            var c = this.m_Octree.Find(x / 256, y / 256, z / 256);
+            var c = this.m_Octree.Find(this.Translate(x), this.Translate(y), this.Translate(z));
             if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeValidation) && c != null &&
                 (c.X != x || c.Y != y || c.Z != z))
                 throw new InvalidOperationException(
@@ -32,12 +39,15 @@ namespace Tychaia
 
         public void Set(Chunk chunk)
         {
-            this.m_Octree.Insert(chunk, chunk.X / 256, chunk.Y / 256, chunk.Z / 256);
+            var xx = this.Translate(chunk.X);
+            var yy = this.Translate(chunk.Y);
+            var zz = this.Translate(chunk.Z);
+            this.m_Octree.Insert(chunk, xx, yy, zz);
             if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeValidation))
             {
-                if (this.m_Octree.Find(chunk.X / 256, chunk.Y / 256, chunk.Z / 256) != chunk)
-                    throw new InvalidOperationException("Octree did not store data correctly for " + chunk.X / 256 +
-                                                        ", " + chunk.Y / 256 + ", " + chunk.Z / 256 + ".");
+                if (this.m_Octree.Find(xx, yy, zz) != chunk)
+                    throw new InvalidOperationException("Octree did not store data correctly for " + xx +
+                                                        ", " + yy + ", " + zz + ".");
             }
         }
     }

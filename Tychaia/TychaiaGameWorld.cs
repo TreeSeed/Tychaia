@@ -11,6 +11,7 @@ using Ninject;
 using Protogame;
 using Tychaia.Disk;
 using Tychaia.Globals;
+using System;
 
 namespace Tychaia
 {
@@ -60,7 +61,10 @@ namespace Tychaia
             this.m_ChunkManagerEntity = chunkManagerEntityFactory.CreateChunkManagerEntity(this);
 
             this.m_Player = new Player(
-                this.m_FilteredFeatures);
+                this.m_FilteredFeatures,
+                assetManagerProvider,
+                this.m_3DRenderUtilities,
+                this.m_ChunkSizePolicy);
             this.Entities = new List<IEntity> { this.m_ChunkManagerEntity, this.m_Player };
         }
 
@@ -110,27 +114,34 @@ namespace Tychaia
             }
 
             // Focus the camera.
-            //this.IsometricCamera.Focus(this.m_Player.X, this.m_Player.Y, this.m_Player.Z);
+            var current = this.IsometricCamera.CurrentFocus;
+            if (Math.Abs(current.Y - this.m_Player.Y) < 2)
+                this.IsometricCamera.Focus((long)this.m_Player.X, (long)this.m_Player.Y, (long)this.m_Player.Z);
+            else
+                this.IsometricCamera.Focus((long)this.m_Player.X, (long)MathHelper.Lerp(current.Y, this.m_Player.Y, 0.1f), (long)this.m_Player.Z);
+                
 
-            //this.m_Player.Z = this.GetSurfaceZ(context, this.m_Player.X, this.m_Player.Y) * Scale.CUBE_Z;
+            if (this.IsometricCamera.Chunk.Generated)
+            {
+                var newY = this.GetSurfaceY(gameContext, this.m_Player.X, this.m_Player.Z);
+                this.m_Player.InaccurateY = (newY == null);
+                if (newY != null)
+                    this.m_Player.Y = newY.Value;
+            }
 
             // Run the intelligence components.
             //foreach (var component in this.m_IntelligenceComponents)
             //   component.Update(gameContext, updateContext);
         }
 
-        private float GetSurfaceZ(IGameContext context, float xx, float yy)
+        private float? GetSurfaceY(IGameContext context, float xx, float zz)
         {
-            /*int x = (int)((xx < 0 ? xx + 1 : xx) % (Chunk.Width * Scale.CUBE_X) / Scale.CUBE_X);
-            int y = (int)((yy < 0 ? yy + 1 : yy) % (Chunk.Height * Scale.CUBE_Y) / Scale.CUBE_Y);
-            if (x < 0) x = 0;
-            if (y < 0) y = 0;
-            if ((context.WorldManager as IsometricWorldManager).Chunk == null)
-                return 0;
-            for (int z = 0; z < Chunk.Depth; z++)
-                if ((context.WorldManager as IsometricWorldManager).Chunk.m_Blocks[x, y, z] != null)
-                    return z - 1;*/
-            return 0;
+            var ax = (int)(xx - this.IsometricCamera.Chunk.X) / this.m_ChunkSizePolicy.CellVoxelWidth;
+            var az = (int)(zz - this.IsometricCamera.Chunk.Z) / this.m_ChunkSizePolicy.CellVoxelDepth;
+            if (ax >= 0 && ax < this.m_ChunkSizePolicy.ChunkCellWidth &&
+                az >= 0 && az < this.m_ChunkSizePolicy.ChunkCellDepth)
+                return this.IsometricCamera.Chunk.Cells[ax, 0, az].Get("HeightMap") * this.m_ChunkSizePolicy.CellVoxelDepth;
+            return null;
         }
     }
 }

@@ -14,7 +14,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Serialization;
 using Tychaia.ProceduralGeneration.Biomes;
-using Tychaia.ProceduralGeneration.FlowBundles;
 using Tychaia.ProceduralGeneration.Blocks;
 
 namespace Tychaia.ProceduralGeneration

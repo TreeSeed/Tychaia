@@ -14,11 +14,22 @@ namespace Tychaia
     public class Player : Entity
     {
         private readonly IFilteredFeatures m_FilteredFeatures;
+        private readonly I3DRenderUtilities m_3DRenderUtilities;
+        private readonly TextureAsset m_PlayerTexture;
+        private readonly IChunkSizePolicy m_ChunkSizePolicy;
+        
+        public bool InaccurateY { get; set; }
 
         public Player(
-            IFilteredFeatures filteredFeatures)
+            IFilteredFeatures filteredFeatures,
+            IAssetManagerProvider assetManagerProvider,
+            I3DRenderUtilities _3DRenderUtilities,
+            IChunkSizePolicy chunkSizePolicy)
         {
             this.m_FilteredFeatures = filteredFeatures;
+            this.m_3DRenderUtilities = _3DRenderUtilities;
+            this.m_PlayerTexture = assetManagerProvider.GetAssetManager().Get<TextureAsset>("chars.player.Player");
+            this.m_ChunkSizePolicy = chunkSizePolicy;
 
             this.Width = 16;
             this.Height = 16;
@@ -38,31 +49,31 @@ namespace Tychaia
             var mv = (float) Math.Sqrt(this.MovementSpeed);
             if (state.IsKeyDown(Keys.W))
             {
-                this.Y -= mv;
+                this.Z -= mv;
                 this.X -= mv;
             }
             if (state.IsKeyDown(Keys.S) || this.m_FilteredFeatures.IsEnabled(Feature.DebugMovement))
             {
-                this.Y += mv;
+                this.Z += mv;
                 this.X += mv;
             }
             if (state.IsKeyDown(Keys.A))
             {
-                this.Y += mv;
+                this.Z += mv;
                 this.X -= mv;
             }
             if (state.IsKeyDown(Keys.D))
             {
-                this.Y -= mv;
+                this.Z -= mv;
                 this.X += mv;
             }
             if (state.IsKeyDown(Keys.I))
             {
-                this.Z += 4f;
+                this.Y += 4f;
             }
             if (state.IsKeyDown(Keys.K))
             {
-                this.Z -= 4f;
+                this.Y -= 4f;
             }
             var v = new Vector2(
                 gpstate.ThumbSticks.Left.X,
@@ -76,18 +87,32 @@ namespace Tychaia
 
         public override void Render(IGameContext gameContext, IRenderContext renderContext)
         {
-            /*this.m_IsometricRenderingUtilities.RenderEntity(
+            if (!renderContext.Is3DContext)
+                return;
+                
+            this.m_3DRenderUtilities.RenderTexture(
                 renderContext,
-                this.m_World,
-                this,
-                this.m_World.IsometricCamera,
-                this.m_World.OccludingSpriteBatch,
-                this.m_PlayerAsset);
-        
-            this.m_RenderUtilities.RenderTexture(
+                Matrix.CreateTranslation(-0.5f, 1, 0) *
+                Matrix.CreateScale((float)Math.Sqrt(2f) / 2f, 1, 1) *
+                Matrix.CreateRotationY(MathHelper.PiOver4) *
+                (this.InaccurateY ? Matrix.CreateRotationY(MathHelper.PiOver4 * 0.75f) : Matrix.Identity) *
+                Matrix.CreateTranslation(
+                    this.X / this.m_ChunkSizePolicy.CellVoxelWidth,
+                    this.Y / this.m_ChunkSizePolicy.CellVoxelHeight,
+                    this.Z / this.m_ChunkSizePolicy.CellVoxelDepth),
+                this.m_PlayerTexture);
+            /* Backface only
+            this.m_3DRenderUtilities.RenderTexture(
                 renderContext,
-                new Vector2(this.X, this.Y),
-                this.m_PlayerAsset);*/
+                Matrix.CreateRotationY(MathHelper.Pi) *
+                Matrix.CreateRotationY(MathHelper.PiOver4) *
+                Matrix.CreateTranslation(0.5f, 1, 0) *
+                Matrix.CreateTranslation(
+                    this.X / this.m_ChunkSizePolicy.CellVoxelWidth,
+                    this.Y / this.m_ChunkSizePolicy.CellVoxelHeight,
+                    this.Z / this.m_ChunkSizePolicy.CellVoxelDepth),
+                this.m_PlayerTexture);
+            */
         }
     }
 }

@@ -14,17 +14,17 @@ namespace Tychaia
         /// <summary>
         /// The X position in 3D space where we are focusing the camera.
         /// </summary>
-        private double m_CurrentX;
+        private long m_CurrentX;
 
         /// <summary>
         /// The Y position in 3D space where we are focusing the camera.
         /// </summary>
-        private double m_CurrentY;
+        private long m_CurrentY;
 
         /// <summary>
         /// The Z position in 3D space where we are focusing the camera.
         /// </summary>
-        private double m_CurrentZ;
+        private long m_CurrentZ;
 
         public IsometricCamera(ChunkOctree octree, Chunk chunk)
         {
@@ -60,65 +60,45 @@ namespace Tychaia
         public ChunkOctree ChunkOctree { get; private set; }
 
         /// <summary>
-        /// Translates a point in the 3D isometric world to a 2D point
-        /// on the screen.
-        /// </summary>
-        /// <param name="x">The X position.</param>
-        /// <param name="y">The Y position.</param>
-        /// <param name="z">The Z position.</param>
-        /// <returns>The position on the screen.</returns>
-        public Vector2 TranslatePoint(float x, float y, float z)
-        {
-            float cx = this.Chunk.X;
-            float cy = this.Chunk.Y;
-            float cz = this.Chunk.Z;
-            float xx = this.ChunkCenterX;
-            float yy = this.ChunkCenterY;
-            xx += (x - cx);
-            yy += (x - cx) * 0.75f;
-            xx -= (y - cy);
-            yy += (y - cy) * 0.75f;
-            yy -= (z - cz) / 2f;
-            return new Vector2(xx, yy);
-        }
-
-        /// <summary>
         /// Checks the current relative position, applying the relative X, Y and Z positions
         /// to it and adjusting the center chunk as needed.
         /// </summary>
-        public void Pan(double x, double y, double z)
+        public void Pan(long x, long y, long z)
         {
-            // Skip if there is no octree.
-            if (this.ChunkOctree == null)
-                return;
-
-            // Adjust the position.
-            this.m_CurrentX += x;
-            this.m_CurrentY += y;
-            this.m_CurrentZ += z;
-
-            // Pan current chunk.
-            var newChunk = this.ChunkOctree.Get(
-                (long) this.m_CurrentX,
-                (long) this.m_CurrentY,
-                (long) this.m_CurrentZ);
-            if (newChunk != null)
-                this.Chunk = newChunk;
+            this.Focus(
+                this.m_CurrentX + x,
+                this.m_CurrentY + y,
+                this.m_CurrentZ + z);
         }
 
         /// <summary>
         /// Sets the current focus of the screen such the center of the screen
         /// is focused on the 3D point in the isometric world.
         /// </summary>
-        public void Focus(double x, double y, double z)
+        public void Focus(long x, long y, long z)
         {
-            this.Pan(x - this.m_CurrentX, y - this.m_CurrentY, z - this.m_CurrentZ);
+            // Skip if there is no octree.
+            if (this.ChunkOctree == null)
+                return;
+
+            // Adjust the position.
+            this.m_CurrentX = x;
+            this.m_CurrentY = y;
+            this.m_CurrentZ = z;
+
+            // Pan current chunk.
+            var newChunk = this.ChunkOctree.Get(
+                this.m_CurrentX,
+                this.m_CurrentY,
+                this.m_CurrentZ);
+            if (newChunk != null)
+                this.Chunk = newChunk;
         }
 
         private int m_Rotation;
         public void InitializeRenderContext(IRenderContext renderContext)
         {
-            m_Rotation++;
+            //m_Rotation++;
             renderContext.View = Matrix.CreateLookAt(
                 this.CurrentFocus + Vector3.Transform(new Vector3(15, 30, 15) * 35, Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation))),
                 this.CurrentFocus,

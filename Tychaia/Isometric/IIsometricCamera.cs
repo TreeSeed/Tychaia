@@ -14,8 +14,7 @@ namespace Tychaia
         Chunk Chunk { get; }
         ChunkOctree ChunkOctree { get; }
 
-        Vector2 TranslatePoint(float x, float y, float z);
-        void Pan(double x, double y, double z);
-        void Focus(double x, double y, double z);
+        void Pan(long x, long y, long z);
+        void Focus(long x, long y, long z);
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Protogame;
 using Tychaia.Disk;
 using Tychaia.Globals;
+using Tychaia.ProceduralGeneration;
 
 namespace Tychaia
 {
@@ -27,6 +28,7 @@ namespace Tychaia
         private readonly IRenderCache m_RenderCache;
         private readonly TextureAtlasAsset m_TextureAtlasAsset;
         public BlockAsset[,,] Blocks = null;
+        public FlowBundle[,,] Cells = null;
         private IAssetManager m_AssetManager;
         private IChunkGenerator m_ChunkGenerator;
         private IFilteredConsole m_FilteredConsole;
@@ -77,8 +79,9 @@ namespace Tychaia
             this.Y = y;
             this.Z = z;
             this.m_Octree.Set(this);
-            this.Blocks =
-                new BlockAsset[this.m_ChunkSizePolicy.ChunkCellWidth, this.m_ChunkSizePolicy.ChunkCellHeight,
+            this.Blocks = new BlockAsset[this.m_ChunkSizePolicy.ChunkCellWidth, this.m_ChunkSizePolicy.ChunkCellHeight,
+                    this.m_ChunkSizePolicy.ChunkCellDepth];
+            this.Cells = new FlowBundle[this.m_ChunkSizePolicy.ChunkCellWidth, this.m_ChunkSizePolicy.ChunkCellHeight,
                     this.m_ChunkSizePolicy.ChunkCellDepth];
             this.m_DiskLevel = level;
             this.m_FilteredConsole.WriteLine(FilterCategory.ChunkValidation,

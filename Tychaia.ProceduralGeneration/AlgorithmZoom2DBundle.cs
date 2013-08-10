@@ -7,7 +7,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Serialization;
-using Tychaia.ProceduralGeneration.FlowBundles;
 
 namespace Tychaia.ProceduralGeneration
 {

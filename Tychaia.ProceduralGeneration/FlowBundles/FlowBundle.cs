@@ -5,7 +5,7 @@
 // 
 using System.Linq;
 
-namespace Tychaia.ProceduralGeneration.FlowBundles
+namespace Tychaia.ProceduralGeneration
 {
     public class FlowBundle
     {
