@@ -13,15 +13,18 @@ namespace Tychaia
         private readonly IChunkFactory m_ChunkFactory;
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
         private readonly TychaiaGameWorld m_World;
+        private readonly TextureAtlasAsset m_TextureAtlasAsset;
 
         public ChunkManagerEntity(
             TychaiaGameWorld gameWorld,
             IChunkSizePolicy chunkSizePolicy,
+            IAssetManagerProvider assetManagerProvider,
             IChunkFactory chunkFactory)
         {
             this.m_World = gameWorld;
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_ChunkFactory = chunkFactory;
+            this.m_TextureAtlasAsset = assetManagerProvider.GetAssetManager().Get<TextureAtlasAsset>("atlas");
         }
 
         public override void Render(IGameContext gameContext, IRenderContext renderContext)
@@ -32,9 +35,10 @@ namespace Tychaia
             var focus = this.m_World.IsometricCamera.CurrentFocus;
 
             // Find the chunk that belongs at this position.
-            for (var x = -3; x <= 3; x++)
-                for (var y = -3; y <= 3; y++)
-                    for (var z = -3; z <= 3; z++)
+            const int dist = 1;
+            for (var x = -dist; x <= dist; x++)
+                for (var y = -dist; y <= dist; y++)
+                    for (var z = -dist; z <= dist; z++)
                     {
                         var chunk = this.GetChunkOrGenerate(this.m_World.ChunkOctree, new Vector3(
                             this.m_World.IsometricCamera.Chunk.X +

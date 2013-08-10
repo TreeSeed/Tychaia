@@ -115,10 +115,12 @@ namespace Tychaia
             this.Pan(x - this.m_CurrentX, y - this.m_CurrentY, z - this.m_CurrentZ);
         }
 
+        private int m_Rotation;
         public void InitializeRenderContext(IRenderContext renderContext)
         {
+            m_Rotation++;
             renderContext.View = Matrix.CreateLookAt(
-                this.CurrentFocus + new Vector3(15, 30, 15) * 35,
+                this.CurrentFocus + Vector3.Transform(new Vector3(15, 30, 15) * 35, Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation))),
                 this.CurrentFocus,
                 Vector3.Up);
             renderContext.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 4f / 3f, 1.0f, 5000.0f);

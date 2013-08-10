@@ -6,13 +6,14 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Protogame;
 using Tychaia.Disk;
 using Tychaia.Globals;
 
 namespace Tychaia
 {
-    public class Chunk
+    public class Chunk : IDisposable
     {
         private static readonly object m_AccessLock = new object();
         public readonly long X;
@@ -24,13 +25,19 @@ namespace Tychaia
         private readonly IFilteredFeatures m_FilteredFeatures;
         private readonly ChunkOctree m_Octree;
         private readonly IRenderCache m_RenderCache;
+        private readonly TextureAtlasAsset m_TextureAtlasAsset;
         public BlockAsset[,,] Blocks = null;
         private IAssetManager m_AssetManager;
         private IChunkGenerator m_ChunkGenerator;
         private IFilteredConsole m_FilteredConsole;
 
-        private bool m_IsGenerated = false;
-        private bool m_IsGenerating = false;
+        public bool GraphicsEmpty { get; private set; }
+        public bool Generated { get; set; }
+        public VertexPositionTexture[] GeneratedVertexes { get; set; }
+        public int[] GeneratedIndices { get; set; } 
+
+        private VertexBuffer m_VertexBuffer;
+        private IndexBuffer m_IndexBuffer;
 
         // TODO: This is ugly.
         private int m_Seed = MenuWorld.StaticSeed; // All chunks are generated from the same seed.
@@ -63,7 +70,8 @@ namespace Tychaia
             this.m_FilteredFeatures = filteredFeatures;
             this.m_ChunkFactory = chunkFactory;
             this.m_RenderCache = renderCache;
-            this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
+            this.m_AssetManager = assetManagerProvider.GetAssetManager();
+            this.m_TextureAtlasAsset = this.m_AssetManager.Get<TextureAtlasAsset>("atlas");
             this.m_ChunkGenerator = chunkGenerator;
             this.X = x;
             this.Y = y;
@@ -79,51 +87,62 @@ namespace Tychaia
             this.m_ChunkGenerator.Generate(this);
         }
 
+        public void Dispose()
+        {
+            if (this.m_VertexBuffer != null)
+                this.m_VertexBuffer.Dispose();
+            if (this.m_IndexBuffer != null)
+                this.m_IndexBuffer.Dispose();
+        }
+
         public void Render(IGameContext gameContext, IRenderContext renderContext)
         {
             if (!renderContext.Is3DContext)
                 return;
 
-            // FIXME: The check always returns "Disjoint"...
-            /*
-            // Check if this chunk is even within the camera's view.
-            var min = new Vector3(this.X, this.Y, this.Z);
-            var max = min + new Vector3(
-                this.m_ChunkSizePolicy.ChunkCellWidth,
-                this.m_ChunkSizePolicy.ChunkCellHeight,
-                this.m_ChunkSizePolicy.ChunkCellDepth);
-            var scale = Matrix.CreateScale(
-                this.m_ChunkSizePolicy.CellVoxelWidth,
-                this.m_ChunkSizePolicy.CellVoxelHeight,
-                this.m_ChunkSizePolicy.CellVoxelDepth);
-            min = Vector3.Transform(min, scale);
-            max = Vector3.Transform(max, scale);
-            var bounds = new Microsoft.Xna.Framework.BoundingBox(min, max);
-            if (renderContext.BoundingFrustrum.Contains(bounds) == ContainmentType.Disjoint)
+            if (this.GraphicsEmpty)
+                return;
+
+            if (this.Generated && this.m_VertexBuffer == null && this.m_IndexBuffer == null)
+                this.CalculateBuffers(renderContext);
+
+            if (this.m_VertexBuffer != null && this.m_IndexBuffer != null)
             {
-                Console.WriteLine("Skipping render of " + this.X + "," + this.Y + ","+this.Z + " because it's outside the camera's bounds.");
+                renderContext.EnableTextures();
+                renderContext.SetActiveTexture(this.m_TextureAtlasAsset.TextureAtlas.Texture);
+                renderContext.GraphicsDevice.Indices = this.m_IndexBuffer;
+                renderContext.GraphicsDevice.SetVertexBuffer(this.m_VertexBuffer);
+                renderContext.World = Matrix.CreateScale(32);
+                foreach (var pass in renderContext.Effect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
+                    renderContext.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, this.m_VertexBuffer.VertexCount, 0, this.m_IndexBuffer.IndexCount / 3);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Calculates the vertex and index buffers for rendering.
+        /// </summary>
+        public void CalculateBuffers(IRenderContext renderContext)
+        {
+            if (this.GeneratedVertexes.Length == 0)
+            {
+                this.GraphicsEmpty = true;
                 return;
             }
-            */
-
-            // TODO: Determine the structure of a chunk and cache it in the render cache.
-            for (var x = 0; x < this.m_ChunkSizePolicy.ChunkCellWidth; x++)
-                for (var y = 0; y < this.m_ChunkSizePolicy.ChunkCellHeight; y++)
-                    for (var z = 0; z < this.m_ChunkSizePolicy.ChunkCellDepth; z++)
-                    {
-                        var block = this.Blocks[x, y, z];
-                        if (block == null)
-                            continue;
-                        block.Render(
-                            renderContext,
-                            this.m_RenderCache,
-                            this.m_ChunkSizePolicy,
-                            new Vector3(
-                                x * this.m_ChunkSizePolicy.CellVoxelWidth,
-                                y * this.m_ChunkSizePolicy.CellVoxelHeight,
-                                z * this.m_ChunkSizePolicy.CellVoxelDepth) +
-                            new Vector3(this.X, this.Y, this.Z));
-                    }
+            this.m_VertexBuffer = new VertexBuffer(
+                renderContext.GraphicsDevice,
+                VertexPositionTexture.VertexDeclaration,
+                this.GeneratedVertexes.Length,
+                BufferUsage.WriteOnly);
+            this.m_VertexBuffer.SetData(this.GeneratedVertexes);
+            this.m_IndexBuffer = new IndexBuffer(
+                renderContext.GraphicsDevice,
+                typeof(int),
+                this.GeneratedIndices.Length,
+                BufferUsage.WriteOnly);
+            this.m_IndexBuffer.SetData(this.GeneratedIndices);
         }
 
         #region Relative Addressing

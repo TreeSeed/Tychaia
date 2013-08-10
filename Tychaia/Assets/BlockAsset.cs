@@ -4,6 +4,8 @@
 // license on the website apply retroactively.
 // 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
@@ -38,7 +40,7 @@ namespace Tychaia
 
         public bool Impassable { get; set; }
 
-        #region Texture Properties 
+        #region Texture Properties
 
         private readonly string m_BackTextureName;
         private readonly string m_BottomTextureName;
@@ -124,72 +126,105 @@ namespace Tychaia
             throw new InvalidOperationException("Asset already resolved to BlockAsset.");
         }
 
-        public void Render(IRenderContext context, IRenderCache cache, IChunkSizePolicy chunkSizePolicy,
-            Vector3 position)
+        public void BuildRenderList(
+            TextureAtlasAsset textureAtlasAsset,
+            int x,
+            int y,
+            int z,
+            Func<int, int, int, BlockAsset> getRelativeBlock,
+            Func<float, float, float, float, float, int> addOrGetVertex,
+            Action<int> addIndex)
         {
-            var vertexes = cache.GetOrSet("block.vertexes", () =>
+            var above = getRelativeBlock(0, 1, 0);
+            var below = getRelativeBlock(0, -1, 0);
+            var east = getRelativeBlock(1, 0, 0);
+            var west = getRelativeBlock(-1, 0, 0);
+            var north = getRelativeBlock(0, 0, -1);
+            var south = getRelativeBlock(0, 0, 1);
+
+            if (above == null)
             {
-                var buffer = new VertexBuffer(
-                    context.GraphicsDevice,
-                    VertexPositionTexture.VertexDeclaration,
-                    8,
-                    BufferUsage.WriteOnly);
-                buffer.SetData(
-                    new[]
-                    {
-                        new VertexPositionTexture(new Vector3(0, 0, 0), new Vector2(0, 0)),
-                        new VertexPositionTexture(new Vector3(0, 0, 1), new Vector2(0, 1)),
-                        new VertexPositionTexture(new Vector3(0, 1, 0), new Vector2(1, 0)),
-                        new VertexPositionTexture(new Vector3(0, 1, 1), new Vector2(1, 1)),
-                        new VertexPositionTexture(new Vector3(1, 0, 0), new Vector2(0, 0)),
-                        new VertexPositionTexture(new Vector3(1, 0, 1), new Vector2(0, 1)),
-                        new VertexPositionTexture(new Vector3(1, 1, 0), new Vector2(1, 0)),
-                        new VertexPositionTexture(new Vector3(1, 1, 1), new Vector2(1, 1))
-                    });
-                return buffer;
-            });
-            var indices = cache.GetOrSet("block.indices", () =>
+                var uv = textureAtlasAsset.GetUVBounds(this.TopTexture.Name);
+                var topLeft = addOrGetVertex(x, y + 1, z, uv.X, uv.Y);
+                var topRight = addOrGetVertex(x + 1, y + 1, z, uv.X + uv.Width, uv.Y);
+                var bottomLeft = addOrGetVertex(x, y + 1, z + 1, uv.X, uv.Y + uv.Height);
+                var bottomRight = addOrGetVertex(x + 1, y + 1, z + 1, uv.X + uv.Width, uv.Y + uv.Height);
+                addIndex(topLeft);
+                addIndex(topRight);
+                addIndex(bottomLeft);
+                addIndex(bottomLeft);
+                addIndex(topRight);
+                addIndex(bottomRight);
+            }
+            if (below == null)
             {
-                var buffer = new IndexBuffer(
-                    context.GraphicsDevice,
-                    typeof(short),
-                    36,
-                    BufferUsage.WriteOnly);
-                buffer.SetData(
-                    new short[]
-                    {
-                        0, 2, 1, 1, 2, 3,
-                        4, 5, 6, 5, 7, 6,
-                        0, 4, 6, 0, 6, 2,
-                        1, 7, 5, 1, 3, 7,
-                        0, 1, 4, 5, 4, 1,
-                        6, 3, 2, 7, 3, 6
-                    });
-                return buffer;
-            });
-
-            context.EnableTextures();
-            context.SetActiveTexture(this.TopTexture.Texture);
-            context.GraphicsDevice.Indices = indices;
-            context.GraphicsDevice.SetVertexBuffer(vertexes);
-
-            context.World = Matrix.CreateScale(
-                chunkSizePolicy.CellVoxelWidth,
-                chunkSizePolicy.CellVoxelHeight,
-                chunkSizePolicy.CellVoxelDepth) *
-                            Matrix.CreateTranslation(position);
-
-            foreach (var pass in context.Effect.CurrentTechnique.Passes)
+                var uv = textureAtlasAsset.GetUVBounds(this.BottomTexture.Name);
+                var topLeft = addOrGetVertex(x, y, z, uv.X, uv.Y);
+                var topRight = addOrGetVertex(x + 1, y, z, uv.X + uv.Width, uv.Y);
+                var bottomLeft = addOrGetVertex(x, y, z + 1, uv.X, uv.Y + uv.Height);
+                var bottomRight = addOrGetVertex(x + 1, y, z + 1, uv.X + uv.Width, uv.Y + uv.Height);
+                addIndex(topLeft);
+                addIndex(bottomLeft);
+                addIndex(topRight);
+                addIndex(bottomLeft);
+                addIndex(bottomRight);
+                addIndex(topRight);
+            }
+            if (west == null)
             {
-                pass.Apply();
-
-                context.GraphicsDevice.DrawIndexedPrimitives(
-                    PrimitiveType.TriangleList,
-                    0,
-                    0,
-                    vertexes.VertexCount,
-                    0,
-                    indices.IndexCount / 3);
+                var uv = textureAtlasAsset.GetUVBounds(this.LeftTexture.Name);
+                var topLeft = addOrGetVertex(x, y + 1, z, uv.X, uv.Y);
+                var topRight = addOrGetVertex(x, y + 1, z + 1, uv.X + uv.Width, uv.Y);
+                var bottomLeft = addOrGetVertex(x, y, z, uv.X, uv.Y + uv.Height);
+                var bottomRight = addOrGetVertex(x, y, z + 1, uv.X + uv.Width, uv.Y + uv.Height);
+                addIndex(topLeft);
+                addIndex(topRight);
+                addIndex(bottomLeft);
+                addIndex(bottomLeft);
+                addIndex(topRight);
+                addIndex(bottomRight);
+            }
+            if (east == null)
+            {
+                var uv = textureAtlasAsset.GetUVBounds(this.RightTexture.Name);
+                var topLeft = addOrGetVertex(x + 1, y + 1, z, uv.X, uv.Y);
+                var topRight = addOrGetVertex(x + 1, y + 1, z + 1, uv.X + uv.Width, uv.Y);
+                var bottomLeft = addOrGetVertex(x + 1, y, z, uv.X, uv.Y + uv.Height);
+                var bottomRight = addOrGetVertex(x + 1, y, z + 1, uv.X + uv.Width, uv.Y + uv.Height);
+                addIndex(topLeft);
+                addIndex(bottomLeft);
+                addIndex(topRight);
+                addIndex(bottomLeft);
+                addIndex(bottomRight);
+                addIndex(topRight);
+            }
+            if (north == null)
+            {
+                var uv = textureAtlasAsset.GetUVBounds(this.FrontTexture.Name);
+                var topLeft = addOrGetVertex(x, y + 1, z, uv.X, uv.Y);
+                var topRight = addOrGetVertex(x + 1, y + 1, z, uv.X + uv.Width, uv.Y);
+                var bottomLeft = addOrGetVertex(x, y, z, uv.X, uv.Y + uv.Height);
+                var bottomRight = addOrGetVertex(x + 1, y, z, uv.X + uv.Width, uv.Y + uv.Height);
+                addIndex(topLeft);
+                addIndex(bottomLeft);
+                addIndex(topRight);
+                addIndex(bottomLeft);
+                addIndex(bottomRight);
+                addIndex(topRight);
+            }
+            if (south == null)
+            {
+                var uv = textureAtlasAsset.GetUVBounds(this.FrontTexture.Name);
+                var topLeft = addOrGetVertex(x, y + 1, z + 1, uv.X, uv.Y);
+                var topRight = addOrGetVertex(x + 1, y + 1, z + 1, uv.X + uv.Width, uv.Y);
+                var bottomLeft = addOrGetVertex(x, y, z + 1, uv.X, uv.Y + uv.Height);
+                var bottomRight = addOrGetVertex(x + 1, y, z + 1, uv.X + uv.Width, uv.Y + uv.Height);
+                addIndex(topLeft);
+                addIndex(topRight);
+                addIndex(bottomLeft);
+                addIndex(bottomLeft);
+                addIndex(topRight);
+                addIndex(bottomRight);
             }
         }
     }
