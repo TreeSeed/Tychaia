@@ -5,6 +5,9 @@ include ^Tychaia\.Content/compiled/Content/(.*)$
 include ^Tychaia\.Content/assets/(.*)$
 include ^Tychaia/bin/Debug/WorldConfig\.xml$
 
+# Exclude our asset source file.
+exclude ^Tychaia\.Content/assets/\.source$
+
 # Rewrite to be relative to root.
 rewrite ^Tychaia/bin/Debug/(.*?)$ $1
 rewrite ^Tychaia\.Content/compiled/Content/(.*?)$ Content/$1
