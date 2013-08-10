@@ -27,14 +27,14 @@ namespace Tychaia.ProceduralGeneration
         public IGenerator GetGeneratorForGame()
         {
             return (from storage in this.m_LoadedLayers
-                where storage.Algorithm is AlgorithmResultBlocks
+                where storage.Algorithm is AlgorithmGenerateBlockInfo
                 select StorageAccess.ToRuntime(storage)).First();
         }
 
         public IGenerator GetGeneratorForExport()
         {
             return (from storage in this.m_LoadedLayers
-                where storage.Algorithm is AlgorithmResultBlocks
+                where storage.Algorithm is AlgorithmGenerateBlockInfo
                 select StorageAccess.ToRuntime(storage)).First();
         }
     }

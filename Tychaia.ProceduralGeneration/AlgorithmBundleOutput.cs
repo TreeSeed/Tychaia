@@ -8,14 +8,15 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Serialization;
 using Tychaia.ProceduralGeneration.Blocks;
+using Tychaia.ProceduralGeneration.FlowBundles;
 
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.FlowBundle)]
     [FlowDesignerCategory(FlowCategory.Output)]
-    [FlowDesignerName("Store Result Blocks")]
-    public class AlgorithmResultBlocks : Algorithm<int, BlockInfo>
+    [FlowDesignerName("Output FlowBundle")]
+    public class AlgorithmBundleOutput : Algorithm<FlowBundle, FlowBundle>
     {
         [DataMember]
         [DefaultValue(false)]
@@ -32,20 +33,10 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, BlockInfo[] output, long x, long y,
+        public override void ProcessCell(IRuntimeContext context, FlowBundle[] input, FlowBundle[] output, long x, long y,
             long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            BlockInfo result;
-            var value = input[(i + ox) + (j + oy) * width + (k + oz) * width * height];
-            if (value <= 0)
-                result = new BlockInfo("block.Water");
-            else if (value == Int32.MaxValue)
-                result = new BlockInfo(null);
-            else if (z < 0)
-                result = new BlockInfo("block.Dirt");
-            else
-                result = new BlockInfo("block.Grass");
-            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = result;
+            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[(i + ox) + (j + oy) * width + (k + oz) * width * height];
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)

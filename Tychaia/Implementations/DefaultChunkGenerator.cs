@@ -39,7 +39,7 @@ namespace Tychaia
             using (var reader = new StreamReader("WorldConfig.xml"))
                 layers = StorageAccess.LoadStorage(reader);
             foreach (var layer in layers)
-                if (layer.Algorithm is AlgorithmResultBlocks)
+                if (layer.Algorithm is AlgorithmGenerateBlockInfo)
                 {
                     this.m_ResultLayer = StorageAccess.ToRuntime(layer);
                     break;

@@ -30,6 +30,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AlgorithmBundleGet.tt</DependentUpon>
     </Compile>
+    <Compile Include="AlgorithmBundleOutput.cs" />
     <Compile Include="AlgorithmBundleSet.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -48,6 +49,7 @@
     <Compile Include="AlgorithmDeriveTerrain.cs" />
     <Compile Include="AlgorithmDistanceFrom0.cs" />
     <Compile Include="AlgorithmExtend2D.cs" />
+    <Compile Include="AlgorithmGenerateBlockInfo.cs" />
     <Compile Include="AlgorithmHeightChange.cs" />
     <Compile Include="AlgorithmIncrementWaterDistance.cs" />
     <Compile Include="AlgorithmInitialBool.cs" />
@@ -58,7 +60,6 @@
     <Compile Include="AlgorithmPerlin.cs" />
     <Compile Include="AlgorithmReduceWaterDepth.cs" />
     <Compile Include="AlgorithmResult.cs" />
-    <Compile Include="AlgorithmResultBlocks.cs" />
     <Compile Include="AlgorithmSmooth.cs" />
     <Compile Include="AlgorithmSmoothByInput.cs" />
     <Compile Include="AlgorithmUtility.cs" />
