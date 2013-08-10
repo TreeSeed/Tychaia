@@ -22,6 +22,7 @@ namespace Tychaia
         private IAssetManager m_AssetManager;
         private ChunkManagerEntity m_ChunkManagerEntity;
         private IChunkSizePolicy m_ChunkSizePolicy;
+        private IProfiler m_Profiler;
 
         private FontAsset m_DefaultFont;
 
@@ -40,7 +41,8 @@ namespace Tychaia
             IChunkFactory chunkFactory,
             IIsometricCameraFactory isometricCameraFactory,
             IChunkSizePolicy chunkSizePolicy,
-            IChunkManagerEntityFactory chunkManagerEntityFactory)
+            IChunkManagerEntityFactory chunkManagerEntityFactory,
+            IProfiler profiler)
         {
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
             this.m_2DRenderUtilities = _2DRenderUtilities;
@@ -48,6 +50,7 @@ namespace Tychaia
             this.m_FilteredFeatures = filteredFeatures;
             this.m_FilteredConsole = filteredConsole;
             this.m_ChunkSizePolicy = chunkSizePolicy;
+            this.m_Profiler = profiler;
 
             this.m_DiskLevel = null;
             this.ChunkOctree = chunkOctreeFactory.CreateChunkOctree();
@@ -79,7 +82,10 @@ namespace Tychaia
 
             this.IsometricCamera.InitializeRenderContext(renderContext);
 
-            renderContext.GraphicsDevice.Clear(Color.Black);
+            using (this.m_Profiler.Measure("tychaia-clear_and_vsync"))
+            {
+                renderContext.GraphicsDevice.Clear(Color.Black);
+            }
         }
 
         public void RenderAbove(IGameContext gameContext, IRenderContext renderContext)

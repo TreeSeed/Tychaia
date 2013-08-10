@@ -36,8 +36,11 @@ namespace Tychaia
 
             using (this.m_TychaiaProfiler.Measure("tychaia-render_3d"))
             {
-                game.GameContext.World.RenderBelow(game.GameContext, game.RenderContext);
-    
+                using (this.m_TychaiaProfiler.Measure("tychaia-render_below_3d"))
+                {
+                    game.GameContext.World.RenderBelow(game.GameContext, game.RenderContext);
+                }
+                
                 using (this.m_TychaiaProfiler.Measure("tychaia-render_entities_3d"))
                 {
                     foreach (var entity in game.GameContext.World.Entities.ToArray())
@@ -45,7 +48,10 @@ namespace Tychaia
                             entity.Render(game.GameContext, game.RenderContext);
                 }
     
-                game.GameContext.World.RenderAbove(game.GameContext, game.RenderContext);
+                using (this.m_TychaiaProfiler.Measure("tychaia-render_above_3d"))
+                {
+                    game.GameContext.World.RenderAbove(game.GameContext, game.RenderContext);
+                }
             }
 
             game.RenderContext.Is3DContext = false;
