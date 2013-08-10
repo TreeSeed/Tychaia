@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Runtime.Serialization;
 using Tychaia.ProceduralGeneration.Biomes;
 using Tychaia.ProceduralGeneration.FlowBundles;
+using Tychaia.ProceduralGeneration.Blocks;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -22,7 +23,8 @@ namespace Tychaia.ProceduralGeneration
 	var types = new[]
 	{
 		"Int32",
-		"Biome"
+		"Biome",
+		"BlockInfo"
 	};
 
 	foreach (var type in types)
@@ -44,7 +46,7 @@ namespace Tychaia.ProceduralGeneration
         }
 
         [DataMember]
-        [DefaultValue("Unassigned")]
+        [DefaultValue("Unassigned <#=type#>")]
         [Description("The identifier for this instance in the bundle.")]
         public string Identifier
         {

@@ -79,8 +79,7 @@ namespace Tychaia.ProceduralGeneration
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
             int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            var chance = ((double) input[(i + ox) + (j + oy) * width + (k + oz) * width * height] / 100) *
-                         ((double) input[(i + ox) + (j + oy) * width + (k + oz) * width * height] / 100);
+            var chance = (double)input[(i + ox) + (j + oy) * width + (k + oz) * width * height] / 100;
 
             if (this.GuaranteeStartingPoint && x == 0 && y == 0)
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.HigherValue;
