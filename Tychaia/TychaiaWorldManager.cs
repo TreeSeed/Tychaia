@@ -14,29 +14,44 @@ namespace Tychaia
     {
 #if DEBUG
         private readonly TychaiaProfilerEntity m_TychaiaProfilerEntity;
+        private readonly TychaiaProfiler m_TychaiaProfiler;
 
         public TychaiaWorldManager(
             TychaiaProfilerEntity tychaiaProfilerEntity)
         {
             this.m_TychaiaProfilerEntity = tychaiaProfilerEntity;
+            this.m_TychaiaProfiler = this.m_TychaiaProfilerEntity.Profiler;
         }
 #endif
 
         public void Render<T>(T game) where T : Microsoft.Xna.Framework.Game, ICoreGame
         {
+#if DEBUG
+            var handle = this.m_TychaiaProfiler.Measure("tychaia-render");
+#endif
+
             game.RenderContext.Render(game.GameContext);
 
             game.RenderContext.Is3DContext = true;
 
-            game.GameContext.World.RenderBelow(game.GameContext, game.RenderContext);
-
-            foreach (var entity in game.GameContext.World.Entities.ToArray())
-                entity.Render(game.GameContext, game.RenderContext);
-
-            game.GameContext.World.RenderAbove(game.GameContext, game.RenderContext);
+            using (this.m_TychaiaProfiler.Measure("tychaia-render_3d"))
+            {
+                game.GameContext.World.RenderBelow(game.GameContext, game.RenderContext);
+    
+                using (this.m_TychaiaProfiler.Measure("tychaia-render_entities_3d"))
+                {
+                    foreach (var entity in game.GameContext.World.Entities.ToArray())
+                        using (this.m_TychaiaProfiler.Measure("tychaia-render_entities_3d_" + entity.GetType().Name))
+                            entity.Render(game.GameContext, game.RenderContext);
+                }
+    
+                game.GameContext.World.RenderAbove(game.GameContext, game.RenderContext);
+            }
 
             game.RenderContext.Is3DContext = false;
 
+            var handle2d = this.m_TychaiaProfiler.Measure("tychaia-render_2d");
+            
             game.RenderContext.SpriteBatch.Begin();
 
             foreach (var pass in game.RenderContext.Effect.CurrentTechnique.Passes)
@@ -45,13 +60,20 @@ namespace Tychaia
 
                 game.GameContext.World.RenderBelow(game.GameContext, game.RenderContext);
 
-                foreach (var entity in game.GameContext.World.Entities.OrderBy(x => x.Z).ToArray())
-                    entity.Render(game.GameContext, game.RenderContext);
+                using (this.m_TychaiaProfiler.Measure("tychaia-render_entities_2d"))
+                {
+                    foreach (var entity in game.GameContext.World.Entities.OrderBy(x => x.Z).ToArray())
+                        entity.Render(game.GameContext, game.RenderContext);
+                }
 
                 game.GameContext.World.RenderAbove(game.GameContext, game.RenderContext);
 
 #if DEBUG
+                handle2d.Dispose();
+                handle.Dispose();
                 this.m_TychaiaProfilerEntity.RenderMaximums(game.GameContext, game.RenderContext);
+                handle = this.m_TychaiaProfiler.Measure("tychaia-render");
+                handle2d = this.m_TychaiaProfiler.Measure("tychaia-render_2d");
 #endif
             }
 
@@ -61,6 +83,10 @@ namespace Tychaia
             game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             game.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
             game.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+
+#if DEBUG
+            handle.Dispose();
+#endif
 
 #if DEBUG
             // Cache the matrixes because we need to render the profiler UI.
@@ -94,6 +120,12 @@ namespace Tychaia
 
         public void Update<T>(T game) where T : Microsoft.Xna.Framework.Game, ICoreGame
         {
+#if DEBUG
+            this.m_TychaiaProfiler.StartRenderStats();
+            using (this.m_TychaiaProfiler.Measure("tychaia-update"))
+            {
+#endif
+            
             game.UpdateContext.Update(game.GameContext);
 
             foreach (var entity in game.GameContext.World.Entities.ToArray())
@@ -102,6 +134,8 @@ namespace Tychaia
             game.GameContext.World.Update(game.GameContext, game.UpdateContext);
 
 #if DEBUG
+            }
+            
             this.m_TychaiaProfilerEntity.Update(game.GameContext, game.UpdateContext);
 #endif
         }

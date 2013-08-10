@@ -14,17 +14,20 @@ namespace Tychaia
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
         private readonly TychaiaGameWorld m_World;
         private readonly TextureAtlasAsset m_TextureAtlasAsset;
+        private readonly IProfiler m_Profiler;
 
         public ChunkManagerEntity(
             TychaiaGameWorld gameWorld,
             IChunkSizePolicy chunkSizePolicy,
             IAssetManagerProvider assetManagerProvider,
-            IChunkFactory chunkFactory)
+            IChunkFactory chunkFactory,
+            IProfiler profiler)
         {
             this.m_World = gameWorld;
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_ChunkFactory = chunkFactory;
             this.m_TextureAtlasAsset = assetManagerProvider.GetAssetManager().Get<TextureAtlasAsset>("atlas");
+            this.m_Profiler = profiler;
         }
 
         public override void Render(IGameContext gameContext, IRenderContext renderContext)
@@ -35,20 +38,30 @@ namespace Tychaia
             var focus = this.m_World.IsometricCamera.CurrentFocus;
 
             // Find the chunk that belongs at this position.
-            const int dist = 1;
-            for (var x = -dist; x <= dist; x++)
-                for (var y = -dist; y <= dist; y++)
-                    for (var z = -dist; z <= dist; z++)
-                    {
-                        var chunk = this.GetChunkOrGenerate(this.m_World.ChunkOctree, new Vector3(
-                            this.m_World.IsometricCamera.Chunk.X +
-                            x * (this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.CellVoxelWidth),
-                            this.m_World.IsometricCamera.Chunk.Y +
-                            y * (this.m_ChunkSizePolicy.ChunkCellHeight * this.m_ChunkSizePolicy.CellVoxelHeight),
-                            this.m_World.IsometricCamera.Chunk.Z +
-                            z * (this.m_ChunkSizePolicy.ChunkCellDepth * this.m_ChunkSizePolicy.CellVoxelDepth)));
-                        chunk.Render(gameContext, renderContext);
-                    }
+            using (this.m_Profiler.Measure("tychaia-chunk_loop"))
+            {
+                const int dist = 5;
+                for (var x = -dist; x <= dist; x++)
+                    for (var y = -dist; y <= dist; y++)
+                        for (var z = -dist; z <= dist; z++)
+                        {
+                            Chunk chunk;
+                            using (this.m_Profiler.Measure("tychaia-chunk_get_or_generate"))
+                            {
+                                chunk = this.GetChunkOrGenerate(this.m_World.ChunkOctree, new Vector3(
+                                    this.m_World.IsometricCamera.Chunk.X +
+                                    x * (this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.CellVoxelWidth),
+                                    this.m_World.IsometricCamera.Chunk.Y +
+                                    y * (this.m_ChunkSizePolicy.ChunkCellHeight * this.m_ChunkSizePolicy.CellVoxelHeight),
+                                    this.m_World.IsometricCamera.Chunk.Z +
+                                    z * (this.m_ChunkSizePolicy.ChunkCellDepth * this.m_ChunkSizePolicy.CellVoxelDepth)));
+                            }
+                            using (this.m_Profiler.Measure("tychaia-chunk_render"))
+                            {
+                                chunk.Render(gameContext, renderContext);
+                            }
+                        }
+             }
         }
 
         private Chunk GetChunkOrGenerate(ChunkOctree octree, Vector3 chunkPos)

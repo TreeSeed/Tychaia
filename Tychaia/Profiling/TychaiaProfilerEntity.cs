@@ -17,7 +17,6 @@ namespace Tychaia
     {
         private readonly I2DRenderUtilities m_2DRenderUtilities;
         private readonly FontAsset m_DefaultFontAsset;
-        private readonly TychaiaProfiler m_Profiler;
         private readonly List<FrameProfileInfo> m_ProfilingInformation;
         private readonly IRenderTargetFactory m_RenderStateFactory;
 
@@ -27,11 +26,17 @@ namespace Tychaia
             I2DRenderUtilities _2DRenderUtilities,
             IAssetManagerProvider assetManagerProvider)
         {
-            this.m_Profiler = profiler;
+            this.Profiler = profiler;
             this.m_RenderStateFactory = renderStateFactory;
             this.m_2DRenderUtilities = _2DRenderUtilities;
             this.m_DefaultFontAsset = assetManagerProvider.GetAssetManager().Get<FontAsset>("font.Default");
             this.m_ProfilingInformation = new List<FrameProfileInfo>();
+        }
+        
+        public TychaiaProfiler Profiler
+        {
+            get;
+            private set;
         }
 
         private FrameProfileInfo Sample(IGameContext gameContext)
@@ -39,12 +44,12 @@ namespace Tychaia
             var info = new FrameProfileInfo
             {
                 Entities = gameContext.World.Entities.Count,
-                FunctionCalls = this.m_Profiler.FunctionCallsSinceLastReset,
+                FunctionCalls = this.Profiler.FunctionCallsSinceLastReset,
                 RenderTargetsUsed = this.m_RenderStateFactory.RenderTargetsUsed,
                 RenderTargetsRAM = this.m_RenderStateFactory.RenderTargetMemory,
                 FPS = gameContext.FPS
             };
-            this.m_Profiler.ResetCalls();
+            this.Profiler.ResetCalls();
             return info;
         }
 
@@ -66,26 +71,52 @@ namespace Tychaia
                     maximum.ToString(CultureInfo.InvariantCulture),
                     this.m_DefaultFontAsset,
                     textColor: color);
+                    
+            var stats = this.Profiler.GetRenderStats();
 
             this.m_2DRenderUtilities.RenderRectangle(
                 renderContext,
-                new Rectangle(0, 0, 300, 224),
+                new Rectangle(0, 0, 300, 224 + (stats == null ? 0 : (stats.Count * 20))),
                 new Color(0, 0, 0, 0.5f), true);
 
-            if (this.m_ProfilingInformation.Count == 0)
-                return;
-
-            var maximumEntities = this.m_ProfilingInformation.Select(x => x.Entities).Last();
-            var maximumFunctionCalls = this.m_ProfilingInformation.Select(x => x.FunctionCalls).Last();
-            var maximumRenderTargetsUsed = this.m_ProfilingInformation.Select(x => x.RenderTargetsUsed).Last();
-            var maximumRenderTargetsRAM = this.m_ProfilingInformation.Select(x => x.RenderTargetsRAM).Last();
-            var maximumFPS = this.m_ProfilingInformation.Select(x => x.FPS).Last();
-
-            drawMaximum(0, maximumEntities, Color.Cyan);
-            drawMaximum(60, maximumFunctionCalls, Color.Green);
-            drawMaximum(120, maximumRenderTargetsUsed, Color.Orange);
-            drawMaximum(180, maximumRenderTargetsRAM / 1024f / 1024f, Color.Purple);
-            drawMaximum(240, maximumFPS, Color.Yellow);
+            if (this.m_ProfilingInformation.Count != 0)
+            {
+                var maximumEntities = this.m_ProfilingInformation.Select(x => x.Entities).Last();
+                var maximumFunctionCalls = this.m_ProfilingInformation.Select(x => x.FunctionCalls).Last();
+                var maximumRenderTargetsUsed = this.m_ProfilingInformation.Select(x => x.RenderTargetsUsed).Last();
+                var maximumRenderTargetsRAM = this.m_ProfilingInformation.Select(x => x.RenderTargetsRAM).Last();
+                var maximumFPS = this.m_ProfilingInformation.Select(x => x.FPS).Last();
+    
+                drawMaximum(0, maximumEntities, Color.Cyan);
+                drawMaximum(60, maximumFunctionCalls, Color.Green);
+                drawMaximum(120, maximumRenderTargetsUsed, Color.Orange);
+                drawMaximum(180, maximumRenderTargetsRAM / 1024f / 1024f, Color.Purple);
+                drawMaximum(240, maximumFPS, Color.Yellow);
+            }
+            
+            if (stats != null)
+            {
+                var i = 0;
+                foreach (var kv in stats.OrderByDescending(x => x.Value))
+                {
+                    this.m_2DRenderUtilities.RenderText(
+                        renderContext,
+                        new Vector2(10, 224 + i * 20),
+                        kv.Key,
+                        this.m_DefaultFontAsset);
+                    var color = Color.White;
+                    if (kv.Value > 16000)
+                        color = Color.Red;
+                    this.m_2DRenderUtilities.RenderText(
+                        renderContext,
+                        new Vector2(290, 224 + i * 20),
+                        ((int)kv.Value) + "us",
+                        this.m_DefaultFontAsset,
+                        horizontalAlignment: HorizontalAlignment.Right,
+                        textColor: color);
+                    i++;
+                }
+            }
         }
 
         public override void Render(IGameContext gameContext, IRenderContext renderContext)
