@@ -1,8 +1,11 @@
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using Ninject;
-using System;
-using Xunit;
-using Tychaia.Globals;
 using Tychaia.Globals.Tests.Dummies;
+using Xunit;
 
 namespace Tychaia.Globals.Tests
 {
@@ -19,4 +22,3 @@ namespace Tychaia.Globals.Tests
         }
     }
 }
-

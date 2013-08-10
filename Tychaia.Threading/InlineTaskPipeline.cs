@@ -1,15 +1,15 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System.Collections.Generic;
 
 namespace Tychaia.Threading
 {
     public class InlineTaskPipeline<T> : IPipeline<T> where T : class
     {
-        private Queue<T> m_InternalQueue;
+        private readonly Queue<T> m_InternalQueue;
 
         public InlineTaskPipeline()
         {
@@ -57,4 +57,3 @@ namespace Tychaia.Threading
         }
     }
 }
-

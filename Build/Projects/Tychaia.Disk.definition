@@ -8,11 +8,11 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Ninject" />
   </References>
   <Files>
     <Compile Include="ILevel.cs" />
     <Compile Include="ILevelAPI.cs" />
     <Compile Include="LevelAPI.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </Files>
 </Project>

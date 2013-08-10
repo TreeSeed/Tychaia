@@ -1,6 +1,12 @@
-using System.ComponentModel;
-using System.Runtime.Serialization;
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Runtime.Serialization;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -15,30 +21,59 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Zoom 2D")]
     public class AlgorithmZoom2D : Algorithm<int, int>
     {
-        [DataMember]
-        [DefaultValue(ZoomType.Smooth)]
-        [Description("The zooming algorithm to use.")]
-        public ZoomType Mode
+        /// <summary>
+        /// An enumeration defining the type of zoom to perform.
+        /// </summary>
+        public enum ZoomType
         {
-            get;
-            set;
+            Square,
+            Smooth,
+            Fuzzy,
         }
-
-        public override int[] RequiredXBorder { get { return new int[] {2}; } }
-        public override int[] RequiredYBorder { get { return new int[] {2}; } }
-        public override int[] RequiredZBorder { get { return new int[] {0}; } }
-        public override bool[] InputWidthAtHalfSize { get { return new bool[] {true}; } }
-        public override bool[] InputHeightAtHalfSize { get { return new bool[] {true}; } }
-        public override bool[] InputDepthAtHalfSize { get { return new bool[] {false}; } }
 
         public AlgorithmZoom2D()
         {
             this.Mode = ZoomType.Smooth;
         }
 
+        [DataMember]
+        [DefaultValue(ZoomType.Smooth)]
+        [Description("The zooming algorithm to use.")]
+        public ZoomType Mode { get; set; }
+
+        public override int[] RequiredXBorder
+        {
+            get { return new[] { 2 }; }
+        }
+
+        public override int[] RequiredYBorder
+        {
+            get { return new[] { 2 }; }
+        }
+
+        public override int[] RequiredZBorder
+        {
+            get { return new[] { 0 }; }
+        }
+
+        public override bool[] InputWidthAtHalfSize
+        {
+            get { return new[] { true }; }
+        }
+
+        public override bool[] InputHeightAtHalfSize
+        {
+            get { return new[] { true }; }
+        }
+
+        public override bool[] InputDepthAtHalfSize
+        {
+            get { return new[] { false }; }
+        }
+
         public override string[] InputNames
         {
-            get { return new string[] { "Input" }; }
+            get { return new[] { "Input" }; }
         }
 
         public override bool Is2DOnly
@@ -46,18 +81,19 @@ namespace Tychaia.ProceduralGeneration
             get { return true; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
+            int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            int ocx = ((x - Math.Abs(i)) % 2 == 0 ? 0 : Math.Abs(i % 2)) - (i % 2 == -1 ? 1 : 0);
-            int ocy = ((y - Math.Abs(j)) % 2 == 0 ? 0 : Math.Abs(j % 2)) - (j % 2 == -1 ? 1 : 0);
+            var ocx = ((x - Math.Abs(i)) % 2 == 0 ? 0 : Math.Abs(i % 2)) - (i % 2 == -1 ? 1 : 0);
+            var ocy = ((y - Math.Abs(j)) % 2 == 0 ? 0 : Math.Abs(j % 2)) - (j % 2 == -1 ? 1 : 0);
 
             //int ocx_e = ((x - i) % 2 == 0 ? 0 : ((i + 1) % 2));
             //int ocx_e = (x % 2 != 0) ? (int)((i + 1) % 2) : 0;
             //int ocy_s = (y % 2 != 0) ? (int)((j + 1) % 2) : 0;
 
-            int ocz = 0;
+            var ocz = 0;
 
-            int current = input[
+            var current = input[
                 (i / 2) + ox + ocx +
                 ((j / 2) + oy + ocy) * width +
                 (k + oz + ocz) * width * height];
@@ -68,21 +104,22 @@ namespace Tychaia.ProceduralGeneration
             {
                 int selected;
 
-                bool ymod = (y) % 2 == 0;
-                bool xmod = (x) % 2 == 0;
+                var ymod = (y) % 2 == 0;
+                var xmod = (x) % 2 == 0;
 
                 if (!xmod && !ymod)
-                if (this.Mode == ZoomType.Fuzzy)
-                    selected = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, 4);
-                else
-                    selected = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, 3);
+                    if (this.Mode == ZoomType.Fuzzy)
+                        selected = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, 4);
+                    else
+                        selected = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, 3);
                 else if (xmod && ymod)
                     selected = 4;
                 else
                     selected = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, 2);
 
-                int ocx_e = ((x - Math.Abs(i)) % 2 == 0 ? 0 : Math.Abs((i + 1) % 2)) - ((i + 1) % 2 == -1 ? 1 : 0);
-                int east = input[((i + 1) / 2 + ox + ocx_e) + (j / 2 + oy + ocy) * width + ((k) + oz + ocz) * width * height];
+                var ocx_e = ((x - Math.Abs(i)) % 2 == 0 ? 0 : Math.Abs((i + 1) % 2)) - ((i + 1) % 2 == -1 ? 1 : 0);
+                var east =
+                    input[((i + 1) / 2 + ox + ocx_e) + (j / 2 + oy + ocy) * width + ((k) + oz + ocz) * width * height];
 
                 switch (selected)
                 {
@@ -91,8 +128,12 @@ namespace Tychaia.ProceduralGeneration
                         break;
                     case 1:
 
-                        int ocy_s = ((y - Math.Abs(j)) % 2 == 0 ? 0 : Math.Abs((j + 1) % 2)) - ((j + 1) % 2 == -1 ? 1 : 0);
-                        int south = input[(i / 2 + ox + ocx) + ((j + 1) / 2 + oy + ocy_s) * width + (k + oz + ocz) * width * height];
+                        var ocy_s = ((y - Math.Abs(j)) % 2 == 0 ? 0 : Math.Abs((j + 1) % 2)) -
+                                    ((j + 1) % 2 == -1 ? 1 : 0);
+                        var south =
+                            input[
+                                (i / 2 + ox + ocx) + ((j + 1) / 2 + oy + ocy_s) * width +
+                                (k + oz + ocz) * width * height];
 
                         if (xmod)
                             output[i + ox + (j + oy) * width + (k + oz) * width * height] = south;
@@ -105,7 +146,10 @@ namespace Tychaia.ProceduralGeneration
                         output[i + ox + (j + oy) * width + (k + oz) * width * height] = east;
                         break;
                     case 3:
-                        int southEast = input[((i + 2) / 2 + ox + ocx) + ((j + 2) / 2 + oy + ocy) * width + (k + oz + ocz) * width * height];
+                        var southEast =
+                            input[
+                                ((i + 2) / 2 + ox + ocx) + ((j + 2) / 2 + oy + ocy) * width +
+                                (k + oz + ocz) * width * height];
                         output[i + ox + (j + oy) * width + (k + oz) * width * height] = southEast;
                         break;
                     case 4:
@@ -115,17 +159,7 @@ namespace Tychaia.ProceduralGeneration
             }
         }
 
-        /// <summary>
-        /// An enumeration defining the type of zoom to perform.
-        /// </summary>
-        public enum ZoomType
-        {
-            Square,
-            Smooth,
-            Fuzzy,
-        }
-
-        public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
+        public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);
         }

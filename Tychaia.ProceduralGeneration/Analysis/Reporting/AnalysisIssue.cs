@@ -1,32 +1,29 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
+using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace Tychaia.ProceduralGeneration.Analysis.Reporting
 {
     [DataContract(Name = "issue")]
     public class AnalysisIssue
     {
-        [DataMember(Name = "id")]
-        public string
-            ID;
-
-        [DataMember(Name = "name")]
-        public string
-            Name;
-
-        [DataMember(Name = "description")]
-        public string
+        [DataMember(Name = "description")] public string
             Description;
 
-        [DataMember(Name = "locations")]
-        public List<AnalysisLocation>
+        [DataMember(Name = "id")] public string
+            ID;
+
+        [DataMember(Name = "locations")] public List<AnalysisLocation>
             Locations = new List<AnalysisLocation>();
+
+        [DataMember(Name = "name")] public string
+            Name;
 
         /// <summary>
         /// Locations can't overlap in the XML or the XSLT won't render
@@ -70,7 +67,7 @@ namespace Tychaia.ProceduralGeneration.Analysis.Reporting
                             copy.UniqueIDRefs += "[" + parent.UniqueID + "]";
 
                         if (copy.UniqueIDRefs == "")
-                            throw new System.InvalidOperationException();
+                            throw new InvalidOperationException();
                         newLocations.Add(copy);
                     }
                     lastOriginalLocation = locationStack.Peek();
@@ -88,4 +85,3 @@ namespace Tychaia.ProceduralGeneration.Analysis.Reporting
         }
     }
 }
-

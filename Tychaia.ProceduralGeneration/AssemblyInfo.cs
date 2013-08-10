@@ -1,10 +1,9 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
@@ -29,4 +28,3 @@ using System.Runtime.CompilerServices;
 
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
-

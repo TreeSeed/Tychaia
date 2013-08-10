@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 
 namespace Tychaia.ProceduralGeneration
@@ -17,7 +17,7 @@ namespace Tychaia.ProceduralGeneration
         {
             unchecked
             {
-                int a = AlgorithmUtility.GetRandomInt(seed, x, y, z, modifier);
+                var a = GetRandomInt(seed, x, y, z, modifier);
                 if (a < 0)
                     a += int.MaxValue;
                 return a % end;
@@ -32,7 +32,7 @@ namespace Tychaia.ProceduralGeneration
         {
             unchecked
             {
-                int a = AlgorithmUtility.GetRandomInt(seed, x, y, z, modifier);
+                var a = GetRandomInt(seed, x, y, z, modifier);
                 if (a < 0)
                     a += int.MaxValue;
                 return a % (end - start) + start;
@@ -47,7 +47,7 @@ namespace Tychaia.ProceduralGeneration
         {
             unchecked
             {
-                return (int)(AlgorithmUtility.GetRandomNumber(seed, x, y, z, modifier) % int.MaxValue);
+                return (int) (GetRandomNumber(seed, x, y, z, modifier) % int.MaxValue);
             }
         }
 
@@ -57,7 +57,7 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public static long GetRandomLong(long seed, long x, long y, long z, long modifier = 0)
         {
-            return AlgorithmUtility.GetRandomNumber(seed, x, y, z, modifier);
+            return GetRandomNumber(seed, x, y, z, modifier);
         }
 
         /// <summary>
@@ -66,10 +66,10 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public static double GetRandomDouble(long seed, long x, long y, long z, long modifier = 0)
         {
-            long a = AlgorithmUtility.GetRandomNumber(seed, x, y, z, modifier) / 2;
+            var a = GetRandomNumber(seed, x, y, z, modifier) / 2;
             if (a < 0)
                 a += long.MaxValue;
-            return (double)a / (double)long.MaxValue;
+            return a / (double) long.MaxValue;
         }
 
         private static long GetRandomNumber(long _seed, long x, long y, long z, long modifier)
@@ -79,7 +79,7 @@ namespace Tychaia.ProceduralGeneration
              * a unique number given a limited set of fields */
             unchecked
             {
-                long seed = (x - 1) * 3661988493967 + (y - 1);
+                var seed = (x - 1) * 3661988493967 + (y - 1);
                 seed += (x - 2) * 2990430311017;
                 seed *= (y - 3) * 14475080218213;
                 seed += modifier;
@@ -94,7 +94,7 @@ namespace Tychaia.ProceduralGeneration
                 // Prevents the seed from being 0 along an axis.
                 seed += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
 
-                long rng = seed * seed;
+                var rng = seed * seed;
                 rng += (x - 11) * 2990430311017;
                 rng *= (y - 12) * 14475080218213;
                 rng *= (z - 13) * 23281823741513;
@@ -133,16 +133,13 @@ namespace Tychaia.ProceduralGeneration
                 {
                     return currentValue;
                 }
-                else
+                selected = GetRandomRange(seed, x, y, 0, 2);
+                switch (selected)
                 {
-                    selected = GetRandomRange(seed, x, y, 0, 2);
-                    switch (selected)
-                    {
-                        case 0:
-                            return currentValue;
-                        case 1:
-                            return southValue;
-                    }
+                    case 0:
+                        return currentValue;
+                    case 1:
+                        return southValue;
                 }
             }
             else
@@ -211,4 +208,3 @@ namespace Tychaia.ProceduralGeneration
         }
     }
 }
-

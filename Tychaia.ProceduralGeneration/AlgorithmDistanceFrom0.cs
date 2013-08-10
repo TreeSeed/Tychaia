@@ -1,15 +1,12 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
-// This layer is used for the gradual increase of monster difficulty
-// as well as increases and decreases to temperature according to height.
-//
+// 
 using System;
-using System.Runtime.Serialization;
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.Serialization;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -19,65 +16,6 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Distance from 0")]
     public class AlgorithmDistanceFrom0 : Algorithm<int>
     {
-        [DataMember]
-        [DefaultValue(true)]
-        [Description("Calculate distance from X axis.")]
-        public bool Xcalculation
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        [DefaultValue(true)]
-        [Description("Calculate distance from Y axis.")]
-        public bool Ycalculation
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        [DefaultValue(true)]
-        [Description("Calculate distance from Z axis.")]
-        public bool Zcalculation
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        [DefaultValue(20)]
-        [Description("Divides X value by this much.")]
-        public long Xdivider
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        [DefaultValue(20)]
-        [Description("Divides Y value by this much.")]
-        public long Ydivider
-        {
-            get;
-            set;
-        }
-
-        [DataMember]
-        [DefaultValue(20)]
-        [Description("Divides Z value by this much.")]
-        public long Zdivider
-        {
-            get;
-            set;
-        }
-
-        public override bool Is2DOnly
-        {
-            get { return false; }
-        }
-
         public AlgorithmDistanceFrom0()
         {
             this.Xcalculation = true;
@@ -88,26 +26,70 @@ namespace Tychaia.ProceduralGeneration
             this.Zdivider = 20;
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
-        {
+        [DataMember]
+        [DefaultValue(true)]
+        [Description("Calculate distance from X axis.")]
+        public bool Xcalculation { get; set; }
 
+        [DataMember]
+        [DefaultValue(true)]
+        [Description("Calculate distance from Y axis.")]
+        public bool Ycalculation { get; set; }
+
+        [DataMember]
+        [DefaultValue(true)]
+        [Description("Calculate distance from Z axis.")]
+        public bool Zcalculation { get; set; }
+
+        [DataMember]
+        [DefaultValue(20)]
+        [Description("Divides X value by this much.")]
+        public long Xdivider { get; set; }
+
+        [DataMember]
+        [DefaultValue(20)]
+        [Description("Divides Y value by this much.")]
+        public long Ydivider { get; set; }
+
+        [DataMember]
+        [DefaultValue(20)]
+        [Description("Divides Z value by this much.")]
+        public long Zdivider { get; set; }
+
+        public override bool Is2DOnly
+        {
+            get { return false; }
+        }
+
+        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j,
+            int k, int width, int height, int depth, int ox, int oy, int oz)
+        {
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
 
-            if (Xcalculation)
+            if (this.Xcalculation)
             {
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] += ((int)(Math.Abs(x) / Xdivider) > int.MaxValue ? int.MaxValue : (int)(Math.Abs(x) / Xdivider));
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] +=
+                    ((int) (Math.Abs(x) / this.Xdivider) > int.MaxValue
+                        ? int.MaxValue
+                        : (int) (Math.Abs(x) / this.Xdivider));
             }
-            if (Ycalculation)
+            if (this.Ycalculation)
             {
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] += ((int)(Math.Abs(y) / Ydivider) > int.MaxValue ? int.MaxValue : (int)(Math.Abs(y) / Ydivider));
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] +=
+                    ((int) (Math.Abs(y) / this.Ydivider) > int.MaxValue
+                        ? int.MaxValue
+                        : (int) (Math.Abs(y) / this.Ydivider));
             }
-            if (Zcalculation)
+            if (this.Zcalculation)
             {
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] += ((int)(Math.Abs(z) / Zdivider) > int.MaxValue ? int.MaxValue : (int)(Math.Abs(z) / Zdivider));
+                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] +=
+                    ((int) (Math.Abs(z) / this.Zdivider) > int.MaxValue
+                        ? int.MaxValue
+                        : (int) (Math.Abs(z) / this.Zdivider));
             }
         }
 
-        public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
+        public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             int a = value;
 
@@ -118,4 +100,3 @@ namespace Tychaia.ProceduralGeneration
         }
     }
 }
-

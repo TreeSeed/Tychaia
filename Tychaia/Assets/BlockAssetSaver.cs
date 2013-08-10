@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using Protogame;
 
 namespace Tychaia
@@ -16,8 +16,8 @@ namespace Tychaia
 
         public dynamic Handle(IAsset asset)
         {
-            var blockAsset = asset as BlockAsset;
-            
+            var blockAsset = (BlockAsset)asset;
+
             return new
             {
                 Loader = typeof(BlockAssetLoader).FullName,
@@ -27,9 +27,8 @@ namespace Tychaia
                 RightTextureName = blockAsset.RightTexture != null ? blockAsset.RightTexture.Name : null,
                 FrontTextureName = blockAsset.FrontTexture != null ? blockAsset.FrontTexture.Name : null,
                 BackTextureName = blockAsset.BackTexture != null ? blockAsset.BackTexture.Name : null,
-                Impassable = blockAsset.Impassable
+                blockAsset.Impassable
             };
         }
     }
 }
-

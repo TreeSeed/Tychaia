@@ -7,7 +7,6 @@
     <Reference Include="Tychaia.Puzzle" />
   </References>
   <Files>
-    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="PuzzleEditor.cs">
       <SubType>Form</SubType>

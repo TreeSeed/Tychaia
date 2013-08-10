@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System.IO;
 using ICSharpCode.NRefactory.CSharp;
 
@@ -20,7 +20,7 @@ namespace Tychaia.ProceduralGeneration.Analysis.Output
 
     public class TrackingOutputFormatter : TextWriterOutputFormatter
     {
-        private TextWriter m_Writer;
+        private readonly TextWriter m_Writer;
 
         public TrackingOutputFormatter(TextWriter textWriter)
             : base(textWriter)
@@ -41,4 +41,3 @@ namespace Tychaia.ProceduralGeneration.Analysis.Output
         }
     }
 }
-

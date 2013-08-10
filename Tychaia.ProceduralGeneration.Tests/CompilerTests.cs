@@ -1,4 +1,8 @@
-using System;
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using Tychaia.ProceduralGeneration.Compiler;
 using Xunit;
 
@@ -11,15 +15,15 @@ namespace Tychaia.ProceduralGeneration.Tests
             Assert.DoesNotThrow(() =>
             {
                 var compiled = LayerCompiler.Compile(runtime);
-    
+
                 int computations;
                 var runtimeData = runtime.GenerateData(-10, -10, -10, 20, 20, 20, out computations);
                 var compiledData = compiled.GenerateData(-10, -10, -10, 20, 20, 20, out computations);
                 var matches = true;
                 for (var x = 0; x < 20; x++)
-                for (var y = 0; y < 20; y++)
-                for (var z = 0; z < 20; z++)
-                    Assert.Equal(runtimeData[x + y * 20 + z * 20 * 20], compiledData[x + y * 20 + z * 20 * 20]);
+                    for (var y = 0; y < 20; y++)
+                        for (var z = 0; z < 20; z++)
+                            Assert.Equal(runtimeData[x + y*20 + z*20*20], compiledData[x + y*20 + z*20*20]);
             });
         }
 
@@ -27,14 +31,14 @@ namespace Tychaia.ProceduralGeneration.Tests
         private void ValidateInitialBool()
         {
             var initialBool = new RuntimeLayer(new AlgorithmInitialBool());
-            ValidateLayer(initialBool);
+            this.ValidateLayer(initialBool);
         }
 
         [Fact]
         private void ValidatePerlin()
         {
             var perlin = new RuntimeLayer(new AlgorithmPerlin());
-            ValidateLayer(perlin);
+            this.ValidateLayer(perlin);
         }
 
         [Fact]
@@ -43,7 +47,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var initialBool = new RuntimeLayer(new AlgorithmInitialBool());
             var passthrough = new RuntimeLayer(new AlgorithmPassthrough());
             passthrough.SetInput(0, initialBool);
-            ValidateLayer(passthrough);
+            this.ValidateLayer(passthrough);
         }
 
         [Fact]
@@ -52,7 +56,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var initialBool = new RuntimeLayer(new AlgorithmInitialBool());
             var heightChange = new RuntimeLayer(new AlgorithmHeightChange());
             heightChange.SetInput(0, initialBool);
-            ValidateLayer(heightChange);
+            this.ValidateLayer(heightChange);
         }
 
         [Fact]
@@ -61,7 +65,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var initialBool = new RuntimeLayer(new AlgorithmInitialBool());
             var zoom2D = new RuntimeLayer(new AlgorithmZoom2D());
             zoom2D.SetInput(0, initialBool);
-            ValidateLayer(zoom2D);
+            this.ValidateLayer(zoom2D);
         }
 
         [Fact]
@@ -72,7 +76,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var zoom2D2 = new RuntimeLayer(new AlgorithmZoom2D());
             zoom2D1.SetInput(0, initialBool);
             zoom2D2.SetInput(0, zoom2D1);
-            ValidateLayer(zoom2D2);
+            this.ValidateLayer(zoom2D2);
         }
 
         [Fact]
@@ -85,7 +89,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             zoom2D1.SetInput(0, initialBool);
             zoom2D2.SetInput(0, zoom2D1);
             zoom2D3.SetInput(0, zoom2D2);
-            ValidateLayer(zoom2D3);
+            this.ValidateLayer(zoom2D3);
         }
 
         [Fact]
@@ -94,7 +98,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var perlin = new RuntimeLayer(new AlgorithmPerlin());
             var zoom3D = new RuntimeLayer(new AlgorithmZoom3D());
             zoom3D.SetInput(0, perlin);
-            ValidateLayer(zoom3D);
+            this.ValidateLayer(zoom3D);
         }
 
         [Fact]
@@ -105,7 +109,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var zoom3D2 = new RuntimeLayer(new AlgorithmZoom3D());
             zoom3D1.SetInput(0, perlin);
             zoom3D2.SetInput(0, zoom3D1);
-            ValidateLayer(zoom3D2);
+            this.ValidateLayer(zoom3D2);
         }
 
         [Fact]
@@ -118,7 +122,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             zoom3D1.SetInput(0, perlin);
             zoom3D2.SetInput(0, zoom3D1);
             zoom3D3.SetInput(0, zoom3D2);
-            ValidateLayer(zoom3D3);
+            this.ValidateLayer(zoom3D3);
         }
 
         [Fact]
@@ -127,7 +131,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var initialBool = new RuntimeLayer(new AlgorithmInitialBool());
             var extend2D = new RuntimeLayer(new AlgorithmExtend2D());
             extend2D.SetInput(0, initialBool);
-            ValidateLayer(extend2D);
+            this.ValidateLayer(extend2D);
         }
 
         [Fact]
@@ -136,14 +140,13 @@ namespace Tychaia.ProceduralGeneration.Tests
             var perlin = new RuntimeLayer(new AlgorithmPerlin());
             var add = new RuntimeLayer(new AlgorithmAdd());
             var perlin2 = new RuntimeLayer(new AlgorithmPerlin());
-            var passthrough = new RuntimeLayer(new AlgorithmPassthrough { XBorder = 7, YBorder = 9, ZBorder = 11 });
+            var passthrough = new RuntimeLayer(new AlgorithmPassthrough {XBorder = 7, YBorder = 9, ZBorder = 11});
             var heightC = new RuntimeLayer(new AlgorithmHeightChange());
             passthrough.SetInput(0, perlin2);
             add.SetInput(0, perlin);
             add.SetInput(1, passthrough);
             heightC.SetInput(0, add);
-            ValidateLayer(heightC);
+            this.ValidateLayer(heightC);
         }
     }
 }
-

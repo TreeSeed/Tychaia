@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using ICSharpCode.NRefactory.CSharp;
 
 namespace Tychaia.ProceduralGeneration.AstVisitors
@@ -36,23 +36,24 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
         public static dynamic GetValueFromExpression(Expression expr)
         {
             if (expr is PrimitiveExpression)
-                return ((PrimitiveExpression)expr).Value;
+                return ((PrimitiveExpression) expr).Value;
             if (expr is UnaryOperatorExpression)
-                return GetValueFromUnaryExpression((UnaryOperatorExpression)expr);
+                return GetValueFromUnaryExpression((UnaryOperatorExpression) expr);
             if (expr is ParenthesizedExpression)
-                return GetValueFromParenthesizedExpression((ParenthesizedExpression)expr);
+                return GetValueFromParenthesizedExpression((ParenthesizedExpression) expr);
             return null;
         }
 
         private static DepthFirstAstVisitor[] GetVisitors()
         {
-            return new DepthFirstAstVisitor[] {
+            return new DepthFirstAstVisitor[]
+            {
                 new RemoveRedundantPrimitiveCastsVisitor(),
                 new RemoveParenthesisVisitor(),
                 new SimplifyConstantMathExpressionsVisitor(),
                 new SimplifyCombinedMathExpressionsVisitor(),
                 new SimplifyZeroAndConditionalExpressionsVisitor(),
-                new SimplifyRedundantMathExpressionsVisitor(),
+                new SimplifyRedundantMathExpressionsVisitor()
             };
         }
 
@@ -84,4 +85,3 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
         }
     }
 }
-

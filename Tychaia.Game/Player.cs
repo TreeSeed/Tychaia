@@ -1,3 +1,8 @@
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using Protogame;
 using Tychaia.Globals;
 
@@ -5,20 +10,13 @@ namespace Tychaia.Game
 {
     public class Player : ChunkEntity
     {
-        private double m_RotateCounter = 0;
-        private IFilteredConsole m_FilteredConsole;
-
-        public double MovementSpeed
-        {
-            get;
-            private set;
-        }
+        private readonly IFilteredConsole m_FilteredConsole;
 
         public Player(
             IWorld world,
             IFilteredConsole filteredConsole)
             : base(world)
-		{
+        {
             this.m_FilteredConsole = filteredConsole;
             this.Width = 16;
             this.Height = 16;
@@ -26,7 +24,11 @@ namespace Tychaia.Game
             this.ImageOffsetY = 15;
             this.MovementSpeed = 2;
         }
-        
+
+        public double MovementSpeed { get; private set; }
+
+        public bool SearchForTerrain { get; set; }
+
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
             //this.X = 0;// (float)(0 + Math.Sin(this.m_RotateCounter) * 100);
@@ -38,12 +40,10 @@ namespace Tychaia.Game
             //this.Z -= 1f;
             //}
 
-            this.m_RotateCounter += 0.1;
-            this.m_FilteredConsole.WriteLine(FilterCategory.Player, "player x/y/z is " + X + ", " + Y + "," + Z + ".");
+            this.m_FilteredConsole.WriteLine(FilterCategory.Player,
+                "player x/y/z is " + this.X + ", " + this.Y + "," + this.Z + ".");
 
             base.Update(gameContext, updateContext);
         }
-
-        public bool SearchForTerrain { get; set; }
     }
 }

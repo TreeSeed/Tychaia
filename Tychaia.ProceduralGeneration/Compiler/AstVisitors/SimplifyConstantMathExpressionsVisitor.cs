@@ -1,10 +1,10 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
-using ICSharpCode.NRefactory.CSharp;
+// 
 using System;
+using ICSharpCode.NRefactory.CSharp;
 
 namespace Tychaia.ProceduralGeneration.AstVisitors
 {
@@ -18,8 +18,8 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             //
             // 2 - 2
 
-            dynamic valueLeft = AstHelpers.GetValueFromExpression(binaryOperatorExpression.Left);
-            dynamic valueRight = AstHelpers.GetValueFromExpression(binaryOperatorExpression.Right);
+            var valueLeft = AstHelpers.GetValueFromExpression(binaryOperatorExpression.Left);
+            var valueRight = AstHelpers.GetValueFromExpression(binaryOperatorExpression.Right);
             if (valueLeft == null || valueRight == null)
                 return;
 
@@ -49,9 +49,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             {
                 // Can't do anything with this value perhaps, so just ignore it and leave
                 // the code as-is.
-                return;
             }
         }
     }
 }
-

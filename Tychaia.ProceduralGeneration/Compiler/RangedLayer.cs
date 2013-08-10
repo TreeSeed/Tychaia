@@ -1,11 +1,11 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
-using ICSharpCode.NRefactory.CSharp;
 using System.Collections.Generic;
+using ICSharpCode.NRefactory.CSharp;
 using Tychaia.ProceduralGeneration.AstVisitors;
 
 namespace Tychaia.ProceduralGeneration.Compiler
@@ -16,6 +16,17 @@ namespace Tychaia.ProceduralGeneration.Compiler
     /// </summary>
     public class RangedLayer
     {
+        public RangedLayer(RuntimeLayer layer)
+        {
+            if (layer == null)
+                throw new ArgumentNullException("layer");
+            InitializeFromRuntime(this, layer);
+        }
+
+        private RangedLayer()
+        {
+        }
+
         public Expression X { get; set; }
         public Expression Y { get; set; }
         public Expression Z { get; set; }
@@ -39,17 +50,6 @@ namespace Tychaia.ProceduralGeneration.Compiler
         public Expression OffsetZ { get; set; }
         public RuntimeLayer Layer { get; set; }
         public RangedLayer[] Inputs { get; set; }
-
-        public RangedLayer(RuntimeLayer layer)
-        {
-            if (layer == null)
-                throw new ArgumentNullException("layer");
-            InitializeFromRuntime(this, layer);
-        }
-
-        private RangedLayer()
-        {
-        }
 
         public override string ToString()
         {
@@ -121,7 +121,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
                     continue;
 
                 Expression ix, iy, iz, iwidth, iheight, idepth, iouterx, ioutery, iouterz;
-                FindMaximumBounds(input, out ix, out iy, out iz, out iwidth, out iheight, out idepth, out iouterx, out ioutery, out iouterz);
+                FindMaximumBounds(input, out ix, out iy, out iz, out iwidth, out iheight, out idepth, out iouterx,
+                    out ioutery, out iouterz);
 
                 x = GetSmallestOrLargestExpression(x, ix, false);
                 y = GetSmallestOrLargestExpression(y, iy, false);
@@ -144,32 +145,31 @@ namespace Tychaia.ProceduralGeneration.Compiler
             // Use the visitor to replace the identifiers with numeric values.
             var aEvaluated = EvaluateExpression(a);
             var bEvaluated = EvaluateExpression(b);
-            var aValue = (int)(aEvaluated as PrimitiveExpression).Value;
-            var bValue = (int)(bEvaluated as PrimitiveExpression).Value;
+            var aValue = (int) (aEvaluated as PrimitiveExpression).Value;
+            var bValue = (int) (bEvaluated as PrimitiveExpression).Value;
             if ((!largest && aValue < bValue) ||
                 (largest && aValue > bValue))
                 return a;
-            else
-                return b;
+            return b;
         }
 
         private static int SanitizeValue(object value)
         {
             try
             {
-                return (int)value;
+                return (int) value;
             }
             catch
             {
             }
             try
             {
-                return (int)(long)value;
+                return (int) (long) value;
             }
             catch
             {
             }
-            throw new InvalidOperationException(value.GetType().FullName.ToString());
+            throw new InvalidOperationException(value.GetType().FullName);
         }
 
         /// <summary>
@@ -198,25 +198,23 @@ namespace Tychaia.ProceduralGeneration.Compiler
                         throw new NotSupportedException(op.ToString());
                 }
             }
-            else if (expr is ParenthesizedExpression)
+            if (expr is ParenthesizedExpression)
                 return EvaluateExpression((expr as ParenthesizedExpression).Expression, values);
-            else if (expr is IdentifierExpression)
+            if (expr is IdentifierExpression)
             {
                 if (values != null)
                     return new PrimitiveExpression(SanitizeValue(values[(expr as IdentifierExpression).Identifier]));
-                else
-                    return new PrimitiveExpression(SanitizeValue(100));
+                return new PrimitiveExpression(SanitizeValue(100));
             }
-            else if (expr is UnaryOperatorExpression &&
-                     (expr as UnaryOperatorExpression).Operator == UnaryOperatorType.Minus)
+            if (expr is UnaryOperatorExpression &&
+                (expr as UnaryOperatorExpression).Operator == UnaryOperatorType.Minus)
             {
                 var primitive = EvaluateExpression((expr as UnaryOperatorExpression).Expression);
-                return new PrimitiveExpression(-((dynamic)primitive.Value));
+                return new PrimitiveExpression(-((dynamic) primitive.Value));
             }
-            else if (expr is PrimitiveExpression)
+            if (expr is PrimitiveExpression)
                 return expr as PrimitiveExpression;
-            else
-                throw new NotSupportedException(expr.GetType().FullName);
+            throw new NotSupportedException(expr.GetType().FullName);
         }
 
         /// <summary>
@@ -314,7 +312,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
 
             // Now we have to find the maximum values.
             Expression mx, my, mz, mwidth, mheight, mdepth, mouterx, moutery, mouterz;
-            RangedLayer.FindMaximumBounds(
+            FindMaximumBounds(
                 ranged,
                 out mx, out my, out mz,
                 out mwidth, out mheight, out mdepth,
@@ -339,7 +337,6 @@ namespace Tychaia.ProceduralGeneration.Compiler
             {
                 BackfillInput(ranged, layer, ranged.Inputs[i], i, mx, my, mz);
             }
-
         }
 
         /// <summary>
@@ -513,9 +510,9 @@ namespace Tychaia.ProceduralGeneration.Compiler
             for (var i = 0; i < inputs.Length; i++)
             {
                 inputRanged.Inputs[i] =
-                    inputs[i] == null ?
-                        null :
-                        ProcessInput(inputRanged, inputRuntime, inputs[i], i);
+                    inputs[i] == null
+                        ? null
+                        : ProcessInput(inputRanged, inputRuntime, inputs[i], i);
             }
 
             // Run AST visitors over the expression to simplify.
@@ -543,8 +540,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
                     input.Clone(),
                     BinaryOperatorType.Subtract,
                     new PrimitiveExpression(border)
-            )
-            );
+                    )
+                );
         }
 
         /// <summary>
@@ -554,11 +551,11 @@ namespace Tychaia.ProceduralGeneration.Compiler
         {
             return new ParenthesizedExpression(
                 new BinaryOperatorExpression(
-                input.Clone(),
-                BinaryOperatorType.Add,
-                new PrimitiveExpression(border)
-            )
-            );
+                    input.Clone(),
+                    BinaryOperatorType.Add,
+                    new PrimitiveExpression(border)
+                    )
+                );
         }
 
         /// <summary>
@@ -568,12 +565,11 @@ namespace Tychaia.ProceduralGeneration.Compiler
         {
             return new ParenthesizedExpression(
                 new BinaryOperatorExpression(
-                input.Clone(),
-                BinaryOperatorType.Divide,
-                new PrimitiveExpression(2)
-            )
-            );
+                    input.Clone(),
+                    BinaryOperatorType.Divide,
+                    new PrimitiveExpression(2)
+                    )
+                );
         }
     }
 }
-

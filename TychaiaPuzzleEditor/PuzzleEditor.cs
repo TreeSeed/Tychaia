@@ -1,19 +1,18 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
-using System.Windows.Forms;
-using System.Drawing;
-using Tychaia.Puzzle;
+// 
 using System;
+using System.Drawing;
+using System.Windows.Forms;
+using Tychaia.Puzzle;
 
 namespace TychaiaPuzzleEditor
 {
     public class PuzzleEditorForm : Form, IPuzzleUI
     {
-        private Timer m_Timer;
-        private ComboBox m_PuzzleList;
+        private readonly ComboBox m_PuzzleList;
         private IPuzzle m_Puzzle;
 
         public PuzzleEditorForm()
@@ -25,21 +24,19 @@ namespace TychaiaPuzzleEditor
             this.m_PuzzleList = new ComboBox();
             this.InitializePuzzleList();
             this.Controls.Add(this.m_PuzzleList);
-            this.m_Timer = new Timer();
-            this.m_Timer.Interval = 1000 / 60;
-            this.m_Timer.Tick += (sender, e) =>
-            {
-                this.Invalidate();
-            };
-            this.m_Timer.Start();
+
+            var timer = new Timer { Interval = 1000 / 60 };
+            timer.Tick += (sender, e) => this.Invalidate();
+            timer.Start();
 
             this.ResumeLayout();
         }
 
-        void InitializePuzzleList()
+        private void InitializePuzzleList()
         {
             this.m_PuzzleList.Size = new Size(350, 24);
-            this.m_PuzzleList.Location = new Point(this.Width - this.m_PuzzleList.Width - 20, this.Height - this.m_PuzzleList.Height - 40);
+            this.m_PuzzleList.Location = new Point(this.Width - this.m_PuzzleList.Width - 20,
+                this.Height - this.m_PuzzleList.Height - 40);
             this.m_PuzzleList.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             this.m_PuzzleList.DropDownStyle = ComboBoxStyle.DropDownList;
 
@@ -59,7 +56,7 @@ namespace TychaiaPuzzleEditor
                 if (this.m_PuzzleList.SelectedItem == null)
                     this.m_Puzzle = null;
                 else
-                    this.m_Puzzle = Activator.CreateInstance(this.m_PuzzleList.SelectedItem as Type) as IPuzzle;
+                    this.m_Puzzle = Activator.CreateInstance((Type)this.m_PuzzleList.SelectedItem) as IPuzzle;
             };
             this.m_PuzzleList.SelectedIndex = 0;
         }
@@ -95,7 +92,7 @@ namespace TychaiaPuzzleEditor
         #region IPuzzleUI implementation
 
         private Color m_ActiveColor = Color.Black;
-        private Graphics m_ActiveGraphics = null;
+        private Graphics m_ActiveGraphics;
 
         public void BeginUI()
         {
@@ -144,10 +141,10 @@ namespace TychaiaPuzzleEditor
         public void DrawText(int x, int y, string text)
         {
             var brush = new SolidBrush(this.m_ActiveColor);
-            this.m_ActiveGraphics.DrawString(text, SystemFonts.DefaultFont, brush, new RectangleF(x, y, x + 1000, y + 32));
+            this.m_ActiveGraphics.DrawString(text, SystemFonts.DefaultFont, brush,
+                new RectangleF(x, y, x + 1000, y + 32));
         }
 
         #endregion
     }
 }
-

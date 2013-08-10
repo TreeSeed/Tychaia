@@ -1,16 +1,20 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using System.Drawing;
-using Tychaia.ProceduralGeneration;
+using System.Drawing.Text;
 
 namespace Tychaia.ProceduralGeneration.Flow
 {
     public static class AlgorithmFlowImageGeneration
     {
+        private const int RenderWidth = 64;
+        private const int RenderHeight = 64;
+        private const int RenderDepth = 64;
+
         public static Bitmap RegenerateImageForLayer(
             StorageLayer layer,
             long seed,
@@ -45,19 +49,86 @@ namespace Tychaia.ProceduralGeneration.Flow
             }
         }
 
+        private static Bitmap Regenerate3DImageForLayer(RuntimeLayer runtimeLayer, long ox, long oy, long oz, int width,
+            int height, int depth, IGenerator compiledLayer = null)
+        {
+            var owidth = width;
+            var oheight = height;
+            width = 128;
+            height = 192; // this affects bitmaps and rendering and stuff :(
+            depth = 128;
+
+            // ARGHGHG FIXME
+            var b = new Bitmap(width, height);
+            var g = Graphics.FromImage(b);
+            g.Clear(Color.White);
+            g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
+            var computations = 0;
+            dynamic data;
+            if (compiledLayer != null)
+                data = compiledLayer.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth, out computations);
+            else
+                data = runtimeLayer.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth, out computations);
+
+            var storageLayer = StorageAccess.FromRuntime(runtimeLayer);
+            int[] render = GetCellRenderOrder(RenderToNE, RenderWidth, RenderHeight);
+            int ztop = runtimeLayer.Algorithm.Is2DOnly ? 1 : RenderDepth;
+            var zbottom = 0;
+            for (var z = zbottom; z < ztop; z++)
+            {
+                var rcx = width / 2 - 1;
+                var rcy = height / 2 - 31;
+                var rw = 2;
+                var rh = 1;
+                for (var i = 0; i < render.Length; i++)
+                {
+                    // Calculate the X / Y of the tile in the grid.
+                    var x = render[i] % RenderWidth;
+                    var y = render[i] / RenderWidth;
+
+                    // Calculate the render position on screen.
+                    var rx = rcx + (int) ((x - y) / 2.0 * rw); // (int)(x / ((RenderWidth + 1) / 2.0) * rw);
+                    var ry = rcy + (x + y) * rh - (rh / 2 * (RenderWidth + RenderHeight)) - (z - zbottom) * 1;
+
+                    while (true)
+                    {
+                        try
+                        {
+                            Color lc = runtimeLayer.Algorithm.GetColorForValue(
+                                storageLayer,
+                                data[x + y * owidth + z * owidth * oheight]);
+                            var sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
+                            g.FillRectangle(
+                                sb,
+                                new Rectangle(rx, ry, rw, rh)
+                                );
+                            break;
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            // Graphics can be in use elsewhere, but we don't care; just try again.
+                        }
+                    }
+                }
+            }
+
+            return b;
+        }
+
         #region Cell Render Ordering
 
-        private static int[][] CellRenderOrder = new int[4][]
-            {
-                null,
-                null,
-                null,
-                null
-            };
         private const int RenderToNE = 0;
         private const int RenderToNW = 1;
         private const int RenderToSE = 2;
         private const int RenderToSW = 3;
+
+        private static int[][] CellRenderOrder = new int[4][]
+        {
+            null,
+            null,
+            null,
+            null
+        };
 
         private static int[] CalculateCellRenderOrder(int targetDir, int width, int height)
         {
@@ -97,15 +168,15 @@ namespace Tychaia.ProceduralGeneration.Flow
             if (targetDir != RenderToNE)
                 throw new InvalidOperationException();
 
-            int[] result = new int[width * height];
-            int count = 0;
-            int start = 0;
-            int maxx = width - 1;
-            int maxy = height - 1;
-            int last = maxx + maxy;
+            var result = new int[width * height];
+            var count = 0;
+            var start = 0;
+            var maxx = width - 1;
+            var maxy = height - 1;
+            var last = maxx + maxy;
             int x, y;
 
-            for (int atk = start; atk <= last; atk++)
+            for (var atk = start; atk <= last; atk++)
             {
                 // Attack from the left.
                 if (atk < maxy)
@@ -147,74 +218,5 @@ namespace Tychaia.ProceduralGeneration.Flow
         }
 
         #endregion
-
-        private const int RenderWidth = 64;
-        private const int RenderHeight = 64;
-        private const int RenderDepth = 64;
-
-        private static Bitmap Regenerate3DImageForLayer(RuntimeLayer runtimeLayer, long ox, long oy, long oz, int width, int height, int depth, IGenerator compiledLayer = null)
-        {
-            int owidth = width;
-            int oheight = height;
-            width = 128;
-            height = 192; // this affects bitmaps and rendering and stuff :(
-            depth = 128;
-
-            // ARGHGHG FIXME
-            Bitmap b = new Bitmap(width, height);
-            Graphics g = Graphics.FromImage(b);
-            g.Clear(Color.White);
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-            int computations = 0;
-            dynamic data;
-            if (compiledLayer != null)
-                data = compiledLayer.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth, out computations);
-            else
-                data = runtimeLayer.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth, out computations);
-
-            var storageLayer = StorageAccess.FromRuntime(runtimeLayer);
-            int[] render = GetCellRenderOrder(RenderToNE, RenderWidth, RenderHeight);
-            int ztop = runtimeLayer.Algorithm.Is2DOnly ? 1 : RenderDepth;
-            int zbottom = 0;
-            for (int z = zbottom; z < ztop; z++)
-            {
-                int rcx = width / 2 - 1;
-                int rcy = height / 2 - 31;
-                int rw = 2;
-                int rh = 1;
-                for (int i = 0; i < render.Length; i++)
-                {
-                    // Calculate the X / Y of the tile in the grid.
-                    int x = render[i] % RenderWidth;
-                    int y = render[i] / RenderWidth;
-
-                    // Calculate the render position on screen.
-                    int rx = rcx + (int)((x - y) / 2.0 * rw);// (int)(x / ((RenderWidth + 1) / 2.0) * rw);
-                    int ry = rcy + (x + y) * rh - (rh / 2 * (RenderWidth + RenderHeight)) - (z - zbottom) * 1;
-
-                    while (true)
-                    {
-                        try
-                        {
-                            Color lc = runtimeLayer.Algorithm.GetColorForValue(
-                                storageLayer,
-                                data[x + y * owidth + z * owidth * oheight]);
-                            SolidBrush sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
-                            g.FillRectangle(
-                                sb,
-                                new Rectangle(rx, ry, rw, rh)
-                            );
-                            break;
-                        }
-                        catch (InvalidOperationException)
-                        {
-                            // Graphics can be in use elsewhere, but we don't care; just try again.
-                        }
-                    }
-                }
-            }
-
-            return b;
-        }
     }
 }

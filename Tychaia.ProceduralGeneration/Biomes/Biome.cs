@@ -1,41 +1,39 @@
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using System.Reflection;
+using System.Linq;
 
 namespace Tychaia.ProceduralGeneration.Biomes
 {
     public abstract class Biome
     {
         // Requirements for biome placement
+        public Color BrushColor;
+        public double DayLengthSummer;
+        public double DayLengthWinter;
         public double Rainfall;
-        public double Temperature;
-        public int Terrain = 0;
-        public double RainfallSelectionVariance = 1;
-        public double TemperatureSelectionVariance = 1;
-        public double TerrainSelectionVariance = 1;
 
         // Placement Modifiers and seasons
         public double RainfallModDaySummer;
-        public double RainfallModNightSummer;
         public double RainfallModDayWinter;
+        public double RainfallModNightSummer;
         public double RainfallModNightWinter;
+        public double RainfallSelectionVariance = 1;
         public double RainfallVariance;
+        public double Temperature;
         public double TemperatureModDaySummer;
-        public double TemperatureModNightSummer;
         public double TemperatureModDayWinter;
+        public double TemperatureModNightSummer;
         public double TemperatureModNightWinter;
+        public double TemperatureSelectionVariance = 1;
         public double TemperatureVariance;
-        public double DayLengthSummer;
-        public double DayLengthWinter;
-
-        // Building assistance
-        //public Material BuildingMaterial;       // The building material that the buildings are made out of in this biome
-
-        // Color that this biome draws
-        public Color BrushColor;
+        public int Terrain = 0;
+        public double TerrainSelectionVariance = 1;
 
         // Chance that a tree will spawn on any given cell.
         public double TreeChance;
@@ -48,11 +46,11 @@ namespace Tychaia.ProceduralGeneration.Biomes
         //Turns out not as easy as copy pasting
         static BiomeEngine()
         {
-            BiomeEngine.Biomes = new List<Biome>();
-            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
-                foreach (Type t in a.GetTypes())
+            Biomes = new List<Biome>();
+            foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
+                foreach (var t in a.GetTypes())
                     if (typeof(Biome).IsAssignableFrom(t) && !t.IsAbstract)
-                        BiomeEngine.Biomes.Add(NewBiome(t));
+                        Biomes.Add(NewBiome(t));
         }
 
         private static Biome NewBiome(Type t)
@@ -65,9 +63,9 @@ namespace Tychaia.ProceduralGeneration.Biomes
             /* What I was going to do:
              * Have it check for the most suitable biome. Biomes will just be given an average for each rain/temp/height and then it will select which biome fits best.
              */
-            double[] score = new double[Biomes.Count];
+            var score = new double[Biomes.Count];
 
-            for (int i = 0; i < Biomes.Count; i++)
+            for (var i = 0; i < Biomes.Count; i++)
             {
                 Biome biome = Biomes[i];
 
@@ -83,24 +81,23 @@ namespace Tychaia.ProceduralGeneration.Biomes
                 }
             }
 
-            int hold = 0;
+            var hold = 0;
 
-            for (int i = 1; i < score.Count(); i++)
+            for (var i = 1; i < score.Count(); i++)
                 if (score[hold] < score[i])
                     hold = i;
 
             if (score.Count() == 0)
                 return null;
-            else
-                return Biomes[hold];
+            return Biomes[hold];
         }
 
         public static Biome GetSimpleBiomeForCell()
         {
-            Random r = new Random();
+            var r = new Random();
 
-            int b = r.Next(Biomes.Count);
-            
+            var b = r.Next(Biomes.Count);
+
             Biome biome = Biomes[b];
 
             return biome;

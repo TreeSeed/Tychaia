@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using System.Linq;
-using System.Text;
 
 namespace Tychaia.ProceduralGeneration.FlowBundles
 {
     public class FlowBundle
     {
+        public readonly int Count;
         public readonly dynamic[] Data;
         public readonly string[] Name;
-        public readonly int Count;
 
         public FlowBundle()
         {
@@ -62,7 +64,7 @@ namespace Tychaia.ProceduralGeneration.FlowBundles
 
         public dynamic Get(string name)
         {
-            for (int i = 0; i < this.Count; i++)
+            for (var i = 0; i < this.Count; i++)
                 if (this.Name[i] == name)
                     return this.Data[i];
             return null;
@@ -70,7 +72,7 @@ namespace Tychaia.ProceduralGeneration.FlowBundles
 
         public FlowBundle Delete(string name)
         {
-            for (int i = 0; i < this.Count; i++)
+            for (var i = 0; i < this.Count; i++)
             {
                 if (this.Name[i] == name)
                 {

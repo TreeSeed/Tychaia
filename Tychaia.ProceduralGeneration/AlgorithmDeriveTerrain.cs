@@ -1,12 +1,11 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
-using System;
-using System.Runtime.Serialization;
+// 
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.Serialization;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -16,31 +15,45 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Derive Terrain")]
     public class AlgorithmDeriveTerrain : Algorithm<int, int, int, int>
     {
-        public override int[] RequiredXBorder { get { return new int[]
+        public AlgorithmDeriveTerrain()
+        {
+            this.CheckDiagonals = true;
+        }
+
+        public override int[] RequiredXBorder
+        {
+            get
+            {
+                return new[]
                 {
                     1,
                     1,
                     1
-                }; } }
-        public override int[] RequiredYBorder { get { return new int[]
+                };
+            }
+        }
+
+        public override int[] RequiredYBorder
+        {
+            get
+            {
+                return new[]
                 {
                     1,
                     1,
                     1
-                }; } }
+                };
+            }
+        }
 
         [DataMember]
         [DefaultValue(true)]
         [Description("Whether diagonals to cells will be evaluated for their height.")]
-        public bool CheckDiagonals
-        {
-            get;
-            set;
-        }
+        public bool CheckDiagonals { get; set; }
 
         public override string[] InputNames
         {
-            get { return new string[] { "Previous Terrain", "New Land", "Terrain Modifier" }; }
+            get { return new[] { "Previous Terrain", "New Land", "Terrain Modifier" }; }
         }
 
         public override bool Is2DOnly
@@ -48,26 +61,23 @@ namespace Tychaia.ProceduralGeneration
             get { return true; }
         }
 
-        public AlgorithmDeriveTerrain()
-        {
-            this.CheckDiagonals = true;
-        }
-
-        public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] inputC, int[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] inputC, int[] output,
+            long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
             if (inputB[i + ox + (j + oy) * width + (k + oz) * width * height] != 0)
             {
                 if (inputA[i + ox + (j + oy) * width + (k + oz) * width * height] == 0)
                     output[i + ox + (j + oy) * width + (k + oz) * width * height] = 1;
                 else
-                    output[i + ox + (j + oy) * width + (k + oz) * width * height] = inputA[i + ox + (j + oy) * width + (k + oz) * width * height];
+                    output[i + ox + (j + oy) * width + (k + oz) * width * height] =
+                        inputA[i + ox + (j + oy) * width + (k + oz) * width * height];
 
                 if (inputB[i + 1 + ox + (j + oy) * width + (k + oz) * width * height] != 0 &&
                     inputB[i - 1 + ox + (j + oy) * width + (k + oz) * width * height] != 0 &&
                     inputB[i + ox + (j + 1 + oy) * width + (k + oz) * width * height] != 0 &&
                     inputB[i + ox + (j - 1 + oy) * width + (k + oz) * width * height] != 0)
                 {
-                    if (this.CheckDiagonals == true &&
+                    if (this.CheckDiagonals &&
                         inputB[i + 1 + ox + (j + 1 + oy) * width + (k + oz) * width * height] != 0 &&
                         inputB[i + 1 + ox + (j - 1 + oy) * width + (k + oz) * width * height] != 0 &&
                         inputB[i - 1 + ox + (j + 1 + oy) * width + (k + oz) * width * height] != 0 &&
@@ -81,7 +91,7 @@ namespace Tychaia.ProceduralGeneration
                     }
                 }
 
-                int add = inputC[i + ox + (j + oy) * width + (k + oz) * width * height];
+                var add = inputC[i + ox + (j + oy) * width + (k + oz) * width * height];
 
                 while (add > 50)
                 {
@@ -95,7 +105,7 @@ namespace Tychaia.ProceduralGeneration
             }
         }
 
-        public override System.Drawing.Color GetColorForValue(StorageLayer parent, dynamic value)
+        public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             if (value == 0)
                 return Color.FromArgb(0, 0, 255);
@@ -110,4 +120,3 @@ namespace Tychaia.ProceduralGeneration
         }
     }
 }
-

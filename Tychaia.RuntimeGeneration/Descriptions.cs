@@ -1,18 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 namespace Tychaia.RuntimeGeneration
 {
     public class Descriptions
     {
-        // Basically a class that will have random generations for anything that doesn't quite fit.
-        private static Random r = new Random();
-
         public string[] ResistPrefix
         {
-            get { return new string[] { "Resist", "Protection" }; }
+            get { return new[] { "Resist", "Protection" }; }
         }
     }
 }

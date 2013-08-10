@@ -1,12 +1,16 @@
-using System;
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using Protogame;
 
 namespace Tychaia.Game
 {
     public class ChunkEntity : Entity
     {
-        private IWorld m_World = null;
-        private float m_Z = 0;
+        private IWorld m_World;
+        private float m_Z;
 
         protected ChunkEntity(IWorld world)
         {
@@ -15,17 +19,9 @@ namespace Tychaia.Game
             base.Y = 0;
         }
 
-        public float ImageOffsetX
-        {
-            get;
-            set;
-        }
+        public float ImageOffsetX { get; set; }
 
-        public float ImageOffsetY
-        {
-            get;
-            set;
-        }
+        public float ImageOffsetY { get; set; }
 
         public float Z
         {
@@ -33,10 +29,6 @@ namespace Tychaia.Game
             set { this.m_Z = value; }
         }
 
-        public int Depth
-        {
-            get;
-            set;
-        }
+        public int Depth { get; set; }
     }
 }

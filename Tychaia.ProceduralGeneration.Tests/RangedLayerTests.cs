@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using Tychaia.ProceduralGeneration.Compiler;
 using Xunit;
 
@@ -96,7 +96,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         public void XBorderTest()
         {
             var perlin = new RuntimeLayer(new AlgorithmPerlin());
-            var passthrough = new RuntimeLayer(new AlgorithmPassthrough { XBorder = 2 });
+            var passthrough = new RuntimeLayer(new AlgorithmPassthrough {XBorder = 2});
             passthrough.SetInput(0, perlin);
 
             var ranged = new RangedLayer(passthrough);
@@ -150,7 +150,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         public void AllBorderTest()
         {
             var perlin = new RuntimeLayer(new AlgorithmPerlin());
-            var passthrough = new RuntimeLayer(new AlgorithmPassthrough { XBorder = 7, YBorder = 9, ZBorder = 11 });
+            var passthrough = new RuntimeLayer(new AlgorithmPassthrough {XBorder = 7, YBorder = 9, ZBorder = 11});
             passthrough.SetInput(0, perlin);
 
             var ranged = new RangedLayer(passthrough);
@@ -206,7 +206,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             var perlin = new RuntimeLayer(new AlgorithmPerlin());
             var add = new RuntimeLayer(new AlgorithmAdd());
             var perlin2 = new RuntimeLayer(new AlgorithmPerlin());
-            var passthrough = new RuntimeLayer(new AlgorithmPassthrough { XBorder = 7, YBorder = 9, ZBorder = 11 });
+            var passthrough = new RuntimeLayer(new AlgorithmPassthrough {XBorder = 7, YBorder = 9, ZBorder = 11});
             var heightC = new RuntimeLayer(new AlgorithmHeightChange());
             passthrough.SetInput(0, perlin2);
             add.SetInput(0, perlin);
@@ -331,4 +331,3 @@ namespace Tychaia.ProceduralGeneration.Tests
         }
     }
 }
-

@@ -1,7 +1,10 @@
+// 
+// This source code is licensed in accordance with the licensing outlined
+// on the main Tychaia website (www.tychaia.com).  Changes to the
+// license on the website apply retroactively.
+// 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Reflection;
 using Tychaia.RuntimeGeneration.Elements;
 
@@ -18,42 +21,54 @@ namespace Tychaia.RuntimeGeneration.Spells
 
         static SpellGenerator()
         {
-            foreach (Type t in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (var t in Assembly.GetExecutingAssembly().GetTypes())
             {
                 if (typeof(Element).IsAssignableFrom(t) && !t.IsAbstract)
-                    Elements.Add(
-                        (Element)t.GetConstructor(Type.EmptyTypes).Invoke(null),
-                        (double)t.GetField("Weight").GetValue(null)
-                    );
+                {
+                    var constructorInfo = t.GetConstructor(Type.EmptyTypes);
+                    if (constructorInfo != null)
+                        Elements.Add(
+                            (Element) constructorInfo.Invoke(null),
+                            (double) t.GetField("Weight").GetValue(null)
+                            );
+                }
                 if (typeof(SpellType).IsAssignableFrom(t) && !t.IsAbstract)
-                    Types.Add(
-                        (SpellType)t.GetConstructor(Type.EmptyTypes).Invoke(null),
-                        (double)t.GetField("Weight").GetValue(null)
-                    );
+                {
+                    var constructorInfo = t.GetConstructor(Type.EmptyTypes);
+                    if (constructorInfo != null)
+                        Types.Add(
+                            (SpellType) constructorInfo.Invoke(null),
+                            (double) t.GetField("Weight").GetValue(null)
+                            );
+                }
                 if (typeof(SpellModifier).IsAssignableFrom(t) && !t.IsAbstract)
-                    Modifiers.Add(
-                        (SpellModifier)t.GetConstructor(Type.EmptyTypes).Invoke(null),
-                        (double)t.GetField("Weight").GetValue(null)
-                    );
+                {
+                    var constructorInfo = t.GetConstructor(Type.EmptyTypes);
+                    if (constructorInfo != null)
+                        Modifiers.Add(
+                            (SpellModifier) constructorInfo.Invoke(null),
+                            (double) t.GetField("Weight").GetValue(null)
+                            );
+                }
             }
 
-            foreach (KeyValuePair<Element, double> kv in Elements)
+            foreach (var kv in Elements)
                 TotalWeightingElements += kv.Value;
-            foreach (KeyValuePair<SpellType, double> kv in Types)
+            foreach (var kv in Types)
                 TotalWeightingTypes += kv.Value;
-            foreach (KeyValuePair<SpellModifier, double> kv in Modifiers)
+            foreach (var kv in Modifiers)
                 TotalWeightingModifiers += kv.Value;
         }
 
         public static Spell Generate(int input)
         {
-            Random r = new Random(input);
-            double elementSelect = r.NextDouble() * TotalWeightingElements;
-            double typeSelect = r.NextDouble() * TotalWeightingTypes;
-            double modifierSelect = r.NextDouble() * TotalWeightingModifiers;
-            Element element = Locate<Element>(Elements, elementSelect);
-            SpellType type = Locate<SpellType>(Types, typeSelect);
-            SpellModifier modifier = Locate<SpellModifier>(Modifiers, modifierSelect);
+            var r = new Random(input);
+            var elementSelect = r.NextDouble() * TotalWeightingElements;
+            var typeSelect = r.NextDouble() * TotalWeightingTypes;
+            var modifierSelect = r.NextDouble() * TotalWeightingModifiers;
+            var element = Locate(Elements, elementSelect);
+            var type = Locate(Types, typeSelect);
+            var modifier = Locate(Modifiers, modifierSelect);
             return new Spell(element, type, modifier);
         }
 

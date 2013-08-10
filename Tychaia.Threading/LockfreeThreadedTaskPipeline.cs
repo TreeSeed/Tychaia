@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using System.Threading;
 
@@ -20,9 +20,9 @@ namespace Tychaia.Threading
     [Obsolete("This implementation has threading issues!", true)]
     public class LockfreeThreadedTaskPipeline<T> : IPipeline<T>
     {
+        private volatile TaskPipelineEntry<T> m_Head;
         private int? m_InputThread;
         private int? m_OutputThread;
-        private volatile TaskPipelineEntry<T> m_Head;
 
         /// <summary>
         /// Creates a new TaskPipeline with the current thread being
@@ -31,7 +31,7 @@ namespace Tychaia.Threading
         /// </summary>
         public LockfreeThreadedTaskPipeline(bool autoconnect = true)
         {
-            this.m_InputThread = autoconnect ? (int?)Thread.CurrentThread.ManagedThreadId : null;
+            this.m_InputThread = autoconnect ? (int?) Thread.CurrentThread.ManagedThreadId : null;
             this.m_OutputThread = null;
         }
 
@@ -91,7 +91,8 @@ namespace Tychaia.Threading
                 head = head.Next;
             if (head == null)
             {
-                if (Interlocked.CompareExchange(ref m_Head, new TaskPipelineEntry<T> { Value = value }, null) != null)
+                if (Interlocked.CompareExchange(ref this.m_Head, new TaskPipelineEntry<T> { Value = value }, null) !=
+                    null)
                     goto retry;
             }
             else
@@ -118,9 +119,9 @@ namespace Tychaia.Threading
 
             // Return the item and exchange the current head with
             // the next item, all in an atomic operation.
-            var head = m_Head;
+            var head = this.m_Head;
             retry:
-                var next = head.Next;
+            var next = head.Next;
             if (Interlocked.CompareExchange(ref head.Next, TaskPipelineEntry<T>.Sentinel, next) != next)
                 goto retry;
             this.m_Head = next;
@@ -144,7 +145,7 @@ namespace Tychaia.Threading
 
             // Return the item and exchange the current head with
             // the next item, all in an atomic operation.
-            var head = m_Head;
+            var head = this.m_Head;
             retry:
             var next = head.Next;
             if (Interlocked.CompareExchange(ref head.Next, TaskPipelineEntry<T>.Sentinel, next) != next)

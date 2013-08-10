@@ -1,11 +1,9 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
-using System.Drawing;
-using Ninject;
 using Tychaia.Globals;
 
 namespace Tychaia.ProceduralGeneration.Flow.Handlers
@@ -14,7 +12,7 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
     {
         private ICurrentWorldSeedProvider m_CurrentWorldSeedProvider;
         private IRenderingLocationProvider m_RenderingLocationProvider;
-    
+
         public GenerateRuntimeBitmapHandler(
             ICurrentWorldSeedProvider currentWorldSeedProvider,
             IRenderingLocationProvider renderingLocationProvider)
@@ -22,7 +20,7 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
             this.m_CurrentWorldSeedProvider = currentWorldSeedProvider;
             this.m_RenderingLocationProvider = renderingLocationProvider;
         }
-        
+
         public void Handle(StorageLayer layer, Action<FlowProcessingResponse> put)
         {
             HandlerHelper.SendStartMessage(
@@ -48,4 +46,3 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
         }
     }
 }
-

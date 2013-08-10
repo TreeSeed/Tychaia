@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using System.Net;
 using Data4;
@@ -13,13 +13,14 @@ namespace Tychaia.Network
 {
     public class TychaiaAssetManagerNetwork : INetworkProvider
     {
-        private static readonly ID ClientID =
+        private static readonly ID m_ClientID =
             new ID(
                 Guid.Parse("8b335407-ef34-4ce3-b3a3-d5f21b487df2"),
                 Guid.Parse("84748d6a-14b7-4ecf-8d2c-ec218f361fef"),
                 Guid.Parse("12a92ece-c6b6-43f5-80c2-501b629a7caf"),
                 Guid.Parse("c423dbc0-f151-4081-ae7b-9a93a22a3662"));
-        private static readonly ID AssetManagerID =
+
+        private static readonly ID m_AssetManagerID =
             new ID(
                 Guid.Parse("ab019f90-ca50-461c-a93e-2c2f27787235"),
                 Guid.Parse("11b08119-17cb-486b-b309-b5e13275c0b3"),
@@ -32,11 +33,7 @@ namespace Tychaia.Network
             this.IsAssetManager = isAssetManager;
         }
 
-        public bool IsAssetManager
-        {
-            get;
-            private set;
-        }
+        public bool IsAssetManager { get; private set; }
 
         #region INetworkProvider Members
 
@@ -47,43 +44,39 @@ namespace Tychaia.Network
             get
             {
                 if (this.IsAssetManager)
-                    return AssetManagerID;
-                return ClientID;
+                    return m_AssetManagerID;
+                return m_ClientID;
             }
         }
 
-        public int DiscoveryPort { get { return 9836; } }
+        public int DiscoveryPort
+        {
+            get { return 9836; }
+        }
 
         public int MessagingPort
         {
-            get
-            {
-                if (this.IsAssetManager)
-                    return 9837;
-                return 9838;
-            }
+            get { return this.IsAssetManager ? 9837 : 9838; }
         }
 
         public IPAddress IPAddress
         {
-            get
-            {
-                return IPAddress.Loopback;
-            }
+            get { return IPAddress.Loopback; }
         }
 
-        public bool IsFirst { get { return this.IsAssetManager; } }
+        public bool IsFirst
+        {
+            get { return this.IsAssetManager; }
+        }
 
         #endregion
 
         public void Join(ID id)
         {
             // We don't care about the ID.
-            Contact contact;
-            if (this.IsAssetManager)
-                contact = new Contact(ClientID, new IPEndPoint(IPAddress.Loopback, 9838));
-            else
-                contact = new Contact(AssetManagerID, new IPEndPoint(IPAddress.Loopback, 9837));
+            var contact = this.IsAssetManager
+                ? new Contact(m_ClientID, new IPEndPoint(IPAddress.Loopback, 9838))
+                : new Contact(m_AssetManagerID, new IPEndPoint(IPAddress.Loopback, 9837));
             this.Node.Contacts.Add(contact);
         }
 

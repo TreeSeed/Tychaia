@@ -1,8 +1,8 @@
-//
+// 
 // This source code is licensed in accordance with the licensing outlined
 // on the main Tychaia website (www.tychaia.com).  Changes to the
 // license on the website apply retroactively.
-//
+// 
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -11,12 +11,16 @@ using System.Linq;
 using System.Reflection;
 using ICSharpCode.Decompiler.Ast;
 using ICSharpCode.NRefactory.CSharp;
+using Protogame;
 using Tychaia.ProceduralGeneration.AstVisitors;
+using Tychaia.Threading;
 
 namespace Tychaia.ProceduralGeneration.Compiler
 {
     public static class LayerCompiler
     {
+        private static Random m_Random = new Random();
+
         public static IGenerator Compile(RuntimeLayer layer, bool optimize = true)
         {
             var result = ProcessRuntimeLayer(layer);
@@ -29,25 +33,11 @@ namespace Tychaia.ProceduralGeneration.Compiler
             return GenerateCode(result, optimize);
         }
 
-        private class ProcessedResult
-        {
-            public string ProcessedCode = null;
-            public string InitializationCode = null;
-            public string OutputVariableType = null;
-            public string OutputVariableName = null;
-            public string[] InputVariableNames = null;
-            public string Declarations = null;
-
-            public List<string> UsingStatements = new List<string>();
-            public IAlgorithm AlgorithmInstance = null;
-        }
-
-        private static Random m_Random = new Random();
         internal static string GenerateRandomIdentifier()
         {
             var result = "";
             for (var i = 0; i < 8; i++)
-                result += (char)((int)'a' + m_Random.Next(0, 26));
+                result += (char) ('a' + m_Random.Next(0, 26));
             return result;
         }
 
@@ -82,7 +72,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             result.OutputVariableName = GenerateRandomIdentifier();
             result.OutputVariableType = algorithm.OutputType.FullName;
             result.Declarations += result.OutputVariableType + "[] " + result.OutputVariableName +
-                " = new " + result.OutputVariableType + "[__cwidth * __cheight * __cdepth];\n";
+                                   " = new " + result.OutputVariableType + "[__cwidth * __cheight * __cdepth];\n";
 
             // Add the conditional container.
             var code = "if (i >= " + ranged.CalculationStartI.GetText(null) + " && " +
@@ -243,7 +233,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 .Replace("/****** %OUTPUT_TYPE% ******/", result.OutputVariableType)
                 .Replace("/****** %DECLS% ******/", result.Declarations)
                 .Replace("/****** %USING% ******/",
-                     result.UsingStatements
+                    result.UsingStatements
                         .Where(v => v != "System" && v != "Tychaia.ProceduralGeneration")
                         .Select(v => "using " + v + ";")
                         .DefaultIfEmpty("")
@@ -258,7 +248,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
             var formatter = FormattingOptionsFactory.CreateMono();
             formatter.SpaceBeforeMethodCallParentheses = false;
             formatter.SpaceBeforeIndexerDeclarationBracket = false;
-            tree.AcceptVisitor(new CSharpOutputVisitor(new TextWriterOutputFormatter(stringWriter) {
+            tree.AcceptVisitor(new CSharpOutputVisitor(new TextWriterOutputFormatter(stringWriter)
+            {
                 IndentationString = "  "
             }, formatter));
             final = stringWriter.ToString();
@@ -273,11 +264,11 @@ namespace Tychaia.ProceduralGeneration.Compiler
             var final = GenerateCode(result, optimize);
 
             // Create the type.
-            var parameters = new CompilerParameters(new string[]
+            var parameters = new CompilerParameters(new[]
             {
                 Assembly.GetExecutingAssembly().Location,
-                typeof(Protogame.PerlinNoise).Assembly.Location,
-                typeof(Tychaia.Threading.InlineTaskPipeline<>).Assembly.Location,
+                typeof(PerlinNoise).Assembly.Location,
+                typeof(InlineTaskPipeline<>).Assembly.Location,
                 "System.Core.dll"
             });
             parameters.GenerateExecutable = false;
@@ -291,12 +282,25 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 foreach (var error in results.Errors)
                     Console.WriteLine(error);
                 Console.WriteLine();
-                throw new InvalidOperationException("Unable to compile code for layer generation.  Compiled code contained errors.");
+                throw new InvalidOperationException(
+                    "Unable to compile code for layer generation.  Compiled code contained errors.");
             }
             var assembly = results.CompiledAssembly;
             var newType = assembly.GetType("CompiledLayer");
             return newType.GetConstructor(Type.EmptyTypes).Invoke(null) as IGenerator;
         }
+
+        private class ProcessedResult
+        {
+            public IAlgorithm AlgorithmInstance = null;
+            public string Declarations = null;
+            public string InitializationCode = null;
+            public string[] InputVariableNames = null;
+            public string OutputVariableName = null;
+            public string OutputVariableType = null;
+            public string ProcessedCode = null;
+
+            public List<string> UsingStatements = new List<string>();
+        }
     }
 }
-
