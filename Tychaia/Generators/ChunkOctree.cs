@@ -23,13 +23,13 @@ namespace Tychaia
         private long Translate(long v)
         {
             if (v < 0)
-                return (v / 256) - 256;
+                return (v / 256) - 1;
             return v / 256;
         }
 
         public Chunk Get(long x, long y, long z)
         {
-            var c = this.m_Octree.Find(this.Translate(x), this.Translate(y), this.Translate(z));
+            var c = PositionOctreeUtil.GetFast64(this.m_Octree, this.Translate(x), this.Translate(y), this.Translate(z)); 
             if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeValidation) && c != null &&
                 (c.X != x || c.Y != y || c.Z != z))
                 throw new InvalidOperationException(
