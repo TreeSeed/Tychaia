@@ -26,6 +26,7 @@ namespace Tychaia
             this.Bind<IChunkManagerEntityFactory>().ToFactory();
             this.Bind<IChunkGenerator>().To<DefaultChunkGenerator>().InSingletonScope();
             this.Bind<ITextureAtlasAssetFactory>().To<DefaultTextureAtlasAssetFactory>();
+            this.Bind<ICommand>().To<CameraCommand>();
 
 #if DEBUG
             var profiler = this.Kernel.Get<TychaiaProfiler>();

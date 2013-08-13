@@ -17,6 +17,7 @@ namespace Tychaia
         private readonly I3DRenderUtilities m_3DRenderUtilities;
         private readonly TextureAsset m_PlayerTexture;
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
+        private readonly IConsole m_Console;
         
         public bool InaccurateY { get; set; }
 
@@ -24,12 +25,14 @@ namespace Tychaia
             IFilteredFeatures filteredFeatures,
             IAssetManagerProvider assetManagerProvider,
             I3DRenderUtilities _3DRenderUtilities,
-            IChunkSizePolicy chunkSizePolicy)
+            IChunkSizePolicy chunkSizePolicy,
+            IConsole console)
         {
             this.m_FilteredFeatures = filteredFeatures;
             this.m_3DRenderUtilities = _3DRenderUtilities;
             this.m_PlayerTexture = assetManagerProvider.GetAssetManager().Get<TextureAsset>("chars.player.Player");
             this.m_ChunkSizePolicy = chunkSizePolicy;
+            this.m_Console = console;
 
             this.Width = 16;
             this.Height = 16;
@@ -43,6 +46,9 @@ namespace Tychaia
 
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
+            if (this.m_Console.Open)
+                return;
+
             // Update player and refocus screen.
             var state = Keyboard.GetState();
             var gpstate = GamePad.GetState(PlayerIndex.One);

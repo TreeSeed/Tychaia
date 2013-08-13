@@ -15,12 +15,23 @@ namespace Tychaia
 #if DEBUG
         private readonly TychaiaProfilerEntity m_TychaiaProfilerEntity;
         private readonly TychaiaProfiler m_TychaiaProfiler;
+        private readonly IConsole m_Console;
 
         public TychaiaWorldManager(
-            TychaiaProfilerEntity tychaiaProfilerEntity)
+            TychaiaProfilerEntity tychaiaProfilerEntity,
+            IConsole console)
         {
             this.m_TychaiaProfilerEntity = tychaiaProfilerEntity;
             this.m_TychaiaProfiler = this.m_TychaiaProfilerEntity.Profiler;
+            this.m_Console = console;
+        }
+#else
+        private readonly IConsole m_Console;
+
+        public TychaiaWorldManager(
+            IConsole console)
+        {
+            this.m_Console = console;
         }
 #endif
 
@@ -122,6 +133,22 @@ namespace Tychaia
             game.RenderContext.Projection = oldProjection;
             game.RenderContext.World = oldWorld;
 #endif
+
+            game.RenderContext.SpriteBatch.Begin();
+
+            foreach (var pass in game.RenderContext.Effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+
+                this.m_Console.Render(game.GameContext, game.RenderContext);
+            }
+
+            game.RenderContext.SpriteBatch.End();
+
+            game.GraphicsDevice.BlendState = BlendState.Opaque;
+            game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            game.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
+            game.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
         }
 
         public void Update<T>(T game) where T : Microsoft.Xna.Framework.Game, ICoreGame
@@ -143,6 +170,8 @@ namespace Tychaia
             }
             
             this.m_TychaiaProfilerEntity.Update(game.GameContext, game.UpdateContext);
+
+            this.m_Console.Update(game.GameContext, game.UpdateContext);
 #endif
         }
     }

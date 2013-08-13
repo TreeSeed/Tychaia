@@ -71,7 +71,10 @@ namespace Tychaia
                         Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation / 10f))),
                     Vector3.Zero,
                     Vector3.Up);
-                renderContext.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 4f / 3f, 1.0f,
+                renderContext.Projection = Matrix.CreatePerspectiveFieldOfView(
+                    MathHelper.PiOver4,
+                    renderContext.GraphicsDevice.Viewport.Width / (float)renderContext.GraphicsDevice.Viewport.Height,
+                    1.0f,
                     1000.0f);
                 this.m_Rotation++;
             }

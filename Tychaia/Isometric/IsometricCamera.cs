@@ -32,6 +32,8 @@ namespace Tychaia
             if (chunk == null) throw new ArgumentNullException("chunk");
             this.ChunkOctree = octree;
             this.Chunk = chunk;
+            this.Distance = 80;
+            this.VerticalAngle = 45;
         }
 
         public Vector3 CurrentFocus
@@ -95,15 +97,39 @@ namespace Tychaia
                 this.Chunk = newChunk;
         }
 
+        public int Distance { get; set; }
+
         private int m_Rotation;
+        public bool Rotation { get; set; }
+        
+        public float VerticalAngle { get; set; }
+        public bool Orthographic { get; set; }
+
         public void InitializeRenderContext(IRenderContext renderContext)
         {
-            //m_Rotation++;
+            if (this.Rotation)
+                this.m_Rotation++;
+            else
+                this.m_Rotation = 0;
+            var angle = new Vector3(0, 0, 15);
+            angle = Vector3.Transform(angle, Matrix.CreateRotationX(MathHelper.ToRadians(-this.VerticalAngle)));
+            angle = Vector3.Transform(angle, Matrix.CreateRotationY(MathHelper.PiOver4));
             renderContext.View = Matrix.CreateLookAt(
-                this.CurrentFocus + Vector3.Transform(new Vector3(15, 30, 15) * 35, Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation))),
+                this.CurrentFocus + Vector3.Transform(angle * this.Distance, Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation))),
                 this.CurrentFocus,
                 Vector3.Up);
-            renderContext.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 4f / 3f, 1.0f, 5000.0f);
+            if (this.Orthographic)
+                renderContext.Projection = Matrix.CreateOrthographic(
+                    renderContext.GraphicsDevice.Viewport.Width,
+                    renderContext.GraphicsDevice.Viewport.Height,
+                    1.0f,
+                    5000.0f);
+            else
+                renderContext.Projection = Matrix.CreatePerspectiveFieldOfView(
+                    MathHelper.PiOver4,
+                    renderContext.GraphicsDevice.Viewport.Width / (float)renderContext.GraphicsDevice.Viewport.Height,
+                    1.0f,
+                    5000.0f);
         }
     }
 }

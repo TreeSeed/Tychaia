@@ -9,6 +9,10 @@ namespace Tychaia
 {
     public interface IIsometricCamera
     {
+        bool Rotation { get; set; }
+        bool Orthographic { get; set; }
+        float VerticalAngle { get; set; }
+        int Distance { get; set; }
         int ChunkCenterX { get; set; }
         int ChunkCenterY { get; set; }
         Chunk Chunk { get; }

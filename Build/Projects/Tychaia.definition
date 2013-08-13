@@ -34,6 +34,7 @@
     <Compile Include="Assets\TychaiaAssetIoCModule.cs" />
     <Compile Include="ChunkManagement\ChunkManagerEntity.cs" />
     <Compile Include="ChunkManagement\IChunkManagerEntityFactory.cs" />
+    <Compile Include="Commands\CameraCommand.cs" />
     <Compile Include="GameAssetManagerProvider.cs" />
     <Compile Include="Generators\Chunk.cs" />
     <Compile Include="Generators\ChunkOctree.cs" />

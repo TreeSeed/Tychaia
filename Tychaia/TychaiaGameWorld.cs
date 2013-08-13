@@ -24,6 +24,7 @@ namespace Tychaia
         private ChunkManagerEntity m_ChunkManagerEntity;
         private IChunkSizePolicy m_ChunkSizePolicy;
         private IProfiler m_Profiler;
+        private IConsole m_Console;
 
         private FontAsset m_DefaultFont;
 
@@ -43,7 +44,8 @@ namespace Tychaia
             IIsometricCameraFactory isometricCameraFactory,
             IChunkSizePolicy chunkSizePolicy,
             IChunkManagerEntityFactory chunkManagerEntityFactory,
-            IProfiler profiler)
+            IProfiler profiler,
+            IConsole console)
         {
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
             this.m_2DRenderUtilities = _2DRenderUtilities;
@@ -52,6 +54,7 @@ namespace Tychaia
             this.m_FilteredConsole = filteredConsole;
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_Profiler = profiler;
+            this.m_Console = console;
 
             this.m_DiskLevel = null;
             this.ChunkOctree = chunkOctreeFactory.CreateChunkOctree();
@@ -64,7 +67,8 @@ namespace Tychaia
                 this.m_FilteredFeatures,
                 assetManagerProvider,
                 this.m_3DRenderUtilities,
-                this.m_ChunkSizePolicy);
+                this.m_ChunkSizePolicy,
+                this.m_Console);
             this.Entities = new List<IEntity> { this.m_ChunkManagerEntity, this.m_Player };
         }
 
