@@ -58,7 +58,7 @@ namespace Tychaia.ProceduralGeneration
         public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, Int32[] inputB, Int32[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
              output[(i + ox) + (j + oy) * width + (k + oz) * width* height] =
-				inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].Get(this.Identifier);
+                inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].Get(this.Identifier);
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
@@ -113,7 +113,7 @@ namespace Tychaia.ProceduralGeneration
         public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, Biome[] inputB, Biome[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
              output[(i + ox) + (j + oy) * width + (k + oz) * width* height] =
-				inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].Get(this.Identifier);
+                inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].Get(this.Identifier);
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
@@ -168,7 +168,7 @@ namespace Tychaia.ProceduralGeneration
         public override void ProcessCell(IRuntimeContext context, FlowBundle[] inputA, BlockInfo[] inputB, BlockInfo[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
              output[(i + ox) + (j + oy) * width + (k + oz) * width* height] =
-				inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].Get(this.Identifier);
+                inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height].Get(this.Identifier);
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)

@@ -18,7 +18,7 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Bundle from Int32")]
     public class AlgorithmBundleCreateInt32 : Algorithm<Int32, FlowBundle>
     {
-		[DataMember]
+        [DataMember]
         [DefaultValue(4)]
         [Description("The maximum amount of data stored within the bundle.")]
         public int BundleSize
@@ -62,14 +62,14 @@ namespace Tychaia.ProceduralGeneration
         {
             this.Layer2D = true;
             this.Identifier = "Unassigned";
-			this.BundleSize = 4;
+            this.BundleSize = 4;
         }
 
         public override void ProcessCell(IRuntimeContext context, Int32[] input, FlowBundle[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-			var bundle = new FlowBundle();
-			var result = bundle.Set(this.Identifier, input[(i + ox) + (j + oy) * width + (k + oz) * width * height]);
-			output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = result;
+            var bundle = new FlowBundle();
+            var result = bundle.Set(this.Identifier, input[(i + ox) + (j + oy) * width + (k + oz) * width * height]);
+            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = result;
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
@@ -84,7 +84,7 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Bundle from Biome")]
     public class AlgorithmBundleCreateBiome : Algorithm<Biome, FlowBundle>
     {
-		[DataMember]
+        [DataMember]
         [DefaultValue(4)]
         [Description("The maximum amount of data stored within the bundle.")]
         public int BundleSize
@@ -128,14 +128,14 @@ namespace Tychaia.ProceduralGeneration
         {
             this.Layer2D = true;
             this.Identifier = "Unassigned";
-			this.BundleSize = 4;
+            this.BundleSize = 4;
         }
 
         public override void ProcessCell(IRuntimeContext context, Biome[] input, FlowBundle[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-			var bundle = new FlowBundle();
-			var result = bundle.Set(this.Identifier, input[(i + ox) + (j + oy) * width + (k + oz) * width * height]);
-			output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = result;
+            var bundle = new FlowBundle();
+            var result = bundle.Set(this.Identifier, input[(i + ox) + (j + oy) * width + (k + oz) * width * height]);
+            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = result;
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
@@ -150,7 +150,7 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Bundle from BlockInfo")]
     public class AlgorithmBundleCreateBlockInfo : Algorithm<BlockInfo, FlowBundle>
     {
-		[DataMember]
+        [DataMember]
         [DefaultValue(4)]
         [Description("The maximum amount of data stored within the bundle.")]
         public int BundleSize
@@ -194,14 +194,14 @@ namespace Tychaia.ProceduralGeneration
         {
             this.Layer2D = true;
             this.Identifier = "Unassigned";
-			this.BundleSize = 4;
+            this.BundleSize = 4;
         }
 
         public override void ProcessCell(IRuntimeContext context, BlockInfo[] input, FlowBundle[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-			var bundle = new FlowBundle();
-			var result = bundle.Set(this.Identifier, input[(i + ox) + (j + oy) * width + (k + oz) * width * height]);
-			output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = result;
+            var bundle = new FlowBundle();
+            var result = bundle.Set(this.Identifier, input[(i + ox) + (j + oy) * width + (k + oz) * width * height]);
+            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = result;
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
