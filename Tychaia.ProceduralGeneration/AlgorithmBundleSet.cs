@@ -59,7 +59,7 @@ namespace Tychaia.ProceduralGeneration
         {
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
                 inputA[(i + ox) + (j + oy) * width + (k + oz) * width* height].Set(
-                    this.Identifier, 
+                    this.Identifier,
                     inputB[(i + ox) + (j + oy) * width + (k + oz) * width* height]);
         }
 
@@ -116,7 +116,7 @@ namespace Tychaia.ProceduralGeneration
         {
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
                 inputA[(i + ox) + (j + oy) * width + (k + oz) * width* height].Set(
-                    this.Identifier, 
+                    this.Identifier,
                     inputB[(i + ox) + (j + oy) * width + (k + oz) * width* height]);
         }
 
@@ -173,7 +173,7 @@ namespace Tychaia.ProceduralGeneration
         {
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
                 inputA[(i + ox) + (j + oy) * width + (k + oz) * width* height].Set(
-                    this.Identifier, 
+                    this.Identifier,
                     inputB[(i + ox) + (j + oy) * width + (k + oz) * width* height]);
         }
 
