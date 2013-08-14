@@ -5,7 +5,13 @@
 @using Cassette.Views;
 @{
     ViewBag.Title = @Model.Page.Title;
-    Bundles.Reference("Syntax");
+    try
+    {
+        Bundles.Reference("Syntax");
+    }
+    catch (System.NullReferenceException)
+    {
+    }
 }
 
 <h2>

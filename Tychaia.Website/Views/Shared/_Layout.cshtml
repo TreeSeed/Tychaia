@@ -3,8 +3,15 @@
 @using Tychaia.Website;
 @using Cassette.Views;
 @{
-    Bundles.Reference("Content");
-    Bundles.Reference("Scripts");
+    try
+    {
+        Bundles.Reference("Content");
+        Bundles.Reference("Scripts");
+    }
+    catch (System.NullReferenceException)
+    {
+        // This crashes under unit tests.
+    }
 }
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">

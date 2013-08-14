@@ -192,11 +192,19 @@ public static class RazorHelper<T>
         {
             compParams.ReferencedAssemblies.Add(@"..\..\..\Tychaia.Website\bin\System.Web.WebPages.dll");
             compParams.ReferencedAssemblies.Add(@"..\..\..\Tychaia.Website\bin\System.Web.Mvc.dll");
+            compParams.ReferencedAssemblies.Add(@"..\..\..\Tychaia.Website\bin\Cassette.dll");
+            compParams.ReferencedAssemblies.Add(@"..\..\..\Tychaia.Website\bin\Cassette.Aspnet.dll");
+            compParams.ReferencedAssemblies.Add(@"..\..\..\Tychaia.Website\bin\Cassette.Less.dll");
+            compParams.ReferencedAssemblies.Add(@"..\..\..\Tychaia.Website\bin\Cassette.Views.dll");
         }
         else
         {
             compParams.ReferencedAssemblies.Add("System.Web.WebPages.dll");
             compParams.ReferencedAssemblies.Add("System.Web.Mvc.dll");
+            compParams.ReferencedAssemblies.Add("Cassette.dll");
+            compParams.ReferencedAssemblies.Add("Cassette.Aspnet.dll");
+            compParams.ReferencedAssemblies.Add("Cassette.Less.dll");
+            compParams.ReferencedAssemblies.Add("Cassette.Views.dll");
         }
         compParams.ReferencedAssemblies.Add("Microsoft.CSharp.dll");
         compParams.ReferencedAssemblies.Add("Tychaia.Website.dll");

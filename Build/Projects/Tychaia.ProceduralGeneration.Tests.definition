@@ -16,7 +16,6 @@
     <Compile Include="AlgorithmPassthroughTest.cs" />
     <Compile Include="AlgorithmZoomTest.cs" />
     <Compile Include="BorderTests.cs" />
-    <Compile Include="CompilerTest.cs" />
     <Compile Include="CompilerTests.cs" />
     <Compile Include="ContinuityTests.cs" />
     <Compile Include="RangedLayerTests.cs" />
