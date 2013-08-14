@@ -33,8 +33,14 @@
     <Compile Include="Assets\TextureAtlasAssetSaver.cs" />
     <Compile Include="Assets\TychaiaAssetIoCModule.cs" />
     <Compile Include="ChunkManagement\ChunkManagerEntity.cs" />
+    <Compile Include="ChunkManagement\FrustumBasedChunkGeneratorAI.cs" />
+    <Compile Include="ChunkManagement\FrustumBasedChunkRenderPickerAI.cs" />
+    <Compile Include="ChunkManagement\IChunkAI.cs" />
     <Compile Include="ChunkManagement\IChunkManagerEntityFactory.cs" />
+    <Compile Include="ChunkManagement\PredeterminedChunkGeneratorAI.cs" />
+    <Compile Include="ChunkManagement\PredeterminedChunkRenderPickerAI.cs" />
     <Compile Include="Commands\CameraCommand.cs" />
+    <Compile Include="Commands\ChunkAICommand.cs" />
     <Compile Include="GameAssetManagerProvider.cs" />
     <Compile Include="Generators\Chunk.cs" />
     <Compile Include="Generators\ChunkOctree.cs" />
@@ -42,6 +48,9 @@
     <Compile Include="Generators\IChunkOctreeFactory.cs" />
     <Compile Include="Implementations\DefaultChunkGenerator.cs" />
     <Compile Include="Implementations\DefaultChunkSizePolicy.cs" />
+    <Compile Include="Implementations\DefaultDebugCubeRenderer.cs" />
+    <Compile Include="Implementations\DefaultFrustumChunkCache.cs" />
+    <Compile Include="Implementations\DefaultPredeterminedChunkPositions.cs" />
     <Compile Include="Implementations\DefaultRenderTargetFactory.cs" />
     <Compile Include="Isometric\IIsometricCamera.cs" />
     <Compile Include="Isometric\IIsometricCameraFactory.cs" />
@@ -61,6 +70,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Services\IChunkGenerator.cs" />
     <Compile Include="Services\IChunkSizePolicy.cs" />
+    <Compile Include="Services\IDebugCubeRenderer.cs" />
+    <Compile Include="Services\IFrustumChunkCache.cs" />
+    <Compile Include="Services\IPredeterminedChunkPositions.cs" />
     <Compile Include="Services\IRenderTargetFactory.cs" />
     <Compile Include="TychaiaGame.cs" />
     <Compile Include="TychaiaGameWorld.cs" />

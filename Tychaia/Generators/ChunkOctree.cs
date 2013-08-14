@@ -1,8 +1,8 @@
-// 
-// This source code is licensed in accordance with the licensing outlined
-// on the main Tychaia website (www.tychaia.com).  Changes to the
-// license on the website apply retroactively.
-// 
+// ====================================================================== //
+// This source code is licensed in accordance with the licensing outlined //
+// on the main Tychaia website (www.tychaia.com).  Changes to the         //
+// license on the website apply retroactively.                            //
+// ====================================================================== //
 using System;
 using Protogame;
 using Tychaia.Globals;
@@ -13,18 +13,21 @@ namespace Tychaia
     {
         private readonly IFilteredFeatures m_FilteredFeatures;
         private readonly PositionOctree<Chunk> m_Octree = new PositionOctree<Chunk>();
+        private readonly int m_ChunkVoxelWidth;
 
         public ChunkOctree(
-            IFilteredFeatures filteredFeatures)
+            IFilteredFeatures filteredFeatures,
+            IChunkSizePolicy chunkSizePolicy)
         {
             this.m_FilteredFeatures = filteredFeatures;
+            this.m_ChunkVoxelWidth = chunkSizePolicy.CellVoxelWidth * chunkSizePolicy.ChunkCellWidth;
         }
         
         private long Translate(long v)
         {
             if (v < 0)
-                return (v / 256) - 1;
-            return v / 256;
+                return (v / this.m_ChunkVoxelWidth) - 1;
+            return v / this.m_ChunkVoxelWidth;
         }
 
         public Chunk Get(long x, long y, long z)

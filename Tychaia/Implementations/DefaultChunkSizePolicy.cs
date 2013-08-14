@@ -1,8 +1,8 @@
-// 
-// This source code is licensed in accordance with the licensing outlined
-// on the main Tychaia website (www.tychaia.com).  Changes to the
-// license on the website apply retroactively.
-// 
+// ====================================================================== //
+// This source code is licensed in accordance with the licensing outlined //
+// on the main Tychaia website (www.tychaia.com).  Changes to the         //
+// license on the website apply retroactively.                            //
+// ====================================================================== //
 namespace Tychaia
 {
     public class DefaultChunkSizePolicy : IChunkSizePolicy
@@ -24,17 +24,17 @@ namespace Tychaia
 
         public int ChunkCellWidth
         {
-            get { return 8; }
+            get { return 32; }
         }
 
         public int ChunkCellHeight
         {
-            get { return 8; }
+            get { return 32; }
         }
 
         public int ChunkCellDepth
         {
-            get { return 8; }
+            get { return 32; }
         }
     }
 }

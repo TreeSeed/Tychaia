@@ -1,8 +1,8 @@
-// 
-// This source code is licensed in accordance with the licensing outlined
-// on the main Tychaia website (www.tychaia.com).  Changes to the
-// license on the website apply retroactively.
-// 
+// ====================================================================== //
+// This source code is licensed in accordance with the licensing outlined //
+// on the main Tychaia website (www.tychaia.com).  Changes to the         //
+// license on the website apply retroactively.                            //
+// ====================================================================== //
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -42,11 +42,11 @@ namespace Tychaia.ProceduralGeneration
         {
             BlockInfo result;
             var value = input[(i + ox) + (j + oy) * width + (k + oz) * width * height];
-            if (value <= 0 && (input[(i + ox) + (j + oy) * width + (k + oz + 1) * width * height] == Int32.MaxValue || input[(i + ox - 1) + (j + oy) * width + (k + oz) * width * height] == Int32.MaxValue || input[(i + ox) + (j + oy - 1) * width + (k + oz) * width * height] == Int32.MaxValue || input[(i + ox + 1) + (j + oy) * width + (k + oz) * width * height] == Int32.MaxValue || input[(i + ox) + (j + oy + 1) * width + (k + oz) * width * height] == Int32.MaxValue))
+            if (value <= 0)
                 result = new BlockInfo("block.Water");
-            else if (value == Int32.MaxValue || value <= 0)
+            else if (value == Int32.MaxValue)
                 result = new BlockInfo(null);
-            else if  (input[(i + ox) + (j + oy) * width + (k + oz + 1) * width * height] == Int32.MaxValue || input[(i + ox - 1) + (j + oy) * width + (k + oz) * width * height] == Int32.MaxValue || input[(i + ox) + (j + oy - 1) * width + (k + oz) * width * height] == Int32.MaxValue || input[(i + ox + 1) + (j + oy) * width + (k + oz) * width * height] == Int32.MaxValue || input[(i + ox) + (j + oy + 1) * width + (k + oz) * width * height] == Int32.MaxValue)
+            else if  (input[(i + ox) + (j + oy) * width + (k + oz + 1) * width * height] == Int32.MaxValue)
                 result = new BlockInfo("block.Grass");
             else
                 result = new BlockInfo("block.Dirt");
