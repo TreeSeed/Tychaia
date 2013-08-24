@@ -11,6 +11,8 @@ using Protogame;
 using ProtogameAssetManager;
 using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Tychaia
 {
@@ -27,6 +29,8 @@ namespace Tychaia
             kernel.Load<TychaiaAssetIoCModule>();
             kernel.Load<TychaiaIsometricIoCModule>();
             kernel.Load<TychaiaGlobalIoCModule>();
+            kernel.Load<TychaiaDiskIoCModule>();
+            kernel.Load<TychaiaProfilingIoCModule>();
             kernel.Load<TychaiaProceduralGenerationIoCModule>();
             AssetManagerClient.AcceptArgumentsAndSetup<LocalAssetManagerProvider>(kernel, args);
 

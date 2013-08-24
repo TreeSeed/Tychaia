@@ -26,7 +26,7 @@ namespace Tychaia
         /// </summary>
         private long m_CurrentZ;
 
-        public IsometricCamera(ChunkOctree octree, Chunk chunk)
+        public IsometricCamera(ChunkOctree octree, RuntimeChunk chunk)
         {
             if (octree == null) throw new ArgumentNullException("octree");
             if (chunk == null) throw new ArgumentNullException("chunk");
@@ -54,7 +54,7 @@ namespace Tychaia
         /// <summary>
         /// The chunk that is currently the focus of the camera.
         /// </summary>
-        public Chunk Chunk { get; private set; }
+        public RuntimeChunk Chunk { get; private set; }
 
         /// <summary>
         /// The octree that holds all of the chunks.

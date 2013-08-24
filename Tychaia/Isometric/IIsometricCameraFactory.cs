@@ -7,6 +7,6 @@ namespace Tychaia
 {
     public interface IIsometricCameraFactory
     {
-        IsometricCamera CreateIsometricCamera(ChunkOctree octree, Chunk chunk);
+        IsometricCamera CreateIsometricCamera(ChunkOctree octree, RuntimeChunk chunk);
     }
 }

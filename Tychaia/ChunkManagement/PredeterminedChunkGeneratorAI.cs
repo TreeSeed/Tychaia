@@ -34,7 +34,7 @@ namespace Tychaia
 
         public string ShowDebugInfo { get; set; }
 
-        public Chunk[] Process(
+        public RuntimeChunk[] Process(
             TychaiaGameWorld world,
             ChunkManagerEntity manager,
             IGameContext gameContext,
@@ -62,6 +62,7 @@ namespace Tychaia
                         color);
                     var chunk = this.GetChunkOrGenerate(
                         world.ChunkOctree,
+                        world.Level,
                         (long)position.X,
                         (long)position.Y,
                         (long)position.Z);
@@ -83,6 +84,7 @@ namespace Tychaia
                 {
                     this.GetChunkOrGenerate(
                         world.ChunkOctree,
+                        world.Level,
                         (long)position.X,
                         (long)position.Y,
                         (long)position.Z);
@@ -91,7 +93,7 @@ namespace Tychaia
             return null;
         }
 
-        private Chunk GetChunkOrGenerate(ChunkOctree octree, long x, long y, long z)
+        private RuntimeChunk GetChunkOrGenerate(ChunkOctree octree, ILevel level, long x, long y, long z)
         {
             using (this.m_Profiler.Measure("tychaia-chunk_test"))
             {
@@ -102,7 +104,7 @@ namespace Tychaia
             using (this.m_Profiler.Measure("tychaia-chunk_create"))
             {
                 return this.m_ChunkFactory.CreateChunk(
-                    null,
+                    level,
                     octree,
                     x,
                     y,

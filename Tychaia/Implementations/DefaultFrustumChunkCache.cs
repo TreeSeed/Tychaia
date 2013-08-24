@@ -82,7 +82,7 @@ namespace Tychaia
                 yield return relative + currentFocus;
         }
 
-        public IEnumerable<Chunk> GetChunks(ChunkOctree octree, Vector3 focus)
+        public IEnumerable<RuntimeChunk> GetChunks(ChunkOctree octree, Vector3 focus)
         {
             foreach (var position in this.GetAbsolutePositions(focus))
                 yield return octree.Get((long)position.X, (long)position.Y, (long)position.Z);

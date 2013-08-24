@@ -25,7 +25,7 @@ namespace Tychaia
             this.m_PredeterminedChunkPositions = predeterminedChunkPositions;
         }
 
-        public Chunk[] Process(
+        public RuntimeChunk[] Process(
             TychaiaGameWorld world,
             ChunkManagerEntity manager,
             IGameContext gameContext,

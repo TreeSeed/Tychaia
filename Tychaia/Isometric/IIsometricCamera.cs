@@ -15,7 +15,7 @@ namespace Tychaia
         int Distance { get; set; }
         int ChunkCenterX { get; set; }
         int ChunkCenterY { get; set; }
-        Chunk Chunk { get; }
+        RuntimeChunk Chunk { get; }
         ChunkOctree ChunkOctree { get; }
 
         void Pan(long x, long y, long z);

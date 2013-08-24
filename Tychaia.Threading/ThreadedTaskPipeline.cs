@@ -123,8 +123,8 @@ namespace Tychaia.Threading
         }
 
         /// <summary>
-        /// Takes the next item from the pipeline, or blocks until an item
-        /// is recieved.
+        /// Tries to take the next item from the pipeline, setting
+        /// retrieved to false if there was nothing to take.
         /// </summary>
         /// <returns>The next item.</returns>
         public T Take(out bool retrieved)

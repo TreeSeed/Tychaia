@@ -24,7 +24,7 @@ namespace Tychaia.RuntimeGeneration.Elements
         /// The chunks contained within this region.  References either the chunk or
         /// null depending on whether the chunk has been loaded into memory.
         /// </summary>
-        private Chunk[,] m_Chunks = new Chunk[REGION_SIZE / 16, REGION_SIZE / 16];
+        private RuntimeChunk[,] m_Chunks = new RuntimeChunk[REGION_SIZE / 16, REGION_SIZE / 16];
 
         /// <summary>
         /// The neighbouring regions.

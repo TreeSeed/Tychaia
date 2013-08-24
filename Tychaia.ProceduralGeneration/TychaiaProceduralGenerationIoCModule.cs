@@ -14,6 +14,7 @@ namespace Tychaia.ProceduralGeneration
         {
             this.Bind<IFlowProcessingRequestHandler>().To<FlowProcessingRequestHandler>().InSingletonScope();
             this.Bind<IGeneratorResolver>().To<DefaultGeneratorResolver>();
+            this.Bind<IGenerationPlanner>().To<DefaultGenerationPlanner>();
         }
     }
 }

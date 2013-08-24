@@ -3,8 +3,8 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,26 +20,29 @@ namespace Tychaia
         private readonly IAssetManager m_AssetManager;
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
         private readonly TextureAtlasAsset m_TextureAtlasAsset;
-        private readonly ThreadedTaskPipeline<Chunk> m_Pipeline;
+        private readonly ThreadedTaskPipeline<RuntimeChunk> m_Pipeline;
         private readonly IGenerator m_Generator;
+        private readonly IFlowBundleToCellConverter m_FlowBundleToCellConverter;
 
         public DefaultChunkGenerator(
             IChunkSizePolicy chunkSizePolicy,
             IAssetManagerProvider assetManagerProvider,
-            IGeneratorResolver generatorResolver)
+            IGeneratorResolver generatorResolver,
+            IFlowBundleToCellConverter flowBundleToCellConverter)
         {
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_AssetManager = assetManagerProvider.GetAssetManager();
             this.m_TextureAtlasAsset = this.m_AssetManager.Get<TextureAtlasAsset>("atlas");
-            this.m_Pipeline = new ThreadedTaskPipeline<Chunk>();
+            this.m_Pipeline = new ThreadedTaskPipeline<RuntimeChunk>();
             this.m_Generator = generatorResolver.GetGeneratorForGame();
             this.m_Generator.SetSeed(10000);
+            this.m_FlowBundleToCellConverter = flowBundleToCellConverter;
             
-            var thread = new Thread(this.Run) { IsBackground = true };
+            var thread = new Thread(this.Run) { IsBackground = true, Priority = ThreadPriority.Highest };
             thread.Start();
         }
 
-        public void Generate(Chunk chunk)
+        public void Generate(RuntimeChunk chunk)
         {
             this.m_Pipeline.Put(chunk);
         }
@@ -70,7 +73,7 @@ namespace Tychaia
                                 x +
                                 z * this.m_ChunkSizePolicy.ChunkCellWidth +
                                 y * this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.ChunkCellHeight];
-                            chunk.Cells[x, y, z] = info;
+                            chunk.Cells[x, y, z] = this.m_FlowBundleToCellConverter.ConvertToCell(info);
                             var block = (BlockInfo)info.Get("BlockInfo");
                             if (block.BlockAssetName == null)
                                 continue;
@@ -120,6 +123,7 @@ namespace Tychaia
                 chunk.GeneratedVertexes = vertexes.ToArray();
                 chunk.GeneratedIndices = indices.ToArray();
                 chunk.Generated = true;
+                Console.WriteLine("Finished generation for chunk " + chunk.X + ", " + chunk.Y + ", " + chunk.Z + ".");
             }
 
             // ReSharper disable once FunctionNeverReturns

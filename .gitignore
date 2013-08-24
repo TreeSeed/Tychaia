@@ -39,3 +39,9 @@ MakeMeAWorld/bin/Compiler/CompiledLayerTemplate.cs
 _UpgradeReport_Files/*
 Backup*/*
 UpgradeLog*.*
+
+# Ignore the bin folder.
+Tychaia.Content/compiled/bin/*
+
+# Ignore the .source file created by Protobuild.
+Tychaia.Content/assets/.source

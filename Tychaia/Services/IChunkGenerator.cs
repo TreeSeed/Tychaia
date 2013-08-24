@@ -7,6 +7,6 @@ namespace Tychaia
 {
     public interface IChunkGenerator
     {
-        void Generate(Chunk chunkz);
+        void Generate(RuntimeChunk chunk);
     }
 }

@@ -13,9 +13,6 @@
 [submodule "Libraries/MonoGame"]
 	path = Libraries/MonoGame
 	url = git://github.com/mono/MonoGame.git
-[submodule "Tychaia.Content"]
-	path = Tychaia.Content
-	url = git://github.com/hach-que/Tychaia.Content.git
 [submodule "Build/cslint"]
 	path = Build/cslint
 	url = git://github.com/hach-que/cslint.git

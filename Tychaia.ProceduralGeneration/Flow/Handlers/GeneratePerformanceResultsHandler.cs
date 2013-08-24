@@ -32,8 +32,8 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
 
             // Settings.
             var testTime = 50;
-            var warningLimit = 100000; // 0.1s
-            var badLimit = 300000; // 0.3s
+            var warningLimit = 5000; // 5ms
+            var badLimit = 16000; // 16ms
 
             // Perform conversions.
             var runtime = StorageAccess.ToRuntime(layer);
@@ -54,7 +54,7 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
             var iterations = 0;
             while ((DateTime.Now - runtimeStart).TotalMilliseconds < testTime)
             {
-                runtime.GenerateData(0, 0, 0, 8, 8, 8, out runtimeComputations);
+                runtime.GenerateData(0, 0, 0, 32, 32, 32, out runtimeComputations);
                 iterations++;
             }
             var runtimeEnd = DateTime.Now;
@@ -67,7 +67,7 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
                 try
                 {
                     for (var i = 0; i < iterations; i++)
-                        compiled.GenerateData(0, 0, 0, 8, 8, 8, out compiledComputations);
+                        compiled.GenerateData(0, 0, 0, 32, 32, 32, out compiledComputations);
                 }
                 catch
                 {

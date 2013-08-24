@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="Tychaia.Data" Path="Tychaia.Data" Type="Library">
+  <Properties>
+    <Property Name="PrecompileProtobuf" Value="True" />
+    <Property Name="PrecompileProtobufInputPath" Value="Tychaia.Data/bin/$(Configuration)/Tychaia.Data.dll" />
+    <Property Name="PrecompileProtobufOutputPath" Value="Tychaia.Data/bin/$(Configuration)/Tychaia.Data.Serializer.dll" />
+    <Property Name="PrecompileProtobufSerializerName" Value="TychaiaDataSerializer" />
+  </Properties>
+  <References>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="protobuf-net" />
+  </References>
+  <Files>
+    <Compile Include="Cell.cs" />
+    <Compile Include="Chunk.cs" />
+    <Compile Include="Vertex.cs" />
+  </Files>
+</Project>

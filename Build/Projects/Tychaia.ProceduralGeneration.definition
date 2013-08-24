@@ -14,6 +14,8 @@
     <Reference Include="Protogame" />
     <Reference Include="Ninject" />
     <Reference Include="Tychaia.Threading" />
+    <Reference Include="Tychaia.Data" />
+    <Reference Include="Tychaia.Data.Serializer" />
   </References>
   <Files>
     <Compile Include="AlgorithmAdd.cs" />
@@ -120,6 +122,11 @@
     <Compile Include="IGenerator.cs" />
     <Compile Include="IGeneratorResolver.cs" />
     <Compile Include="IRuntimeContext.cs" />
+    <Compile Include="Planner\DefaultGenerationPlanner.cs" />
+    <Compile Include="Planner\DefaultGenerationRequest.cs" />
+    <Compile Include="Planner\GenerationRegion.cs" />
+    <Compile Include="Planner\IGenerationPlanner.cs" />
+    <Compile Include="Planner\IGenerationRequest.cs" />
     <Compile Include="Professions\Professions.cs" />
     <Compile Include="RuntimeLayer.cs" />
     <Compile Include="StorageAccess.cs" />

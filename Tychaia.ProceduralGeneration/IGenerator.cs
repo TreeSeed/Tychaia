@@ -23,5 +23,10 @@ namespace Tychaia.ProceduralGeneration
         /// Generates data using the current algorithm.
         /// </summary>
         dynamic GenerateData(long x, long y, long z, int width, int height, int depth, out int computations);
+
+        /// <summary>
+        /// Occurs when data has been generated for an algorithm.
+        /// </summary>
+        event DataGeneratedEventHandler DataGenerated;
     }
 }

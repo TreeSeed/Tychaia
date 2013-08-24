@@ -19,7 +19,7 @@ namespace Tychaia
         void SetFrustumScope(Matrix frustum);
         IEnumerable<Vector3> GetRelativePositions();
         IEnumerable<Vector3> GetAbsolutePositions(Vector3 currentFocus);
-        IEnumerable<Chunk> GetChunks(ChunkOctree octree, Vector3 focus);
+        IEnumerable<RuntimeChunk> GetChunks(ChunkOctree octree, Vector3 focus);
     }
 }
 

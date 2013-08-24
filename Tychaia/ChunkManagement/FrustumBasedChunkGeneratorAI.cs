@@ -45,7 +45,7 @@ namespace Tychaia
 
         public string ShowDebugInfo { get; set; }
 
-        public Chunk[] Process(
+        public RuntimeChunk[] Process(
             TychaiaGameWorld world,
             ChunkManagerEntity manager,
             IGameContext gameContext,
@@ -102,7 +102,7 @@ namespace Tychaia
             return null;
         }
 
-        private Chunk GetChunkOrGenerate(ChunkOctree octree, long x, long y, long z)
+        private RuntimeChunk GetChunkOrGenerate(ChunkOctree octree, long x, long y, long z)
         {
             using (this.m_Profiler.Measure("tychaia-chunk_test"))
             {

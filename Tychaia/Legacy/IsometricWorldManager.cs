@@ -39,7 +39,7 @@ namespace Tychaia
             set;
         }
 
-        private Chunk Chunk
+        private RuntimeChunk Chunk
         {
             get;
             set;
@@ -55,14 +55,14 @@ namespace Tychaia
 
         private struct RelativeRenderInformation
         {
-            public Chunk Target;
+            public RuntimeChunk Target;
             public int X;
             public int Y;
         }
 
         private const int UNKNOWN_Y_OFFSET = -16;
 
-        private IEnumerable<RelativeRenderInformation> GetRelativeRenderInformation(IGameContext context, Chunk center)
+        private IEnumerable<RelativeRenderInformation> GetRelativeRenderInformation(IGameContext context, RuntimeChunk center)
         {
             List<RelativeRenderInformation> renders = new List<RelativeRenderInformation>();
 
@@ -125,7 +125,7 @@ namespace Tychaia
                  * to render (rounded upward)
                  */
 
-                Chunk c = center;
+                var c = center;
                 if (j < innerHorizontalChunksToRender / 2)
                 {
                     for (int i = innerHorizontalChunksToRender / 2; i > j; i--)
@@ -167,7 +167,7 @@ namespace Tychaia
                     /* Loop -2 to +2 on the Z axis */
                     for (int k = -2; k <= 0; k++)
                     {
-                        Chunk zc = c;
+                        var zc = c;
                         for (int a = 0; a > k; a--)
                             zc = zc.Down;
                         for (int a = 0; a < k; a++)

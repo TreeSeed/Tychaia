@@ -14,7 +14,7 @@ namespace Tychaia
         /// if the render list shouldn't be changed.  There should only be one chunk AI that
         /// returns a non-null value from this function.
         /// </summary>
-        Chunk[] Process(
+        RuntimeChunk[] Process(
             TychaiaGameWorld world,
             ChunkManagerEntity manager,
             IGameContext gameContext,

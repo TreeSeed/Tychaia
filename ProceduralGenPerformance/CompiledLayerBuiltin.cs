@@ -22,6 +22,8 @@ public class CompiledLayerBuiltin : IRuntimeContext, IGenerator
         set;
     }
 
+    public event DataGeneratedEventHandler DataGenerated;
+
     #region AUTO-GENERATED CODE
 
     public dynamic GenerateData(long x, long y, long z, int width, int height, int depth, out int computations)

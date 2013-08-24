@@ -233,11 +233,11 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
 
     $regenerate_start = microtime(true);
     $regenerate_future = new ExecFuture(
-      "%C %s",
-      $this->buildEngine,
-      "/p:TargetPlatform=$platform");
+      "%C Protobuild.exe --resync %s",
+      $this->runtimeEngine,
+      $platform);
     $regenerate_future->setCWD(Filesystem::resolvePath(
-      $this->projectRoot."/Build"));
+      $this->projectRoot));
     $results = array();
     $result = new ArcanistUnitTestResult();
     $result->setName("(regenerate projects for $platform)");

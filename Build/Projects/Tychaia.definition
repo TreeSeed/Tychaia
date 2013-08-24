@@ -14,13 +14,15 @@
     <Reference Include="ProtogameAssetManager" />
     <Reference Include="Tychaia.Globals" />
     <Reference Include="Tychaia.Game" />
-    <Reference Include="Tychaia.Disk" />
+    <Reference Include="Tychaia.Data" />
+    <Reference Include="Tychaia.Data.Serializer" />
     <Reference Include="Tychaia.ProceduralGeneration" />
     <Reference Include="Tychaia.Content" />
     <Reference Include="Tychaia.Threading" />
     <Reference Include="MonoGame" />
     <Reference Include="Dx" />
     <Reference Include="Ninject" />
+    <Reference Include="protobuf-net" />
   </References>
   <Files>
     <Compile Include="Assets\BlockAsset.cs" />
@@ -33,22 +35,32 @@
     <Compile Include="Assets\TextureAtlasAssetSaver.cs" />
     <Compile Include="Assets\TychaiaAssetIoCModule.cs" />
     <Compile Include="ChunkManagement\ChunkManagerEntity.cs" />
+    <Compile Include="ChunkManagement\ChunkOctree.cs" />
     <Compile Include="ChunkManagement\FrustumBasedChunkGeneratorAI.cs" />
     <Compile Include="ChunkManagement\FrustumBasedChunkRenderPickerAI.cs" />
     <Compile Include="ChunkManagement\IChunkAI.cs" />
+    <Compile Include="ChunkManagement\IChunkFactory.cs" />
     <Compile Include="ChunkManagement\IChunkManagerEntityFactory.cs" />
+    <Compile Include="ChunkManagement\IChunkOctreeFactory.cs" />
     <Compile Include="ChunkManagement\PredeterminedChunkGeneratorAI.cs" />
     <Compile Include="ChunkManagement\PredeterminedChunkRenderPickerAI.cs" />
+    <Compile Include="ChunkManagement\RuntimeChunk.cs" />
     <Compile Include="Commands\CameraCommand.cs" />
     <Compile Include="Commands\ChunkAICommand.cs" />
+    <Compile Include="Disk\CombinedLevelAPI.cs" />
+    <Compile Include="Disk\ILevel.cs" />
+    <Compile Include="Disk\ILevelAPI.cs" />
+    <Compile Include="Disk\ILevelAPIImpl.cs" />
+    <Compile Include="Disk\Tychaia\ITychaiaLevelFactory.cs" />
+    <Compile Include="Disk\Tychaia\SimpleLevel.cs" />
+    <Compile Include="Disk\Tychaia\TychaiaLevelAPIImpl.cs" />
+    <Compile Include="Disk\TychaiaDiskIoCModule.cs" />
     <Compile Include="GameAssetManagerProvider.cs" />
-    <Compile Include="Generators\Chunk.cs" />
-    <Compile Include="Generators\ChunkOctree.cs" />
-    <Compile Include="Generators\IChunkFactory.cs" />
-    <Compile Include="Generators\IChunkOctreeFactory.cs" />
     <Compile Include="Implementations\DefaultChunkGenerator.cs" />
     <Compile Include="Implementations\DefaultChunkSizePolicy.cs" />
     <Compile Include="Implementations\DefaultDebugCubeRenderer.cs" />
+    <Compile Include="Implementations\DefaultFlowBundleSerializer.cs" />
+    <Compile Include="Implementations\DefaultFlowBundleToCellConverter.cs" />
     <Compile Include="Implementations\DefaultFrustumChunkCache.cs" />
     <Compile Include="Implementations\DefaultPredeterminedChunkPositions.cs" />
     <Compile Include="Implementations\DefaultRenderTargetFactory.cs" />
@@ -56,30 +68,35 @@
     <Compile Include="Isometric\IIsometricCameraFactory.cs" />
     <Compile Include="Isometric\IsometricCamera.cs" />
     <Compile Include="Isometric\TychaiaIsometricIoCModule.cs" />
-    <Compile Include="MainMenu\BackgroundCubeEntity.cs" />
-    <Compile Include="MainMenu\IBackgroundCubeEntityFactory.cs" />
-    <Compile Include="MainMenu\LoadWorld.cs" />
-    <Compile Include="MainMenu\MenuWorld.cs" />
-    <Compile Include="MainMenu\ScatterBackground.cs" />
-    <Compile Include="MainMenu\TitleMenu.cs" />
-    <Compile Include="MainMenu\TitleWorld.cs" />
+    <Compile Include="IWorldFactory.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Profiling\TychaiaProfiler.cs" />
     <Compile Include="Profiling\TychaiaProfilerEntity.cs" />
     <Compile Include="Profiling\TychaiaProfilingInterceptor.cs" />
+    <Compile Include="Profiling\TychaiaProfilingIoCModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Services\IChunkGenerator.cs" />
     <Compile Include="Services\IChunkSizePolicy.cs" />
     <Compile Include="Services\IDebugCubeRenderer.cs" />
+    <Compile Include="Services\IFlowBundleSerializer.cs" />
+    <Compile Include="Services\IFlowBundleToCellConverter.cs" />
     <Compile Include="Services\IFrustumChunkCache.cs" />
     <Compile Include="Services\IPredeterminedChunkPositions.cs" />
     <Compile Include="Services\IRenderTargetFactory.cs" />
     <Compile Include="TychaiaGame.cs" />
-    <Compile Include="TychaiaGameWorld.cs" />
     <Compile Include="TychaiaIoCModule.cs" />
     <Compile Include="TychaiaSkin.cs" />
     <Compile Include="TychaiaWorldManager.cs" />
     <Compile Include="UniqueRender.cs" />
+    <Compile Include="Worlds\LoadWorld.cs" />
+    <Compile Include="Worlds\MainMenu\BackgroundCubeEntity.cs" />
+    <Compile Include="Worlds\MainMenu\IBackgroundCubeEntityFactory.cs" />
+    <Compile Include="Worlds\MainMenu\ScatterBackground.cs" />
+    <Compile Include="Worlds\MainMenu\TitleMenu.cs" />
+    <Compile Include="Worlds\MenuWorld.cs" />
+    <Compile Include="Worlds\PregenerateWorld.cs" />
+    <Compile Include="Worlds\TitleWorld.cs" />
+    <Compile Include="Worlds\TychaiaGameWorld.cs" />
     <None Include="..\Other\OpenTK.dll.config">
       <Link>OpenTK.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -89,11 +106,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="app.config" />
+    <None Include="Disk\Minecraft\MinecraftLevel.cs" />
+    <None Include="Disk\Minecraft\MinecraftLevelImpl.cs" />
+    <None Include="Disk\Minecraft\RegionFile.cs" />
+    <None Include="Disk\Tychaia\TerrainOctree.cs" />
+    <None Include="Disk\Tychaia\TychaiaLevel.cs" />
     <None Include="Game.ico" />
     <None Include="GameThumbnail.png" />
-    <None Include="Generators\ChunkProvider.cs" />
-    <None Include="Generators\ChunkRenderer.cs" />
-    <None Include="Generators\UniqueRenderCache.cs" />
     <None Include="Legacy\Elements\Region.cs" />
     <None Include="Legacy\Elements\World.cs" />
     <None Include="Legacy\IsometricWorldManager.cs" />
@@ -110,5 +129,6 @@
     <None Include="Legacy\Tiles\TrunkTile.cs" />
     <None Include="Legacy\Tiles\WaterTile.cs" />
     <None Include="Legacy\TitleButton.cs" />
+    <None Include="packages.config" />
   </Files>
 </Project>

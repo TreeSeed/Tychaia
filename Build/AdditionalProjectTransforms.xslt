@@ -25,3 +25,25 @@
     </xsl:choose>
   </Target>
 </xsl:if>
+
+<xsl:if test="/Input/Properties/PrecompileProtobuf = 'True'">
+  <Target Name="AfterBuild">
+    <Exec>
+      <xsl:attribute name="WorkingDirectory">
+        <xsl:value-of select="/Input/Generation/RootPath" />
+      </xsl:attribute>
+      <xsl:attribute name="Command">
+        <xsl:if test="/Input/Generation/Platform != 'Windows'">
+          <xsl:text>mono </xsl:text>
+        </xsl:if>
+        <xsl:text>Libraries/protobuf-net/precompiler/precompile.exe </xsl:text>
+        <xsl:value-of select="/Input/Properties/PrecompileProtobufInputPath" />
+        <xsl:text> -o:</xsl:text>
+        <xsl:value-of select="/Input/Properties/PrecompileProtobufOutputPath" />
+        <xsl:text> -t:</xsl:text>
+        <xsl:value-of select="/Input/Properties/PrecompileProtobufSerializerName" />
+        <xsl:text> -access:Public</xsl:text>
+      </xsl:attribute>
+    </Exec>
+  </Target>
+</xsl:if>

@@ -11,7 +11,6 @@
     <Reference Include="ProtogameAssetManager" />
     <Reference Include="Tychaia.Globals" />
     <Reference Include="Tychaia.Game" />
-    <Reference Include="Tychaia.Disk" />
     <Reference Include="Tychaia.ProceduralGeneration" />
     <Reference Include="Tychaia.Content" />
     <Reference Include="Tychaia.Threading" />

@@ -18,7 +18,7 @@ namespace Tychaia
         private readonly Vector3[] m_CachedChunkPositions;
         private readonly Vector3[] m_AOTChunkPositions;
         private readonly IChunkAI[] m_ChunkAI;
-        private Chunk[] m_ChunksToRenderNext;
+        private RuntimeChunk[] m_ChunksToRenderNext;
 
         public ChunkManagerEntity(
             TychaiaGameWorld gameWorld,
@@ -34,7 +34,7 @@ namespace Tychaia
             this.m_ChunkAI = chunkAI;
             this.m_TextureAtlasAsset = assetManagerProvider.GetAssetManager().Get<TextureAtlasAsset>("atlas");
             this.m_Profiler = profiler;
-            this.m_ChunksToRenderNext = new Chunk[0];
+            this.m_ChunksToRenderNext = new RuntimeChunk[0];
         }
 
         public IChunkAI[] GetAIs()

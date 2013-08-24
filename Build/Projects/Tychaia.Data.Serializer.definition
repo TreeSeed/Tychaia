@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ExternalProject Name="Tychaia.Data.Serializer">
+  
+  <Binary
+    Name="Tychaia.Data.Serializer"
+    Path="Tychaia.Data/bin/$(Configuration)/Tychaia.Data.Serializer.dll" />
+ 
+</ExternalProject>

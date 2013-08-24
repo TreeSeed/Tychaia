@@ -45,29 +45,41 @@ namespace Tychaia
 
             game.RenderContext.Is3DContext = true;
 
+#if DEBUG
             using (this.m_TychaiaProfiler.Measure("tychaia-render_3d"))
             {
                 using (this.m_TychaiaProfiler.Measure("tychaia-render_below_3d"))
                 {
+#endif
                     game.GameContext.World.RenderBelow(game.GameContext, game.RenderContext);
+#if DEBUG
                 }
                 
                 using (this.m_TychaiaProfiler.Measure("tychaia-render_entities_3d"))
                 {
+#endif
                     foreach (var entity in game.GameContext.World.Entities.ToArray())
+#if DEBUG
                         using (this.m_TychaiaProfiler.Measure("tychaia-render_entities_3d_" + entity.GetType().Name))
+#endif
                             entity.Render(game.GameContext, game.RenderContext);
+#if DEBUG
                 }
     
                 using (this.m_TychaiaProfiler.Measure("tychaia-render_above_3d"))
                 {
+#endif
                     game.GameContext.World.RenderAbove(game.GameContext, game.RenderContext);
+#if DEBUG
                 }
             }
+#endif
 
             game.RenderContext.Is3DContext = false;
 
+#if DEBUG
             var handle2d = this.m_TychaiaProfiler.Measure("tychaia-render_2d");
+#endif
             
             game.RenderContext.SpriteBatch.Begin();
 
@@ -77,11 +89,15 @@ namespace Tychaia
 
                 game.GameContext.World.RenderBelow(game.GameContext, game.RenderContext);
 
+#if DEBUG
                 using (this.m_TychaiaProfiler.Measure("tychaia-render_entities_2d"))
                 {
+#endif
                     foreach (var entity in game.GameContext.World.Entities.OrderBy(x => x.Z).ToArray())
                         entity.Render(game.GameContext, game.RenderContext);
+#if DEBUG
                 }
+#endif
 
                 game.GameContext.World.RenderAbove(game.GameContext, game.RenderContext);
 

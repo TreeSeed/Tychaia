@@ -35,7 +35,7 @@ namespace Tychaia
                 Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 4f / 3f, 1.0f, 5000.0f));
         }
 
-        public Chunk[] Process(
+        public RuntimeChunk[] Process(
             TychaiaGameWorld world,
             ChunkManagerEntity manager,
             IGameContext gameContext,
@@ -53,7 +53,7 @@ namespace Tychaia
                 new Vector3(
                     world.IsometricCamera.Chunk.X,
                     world.IsometricCamera.Chunk.Y,
-                    world.IsometricCamera.Chunk.Z)).Concat(new List<Chunk>
+                    world.IsometricCamera.Chunk.Z)).Concat(new List<RuntimeChunk>
                 {
                     world.IsometricCamera.Chunk.East.North,
                     world.IsometricCamera.Chunk.West.South
