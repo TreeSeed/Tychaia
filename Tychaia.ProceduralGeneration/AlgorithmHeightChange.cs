@@ -56,15 +56,21 @@ namespace Tychaia.ProceduralGeneration
         [Description("Estimate maximum value.")]
         public int EstimateMax { get; set; }
 
+        public bool Layer2D
+        {
+            get;
+            set;
+        }
+
         public override bool Is2DOnly
         {
-            get { return true; }
+            get { return this.Layer2D; }
         }
 
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
             int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            if (this.XorY == false)
+            if (!this.XorY)
                 output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
                     input[(i + ox) + (j + oy) * width + (k + oz) * width * height] -
                     input[(i + ox) + (j + 1 + oy) * width + (k + oz) * width * height];

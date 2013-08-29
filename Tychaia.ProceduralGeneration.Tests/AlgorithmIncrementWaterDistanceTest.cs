@@ -14,7 +14,8 @@ namespace Tychaia.ProceduralGeneration.Tests
         {
             var inputA = new AlgorithmDebuggingInitialValueDelegate
             {
-                GetValueForPosition = (x, y, z, i, j, k) => { return -1; }
+                GetValueForPosition = (x, y, z, i, j, k) => { return -1; },
+                ShowAs2D = true
             };
 
             int computations;
@@ -41,7 +42,8 @@ namespace Tychaia.ProceduralGeneration.Tests
         {
             var inputA = new AlgorithmDebuggingInitialValueDelegate
             {
-                GetValueForPosition = (x, y, z, i, j, k) => { return 1; }
+                GetValueForPosition = (x, y, z, i, j, k) => { return 1; },
+                ShowAs2D = true
             };
 
             int computations;

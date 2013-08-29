@@ -10,5 +10,9 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="CompiledLayerBuiltin.cs" />
     <Compile Include="Main.cs" />
+    <None Include="..\Other\WorldConfig.xml">
+      <Link>WorldConfig.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </Files>
 </Project>

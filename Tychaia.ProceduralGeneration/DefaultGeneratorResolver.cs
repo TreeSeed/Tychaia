@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Tychaia.ProceduralGeneration
 {
-    internal class DefaultGeneratorResolver : IGeneratorResolver
+    public class DefaultGeneratorResolver : IGeneratorResolver
     {
         private readonly StorageLayer[] m_LoadedLayers;
 

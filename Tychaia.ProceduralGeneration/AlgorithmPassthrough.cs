@@ -56,9 +56,15 @@ namespace Tychaia.ProceduralGeneration
             get { return new[] { "Input" }; }
         }
 
+        public bool Layer2D
+        {
+            get;
+            set;
+        }
+
         public override bool Is2DOnly
         {
-            get { return false; }
+            get { return this.Layer2D; }
         }
 
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
@@ -144,9 +150,15 @@ namespace Tychaia.ProceduralGeneration
             get { return new[] { "Input A", "Input B", "Input C" }; }
         }
 
+        public bool Layer2D
+        {
+            get;
+            set;
+        }
+
         public override bool Is2DOnly
         {
-            get { return false; }
+            get { return this.Layer2D; }
         }
 
         public override void Initialize(IRuntimeContext context)

@@ -1,8 +1,8 @@
-//
-// This source code is licensed in accordance with the licensing outlined
-// on the main Tychaia website (www.tychaia.com).  Changes to the
-// license on the website apply retroactively.
-//
+// ====================================================================== //
+// This source code is licensed in accordance with the licensing outlined //
+// on the main Tychaia website (www.tychaia.com).  Changes to the         //
+// license on the website apply retroactively.                            //
+// ====================================================================== //
 
 //#define MODULO_SPEED_TEST
 #define VERIFICATION
@@ -21,12 +21,17 @@ namespace ProceduralGenPerformance
             RuntimeLayer algorithmRuntime = null;
             IGenerator algorithmCompiled = null;
             IGenerator algorithmCompiledBuiltin = null;
-            string mode = "quadzoom";
+            var mode = "original";
             if (args.Length > 0)
                 mode = args[0];
 
             // Create initial layers from both types.
-            if (mode == "quadzoom")
+            if (mode == "original")
+            {
+                var resolver = new DefaultGeneratorResolver();
+                algorithmRuntime = (RuntimeLayer)resolver.GetGeneratorForGame();
+            }
+            else if (mode == "quadzoom")
             {
                 var algorithmZoom1 = new RuntimeLayer(new AlgorithmZoom2D());
                 var algorithmZoom2 = new RuntimeLayer(new AlgorithmZoom2D());
@@ -205,17 +210,17 @@ namespace ProceduralGenPerformance
                 Console.WriteLine("Starting Test #" + x + " (algorithm runtime)");
                 var algorithmRuntimeFailed = false;
                 var algorithmRuntimeStartTime = DateTime.Now;
-                try
-                {
-                    for (int i = 0; i < 1000; i++)
-                        algorithmRuntime.GenerateData(0, 0, 0, 128, 128, 1, out computations);
-                }
+                //try
+                //{
+                    for (var i = 0; i < 10; i++)
+                        algorithmRuntime.GenerateData(0, 0, 0, 32, 32, 1, out computations);
+                /*}
                 catch
                 {
                     algorithmRuntimeFailed = true;
-                }
+                }*/
                 var algorithmRuntimeEndTime = DateTime.Now;
-                Console.WriteLine("Starting Test #" + x + " (algorithm compiled)");
+                /*Console.WriteLine("Starting Test #" + x + " (algorithm compiled)");
                 var algorithmCompiledFailed = false;
                 var algorithmCompiledStartTime = DateTime.Now;
                 try
@@ -228,19 +233,20 @@ namespace ProceduralGenPerformance
                     algorithmCompiledFailed = true;
                 }
                 var algorithmCompiledEndTime = DateTime.Now;
+                */
 
                 // Because there are 1000 tests, and 1000 microseconds in a millisecond..
-                Console.Write("Test #" + x);
+                Console.Write("Test #" + x + " ");
                 PrintStatus(
                     "ALGORITHM RUNTIME",
-                    algorithmRuntimeFailed,
+                    true, //algorithmRuntimeFailed,
                     algorithmRuntimeStartTime,
                     algorithmRuntimeEndTime);
-                PrintStatus(
+                /*PrintStatus(
                     "ALGORITHM COMPILED",
                     algorithmCompiledFailed,
                     algorithmCompiledStartTime,
-                    algorithmCompiledEndTime);
+                    algorithmCompiledEndTime);*/
             }
         }
 
@@ -248,9 +254,8 @@ namespace ProceduralGenPerformance
         {
             if (!display)
                 return;
-            const string u = "\ub5c2";
             Console.Write(name + ": ");
-            Console.Write((end - start).TotalMilliseconds + u + "s ");
+            Console.Write((end - start).TotalMilliseconds + "us ");
         }
     }
 }

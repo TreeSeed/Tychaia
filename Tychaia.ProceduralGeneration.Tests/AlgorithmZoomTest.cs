@@ -14,7 +14,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         {
             int computations1, computations2;
             int width = 16, height = 16, depth = 16;
-            var gradient = new RuntimeLayer(new AlgorithmGradientInitial());
+            var gradient = new RuntimeLayer(new AlgorithmGradientInitial { Layer2D = true });
             var zoom = new RuntimeLayer(new AlgorithmZoom2D {Mode = AlgorithmZoom2D.ZoomType.Square});
             zoom.SetInput(0, gradient);
             var i1 = gradient.GenerateData(0, 0, 0, width, height, depth, out computations1);
@@ -36,7 +36,8 @@ namespace Tychaia.ProceduralGeneration.Tests
             int computations;
             var input = new AlgorithmDebuggingInitialDelegate
             {
-                ValueShouldBePlacedAt = (x, y, z) => true
+                ValueShouldBePlacedAt = (x, y, z) => true,
+                ShowAs2D = true
             };
             var zoom = new AlgorithmZoom2D
             {
@@ -50,8 +51,8 @@ namespace Tychaia.ProceduralGeneration.Tests
             // We have filled the entire block, therefore this bug can be detected by checking
             // every odd row.
             for (var x = 1; x < 32; x += 2)
-                Assert.True(result[x + 0*32 + 0*32*32] == 1);
-            //, "OCX odd adjustment shutter bug is present, where every odd row is blank when main adjustment is an odd number.");
+                Assert.True(result[x + 0*32 + 0*32*32] == 1,
+                    "OCX odd adjustment shutter bug is present, where every odd row is blank when main adjustment is an odd number.");
         }
     }
 }

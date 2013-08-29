@@ -15,9 +15,15 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Initial Gradient")]
     public class AlgorithmGradientInitial : Algorithm<int>
     {
+        public bool Layer2D
+        {
+            get;
+            set;
+        }
+
         public override bool Is2DOnly
         {
-            get { return false; }
+            get { return this.Layer2D; }
         }
 
         public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j,
@@ -40,9 +46,15 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Initial Grid")]
     public class AlgorithmGridInitial : Algorithm<int>
     {
+        public bool Layer2D
+        {
+            get;
+            set;
+        }
+
         public override bool Is2DOnly
         {
-            get { return false; }
+            get { return this.Layer2D; }
         }
 
         public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j,

@@ -211,6 +211,8 @@ namespace Tychaia.ProceduralGeneration
                 return true;
             if (index < 0 || index >= this.m_Algorithm.InputTypes.Length)
                 return false;
+            if (this.m_Algorithm.Is2DOnly && !input.m_Algorithm.Is2DOnly)
+                return false;
             return (input.m_Algorithm.OutputType == this.m_Algorithm.InputTypes[index]);
         }
 
@@ -350,14 +352,6 @@ namespace Tychaia.ProceduralGeneration
             int childOffsetX, int childOffsetY, int childOffsetZ,
             ref int computations)
         {
-            // Check the generate width, height and depth. This actually doesn't work with this system anyway
-            /*
-            if (arrayWidth != (int)(xTo - xFrom) ||
-                arrayHeight != (int)(yTo - yFrom) ||
-                arrayDepth != (int)(zTo - zFrom))
-                throw new InvalidOperationException("Size generation is out of sync!");
-            */
-
             // Get the method for processing cells.
             dynamic algorithm = this.m_Algorithm;
             var processCell = this.m_Algorithm.GetType().GetMethod("ProcessCell");
@@ -382,6 +376,18 @@ namespace Tychaia.ProceduralGeneration
                         for (var i = -childOffsetX; i < iEnd; i++)
                             for (var j = -childOffsetY; j < jEnd; j++)
                             {
+                                if (this.m_Algorithm.Is2DOnly && k != -childOffsetZ)
+                                {
+                                    outputArray[
+                                        i + maxOffsetX +
+                                        (j + maxOffsetY) * arrayWidth +
+                                        (k + maxOffsetZ) * arrayWidth * arrayHeight] =
+                                        outputArray[
+                                            i + maxOffsetX +
+                                            (j + maxOffsetY) * arrayWidth +
+                                            (-childOffsetZ + maxOffsetZ) * arrayWidth * arrayHeight];
+                                    continue;
+                                }
                                 algorithm.ProcessCell(
                                     this,
                                     outputArray,
@@ -417,6 +423,18 @@ namespace Tychaia.ProceduralGeneration
                             for (var i = -childOffsetX; i < iEnd; i++)
                                 for (var j = -childOffsetY; j < jEnd; j++)
                                 {
+                                    if (this.m_Algorithm.Is2DOnly && k != -childOffsetZ)
+                                    {
+                                        outputArray[
+                                            i + maxOffsetX +
+                                            (j + maxOffsetY) * arrayWidth +
+                                            (k + maxOffsetZ) * arrayWidth * arrayHeight] =
+                                            outputArray[
+                                                i + maxOffsetX +
+                                                (j + maxOffsetY) * arrayWidth +
+                                                (-childOffsetZ + maxOffsetZ) * arrayWidth * arrayHeight];
+                                        continue;
+                                    }
                                     algorithm.ProcessCell(
                                         this,
                                         inputArray0,
@@ -459,6 +477,18 @@ namespace Tychaia.ProceduralGeneration
                             for (var i = -childOffsetX; i < iEnd; i++)
                                 for (var j = -childOffsetY; j < jEnd; j++)
                                 {
+                                    if (this.m_Algorithm.Is2DOnly && k != -childOffsetZ)
+                                    {
+                                        outputArray[
+                                            i + maxOffsetX +
+                                            (j + maxOffsetY) * arrayWidth +
+                                            (k + maxOffsetZ) * arrayWidth * arrayHeight] =
+                                            outputArray[
+                                                i + maxOffsetX +
+                                                (j + maxOffsetY) * arrayWidth +
+                                                (-childOffsetZ + maxOffsetZ) * arrayWidth * arrayHeight];
+                                        continue;
+                                    }
                                     algorithm.ProcessCell(
                                         this,
                                         inputArray0,
@@ -507,6 +537,18 @@ namespace Tychaia.ProceduralGeneration
                             for (var i = -childOffsetX; i < iEnd; i++)
                                 for (var j = -childOffsetY; j < jEnd; j++)
                                 {
+                                    if (this.m_Algorithm.Is2DOnly && k != -childOffsetZ)
+                                    {
+                                        outputArray[
+                                            i + maxOffsetX +
+                                            (j + maxOffsetY) * arrayWidth +
+                                            (k + maxOffsetZ) * arrayWidth * arrayHeight] =
+                                            outputArray[
+                                                i + maxOffsetX +
+                                                (j + maxOffsetY) * arrayWidth +
+                                                (-childOffsetZ + maxOffsetZ) * arrayWidth * arrayHeight];
+                                        continue;
+                                    }
                                     algorithm.ProcessCell(
                                         this,
                                         inputArray0,
