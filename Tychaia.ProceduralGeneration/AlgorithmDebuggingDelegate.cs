@@ -37,6 +37,11 @@ namespace Tychaia.ProceduralGeneration
             get { return this.ShowAs2D; }
         }
 
+        public override bool[] InputIs2D
+        {
+            get { return new[] { this.ShowAs2D }; }
+        }
+
         public Action<IRuntimeContext, int[], int[], long, long, long, int, int, int, int, int, int, int, int, int>
             Delegate { get; set; }
 

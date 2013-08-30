@@ -44,6 +44,11 @@ namespace Tychaia.ProceduralGeneration
             }
         }
 
+        public override bool[] InputIs2D
+        {
+            get { return new[] { this.Layer2D }; }
+        }
+
         public override bool Is2DOnly
         {
             get { return this.Layer2D; }
@@ -99,6 +104,11 @@ namespace Tychaia.ProceduralGeneration
             }
         }
 
+        public override bool[] InputIs2D
+        {
+            get { return new[] { this.Layer2D }; }
+        }
+
         public override bool Is2DOnly
         {
             get { return this.Layer2D; }
@@ -152,6 +162,11 @@ namespace Tychaia.ProceduralGeneration
             {
                 return new[] { "FlowBundle", "Color" };
             }
+        }
+
+        public override bool[] InputIs2D
+        {
+            get { return new[] { this.Layer2D }; }
         }
 
         public override bool Is2DOnly

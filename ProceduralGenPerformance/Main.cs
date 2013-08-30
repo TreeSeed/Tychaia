@@ -213,7 +213,7 @@ namespace ProceduralGenPerformance
                 //try
                 //{
                     for (var i = 0; i < 10; i++)
-                        algorithmRuntime.GenerateData(0, 0, 0, 32, 32, 1, out computations);
+                        algorithmRuntime.GenerateData(0, 0, 0, 32, 32, 32, out computations);
                 /*}
                 catch
                 {

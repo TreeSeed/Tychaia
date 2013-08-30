@@ -412,10 +412,17 @@ namespace Tychaia.ProceduralGeneration
                     // context, input, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz
                     if (this.m_Inputs[0] != null)
                     {
-                        dynamic inputArray0 = this.GetInputData(
-                            0, absoluteX, absoluteY, absoluteZ, width, height, depth,
-                            arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
-                            childOffsetX, childOffsetY, childOffsetZ, ref computations);
+                        dynamic inputArray0;
+                        if (algorithm.InputIs2D[0])
+                            inputArray0 = this.GetInputData(
+                                0, absoluteX, absoluteY, 0, width, height, 1,
+                                arrayWidth, arrayHeight, 1, maxOffsetX, maxOffsetY, 0,
+                                childOffsetX, childOffsetY, 0, ref computations);
+                        else
+                            inputArray0 = this.GetInputData(
+                                0, absoluteX, absoluteY, absoluteZ, width, height, depth,
+                                arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
+                                childOffsetX, childOffsetY, childOffsetZ, ref computations);
 
                         algorithm.Initialize(this);
 
@@ -461,15 +468,27 @@ namespace Tychaia.ProceduralGeneration
                     // context, input0, input1, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz
                     if (this.m_Inputs[0] != null && this.m_Inputs[1] != null)
                     {
-                        dynamic inputArray0 = this.GetInputData(
-                            0, absoluteX, absoluteY, absoluteZ, width, height, depth,
-                            arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
-                            childOffsetX, childOffsetY, childOffsetZ, ref computations);
-
-                        dynamic inputArray1 = this.GetInputData(
-                            1, absoluteX, absoluteY, absoluteZ, width, height, depth,
-                            arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
-                            childOffsetX, childOffsetY, childOffsetZ, ref computations);
+                        dynamic inputArray0, inputArray1;
+                        if (algorithm.InputIs2D[0])
+                            inputArray0 = this.GetInputData(
+                                0, absoluteX, absoluteY, 0, width, height, 1,
+                                arrayWidth, arrayHeight, 1, maxOffsetX, maxOffsetY, 0,
+                                childOffsetX, childOffsetY, 0, ref computations);
+                        else
+                            inputArray0 = this.GetInputData(
+                                0, absoluteX, absoluteY, absoluteZ, width, height, depth,
+                                arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
+                                childOffsetX, childOffsetY, childOffsetZ, ref computations);
+                        if (algorithm.InputIs2D[1])
+                            inputArray1 = this.GetInputData(
+                                1, absoluteX, absoluteY, 0, width, height, 1,
+                                arrayWidth, arrayHeight, 1, maxOffsetX, maxOffsetY, 0,
+                                childOffsetX, childOffsetY, 0, ref computations);
+                        else
+                            inputArray1 = this.GetInputData(
+                                1, absoluteX, absoluteY, absoluteZ, width, height, depth,
+                                arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
+                                childOffsetX, childOffsetY, childOffsetZ, ref computations);
 
                         algorithm.Initialize(this);
 
@@ -516,20 +535,37 @@ namespace Tychaia.ProceduralGeneration
                     // context, input0, input1, input2, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz
                     if (this.m_Inputs[0] != null && this.m_Inputs[1] != null && this.m_Inputs[2] != null)
                     {
-                        dynamic inputArray0 = this.GetInputData(
-                            0, absoluteX, absoluteY, absoluteZ, width, height, depth,
-                            arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
-                            childOffsetX, childOffsetY, childOffsetZ, ref computations);
-
-                        dynamic inputArray1 = this.GetInputData(
-                            1, absoluteX, absoluteY, absoluteZ, width, height, depth,
-                            arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
-                            childOffsetX, childOffsetY, childOffsetZ, ref computations);
-
-                        dynamic inputArray2 = this.GetInputData(
-                            2, absoluteX, absoluteY, absoluteZ, width, height, depth,
-                            arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
-                            childOffsetX, childOffsetY, childOffsetZ, ref computations);
+                        dynamic inputArray0, inputArray1, inputArray2;
+                        if (algorithm.InputIs2D[0])
+                            inputArray0 = this.GetInputData(
+                                0, absoluteX, absoluteY, 0, width, height, 1,
+                                arrayWidth, arrayHeight, 1, maxOffsetX, maxOffsetY, 0,
+                                childOffsetX, childOffsetY, 0, ref computations);
+                        else
+                            inputArray0 = this.GetInputData(
+                                0, absoluteX, absoluteY, absoluteZ, width, height, depth,
+                                arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
+                                childOffsetX, childOffsetY, childOffsetZ, ref computations);
+                        if (algorithm.InputIs2D[1])
+                            inputArray1 = this.GetInputData(
+                                1, absoluteX, absoluteY, 0, width, height, 1,
+                                arrayWidth, arrayHeight, 1, maxOffsetX, maxOffsetY, 0,
+                                childOffsetX, childOffsetY, 0, ref computations);
+                        else
+                            inputArray1 = this.GetInputData(
+                                1, absoluteX, absoluteY, absoluteZ, width, height, depth,
+                                arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
+                                childOffsetX, childOffsetY, childOffsetZ, ref computations);
+                        if (algorithm.InputIs2D[2])
+                            inputArray2 = this.GetInputData(
+                                2, absoluteX, absoluteY, 0, width, height, 1,
+                                arrayWidth, arrayHeight, 1, maxOffsetX, maxOffsetY, 0,
+                                childOffsetX, childOffsetY, 0, ref computations);
+                        else
+                            inputArray2 = this.GetInputData(
+                                2, absoluteX, absoluteY, absoluteZ, width, height, depth,
+                                arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
+                                childOffsetX, childOffsetY, childOffsetZ, ref computations);
 
                         algorithm.Initialize(this);
 

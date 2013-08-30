@@ -90,18 +90,23 @@ namespace Tychaia.ProceduralGeneration
             get { return true; }
         }
 
+        public override bool[] InputIs2D
+        {
+            get { return new[] { true }; }
+        }
+
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
             int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            var v00 = input[((i - 1) + ox) + ((j - 1) + oy) * width + (k + oz) * width * height];
-            var v01 = input[((i - 1) + ox) + ((j + 0) + oy) * width + (k + oz) * width * height];
-            var v02 = input[((i - 1) + ox) + ((j + 1) + oy) * width + (k + oz) * width * height];
-            var v10 = input[((i + 0) + ox) + ((j - 1) + oy) * width + (k + oz) * width * height];
-            var v11 = input[((i + 0) + ox) + ((j + 0) + oy) * width + (k + oz) * width * height];
-            var v12 = input[((i + 0) + ox) + ((j + 1) + oy) * width + (k + oz) * width * height];
-            var v20 = input[((i + 1) + ox) + ((j - 1) + oy) * width + (k + oz) * width * height];
-            var v21 = input[((i + 1) + ox) + ((j + 0) + oy) * width + (k + oz) * width * height];
-            var v22 = input[((i + 1) + ox) + ((j + 1) + oy) * width + (k + oz) * width * height];
+            var v00 = input[((i - 1) + ox) + ((j - 1) + oy) * width];
+            var v01 = input[((i - 1) + ox) + ((j + 0) + oy) * width];
+            var v02 = input[((i - 1) + ox) + ((j + 1) + oy) * width];
+            var v10 = input[((i + 0) + ox) + ((j - 1) + oy) * width];
+            var v11 = input[((i + 0) + ox) + ((j + 0) + oy) * width];
+            var v12 = input[((i + 0) + ox) + ((j + 1) + oy) * width];
+            var v20 = input[((i + 1) + ox) + ((j - 1) + oy) * width];
+            var v21 = input[((i + 1) + ox) + ((j + 0) + oy) * width];
+            var v22 = input[((i + 1) + ox) + ((j + 1) + oy) * width];
 
             if (this.Initial)
             {

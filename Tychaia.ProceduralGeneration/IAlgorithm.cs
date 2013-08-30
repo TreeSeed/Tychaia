@@ -43,6 +43,14 @@ namespace Tychaia.ProceduralGeneration
         string[] InputNames { get; }
 
         /// <summary>
+        /// Whether the inputs are 2D.  This is ignored when
+        /// this algorithm itself is 2D, as all inputs are
+        /// assumed to be 2D as well.
+        /// </summary>
+        /// <value>The inputs are 2D (true) or 3D (false).</value>
+        bool[] InputIs2D { get; }
+
+        /// <summary>
         /// The data type of the output of this algorithm.
         /// </summary>
         Type OutputType { get; }
@@ -208,6 +216,9 @@ namespace Tychaia.ProceduralGeneration
         public abstract string[] InputNames { get; }
 
         [Category("Base")]
+        public abstract bool[] InputIs2D { get; }
+
+        [Category("Base")]
         public abstract Type OutputType { get; }
 
         [Category("Base")]
@@ -246,6 +257,11 @@ namespace Tychaia.ProceduralGeneration
         public override sealed string[] InputNames
         {
             get { return new string[] { }; }
+        }
+
+        public override sealed bool[] InputIs2D
+        {
+            get { return new bool[] { }; }
         }
 
         public override sealed Type OutputType

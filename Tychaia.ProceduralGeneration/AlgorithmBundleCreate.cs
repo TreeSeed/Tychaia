@@ -58,6 +58,11 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
 
+        public override bool[] InputIs2D
+        {
+            get { return new[] { this.Layer2D }; }
+        }
+
         public AlgorithmBundleCreateInt32()
         {
             this.Layer2D = true;
@@ -124,6 +129,11 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
 
+        public override bool[] InputIs2D
+        {
+            get { return new[] { this.Layer2D }; }
+        }
+
         public AlgorithmBundleCreateBiome()
         {
             this.Layer2D = true;
@@ -188,6 +198,11 @@ namespace Tychaia.ProceduralGeneration
         public override bool Is2DOnly
         {
             get { return this.Layer2D; }
+        }
+
+        public override bool[] InputIs2D
+        {
+            get { return new[] { this.Layer2D }; }
         }
 
         public AlgorithmBundleCreateBlockInfo()

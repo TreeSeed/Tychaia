@@ -3,7 +3,7 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#@ output extension=".cs" #>
+<#@ output extension=".cs" encoding="us-ascii" #>
 // ====================================================================== //
 // This source code is licensed in accordance with the licensing outlined //
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
@@ -59,6 +59,11 @@ namespace Tychaia.ProceduralGeneration
             {
                 return new[] { "FlowBundle", "Color" };
             }
+        }
+        
+        public override bool[] InputIs2D
+        {
+            get { return new[] { this.Layer2D }; }
         }
 
         public override bool Is2DOnly

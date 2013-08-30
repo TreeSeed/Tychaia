@@ -67,6 +67,11 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
 
+        public override bool[] InputIs2D
+        {
+            get { return new[] { this.Layer2D }; }
+        }
+
         public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
             int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
@@ -134,6 +139,19 @@ namespace Tychaia.ProceduralGeneration
                     this.HeightHalfA,
                     false,
                     false
+                };
+            }
+        }
+
+        public override bool[] InputIs2D
+        {
+            get
+            {
+                return new bool[]
+                {
+                    this.Layer2D,
+                    this.Layer2D,
+                    this.Layer2D
                 };
             }
         }

@@ -34,6 +34,11 @@ namespace Tychaia.ProceduralGeneration
             get { return true; }
         }
 
+        public override bool[] InputIs2D
+        {
+            get { return new[] { true }; }
+        }
+
         // Will be able to use this algorithm for:
         // Land - This is the equivelent of ExtendLand
         // Towns - This is the equivelent of ExtendTowns

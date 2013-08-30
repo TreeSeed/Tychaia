@@ -54,6 +54,11 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
 
+        public override bool[] InputIs2D
+        {
+            get { return new[] { this.Layer2D }; }
+        }
+
         public override string[] InputNames
         {
             get { return new[] { "Input" }; }

@@ -24,9 +24,14 @@ namespace Tychaia.ProceduralGeneration
         [Description("The color to use when representing this value in the flow editor.")]
         public Color Color { get; set; }
 
+        public bool Layer2D
+        {
+            get; set;
+        }
+
         public override bool Is2DOnly
         {
-            get { return false; }
+            get { return this.Layer2D; }
         }
 
         public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j,

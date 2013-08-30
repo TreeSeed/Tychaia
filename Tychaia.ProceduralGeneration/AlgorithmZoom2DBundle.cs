@@ -76,6 +76,11 @@ namespace Tychaia.ProceduralGeneration
             get { return new[] { "Input" }; }
         }
 
+        public override bool[] InputIs2D
+        {
+            get { return new[] { true }; }
+        }
+
         public override bool Is2DOnly
         {
             get { return true; }
