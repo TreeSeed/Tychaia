@@ -11,31 +11,34 @@ namespace Tychaia.ProceduralGeneration
     public class DefaultGeneratorResolver : IGeneratorResolver
     {
         private readonly StorageLayer[] m_LoadedLayers;
+        private readonly IStorageAccess m_StorageAccess;
 
-        public DefaultGeneratorResolver()
+        public DefaultGeneratorResolver(IStorageAccess storageAccess)
         {
+            this.m_StorageAccess = storageAccess;
+            
             using (var reader = new StreamReader("WorldConfig.xml"))
-                this.m_LoadedLayers = StorageAccess.LoadStorage(reader);
+                this.m_LoadedLayers = this.m_StorageAccess.LoadStorage(reader);
         }
 
         public RuntimeLayer[] GetGenerators()
         {
             return (from storage in this.m_LoadedLayers
-                select StorageAccess.ToRuntime(storage)).ToArray();
+                select this.m_StorageAccess.ToRuntime(storage)).ToArray();
         }
 
         public IGenerator GetGeneratorForGame()
         {
             return (from storage in this.m_LoadedLayers
                 where storage.Algorithm is AlgorithmBundleOutput
-                select StorageAccess.ToRuntime(storage)).First();
+                select this.m_StorageAccess.ToRuntime(storage)).First();
         }
 
         public IGenerator GetGeneratorForExport()
         {
             return (from storage in this.m_LoadedLayers
                 where storage.Algorithm is AlgorithmBundleOutput
-                select StorageAccess.ToRuntime(storage)).First();
+                select this.m_StorageAccess.ToRuntime(storage)).First();
         }
     }
 }

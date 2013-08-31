@@ -10,6 +10,7 @@
     <Reference Include="System.Core" />
     <Reference Include="Tychaia.ProceduralGeneration" />
     <Reference Include="Tychaia.Globals" />
+    <Reference Include="Ninject" />
   </References>
   <Files>
     <Compile Include="BaseGenerator.cs" />

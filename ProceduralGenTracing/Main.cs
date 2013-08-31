@@ -7,6 +7,7 @@ using System;
 using Tychaia.ProceduralGeneration;
 using Tychaia.ProceduralGeneration.Flow;
 using System.Collections.Generic;
+using Ninject;
 
 namespace ProceduralGenTracing
 {
@@ -17,6 +18,11 @@ namespace ProceduralGenTracing
 
         public static void Main(string[] args)
         {
+            var kernel = new StandardKernel();
+            kernel.Load<TychaiaProceduralGenerationIoCModule>();
+            
+            var factory = kernel.Get<IRuntimeLayerFactory>();
+        
             var algorithmInitial = new AlgorithmInitialBool();
             var algorithmZoom2DIteration1 = new AlgorithmZoom2D();
             var algorithmZoom2DIteration2 = new AlgorithmZoom2D();
@@ -29,15 +35,15 @@ namespace ProceduralGenTracing
             var algorithmIncrementWaterDistance2 = new AlgorithmIncrementWaterDistance();
             var algorithmIncrementWaterDistance3 = new AlgorithmIncrementWaterDistance();
             var algorithmIncrementWaterDistance4 = new AlgorithmIncrementWaterDistance();
-            var runtimeInitial = new RuntimeLayer(algorithmInitial);
-            var runtimeZoom2DIteration1 = new RuntimeLayer(algorithmZoom2DIteration1);
-            var runtimeZoom2DIteration2 = new RuntimeLayer(algorithmZoom2DIteration2);
-            var runtimeZoom2DIteration3 = new RuntimeLayer(algorithmZoom2DIteration3);
-            var runtimeZoom2DIteration4 = new RuntimeLayer(algorithmZoom2DIteration4);
-            var runtimeIncrementWaterDistance1 = new RuntimeLayer(algorithmIncrementWaterDistance1);
-            var runtimeIncrementWaterDistance2 = new RuntimeLayer(algorithmIncrementWaterDistance2);
-            var runtimeIncrementWaterDistance3 = new RuntimeLayer(algorithmIncrementWaterDistance3);
-            var runtimeIncrementWaterDistance4 = new RuntimeLayer(algorithmIncrementWaterDistance4);
+            var runtimeInitial = factory.CreateRuntimeLayer(algorithmInitial);
+            var runtimeZoom2DIteration1 = factory.CreateRuntimeLayer(algorithmZoom2DIteration1);
+            var runtimeZoom2DIteration2 = factory.CreateRuntimeLayer(algorithmZoom2DIteration2);
+            var runtimeZoom2DIteration3 = factory.CreateRuntimeLayer(algorithmZoom2DIteration3);
+            var runtimeZoom2DIteration4 = factory.CreateRuntimeLayer(algorithmZoom2DIteration4);
+            var runtimeIncrementWaterDistance1 = factory.CreateRuntimeLayer(algorithmIncrementWaterDistance1);
+            var runtimeIncrementWaterDistance2 = factory.CreateRuntimeLayer(algorithmIncrementWaterDistance2);
+            var runtimeIncrementWaterDistance3 = factory.CreateRuntimeLayer(algorithmIncrementWaterDistance3);
+            var runtimeIncrementWaterDistance4 = factory.CreateRuntimeLayer(algorithmIncrementWaterDistance4);
             runtimeZoom2DIteration1.SetInput(0, runtimeInitial);
             runtimeIncrementWaterDistance1.SetInput(0, runtimeZoom2DIteration1);
             runtimeZoom2DIteration2.SetInput(0, runtimeIncrementWaterDistance1);

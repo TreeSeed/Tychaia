@@ -1,13 +1,14 @@
-//
-// This source code is licensed in accordance with the licensing outlined
-// on the main Tychaia website (www.tychaia.com).  Changes to the
-// license on the website apply retroactively.
-//
+// ====================================================================== //
+// This source code is licensed in accordance with the licensing outlined //
+// on the main Tychaia website (www.tychaia.com).  Changes to the         //
+// license on the website apply retroactively.                            //
+// ====================================================================== //
 using System;
+using ICSharpCode.NRefactory.CSharp;
+using Ninject;
+using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
 using Tychaia.ProceduralGeneration.Compiler;
-using ICSharpCode.NRefactory.CSharp;
-using Tychaia.ProceduralGeneration.AstVisitors;
 
 namespace ProceduralGenCompiler
 {
@@ -66,13 +67,17 @@ namespace ProceduralGenCompiler
 
         public static void Main(string[] args)
         {
-            var constant = new RuntimeLayer(new AlgorithmConstant { Constant = 123456 });
-            var perlin = new RuntimeLayer(new AlgorithmPerlin());
-            var add = new RuntimeLayer(new AlgorithmAdd());
-            var perlin2 = new RuntimeLayer(new AlgorithmPerlin());
-            var passthrough = new RuntimeLayer(new AlgorithmPassthrough { XBorder = 7, YBorder = 9, ZBorder = 11 });
-            var heightC = new RuntimeLayer(new AlgorithmHeightChange());
-            var zoom3D = new RuntimeLayer(new AlgorithmZoom3D());
+            var kernel = new StandardKernel();
+            kernel.Load<TychaiaProceduralGenerationIoCModule>();
+            
+            var factory = kernel.Get<IRuntimeLayerFactory>();
+            var constant = factory.CreateRuntimeLayer(new AlgorithmConstant { Constant = 123456 });
+            var perlin = factory.CreateRuntimeLayer(new AlgorithmPerlin());
+            var add = factory.CreateRuntimeLayer(new AlgorithmAdd());
+            var perlin2 = factory.CreateRuntimeLayer(new AlgorithmPerlin());
+            var passthrough = factory.CreateRuntimeLayer(new AlgorithmPassthrough { XBorder = 7, YBorder = 9, ZBorder = 11 });
+            var heightC = factory.CreateRuntimeLayer(new AlgorithmHeightChange());
+            var zoom3D = factory.CreateRuntimeLayer(new AlgorithmZoom3D());
             passthrough.SetInput(0, perlin2);
             //zoom3D.SetInput(0, perlin);
             add.SetInput(0, perlin/*zoom3D*/);

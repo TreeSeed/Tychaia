@@ -3,17 +3,11 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Ninject.Modules;
-
-namespace Tychaia.Globals
+namespace Tychaia.ProceduralGeneration
 {
-    public class TychaiaGlobalIoCModule : NinjectModule
+    public interface IRuntimeLayerFactory
     {
-        public override void Load()
-        {
-            this.Bind<IFilteredConsole>().To<DefaultFilteredConsole>();
-            this.Bind<IFilteredFeatures>().To<DefaultFilteredFeatures>();
-            this.Bind<IArrayPool>().To<DefaultArrayPool>().InSingletonScope();
-        }
+        RuntimeLayer CreateRuntimeLayer(IAlgorithm algorithm);
     }
 }
+

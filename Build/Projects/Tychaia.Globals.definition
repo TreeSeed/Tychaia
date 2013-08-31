@@ -6,12 +6,15 @@
     <Reference Include="Ninject" />
     <Reference Include="cscjvm" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="Microsoft.CSharp" />
   </References>
   <Files>
+    <Compile Include="DefaultArrayPool.cs" />
     <Compile Include="DefaultFilteredConsole.cs" />
     <Compile Include="DefaultFilteredFeatures.cs" />
     <Compile Include="Feature.cs" />
     <Compile Include="FilterCategory.cs" />
+    <Compile Include="IArrayPool.cs" />
     <Compile Include="IFilteredConsole.cs" />
     <Compile Include="IFilteredFeatures.cs" />
     <Compile Include="IRenderingLocationProvider.cs" />

@@ -1,9 +1,8 @@
-//
-// This source code is licensed in accordance with the licensing outlined
-// on the main Tychaia website (www.tychaia.com).  Changes to the
-// license on the website apply retroactively.
-//
-
+// ====================================================================== //
+// This source code is licensed in accordance with the licensing outlined //
+// on the main Tychaia website (www.tychaia.com).  Changes to the         //
+// license on the website apply retroactively.                            //
+// ====================================================================== //
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -171,7 +170,7 @@ namespace MakeMeAWorld
 
         #endregion
 
-        private static Bitmap RenderPartial3D(GenerationResult result)
+        private Bitmap RenderPartial3D(GenerationResult result)
         {
             var width = result.Request.Size;
             var height = result.Request.Size;
@@ -189,7 +188,7 @@ namespace MakeMeAWorld
                     var render = GetCellRenderOrder(RenderToNE, width, height);
                     var ztop = depth;
                     var zbottom = 0;
-                    var parentLayer = StorageAccess.FromRuntime(result.Layer.GetInputs()[0]);
+                    var parentLayer = this.StorageAccess.FromRuntime(result.Layer.GetInputs()[0]);
                     for (int z = zbottom; z < ztop; z++)
                     {
                         int rcx = width / 2 - 1 + 32;

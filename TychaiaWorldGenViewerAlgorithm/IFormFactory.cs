@@ -3,17 +3,15 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Ninject.Modules;
+using Redpoint.FlowGraph;
 
-namespace Tychaia.Globals
+namespace TychaiaWorldGenViewerAlgorithm
 {
-    public class TychaiaGlobalIoCModule : NinjectModule
+    public interface IFormFactory
     {
-        public override void Load()
-        {
-            this.Bind<IFilteredConsole>().To<DefaultFilteredConsole>();
-            this.Bind<IFilteredFeatures>().To<DefaultFilteredFeatures>();
-            this.Bind<IArrayPool>().To<DefaultArrayPool>().InSingletonScope();
-        }
+        AnalyseForm CreateAnalyseForm(FlowElement flowElement);
+        ExportForm CreateExportForm(FlowElement flowElement);
+        TraceForm CreateTraceForm(FlowElement flowElement);
     }
 }
+

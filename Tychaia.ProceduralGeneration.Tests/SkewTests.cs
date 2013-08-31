@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    public class SkewTests
+    public class SkewTests : TestBase
     {
         [Fact]
         public void TestXSkew()
@@ -18,8 +18,8 @@ namespace Tychaia.ProceduralGeneration.Tests
                 ValueShouldBePlacedAt = (x, y, z) => (y == 0 && z == 0)
             };
             var passthrough = new AlgorithmPassthrough();
-            var runtimeInput = new RuntimeLayer(input);
-            var runtimePassthough = new RuntimeLayer(passthrough);
+            var runtimeInput = this.CreateRuntimeLayer(input);
+            var runtimePassthough = this.CreateRuntimeLayer(passthrough);
             runtimePassthough.SetInput(0, runtimeInput);
 
             // We need to check with various borders.
@@ -83,8 +83,8 @@ namespace Tychaia.ProceduralGeneration.Tests
                 ValueShouldBePlacedAt = (x, y, z) => (x == 0 && z == 0)
             };
             var passthrough = new AlgorithmPassthrough();
-            var runtimeInput = new RuntimeLayer(input);
-            var runtimePassthough = new RuntimeLayer(passthrough);
+            var runtimeInput = this.CreateRuntimeLayer(input);
+            var runtimePassthough = this.CreateRuntimeLayer(passthrough);
             runtimePassthough.SetInput(0, runtimeInput);
 
             // We need to check with various borders.
@@ -148,8 +148,8 @@ namespace Tychaia.ProceduralGeneration.Tests
                 ValueShouldBePlacedAt = (x, y, z) => (x == 0 && y == 0)
             };
             var passthrough = new AlgorithmPassthrough();
-            var runtimeInput = new RuntimeLayer(input);
-            var runtimePassthough = new RuntimeLayer(passthrough);
+            var runtimeInput = this.CreateRuntimeLayer(input);
+            var runtimePassthough = this.CreateRuntimeLayer(passthrough);
             runtimePassthough.SetInput(0, runtimeInput);
 
             // We need to check with various borders.

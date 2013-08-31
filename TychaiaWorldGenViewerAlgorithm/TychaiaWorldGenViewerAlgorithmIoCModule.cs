@@ -6,6 +6,7 @@
 using System;
 using Ninject;
 using Ninject.Activation;
+using Ninject.Extensions.Factory;
 using Ninject.Modules;
 using Tychaia.ProceduralGeneration.Flow;
 
@@ -21,6 +22,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.Bind<FlowProcessingPipeline>().ToMethod(load);
             this.Bind<IFlowProcessingPipeline>().ToMethod(load);
             this.Bind<IFlowProcessingRequestHandler>().To<FlowProcessingRequestHandler>();
+            this.Bind<IFormFactory>().ToFactory();
         }
     }
 }

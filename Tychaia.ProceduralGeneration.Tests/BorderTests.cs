@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    public class BorderTests
+    public class BorderTests : TestBase
     {
         [Fact]
         public void TestValueRetrievalAcrossBorder()
@@ -50,8 +50,8 @@ namespace Tychaia.ProceduralGeneration.Tests
                         "v22 != 1 when x == " + x + " && y == " + y + " && i == " + i + " && j == " + j);
                 }
             };
-            var runtimeInput = new RuntimeLayer(inputA);
-            var runtimeTest = new RuntimeLayer(test);
+            var runtimeInput = this.CreateRuntimeLayer(inputA);
+            var runtimeTest = this.CreateRuntimeLayer(test);
             runtimeTest.SetInput(0, runtimeInput);
 
             // Test this stuff.

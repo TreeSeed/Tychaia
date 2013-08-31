@@ -1,15 +1,15 @@
-//
-// This source code is licensed in accordance with the licensing outlined
-// on the main Tychaia website (www.tychaia.com).  Changes to the
-// license on the website apply retroactively.
-//
-
+// ====================================================================== //
+// This source code is licensed in accordance with the licensing outlined //
+// on the main Tychaia website (www.tychaia.com).  Changes to the         //
+// license on the website apply retroactively.                            //
+// ====================================================================== //
 using System;
-using System.Web;
-using System.Linq;
-using Tychaia.ProceduralGeneration;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
+using Ninject;
+using Tychaia.ProceduralGeneration;
 
 namespace MakeMeAWorld
 {
@@ -35,6 +35,9 @@ namespace MakeMeAWorld
             public int Computations;
             public TimeSpan TotalTime;
         }
+        
+        [Inject]
+        public IStorageAccess StorageAccess { protected get; set; }
 
         /// <summary>
         /// Processes a request by checking the cache and handling it if possible.  Returns
@@ -191,39 +194,39 @@ namespace MakeMeAWorld
 
         #region Data Loading
 
-        private static RuntimeLayer CreateLayerFromConfig(string path, GenerationRequest request)
+        private RuntimeLayer CreateLayerFromConfig(string path, GenerationRequest request)
         {
             // Use StorageAccess to load reference to world generation.
             StorageLayer[] layers;
             using (var reader = new StreamReader(path))
-                layers = StorageAccess.LoadStorage(reader);
+                layers = this.StorageAccess.LoadStorage(reader);
             foreach (var layer in layers)
                 if ((layer.Algorithm is AlgorithmResult) &&
                     (layer.Algorithm as AlgorithmResult).Name == request.LayerName &&
                     ((layer.Algorithm as AlgorithmResult).ShowInMakeMeAWorld ||
                     (layer.Algorithm as AlgorithmResult).PermitInMakeMeAWorld))
-                    return StorageAccess.ToRuntime(layer);
+                    return this.StorageAccess.ToRuntime(layer);
             return null;
         }
 
-        public static List<string> GetListOfAvailableLayers(HttpContext context)
+        public List<string> GetListOfAvailableLayers(HttpContext context)
         {
             return GetListOfAvailableLayers(context.Server.MapPath("~/bin/WorldConfig.xml"));
         }
 
-        public static string GetDefaultAvailableLayer(HttpContext context)
+        public string GetDefaultAvailableLayer(HttpContext context)
         {
             return GetDefaultAvailableLayer(context.Server.MapPath("~/bin/WorldConfig.xml"));
         }
 
-        private static List<string> GetListOfAvailableLayers(string path)
+        private List<string> GetListOfAvailableLayers(string path)
         {
             var result = new List<string>();
 
             // Use StorageAccess to load reference to world generation.
             StorageLayer[] layers;
             using (var reader = new StreamReader(path))
-                layers = StorageAccess.LoadStorage(reader);
+                layers = this.StorageAccess.LoadStorage(reader);
             foreach (var layer in layers)
                 if (layer.Algorithm is AlgorithmResult)
                 if ((layer.Algorithm as AlgorithmResult).ShowInMakeMeAWorld)
@@ -234,12 +237,12 @@ namespace MakeMeAWorld
             return result;
         }
 
-        private static string GetDefaultAvailableLayer(string path)
+        private string GetDefaultAvailableLayer(string path)
         {
             // Use StorageAccess to load reference to world generation.
             StorageLayer[] layers;
             using (var reader = new StreamReader(path))
-                layers = StorageAccess.LoadStorage(reader);
+                layers = this.StorageAccess.LoadStorage(reader);
             foreach (var layer in layers)
                 if (layer.Algorithm is AlgorithmResult)
                 if ((layer.Algorithm as AlgorithmResult).DefaultForMakeMeAWorld)

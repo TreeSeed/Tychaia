@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using Tychaia.Globals;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -30,14 +31,16 @@ namespace Tychaia.ProceduralGeneration
             m_Inputs;
 
         private long m_Seed;
+        private readonly IArrayPool m_ArrayPool;
 
         /// <summary>
         /// Creates a new runtime layer that holds the specified algorithm.
         /// </summary>
-        public RuntimeLayer(IAlgorithm algorithm)
+        public RuntimeLayer(IArrayPool arrayPool, IAlgorithm algorithm)
         {
             if (algorithm == null)
                 throw new ArgumentNullException("algorithm");
+            this.m_ArrayPool = arrayPool;
             this.m_Algorithm = algorithm;
             var inputs = new List<RuntimeLayer>();
             for (var i = 0; i < algorithm.InputTypes.Length; i++)

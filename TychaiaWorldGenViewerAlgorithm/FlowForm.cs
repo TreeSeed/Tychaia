@@ -19,6 +19,8 @@ namespace TychaiaWorldGenViewerAlgorithm
     public partial class FlowForm : Form, IRenderingLocationProvider, ICurrentWorldSeedProvider
     {
         private readonly FlowProcessingPipeline m_FlowProcessingPipeline;
+        private readonly IFormFactory m_FormFactory;
+        private readonly IStorageAccess m_StorageAccess;
         private ToolStripItem m_PerformanceTestStart;
         private int m_PerformanceResultsLeftToCalculate;
 
@@ -26,7 +28,11 @@ namespace TychaiaWorldGenViewerAlgorithm
         private long m_Y;
         private long m_Z;
 
-        public FlowForm(IKernel kernel, Lazy<FlowProcessingPipeline> flowProcessingPipeline)
+        public FlowForm(
+            IKernel kernel,
+            IFormFactory formFactory,
+            IStorageAccess storageAccess,
+            Lazy<FlowProcessingPipeline> flowProcessingPipeline)
         {
             // TODO: Expose this in the UI.
             this.Seed = 0xDEADBEEF;
@@ -35,6 +41,8 @@ namespace TychaiaWorldGenViewerAlgorithm
             kernel.Bind<IRenderingLocationProvider>().ToMethod(context => this);
             kernel.Bind<ICurrentWorldSeedProvider>().ToMethod(context => this);
             this.m_FlowProcessingPipeline = flowProcessingPipeline.Value;
+            this.m_FormFactory = formFactory;
+            this.m_StorageAccess = storageAccess;
             if (this.m_FlowProcessingPipeline == null)
                 throw new Exception("IFlowProcessingPipeline is not of type FlowProcessingPipeline.");
             this.m_FlowProcessingPipeline.FormConnect(this);
@@ -159,7 +167,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                 {
                     // Load from file.
                     using (var stream = new StreamReader(openFileDialog.FileName))
-                        layers = StorageAccess.LoadStorage(stream);
+                        layers = this.m_StorageAccess.LoadStorage(stream);
                     if (layers == null)
                     {
                         MessageBox.Show(this, @"Unable to load configuration file.", @"Configuration invalid.",
@@ -221,7 +229,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                     var memory = new MemoryStream();
                     using (var writer = new StreamWriter(memory))
                     {
-                        StorageAccess.SaveStorage(layers.ToArray(), writer);
+                        this.m_StorageAccess.SaveStorage(layers.ToArray(), writer);
                         memory.Seek(0, SeekOrigin.Begin);
                         using (var file = new StreamWriter(this.m_LastSavePath, false))
                             memory.CopyTo(file.BaseStream);
@@ -317,7 +325,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             if (this.c_FlowInterfaceControl.SelectedElement == null)
                 return;
 
-            var ef = new ExportForm(this, this.c_FlowInterfaceControl.SelectedElement);
+            var ef = this.m_FormFactory.CreateExportForm(this.c_FlowInterfaceControl.SelectedElement);
             ef.Show();
         }
 
@@ -326,7 +334,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             if (this.c_FlowInterfaceControl.SelectedElement == null)
                 return;
 
-            var af = new AnalyseForm(this.c_FlowInterfaceControl.SelectedElement);
+            var af = this.m_FormFactory.CreateAnalyseForm(this.c_FlowInterfaceControl.SelectedElement);
             af.Show();
         }
 
@@ -335,7 +343,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             if (this.c_FlowInterfaceControl.SelectedElement == null)
                 return;
 
-            var tf = new TraceForm(this.c_FlowInterfaceControl.SelectedElement);
+            var tf = this.m_FormFactory.CreateTraceForm(this.c_FlowInterfaceControl.SelectedElement);
             tf.ShowDialog();
         }
 

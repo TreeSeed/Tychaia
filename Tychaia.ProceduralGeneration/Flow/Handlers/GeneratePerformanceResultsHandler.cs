@@ -11,15 +11,21 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
 {
     public class GeneratePerformanceResultsHandler
     {
-        private ICurrentWorldSeedProvider m_CurrentWorldSeedProvider;
-        private IRenderingLocationProvider m_RenderingLocationProvider;
+        private readonly ICurrentWorldSeedProvider m_CurrentWorldSeedProvider;
+        private readonly IRenderingLocationProvider m_RenderingLocationProvider;
+        private readonly IStorageAccess m_StorageAccess;
+        private readonly IAlgorithmFlowImageGeneration m_AlgorithmFlowImageGeneration;
 
         public GeneratePerformanceResultsHandler(
             ICurrentWorldSeedProvider currentWorldSeedProvider,
-            IRenderingLocationProvider renderingLocationProvider)
+            IRenderingLocationProvider renderingLocationProvider,
+            IStorageAccess storageAccess,
+            IAlgorithmFlowImageGeneration algorithmFlowImageGeneration)
         {
             this.m_CurrentWorldSeedProvider = currentWorldSeedProvider;
             this.m_RenderingLocationProvider = renderingLocationProvider;
+            this.m_StorageAccess = storageAccess;
+            this.m_AlgorithmFlowImageGeneration = algorithmFlowImageGeneration;
         }
 
         public void Handle(StorageLayer layer, Action<FlowProcessingResponse> put)
@@ -36,12 +42,12 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
             var badLimit = 16000; // 16ms
 
             // Perform conversions.
-            var runtime = StorageAccess.ToRuntime(layer);
+            var runtime = this.m_StorageAccess.ToRuntime(layer);
             runtime.SetSeed(this.m_CurrentWorldSeedProvider.Seed);
             IGenerator compiled = null;
             try
             {
-                compiled = StorageAccess.ToCompiled(runtime);
+                compiled = this.m_StorageAccess.ToCompiled(runtime);
             }
             catch (Exception)
             {
@@ -137,7 +143,7 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
             // Use the compiled layer to re-render the output.
             if (compiled != null)
             {
-                compiledBitmap = AlgorithmFlowImageGeneration.RegenerateImageForLayer(
+                compiledBitmap = this.m_AlgorithmFlowImageGeneration.RegenerateImageForLayer(
                     layer,
                     this.m_CurrentWorldSeedProvider.Seed,
                     this.m_RenderingLocationProvider.X,

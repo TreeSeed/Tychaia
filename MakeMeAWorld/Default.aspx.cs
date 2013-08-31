@@ -1,3 +1,8 @@
+// ====================================================================== //
+// This source code is licensed in accordance with the licensing outlined //
+// on the main Tychaia website (www.tychaia.com).  Changes to the         //
+// license on the website apply retroactively.                            //
+// ====================================================================== //
 using System;
 using System.Collections.Generic;
 using System.Web;
@@ -16,8 +21,9 @@ namespace MakeMeAWorld
             ShowExperimentalOptions = true;
 
             HtmlLayerOptions = "";
-            var list = BaseGenerator.GetListOfAvailableLayers(this.Context);
-            var defaultLayer = BaseGenerator.GetDefaultAvailableLayer(this.Context);
+            var generator = new JsonGenerator();
+            var list = generator.GetListOfAvailableLayers(this.Context);
+            var defaultLayer = generator.GetDefaultAvailableLayer(this.Context);
             foreach (var layer in list)
             {
                 if (layer == defaultLayer)

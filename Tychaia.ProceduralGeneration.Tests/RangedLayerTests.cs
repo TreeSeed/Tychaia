@@ -8,12 +8,12 @@ using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    public class RangedLayerTests
+    public class RangedLayerTests : TestBase
     {
         [Fact]
         public void SingleTest()
         {
-            var runtime = new RuntimeLayer(new AlgorithmPerlin());
+            var runtime = this.CreateRuntimeLayer(new AlgorithmPerlin());
             var ranged = new RangedLayer(runtime);
             Assert.Equal("x", ranged.X.GetText());
             Assert.Equal("y", ranged.Y.GetText());
@@ -41,8 +41,8 @@ namespace Tychaia.ProceduralGeneration.Tests
         [Fact]
         public void PassthroughTest()
         {
-            var perlin = new RuntimeLayer(new AlgorithmPerlin());
-            var passthrough = new RuntimeLayer(new AlgorithmPassthrough());
+            var perlin = this.CreateRuntimeLayer(new AlgorithmPerlin());
+            var passthrough = this.CreateRuntimeLayer(new AlgorithmPassthrough());
             passthrough.SetInput(0, perlin);
 
             var ranged = new RangedLayer(passthrough);
@@ -95,8 +95,8 @@ namespace Tychaia.ProceduralGeneration.Tests
         [Fact]
         public void XBorderTest()
         {
-            var perlin = new RuntimeLayer(new AlgorithmPerlin());
-            var passthrough = new RuntimeLayer(new AlgorithmPassthrough {XBorder = 2});
+            var perlin = this.CreateRuntimeLayer(new AlgorithmPerlin());
+            var passthrough = this.CreateRuntimeLayer(new AlgorithmPassthrough {XBorder = 2});
             passthrough.SetInput(0, perlin);
 
             var ranged = new RangedLayer(passthrough);
@@ -149,8 +149,8 @@ namespace Tychaia.ProceduralGeneration.Tests
         [Fact]
         public void AllBorderTest()
         {
-            var perlin = new RuntimeLayer(new AlgorithmPerlin());
-            var passthrough = new RuntimeLayer(new AlgorithmPassthrough {XBorder = 7, YBorder = 9, ZBorder = 11});
+            var perlin = this.CreateRuntimeLayer(new AlgorithmPerlin());
+            var passthrough = this.CreateRuntimeLayer(new AlgorithmPassthrough {XBorder = 7, YBorder = 9, ZBorder = 11});
             passthrough.SetInput(0, perlin);
 
             var ranged = new RangedLayer(passthrough);
@@ -203,11 +203,11 @@ namespace Tychaia.ProceduralGeneration.Tests
         [Fact]
         public void ComplexBorderTest()
         {
-            var perlin = new RuntimeLayer(new AlgorithmPerlin());
-            var add = new RuntimeLayer(new AlgorithmAdd());
-            var perlin2 = new RuntimeLayer(new AlgorithmPerlin());
-            var passthrough = new RuntimeLayer(new AlgorithmPassthrough {XBorder = 7, YBorder = 9, ZBorder = 11});
-            var heightC = new RuntimeLayer(new AlgorithmHeightChange());
+            var perlin = this.CreateRuntimeLayer(new AlgorithmPerlin());
+            var add = this.CreateRuntimeLayer(new AlgorithmAdd());
+            var perlin2 = this.CreateRuntimeLayer(new AlgorithmPerlin());
+            var passthrough = this.CreateRuntimeLayer(new AlgorithmPassthrough {XBorder = 7, YBorder = 9, ZBorder = 11});
+            var heightC = this.CreateRuntimeLayer(new AlgorithmHeightChange());
             passthrough.SetInput(0, perlin2);
             add.SetInput(0, perlin);
             add.SetInput(1, passthrough);

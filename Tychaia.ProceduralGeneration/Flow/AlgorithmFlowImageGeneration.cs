@@ -9,13 +9,21 @@ using System.Drawing.Text;
 
 namespace Tychaia.ProceduralGeneration.Flow
 {
-    public static class AlgorithmFlowImageGeneration
+    public class AlgorithmFlowImageGeneration : IAlgorithmFlowImageGeneration
     {
         private const int RenderWidth = 64;
         private const int RenderHeight = 64;
         private const int RenderDepth = 64;
 
-        public static Bitmap RegenerateImageForLayer(
+        private readonly IStorageAccess m_StorageAccess;
+
+        public AlgorithmFlowImageGeneration(
+            IStorageAccess storageAccess)
+        {
+            this.m_StorageAccess = storageAccess;
+        }
+
+        public Bitmap RegenerateImageForLayer(
             StorageLayer layer,
             long seed,
             long ox, long oy, long oz,
@@ -24,7 +32,7 @@ namespace Tychaia.ProceduralGeneration.Flow
         {
             try
             {
-                var runtime = StorageAccess.ToRuntime(layer);
+                var runtime = this.m_StorageAccess.ToRuntime(layer);
                 runtime.SetSeed(seed);
                 if (compiled)
                 {
@@ -34,7 +42,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                             runtime,
                             ox, oy, oz,
                             width, height, depth,
-                            StorageAccess.ToCompiled(runtime));
+                            this.m_StorageAccess.ToCompiled(runtime));
                     }
                     catch (Exception)
                     {
@@ -49,8 +57,11 @@ namespace Tychaia.ProceduralGeneration.Flow
             }
         }
 
-        private static Bitmap Regenerate3DImageForLayer(RuntimeLayer runtimeLayer, long ox, long oy, long oz, int width,
-            int height, int depth, IGenerator compiledLayer = null)
+        private Bitmap Regenerate3DImageForLayer(
+            RuntimeLayer runtimeLayer,
+            long ox, long oy, long oz,
+            int width, int height, int depth,
+            IGenerator compiledLayer = null)
         {
             var owidth = width;
             var oheight = height;
@@ -70,7 +81,7 @@ namespace Tychaia.ProceduralGeneration.Flow
             else
                 data = runtimeLayer.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth, out computations);
 
-            var storageLayer = StorageAccess.FromRuntime(runtimeLayer);
+            var storageLayer = this.m_StorageAccess.FromRuntime(runtimeLayer);
             int[] render = GetCellRenderOrder(RenderToNE, RenderWidth, RenderHeight);
             int ztop = runtimeLayer.Algorithm.Is2DOnly ? 1 : RenderDepth;
             var zbottom = 0;

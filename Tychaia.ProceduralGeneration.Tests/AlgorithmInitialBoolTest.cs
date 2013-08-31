@@ -7,13 +7,13 @@ using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    public class AlgorithmInitialBoolTest
+    public class AlgorithmInitialBoolTest : TestBase
     {
         [Fact, TestFor(typeof (AlgorithmInitialBool))]
         public void TestRange()
         {
             int computations;
-            var gradient = new RuntimeLayer(new AlgorithmInitialBool());
+            var gradient = this.CreateRuntimeLayer(new AlgorithmInitialBool());
             var result = gradient.GenerateData(0, 0, 0, 16, 16, 16, out computations);
 
             for (var i = 0; i < 16; i++)

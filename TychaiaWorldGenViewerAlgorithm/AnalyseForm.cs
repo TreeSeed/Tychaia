@@ -18,11 +18,13 @@ namespace TychaiaWorldGenViewerAlgorithm
     {
         private RuntimeLayer m_Layer;
 
-        public AnalyseForm(FlowElement flowElement)
+        public AnalyseForm(
+            IStorageAccess storageAccess,
+            FlowElement flowElement)
         {
             this.InitializeComponent();
 
-            this.m_Layer = StorageAccess.ToRuntime(((AlgorithmFlowElement)flowElement).Layer);
+            this.m_Layer = storageAccess.ToRuntime(((AlgorithmFlowElement)flowElement).Layer);
             this.c_AnalysisAddOptionsMenu.Items.AddRange((
                 from assembly in AppDomain.CurrentDomain.GetAssemblies()
                 from type in assembly.GetTypes()

@@ -24,10 +24,12 @@ namespace TychaiaWorldGenViewerAlgorithm
         private Action m_DisableHandlers;
         private Action m_EnableHandlers;
 
-        public TraceForm(FlowElement flowElement)
+        public TraceForm(
+            IStorageAccess storageAccess,
+            FlowElement flowElement)
         {
             this.InitializeComponent();
-            this.m_Layer = StorageAccess.ToRuntime(((AlgorithmFlowElement)flowElement).Layer);
+            this.m_Layer = storageAccess.ToRuntime(((AlgorithmFlowElement)flowElement).Layer);
             this.c_FormZoomSize.Items.Add(new ZoomLevel { Level = 1 });
             this.c_FormZoomSize.Items.Add(new ZoomLevel { Level = 2 });
             this.c_FormZoomSize.SelectedIndex = 0;

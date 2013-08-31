@@ -7,15 +7,15 @@ using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    public class AlgorithmZoomTest
+    public class AlgorithmZoomTest : TestBase
     {
         [Fact, TestFor(typeof (AlgorithmZoom2D))]
         public void ZoomSquareTest()
         {
             int computations1, computations2;
             int width = 16, height = 16, depth = 16;
-            var gradient = new RuntimeLayer(new AlgorithmGradientInitial { Layer2D = true });
-            var zoom = new RuntimeLayer(new AlgorithmZoom2D {Mode = AlgorithmZoom2D.ZoomType.Square});
+            var gradient = this.CreateRuntimeLayer(new AlgorithmGradientInitial { Layer2D = true });
+            var zoom = this.CreateRuntimeLayer(new AlgorithmZoom2D {Mode = AlgorithmZoom2D.ZoomType.Square});
             zoom.SetInput(0, gradient);
             var i1 = gradient.GenerateData(0, 0, 0, width, height, depth, out computations1);
             var i2 = zoom.GenerateData(0, 0, 0, width, height, depth, out computations2);
@@ -43,8 +43,8 @@ namespace Tychaia.ProceduralGeneration.Tests
             {
                 Mode = AlgorithmZoom2D.ZoomType.Square
             };
-            var runtimeInput = new RuntimeLayer(input);
-            var runtimeZoom = new RuntimeLayer(zoom);
+            var runtimeInput = this.CreateRuntimeLayer(input);
+            var runtimeZoom = this.CreateRuntimeLayer(zoom);
             runtimeZoom.SetInput(0, runtimeInput);
             var result = runtimeZoom.GenerateData(1, 0, 0, 32, 32, 32, out computations);
 

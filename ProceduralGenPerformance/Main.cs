@@ -3,14 +3,15 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-
-//#define MODULO_SPEED_TEST
-#define VERIFICATION
-//#define RANGED_LOGIC_TEST
-
 using System;
+using Ninject;
+using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
 using Tychaia.ProceduralGeneration.Compiler;
+
+//#define MODULO_SPEED_TEST
+//#define VERIFICATION
+//#define RANGED_LOGIC_TEST
 
 namespace ProceduralGenPerformance
 {
@@ -24,20 +25,26 @@ namespace ProceduralGenPerformance
             var mode = "original";
             if (args.Length > 0)
                 mode = args[0];
+                
+            var kernel = new StandardKernel();
+            kernel.Load<TychaiaGlobalIoCModule>();
+            kernel.Load<TychaiaProceduralGenerationIoCModule>();
+            
+            var factory = kernel.Get<IRuntimeLayerFactory>();
+            var resolver = kernel.Get<IGeneratorResolver>();
 
             // Create initial layers from both types.
             if (mode == "original")
             {
-                var resolver = new DefaultGeneratorResolver();
                 algorithmRuntime = (RuntimeLayer)resolver.GetGeneratorForGame();
             }
             else if (mode == "quadzoom")
             {
-                var algorithmZoom1 = new RuntimeLayer(new AlgorithmZoom2D());
-                var algorithmZoom2 = new RuntimeLayer(new AlgorithmZoom2D());
-                var algorithmZoom3 = new RuntimeLayer(new AlgorithmZoom2D());
-                var algorithmZoom4 = new RuntimeLayer(new AlgorithmZoom2D());
-                var algorithmInitialLand = new RuntimeLayer(new AlgorithmInitialBool());
+                var algorithmZoom1 = factory.CreateRuntimeLayer(new AlgorithmZoom2D());
+                var algorithmZoom2 = factory.CreateRuntimeLayer(new AlgorithmZoom2D());
+                var algorithmZoom3 = factory.CreateRuntimeLayer(new AlgorithmZoom2D());
+                var algorithmZoom4 = factory.CreateRuntimeLayer(new AlgorithmZoom2D());
+                var algorithmInitialLand = factory.CreateRuntimeLayer(new AlgorithmInitialBool());
                 algorithmZoom4.SetInput(0, algorithmInitialLand);
                 algorithmZoom3.SetInput(0, algorithmZoom4);
                 algorithmZoom2.SetInput(0, algorithmZoom3);
@@ -50,9 +57,9 @@ namespace ProceduralGenPerformance
             }
             else if (mode == "doublezoom")
             {
-                var algorithmZoom1 = new RuntimeLayer(new AlgorithmZoom2D());
-                var algorithmZoom2 = new RuntimeLayer(new AlgorithmZoom2D());
-                var algorithmInitialLand = new RuntimeLayer(new AlgorithmInitialBool());
+                var algorithmZoom1 = factory.CreateRuntimeLayer(new AlgorithmZoom2D());
+                var algorithmZoom2 = factory.CreateRuntimeLayer(new AlgorithmZoom2D());
+                var algorithmInitialLand = factory.CreateRuntimeLayer(new AlgorithmInitialBool());
                 algorithmZoom2.SetInput(0, algorithmInitialLand);
                 algorithmZoom1.SetInput(0, algorithmZoom2);
                 algorithmRuntime = algorithmZoom1;
@@ -62,17 +69,17 @@ namespace ProceduralGenPerformance
             }
             else if (mode == "zoom")
             {
-                algorithmRuntime = new RuntimeLayer(new AlgorithmZoom2D());
-                algorithmRuntime.SetInput(0, new RuntimeLayer(new AlgorithmInitialBool()));
+                algorithmRuntime = factory.CreateRuntimeLayer(new AlgorithmZoom2D());
+                algorithmRuntime.SetInput(0, factory.CreateRuntimeLayer(new AlgorithmInitialBool()));
 #if !RANGED_LOGIC_TEST
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
 #endif
             }
             else if (mode == "test")
             {
-                var algorithmTest1 = new RuntimeLayer(new AlgorithmPassthrough());
-                var algorithmTest2 = new RuntimeLayer(new AlgorithmPassthrough());
-                var algorithmConstant = new RuntimeLayer(new AlgorithmConstant { Constant = 5 });
+                var algorithmTest1 = factory.CreateRuntimeLayer(new AlgorithmPassthrough());
+                var algorithmTest2 = factory.CreateRuntimeLayer(new AlgorithmPassthrough());
+                var algorithmConstant = factory.CreateRuntimeLayer(new AlgorithmConstant { Constant = 5 });
                 algorithmTest2.SetInput(0, algorithmConstant);
                 algorithmTest1.SetInput(0, algorithmTest2);
                 algorithmRuntime = algorithmTest1;
@@ -82,15 +89,15 @@ namespace ProceduralGenPerformance
             }
             else if (mode == "extend")
             {
-                algorithmRuntime = new RuntimeLayer(new AlgorithmExtend2D());
-                algorithmRuntime.SetInput(0, new RuntimeLayer(new AlgorithmInitialBool()));
+                algorithmRuntime = factory.CreateRuntimeLayer(new AlgorithmExtend2D());
+                algorithmRuntime.SetInput(0, factory.CreateRuntimeLayer(new AlgorithmInitialBool()));
 #if !RANGED_LOGIC_TEST
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
 #endif
             }
             else if (mode == "land")
             {
-                algorithmRuntime = new RuntimeLayer(new AlgorithmInitialBool());
+                algorithmRuntime = factory.CreateRuntimeLayer(new AlgorithmInitialBool());
 #if !RANGED_LOGIC_TEST
                 algorithmCompiled = LayerCompiler.Compile(algorithmRuntime);
 #endif
@@ -204,15 +211,14 @@ namespace ProceduralGenPerformance
 #endif
 
             // Run tests to see how fast they are.
-            for (int x = 0; x < 300; x++)
+            for (int x = 0; x < 3000; x++)
             {
                 int computations;
-                Console.WriteLine("Starting Test #" + x + " (algorithm runtime)");
                 var algorithmRuntimeFailed = false;
                 var algorithmRuntimeStartTime = DateTime.Now;
                 //try
                 //{
-                    for (var i = 0; i < 10; i++)
+                    //for (var i = 0; i < 10; i++)
                         algorithmRuntime.GenerateData(0, 0, 0, 32, 32, 32, out computations);
                 /*}
                 catch
@@ -242,6 +248,7 @@ namespace ProceduralGenPerformance
                     true, //algorithmRuntimeFailed,
                     algorithmRuntimeStartTime,
                     algorithmRuntimeEndTime);
+                Console.WriteLine();
                 /*PrintStatus(
                     "ALGORITHM COMPILED",
                     algorithmCompiledFailed,

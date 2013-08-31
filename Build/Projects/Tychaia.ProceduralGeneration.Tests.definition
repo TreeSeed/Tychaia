@@ -8,6 +8,8 @@
     <Reference Include="System.Core" />
     <Reference Include="Tychaia.ProceduralGeneration" />
     <Reference Include="ICSharpCode.NRefactory" />
+    <Reference Include="Ninject" />
+    <Reference Include="Ninject.MockingKernel" />
   </References>
   <Files>
     <Compile Include="AlgorithmConstantTest.cs" />
@@ -20,6 +22,7 @@
     <Compile Include="ContinuityTests.cs" />
     <Compile Include="RangedLayerTests.cs" />
     <Compile Include="SkewTests.cs" />
+    <Compile Include="TestBase.cs" />
     <Compile Include="TestForAttribute.cs" />
   </Files>
 </Project>

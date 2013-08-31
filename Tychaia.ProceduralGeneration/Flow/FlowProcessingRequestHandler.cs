@@ -16,16 +16,22 @@ namespace Tychaia.ProceduralGeneration.Flow
         private volatile IFlowProcessingPipeline m_ProcessingPipeline;
         private Thread m_ProcessingThread;
         private IRenderingLocationProvider m_RenderingLocationProvider;
+        private IAlgorithmFlowImageGeneration m_AlgorithmFlowImageGeneration;
+        private IStorageAccess m_StorageAccess;
 
         public FlowProcessingRequestHandler(
             ICurrentWorldSeedProvider currentWorldSeedProvider,
-            IRenderingLocationProvider renderingLocationProvider)
+            IRenderingLocationProvider renderingLocationProvider,
+            IAlgorithmFlowImageGeneration algorithmFlowImageGeneration,
+            IStorageAccess storageAccess)
         {
             Console.WriteLine("Request handler created.");
             this.m_ProcessingThread = new Thread(this.Run);
             this.m_ProcessingThread.IsBackground = true;
             this.m_CurrentWorldSeedProvider = currentWorldSeedProvider;
             this.m_RenderingLocationProvider = renderingLocationProvider;
+            this.m_AlgorithmFlowImageGeneration = algorithmFlowImageGeneration;
+            this.m_StorageAccess = storageAccess;
         }
 
         public void SetPipelineAndStart(IFlowProcessingPipeline pipeline)
@@ -38,10 +44,13 @@ namespace Tychaia.ProceduralGeneration.Flow
         {
             var generateRuntimeBitmapHandler = new GenerateRuntimeBitmapHandler(
                 this.m_CurrentWorldSeedProvider,
-                this.m_RenderingLocationProvider);
+                this.m_RenderingLocationProvider,
+                this.m_AlgorithmFlowImageGeneration);
             var generatePerformanceResultsHandler = new GeneratePerformanceResultsHandler(
                 this.m_CurrentWorldSeedProvider,
-                this.m_RenderingLocationProvider);
+                this.m_RenderingLocationProvider,
+                this.m_StorageAccess,
+                this.m_AlgorithmFlowImageGeneration);
             this.m_ProcessingPipeline.OutputPipeline.InputConnect();
             this.m_ProcessingPipeline.InputPipeline.OutputConnect();
 

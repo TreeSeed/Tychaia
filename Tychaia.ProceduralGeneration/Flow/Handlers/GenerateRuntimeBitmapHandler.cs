@@ -12,13 +12,16 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
     {
         private ICurrentWorldSeedProvider m_CurrentWorldSeedProvider;
         private IRenderingLocationProvider m_RenderingLocationProvider;
+        private IAlgorithmFlowImageGeneration m_AlgorithmFlowImageGeneration;
 
         public GenerateRuntimeBitmapHandler(
             ICurrentWorldSeedProvider currentWorldSeedProvider,
-            IRenderingLocationProvider renderingLocationProvider)
+            IRenderingLocationProvider renderingLocationProvider,
+            IAlgorithmFlowImageGeneration algorithmFlowImageGeneration)
         {
             this.m_CurrentWorldSeedProvider = currentWorldSeedProvider;
             this.m_RenderingLocationProvider = renderingLocationProvider;
+            this.m_AlgorithmFlowImageGeneration = algorithmFlowImageGeneration;
         }
 
         public void Handle(StorageLayer layer, Action<FlowProcessingResponse> put)
@@ -29,7 +32,7 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
                 layer,
                 put);
 
-            var runtime = AlgorithmFlowImageGeneration.RegenerateImageForLayer(
+            var runtime = this.m_AlgorithmFlowImageGeneration.RegenerateImageForLayer(
                 layer,
                 this.m_CurrentWorldSeedProvider.Seed,
                 this.m_RenderingLocationProvider.X,

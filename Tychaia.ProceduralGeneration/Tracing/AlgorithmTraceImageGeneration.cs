@@ -9,7 +9,7 @@ using System.Drawing.Text;
 
 namespace Tychaia.ProceduralGeneration.Flow
 {
-    public static class AlgorithmTraceImageGeneration
+    public class AlgorithmTraceImageGeneration : IAlgorithmTraceImageGeneration
     {
         #region Cell Render Ordering
 
@@ -119,8 +119,16 @@ namespace Tychaia.ProceduralGeneration.Flow
         private const int TraceRenderWidth = 64 * TraceScale;
         private const int TraceRenderHeight = 64 * TraceScale;
         private const int TraceRenderDepth = 64 * TraceScale;
+        
+        private readonly IStorageAccess m_StorageAccess;
+        
+        public AlgorithmTraceImageGeneration(
+            IStorageAccess storageAccess)
+        {
+            this.m_StorageAccess = storageAccess;
+        }
 
-        public static Bitmap RenderTraceResult(
+        public Bitmap RenderTraceResult(
             RuntimeLayer layer,
             dynamic data,
             int width,
@@ -142,7 +150,7 @@ namespace Tychaia.ProceduralGeneration.Flow
             if (layer.GetInputs().Length == 0)
                 parent = null;
             else
-                parent = StorageAccess.FromRuntime(layer.GetInputs()[0]);
+                parent = this.m_StorageAccess.FromRuntime(layer.GetInputs()[0]);
 
             int[] render = GetCellRenderOrder(RenderToNE, TraceRenderWidth, TraceRenderHeight);
             var ztop = layer.Algorithm.Is2DOnly ? 1 : 128;

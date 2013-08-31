@@ -1,11 +1,12 @@
-//
-// This source code is licensed in accordance with the licensing outlined
-// on the main Tychaia website (www.tychaia.com).  Changes to the
-// license on the website apply retroactively.
-//
+// ====================================================================== //
+// This source code is licensed in accordance with the licensing outlined //
+// on the main Tychaia website (www.tychaia.com).  Changes to the         //
+// license on the website apply retroactively.                            //
+// ====================================================================== //
 using System;
 using Tychaia.ProceduralGeneration;
 using System.IO;
+using Ninject;
 
 namespace ProceduralGenStorage
 {
@@ -13,12 +14,18 @@ namespace ProceduralGenStorage
     {
         public static void Main(string[] args)
         {
+            var kernel = new StandardKernel();
+            kernel.Load<TychaiaProceduralGenerationIoCModule>();
+            
+            var factory = kernel.Get<IRuntimeLayerFactory>();
+            var storageAccess = kernel.Get<IStorageAccess>();
+        
             // Create algorithm setup.
-            var algorithmZoom1 = new RuntimeLayer(new AlgorithmZoom2D());
-            var algorithmZoom2 = new RuntimeLayer(new AlgorithmZoom2D());
-            var algorithmZoom3 = new RuntimeLayer(new AlgorithmZoom2D());
-            var algorithmZoom4 = new RuntimeLayer(new AlgorithmZoom2D());
-            var algorithmInitialLand = new RuntimeLayer(new AlgorithmInitialBool());
+            var algorithmZoom1 = factory.CreateRuntimeLayer(new AlgorithmZoom2D());
+            var algorithmZoom2 = factory.CreateRuntimeLayer(new AlgorithmZoom2D());
+            var algorithmZoom3 = factory.CreateRuntimeLayer(new AlgorithmZoom2D());
+            var algorithmZoom4 = factory.CreateRuntimeLayer(new AlgorithmZoom2D());
+            var algorithmInitialLand = factory.CreateRuntimeLayer(new AlgorithmInitialBool());
             algorithmZoom4.SetInput(0, algorithmInitialLand);
             algorithmZoom3.SetInput(0, algorithmZoom4);
             algorithmZoom2.SetInput(0, algorithmZoom3);
@@ -27,12 +34,12 @@ namespace ProceduralGenStorage
             StorageLayer[] storage = null;
             Console.WriteLine("Storing...");
             using (var writer = new StreamWriter("WorldConfig.xml", false))
-                StorageAccess.SaveStorage(
-                    new StorageLayer[] { StorageAccess.FromRuntime(algorithmZoom1) }, writer);
+                storageAccess.SaveStorage(
+                    new StorageLayer[] { storageAccess.FromRuntime(algorithmZoom1) }, writer);
 
             Console.WriteLine("Loading...");
             using (var reader = new StreamReader("WorldConfig.xml"))
-                storage = StorageAccess.LoadStorage(reader);
+                storage = storageAccess.LoadStorage(reader);
             foreach (var l in storage)
             {
                 Console.WriteLine(l.Algorithm.GetType().FullName);

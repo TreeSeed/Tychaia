@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    public class AlgorithmIncrementWaterDistanceTest
+    public class AlgorithmIncrementWaterDistanceTest : TestBase
     {
         [Fact, TestFor(typeof (AlgorithmIncrementWaterDistance))]
         public void TestNegativeDoubling()
@@ -21,8 +21,8 @@ namespace Tychaia.ProceduralGeneration.Tests
             int computations;
             var increment = new AlgorithmIncrementWaterDistance();
 
-            var runtimeInput = new RuntimeLayer(inputA);
-            var runtimeTest = new RuntimeLayer(increment);
+            var runtimeInput = this.CreateRuntimeLayer(inputA);
+            var runtimeTest = this.CreateRuntimeLayer(increment);
             runtimeTest.SetInput(0, runtimeInput);
 
             var result = runtimeTest.GenerateData(0, 0, 0, 16, 16, 16, out computations);
@@ -49,8 +49,8 @@ namespace Tychaia.ProceduralGeneration.Tests
             int computations;
             var increment = new AlgorithmIncrementWaterDistance();
 
-            var runtimeInput = new RuntimeLayer(inputA);
-            var runtimeTest = new RuntimeLayer(increment);
+            var runtimeInput = this.CreateRuntimeLayer(inputA);
+            var runtimeTest = this.CreateRuntimeLayer(increment);
             runtimeTest.SetInput(0, runtimeInput);
 
             var result = runtimeTest.GenerateData(0, 0, 0, 16, 16, 16, out computations);

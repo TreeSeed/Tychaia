@@ -83,7 +83,12 @@
     <Compile Include="Analysis\TextLocationExtensions.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Biomes\Biome.cs" />
+    <Compile Include="Biomes\DesertBiome.cs" />
+    <Compile Include="Biomes\ForestBiome.cs" />
     <Compile Include="Biomes\GrasslandBiome.cs" />
+    <Compile Include="Biomes\PlainsBiome.cs" />
+    <Compile Include="Biomes\SnowBiome.cs" />
+    <Compile Include="Biomes\TropicalforestBiome.cs" />
     <Compile Include="Biomes\WaterBiome.cs" />
     <Compile Include="Blocks\BlockInfo.cs" />
     <Compile Include="Buildings\Building.cs" />
@@ -112,6 +117,7 @@
     <Compile Include="Flow\Handlers\GeneratePerformanceResultsHandler.cs" />
     <Compile Include="Flow\Handlers\GenerateRuntimeBitmapHandler.cs" />
     <Compile Include="Flow\Handlers\HandlerHelper.cs" />
+    <Compile Include="Flow\IAlgorithmFlowImageGeneration.cs" />
     <Compile Include="Flow\IFlowProcessingPipeline.cs" />
     <Compile Include="Flow\IFlowProcessingRequestHandler.cs" />
     <Compile Include="FlowBundles\FlowBundle.cs" />
@@ -122,6 +128,8 @@
     <Compile Include="IGenerator.cs" />
     <Compile Include="IGeneratorResolver.cs" />
     <Compile Include="IRuntimeContext.cs" />
+    <Compile Include="IRuntimeLayerFactory.cs" />
+    <Compile Include="IStorageAccess.cs" />
     <Compile Include="Planner\DefaultGenerationPlanner.cs" />
     <Compile Include="Planner\DefaultGenerationRequest.cs" />
     <Compile Include="Planner\GenerationRegion.cs" />
@@ -133,6 +141,7 @@
     <Compile Include="StorageLayer.cs" />
     <Compile Include="Towns\Town.cs" />
     <Compile Include="Tracing\AlgorithmTraceImageGeneration.cs" />
+    <Compile Include="Tracing\IAlgorithmTraceImageGeneration.cs" />
     <Compile Include="TychaiaProceduralGenerationIoCModule.cs" />
     <EmbeddedResource Include="Compiler\CompiledLayerTemplate.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -149,6 +158,17 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AlgorithmBundleSet.cs</LastGenOutput>
     </None>
+    <None Include="Analysis\DeployedExample\bootstrap\css\bootstrap.min.css" />
+    <None Include="Analysis\DeployedExample\bootstrap\css\bootstrap-responsive.min.css" />
+    <None Include="Analysis\DeployedExample\bootstrap\css\docs.css" />
+    <None Include="Analysis\DeployedExample\bootstrap\css\prettify.css" />
+    <None Include="Analysis\DeployedExample\bootstrap\img\glyphicons-halflings.png" />
+    <None Include="Analysis\DeployedExample\bootstrap\img\glyphicons-halflings-white.png" />
+    <None Include="Analysis\DeployedExample\bootstrap\js\bootstrap.min.js" />
+    <None Include="Analysis\DeployedExample\bootstrap\js\jquery-1.9.1.min.js" />
+    <None Include="Analysis\DeployedExample\bootstrap\js\prettify.js" />
+    <None Include="Analysis\DeployedExample\demo.xml" />
+    <None Include="Analysis\DeployedExample\reports.xsl" />
     <None Include="Analysis\Reporting\bootstrap\css\bootstrap.min.css" />
     <None Include="Analysis\Reporting\bootstrap\css\bootstrap-responsive.min.css" />
     <None Include="Analysis\Reporting\bootstrap\css\docs.css" />
@@ -159,5 +179,7 @@
     <None Include="Analysis\Reporting\bootstrap\js\jquery-1.9.1.min.js" />
     <None Include="Analysis\Reporting\bootstrap\js\prettify.js" />
     <None Include="Analysis\Reporting\reports.xsl" />
+    <None Include="Tychaia.ProceduralGeneration.Linux.csproj" />
+    <None Include="Tychaia.ProceduralGeneration.Linux.nuspec" />
   </Files>
 </Project>

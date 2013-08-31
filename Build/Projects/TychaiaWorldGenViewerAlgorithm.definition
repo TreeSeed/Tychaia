@@ -38,6 +38,7 @@
       <DependentUpon>FlowForm.cs</DependentUpon>
     </Compile>
     <Compile Include="FlowProcessingPipeline.cs" />
+    <Compile Include="IFormFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

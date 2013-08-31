@@ -7,9 +7,9 @@ using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    public static class ContinuityTests
+    public class ContinuityTests : TestBase
     {
-        public static void PerformSampling(string name, IGenerator layer)
+        public void PerformSampling(string name, IGenerator layer)
         {
             PerformSamplingIndividual(name, layer, 5, 0);
             PerformSamplingIndividual(name, layer, 5, 100);
@@ -17,7 +17,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             PerformSamplingIndividual(name, layer, 5, 10000000);
         }
 
-        private static void PerformSamplingIndividual(string name, IGenerator layer, int s, int o)
+        private void PerformSamplingIndividual(string name, IGenerator layer, int s, int o)
         {
             int computations;
             int[] initial = layer.GenerateData(-s + o, -s + o, -s + o, s*2, s*2, s*2, out computations);
@@ -33,54 +33,54 @@ namespace Tychaia.ProceduralGeneration.Tests
         }
 
         [Fact]
-        public static void TestAlgorithmInitialBool()
+        public void TestAlgorithmInitialBool()
         {
             var algorithm = new AlgorithmInitialBool();
-            var runtime = new RuntimeLayer(algorithm);
+            var runtime = this.CreateRuntimeLayer(algorithm);
             PerformSampling("AlgorithmInitialBool", runtime);
         }
 
         [Fact]
-        public static void TestAlgorithmZoom2DIteration1()
+        public void TestAlgorithmZoom2DIteration1()
         {
             var algorithmInitial = new AlgorithmInitialBool();
             var algorithmZoom2DIteration1 = new AlgorithmZoom2D();
-            var runtimeInitial = new RuntimeLayer(algorithmInitial);
-            var runtimeZoom2DIteration1 = new RuntimeLayer(algorithmZoom2DIteration1);
+            var runtimeInitial = this.CreateRuntimeLayer(algorithmInitial);
+            var runtimeZoom2DIteration1 = this.CreateRuntimeLayer(algorithmZoom2DIteration1);
             runtimeZoom2DIteration1.SetInput(0, runtimeInitial);
             PerformSampling("AlgorithmZoom2D (1 iteration)", runtimeZoom2DIteration1);
         }
 
         [Fact]
-        public static void TestAlgorithmZoom2DIteration2()
+        public void TestAlgorithmZoom2DIteration2()
         {
             var algorithmInitial = new AlgorithmInitialBool();
             var algorithmZoom2DIteration1 = new AlgorithmZoom2D();
             var algorithmZoom2DIteration2 = new AlgorithmZoom2D();
-            var runtimeInitial = new RuntimeLayer(algorithmInitial);
-            var runtimeZoom2DIteration1 = new RuntimeLayer(algorithmZoom2DIteration1);
-            var runtimeZoom2DIteration2 = new RuntimeLayer(algorithmZoom2DIteration2);
+            var runtimeInitial = this.CreateRuntimeLayer(algorithmInitial);
+            var runtimeZoom2DIteration1 = this.CreateRuntimeLayer(algorithmZoom2DIteration1);
+            var runtimeZoom2DIteration2 = this.CreateRuntimeLayer(algorithmZoom2DIteration2);
             runtimeZoom2DIteration1.SetInput(0, runtimeInitial);
             runtimeZoom2DIteration2.SetInput(0, runtimeInitial);
             PerformSampling("AlgorithmZoom2D (2 iteration)", runtimeZoom2DIteration2);
         }
 
         [Fact]
-        public static void TestAlgorithmIncrementWaterDistance1()
+        public void TestAlgorithmIncrementWaterDistance1()
         {
             var algorithmInitial = new AlgorithmInitialBool();
             var algorithmIncrementWaterDistance = new AlgorithmIncrementWaterDistance
             {
                 Initial = true
             };
-            var runtimeInitial = new RuntimeLayer(algorithmInitial);
-            var runtimeIncrementWaterDistance = new RuntimeLayer(algorithmIncrementWaterDistance);
+            var runtimeInitial = this.CreateRuntimeLayer(algorithmInitial);
+            var runtimeIncrementWaterDistance = this.CreateRuntimeLayer(algorithmIncrementWaterDistance);
             runtimeIncrementWaterDistance.SetInput(0, runtimeInitial);
             PerformSampling("AlgorithmIncrementWaterDistance", runtimeIncrementWaterDistance);
         }
 
         [Fact]
-        public static void TestAlgorithmIncrementWaterDistance2()
+        public void TestAlgorithmIncrementWaterDistance2()
         {
             var algorithmInitial = new AlgorithmInitialBool();
             var algorithmZoom2DIteration1 = new AlgorithmZoom2D();
@@ -90,11 +90,11 @@ namespace Tychaia.ProceduralGeneration.Tests
                 Initial = true
             };
             var algorithmIncrementWaterDistance2 = new AlgorithmIncrementWaterDistance();
-            var runtimeInitial = new RuntimeLayer(algorithmInitial);
-            var runtimeZoom2DIteration1 = new RuntimeLayer(algorithmZoom2DIteration1);
-            var runtimeZoom2DIteration2 = new RuntimeLayer(algorithmZoom2DIteration2);
-            var runtimeIncrementWaterDistance1 = new RuntimeLayer(algorithmIncrementWaterDistance1);
-            var runtimeIncrementWaterDistance2 = new RuntimeLayer(algorithmIncrementWaterDistance2);
+            var runtimeInitial = this.CreateRuntimeLayer(algorithmInitial);
+            var runtimeZoom2DIteration1 = this.CreateRuntimeLayer(algorithmZoom2DIteration1);
+            var runtimeZoom2DIteration2 = this.CreateRuntimeLayer(algorithmZoom2DIteration2);
+            var runtimeIncrementWaterDistance1 = this.CreateRuntimeLayer(algorithmIncrementWaterDistance1);
+            var runtimeIncrementWaterDistance2 = this.CreateRuntimeLayer(algorithmIncrementWaterDistance2);
             runtimeZoom2DIteration1.SetInput(0, runtimeInitial);
             runtimeIncrementWaterDistance1.SetInput(0, runtimeZoom2DIteration1);
             runtimeZoom2DIteration2.SetInput(0, runtimeIncrementWaterDistance1);
@@ -103,7 +103,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         }
 
         [Fact]
-        public static void TestAlgorithmIncrementWaterDistance3()
+        public void TestAlgorithmIncrementWaterDistance3()
         {
             var algorithmInitial = new AlgorithmInitialBool();
             var algorithmZoom2DIteration1 = new AlgorithmZoom2D();
@@ -115,13 +115,13 @@ namespace Tychaia.ProceduralGeneration.Tests
             };
             var algorithmIncrementWaterDistance2 = new AlgorithmIncrementWaterDistance();
             var algorithmIncrementWaterDistance3 = new AlgorithmIncrementWaterDistance();
-            var runtimeInitial = new RuntimeLayer(algorithmInitial);
-            var runtimeZoom2DIteration1 = new RuntimeLayer(algorithmZoom2DIteration1);
-            var runtimeZoom2DIteration2 = new RuntimeLayer(algorithmZoom2DIteration2);
-            var runtimeZoom2DIteration3 = new RuntimeLayer(algorithmZoom2DIteration3);
-            var runtimeIncrementWaterDistance1 = new RuntimeLayer(algorithmIncrementWaterDistance1);
-            var runtimeIncrementWaterDistance2 = new RuntimeLayer(algorithmIncrementWaterDistance2);
-            var runtimeIncrementWaterDistance3 = new RuntimeLayer(algorithmIncrementWaterDistance3);
+            var runtimeInitial = this.CreateRuntimeLayer(algorithmInitial);
+            var runtimeZoom2DIteration1 = this.CreateRuntimeLayer(algorithmZoom2DIteration1);
+            var runtimeZoom2DIteration2 = this.CreateRuntimeLayer(algorithmZoom2DIteration2);
+            var runtimeZoom2DIteration3 = this.CreateRuntimeLayer(algorithmZoom2DIteration3);
+            var runtimeIncrementWaterDistance1 = this.CreateRuntimeLayer(algorithmIncrementWaterDistance1);
+            var runtimeIncrementWaterDistance2 = this.CreateRuntimeLayer(algorithmIncrementWaterDistance2);
+            var runtimeIncrementWaterDistance3 = this.CreateRuntimeLayer(algorithmIncrementWaterDistance3);
             runtimeZoom2DIteration1.SetInput(0, runtimeInitial);
             runtimeIncrementWaterDistance1.SetInput(0, runtimeZoom2DIteration1);
             runtimeZoom2DIteration2.SetInput(0, runtimeIncrementWaterDistance1);
@@ -132,7 +132,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         }
 
         [Fact]
-        public static void TestAlgorithmIncrementWaterDistance4()
+        public void TestAlgorithmIncrementWaterDistance4()
         {
             var algorithmInitial = new AlgorithmInitialBool();
             var algorithmZoom2DIteration1 = new AlgorithmZoom2D();
@@ -146,15 +146,15 @@ namespace Tychaia.ProceduralGeneration.Tests
             var algorithmIncrementWaterDistance2 = new AlgorithmIncrementWaterDistance();
             var algorithmIncrementWaterDistance3 = new AlgorithmIncrementWaterDistance();
             var algorithmIncrementWaterDistance4 = new AlgorithmIncrementWaterDistance();
-            var runtimeInitial = new RuntimeLayer(algorithmInitial);
-            var runtimeZoom2DIteration1 = new RuntimeLayer(algorithmZoom2DIteration1);
-            var runtimeZoom2DIteration2 = new RuntimeLayer(algorithmZoom2DIteration2);
-            var runtimeZoom2DIteration3 = new RuntimeLayer(algorithmZoom2DIteration3);
-            var runtimeZoom2DIteration4 = new RuntimeLayer(algorithmZoom2DIteration4);
-            var runtimeIncrementWaterDistance1 = new RuntimeLayer(algorithmIncrementWaterDistance1);
-            var runtimeIncrementWaterDistance2 = new RuntimeLayer(algorithmIncrementWaterDistance2);
-            var runtimeIncrementWaterDistance3 = new RuntimeLayer(algorithmIncrementWaterDistance3);
-            var runtimeIncrementWaterDistance4 = new RuntimeLayer(algorithmIncrementWaterDistance4);
+            var runtimeInitial = this.CreateRuntimeLayer(algorithmInitial);
+            var runtimeZoom2DIteration1 = this.CreateRuntimeLayer(algorithmZoom2DIteration1);
+            var runtimeZoom2DIteration2 = this.CreateRuntimeLayer(algorithmZoom2DIteration2);
+            var runtimeZoom2DIteration3 = this.CreateRuntimeLayer(algorithmZoom2DIteration3);
+            var runtimeZoom2DIteration4 = this.CreateRuntimeLayer(algorithmZoom2DIteration4);
+            var runtimeIncrementWaterDistance1 = this.CreateRuntimeLayer(algorithmIncrementWaterDistance1);
+            var runtimeIncrementWaterDistance2 = this.CreateRuntimeLayer(algorithmIncrementWaterDistance2);
+            var runtimeIncrementWaterDistance3 = this.CreateRuntimeLayer(algorithmIncrementWaterDistance3);
+            var runtimeIncrementWaterDistance4 = this.CreateRuntimeLayer(algorithmIncrementWaterDistance4);
             runtimeZoom2DIteration1.SetInput(0, runtimeInitial);
             runtimeIncrementWaterDistance1.SetInput(0, runtimeZoom2DIteration1);
             runtimeZoom2DIteration2.SetInput(0, runtimeIncrementWaterDistance1);

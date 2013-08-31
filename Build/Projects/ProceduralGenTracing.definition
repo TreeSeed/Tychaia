@@ -5,6 +5,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Tychaia.ProceduralGeneration" />
+    <Reference Include="Ninject" />
   </References>
   <Files>
     <Compile Include="AssemblyInfo.cs" />

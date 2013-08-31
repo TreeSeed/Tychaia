@@ -3,17 +3,18 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Ninject.Modules;
+using System.Drawing;
 
-namespace Tychaia.Globals
+namespace Tychaia.ProceduralGeneration
 {
-    public class TychaiaGlobalIoCModule : NinjectModule
+    public interface IAlgorithmFlowImageGeneration
     {
-        public override void Load()
-        {
-            this.Bind<IFilteredConsole>().To<DefaultFilteredConsole>();
-            this.Bind<IFilteredFeatures>().To<DefaultFilteredFeatures>();
-            this.Bind<IArrayPool>().To<DefaultArrayPool>().InSingletonScope();
-        }
+        Bitmap RegenerateImageForLayer(
+            StorageLayer layer,
+            long seed,
+            long ox, long oy, long oz,
+            int width, int height, int depth,
+            bool compiled = false);
     }
 }
+

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    public class AlgorithmPassthroughTest
+    public class AlgorithmPassthroughTest : TestBase
     {
         [Fact, TestFor(typeof (AlgorithmPassthrough))]
         public void TestRuntimePassthroughNoBorder()
@@ -57,8 +57,8 @@ namespace Tychaia.ProceduralGeneration.Tests
         {
             int computations1, computations2;
             int width = 16, height = 16, depth = 16;
-            var gradient = new RuntimeLayer(new AlgorithmGradientInitial());
-            var passthrough = new RuntimeLayer(new AlgorithmPassthrough {XBorder = xBorder, YBorder = yBorder});
+            var gradient = this.CreateRuntimeLayer(new AlgorithmGradientInitial());
+            var passthrough = this.CreateRuntimeLayer(new AlgorithmPassthrough {XBorder = xBorder, YBorder = yBorder});
             passthrough.SetInput(0, gradient);
             var i1 = gradient.GenerateData(0, 0, 0, width, height, depth, out computations1);
             var i2 = passthrough.GenerateData(0, 0, 0, width, height, depth, out computations2);

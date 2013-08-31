@@ -11,20 +11,28 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Xml;
 using Redpoint.FlowGraph;
+using Tychaia.Globals;
 using Tychaia.ProceduralGeneration.Compiler;
 using Tychaia.ProceduralGeneration.Flow;
 
 namespace Tychaia.ProceduralGeneration
 {
-    public static class StorageAccess
+    internal class StorageAccess : IStorageAccess
     {
+        private readonly IArrayPool m_ArrayPool;
+        
+        public StorageAccess(IArrayPool arrayPool)
+        {
+            this.m_ArrayPool = arrayPool;
+        }
+    
         #region Conversion to runtime and compiled layers
 
         /// <summary>
         /// Converts the runtime layer representation into
         /// a storage layer so that it can be saved.
         /// </summary>
-        public static StorageLayer FromRuntime(RuntimeLayer layer)
+        public StorageLayer FromRuntime(RuntimeLayer layer)
         {
             // Handle null conversion.
             if (layer == null)
@@ -47,14 +55,14 @@ namespace Tychaia.ProceduralGeneration
         /// <summary>
         /// Converts the loaded storage layer into a runtime layer.
         /// </summary>
-        public static RuntimeLayer ToRuntime(StorageLayer layer)
+        public RuntimeLayer ToRuntime(StorageLayer layer)
         {
             // Handle null conversion.
             if (layer == null)
                 return null;
 
             // Convert runtime layer.
-            var runtime = new RuntimeLayer(layer.Algorithm);
+            var runtime = new RuntimeLayer(this.m_ArrayPool, layer.Algorithm);
             if (layer.Inputs != null)
                 for (var i = 0; i < layer.Inputs.Length; i++)
                     runtime.SetInput(i, ToRuntime(layer.Inputs[i]));
@@ -64,7 +72,7 @@ namespace Tychaia.ProceduralGeneration
         /// <summary>
         /// Compiles the storage layer.
         /// </summary>
-        public static IGenerator ToCompiled(StorageLayer layer)
+        public IGenerator ToCompiled(StorageLayer layer)
         {
             return ToCompiled(ToRuntime(layer));
         }
@@ -72,7 +80,7 @@ namespace Tychaia.ProceduralGeneration
         /// <summary>
         /// Compiles the runtime layer.
         /// </summary>
-        public static IGenerator ToCompiled(RuntimeLayer layer)
+        public IGenerator ToCompiled(RuntimeLayer layer)
         {
             var result = LayerCompiler.Compile(layer);
             result.SetSeed(layer.Seed);
@@ -86,7 +94,7 @@ namespace Tychaia.ProceduralGeneration
         /// <summary>
         /// Adds all the layers recursively to a list.
         /// </summary>
-        public static void AddRecursiveStorage(List<StorageLayer> allLayers, StorageLayer layer)
+        public void AddRecursiveStorage(List<StorageLayer> allLayers, StorageLayer layer)
         {
             if (!allLayers.Contains(layer))
                 allLayers.Add(layer);
@@ -98,7 +106,7 @@ namespace Tychaia.ProceduralGeneration
         /// <summary>
         /// Saves the storage layer to file.
         /// </summary>
-        public static void SaveStorage(StorageLayer layer, StreamWriter output)
+        public void SaveStorage(StorageLayer layer, StreamWriter output)
         {
             SaveStorage(new[] { layer }, output);
         }
@@ -106,7 +114,7 @@ namespace Tychaia.ProceduralGeneration
         /// <summary>
         /// Saves the storage layers to file.
         /// </summary>
-        public static void SaveStorage(StorageLayer[] layers, StreamWriter output)
+        public void SaveStorage(StorageLayer[] layers, StreamWriter output)
         {
             // Find all possible layers that need to saved.
             var allLayers = layers.ToList();
@@ -127,7 +135,7 @@ namespace Tychaia.ProceduralGeneration
         /// <summary>
         /// Loads storage layers from a stream.
         /// </summary>
-        public static StorageLayer[] LoadStorage(StreamReader input)
+        public StorageLayer[] LoadStorage(StreamReader input)
         {
             var x = new DataContractSerializer(typeof(StorageLayer[]), SerializableTypes);
             using (

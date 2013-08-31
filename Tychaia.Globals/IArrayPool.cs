@@ -3,17 +3,16 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Ninject.Modules;
+using System;
 
 namespace Tychaia.Globals
 {
-    public class TychaiaGlobalIoCModule : NinjectModule
+    public interface IArrayPool
     {
-        public override void Load()
-        {
-            this.Bind<IFilteredConsole>().To<DefaultFilteredConsole>();
-            this.Bind<IFilteredFeatures>().To<DefaultFilteredFeatures>();
-            this.Bind<IArrayPool>().To<DefaultArrayPool>().InSingletonScope();
-        }
+        T[] Get<T>(int size);
+        dynamic Get(Type type, int size);
+        void Release<T>(T[] array);
+        void Release(dynamic array);
     }
 }
+

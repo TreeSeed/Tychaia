@@ -20,18 +20,21 @@ namespace TychaiaWorldGenViewerAlgorithm
         private readonly Bitmap m_Bitmap;
         private readonly RuntimeLayer m_Layer;
         private readonly IRenderingLocationProvider m_RenderingLocationProvider;
+        private readonly IStorageAccess m_StorageAccess;
         private int m_X;
         private int m_Y;
         private int m_Z;
 
         public ExportForm(
             IRenderingLocationProvider renderingLocationProvider,
+            IStorageAccess storageAccess,
             FlowElement flowElement)
         {
             this.InitializeComponent();
 
+            this.m_StorageAccess = storageAccess;
             this.m_RenderingLocationProvider = renderingLocationProvider;
-            this.m_Layer = StorageAccess.ToRuntime(((AlgorithmFlowElement)flowElement).Layer);
+            this.m_Layer = this.m_StorageAccess.ToRuntime(((AlgorithmFlowElement)flowElement).Layer);
             this.m_Bitmap = new Bitmap(1024 + 32, 1024 + 256);
             this.c_RenderBox.Image = this.m_Bitmap;
             this.c_Timer.Start();
@@ -185,7 +188,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                                 Color lc;
                                 if (layer.GetInputs().Length > 0)
                                     lc = layer.Algorithm.GetColorForValue(
-                                        StorageAccess.FromRuntime(layer.GetInputs()[0]),
+                                        this.m_StorageAccess.FromRuntime(layer.GetInputs()[0]),
                                         data[x + y * width + z * width * height]);
                                 else
                                     lc = layer.Algorithm.GetColorForValue(

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Tychaia.ProceduralGeneration.Tests
 {
-    public class AlgorithmConstantTest
+    public class AlgorithmConstantTest : TestBase
     {
         [Fact, TestFor(typeof (AlgorithmConstant))]
         public void TestValues()
@@ -15,7 +15,7 @@ namespace Tychaia.ProceduralGeneration.Tests
             for (var v = -50; v < 50; v++)
             {
                 int computations;
-                var gradient = new RuntimeLayer(new AlgorithmConstant { Constant = v });
+                var gradient = this.CreateRuntimeLayer(new AlgorithmConstant { Constant = v });
                 var result = gradient.GenerateData(-1, -1, -1, 3, 3, 3, out computations);
 
                 for (var i = 0; i < 3; i++)
