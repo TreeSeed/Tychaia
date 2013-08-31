@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ExternalProject Name="Substrate">
-  
-  <Project 
-    Name="Substrate (NET4)"
-    Guid="7264A1C4-AB4A-4437-B252-7379B98B5509"
-    Path="Libraries/Substrate/SubstrateCS/Substrate (NET4).csproj" />
-  
-</ExternalProject>
