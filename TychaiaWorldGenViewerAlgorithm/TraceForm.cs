@@ -19,6 +19,8 @@ namespace TychaiaWorldGenViewerAlgorithm
 {
     public partial class TraceForm : Form
     {
+        private readonly IAlgorithmTraceImageGeneration m_AlgorithmTraceImageGeneration;
+
         private readonly RuntimeLayer m_Layer;
         private List<Bitmap> m_Bitmaps;
         private Action m_DisableHandlers;
@@ -26,8 +28,11 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         public TraceForm(
             IStorageAccess storageAccess,
+            IAlgorithmTraceImageGeneration algorithmTraceImageGeneration,
             FlowElement flowElement)
         {
+            this.m_AlgorithmTraceImageGeneration = algorithmTraceImageGeneration;
+
             this.InitializeComponent();
             this.m_Layer = storageAccess.ToRuntime(((AlgorithmFlowElement)flowElement).Layer);
             this.c_FormZoomSize.Items.Add(new ZoomLevel { Level = 1 });
@@ -61,7 +66,14 @@ namespace TychaiaWorldGenViewerAlgorithm
             var thread = new Thread(() =>
             {
                 int computations;
-                this.m_Layer.GenerateData(-s + o, -s + o, -s + o, s * 2, s * 2, s * 2, out computations);
+                this.m_Layer.GenerateData(
+                    -s + o,
+                    -s + o,
+                    -s + o,
+                    s * 2,
+                    s * 2,
+                    this.m_Layer.Algorithm.Is2DOnly ? 1 : s * 2,
+                    out computations);
                 this.m_DisableHandlers();
 
                 if (this.IsHandleCreated)
@@ -126,7 +138,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             // Save the internal result.
             if (!this.c_OnlyComparisonDataCheckBox.Checked)
             {
-                this.m_Bitmaps.Add(AlgorithmTraceImageGeneration.RenderTraceResult(
+                this.m_Bitmaps.Add(this.m_AlgorithmTraceImageGeneration.RenderTraceResult(
                     sender as RuntimeLayer,
                     e.Data,
                     e.GSArrayWidth,
@@ -154,7 +166,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                     e.GSArrayWidth,
                     e.GSArrayHeight,
                     e.GSArrayDepth, out computations);
-            this.m_Bitmaps.Add(AlgorithmTraceImageGeneration.RenderTraceResult(
+            this.m_Bitmaps.Add(this.m_AlgorithmTraceImageGeneration.RenderTraceResult(
                 sender as RuntimeLayer,
                 data,
                 e.GSArrayWidth,
@@ -209,9 +221,9 @@ namespace TychaiaWorldGenViewerAlgorithm
 
         private void c_FormZoomSize_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.Size = new Size(
-                417 + 384 * (((ZoomLevel)this.c_FormZoomSize.SelectedItem).Level - 1),
-                560 + 384 * (((ZoomLevel)this.c_FormZoomSize.SelectedItem).Level - 1));
+            var base1 = 417 + 384 * (((ZoomLevel)this.c_FormZoomSize.SelectedItem).Level - 1);
+            var base2 = 560 + 384 * (((ZoomLevel)this.c_FormZoomSize.SelectedItem).Level - 1) + 30;
+            this.Size = new Size(base1, base2);
             this.c_TraceScrollbar_Scroll(this,
                 new ScrollEventArgs(ScrollEventType.EndScroll, this.c_TraceScrollbar.Value));
         }

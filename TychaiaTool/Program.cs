@@ -4,29 +4,26 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using System;
-using System.Windows.Forms;
 using Ninject;
-using Tychaia.ProceduralGeneration;
 using Tychaia.Globals;
+using Tychaia.ProceduralGeneration;
+using ManyConsole;
 
-namespace TychaiaWorldGenViewerAlgorithm
+namespace TychaiaTool
 {
-    internal static class Program
+    public static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        private static void Main()
+        public static void Main(string[] args)
         {
             var kernel = new StandardKernel();
             kernel.Load<TychaiaGlobalIoCModule>();
             kernel.Load<TychaiaProceduralGenerationIoCModule>();
-            kernel.Load<TychaiaWorldGenViewerAlgorithmIoCModule>();
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(kernel.Get<FlowForm>());
+            kernel.Load<TychaiaToolIoCModule>();
+            ConsoleCommandDispatcher.DispatchCommand(
+                kernel.GetAll<ConsoleCommand>(),
+                args,
+                Console.Out);
         }
     }
 }
+

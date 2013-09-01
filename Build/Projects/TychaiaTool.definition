@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="TychaiaTool" Path="TychaiaTool" Type="Console">
+  <References>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Tychaia.Globals" />
+    <Reference Include="Tychaia.Game" />
+    <Reference Include="Tychaia.Data" />
+    <Reference Include="Tychaia.Data.Serializer" />
+    <Reference Include="Tychaia.ProceduralGeneration" />
+    <Reference Include="Tychaia.Content" />
+    <Reference Include="Tychaia.Threading" />
+    <Reference Include="Ninject" />
+    <Reference Include="ICSharpCode.NRefactory" />
+    <Reference Include="protobuf-net" />
+    <Reference Include="Protogame" />
+  </References>
+  <Files>
+    <Compile Include="Configurations\ActualProceduralConfiguration.cs" />
+    <Compile Include="Configurations\DefaultConfigurationHelper.cs" />
+    <Compile Include="Configurations\DoubleZoomProceduralConfiguration.cs" />
+    <Compile Include="Configurations\ExtendProceduralConfiguration.cs" />
+    <Compile Include="Configurations\HeightChange3DProceduralConfiguration.cs" />
+    <Compile Include="Configurations\HeightChangeProceduralConfiguration.cs" />
+    <Compile Include="Configurations\IConfigurationHelper.cs" />
+    <Compile Include="Configurations\IProceduralConfiguration.cs" />
+    <Compile Include="Configurations\LandProceduralConfiguration.cs" />
+    <Compile Include="Configurations\QuadZoomProceduralConfiguration.cs" />
+    <Compile Include="Configurations\TestProceduralConfiguration.cs" />
+    <Compile Include="Configurations\TraceTestProceduralConfiguration.cs" />
+    <Compile Include="Configurations\ZoomProceduralConfiguration.cs" />
+    <Compile Include="ProceduralCompiler\ProceduralCompilerCommand.cs" />
+    <Compile Include="ProceduralPerformance\ProceduralPerformanceCommand.cs" />
+    <Compile Include="ProceduralPlanner\ProceduralPlannerCommand.cs" />
+    <Compile Include="ProceduralStorage\ProceduralStorageCommand.cs" />
+    <Compile Include="ProceduralTracing\ProceduralTracingCommand.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="QuickAssetImport\QuickAssetImportCommand.cs" />
+    <Compile Include="TychaiaToolIoCModule.cs" />
+    <None Include="..\Other\WorldConfig.xml">
+      <Link>WorldConfig.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </Files>
+</Project>

@@ -4,6 +4,7 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using Ninject;
+using Tychaia.Globals;
 using Tychaia.ProceduralGeneration.Compiler;
 
 namespace Tychaia.ProceduralGeneration.Tests
@@ -13,6 +14,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         protected RuntimeLayer CreateRuntimeLayer(IAlgorithm algorithm)
         {
             var kernel = new StandardKernel();
+            kernel.Load<TychaiaGlobalIoCModule>();
             kernel.Load<TychaiaProceduralGenerationIoCModule>();
             return kernel.Get<IRuntimeLayerFactory>().CreateRuntimeLayer(algorithm);
         }

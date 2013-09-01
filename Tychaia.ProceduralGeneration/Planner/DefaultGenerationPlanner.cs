@@ -123,8 +123,11 @@ namespace Tychaia.ProceduralGeneration
                     {
                         // The original region is inside the plan and it hasn't
                         // recieved data yet.  Copy out the data and fire the event.
-                        // FIXME: Don't always assume the data will be FlowBundles.
-                        original.GeneratedData = new FlowBundle[original.Width, original.Height, original.Depth];
+                        original.GeneratedData = Activator.CreateInstance(
+                            ((Type)result.GetType()).GetElementType().MakeArrayType(3),
+                            original.Width,
+                            original.Height,
+                            original.Depth);
                         for (var x = original.X - planned.X; x < (original.X - planned.X) + original.Width; x++)
                         for (var y = original.Y - planned.Y; y < (original.Y - planned.Y) + original.Height; y++)
                         for (var z = original.Z - planned.Z; z < (original.Z - planned.Z) + original.Depth; z++)

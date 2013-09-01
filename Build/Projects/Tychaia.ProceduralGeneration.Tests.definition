@@ -6,6 +6,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Core" />
+    <Reference Include="Tychaia.Globals" />
     <Reference Include="Tychaia.ProceduralGeneration" />
     <Reference Include="ICSharpCode.NRefactory" />
     <Reference Include="Ninject" />

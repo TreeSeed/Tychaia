@@ -21,7 +21,6 @@ namespace TychaiaWorldGenViewerAlgorithm
                                                                (flowProcessingPipeline = new FlowProcessingPipeline(x.Kernel.Get<IFlowProcessingRequestHandler>()));
             this.Bind<FlowProcessingPipeline>().ToMethod(load);
             this.Bind<IFlowProcessingPipeline>().ToMethod(load);
-            this.Bind<IFlowProcessingRequestHandler>().To<FlowProcessingRequestHandler>();
             this.Bind<IFormFactory>().ToFactory();
         }
     }

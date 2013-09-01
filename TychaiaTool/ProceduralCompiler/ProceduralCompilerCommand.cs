@@ -5,16 +5,47 @@
 // ====================================================================== //
 using System;
 using ICSharpCode.NRefactory.CSharp;
-using Ninject;
-using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
 using Tychaia.ProceduralGeneration.Compiler;
+using ManyConsole;
 
-namespace ProceduralGenCompiler
+namespace TychaiaTool
 {
-    class MainClass
+    public class ProceduralCompilerCommand : ConsoleCommand
     {
-        private static void PrintRangedTree(RangedLayer layer, string indent = " ", string desired = "\x250E")
+        private readonly IConfigurationHelper m_ConfigurationHelper;
+
+        private IProceduralConfiguration m_Configuration;
+        private string m_ConfigurationName;
+        private bool m_ShowOptimizedCode = true;
+        private bool m_UseOptimizedCode = true;
+
+        public ProceduralCompilerCommand(
+            IConfigurationHelper configurationHelper)
+        {
+            this.m_ConfigurationHelper = configurationHelper;
+
+            this.IsCommand("test-compiler", "Test the lightspeed compiler");
+            this.m_ConfigurationHelper.Setup(this, x => this.m_ConfigurationName = x);
+            this.HasOption(
+                "show-original",
+                "Do not show the optimized version of the code",
+                x => this.m_ShowOptimizedCode = false);
+            this.HasOption(
+                "use-original",
+                "Do not use the optimized version of the code",
+                x => this.m_UseOptimizedCode = false);
+        }
+
+        public override int? OverrideAfterHandlingArgumentsBeforeRun(string[] remainingArguments)
+        {
+            this.m_Configuration = this.m_ConfigurationHelper.Validate(this.m_ConfigurationName);
+            return this.m_Configuration == null
+                ? 1
+                : base.OverrideAfterHandlingArgumentsBeforeRun(remainingArguments);
+        }
+
+        private void PrintRangedTree(RangedLayer layer, string indent = " ", string desired = "\x250E")
         {
             var i = "  ";
             var d = "\x250E";
@@ -65,25 +96,14 @@ namespace ProceduralGenCompiler
                 layer.OffsetZ);
         }
 
-        public static void Main(string[] args)
+        public override int Run(string[] remainingArguments)
         {
-            var kernel = new StandardKernel();
-            kernel.Load<TychaiaProceduralGenerationIoCModule>();
-            
-            var factory = kernel.Get<IRuntimeLayerFactory>();
-            var constant = factory.CreateRuntimeLayer(new AlgorithmConstant { Constant = 123456 });
-            var perlin = factory.CreateRuntimeLayer(new AlgorithmPerlin());
-            var add = factory.CreateRuntimeLayer(new AlgorithmAdd());
-            var perlin2 = factory.CreateRuntimeLayer(new AlgorithmPerlin());
-            var passthrough = factory.CreateRuntimeLayer(new AlgorithmPassthrough { XBorder = 7, YBorder = 9, ZBorder = 11 });
-            var heightC = factory.CreateRuntimeLayer(new AlgorithmHeightChange());
-            var zoom3D = factory.CreateRuntimeLayer(new AlgorithmZoom3D());
-            passthrough.SetInput(0, perlin2);
-            //zoom3D.SetInput(0, perlin);
-            add.SetInput(0, perlin/*zoom3D*/);
-            add.SetInput(1, passthrough);
-            heightC.SetInput(0, add);
-            var runtime = heightC;
+            var runtime = this.m_Configuration.GetConfiguration() as RuntimeLayer;
+            if (runtime == null)
+            {
+                Console.WriteLine("Configuration is already compiled.");
+                return 1;
+            }
 
             // ------- RANGED --------
             Expression xl, yl, zl, width, height, depth, outerX, outerY, outerZ;
@@ -123,13 +143,13 @@ namespace ProceduralGenCompiler
 
             // ------- TEST CODE -------
 
-            var compiledCode = LayerCompiler.GenerateCode(runtime, false);
+            var compiledCode = LayerCompiler.GenerateCode(runtime, this.m_ShowOptimizedCode);
 
             Console.WriteLine("The generated code is:");
             Console.WriteLine();
             Console.WriteLine(compiledCode);
 
-            var compiled = LayerCompiler.Compile(runtime);
+            var compiled = LayerCompiler.Compile(runtime, this.m_UseOptimizedCode);
 
             int computations;
             var runtimeData = runtime.GenerateData(-10, -10, -10, 20, 20, 20, out computations);
@@ -156,6 +176,8 @@ namespace ProceduralGenCompiler
                 Console.WriteLine("Compiled layer matches runtime.");
             else
                 Console.WriteLine("Compiled layer is " + (count / (double)total) * 100 + "% different to runtime.");
+
+            return 0;
         }
     }
 }

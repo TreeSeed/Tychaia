@@ -38,8 +38,8 @@ namespace TychaiaWorldGenViewerAlgorithm
             this.Seed = 0xDEADBEEF;
 
             this.InitializeComponent();
-            kernel.Bind<IRenderingLocationProvider>().ToMethod(context => this);
-            kernel.Bind<ICurrentWorldSeedProvider>().ToMethod(context => this);
+            kernel.Rebind<IRenderingLocationProvider>().ToMethod(context => this);
+            kernel.Rebind<ICurrentWorldSeedProvider>().ToMethod(context => this);
             this.m_FlowProcessingPipeline = flowProcessingPipeline.Value;
             this.m_FormFactory = formFactory;
             this.m_StorageAccess = storageAccess;

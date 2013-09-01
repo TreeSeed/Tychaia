@@ -14,7 +14,7 @@ namespace Tychaia.ProceduralGeneration
         public int Height;
         public int Depth;
 
-        public FlowBundle[,,] GeneratedData;
+        public dynamic GeneratedData;
 
         public override string ToString()
         {

@@ -20,6 +20,8 @@ namespace Tychaia.ProceduralGeneration
             this.Bind<IAlgorithmFlowImageGeneration>().To<AlgorithmFlowImageGeneration>().InSingletonScope();
             this.Bind<IAlgorithmTraceImageGeneration>().To<AlgorithmTraceImageGeneration>().InSingletonScope();
             this.Bind<IRuntimeLayerFactory>().ToFactory();
+            this.Bind<ICellOrderCalculator>().To<DefaultCellOrderCalculator>().InSingletonScope();
+            this.Bind<IIsometricBitmapRenderer>().To<DefaultIsometricBitmapRenderer>().InSingletonScope();
         }
     }
 }

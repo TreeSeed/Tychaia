@@ -16,11 +16,14 @@ namespace Tychaia.ProceduralGeneration.Flow
         private const int RenderDepth = 64;
 
         private readonly IStorageAccess m_StorageAccess;
+        private readonly IIsometricBitmapRenderer m_IsometricBitmapRenderer;
 
         public AlgorithmFlowImageGeneration(
-            IStorageAccess storageAccess)
+            IStorageAccess storageAccess,
+            IIsometricBitmapRenderer isometricBitmapRenderer)
         {
             this.m_StorageAccess = storageAccess;
+            this.m_IsometricBitmapRenderer = isometricBitmapRenderer;
         }
 
         public Bitmap RegenerateImageForLayer(
@@ -38,18 +41,28 @@ namespace Tychaia.ProceduralGeneration.Flow
                 {
                     try
                     {
-                        return Regenerate3DImageForLayer(
+                        return this.m_IsometricBitmapRenderer.GenerateImage(
+                            runtime,
+                            x => runtime.Algorithm.GetColorForValue(this.m_StorageAccess.FromRuntime(runtime), x),
+                            ox, oy, oz,
+                            width, height, runtime.Algorithm.Is2DOnly ? 1 : depth);
+                        /*return Regenerate3DImageForLayer(
                             runtime,
                             ox, oy, oz,
                             width, height, depth,
-                            this.m_StorageAccess.ToCompiled(runtime));
+                            this.m_StorageAccess.ToCompiled(runtime));*/
                     }
                     catch (Exception)
                     {
                         return null;
                     }
                 }
-                return Regenerate3DImageForLayer(runtime, ox, oy, oz, width, height, depth);
+                return this.m_IsometricBitmapRenderer.GenerateImage(
+                    runtime,
+                    x => runtime.Algorithm.GetColorForValue(this.m_StorageAccess.FromRuntime(runtime), x),
+                    ox, oy, oz,
+                    width, height, runtime.Algorithm.Is2DOnly ? 1 : depth);
+                //return Regenerate3DImageForLayer(runtime, ox, oy, oz, width, height, depth);
             }
             catch (Exception)
             {
@@ -57,6 +70,7 @@ namespace Tychaia.ProceduralGeneration.Flow
             }
         }
 
+/*
         private Bitmap Regenerate3DImageForLayer(
             RuntimeLayer runtimeLayer,
             long ox, long oy, long oz,
@@ -82,7 +96,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                 data = runtimeLayer.GenerateData(ox, oy, oz, RenderWidth, RenderHeight, RenderDepth, out computations);
 
             var storageLayer = this.m_StorageAccess.FromRuntime(runtimeLayer);
-            int[] render = GetCellRenderOrder(RenderToNE, RenderWidth, RenderHeight);
+            int[] render = this.m_CellOrderCalculator.CalculateCellRenderOrder(RenderWidth, RenderHeight);
             int ztop = runtimeLayer.Algorithm.Is2DOnly ? 1 : RenderDepth;
             var zbottom = 0;
             for (var z = zbottom; z < ztop; z++)
@@ -124,110 +138,6 @@ namespace Tychaia.ProceduralGeneration.Flow
             }
 
             return b;
-        }
-
-        #region Cell Render Ordering
-
-        private const int RenderToNE = 0;
-        private const int RenderToNW = 1;
-        private const int RenderToSE = 2;
-        private const int RenderToSW = 3;
-
-        private static int[][] CellRenderOrder = new int[4][]
-        {
-            null,
-            null,
-            null,
-            null
-        };
-
-        private static int[] CalculateCellRenderOrder(int targetDir, int width, int height)
-        {
-            /*               North
-             *        0  1  2  3  4  5  6
-             *        1  2  3  4  5  6  7
-             *        2  3  4  5  6  7  8
-             *  East  3  4  5  6  7  8  9  West
-             *        4  5  6  7  8  9  10
-             *        5  6  7  8  9  10 11
-             *        6  7  8  9  10 11 12
-             *               South
-             *
-             * Start value is always 0.
-             * Last value is (MaxX + MaxY).
-             * This is the AtkValue.
-             *
-             * We attack from the left side of the render first
-             * with (X: 0, Y: AtkValue) until Y would be less than
-             * half of AtkValue.
-             *
-             * We then attack from the right side of the render
-             * with (X: AtkValue, Y: 0) until X would be less than
-             * half of AtkValue - 1.
-             *
-             * If we are attacking from the left, but Y is now
-             * greater than MaxY, then we are over half-way and are
-             * now starting at the bottom of the grid.
-             *
-             * In this case, we start with (X: AtkValue - MaxY, Y: MaxY)
-             * and continue until we reach the same conditions that
-             * apply normally.  The same method applies to the right hand
-             * side where we start with (X: MaxX, Y: AtkValue - MaxX).
-             *
-             */
-
-            if (targetDir != RenderToNE)
-                throw new InvalidOperationException();
-
-            var result = new int[width * height];
-            var count = 0;
-            var start = 0;
-            var maxx = width - 1;
-            var maxy = height - 1;
-            var last = maxx + maxy;
-            int x, y;
-
-            for (var atk = start; atk <= last; atk++)
-            {
-                // Attack from the left.
-                if (atk < maxy)
-                {
-                    x = 0;
-                    y = atk;
-                }
-                else
-                {
-                    x = atk - maxy;
-                    y = maxy;
-                }
-                while (y > atk / 2)
-                    result[count++] = y-- * width + x++;
-
-                // Attack from the right.
-                if (atk < maxx)
-                {
-                    x = atk;
-                    y = 0;
-                }
-                else
-                {
-                    x = maxx;
-                    y = atk - maxx;
-                }
-                while (y <= atk / 2)
-                    result[count++] = y++ * width + x--;
-            }
-
-            return result;
-        }
-
-        private static int[] GetCellRenderOrder(int cameraDirection, int width, int height)
-        {
-            if (CellRenderOrder[cameraDirection] == null)
-                CellRenderOrder[cameraDirection] = CalculateCellRenderOrder(cameraDirection, width, height);
-            return CellRenderOrder[cameraDirection];
-        }
-
-        #endregion
+        }*/
     }
 }
