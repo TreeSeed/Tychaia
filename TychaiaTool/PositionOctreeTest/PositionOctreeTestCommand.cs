@@ -1,24 +1,23 @@
+// ====================================================================== //
+// This source code is licensed in accordance with the licensing outlined //
+// on the main Tychaia website (www.tychaia.com).  Changes to the         //
+// license on the website apply retroactively.                            //
+// ====================================================================== //
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using ManyConsole;
 using Protogame;
+using TychaiaTool.PositionOctreeTest;
 
-namespace PositionOctreeTest
+namespace TychaiaTool
 {
-    class Value
+    public class PositionOctreeTestCommand : ConsoleCommand
     {
-        public Value(int v)
+        public PositionOctreeTestCommand()
         {
-            this.Blah = v;
+            this.IsCommand("test-position-octree", "Verify that the position octree is working correctly");
         }
 
-        public int Blah;
-    }
-
-    class Program
-    {
-        static void Main(string[] args)
+        public override int Run(string[] remainingArguments)
         {
             PositionOctree<Value> octree = new PositionOctree<Value>();
             octree.Insert(new Value(5), 1, 1, 1);
@@ -39,7 +38,9 @@ namespace PositionOctreeTest
             Console.WriteLine(v.Blah);
             v = octree.Find(-1000000000, -1000000000, -1000000000);
             Console.WriteLine(v.Blah);
-            Console.ReadKey();
+
+            return 0;
         }
     }
 }
+
