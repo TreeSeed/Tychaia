@@ -34,7 +34,6 @@ MakeMeAWorld/bin/Compiler/CompiledLayerTemplate.cs
 *.Windows.sln
 *.Java.sln
 *.Java.csproj
-*.nuspec
 *.nupkg
 _UpgradeReport_Files/*
 Backup*/*

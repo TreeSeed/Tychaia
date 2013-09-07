@@ -59,6 +59,35 @@ namespace Tychaia.ProceduralGeneration
             get { return this.m_Algorithm; }
         }
 
+        private int CountOutputs()
+        {
+            var total = 1;
+            foreach (var input in this.GetInputs())
+                total += input.CountOutputs();
+            return total;
+        }
+
+        private void PopulateOutputs(dynamic[] outputs, ref int outputIdx, int arrayWidth, int arrayHeight, int arrayDepth)
+        {
+            outputs[outputIdx++] = Activator.CreateInstance(
+                this.m_Algorithm.OutputType.MakeArrayType(),
+                (arrayWidth * arrayHeight * arrayDepth));
+            foreach (var input in this.GetInputs())
+                input.PopulateOutputs(outputs, ref outputIdx, arrayWidth, arrayHeight, arrayDepth);
+        }
+
+        private dynamic[] PlanOutputs(int arrayWidth, int arrayHeight, int arrayDepth)
+        {
+            var total = this.CountOutputs();
+            var outputs = new dynamic[total];
+            var outputIdx = 0;
+            this.PopulateOutputs(outputs, ref outputIdx, arrayWidth, arrayHeight, arrayDepth);
+            return outputs;
+        }
+
+        private static dynamic[] m_CachedOutputs = null;
+        private static int m_CachedHash = 0;
+
         /// <summary>
         /// Generates data using the current algorithm.
         /// </summary>
@@ -135,7 +164,18 @@ namespace Tychaia.ProceduralGeneration
             var arrayHeight = height + MaxOffsetY * 2;
             var arrayDepth = depth + MaxOffsetZ * 2;
 
+            // Plan required output arrays.
+            var outputIdx = 0;
+            dynamic[] outputs;
+            if (m_CachedHash != arrayWidth * arrayHeight * arrayDepth || m_CachedOutputs == null)
+                outputs = m_CachedOutputs = this.PlanOutputs(arrayWidth, arrayHeight, arrayDepth);
+            else
+                outputs = m_CachedOutputs;
+            m_CachedHash = arrayWidth * arrayHeight * arrayDepth;
+
             dynamic resultArray = this.PerformAlgorithmRuntimeCall(
+                outputs,
+                ref outputIdx,
                 x,
                 y,
                 z,
@@ -348,7 +388,9 @@ namespace Tychaia.ProceduralGeneration
         /// <param name="halfInputWidth">If the layer only provides half the output of width.</param>
         /// <param name="halfInputHeight">If the layer only provides half the output of height.</param>
         /// <param name="halfInputDepth">If the layer only provides half the output of depth.</param>
-        private dynamic PerformAlgorithmRuntimeCall(long absoluteX, long absoluteY, long absoluteZ,
+        private dynamic PerformAlgorithmRuntimeCall(
+            dynamic[] outputs, ref int outputIdx,
+            long absoluteX, long absoluteY, long absoluteZ,
             int width, int height, int depth,
             int arrayWidth, int arrayHeight, int arrayDepth,
             int maxOffsetX, int maxOffsetY, int maxOffsetZ,
@@ -359,9 +401,7 @@ namespace Tychaia.ProceduralGeneration
             dynamic algorithm = this.m_Algorithm;
             var processCell = this.m_Algorithm.GetType().GetMethod("ProcessCell");
 
-            dynamic outputArray = Activator.CreateInstance(
-                this.m_Algorithm.OutputType.MakeArrayType(),
-                (arrayWidth * arrayHeight * arrayDepth));
+            dynamic outputArray = outputs[outputIdx++];
 
             var iEnd = (width - childOffsetX > 0 ? width - childOffsetX : 1 - childOffsetX);
             var jEnd = (height - childOffsetY > 0 ? height - childOffsetY : 1 - childOffsetY);
@@ -418,11 +458,13 @@ namespace Tychaia.ProceduralGeneration
                         dynamic inputArray0;
                         if (algorithm.InputIs2D[0])
                             inputArray0 = this.GetInputData(
+                                outputs, ref outputIdx,
                                 0, absoluteX, absoluteY, 0, width, height, 1,
                                 arrayWidth, arrayHeight, 1, maxOffsetX, maxOffsetY, 0,
                                 childOffsetX, childOffsetY, 0, ref computations);
                         else
                             inputArray0 = this.GetInputData(
+                                outputs, ref outputIdx,
                                 0, absoluteX, absoluteY, absoluteZ, width, height, depth,
                                 arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
                                 childOffsetX, childOffsetY, childOffsetZ, ref computations);
@@ -474,21 +516,25 @@ namespace Tychaia.ProceduralGeneration
                         dynamic inputArray0, inputArray1;
                         if (algorithm.InputIs2D[0])
                             inputArray0 = this.GetInputData(
+                                outputs, ref outputIdx,
                                 0, absoluteX, absoluteY, 0, width, height, 1,
                                 arrayWidth, arrayHeight, 1, maxOffsetX, maxOffsetY, 0,
                                 childOffsetX, childOffsetY, 0, ref computations);
                         else
                             inputArray0 = this.GetInputData(
+                                outputs, ref outputIdx,
                                 0, absoluteX, absoluteY, absoluteZ, width, height, depth,
                                 arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
                                 childOffsetX, childOffsetY, childOffsetZ, ref computations);
                         if (algorithm.InputIs2D[1])
                             inputArray1 = this.GetInputData(
+                                outputs, ref outputIdx,
                                 1, absoluteX, absoluteY, 0, width, height, 1,
                                 arrayWidth, arrayHeight, 1, maxOffsetX, maxOffsetY, 0,
                                 childOffsetX, childOffsetY, 0, ref computations);
                         else
                             inputArray1 = this.GetInputData(
+                                outputs, ref outputIdx,
                                 1, absoluteX, absoluteY, absoluteZ, width, height, depth,
                                 arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
                                 childOffsetX, childOffsetY, childOffsetZ, ref computations);
@@ -541,31 +587,37 @@ namespace Tychaia.ProceduralGeneration
                         dynamic inputArray0, inputArray1, inputArray2;
                         if (algorithm.InputIs2D[0])
                             inputArray0 = this.GetInputData(
+                                outputs, ref outputIdx,
                                 0, absoluteX, absoluteY, 0, width, height, 1,
                                 arrayWidth, arrayHeight, 1, maxOffsetX, maxOffsetY, 0,
                                 childOffsetX, childOffsetY, 0, ref computations);
                         else
                             inputArray0 = this.GetInputData(
+                                outputs, ref outputIdx,
                                 0, absoluteX, absoluteY, absoluteZ, width, height, depth,
                                 arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
                                 childOffsetX, childOffsetY, childOffsetZ, ref computations);
                         if (algorithm.InputIs2D[1])
                             inputArray1 = this.GetInputData(
+                                outputs, ref outputIdx,
                                 1, absoluteX, absoluteY, 0, width, height, 1,
                                 arrayWidth, arrayHeight, 1, maxOffsetX, maxOffsetY, 0,
                                 childOffsetX, childOffsetY, 0, ref computations);
                         else
                             inputArray1 = this.GetInputData(
+                                outputs, ref outputIdx,
                                 1, absoluteX, absoluteY, absoluteZ, width, height, depth,
                                 arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
                                 childOffsetX, childOffsetY, childOffsetZ, ref computations);
                         if (algorithm.InputIs2D[2])
                             inputArray2 = this.GetInputData(
+                                outputs, ref outputIdx,
                                 2, absoluteX, absoluteY, 0, width, height, 1,
                                 arrayWidth, arrayHeight, 1, maxOffsetX, maxOffsetY, 0,
                                 childOffsetX, childOffsetY, 0, ref computations);
                         else
                             inputArray2 = this.GetInputData(
+                                outputs, ref outputIdx,
                                 2, absoluteX, absoluteY, absoluteZ, width, height, depth,
                                 arrayWidth, arrayHeight, arrayDepth, maxOffsetX, maxOffsetY, maxOffsetZ,
                                 childOffsetX, childOffsetY, childOffsetZ, ref computations);
@@ -645,6 +697,8 @@ namespace Tychaia.ProceduralGeneration
         }
 
         private dynamic GetInputData(
+            dynamic[] outputs,
+            ref int outputIdx,
             int idx,
             long absoluteX,
             long absoluteY,
@@ -664,6 +718,8 @@ namespace Tychaia.ProceduralGeneration
             ref int computations)
         {
             return this.m_Inputs[idx].PerformAlgorithmRuntimeCall(
+                outputs,
+                ref outputIdx,
                 (this.m_Algorithm.InputWidthAtHalfSize[idx]
                     ? ((absoluteX) < 0 ? (absoluteX - 1) / 2 : (absoluteX) / 2)
                     : absoluteX),
