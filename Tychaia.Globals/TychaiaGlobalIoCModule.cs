@@ -14,6 +14,7 @@ namespace Tychaia.Globals
             this.Bind<IFilteredConsole>().To<DefaultFilteredConsole>();
             this.Bind<IFilteredFeatures>().To<DefaultFilteredFeatures>();
             this.Bind<IArrayPool>().To<DefaultArrayPool>().InSingletonScope();
+            this.Bind<IPersistentStorage>().To<DefaultPersistentStorage>().InSingletonScope();
         }
     }
 }
