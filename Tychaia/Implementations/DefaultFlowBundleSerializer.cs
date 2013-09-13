@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using Tychaia.ProceduralGeneration;
 using System.Collections.Generic;
-using Tychaia.ProceduralGeneration.Blocks;
 
 namespace Tychaia
 {

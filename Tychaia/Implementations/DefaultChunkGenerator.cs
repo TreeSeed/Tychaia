@@ -10,7 +10,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
 using Tychaia.ProceduralGeneration;
-using Tychaia.ProceduralGeneration.Blocks;
 using Tychaia.Threading;
 
 namespace Tychaia
