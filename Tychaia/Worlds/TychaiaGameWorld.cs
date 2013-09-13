@@ -27,7 +27,7 @@ namespace Tychaia
         private FontAsset m_DefaultFont;
 
         private IFilteredConsole m_FilteredConsole;
-        private Player m_Player;
+        private PlayerEntity m_Player;
 
         public TychaiaGameWorld(
             IAssetManagerProvider assetManagerProvider,
@@ -60,7 +60,7 @@ namespace Tychaia
             this.IsometricCamera = isometricCameraFactory.CreateIsometricCamera(this.ChunkOctree, chunk);
             this.m_ChunkManagerEntity = chunkManagerEntityFactory.CreateChunkManagerEntity(this);
 
-            this.m_Player = new Player(
+            this.m_Player = new PlayerEntity(
                 this.m_FilteredFeatures,
                 assetManagerProvider,
                 this.m_3DRenderUtilities,

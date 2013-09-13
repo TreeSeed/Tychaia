@@ -70,7 +70,7 @@
     <Compile Include="Isometric\IsometricCamera.cs" />
     <Compile Include="Isometric\TychaiaIsometricIoCModule.cs" />
     <Compile Include="IWorldFactory.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="PlayerEntity.cs" />
     <Compile Include="Profiling\TychaiaProfiler.cs" />
     <Compile Include="Profiling\TychaiaProfilerEntity.cs" />
     <Compile Include="Profiling\TychaiaProfilingInterceptor.cs" />

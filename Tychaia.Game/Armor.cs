@@ -5,7 +5,7 @@
 // ====================================================================== //
 namespace Tychaia.Game
 {
-    public class Player : Being
+    public class Armor : Item
     {
     }
 }

@@ -5,8 +5,14 @@
 // ====================================================================== //
 namespace Tychaia.Game
 {
-    public class Player : Being
+    public class Item
     {
+        public string Name { get; set; }
+
+        public virtual float GetNumericWeight()
+        {
+            return 0;
+        }
     }
 }
 

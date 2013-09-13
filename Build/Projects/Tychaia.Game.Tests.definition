@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="Tychaia.Game.Tests" Path="Tychaia.Game.Tests" Type="Tests">
+  <References>
+    <Reference Include="System" />
+    <Reference Include="Tychaia.Game" />
+    <Reference Include="Ninject" />
+    <Reference Include="Ninject.MockingKernel" />
+    <Reference Include="Microsoft.CSharp" />
+  </References>
+  <Files>
+    <Compile Include="InventoryTests.cs" />
+    <None Include="packages.config" />
+  </Files>
+</Project>

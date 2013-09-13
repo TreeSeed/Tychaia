@@ -5,8 +5,11 @@
 // ====================================================================== //
 namespace Tychaia.Game
 {
-    public class Player : Being
+    public enum Weight
     {
+        Heavy,
+        Medium,
+        Light
     }
 }
 

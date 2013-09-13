@@ -8,10 +8,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Protogame;
 using Tychaia.Globals;
+using Tychaia.Game;
 
 namespace Tychaia
 {
-    public class Player : Entity
+    public class PlayerEntity : Entity, IRuntimeData<Player>
     {
         private readonly IFilteredFeatures m_FilteredFeatures;
         private readonly I3DRenderUtilities m_3DRenderUtilities;
@@ -21,7 +22,7 @@ namespace Tychaia
         
         public bool InaccurateY { get; set; }
 
-        public Player(
+        public PlayerEntity(
             IFilteredFeatures filteredFeatures,
             IAssetManagerProvider assetManagerProvider,
             I3DRenderUtilities _3DRenderUtilities,
@@ -37,11 +38,19 @@ namespace Tychaia
             this.Width = 16;
             this.Height = 16;
             this.Depth = 16;
+
+            this.RuntimeData = new Player();
         }
 
         public float MovementSpeed
         {
             get { return 4; }
+        }
+
+        public Player RuntimeData
+        {
+            get;
+            set;
         }
 
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
