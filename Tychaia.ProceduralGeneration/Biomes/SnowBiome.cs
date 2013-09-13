@@ -6,7 +6,7 @@
 using System;
 using System.Drawing;
 
-namespace Tychaia.ProceduralGeneration.Biomes
+namespace Tychaia.ProceduralGeneration
 {
     public class SnowBiome : Biome
     {

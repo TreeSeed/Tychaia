@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace Tychaia.ProceduralGeneration.Professions
+namespace Tychaia.ProceduralGeneration
 {
     public abstract class Profession
     {

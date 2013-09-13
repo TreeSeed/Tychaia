@@ -7,8 +7,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Serialization;
-using Tychaia.ProceduralGeneration.Biomes;
-using Tychaia.ProceduralGeneration.Blocks;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -43,7 +41,7 @@ namespace Tychaia.ProceduralGeneration
                 return new[] { "FlowBundle", "Color" };
             }
         }
-
+        
         public override bool[] InputIs2D
         {
             get { return new[] { this.Layer2D }; }
@@ -103,7 +101,7 @@ namespace Tychaia.ProceduralGeneration
                 return new[] { "FlowBundle", "Color" };
             }
         }
-
+        
         public override bool[] InputIs2D
         {
             get { return new[] { this.Layer2D }; }
@@ -163,7 +161,7 @@ namespace Tychaia.ProceduralGeneration
                 return new[] { "FlowBundle", "Color" };
             }
         }
-
+        
         public override bool[] InputIs2D
         {
             get { return new[] { this.Layer2D }; }

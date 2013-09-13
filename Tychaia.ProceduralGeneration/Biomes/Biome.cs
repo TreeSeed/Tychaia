@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace Tychaia.ProceduralGeneration.Biomes
+namespace Tychaia.ProceduralGeneration
 {
     public abstract class Biome
     {

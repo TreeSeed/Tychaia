@@ -7,8 +7,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Serialization;
-using Tychaia.ProceduralGeneration.Biomes;
-using Tychaia.ProceduralGeneration.Blocks;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -48,7 +46,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return this.Layer2D; }
         }
-
+        
         public override bool[] InputIs2D
         {
             get { return new[] { this.Layer2D, this.Layer2D }; }
@@ -64,7 +62,7 @@ namespace Tychaia.ProceduralGeneration
         {
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
                 inputA[(i + ox) + (j + oy) * width + (k + oz) * width* height].Set(
-                    this.Identifier,
+                    this.Identifier, 
                     inputB[(i + ox) + (j + oy) * width + (k + oz) * width* height]);
         }
 
@@ -110,7 +108,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return this.Layer2D; }
         }
-
+        
         public override bool[] InputIs2D
         {
             get { return new[] { this.Layer2D, this.Layer2D }; }
@@ -126,7 +124,7 @@ namespace Tychaia.ProceduralGeneration
         {
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
                 inputA[(i + ox) + (j + oy) * width + (k + oz) * width* height].Set(
-                    this.Identifier,
+                    this.Identifier, 
                     inputB[(i + ox) + (j + oy) * width + (k + oz) * width* height]);
         }
 
@@ -172,7 +170,7 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return this.Layer2D; }
         }
-
+        
         public override bool[] InputIs2D
         {
             get { return new[] { this.Layer2D, this.Layer2D }; }
@@ -188,7 +186,7 @@ namespace Tychaia.ProceduralGeneration
         {
             output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
                 inputA[(i + ox) + (j + oy) * width + (k + oz) * width* height].Set(
-                    this.Identifier,
+                    this.Identifier, 
                     inputB[(i + ox) + (j + oy) * width + (k + oz) * width* height]);
         }
 

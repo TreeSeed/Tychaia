@@ -6,9 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Tychaia.ProceduralGeneration.Professions;
 
-namespace Tychaia.ProceduralGeneration.Buildings
+namespace Tychaia.ProceduralGeneration
 {
     public abstract class Building
     {

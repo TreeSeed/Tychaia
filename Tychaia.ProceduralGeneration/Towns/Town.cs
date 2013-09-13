@@ -5,7 +5,7 @@
 // ====================================================================== //
 using System.Drawing;
 
-namespace Tychaia.ProceduralGeneration.Towns
+namespace Tychaia.ProceduralGeneration
 {
     public class Town
     {

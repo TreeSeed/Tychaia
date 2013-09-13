@@ -5,7 +5,7 @@
 // ====================================================================== //
 using System.Drawing;
 
-namespace Tychaia.ProceduralGeneration.Biomes
+namespace Tychaia.ProceduralGeneration
 {
     public class GrasslandBiome : Biome
     {
