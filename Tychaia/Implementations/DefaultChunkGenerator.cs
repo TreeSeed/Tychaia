@@ -9,6 +9,7 @@ using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
+using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
 using Tychaia.Threading;
 

@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
 using Tychaia.Data;
+using Tychaia.Globals;
 
 namespace Tychaia
 {

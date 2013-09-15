@@ -58,7 +58,6 @@
     <Compile Include="Disk\TychaiaDiskIoCModule.cs" />
     <Compile Include="GameAssetManagerProvider.cs" />
     <Compile Include="Implementations\DefaultChunkGenerator.cs" />
-    <Compile Include="Implementations\DefaultChunkSizePolicy.cs" />
     <Compile Include="Implementations\DefaultDebugCubeRenderer.cs" />
     <Compile Include="Implementations\DefaultFlowBundleSerializer.cs" />
     <Compile Include="Implementations\DefaultFlowBundleToCellConverter.cs" />
@@ -77,7 +76,6 @@
     <Compile Include="Profiling\TychaiaProfilingIoCModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Services\IChunkGenerator.cs" />
-    <Compile Include="Services\IChunkSizePolicy.cs" />
     <Compile Include="Services\IDebugCubeRenderer.cs" />
     <Compile Include="Services\IFlowBundleSerializer.cs" />
     <Compile Include="Services\IFlowBundleToCellConverter.cs" />

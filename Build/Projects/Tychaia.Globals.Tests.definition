@@ -17,5 +17,6 @@
     <Compile Include="Dummies\IBar.cs" />
     <Compile Include="Dummies\IFoo.cs" />
     <Compile Include="IoCTests.cs" />
+    <Compile Include="TranslationTests.cs" />
   </Files>
 </Project>

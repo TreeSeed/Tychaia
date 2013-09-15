@@ -13,7 +13,6 @@ namespace Tychaia
     {
         public override void Load()
         {
-            this.Bind<IChunkSizePolicy>().To<DefaultChunkSizePolicy>();
             this.Bind<IBackgroundCubeEntityFactory>().ToFactory();
             this.Bind<IChunkOctreeFactory>().ToFactory();
             this.Bind<IChunkFactory>().ToFactory();

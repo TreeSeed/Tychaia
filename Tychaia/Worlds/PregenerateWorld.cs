@@ -4,13 +4,12 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Protogame;
-using Tychaia.ProceduralGeneration;
 using Tychaia.Data;
+using Tychaia.Globals;
+using Tychaia.ProceduralGeneration;
 
 namespace Tychaia
 {
@@ -18,25 +17,20 @@ namespace Tychaia
     {
         private readonly IAssetManager m_AssetManager;
         private readonly I2DRenderUtilities m_2DRenderUtilities;
-        private readonly IChunkGenerator m_ChunkGenerator;
-        private readonly IChunkFactory m_ChunkFactory;
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
         private readonly IGenerationPlanner m_GenerationPlanner;
         private readonly IFlowBundleToCellConverter m_FlowBundleToCellConverter;
 
         private readonly FontAsset m_DefaultFont;
         private readonly List<IEntity> m_Entities;
-        private readonly ChunkOctree m_Octree;
         private volatile string m_Status;
         private ILevel m_Level;
-        private IEnumerator<object> m_Processor;
 
         public List<IEntity> Entities { get { return this.m_Entities; } }
 
         public PregenerateWorld(
             IAssetManagerProvider assetManagerProvider,
             I2DRenderUtilities _2dRenderUtilities,
-            IChunkFactory chunkFactory,
             IChunkSizePolicy chunkSizePolicy,
             IGenerationPlanner generationPlanner,
             IGeneratorResolver generatorResolver,
@@ -45,7 +39,6 @@ namespace Tychaia
         {
             this.m_AssetManager = assetManagerProvider.GetAssetManager();
             this.m_2DRenderUtilities = _2dRenderUtilities;
-            this.m_ChunkFactory = chunkFactory;
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_GenerationPlanner = generationPlanner;
             this.m_FlowBundleToCellConverter = flowBundleToCellConverter;

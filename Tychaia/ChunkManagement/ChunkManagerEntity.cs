@@ -5,6 +5,7 @@
 // ====================================================================== //
 using Microsoft.Xna.Framework;
 using Protogame;
+using Tychaia.Globals;
 
 namespace Tychaia
 {

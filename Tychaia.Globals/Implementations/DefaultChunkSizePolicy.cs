@@ -3,7 +3,7 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-namespace Tychaia
+namespace Tychaia.Globals
 {
     public class DefaultChunkSizePolicy : IChunkSizePolicy
     {

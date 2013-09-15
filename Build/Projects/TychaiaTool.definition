@@ -32,6 +32,7 @@
     <Compile Include="Configurations\TraceTestProceduralConfiguration.cs" />
     <Compile Include="Configurations\ZoomProceduralConfiguration.cs" />
     <Compile Include="PositionOctreeTest\PositionOctreeTestCommand.cs" />
+    <Compile Include="PositionOctreeTest\TranslationTestCommand.cs" />
     <Compile Include="PositionOctreeTest\Value.cs" />
     <Compile Include="ProceduralCompiler\ProceduralCompilerCommand.cs" />
     <Compile Include="ProceduralPerformance\ProceduralPerformanceCommand.cs" />

@@ -16,6 +16,7 @@ namespace TychaiaTool
             this.Bind<ConsoleCommand>().To<ProceduralStorageCommand>();
             this.Bind<ConsoleCommand>().To<ProceduralPlannerCommand>();
             this.Bind<ConsoleCommand>().To<ProceduralPerformanceCommand>();
+            this.Bind<ConsoleCommand>().To<TranslationTestCommand>();
             this.Bind<ConsoleCommand>().To<PositionOctreeTestCommand>();
             this.Bind<ConsoleCommand>().To<ProceduralTracingCommand>();
             this.Bind<ConsoleCommand>().To<QuickAssetImportCommand>();

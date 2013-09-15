@@ -12,27 +12,24 @@ namespace Tychaia
     public class ChunkOctree
     {
         private readonly IFilteredFeatures m_FilteredFeatures;
+        private readonly IPositionScaleTranslation m_PositionScaleTranslation;
         private readonly PositionOctree<RuntimeChunk> m_Octree = new PositionOctree<RuntimeChunk>();
-        private readonly int m_ChunkVoxelWidth;
 
         public ChunkOctree(
             IFilteredFeatures filteredFeatures,
-            IChunkSizePolicy chunkSizePolicy)
+            IPositionScaleTranslation positionScaleTranslation)
         {
             this.m_FilteredFeatures = filteredFeatures;
-            this.m_ChunkVoxelWidth = chunkSizePolicy.CellVoxelWidth * chunkSizePolicy.ChunkCellWidth;
+            this.m_PositionScaleTranslation = positionScaleTranslation;
         }
         
-        private long Translate(long v)
-        {
-            if (v < 0)
-                return (v / this.m_ChunkVoxelWidth) - 1;
-            return v / this.m_ChunkVoxelWidth;
-        }
-
         public RuntimeChunk Get(long x, long y, long z)
         {
-            var c = PositionOctreeUtil.GetFast64(this.m_Octree, this.Translate(x), this.Translate(y), this.Translate(z)); 
+            var c = PositionOctreeUtil.GetFast64(
+                this.m_Octree,
+                this.m_PositionScaleTranslation.Translate(x),
+                this.m_PositionScaleTranslation.Translate(y),
+                this.m_PositionScaleTranslation.Translate(z));
             if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeValidation) && c != null &&
                 (c.X != x || c.Y != y || c.Z != z))
                 throw new InvalidOperationException(
@@ -42,9 +39,9 @@ namespace Tychaia
 
         public void Set(RuntimeChunk chunk)
         {
-            var xx = this.Translate(chunk.X);
-            var yy = this.Translate(chunk.Y);
-            var zz = this.Translate(chunk.Z);
+            var xx = this.m_PositionScaleTranslation.Translate(chunk.X);
+            var yy = this.m_PositionScaleTranslation.Translate(chunk.Y);
+            var zz = this.m_PositionScaleTranslation.Translate(chunk.Z);
             this.m_Octree.Insert(chunk, xx, yy, zz);
             if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeValidation))
             {
