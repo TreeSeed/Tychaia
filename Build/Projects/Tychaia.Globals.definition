@@ -6,7 +6,6 @@
     <Reference Include="System.Core" />
     <Reference Include="Ninject" />
     <Reference Include="cscjvm" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="Microsoft.CSharp" />
   </References>
   <Files>
@@ -17,6 +16,7 @@
     <Compile Include="Implementations\DefaultFilteredFeatures.cs" />
     <Compile Include="Implementations\DefaultPersistentStorage.cs" />
     <Compile Include="Implementations\DynamicDictionary.cs" />
+    <Compile Include="NoProfileAttribute.cs" />
     <Compile Include="ResourceHelper.cs" />
     <Compile Include="Services\IArrayPool.cs" />
     <Compile Include="Services\IFilteredConsole.cs" />

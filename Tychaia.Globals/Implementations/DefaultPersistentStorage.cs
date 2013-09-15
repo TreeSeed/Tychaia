@@ -57,7 +57,10 @@ namespace Tychaia.Globals
         {
             // Look under %appdata%/.tychaia.
             var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            return Path.Combine(appdata, ".tychaia");
+            var path = Path.Combine(appdata, ".tychaia");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            return path;
         }
 
         private string GetSettingsPath()
@@ -69,7 +72,10 @@ namespace Tychaia.Globals
         private string GetSavePath()
         {
             // Look under %appdata%/.tychaia/saves.
-            return Path.Combine(this.GetBasePath(), "saves");
+            var path = Path.Combine(this.GetBasePath(), "saves");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            return path;
         }
     }
 }

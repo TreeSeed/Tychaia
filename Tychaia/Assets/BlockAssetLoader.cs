@@ -20,13 +20,13 @@ namespace Tychaia
             return new BlockAsset(
                 assetManager,
                 name,
-                data.TopTextureName,
-                data.BottomTextureName,
-                data.LeftTextureName,
-                data.RightTextureName,
-                data.FrontTextureName,
-                data.BackTextureName,
-                data.Impassable);
+                (string)data.TopTextureName,
+                (string)data.BottomTextureName,
+                (string)data.LeftTextureName,
+                (string)data.RightTextureName,
+                (string)data.FrontTextureName,
+                (string)data.BackTextureName,
+                (bool)data.Impassable);
         }
 
         public IAsset GetDefault(IAssetManager assetManager, string name)

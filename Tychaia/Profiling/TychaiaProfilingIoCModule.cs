@@ -31,7 +31,9 @@ namespace Tychaia
                 // disable the profiler if the debugger is attached.
                 if (!Debugger.IsAttached || Type.GetType("Mono.Runtime") == null)
                 {
-                    this.Kernel.Intercept(p => p.Request.Service.IsInterface)
+                    this.Kernel.Intercept(
+                        p => p.Request.Service.IsInterface &&
+                             p.Request.Service.GetCustomAttributes(typeof(NoProfileAttribute), true).Length == 0)
                         .With(new TychaiaProfilingInterceptor(profiler));
                 }
             }
