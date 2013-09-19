@@ -9,7 +9,7 @@
 	url = git://github.com/mono/MonoGame.git
 [submodule "Build/cslint"]
 	path = Build/cslint
-	url = git://github.com/hach-que/cslint.git
+	url = git://github.com/hach-que/cstools.git
 [submodule "Libraries/cscjvm"]
 	path = Libraries/cscjvm
 	url = git://github.com/hach-que/cscjvm.git
