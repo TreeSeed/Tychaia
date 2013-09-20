@@ -9,12 +9,12 @@
  *
  * @group unitrun
  */
-final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
+class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
 
-  private $runtimeEngine;
-  private $buildEngine;
-  private $testEngine;
-  private $projectRoot;
+  protected $runtimeEngine;
+  protected $buildEngine;
+  protected $testEngine;
+  protected $projectRoot;
 
   /**
    * This test engine supports running all tests.
@@ -31,7 +31,7 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
    *
    * @return void
    */
-  private function loadEnvironment() {
+  protected function loadEnvironment() {
     $this->projectRoot = $this->getWorkingCopy()->getProjectRoot();
 
     // Determine build engine.
@@ -47,7 +47,7 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
     if (phutil_is_windows()) {
       $this->runtimeEngine = "";
     } else if (Filesystem::binaryExists("mono")) {
-      $this->runtimeEngine = "mono --debug ";
+      $this->runtimeEngine = Filesystem::resolveBinary("mono");
     } else {
       throw new Exception("Unable to find Mono and you are not on Windows!");
     }
@@ -308,6 +308,35 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
   }
 
   /**
+   * Build the future for running a unit test.  This can be
+   * overridden to enable support for code coverage via
+   * another tool
+   *
+   * @param  string  Name of the test assembly.
+   * @return array   The future, output filename and coverage filename
+   *                 stored in an array.
+   */
+  protected function buildTestFuture($test_assembly) {
+      // FIXME: Can't use TempFile here as xUnit doesn't like
+      // UNIX-style full paths.  It sees the leading / as the
+      // start of an option flag, even when quoted.
+      $xunit_temp = $test_assembly.".results.xml";
+      if (file_exists($xunit_temp)) {
+        unlink($xunit_temp);
+      }
+      $future = new ExecFuture(
+        "%C %s /xml %s /silent",
+        trim($this->runtimeEngine." ".$this->testEngine),
+        str_replace('/', '_', $test_assembly).
+          "/bin/Debug/".
+          str_replace('/', '_', $test_assembly).
+          ".dll",
+        $xunit_temp);
+      $future->setCWD(Filesystem::resolvePath($this->projectRoot));
+      return array($future, $xunit_temp, null);
+  }
+
+  /**
    * Run the xUnit test runner on each of the assemblies and parse the
    * resulting XML.
    *
@@ -321,25 +350,13 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
     // Build the futures for running the tests.
     $futures = array();
     $outputs = array();
+    $coverages = array();
     foreach ($test_assemblies as $test_assembly) {
-      // FIXME: Can't use TempFile here as xUnit doesn't like
-      // UNIX-style full paths.  It sees the leading / as the
-      // start of an option flag, even when quoted.
-      $xunit_temp = $test_assembly.".results.xml";
-      if (file_exists($xunit_temp)) {
-        unlink($xunit_temp);
-      }
-      $future = new ExecFuture(
-        "%C %s /xml %s /silent",
-        $this->runtimeEngine.$this->testEngine,
-        str_replace('/', '_', $test_assembly).
-          "/bin/Debug/".
-          str_replace('/', '_', $test_assembly).
-          ".dll",
-        $xunit_temp);
-      $future->setCWD(Filesystem::resolvePath($this->projectRoot));
+      list($future, $xunit_temp, $coverage) =
+        $this->buildTestFuture($test_assembly);
       $futures[$test_assembly] = $future;
       $outputs[$test_assembly] = $xunit_temp;
+      $coverages[$test_assembly] = $coverage;
     }
 
     // Run all of the tests.
@@ -352,7 +369,10 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
       }
 
       if (file_exists($outputs[$test_assembly])) {
-        $results[] = $this->parseTestResult($outputs[$test_assembly]);
+        $result = $this->parseTestResult(
+          $outputs[$test_assembly],
+          $coverages[$test_assembly]);
+        $results[] = $result;
         unlink($outputs[$test_assembly]);
       } else {
         $result = new ArcanistUnitTestResult();
@@ -366,7 +386,11 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
     return array_mergev($results);
   }
 
-  private function parseTestResult($xunit_tmp) {
+  protected function parseCoverageResult($coverage) {
+    return null;
+  }
+
+  private function parseTestResult($xunit_tmp, $coverage) {
     $xunit_dom = new DOMDocument();
     $xunit_dom->loadXML(Filesystem::readFile($xunit_tmp));
 
@@ -407,6 +431,9 @@ final class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
       $result->setResult($status);
       $result->setDuration($time);
       $result->setUserData($userdata);
+      if ($coverage != null) {
+        $result->setCoverage($this->parseCoverageResult($coverage));
+      }
       $results[] = $result;
     }
 

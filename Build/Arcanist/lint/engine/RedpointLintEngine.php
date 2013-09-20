@@ -57,7 +57,7 @@ final class RedpointLintEngine extends ArcanistLintEngine {
       ->setPaths(preg_grep('/\.cs$/', $paths))
       ->setHintPath(
         $this->getWorkingCopy()->getProjectRoot().
-        "/Build/cslint/bin/Debug/cslint.exe");
+        "/cstools/cslint/bin/Debug/cslint.exe");
 
     return $linters;
   }

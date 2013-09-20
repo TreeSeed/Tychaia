@@ -12,6 +12,7 @@ phutil_register_library_map(array(
   array(
     'ArcanistCSharpLinter' => 'lint/linter/ArcanistCSharpLinter.php',
     'ArcanistTychaiaLicenseLinter' => 'lint/linter/ArcanistTychaiaLicenseLinter.php',
+    'CSharpToolsTestEngine' => 'unit/engine/CSharpToolsTestEngine.php',
     'RedpointCheckEnvironmentWorkflow' => 'workflow/RedpointCheckEnvironmentWorkflow.php',
     'RedpointCleanupWorkflow' => 'workflow/RedpointCleanupWorkflow.php',
     'RedpointForceResetWorkflow' => 'workflow/RedpointForceResetWorkflow.php',
@@ -26,6 +27,7 @@ phutil_register_library_map(array(
   array(
     'ArcanistCSharpLinter' => 'ArcanistFutureLinter',
     'ArcanistTychaiaLicenseLinter' => 'ArcanistLinter',
+    'CSharpToolsTestEngine' => 'XUnitTestEngine',
     'RedpointCheckEnvironmentWorkflow' => 'ArcanistBaseWorkflow',
     'RedpointCleanupWorkflow' => 'ArcanistBaseWorkflow',
     'RedpointForceResetWorkflow' => 'ArcanistBaseWorkflow',
