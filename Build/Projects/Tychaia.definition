@@ -57,6 +57,10 @@
     <Compile Include="Disk\Tychaia\TychaiaLevelAPIImpl.cs" />
     <Compile Include="Disk\TychaiaDiskIoCModule.cs" />
     <Compile Include="GameAssetManagerProvider.cs" />
+    <Compile Include="GameUI\EmptyContainer.cs" />
+    <Compile Include="GameUI\IGameUIFactory.cs" />
+    <Compile Include="GameUI\InventoryUIEntity.cs" />
+    <Compile Include="GameUI\StatusBar.cs" />
     <Compile Include="Implementations\DefaultChunkGenerator.cs" />
     <Compile Include="Implementations\DefaultDebugCubeRenderer.cs" />
     <Compile Include="Implementations\DefaultFlowBundleSerializer.cs" />

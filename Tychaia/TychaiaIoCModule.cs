@@ -31,6 +31,7 @@ namespace Tychaia
             this.Bind<IWorldFactory>().ToFactory();
             this.Bind<IFlowBundleToCellConverter>().To<DefaultFlowBundleToCellConverter>();
             this.Bind<ICommand>().To<ProfilingCommand>();
+            this.Bind<IGameUIFactory>().ToFactory();
         }
     }
 }

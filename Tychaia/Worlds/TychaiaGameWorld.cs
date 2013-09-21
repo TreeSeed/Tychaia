@@ -23,6 +23,7 @@ namespace Tychaia
         private IChunkSizePolicy m_ChunkSizePolicy;
         private IProfiler m_Profiler;
         private IConsole m_Console;
+        private InventoryUIEntity m_InventoryUIEntity;
 
         private FontAsset m_DefaultFont;
 
@@ -42,7 +43,8 @@ namespace Tychaia
             IChunkManagerEntityFactory chunkManagerEntityFactory,
             IProfiler profiler,
             IConsole console,
-            ILevel level)
+            ILevel level,
+            IGameUIFactory gameUIFactory)
         {
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
             this.m_2DRenderUtilities = _2DRenderUtilities;
@@ -66,7 +68,8 @@ namespace Tychaia
                 this.m_3DRenderUtilities,
                 this.m_ChunkSizePolicy,
                 this.m_Console);
-            this.Entities = new List<IEntity> { this.m_ChunkManagerEntity, this.m_Player };
+            this.m_InventoryUIEntity = gameUIFactory.CreateInventoryUIEntity();
+            this.Entities = new List<IEntity> { this.m_ChunkManagerEntity, this.m_Player, this.m_InventoryUIEntity };
         }
 
         public ChunkOctree ChunkOctree { get; private set; }
