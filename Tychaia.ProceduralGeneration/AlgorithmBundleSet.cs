@@ -68,6 +68,8 @@ namespace Tychaia.ProceduralGeneration
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
+            if (value == null)
+                return Color.White;
             return Color.FromArgb(value.Hash());
         }
     }
@@ -130,6 +132,8 @@ namespace Tychaia.ProceduralGeneration
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
+            if (value == null)
+                return Color.White;
             return Color.FromArgb(value.Hash());
         }
     }
@@ -192,6 +196,8 @@ namespace Tychaia.ProceduralGeneration
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
+            if (value == null)
+                return Color.White;
             return Color.FromArgb(value.Hash());
         }
     }
