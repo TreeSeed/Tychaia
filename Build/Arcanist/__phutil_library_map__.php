@@ -12,13 +12,13 @@ phutil_register_library_map(array(
   array(
     'ArcanistCSharpLinter' => 'lint/linter/ArcanistCSharpLinter.php',
     'ArcanistTychaiaLicenseLinter' => 'lint/linter/ArcanistTychaiaLicenseLinter.php',
-    'CSharpToolsTestEngine' => 'unit/engine/CSharpToolsTestEngine.php',
+    'LocalCSharpToolsTestEngine' => 'unit/engine/LocalCSharpToolsTestEngine.php',
+    'LocalXUnitTestEngine' => 'unit/engine/LocalXUnitTestEngine.php',
     'RedpointCheckEnvironmentWorkflow' => 'workflow/RedpointCheckEnvironmentWorkflow.php',
     'RedpointCleanupWorkflow' => 'workflow/RedpointCleanupWorkflow.php',
     'RedpointForceResetWorkflow' => 'workflow/RedpointForceResetWorkflow.php',
     'RedpointLintEngine' => 'lint/engine/RedpointLintEngine.php',
     'RedpointUpgradeWebsitesWorkflow' => 'workflow/RedpointUpgradeWebsitesWorkflow.php',
-    'XUnitTestEngine' => 'unit/engine/XUnitTestEngine.php',
   ),
   'function' =>
   array(
@@ -27,12 +27,12 @@ phutil_register_library_map(array(
   array(
     'ArcanistCSharpLinter' => 'ArcanistFutureLinter',
     'ArcanistTychaiaLicenseLinter' => 'ArcanistLinter',
-    'CSharpToolsTestEngine' => 'XUnitTestEngine',
+    'LocalCSharpToolsTestEngine' => 'LocalXUnitTestEngine',
+    'LocalXUnitTestEngine' => 'ArcanistBaseUnitTestEngine',
     'RedpointCheckEnvironmentWorkflow' => 'ArcanistBaseWorkflow',
     'RedpointCleanupWorkflow' => 'ArcanistBaseWorkflow',
     'RedpointForceResetWorkflow' => 'ArcanistBaseWorkflow',
     'RedpointLintEngine' => 'ArcanistLintEngine',
     'RedpointUpgradeWebsitesWorkflow' => 'ArcanistBaseWorkflow',
-    'XUnitTestEngine' => 'ArcanistBaseUnitTestEngine',
   ),
 ));

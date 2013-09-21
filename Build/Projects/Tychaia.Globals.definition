@@ -18,6 +18,7 @@
     <Compile Include="Implementations\DefaultPersistentStorage.cs" />
     <Compile Include="Implementations\DefaultPositionScaleTranslation.cs" />
     <Compile Include="Implementations\DynamicDictionary.cs" />
+    <Compile Include="NoInstrumentationAttribute.cs" />
     <Compile Include="NoProfileAttribute.cs" />
     <Compile Include="ResourceHelper.cs" />
     <Compile Include="Services\IArrayPool.cs" />

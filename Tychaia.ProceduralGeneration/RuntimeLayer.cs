@@ -11,6 +11,7 @@ using Tychaia.Globals;
 
 namespace Tychaia.ProceduralGeneration
 {
+    [NoInstrumentation]
     public class RuntimeLayer : IRuntimeContext, IGenerator
     {
         /// <summary>

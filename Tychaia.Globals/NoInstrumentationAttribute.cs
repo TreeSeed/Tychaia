@@ -8,11 +8,12 @@ using System;
 namespace Tychaia.Globals
 {
     /// <summary>
-    /// Use this attribute on highly-used classes (such as classes that provide sizing
-    /// information) so that the profiler doesn't create massive overhead on operations.
+    /// Use this attribute on highly-used methods or classes to prevent code coverage
+    /// from analyising the function.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Interface)]
-    public class NoProfileAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
+    public class NoInstrumentationAttribute : Attribute
     {
     }
 }
+

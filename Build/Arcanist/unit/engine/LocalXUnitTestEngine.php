@@ -8,13 +8,15 @@
  * located at `SomeAssembly.Tests`.
  *
  * @group unitrun
+ * @concrete-extensible
  */
-class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
+class LocalXUnitTestEngine extends ArcanistBaseUnitTestEngine {
 
   protected $runtimeEngine;
   protected $buildEngine;
   protected $testEngine;
   protected $projectRoot;
+  protected $xunitHintPath;
 
   /**
    * This test engine supports running all tests.
@@ -31,7 +33,7 @@ class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
    *
    * @return void
    */
-  protected function loadEnvironment() {
+  protected function loadEnvironment($config_item = 'unit.xunit.binary') {
     $this->projectRoot = $this->getWorkingCopy()->getProjectRoot();
 
     // Determine build engine.
@@ -53,33 +55,30 @@ class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
     }
 
     // Determine xUnit test runner path.
-    $xunit = $this->projectRoot.
-             "/packages/xunit.runners.1.9.1/tools/xunit.console.clr4.exe";
+    if ($this->xunitHintPath === null) {
+      $this->xunitHintPath = $this->getWorkingCopy()->getConfig(
+        'unit.xunit.binary');
+    }
+    if ($this->xunitHintPath === null) {
+    }
+    $xunit = $this->projectRoot."/".$this->xunitHintPath;
     if (file_exists($xunit)) {
       $this->testEngine = Filesystem::resolvePath($xunit);
     } else if (Filesystem::binaryExists("xunit.console.clr4.exe")) {
       $this->testEngine = "xunit.console.clr4.exe";
     } else {
-      throw new Exception("Unable to locate xUnit console runner.");
-    }
-  }
-  
-  /**
-   * Returns the maximum parallelization permitted for futures when
-   * building the unit tests.  Windows locks files as they're being
-   * written out, which means that on Windows we can't parallelize the
-   * build at all, while on Linux we can parallelize everything.
-   *
-   * @return int     Either 1 or null, depending on the platform.
-   */
-  private function getBuildParallelizationLimit() {
-    if (phutil_is_windows()) {
-      return 1;
-    } else {
-      return null;
+      throw new Exception(
+        "Unable to locate xUnit console runner.  Configure ".
+        "it with the `$config_item' option in .arcconfig");
     }
   }
 
+  /**
+   * Returns all available tests and related projects.  Recurses into
+   * Protobuild submodules if they are present.
+   *
+   * @return array   Mappings of test project to project being tested.
+   */
   public function getAllAvailableTestsAndRelatedProjects($path = null) {
     if ($path == null) {
       $path = $this->projectRoot;
@@ -90,7 +89,7 @@ class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
       if (substr($entry, -6) === ".Tests") {
         if (is_dir($path."/".$entry)) {
           $mappings[$path."/".$entry] = $path."/".
-            substr($entry, 0, strlen($entry) - 6); 
+            substr($entry, 0, strlen($entry) - 6);
         }
       } elseif (is_dir($path."/".$entry."/Build")) {
         if (file_exists($path."/".$entry."/Build/Module.xml")) {
@@ -122,8 +121,8 @@ class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
       echo "Loading tests..."."\n";
       $entries = $this->getAllAvailableTestsAndRelatedProjects();
       foreach ($entries as $key => $value) {
-        echo "Test: ".substr($key, strlen($this->projectRoot)+1)."\n";
-        $affected_tests[] = substr($key, strlen($this->projectRoot)+1);
+        echo "Test: ".substr($key, strlen($this->projectRoot) + 1)."\n";
+        $affected_tests[] = substr($key, strlen($this->projectRoot) + 1);
       }
     } else {
       $paths = $this->getPaths();
@@ -283,8 +282,7 @@ class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
         $this->projectRoot."/".$test_assembly));
       $build_futures[$test_assembly] = $build_future;
     }
-    $iterator = Futures($build_futures)->limit(
-      $this->getBuildParallelizationLimit());
+    $iterator = Futures($build_futures)->limit(1);
     foreach ($iterator as $test_assembly => $future) {
       $result = new ArcanistUnitTestResult();
       $result->setName("(build) ".$test_assembly);
@@ -386,10 +384,28 @@ class XUnitTestEngine extends ArcanistBaseUnitTestEngine {
     return array_mergev($results);
   }
 
+  /**
+   * Returns null for this implementation as xUnit does not support code
+   * coverage directly.  Override this method in another class to provide
+   * code coverage information (also see `CSharpToolsUnitEngine`).
+   *
+   * @param  string  The name of the coverage file if one was provided by
+   *                 `buildTestFuture`.
+   * @return array   Code coverage results, or null.
+   */
   protected function parseCoverageResult($coverage) {
     return null;
   }
 
+  /**
+   * Parses the test results from xUnit.
+   *
+   * @param  string  The name of the xUnit results file.
+   * @param  string  The name of the coverage file if one was provided by
+   *                 `buildTestFuture`.  This is passed through to
+   *                 `parseCoverageResult`.
+   * @return array   Test results.
+   */
   private function parseTestResult($xunit_tmp, $coverage) {
     $xunit_dom = new DOMDocument();
     $xunit_dom->loadXML(Filesystem::readFile($xunit_tmp));

@@ -5,6 +5,9 @@
     "load": [
         "Build/Arcanist"
     ],
-    "unit.engine": "CSharpToolsTestEngine",
+    "unit.engine": "LocalCSharpToolsTestEngine",
+    "unit.csharp.xunit.binary": "packages/xunit.runners.1.9.1/tools/xunit.console.clr4.exe",
+    "unit.csharp.cscover.binary": "cstools/cscover/bin/Debug/cscover.exe",
+    "unit.csharp.coverage.match": "/^Tychaia.*\\.(dll|exe)$/",
     "lint.engine": "RedpointLintEngine"
 }
