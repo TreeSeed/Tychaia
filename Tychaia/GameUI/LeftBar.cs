@@ -8,11 +8,11 @@ using Protogame;
 
 namespace Tychaia
 {
-    public class StatusBar : IContainer
+    public class LeftBar : IContainer
     {
         private I2DRenderUtilities m_2DRenderUtilities;
 
-        public StatusBar(I2DRenderUtilities _2DRenderUtilities)
+        public LeftBar(I2DRenderUtilities _2DRenderUtilities)
         {
             this.m_2DRenderUtilities = _2DRenderUtilities;
         }
@@ -55,7 +55,7 @@ namespace Tychaia
             this.m_2DRenderUtilities.RenderRectangle(
                 context,
                 layout,
-                Color.Red,
+                Color.Yellow,
                 filled: true);
         }
     }

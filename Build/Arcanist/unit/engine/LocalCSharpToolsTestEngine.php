@@ -118,7 +118,7 @@ final class LocalCSharpToolsTestEngine extends LocalXUnitTestEngine {
       "/bin/Debug/";
     $assemblies_to_instrument = array();
     foreach (Filesystem::listDirectory($assembly_dir) as $file) {
-      if (substr($file, -4) == ".dll") {
+      if (substr($file, -4) == ".dll" || substr($file, -4) == ".exe") {
         if ($this->assemblyShouldBeInstrumented($file)) {
           $assemblies_to_instrument[] = $assembly_dir.$file;
         }

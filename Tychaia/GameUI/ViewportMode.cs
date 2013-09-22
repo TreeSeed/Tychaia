@@ -5,12 +5,12 @@
 // ====================================================================== //
 namespace Tychaia
 {
-    public interface IGameUIFactory
+    public enum ViewportMode
     {
-        InventoryUIEntity CreateInventoryUIEntity();
-        StatusBar CreateStatusBar();
-        LeftBar CreateLeftBar();
-        RightBar CreateRightBar();
+        Full,
+        Left,
+        Right,
+        Centre
     }
 }
 

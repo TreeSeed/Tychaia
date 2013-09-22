@@ -57,10 +57,15 @@
     <Compile Include="Disk\Tychaia\TychaiaLevelAPIImpl.cs" />
     <Compile Include="Disk\TychaiaDiskIoCModule.cs" />
     <Compile Include="GameAssetManagerProvider.cs" />
+    <Compile Include="GameUI\DefaultViewportMode.cs" />
     <Compile Include="GameUI\EmptyContainer.cs" />
     <Compile Include="GameUI\IGameUIFactory.cs" />
     <Compile Include="GameUI\InventoryUIEntity.cs" />
+    <Compile Include="GameUI\IViewportMode.cs" />
+    <Compile Include="GameUI\LeftBar.cs" />
+    <Compile Include="GameUI\RightBar.cs" />
     <Compile Include="GameUI\StatusBar.cs" />
+    <Compile Include="GameUI\ViewportMode.cs" />
     <Compile Include="Implementations\DefaultChunkGenerator.cs" />
     <Compile Include="Implementations\DefaultDebugCubeRenderer.cs" />
     <Compile Include="Implementations\DefaultFlowBundleSerializer.cs" />

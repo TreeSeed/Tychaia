@@ -15,22 +15,27 @@ namespace Tychaia
 #if DEBUG
         private readonly TychaiaProfilerEntity m_TychaiaProfilerEntity;
         private readonly TychaiaProfiler m_TychaiaProfiler;
+        private readonly IViewportMode m_ViewportMode;
         private readonly IConsole m_Console;
 
         public TychaiaWorldManager(
             TychaiaProfilerEntity tychaiaProfilerEntity,
+            IViewportMode viewportMode,
             IConsole console)
         {
             this.m_TychaiaProfilerEntity = tychaiaProfilerEntity;
             this.m_TychaiaProfiler = this.m_TychaiaProfilerEntity.Profiler;
+            this.m_ViewportMode = viewportMode;
             this.m_Console = console;
         }
 #else
         private readonly IConsole m_Console;
 
         public TychaiaWorldManager(
+            IViewportMode viewportMode,
             IConsole console)
         {
+            this.m_ViewportMode = viewportMode;
             this.m_Console = console;
         }
 #endif
@@ -42,6 +47,10 @@ namespace Tychaia
 #endif
 
             game.RenderContext.Render(game.GameContext);
+
+            var viewport = game.RenderContext.GraphicsDevice.Viewport;
+            var newViewport = this.m_ViewportMode.Get3DViewport(viewport);
+            game.RenderContext.GraphicsDevice.Viewport = newViewport;
 
             game.RenderContext.Is3DContext = true;
 
@@ -74,6 +83,8 @@ namespace Tychaia
                 }
             }
 #endif
+
+            game.RenderContext.GraphicsDevice.Viewport = viewport;
 
             game.RenderContext.Is3DContext = false;
 
