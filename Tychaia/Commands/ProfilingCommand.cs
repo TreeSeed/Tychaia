@@ -38,7 +38,8 @@ namespace Tychaia
             switch (parameters[0].ToLower())
             {
                 case "help":
-                    return @"per-method - Configure per-method profiling.";
+                    return @"per-method - Configure per-method profiling.
+visibility - Control whether the profiler is visible.";
                 case "per-method":
                     if (parameters.Length < 2)
                         return "Not enough parameters.";
@@ -62,6 +63,23 @@ status - Show the status of per-method profiling.";
                                 : "Per-method profiling is disabled (changes take effect after game restart).";
                         default:
                             return "Unknown command (try `per-method help`).";
+                    }
+                case "visibility":
+                    if (parameters.Length < 2)
+                        return "Not enough parameters.";
+                    switch (parameters[1].ToLower())
+                    {
+                        case "help":
+                            return @"show - Show profiling information.
+hide - Hide profiling information.";
+                        case "show":
+                            this.m_PersistentStorage.Settings.VisibleProfiling = true;
+                            return "Profiling information is now visible.";
+                        case "hide":
+                            this.m_PersistentStorage.Settings.VisibleProfiling = false;
+                            return "Profiling information is now hidden.";
+                        default:
+                            return "Unknown command (try `visible help`).";
                     }
                 default:
                     return "Unknown command (try `help`).";

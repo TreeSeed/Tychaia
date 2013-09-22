@@ -10,6 +10,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
+using Tychaia.Globals;
 
 namespace Tychaia
 {
@@ -19,18 +20,21 @@ namespace Tychaia
         private readonly FontAsset m_DefaultFontAsset;
         private readonly List<FrameProfileInfo> m_ProfilingInformation;
         private readonly IRenderTargetFactory m_RenderStateFactory;
+        private readonly IPersistentStorage m_PersistentStorage;
 
         public TychaiaProfilerEntity(
             TychaiaProfiler profiler,
             IRenderTargetFactory renderStateFactory,
             I2DRenderUtilities _2DRenderUtilities,
-            IAssetManagerProvider assetManagerProvider)
+            IAssetManagerProvider assetManagerProvider,
+            IPersistentStorage persistentStorage)
         {
             this.Profiler = profiler;
             this.m_RenderStateFactory = renderStateFactory;
             this.m_2DRenderUtilities = _2DRenderUtilities;
             this.m_DefaultFontAsset = assetManagerProvider.GetAssetManager().Get<FontAsset>("font.Default");
             this.m_ProfilingInformation = new List<FrameProfileInfo>();
+            this.m_PersistentStorage = persistentStorage;
         }
         
         public TychaiaProfiler Profiler
@@ -64,6 +68,9 @@ namespace Tychaia
 
         public void RenderMaximums(IGameContext gameContext, IRenderContext renderContext)
         {
+            if ((this.m_PersistentStorage.Settings.VisibleProfiling ?? true) == false)
+                return;
+
             Action<int, double, Color> drawMaximum = (offset, maximum, color) => 
                 this.m_2DRenderUtilities.RenderText(
                     renderContext,
@@ -122,6 +129,9 @@ namespace Tychaia
         public override void Render(IGameContext gameContext, IRenderContext renderContext)
         {
             base.Render(gameContext, renderContext);
+
+            if ((this.m_PersistentStorage.Settings.VisibleProfiling ?? true) == false)
+                return;
 
             if (this.m_ProfilingInformation.Count == 0)
                 return;
