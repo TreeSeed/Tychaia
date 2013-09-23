@@ -56,6 +56,13 @@
     <Compile Include="Disk\Tychaia\SimpleLevel.cs" />
     <Compile Include="Disk\Tychaia\TychaiaLevelAPIImpl.cs" />
     <Compile Include="Disk\TychaiaDiskIoCModule.cs" />
+    <Compile Include="Events\CharacterToggleAction.cs" />
+    <Compile Include="Events\InventoryToggleAction.cs" />
+    <Compile Include="Events\MoveBackwardAction.cs" />
+    <Compile Include="Events\MoveForwardAction.cs" />
+    <Compile Include="Events\MoveLeftAction.cs" />
+    <Compile Include="Events\MoveRightAction.cs" />
+    <Compile Include="Events\TychaiaDefaultDesktopBinder.cs" />
     <Compile Include="GameAssetManagerProvider.cs" />
     <Compile Include="GameUI\DefaultViewportMode.cs" />
     <Compile Include="GameUI\EmptyContainer.cs" />

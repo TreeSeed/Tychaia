@@ -63,7 +63,6 @@ namespace Tychaia
             this.m_ChunkManagerEntity = chunkManagerEntityFactory.CreateChunkManagerEntity(this);
 
             this.m_Player = new PlayerEntity(
-                this.m_FilteredFeatures,
                 assetManagerProvider,
                 this.m_3DRenderUtilities,
                 this.m_ChunkSizePolicy,

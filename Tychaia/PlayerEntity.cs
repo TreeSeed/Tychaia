@@ -14,7 +14,6 @@ namespace Tychaia
 {
     public class PlayerEntity : Entity, IRuntimeData<Player>
     {
-        private readonly IFilteredFeatures m_FilteredFeatures;
         private readonly I3DRenderUtilities m_3DRenderUtilities;
         private readonly TextureAsset m_PlayerTexture;
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
@@ -23,13 +22,11 @@ namespace Tychaia
         public bool InaccurateY { get; set; }
 
         public PlayerEntity(
-            IFilteredFeatures filteredFeatures,
             IAssetManagerProvider assetManagerProvider,
             I3DRenderUtilities _3DRenderUtilities,
             IChunkSizePolicy chunkSizePolicy,
             IConsole console)
         {
-            this.m_FilteredFeatures = filteredFeatures;
             this.m_3DRenderUtilities = _3DRenderUtilities;
             this.m_PlayerTexture = assetManagerProvider.GetAssetManager().Get<TextureAsset>("chars.player.Player");
             this.m_ChunkSizePolicy = chunkSizePolicy;
@@ -53,6 +50,14 @@ namespace Tychaia
             set;
         }
 
+        public void MoveInDirection(int directionInDegrees)
+        {
+            var x = Math.Sin(MathHelper.ToRadians(directionInDegrees - 45)) * this.MovementSpeed;
+            var y = -Math.Cos(MathHelper.ToRadians(directionInDegrees - 45)) * this.MovementSpeed;
+            this.X += (float)x;
+            this.Z += (float)y;
+        }
+
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
             if (this.m_Console.Open)
@@ -62,26 +67,6 @@ namespace Tychaia
             var state = Keyboard.GetState();
             var gpstate = GamePad.GetState(PlayerIndex.One);
             var mv = (float) Math.Sqrt(this.MovementSpeed);
-            if (state.IsKeyDown(Keys.W))
-            {
-                this.Z -= mv;
-                this.X -= mv;
-            }
-            if (state.IsKeyDown(Keys.S) || this.m_FilteredFeatures.IsEnabled(Feature.DebugMovement))
-            {
-                this.Z += mv;
-                this.X += mv;
-            }
-            if (state.IsKeyDown(Keys.A))
-            {
-                this.Z += mv;
-                this.X -= mv;
-            }
-            if (state.IsKeyDown(Keys.D))
-            {
-                this.Z -= mv;
-                this.X += mv;
-            }
             if (state.IsKeyDown(Keys.I))
             {
                 this.Y += 4f;

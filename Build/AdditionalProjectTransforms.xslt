@@ -46,6 +46,9 @@
         <xsl:text> -t:</xsl:text>
         <xsl:value-of select="/Input/Properties/PrecompileProtobufSerializerName" />
         <xsl:text> -access:Public</xsl:text>
+        <xsl:if test="/Input/Generation/Platform != 'Windows'">
+          <xsl:text> -f:/usr/lib/mono/4.0/</xsl:text>
+        </xsl:if>
       </xsl:attribute>
     </Exec>
   </Target>
