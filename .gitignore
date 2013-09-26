@@ -45,6 +45,8 @@ Tychaia.Content/compiled/bin/*
 
 # Ignore the .source file created by Protobuild.
 Tychaia.Content/assets/.source
+
+# Ignore the .nuspec files created by Protobuild.
 MakeMeAWorld/MakeMeAWorld.Windows.nuspec
 PerspectiveTest/PerspectiveTest.Windows.nuspec
 Phabricator.Conduit/Phabricator.Conduit.Windows.nuspec
