@@ -3,12 +3,16 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Protogame;
-
 namespace Tychaia.Game
 {
-    public class Being : Entity
+    public class Being
     {
+        public Inventory Inventory { get; private set; }
+
+        public Being()
+        {
+            this.Inventory = new Inventory();
+        }
     }
 }
 

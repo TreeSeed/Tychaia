@@ -12,7 +12,7 @@ using Tychaia.Game;
 
 namespace Tychaia
 {
-    public class PlayerEntity : Entity, IRuntimeData<Player>
+    public class PlayerEntity : Entity, IHasRuntimeData<Player>
     {
         private readonly I3DRenderUtilities m_3DRenderUtilities;
         private readonly TextureAsset m_PlayerTexture;

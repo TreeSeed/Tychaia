@@ -5,6 +5,7 @@
 // ====================================================================== //
 using Protogame;
 using Microsoft.Xna.Framework.Input;
+using System.Linq;
 
 namespace Tychaia
 {
@@ -18,6 +19,7 @@ namespace Tychaia
         private RightBar m_RightBar;
         private HorizontalContainer m_StatusBarSpacing;
         private StatusBar m_StatusBar;
+        private InventoryManager m_InventoryManager;
 
         public int SidebarWidth { get; set; }
         public bool RightExtended { get; private set; }
@@ -31,12 +33,16 @@ namespace Tychaia
             this.m_ViewportMode = viewportMode;
             this.SidebarWidth = 400;
 
+            this.m_InventoryManager = gameUIFactory.CreateInventoryManager();
+
             this.m_SplitHorizontal = new HorizontalContainer();
             this.m_LeftBar = gameUIFactory.CreateLeftBar();
             this.m_CentreContainer = new VerticalContainer();
             this.m_RightBar = gameUIFactory.CreateRightBar();
             this.m_StatusBarSpacing = new HorizontalContainer();
             this.m_StatusBar = gameUIFactory.CreateStatusBar();
+
+            this.m_RightBar.SetChild(this.m_InventoryManager);
 
             this.m_SplitHorizontal.AddChild(this.m_LeftBar, "0");
             this.m_SplitHorizontal.AddChild(this.m_CentreContainer, "*");
@@ -93,6 +99,10 @@ namespace Tychaia
                 this.m_ViewportMode.SetViewportMode(ViewportMode.Right);
             else
                 this.m_ViewportMode.SetViewportMode(ViewportMode.Full);
+
+            // Assign player to the inventory manager.
+            this.m_InventoryManager.Inventory =
+                gameContext.World.Entities.OfType<PlayerEntity>().First().RuntimeData.Inventory;
         }
     }
 }

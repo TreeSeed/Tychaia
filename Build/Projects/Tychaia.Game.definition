@@ -15,8 +15,8 @@
   <Files>
     <Compile Include="Armor.cs" />
     <Compile Include="Being.cs" />
+    <Compile Include="IHasRuntimeData.cs" />
     <Compile Include="Inventory.cs" />
-    <Compile Include="IRuntimeData.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="SpellBook.cs" />

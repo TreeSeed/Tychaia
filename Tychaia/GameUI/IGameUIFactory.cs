@@ -11,6 +11,7 @@ namespace Tychaia
         StatusBar CreateStatusBar();
         LeftBar CreateLeftBar();
         RightBar CreateRightBar();
+        InventoryManager CreateInventoryManager();
     }
 }
 

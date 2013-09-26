@@ -8,7 +8,7 @@ using Protogame;
 
 namespace Tychaia
 {
-    public class RightBar : IContainer
+    public class RightBar : SingleContainer
     {
         private I2DRenderUtilities m_2DRenderUtilities;
 
@@ -17,46 +17,18 @@ namespace Tychaia
             this.m_2DRenderUtilities = _2DRenderUtilities;
         }
 
-        public IContainer[] Children
+        public override void Draw(IRenderContext context, ISkin skin, Rectangle layout)
         {
-            get
+            if (!context.Is3DContext)
             {
-                return new IContainer[0];
+                this.m_2DRenderUtilities.RenderRectangle(
+                    context,
+                    layout,
+                    Color.Green,
+                    filled: true);
             }
-        }
 
-        public IContainer Parent
-        {
-            get;
-            set;
-        }
-
-        public int Order
-        {
-            get;
-            set;
-        }
-
-        public bool Focused
-        {
-            get;
-            set;
-        }
-
-        public void Update(ISkin skin, Rectangle layout, GameTime gameTime, ref bool stealFocus)
-        {
-        }
-
-        public void Draw(IRenderContext context, ISkin skin, Rectangle layout)
-        {
-            if (context.Is3DContext)
-                return;
-
-            this.m_2DRenderUtilities.RenderRectangle(
-                context,
-                layout,
-                Color.Green,
-                filled: true);
+            base.Draw(context, skin, layout);
         }
     }
 }

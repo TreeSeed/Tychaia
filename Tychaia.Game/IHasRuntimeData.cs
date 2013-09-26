@@ -5,7 +5,7 @@
 // ====================================================================== //
 namespace Tychaia.Game
 {
-    public interface IRuntimeData<T>
+    public interface IHasRuntimeData<T>
     {
         T RuntimeData { get; }
     }

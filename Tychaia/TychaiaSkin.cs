@@ -93,7 +93,6 @@ namespace Tychaia
 
         public void DrawSingleContainer(IRenderContext context, Rectangle layout, SingleContainer singleContainer)
         {
-            throw new NotSupportedException();
         }
 
         public void DrawTextBox(IRenderContext context, Rectangle layout, TextBox textBox)

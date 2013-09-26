@@ -47,6 +47,8 @@
     <Compile Include="ChunkManagement\RuntimeChunk.cs" />
     <Compile Include="Commands\CameraCommand.cs" />
     <Compile Include="Commands\ChunkAICommand.cs" />
+    <Compile Include="Commands\EquipCommand.cs" />
+    <Compile Include="Commands\GiveCommand.cs" />
     <Compile Include="Commands\ProfilingCommand.cs" />
     <Compile Include="Disk\CombinedLevelAPI.cs" />
     <Compile Include="Disk\ILevel.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="GameUI\DefaultViewportMode.cs" />
     <Compile Include="GameUI\EmptyContainer.cs" />
     <Compile Include="GameUI\IGameUIFactory.cs" />
+    <Compile Include="GameUI\InventoryManager.cs" />
     <Compile Include="GameUI\InventoryUIEntity.cs" />
     <Compile Include="GameUI\IViewportMode.cs" />
     <Compile Include="GameUI\LeftBar.cs" />
