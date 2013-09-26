@@ -107,7 +107,7 @@ namespace Tychaia
             var keyboard = Keyboard.GetState();
 
             // Handle escape.
-            if (keyboard.IsKeyPressed(Keys.Escape))
+            if (keyboard.IsKeyPressed(this, Keys.Escape))
             {
                 gameContext.SwitchWorld<TitleWorld>();
             }

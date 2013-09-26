@@ -7,11 +7,11 @@ using Protogame;
 
 namespace Tychaia
 {
-    public class CharacterToggleAction : IEventAction
+    public class CharacterToggleAction : IEventEntityAction<InventoryUIEntity>
     {
-        public void Handle(IGameContext gameContext, Event @event)
+        public void Handle(InventoryUIEntity entity, Event @event)
         {
-            System.Console.WriteLine("character toggle pressed");
+            entity.ToggleLeft();
         }
     }
 }
