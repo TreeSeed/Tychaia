@@ -79,6 +79,7 @@ namespace Tychaia
                     this.m_DefaultFontAsset,
                     textColor: color);
                     
+            this.Profiler.CheckSlowFrames();
             var stats = this.Profiler.GetRenderStats();
 
             this.m_2DRenderUtilities.RenderRectangle(

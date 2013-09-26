@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Protogame;
+using System.Linq;
 
 namespace Tychaia
 {
@@ -15,6 +16,7 @@ namespace Tychaia
         private static TychaiaProfiler SingletonProtection;
     
         private int m_CallCount;
+        private DateTime m_LastStart = DateTime.Now;
         internal Dictionary<string, double> m_MeasureCosts;
         
         public TychaiaProfiler()
@@ -64,6 +66,23 @@ namespace Tychaia
         public void StartRenderStats()
         {
             this.m_MeasureCosts = new Dictionary<string, double>();
+            this.m_LastStart = DateTime.Now;
+        }
+
+        public void CheckSlowFrames()
+        {
+            var span = DateTime.Now - this.m_LastStart;
+            if (span.TotalMilliseconds > (1 / 60f) * 1000f)
+            {
+                // We just had a slow frame.  Output the statistics to the console.
+                Console.WriteLine("=============================");
+                Console.WriteLine("WARNING: SLOW FRAME DETECTED!");
+                foreach (var kv in this.GetRenderStats().OrderByDescending(x => x.Value))
+                {
+                    Console.WriteLine(kv.Key + ": " + kv.Value + "us");
+                }
+                Console.WriteLine("=============================");
+            }
         }
         
         public Dictionary<string, double> GetRenderStats()

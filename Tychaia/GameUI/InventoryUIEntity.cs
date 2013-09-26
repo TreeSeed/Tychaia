@@ -20,8 +20,8 @@ namespace Tychaia
         private StatusBar m_StatusBar;
 
         public int SidebarWidth { get; set; }
-        public bool RightExtended { get; set; }
-        public bool LeftExtended { get; set; }
+        public bool RightExtended { get; private set; }
+        public bool LeftExtended { get; private set; }
 
         public InventoryUIEntity(
             IGameUIFactory gameUIFactory,
@@ -51,25 +51,25 @@ namespace Tychaia
             this.Canvas.SetChild(this.m_SplitHorizontal);
         }
 
+        public void ToggleRight()
+        {
+            this.RightExtended = !this.RightExtended;
+            this.m_SplitHorizontal.SetChildSize(
+                this.m_RightBar,
+                this.RightExtended ? this.SidebarWidth.ToString() : "0");
+        }
+
+        public void ToggleLeft()
+        {
+            this.LeftExtended = !this.LeftExtended;
+            this.m_SplitHorizontal.SetChildSize(
+                this.m_LeftBar,
+                this.LeftExtended ? this.SidebarWidth.ToString() : "0");
+        }
+
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
             base.Update(gameContext, updateContext);
-
-            var keyboard = Keyboard.GetState();
-            if (keyboard.IsKeyPressed(Keys.R))
-            {
-                this.RightExtended = !this.RightExtended;
-                this.m_SplitHorizontal.SetChildSize(
-                    this.m_RightBar,
-                    this.RightExtended ? this.SidebarWidth.ToString() : "0");
-            }
-            if (keyboard.IsKeyPressed(Keys.L))
-            {
-                this.LeftExtended = !this.LeftExtended;
-                this.m_SplitHorizontal.SetChildSize(
-                    this.m_LeftBar,
-                    this.LeftExtended ? this.SidebarWidth.ToString() : "0");
-            }
 
             this.m_ViewportMode.SidebarWidth = this.SidebarWidth;
             if (this.RightExtended && this.LeftExtended)
