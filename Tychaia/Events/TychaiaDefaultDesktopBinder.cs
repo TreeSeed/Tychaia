@@ -12,8 +12,8 @@ namespace Tychaia
     {
         public override void Configure()
         {
-            this.Bind<KeyPressEvent>(x => x.Key == Keys.I).On<InventoryUIEntity>().To<InventoryToggleAction>();
-            this.Bind<KeyPressEvent>(x => x.Key == Keys.C).On<InventoryUIEntity>().To<CharacterToggleAction>();
+            this.Bind<KeyPressEvent>(x => x.Key == Keys.I).OnTogglable<InventoryUIEntity>().ToToggle("inventory");
+            this.Bind<KeyPressEvent>(x => x.Key == Keys.C).OnTogglable<InventoryUIEntity>().ToToggle("character");
             this.Bind<KeyHeldEvent>(x => x.Key == Keys.W).On<PlayerEntity>().To<MoveForwardAction>();
             this.Bind<KeyHeldEvent>(x => x.Key == Keys.A).On<PlayerEntity>().To<MoveLeftAction>();
             this.Bind<KeyHeldEvent>(x => x.Key == Keys.S).On<PlayerEntity>().To<MoveBackwardAction>();

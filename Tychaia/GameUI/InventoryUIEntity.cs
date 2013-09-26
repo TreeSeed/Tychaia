@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Tychaia
 {
-    public class InventoryUIEntity : CanvasEntity
+    public class InventoryUIEntity : CanvasEntity, IEventTogglable
     {
         private readonly IViewportMode m_ViewportMode;
 
@@ -51,7 +51,20 @@ namespace Tychaia
             this.Canvas.SetChild(this.m_SplitHorizontal);
         }
 
-        public void ToggleRight()
+        public void Toggle(string id)
+        {
+            switch (id)
+            {
+                case "inventory":
+                    this.ToggleRight();
+                    break;
+                case "character":
+                    this.ToggleLeft();
+                    break;
+            }
+        }
+
+        private void ToggleRight()
         {
             this.RightExtended = !this.RightExtended;
             this.m_SplitHorizontal.SetChildSize(
@@ -59,7 +72,7 @@ namespace Tychaia
                 this.RightExtended ? this.SidebarWidth.ToString() : "0");
         }
 
-        public void ToggleLeft()
+        private void ToggleLeft()
         {
             this.LeftExtended = !this.LeftExtended;
             this.m_SplitHorizontal.SetChildSize(
