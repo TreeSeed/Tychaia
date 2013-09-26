@@ -45,3 +45,25 @@ Tychaia.Content/compiled/bin/*
 
 # Ignore the .source file created by Protobuild.
 Tychaia.Content/assets/.source
+MakeMeAWorld/MakeMeAWorld.Windows.nuspec
+PerspectiveTest/PerspectiveTest.Windows.nuspec
+Phabricator.Conduit/Phabricator.Conduit.Windows.nuspec
+Tychaia.Data/Tychaia.Data.Windows.nuspec
+Tychaia.Game.Tests/Tychaia.Game.Tests.Windows.nuspec
+Tychaia.Game/Tychaia.Game.Windows.nuspec
+Tychaia.Globals.Tests/Tychaia.Globals.Tests.Windows.nuspec
+Tychaia.Globals/Tychaia.Globals.Windows.nuspec
+Tychaia.Network/Tychaia.Network.Windows.nuspec
+Tychaia.ProceduralGeneration.Tests/Tychaia.ProceduralGeneration.Tests.Windows.nuspec
+Tychaia.ProceduralGeneration/Tychaia.ProceduralGeneration.Windows.nuspec
+Tychaia.Puzzle/Tychaia.Puzzle.Windows.nuspec
+Tychaia.RuntimeGeneration/Tychaia.RuntimeGeneration.Windows.nuspec
+Tychaia.Tests/Tychaia.Tests.Windows.nuspec
+Tychaia.Threading.Tests/Tychaia.Threading.Tests.Windows.nuspec
+Tychaia.Threading/Tychaia.Threading.Windows.nuspec
+Tychaia.Website.Tests/Tychaia.Website.Tests.Windows.nuspec
+Tychaia.Website/Tychaia.Website.Windows.nuspec
+Tychaia/Tychaia.Windows.nuspec
+TychaiaPuzzleEditor/TychaiaPuzzleEditor.Windows.nuspec
+TychaiaTool/TychaiaTool.Windows.nuspec
+TychaiaWorldGenViewerAlgorithm/TychaiaWorldGenViewerAlgorithm.Windows.nuspec
