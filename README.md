@@ -17,7 +17,7 @@ About
 
 Imagine a game where the world never ends, the scale is infinite and there's always one more quest.  Where the game starts with nothing and ends with your death.  Welcome to Tychaia.
 
-![A very early screenshot.](http://i.imgur.com/BeXfI.png)
+![A very early screenshot.](http://i.imgur.com/vD8MjHG.png)
 
 The game places a very heavy focus on procedural generation; it generates the entire world from scratch every time you play, including content such as:
 
