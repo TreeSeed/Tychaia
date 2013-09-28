@@ -1,0 +1,155 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#
+    var monitors = new[]
+    {
+        new Monitor("Entities", "int", "Orange"),
+        new Monitor("FPS", "int", "Yellow", "FPS"),
+        new Monitor("FunctionCalls", "int", "Green"),
+        new Monitor("LastFrameLength", "double", "White", "ms"),
+        new Monitor("VirtualMemory", "long", "Magenta", "MB")
+    };
+#>
+// ====================================================================== //
+// This source code is licensed in accordance with the licensing outlined //
+// on the main Tychaia website (www.tychaia.com).  Changes to the         //
+// license on the website apply retroactively.                            //
+// ====================================================================== //
+// @<##>generated
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Protogame;
+
+namespace Tychaia
+{
+    public class FrameProfileInfo
+    {
+<#
+    foreach (var monitor in monitors)
+    {
+#>
+        public <#=monitor.Type#> <#=monitor.Name#>;
+<#
+    }
+#>
+    }
+    
+    public class TychaiaProfilerEntityUtil
+    {
+        public void RenderMaximums(I2DRenderUtilities _2DRenderUtilities, IRenderContext renderContext, FontAsset font, List<FrameProfileInfo> info)
+        {
+            Action<int, string, Color> drawMaximum = (offset, maximum, color) => 
+                _2DRenderUtilities.RenderText(
+                    renderContext,
+                    new Vector2(4 + offset, 4),
+                    maximum,
+                    font,
+                    textColor: color);
+            
+<#
+    foreach (var monitor in monitors)
+    {
+#>
+            var last<#=monitor.Name#> = info.Select(x => x.<#=monitor.Name#>).Last();
+<#
+    }
+    
+    var total = 300 / monitors.Length;
+    var i = 0;
+    foreach (var monitor in monitors)
+    {
+#>
+            drawMaximum(<#=i#>, last<#=monitor.Name#>.ToString(CultureInfo.InvariantCulture) + "<#=monitor.Suffix#>", Color.<#=monitor.Color#>);
+<#
+        i += total;
+    }
+#>
+        }
+    
+        public void RenderLines(IGameContext gameContext, List<FrameProfileInfo> info)
+        {
+            Action<int, Func<FrameProfileInfo, double>, double, VertexPositionColor[], Color, int> addToLine =
+                (i, value, maximum, vertexList, color, offset) =>
+                {
+                    var sample = info[i];
+                    vertexList[i] = new VertexPositionColor(
+                        new Vector3(i, (float) (224 - (value(sample) / (maximum < 1 ? 1 : maximum)) * (200 - offset)), 0),
+                        color);
+                };
+            Action<VertexPositionColor[], short[]> renderLine = (vertexList, lsi) =>
+            {
+                if (vertexList.Length == 0)
+                    return;
+                gameContext.Graphics.GraphicsDevice.DrawUserIndexedPrimitives(
+                    PrimitiveType.LineStrip,
+                    vertexList,
+                    0,
+                    vertexList.Length,
+                    lsi,
+                    0,
+                    lsi.Length - 1);
+            };
+            
+<#
+    foreach (var monitor in monitors)
+    {
+#>
+            var maximum<#=monitor.Name#> = info.Select(x => x.<#=monitor.Name#>).Max();
+            var line<#=monitor.Name#> = new VertexPositionColor[info.Count - 1];
+<#
+    }
+#>
+            var sixteenMillisecondsLine = new VertexPositionColor[info.Count - 1];
+            var lineStripIndices = new short[info.Count - 1];
+            for (short i = 0; i < info.Count - 1; i++)
+            {
+                lineStripIndices[i] = i;
+<#
+    var offset = 0;
+    foreach (var monitor in monitors)
+    {
+#>
+                addToLine(i, x => x.<#=monitor.Name#>, maximum<#=monitor.Name#>, line<#=monitor.Name#>, Color.<#=monitor.Color#>, <#=offset#>);
+<#
+        offset += 4;
+    }
+#>
+                addToLine(i, x => 1000.0 / 60.0, maximumLastFrameLength, sixteenMillisecondsLine, Color.Red, 20);
+            }
+<#
+    foreach (var monitor in monitors)
+    {
+#>
+            renderLine(line<#=monitor.Name#>, lineStripIndices);
+<#
+    }
+#>
+            renderLine(sixteenMillisecondsLine, lineStripIndices);
+        }
+    }
+}
+<#+
+    public class Monitor
+    {
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string Color { get; set; }
+        public string Suffix { get; set; }
+        
+        public Monitor(string name, string type, string color, string suffix = "")
+        {
+            this.Name = name;
+            this.Type = type;
+            this.Color = color;
+            this.Suffix = suffix;
+        }
+    }
+#>

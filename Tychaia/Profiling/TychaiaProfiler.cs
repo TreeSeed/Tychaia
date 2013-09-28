@@ -19,6 +19,12 @@ namespace Tychaia
         private DateTime m_LastStart = DateTime.Now;
         internal Dictionary<string, double> m_MeasureCosts;
         
+        public double LastFrameLength
+        {
+            get;
+            set;
+        }
+
         public TychaiaProfiler()
         {
             if (SingletonProtection != null)
@@ -72,11 +78,13 @@ namespace Tychaia
         public void CheckSlowFrames()
         {
             var span = DateTime.Now - this.m_LastStart;
-            if (span.TotalMilliseconds > (1 / 60f) * 1000f)
+            this.LastFrameLength = span.TotalMilliseconds;
+            if (span.TotalMilliseconds > (1 / 45f) * 1000f)
             {
                 // We just had a slow frame.  Output the statistics to the console.
                 Console.WriteLine("=============================");
                 Console.WriteLine("WARNING: SLOW FRAME DETECTED!");
+                Console.WriteLine("TOTAL TIME: " + span.TotalMilliseconds + "ms");
                 foreach (var kv in this.GetRenderStats().OrderByDescending(x => x.Value))
                 {
                     Console.WriteLine(kv.Key + ": " + kv.Value + "us");

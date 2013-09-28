@@ -63,7 +63,6 @@
     <Compile Include="Events\MoveLeftAction.cs" />
     <Compile Include="Events\MoveRightAction.cs" />
     <Compile Include="Events\TychaiaDefaultDesktopBinder.cs" />
-    <Compile Include="GameAssetManagerProvider.cs" />
     <Compile Include="GameUI\DefaultViewportMode.cs" />
     <Compile Include="GameUI\EmptyContainer.cs" />
     <Compile Include="GameUI\IGameUIFactory.cs" />
@@ -89,6 +88,9 @@
     <Compile Include="PlayerEntity.cs" />
     <Compile Include="Profiling\TychaiaProfiler.cs" />
     <Compile Include="Profiling\TychaiaProfilerEntity.cs" />
+    <Compile Include="Profiling\TychaiaProfilerEntityUtil.cs">
+      <DependentUpon>TychaiaProfilerEntityUtil.tt</DependentUpon>
+    </Compile>
     <Compile Include="Profiling\TychaiaProfilingInterceptor.cs" />
     <Compile Include="Profiling\TychaiaProfilingIoCModule.cs" />
     <Compile Include="Program.cs" />
@@ -146,5 +148,9 @@
     <None Include="Legacy\Tiles\WaterTile.cs" />
     <None Include="Legacy\TitleButton.cs" />
     <None Include="packages.config" />
+    <None Include="Profiling\TychaiaProfilerEntityUtil.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TychaiaProfilerEntityUtil.cs</LastGenOutput>
+    </None>
   </Files>
 </Project>
