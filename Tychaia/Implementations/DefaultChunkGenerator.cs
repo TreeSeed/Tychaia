@@ -12,6 +12,7 @@ using Protogame;
 using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
 using Tychaia.Threading;
+using System.Diagnostics;
 
 namespace Tychaia
 {
@@ -22,13 +23,13 @@ namespace Tychaia
         private readonly TextureAtlasAsset m_TextureAtlasAsset;
         private readonly ThreadedTaskPipeline<RuntimeChunk> m_Pipeline;
         private readonly IGenerator m_Generator;
-        private readonly IFlowBundleToCellConverter m_FlowBundleToCellConverter;
+        private readonly IResultDataToCellConverter m_FlowBundleToCellConverter;
 
         public DefaultChunkGenerator(
             IChunkSizePolicy chunkSizePolicy,
             IAssetManagerProvider assetManagerProvider,
             IGeneratorResolver generatorResolver,
-            IFlowBundleToCellConverter flowBundleToCellConverter)
+            IResultDataToCellConverter flowBundleToCellConverter)
         {
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_AssetManager = assetManagerProvider.GetAssetManager();
@@ -57,7 +58,9 @@ namespace Tychaia
                 int computations;
 
                 // Generate the actual data using the procedural generation library.
-                var blocks = (FlowBundle[]) this.m_Generator.GenerateData(
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+                var blocks = (ResultData[]) this.m_Generator.GenerateData(
                     chunk.X / this.m_ChunkSizePolicy.CellVoxelWidth,
                     chunk.Z / this.m_ChunkSizePolicy.CellVoxelDepth,
                     chunk.Y / this.m_ChunkSizePolicy.CellVoxelHeight,
@@ -65,6 +68,8 @@ namespace Tychaia
                     this.m_ChunkSizePolicy.ChunkCellHeight,
                     this.m_ChunkSizePolicy.ChunkCellDepth,
                     out computations);
+                Console.WriteLine("Took " + stopwatch.ElapsedMilliseconds + "ms to generate data.");
+                Thread.Sleep(16);
                 for (var x = 0; x < this.m_ChunkSizePolicy.ChunkCellWidth; x++)
                     for (var y = 0; y < this.m_ChunkSizePolicy.ChunkCellHeight; y++)
                         for (var z = 0; z < this.m_ChunkSizePolicy.ChunkCellDepth; z++)
@@ -74,11 +79,12 @@ namespace Tychaia
                                 z * this.m_ChunkSizePolicy.ChunkCellWidth +
                                 y * this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.ChunkCellHeight];
                             chunk.Cells[x, y, z] = this.m_FlowBundleToCellConverter.ConvertToCell(info);
-                            var block = (BlockInfo)info.Get("BlockInfo");
+                            var block = info.BlockInfo;
                             if (block.BlockAssetName == null)
                                 continue;
                             chunk.Blocks[x, y, z] = this.m_AssetManager.Get<BlockAsset>(block.BlockAssetName);
                         }
+                Thread.Sleep(16);
 
                 // Now also generate the vertexes / indices in this thread.
                 var vertexes = new List<VertexPositionTexture>();
@@ -120,6 +126,7 @@ namespace Tychaia
                                 },
                                 indices.Add);
                         }
+                Thread.Sleep(16);
                 chunk.GeneratedVertexes = vertexes.ToArray();
                 chunk.GeneratedIndices = indices.ToArray();
                 chunk.Generated = true;

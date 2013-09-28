@@ -19,7 +19,7 @@ namespace Tychaia
         private readonly I2DRenderUtilities m_2DRenderUtilities;
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
         private readonly IGenerationPlanner m_GenerationPlanner;
-        private readonly IFlowBundleToCellConverter m_FlowBundleToCellConverter;
+        private readonly IResultDataToCellConverter m_FlowBundleToCellConverter;
 
         private readonly FontAsset m_DefaultFont;
         private readonly List<IEntity> m_Entities;
@@ -34,7 +34,7 @@ namespace Tychaia
             IChunkSizePolicy chunkSizePolicy,
             IGenerationPlanner generationPlanner,
             IGeneratorResolver generatorResolver,
-            IFlowBundleToCellConverter flowBundleToCellConverter,
+            IResultDataToCellConverter flowBundleToCellConverter,
             ILevel level)
         {
             this.m_AssetManager = assetManagerProvider.GetAssetManager();

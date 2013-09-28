@@ -48,7 +48,7 @@ namespace Tychaia.ProceduralGeneration
             this.EnsureLoaded();
 
             return (from storage in this.m_LoadedLayers
-                where storage.Algorithm is AlgorithmBundleOutput
+                where storage.Algorithm is AlgorithmFormResult
                 select this.m_StorageAccess.ToRuntime(storage)).First();
         }
 
@@ -57,7 +57,7 @@ namespace Tychaia.ProceduralGeneration
             this.EnsureLoaded();
 
             return (from storage in this.m_LoadedLayers
-                where storage.Algorithm is AlgorithmBundleOutput
+                where storage.Algorithm is AlgorithmFormResult
                 select this.m_StorageAccess.ToRuntime(storage)).First();
         }
     }

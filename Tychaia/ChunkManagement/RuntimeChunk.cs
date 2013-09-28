@@ -26,6 +26,7 @@ namespace Tychaia
         private readonly ChunkOctree m_Octree;
         private readonly IRenderCache m_RenderCache;
         private readonly TextureAtlasAsset m_TextureAtlasAsset;
+        private readonly IProfiler m_Profiler;
         public BlockAsset[,,] Blocks = null;
         public Cell[,,] Cells = null;
         private IAssetManager m_AssetManager;
@@ -53,6 +54,7 @@ namespace Tychaia
             IRenderCache renderCache,
             IAssetManagerProvider assetManagerProvider,
             IChunkGenerator chunkGenerator,
+            IProfiler profiler,
             long x,
             long y,
             long z)
@@ -74,6 +76,7 @@ namespace Tychaia
             this.m_AssetManager = assetManagerProvider.GetAssetManager();
             this.m_TextureAtlasAsset = this.m_AssetManager.Get<TextureAtlasAsset>("atlas");
             this.m_ChunkGenerator = chunkGenerator;
+            this.m_Profiler = profiler;
             this.X = x;
             this.Y = y;
             this.Z = z;

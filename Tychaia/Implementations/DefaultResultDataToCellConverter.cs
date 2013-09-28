@@ -3,15 +3,21 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using System.IO;
+using Tychaia.Data;
 using Tychaia.ProceduralGeneration;
 
 namespace Tychaia
 {
-    public interface IFlowBundleSerializer
+    public class DefaultResultDataToCellConverter : IResultDataToCellConverter
     {
-        void Serialize(BinaryWriter writer, FlowBundle bundle);
-        FlowBundle Deserialize(BinaryReader reader);
+        public Cell ConvertToCell(ResultData resultData)
+        {
+            return new Cell
+            {
+                BlockAssetName = resultData.BlockInfo.BlockAssetName,
+                HeightMap = resultData.HeightMap
+            };
+        }
     }
 }
 

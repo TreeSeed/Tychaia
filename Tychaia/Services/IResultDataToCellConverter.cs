@@ -8,16 +8,9 @@ using Tychaia.ProceduralGeneration;
 
 namespace Tychaia
 {
-    public class DefaultFlowBundleToCellConverter : IFlowBundleToCellConverter
+    public interface IResultDataToCellConverter
     {
-        public Cell ConvertToCell(FlowBundle bundle)
-        {
-            return new Cell
-            {
-                BlockAssetName = bundle.Get("BlockInfo").BlockAssetName,
-                HeightMap = bundle.Get("HeightMap")
-            };
-        }
+        Cell ConvertToCell(ResultData resultData);
     }
 }
 

@@ -15,7 +15,7 @@ namespace Tychaia
             this.Bind<ILevelAPI>().To<CombinedLevelAPI>();
             this.Bind<ILevelAPIImpl>().To<TychaiaLevelAPIImpl>().Named("Default");
             this.Bind<ITychaiaLevelFactory>().ToFactory();
-            this.Bind<IFlowBundleSerializer>().To<DefaultFlowBundleSerializer>();
+            this.Bind<IResultDataSerialiser>().To<DefaultResultDataSerialiser>();
         }
     }
 }

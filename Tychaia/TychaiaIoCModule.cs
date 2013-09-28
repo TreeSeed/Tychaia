@@ -29,7 +29,7 @@ namespace Tychaia
             this.Bind<ICommand>().To<ChunkAICommand>();
             this.Bind<IPredeterminedChunkPositions>().To<DefaultPredeterminedChunkPositions>();
             this.Bind<IWorldFactory>().ToFactory();
-            this.Bind<IFlowBundleToCellConverter>().To<DefaultFlowBundleToCellConverter>();
+            this.Bind<IResultDataToCellConverter>().To<DefaultResultDataToCellConverter>();
             this.Bind<ICommand>().To<ProfilingCommand>();
             this.Bind<IGameUIFactory>().ToFactory();
             this.Bind<IViewportMode>().To<DefaultViewportMode>().InSingletonScope();

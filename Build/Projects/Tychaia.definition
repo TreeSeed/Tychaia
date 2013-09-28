@@ -75,11 +75,11 @@
     <Compile Include="GameUI\ViewportMode.cs" />
     <Compile Include="Implementations\DefaultChunkGenerator.cs" />
     <Compile Include="Implementations\DefaultDebugCubeRenderer.cs" />
-    <Compile Include="Implementations\DefaultFlowBundleSerializer.cs" />
-    <Compile Include="Implementations\DefaultFlowBundleToCellConverter.cs" />
     <Compile Include="Implementations\DefaultFrustumChunkCache.cs" />
     <Compile Include="Implementations\DefaultPredeterminedChunkPositions.cs" />
     <Compile Include="Implementations\DefaultRenderTargetFactory.cs" />
+    <Compile Include="Implementations\DefaultResultDataSerialiser.cs" />
+    <Compile Include="Implementations\DefaultResultDataToCellConverter.cs" />
     <Compile Include="Isometric\IIsometricCamera.cs" />
     <Compile Include="Isometric\IIsometricCameraFactory.cs" />
     <Compile Include="Isometric\IsometricCamera.cs" />
@@ -96,11 +96,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Services\IChunkGenerator.cs" />
     <Compile Include="Services\IDebugCubeRenderer.cs" />
-    <Compile Include="Services\IFlowBundleSerializer.cs" />
-    <Compile Include="Services\IFlowBundleToCellConverter.cs" />
     <Compile Include="Services\IFrustumChunkCache.cs" />
     <Compile Include="Services\IPredeterminedChunkPositions.cs" />
     <Compile Include="Services\IRenderTargetFactory.cs" />
+    <Compile Include="Services\IResultDataSerialiser.cs" />
+    <Compile Include="Services\IResultDataToCellConverter.cs" />
     <Compile Include="TychaiaGame.cs" />
     <Compile Include="TychaiaIoCModule.cs" />
     <Compile Include="TychaiaSkin.cs" />

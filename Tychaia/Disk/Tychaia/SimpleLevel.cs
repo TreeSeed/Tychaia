@@ -17,13 +17,13 @@ namespace Tychaia
     {
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
         private readonly IAssetManager m_AssetManager;
-        private readonly IFlowBundleSerializer m_FlowBundleSerializer;
+        private readonly IResultDataSerialiser m_FlowBundleSerializer;
         private string m_Path;
 
         public SimpleLevel(
             IChunkSizePolicy chunkSizePolicy,
             IAssetManagerProvider assetManagerProvider,
-            IFlowBundleSerializer flowBundleSerializer,
+            IResultDataSerialiser flowBundleSerializer,
             string name,
             string path)
         {

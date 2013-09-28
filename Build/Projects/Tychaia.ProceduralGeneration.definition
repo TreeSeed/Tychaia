@@ -22,22 +22,6 @@
     <Compile Include="AlgorithmAverage.cs" />
     <Compile Include="AlgorithmBiomes.cs" />
     <Compile Include="AlgorithmBiomesSimple.cs" />
-    <Compile Include="AlgorithmBundleCreate.cs">
-      <DependentUpon>AlgorithmBundleCreate.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="AlgorithmBundleGet.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AlgorithmBundleGet.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AlgorithmBundleOutput.cs" />
-    <Compile Include="AlgorithmBundleSet.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AlgorithmBundleSet.tt</DependentUpon>
-    </Compile>
     <Compile Include="AlgorithmChancedBool.cs" />
     <Compile Include="AlgorithmClamp.cs" />
     <Compile Include="AlgorithmColors.cs" />
@@ -51,6 +35,7 @@
     <Compile Include="AlgorithmDeriveTerrain.cs" />
     <Compile Include="AlgorithmDistanceFrom0.cs" />
     <Compile Include="AlgorithmExtend2D.cs" />
+    <Compile Include="AlgorithmFormResult.cs" />
     <Compile Include="AlgorithmGenerateBlockInfo.cs" />
     <Compile Include="AlgorithmHeightChange.cs" />
     <Compile Include="AlgorithmIncrementWaterDistance.cs" />
@@ -67,7 +52,6 @@
     <Compile Include="AlgorithmUtility.cs" />
     <Compile Include="AlgorithmValueTo3D.cs" />
     <Compile Include="AlgorithmZoom2D.cs" />
-    <Compile Include="AlgorithmZoom2DBundle.cs" />
     <Compile Include="AlgorithmZoom3D.cs" />
     <Compile Include="Analysis\AnalysisEngine.cs" />
     <Compile Include="Analysis\Output\AstNodeExtensions.cs" />
@@ -122,7 +106,6 @@
     <Compile Include="Flow\IAlgorithmFlowImageGeneration.cs" />
     <Compile Include="Flow\IFlowProcessingPipeline.cs" />
     <Compile Include="Flow\IFlowProcessingRequestHandler.cs" />
-    <Compile Include="FlowBundles\FlowBundle.cs" />
     <Compile Include="FlowDesignerCategoryAttribute.cs" />
     <Compile Include="FlowDesignerNameAttribute.cs" />
     <Compile Include="IAlgorithm.cs" />
@@ -140,6 +123,7 @@
     <Compile Include="Planner\IGenerationPlanner.cs" />
     <Compile Include="Planner\IGenerationRequest.cs" />
     <Compile Include="Professions\Professions.cs" />
+    <Compile Include="ResultData.cs" />
     <Compile Include="RuntimeLayer.cs" />
     <Compile Include="StorageAccess.cs" />
     <Compile Include="StorageLayer.cs" />
@@ -150,18 +134,6 @@
     <EmbeddedResource Include="Compiler\CompiledLayerTemplate.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <None Include="AlgorithmBundleCreate.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AlgorithmBundleCreate.cs</LastGenOutput>
-    </None>
-    <None Include="AlgorithmBundleGet.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AlgorithmBundleGet.cs</LastGenOutput>
-    </None>
-    <None Include="AlgorithmBundleSet.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AlgorithmBundleSet.cs</LastGenOutput>
-    </None>
     <None Include="Analysis\Reporting\bootstrap\css\bootstrap.min.css" />
     <None Include="Analysis\Reporting\bootstrap\css\bootstrap-responsive.min.css" />
     <None Include="Analysis\Reporting\bootstrap\css\docs.css" />
