@@ -99,6 +99,45 @@ namespace Tychaia
             foreach (var position in this.GetAbsolutePositions(focus))
                 yield return octree.Get((long)position.X, (long)position.Y, (long)position.Z);
         }
+
+        public IEnumerable<Vector3> GetPurgableRelativePositions()
+        {
+            yield return new Vector3(-4, -4, 0);
+            yield return new Vector3(-4, -3, 0);
+            yield return new Vector3(-4, -2, 0);
+            yield return new Vector3(-4, -1, 0);
+            yield return new Vector3(-4, 0, 0);
+            yield return new Vector3(-4, 1, 0);
+            yield return new Vector3(-4, 2, 0);
+            yield return new Vector3(-4, 3, 0);
+            yield return new Vector3(-4, 4, 0);
+
+            yield return new Vector3(4, -4, 0);
+            yield return new Vector3(4, -3, 0);
+            yield return new Vector3(4, -2, 0);
+            yield return new Vector3(4, -1, 0);
+            yield return new Vector3(4, 0, 0);
+            yield return new Vector3(4, 1, 0);
+            yield return new Vector3(4, 2, 0);
+            yield return new Vector3(4, 3, 0);
+            yield return new Vector3(4, 4, 0);
+
+        }
+
+        public IEnumerable<Vector3> GetPurgableScaledRelativePositions()
+        {
+            foreach (var relative in this.GetPurgableRelativePositions())
+                yield return new Vector3(
+                    relative.X * this.m_ChunkSizePolicy.CellVoxelWidth * this.m_ChunkSizePolicy.ChunkCellWidth,
+                    relative.Y * this.m_ChunkSizePolicy.CellVoxelHeight * this.m_ChunkSizePolicy.ChunkCellHeight,
+                    relative.Z * this.m_ChunkSizePolicy.CellVoxelDepth * this.m_ChunkSizePolicy.ChunkCellDepth);
+        }
+
+        public IEnumerable<Vector3> GetPurgableAbsolutePositions(Vector3 absolute)
+        {
+            foreach (var relative in this.GetPurgableScaledRelativePositions())
+                yield return absolute + relative;
+        }
     }
 }
 

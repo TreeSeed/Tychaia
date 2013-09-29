@@ -122,6 +122,8 @@
     <Compile Include="Planner\GenerationRegion.cs" />
     <Compile Include="Planner\IGenerationPlanner.cs" />
     <Compile Include="Planner\IGenerationRequest.cs" />
+    <Compile Include="Pooling\IPool.cs" />
+    <Compile Include="Pooling\PredeterminedPool.cs" />
     <Compile Include="Professions\Professions.cs" />
     <Compile Include="ResultData.cs" />
     <Compile Include="RuntimeLayer.cs" />

@@ -19,10 +19,14 @@ namespace Tychaia.ProceduralGeneration
 {
     internal class StorageAccess : IStorageAccess
     {
+        private readonly IPool m_Pool;
         private readonly IArrayPool m_ArrayPool;
         
-        public StorageAccess(IArrayPool arrayPool)
+        public StorageAccess(
+            IPool pool,
+            IArrayPool arrayPool)
         {
+            this.m_Pool = pool;
             this.m_ArrayPool = arrayPool;
         }
     
@@ -62,7 +66,10 @@ namespace Tychaia.ProceduralGeneration
                 return null;
 
             // Convert runtime layer.
-            var runtime = new RuntimeLayer(this.m_ArrayPool, layer.Algorithm);
+            var runtime = new RuntimeLayer(
+                this.m_Pool,
+                this.m_ArrayPool,
+                layer.Algorithm);
             if (layer.Inputs != null)
                 for (var i = 0; i < layer.Inputs.Length; i++)
                     runtime.SetInput(i, ToRuntime(layer.Inputs[i]));

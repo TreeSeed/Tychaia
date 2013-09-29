@@ -22,6 +22,7 @@ namespace Tychaia.ProceduralGeneration
             this.Bind<IRuntimeLayerFactory>().ToFactory();
             this.Bind<ICellOrderCalculator>().To<DefaultCellOrderCalculator>().InSingletonScope();
             this.Bind<IIsometricBitmapRenderer>().To<DefaultIsometricBitmapRenderer>().InSingletonScope();
+            this.Bind<IPool>().To<PredeterminedPool>().InThreadScope();
         }
     }
 }

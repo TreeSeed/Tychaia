@@ -50,5 +50,13 @@ namespace Tychaia
                                                         ", " + yy + ", " + zz + ".");
             }
         }
+
+        public void Clear(RuntimeChunk chunk)
+        {
+            var xx = this.m_PositionScaleTranslation.Translate(chunk.X);
+            var yy = this.m_PositionScaleTranslation.Translate(chunk.Y);
+            var zz = this.m_PositionScaleTranslation.Translate(chunk.Z);
+            this.m_Octree.Insert(null, xx, yy, zz);
+        }
     }
 }

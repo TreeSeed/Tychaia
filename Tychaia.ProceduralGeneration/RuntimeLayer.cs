@@ -33,14 +33,19 @@ namespace Tychaia.ProceduralGeneration
 
         private long m_Seed;
         private readonly IArrayPool m_ArrayPool;
+        private readonly IPool m_Pool;
 
         /// <summary>
         /// Creates a new runtime layer that holds the specified algorithm.
         /// </summary>
-        public RuntimeLayer(IArrayPool arrayPool, IAlgorithm algorithm)
+        public RuntimeLayer(
+            IPool pool,
+            IArrayPool arrayPool,
+            IAlgorithm algorithm)
         {
             if (algorithm == null)
                 throw new ArgumentNullException("algorithm");
+            this.m_Pool = pool;
             this.m_ArrayPool = arrayPool;
             this.m_Algorithm = algorithm;
             var inputs = new List<RuntimeLayer>();
@@ -136,6 +141,7 @@ namespace Tychaia.ProceduralGeneration
             var arrayHeight = height + MaxOffsetY * 2;
             var arrayDepth = depth + MaxOffsetZ * 2;
 
+            this.m_Pool.Begin();
             dynamic resultArray = this.PerformAlgorithmRuntimeCall(
                 x,
                 y,
@@ -164,6 +170,7 @@ namespace Tychaia.ProceduralGeneration
                             resultArray[(i + MaxOffsetX) +
                                         (j + MaxOffsetY) * arrayWidth +
                                         (k + MaxOffsetZ) * arrayWidth * arrayHeight];
+            this.m_Pool.End();
 
             // Return the result.
             return correctArray;
@@ -360,7 +367,7 @@ namespace Tychaia.ProceduralGeneration
             dynamic algorithm = this.m_Algorithm;
             var processCell = this.m_Algorithm.GetType().GetMethod("ProcessCell");
 
-            dynamic outputArray = Activator.CreateInstance(
+            dynamic outputArray = this.m_Pool.Get(
                 this.m_Algorithm.OutputType.MakeArrayType(),
                 (arrayWidth * arrayHeight * arrayDepth));
 

@@ -10,6 +10,7 @@ using Protogame;
 using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
 using Tychaia.Data;
+using System.Threading;
 
 namespace Tychaia
 {
@@ -90,26 +91,10 @@ namespace Tychaia
             this.m_FilteredConsole.WriteLine(FilterCategory.ChunkValidation,
                 "Chunk created for " + x + ", " + y + ", " + z + ".");
 
-            if (this.m_Level.HasChunk(this))
-            {
-                try
-                {
-                    this.m_Level.LoadChunk(this);
-                }
-                catch (Exception ex)
-                {
-                    this.m_FilteredConsole.WriteLine(FilterCategory.ChunkValidation, "Unable to load chunk " + x + ", " + y + ", " + z + " from disk due to exception:");
-                    this.m_FilteredConsole.WriteLine(FilterCategory.ChunkValidation, ex.ToString());
-                    this.m_FilteredConsole.WriteLine(FilterCategory.ChunkValidation, "Chunk " + x + ", " + y + ", " + z + " will be regenerated!");
-                    this.Generated = false;
-                    this.m_ChunkGenerator.Generate(this);
-                }
-            }
-            else
-            {
-                this.m_ChunkGenerator.Generate(this);
-            }
+            this.m_ChunkGenerator.Generate(this);
         }
+
+        public ILevel Level { get { return this.m_Level; } }
 
         public void Dispose()
         {
@@ -117,6 +102,12 @@ namespace Tychaia
                 this.m_VertexBuffer.Dispose();
             if (this.m_IndexBuffer != null)
                 this.m_IndexBuffer.Dispose();
+            this.m_FilteredConsole = null;
+            this.m_AssetManager = null;
+            this.m_ChunkGenerator = null;
+            this.Blocks = null;
+            this.Cells = null;
+            this.Generated = false;
         }
 
         public void Render(IGameContext gameContext, IRenderContext renderContext)
@@ -175,6 +166,17 @@ namespace Tychaia
         public void Save()
         {
             this.m_Level.SaveChunk(this);
+        }
+
+        /// <summary>
+        /// Saves the state of the chunk to disk and purges it from memory.
+        /// </summary>
+        public void Purge()
+        {
+            this.Save();
+            this.Dispose();
+            if (this.m_Octree != null)
+                this.m_Octree.Clear(this);
         }
 
         #region Relative Addressing

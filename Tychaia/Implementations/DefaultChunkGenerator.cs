@@ -57,9 +57,14 @@ namespace Tychaia
                 var chunk = this.m_Pipeline.Take();
                 int computations;
 
+                // Check to see if we can load the chunk instead.
+                if (chunk.Level.HasChunk(chunk))
+                {
+                    chunk.Level.LoadChunk(chunk);
+                    continue;
+                }
+
                 // Generate the actual data using the procedural generation library.
-                var stopwatch = new Stopwatch();
-                stopwatch.Start();
                 var blocks = (ResultData[]) this.m_Generator.GenerateData(
                     chunk.X / this.m_ChunkSizePolicy.CellVoxelWidth,
                     chunk.Z / this.m_ChunkSizePolicy.CellVoxelDepth,
@@ -68,8 +73,6 @@ namespace Tychaia
                     this.m_ChunkSizePolicy.ChunkCellHeight,
                     this.m_ChunkSizePolicy.ChunkCellDepth,
                     out computations);
-                Console.WriteLine("Took " + stopwatch.ElapsedMilliseconds + "ms to generate data.");
-                Thread.Sleep(16);
                 for (var x = 0; x < this.m_ChunkSizePolicy.ChunkCellWidth; x++)
                     for (var y = 0; y < this.m_ChunkSizePolicy.ChunkCellHeight; y++)
                         for (var z = 0; z < this.m_ChunkSizePolicy.ChunkCellDepth; z++)
@@ -84,7 +87,6 @@ namespace Tychaia
                                 continue;
                             chunk.Blocks[x, y, z] = this.m_AssetManager.Get<BlockAsset>(block.BlockAssetName);
                         }
-                Thread.Sleep(16);
 
                 // Now also generate the vertexes / indices in this thread.
                 var vertexes = new List<VertexPositionTexture>();
@@ -126,11 +128,10 @@ namespace Tychaia
                                 },
                                 indices.Add);
                         }
-                Thread.Sleep(16);
                 chunk.GeneratedVertexes = vertexes.ToArray();
                 chunk.GeneratedIndices = indices.ToArray();
                 chunk.Generated = true;
-                Console.WriteLine("Finished generation for chunk " + chunk.X + ", " + chunk.Y + ", " + chunk.Z + ".");
+                chunk.Save();
             }
 
             // ReSharper disable once FunctionNeverReturns

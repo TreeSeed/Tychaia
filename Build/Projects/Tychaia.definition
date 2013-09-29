@@ -43,6 +43,7 @@
     <Compile Include="ChunkManagement\IChunkManagerEntityFactory.cs" />
     <Compile Include="ChunkManagement\IChunkOctreeFactory.cs" />
     <Compile Include="ChunkManagement\PredeterminedChunkGeneratorAI.cs" />
+    <Compile Include="ChunkManagement\PredeterminedChunkPurgerAI.cs" />
     <Compile Include="ChunkManagement\PredeterminedChunkRenderPickerAI.cs" />
     <Compile Include="ChunkManagement\RuntimeChunk.cs" />
     <Compile Include="Commands\CameraCommand.cs" />
