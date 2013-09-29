@@ -11,22 +11,62 @@ final class ArcanistCSharpLinter extends ArcanistFutureLinter {
   private $cslintEngine;
   private $cslintHintPath;
   private $loaded;
+  private $discoveryMap;
 
   public function getLinterName() {
     return 'C#';
   }
 
+  public function getLinterConfigurationName() {
+    return 'csharp';
+  }
+
+  public function getLinterConfigurationOptions() {
+    $options = parent::getLinterConfigurationOptions();
+
+    $options["discovery"] = 'map<string, list<string>>';
+    $options["binary"] = 'string';
+
+    return $options;
+  }
+  
+  public function setLinterConfigurationValue($key, $value) {
+    switch ($key) {
+      case 'discovery':
+        $this->discoveryMap = $value;
+        return;
+      case 'binary':
+        $this->cslintHintPath = $value;
+        return;
+    }
+    parent::setLinterConfigurationValue($key, $value);
+  }
+
+  public function getLintCodeFromLinterConfigurationKey($code) {
+    return $code;
+  }
+
+  public function setCustomSeverityMap(array $map) {
+    foreach ($map as $code => $severity) {
+      if (substr($code, 0, 2) === "SA" && $severity == "disabled") {
+        throw new Exception(
+          "In order to keep StyleCop integration with IDEs and other tools ".
+          "consistent with Arcanist results, you aren't permitted to ".
+          "disable StyleCop rules within '.arclint'.  ".
+          "Instead configure the severity using the StyleCop settings dialog ".
+          "(usually accessible from within your IDE).  StyleCop settings ".
+          "for your project will be used when linting for Arcanist.");
+      }
+    }
+    return parent::setCustomSeverityMap($map);
+  }
+  
   public function getLintSeverityMap() {
     return array();
   }
 
   public function getLintNameMap() {
     return array();
-  }
-
-  public function setHintPath($cslint) {
-    $this->cslintHintPath = $cslint;
-    return $this;
   }
 
   /**
@@ -70,9 +110,18 @@ final class ArcanistCSharpLinter extends ArcanistFutureLinter {
     $futures = array();
 
     foreach ($paths as $path) {
+      // %s won't pass through the JSON correctly
+      // under Windows.  This is probably because not only
+      // does the JSON have quotation marks in the content,
+      // but because there'll be a lot of escaping and
+      // double escaping because the JSON also contains
+      // regular expressions.  cslint supports passing the
+      // settings JSON through base64-encoded to mitigate
+      // this issue.
       $futures[$path] = new ExecFuture(
-        "%C %s",
+        "%C --settings-base64=%s -r=. %s",
         $this->runtimeEngine.$this->cslintEngine,
+        base64_encode(json_encode($this->discoveryMap)),
         $this->getEngine()->getFilePathOnDisk($path));
     }
 
@@ -89,7 +138,7 @@ final class ArcanistCSharpLinter extends ArcanistFutureLinter {
       $message = new ArcanistLintMessage();
       $message->setPath($path);
       $message->setLine($issue->LineNumber);
-      $message->setCode("CS".$issue->Index->Code);
+      $message->setCode($issue->Index->Code);
       $message->setName($issue->Index->Name);
       $message->setChar($issue->Column);
       $message->setOriginalText($issue->OriginalText);
@@ -114,9 +163,17 @@ final class ArcanistCSharpLinter extends ArcanistFutureLinter {
           $severity = ArcanistLintSeverity::SEVERITY_DISABLED;
           break;
       }
+      $severity_override = $this->getLintMessageSeverity($issue->Index->Code);
+      if ($severity_override !== null) {
+        $severity = $severity_override;
+      }
       $message->setSeverity($severity);
       $this->addLintMessage($message);
     }
+  }
+
+  protected function getDefaultMessageSeverity($code) {
+    return null;
   }
 
 }

@@ -12,10 +12,10 @@ namespace Tychaia
 {
     public class TychaiaWorldManager : IWorldManager
     {
+        private readonly IViewportMode m_ViewportMode;
 #if DEBUG
         private readonly TychaiaProfilerEntity m_TychaiaProfilerEntity;
         private readonly TychaiaProfiler m_TychaiaProfiler;
-        private readonly IViewportMode m_ViewportMode;
         private readonly IConsole m_Console;
 
         public TychaiaWorldManager(

@@ -1,0 +1,17 @@
+{
+  "linters": {
+    "csharp": {
+      "type": "csharp",
+      "include": "(\\.cs$)",
+      "binary": "cstools/cslint/bin/Debug/cslint.exe",
+      "discovery": {
+        "([^/]+)/(.*?)\\.cs": [
+          "$1/$1.Linux.csproj"
+        ],
+        "([^\\\\]+)\\\\(.*?)\\.cs": [
+          "$1\\$1.Windows.csproj"
+        ]
+      }
+    }
+  }
+}

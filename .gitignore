@@ -27,6 +27,7 @@ Thumbs.db
 !Tychaia.Website/bin
 MakeMeAWorld/bin/Compiler/CompiledLayerTemplate.cs
 StyleCop.Cache
+StyleCopViolations.xml
 
 # Generated solution and project files
 *.Linux.csproj
