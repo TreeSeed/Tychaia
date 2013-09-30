@@ -37,11 +37,18 @@ namespace Tychaia
                 item = new Item { Name = parameters[0] };
             else
             {
-                item = new WeightedItem
+                try
                 {
-                    Name = parameters[0],
-                    Weight = (Weight)Enum.Parse(typeof(Weight), parameters[1])
-                };
+                    item = new WeightedItem
+                    {
+                        Name = parameters[0],
+                        Weight = (Weight)Enum.Parse(typeof(Weight), parameters[1])
+                    };
+                }
+                catch (ArgumentException)
+                {
+                    return "No such weighting exists.";
+                }
             }
             player.RuntimeData.Inventory.Add(item);
             return "Added " + parameters[0] + " to player's inventory.";
