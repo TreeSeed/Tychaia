@@ -1,3 +1,8 @@
+// ====================================================================== //
+// This source code is licensed in accordance with the licensing outlined //
+// on the main Tychaia website (www.tychaia.com).  Changes to the         //
+// license on the website apply retroactively.                            //
+// ====================================================================== //
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,13 +36,17 @@ namespace PerspectiveTest
             using (var spriteBatch = new SpriteBatch(game.GraphicsDevice))
             {
                 spriteBatch.Begin();
-                spriteBatch.DrawString(this.m_Font, "TigJam Australia #2\n\nClosing Presentations", new Vector2(0, 0),
-                new Color(
-                    this.m_Random.Next(0, 256),
-                    this.m_Random.Next(0, 256),
-                    this.m_Random.Next(0, 256)));
+                spriteBatch.DrawString(
+                    this.m_Font,
+                    "TigJam Australia #2\n\nClosing Presentations",
+                    new Vector2(0, 0),
+                    new Color(
+                        this.m_Random.Next(0, 256),
+                        this.m_Random.Next(0, 256),
+                        this.m_Random.Next(0, 256)));
                 spriteBatch.End();
             }
+            
             game.GraphicsDevice.SetRenderTarget(null);
             
             game.GraphicsDevice.BlendState = BlendState.Opaque;
@@ -50,34 +59,14 @@ namespace PerspectiveTest
         {
             game.GraphicsDevice.Clear(Color.CornflowerBlue);     
 
-            //var rotation = 0;
-            //var modelPosition = new Vector3(0, 0, 0);
-            //var cameraPosition = new Vector3(-100, -100, -100);
-
-            // Set the World matrix which defines the position of the cube
-            /*
-        
-            // Set the View matrix which defines the camera and what it's looking at
-            this.m_Effect.View = Matrix.CreateLookAt(cameraPosition, modelPosition, Vector3.Up);
-        
-            // Set the Projection matrix which defines how we see the scene (Field of view)
-            this.m_Effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 4f / 3f, 1.0f, 1000.0f);
-        
-            // Enable textures on the Cube Effect. this is necessary to texture the model
-            */
-            //this.m_Effect.Texture = cubeTexture;
-        
             this.m_Effect.VertexColorEnabled = true;
             this.m_Effect.TextureEnabled = false;
             this.m_Effect.LightingEnabled = false;
             this.m_Effect.View = Matrix.CreateLookAt(new Vector3(0.0f, 3.0f, 3.0f), Vector3.Zero, Vector3.Up);
             this.m_Effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 4f / 3f, 1.0f, 1000.0f);
-            this.m_Effect.World = Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation));/*
-                Matrix.CreateRotationX(MathHelper.ToRadians(this.m_Rotation));*/
+            this.m_Effect.World = Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation));
             this.m_Rotation++;
-        
-            // Enable some pretty lights
-            //this.m_Effect.EnableDefaultLighting();
+            
             var vertexes = new VertexPositionColor[]
             {
                 new VertexPositionColor(new Vector3(0, 0, 0), Color.White),
@@ -89,7 +78,7 @@ namespace PerspectiveTest
                 new VertexPositionColor(new Vector3(0, 0, 3), Color.Yellow),
                 new VertexPositionColor(new Vector3(0, 3, 0), Color.Black),
             };
-            var indicies = new short[18]{ 0, 1, 2, 2, 1, 3, 2, 3, 4, 4, 3, 5, 4, 5, 6, 6, 5, 7 };
+            var indicies = new short[18] { 0, 1, 2, 2, 1, 3, 2, 3, 4, 4, 3, 5, 4, 5, 6, 6, 5, 7 };
             
             foreach (var pass in this.m_Effect.CurrentTechnique.Passes)
             {
@@ -120,7 +109,7 @@ namespace PerspectiveTest
                 new VertexPositionTexture(new Vector3(0, 0, -3), new Vector2(0, 0)),
                 new VertexPositionTexture(new Vector3(0, -3, 0), new Vector2(1, 0)),
             };
-            var textureIndicies = new short[18]{ 0, 1, 2, 2, 1, 3, 2, 3, 4, 4, 3, 5, 4, 5, 6, 6, 5, 7 };
+            var textureIndicies = new short[18] { 0, 1, 2, 2, 1, 3, 2, 3, 4, 4, 3, 5, 4, 5, 6, 6, 5, 7 };
             
             foreach (var pass in this.m_Effect.CurrentTechnique.Passes)
             {
@@ -150,8 +139,8 @@ namespace PerspectiveTest
                 new VertexPositionTexture(new Vector3(0, 1, 0), new Vector2(-1, 0)),
                 new VertexPositionTexture(new Vector3(-1.5f, 1, 1.5f), new Vector2(0, 0)),
             };
-            var fontIndicies1 = new short[6]{ 0, 1, 2, 2, 1, 3 };
-            var fontIndicies2 = new short[6]{ 4, 5, 6, 6, 5, 7 };
+            var fontIndicies1 = new short[6] { 0, 1, 2, 2, 1, 3 };
+            var fontIndicies2 = new short[6] { 4, 5, 6, 6, 5, 7 };
             
             game.GraphicsDevice.BlendState = BlendState.Additive;
             foreach (var pass in this.m_Effect.CurrentTechnique.Passes)
@@ -175,8 +164,8 @@ namespace PerspectiveTest
                     0,   // first index element to read
                     2);
             }
+            
             game.GraphicsDevice.BlendState = BlendState.Opaque;
         }
     }
 }
-

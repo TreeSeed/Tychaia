@@ -1,3 +1,8 @@
+// ====================================================================== //
+// This source code is licensed in accordance with the licensing outlined //
+// on the main Tychaia website (www.tychaia.com).  Changes to the         //
+// license on the website apply retroactively.                            //
+// ====================================================================== //
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -42,7 +47,8 @@ namespace PerspectiveTest
             for (var y = 0; y < 8; y++)
             for (var z = 0; z < 8; z++)
             {
-                vertexes[x + y * 8 + z * 64] = new VertexPositionColor(new Vector3(x, y, z), new Color(new Vector3(x * 16, y * 16, z * 16)));
+                vertexes[x + (y * 8) + (z * 64)] = 
+                    new VertexPositionColor(new Vector3(x, y, z), new Color(new Vector3(x * 16, y * 16, z * 16)));
             }
             
             var indicies = new int[8 * 8 * 8 * 6 * 6];
@@ -50,47 +56,47 @@ namespace PerspectiveTest
             for (var y = 0; y < 8; y++)
             for (var z = 0; z < 8; z++)
             {
-                indicies[(x + y * 8 + z * 64) * 36 +  0] = (x + 0) + (y + 0) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 +  1] = (x + 1) + (y + 0) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 +  2] = (x + 0) + (y + 1) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 +  3] = (x + 0) + (y + 1) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 +  4] = (x + 1) + (y + 0) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 +  5] = (x + 1) + (y + 1) * 8 + (z + 0) * 64;
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 0] = (x + 0) + ((y + 0) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 1] = (x + 1) + ((y + 0) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 2] = (x + 0) + ((y + 1) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 3] = (x + 0) + ((y + 1) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 4] = (x + 1) + ((y + 0) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 5] = (x + 1) + ((y + 1) * 8) + ((z + 0) * 64);
                 
-                indicies[(x + y * 8 + z * 64) * 36 +  6] = (x + 0) + (y + 0) * 8 + (z + 1) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 +  7] = (x + 1) + (y + 0) * 8 + (z + 1) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 +  8] = (x + 0) + (y + 1) * 8 + (z + 1) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 +  9] = (x + 0) + (y + 1) * 8 + (z + 1) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 10] = (x + 1) + (y + 0) * 8 + (z + 1) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 11] = (x + 1) + (y + 1) * 8 + (z + 1) * 64;
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 6] = (x + 0) + ((y + 0) * 8) + ((z + 1) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 7] = (x + 1) + ((y + 0) * 8) + ((z + 1) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 8] = (x + 0) + ((y + 1) * 8) + ((z + 1) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 9] = (x + 0) + ((y + 1) * 8) + ((z + 1) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 10] = (x + 1) + ((y + 0) * 8) + ((z + 1) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 11] = (x + 1) + ((y + 1) * 8) + ((z + 1) * 64);
                 
-                indicies[(x + y * 8 + z * 64) * 36 + 12] = (x + 0) + (y + 0) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 13] = (x + 0) + (y + 0) * 8 + (z + 1) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 14] = (x + 0) + (y + 1) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 15] = (x + 0) + (y + 1) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 16] = (x + 0) + (y + 0) * 8 + (z + 1) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 17] = (x + 0) + (y + 1) * 8 + (z + 1) * 64;
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 12] = (x + 0) + ((y + 0) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 13] = (x + 0) + ((y + 0) * 8) + ((z + 1) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 14] = (x + 0) + ((y + 1) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 15] = (x + 0) + ((y + 1) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 16] = (x + 0) + ((y + 0) * 8) + ((z + 1) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 17] = (x + 0) + ((y + 1) * 8) + ((z + 1) * 64);
                 
-                indicies[(x + y * 8 + z * 64) * 36 + 18] = (x + 1) + (y + 0) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 19] = (x + 1) + (y + 0) * 8 + (z + 1) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 20] = (x + 1) + (y + 1) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 21] = (x + 1) + (y + 1) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 22] = (x + 1) + (y + 0) * 8 + (z + 1) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 23] = (x + 1) + (y + 1) * 8 + (z + 1) * 64;
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 18] = (x + 1) + ((y + 0) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 19] = (x + 1) + ((y + 0) * 8) + ((z + 1) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 20] = (x + 1) + ((y + 1) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 21] = (x + 1) + ((y + 1) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 22] = (x + 1) + ((y + 0) * 8) + ((z + 1) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 23] = (x + 1) + ((y + 1) * 8) + ((z + 1) * 64);
                 
-                indicies[(x + y * 8 + z * 64) * 36 + 24] = (x + 0) + (y + 0) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 25] = (x + 0) + (y + 0) * 8 + (z + 1) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 26] = (x + 1) + (y + 0) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 27] = (x + 1) + (y + 0) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 28] = (x + 0) + (y + 0) * 8 + (z + 1) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 29] = (x + 1) + (y + 0) * 8 + (z + 1) * 64;
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 24] = (x + 0) + ((y + 0) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 25] = (x + 0) + ((y + 0) * 8) + ((z + 1) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 26] = (x + 1) + ((y + 0) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 27] = (x + 1) + ((y + 0) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 28] = (x + 0) + ((y + 0) * 8) + ((z + 1) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 29] = (x + 1) + ((y + 0) * 8) + ((z + 1) * 64);
                 
-                indicies[(x + y * 8 + z * 64) * 36 + 30] = (x + 0) + (y + 1) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 31] = (x + 0) + (y + 1) * 8 + (z + 1) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 32] = (x + 1) + (y + 1) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 33] = (x + 1) + (y + 1) * 8 + (z + 0) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 34] = (x + 0) + (y + 1) * 8 + (z + 1) * 64;
-                indicies[(x + y * 8 + z * 64) * 36 + 35] = (x + 1) + (y + 1) * 8 + (z + 1) * 64;
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 30] = (x + 0) + ((y + 1) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 31] = (x + 0) + ((y + 1) * 8) + ((z + 1) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 32] = (x + 1) + ((y + 1) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 33] = (x + 1) + ((y + 1) * 8) + ((z + 0) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 34] = (x + 0) + ((y + 1) * 8) + ((z + 1) * 64);
+                indicies[((x + (y * 8) + (z * 64)) * 36) + 35] = (x + 1) + ((y + 1) * 8) + ((z + 1) * 64);
             }
 
             foreach (var pass in this.m_Effect.CurrentTechnique.Passes)
@@ -109,4 +115,3 @@ namespace PerspectiveTest
         }
     }
 }
-
