@@ -17,6 +17,10 @@ final class ArcanistTychaiaLicenseLinter extends ArcanistLinter {
     return 'TYCHAIALICENSE';
   }
 
+  public function getLinterConfigurationName() {
+    return 'tychaialicense';
+  }
+
   public function getLintSeverityMap() {
     return array();
   }
