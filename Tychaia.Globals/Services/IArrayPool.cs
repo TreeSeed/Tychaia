@@ -15,4 +15,3 @@ namespace Tychaia.Globals
         void Release(dynamic array);
     }
 }
-

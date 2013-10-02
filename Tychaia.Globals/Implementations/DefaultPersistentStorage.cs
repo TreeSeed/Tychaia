@@ -4,7 +4,6 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using Newtonsoft.Json;
@@ -17,17 +16,6 @@ namespace Tychaia.Globals
         private FileStream m_Stream;
         private StreamReader m_Reader;
         private StreamWriter m_Writer;
-
-        public dynamic Settings
-        {
-            get;
-            private set;
-        }
-
-        public DirectoryInfo SaveDirectory
-        {
-            get { return new DirectoryInfo(this.GetSavePath()); }
-        }
 
         public DefaultPersistentStorage()
         {
@@ -53,6 +41,17 @@ namespace Tychaia.Globals
             };
         }
 
+        public dynamic Settings
+        {
+            get;
+            private set;
+        }
+
+        public DirectoryInfo SaveDirectory
+        {
+            get { return new DirectoryInfo(this.GetSavePath()); }
+        }
+        
         private string GetBasePath()
         {
             // Look under %appdata%/.tychaia.
@@ -79,4 +78,3 @@ namespace Tychaia.Globals
         }
     }
 }
-

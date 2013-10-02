@@ -32,25 +32,27 @@ namespace Tychaia.Globals
                 Console.WriteLine("Allocated " + type.FullName + " with size " + size);
                 return Activator.CreateInstance(type, size);
             }
+            
             var array = pool.Value.Value.Cast<dynamic>().FirstOrDefault(x => x.Length == size);
             if (array == null)
             {
                 Console.WriteLine("Allocated " + type.FullName + " with size " + size);
                 return Activator.CreateInstance(type, size);
             }
+            
             Console.WriteLine("Reused " + type.FullName + " with size " + size);
             return array;
         }
         
         public void Release<T>(T[] array)
         {
-            Release(typeof(T), array);
+            this.Release(typeof(T), array);
         }
         
         public void Release(dynamic array)
         {
             var type = array.GetType().GetElementType();
-            Release(type, array);
+            this.Release(type, array);
         }
         
         private void Release(Type type, object array)
@@ -63,4 +65,3 @@ namespace Tychaia.Globals
         }
     }
 }
-

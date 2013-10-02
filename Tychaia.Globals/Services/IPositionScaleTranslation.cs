@@ -14,4 +14,3 @@ namespace Tychaia.Globals
         long Translate(long pixelPosition);
     }
 }
-
