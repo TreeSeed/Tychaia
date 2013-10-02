@@ -10,9 +10,6 @@ namespace MakeMeAWorld
 {
     public abstract class BaseHandler
     {
-        public bool IsReusable { get { return false; } }
-        protected RequestContext RequestContext { get; set; }
-
         protected BaseHandler()
         {
             ((Global)HttpContext.Current.ApplicationInstance).Kernel.Inject(this);
@@ -23,6 +20,16 @@ namespace MakeMeAWorld
             this.RequestContext = requestContext;
             ((Global)HttpContext.Current.ApplicationInstance).Kernel.Inject(this);
         }
+        
+        public bool IsReusable
+        {
+            get
+            {
+                return false;
+            }
+        }
+        
+        protected RequestContext RequestContext { get; set; }
 
         public abstract void ProcessRequest(HttpContext context);
     }

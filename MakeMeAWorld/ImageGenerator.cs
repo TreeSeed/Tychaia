@@ -14,21 +14,44 @@ namespace MakeMeAWorld
 {
     public class ImageGenerator : BaseGenerator
     {
+        #region 3D Rendering
+
+        #region Cell Render Ordering
+
+        private const int RenderToNE = 0;
+        private const int RenderToNW = 1;
+        private const int RenderToSE = 2;
+        private const int RenderToSW = 3;
+        
+        private static int[][] m_CellRenderOrder = new int[4][]
+        {
+            null,
+            null,
+            null,
+            null
+        };
+
+        #endregion
+
+        #endregion
+        
         protected override bool ProcessCache(GenerationRequest request, HttpContext context)
         {
             var cache = this.GetCacheName(request, context, "png");
+            
             if (File.Exists(cache))
             {
                 context.Response.ContentType = "image/png";
                 context.Response.TransmitFile(cache);
                 return true;
             }
+            
             return false;
         }
 
         protected override void ProcessGeneration(GenerationResult result, HttpContext context)
         {
-            var bitmap = RenderPartial3D(result);
+            var bitmap = this.RenderPartial3D(result);
             this.SaveToCache(bitmap, result.Request, context);
         }
 
@@ -37,49 +60,8 @@ namespace MakeMeAWorld
             var bitmap = new Bitmap(1, 1);
             this.SaveToCache(bitmap, result.Request, context);
         }
-
-        private void SaveToCache(Image bitmap, GenerationRequest request, HttpContext context)
-        {
-            try
-            {
-                context.Response.ContentType = "image/png";
-                bitmap.Save(context.Response.OutputStream, ImageFormat.Png);
-                var cache = this.GetCacheName(request, context, "png");
-                if (cache != null)
-                {
-                    try
-                    {
-                        using (var stream = new FileStream(cache, FileMode.CreateNew))
-                            bitmap.Save(stream, ImageFormat.Png);
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-            }
-            finally
-            {
-                bitmap.Dispose();
-            }
-        }
-
-        #region Rendering
-
+        
         #region 3D Rendering
-
-        #region Cell Render Ordering
-
-        private static int[][] m_CellRenderOrder = new int[4][]
-        {
-            null,
-            null,
-            null,
-            null
-        };
-        private const int RenderToNE = 0;
-        private const int RenderToNW = 1;
-        private const int RenderToSE = 2;
-        private const int RenderToSW = 3;
 
         private static int[] CalculateCellRenderOrder(int targetDir, int width, int height)
         {
@@ -140,8 +122,9 @@ namespace MakeMeAWorld
                     x = atk - maxy;
                     y = maxy;
                 }
+                
                 while (y > atk / 2)
-                    result[count++] = y-- * width + x++;
+                    result[count++] = (y-- * width) + x++;
 
                 // Attack from the right.
                 if (atk < maxx)
@@ -154,8 +137,9 @@ namespace MakeMeAWorld
                     x = maxx;
                     y = atk - maxx;
                 }
+                
                 while (y <= atk / 2)
-                    result[count++] = y++ * width + x--;
+                    result[count++] = (y++ * width) + x--;
             }
 
             return result;
@@ -167,9 +151,36 @@ namespace MakeMeAWorld
                 m_CellRenderOrder[cameraDirection] = CalculateCellRenderOrder(cameraDirection, width, height);
             return m_CellRenderOrder[cameraDirection];
         }
-
+        
         #endregion
 
+        private void SaveToCache(Image bitmap, GenerationRequest request, HttpContext context)
+        {
+            try
+            {
+                context.Response.ContentType = "image/png";
+                bitmap.Save(context.Response.OutputStream, ImageFormat.Png);
+                var cache = this.GetCacheName(request, context, "png");
+                if (cache != null)
+                {
+                    try
+                    {
+                        using (var stream = new FileStream(cache, FileMode.CreateNew))
+                            bitmap.Save(stream, ImageFormat.Png);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+            finally
+            {
+                bitmap.Dispose();
+            }
+        }
+        
+        #region 3D Rendering
+        
         private Bitmap RenderPartial3D(GenerationResult result)
         {
             var width = result.Request.Size;
@@ -191,8 +202,8 @@ namespace MakeMeAWorld
                     var parentLayer = this.StorageAccess.FromRuntime(result.Layer.GetInputs()[0]);
                     for (int z = zbottom; z < ztop; z++)
                     {
-                        int rcx = width / 2 - 1 + 32;
-                        int rcy = height / 2 - 15 + 32;
+                        var rcx = (width / 2) - 1 + 32;
+                        var rcy = (height / 2) - 15 + 32;
                         int rw = 2;
                         int rh = 1;
                         for (int i = 0; i < render.Length; i++)
@@ -203,13 +214,13 @@ namespace MakeMeAWorld
 
                             // Calculate the render position on screen.
                             int rx = rcx + (int)((x - y) / 2.0 * rw);
-                            int ry = rcy + (x + y) * rh - (rh / 2 * (width + height)) - (z - zbottom) * 1;
+                            var ry = rcy + ((x + y) * rh) - (rh / 2 * (width + height)) - ((z - zbottom) * 1);
 
                             // Adjust for square mode.
                             if (result.Request.AsSquare)
                             {
-                                rx = (rx - rcx) + width / 2;
-                                ry = (ry - rcy) - height / 2;
+                                rx = (rx - rcx) + (width / 2);
+                                ry = (ry - rcy) - (height / 2);
                                 if (rx < -1 || ry < -1 ||
                                     rx > width + 1 || ry > height + 1)
                                     continue;
@@ -221,7 +232,7 @@ namespace MakeMeAWorld
                                 {
                                     Color lc = result.Layer.Algorithm.GetColorForValue(
                                         parentLayer,
-                                        result.Data[x + y * width + z * width * height]);
+                                        result.Data[x + (y * width) + (z * width * height)]);
                                     var sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
                                     graphics.FillRectangle(sb, new Rectangle(rx, ry, rw, rh));
                                     break;
@@ -238,11 +249,10 @@ namespace MakeMeAWorld
                 {
                 }
             }
+            
             return bitmap;
         }
-
-        #endregion
-
+        
         #endregion
     }
 }

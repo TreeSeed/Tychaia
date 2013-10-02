@@ -15,72 +15,8 @@ namespace MakeMeAWorld
 {
     public abstract class BaseGenerator : BaseHandler, IHttpHandler
     {
-        protected class GenerationRequest
-        {
-            public long X;
-            public long Y;
-            public long Z;
-            public int Size;
-            public long Seed;
-            public string LayerName;
-            public bool Packed;
-            public bool AsSquare;
-        }
-
-        protected class GenerationResult
-        {
-            public GenerationRequest Request;
-            public RuntimeLayer Layer;
-            public int[] Data;
-            public int Computations;
-            public TimeSpan TotalTime;
-        }
-        
         [Inject]
         public IStorageAccess StorageAccess { protected get; set; }
-
-        /// <summary>
-        /// Processes a request by checking the cache and handling it if possible.  Returns
-        /// true if the request has been handled by the cache.
-        /// </summary>
-        protected abstract bool ProcessCache(GenerationRequest request, HttpContext context);
-
-        /// <summary>
-        /// Processes an empty 3D result (when all of the values are the same).
-        /// </summary>
-        protected abstract void ProcessEmpty(GenerationResult result, HttpContext context);
-
-        /// <summary>
-        /// Processes a request using the generated data and layer information.
-        /// </summary>
-        protected abstract void ProcessGeneration(GenerationResult result, HttpContext context);
-
-        protected string GetCacheName(GenerationRequest request, HttpContext context, string extension)
-        {
-            if (request.LayerName.Contains(".") || request.LayerName.Contains("/"))
-                throw new HttpException("Layer name is not valid.");
-            var cacheComponents = new string[]
-            {
-                "~",
-                "App_Cache",
-                "api-v1",
-                request.LayerName,
-                request.Seed.ToString(),
-                request.X.ToString(),
-                request.Y.ToString(),
-                request.Z.ToString(),
-                request.Size.ToString(),
-                "get" + (request.AsSquare ? "_square" : "") +
-                (request.Packed ? "_packed" : "") + "." + extension
-            };
-            for (var i = 0; i < cacheComponents.Length - 1; i++)
-            {
-                var path = context.Server.MapPath(cacheComponents.Where((x, id) => id <= i).Aggregate((a, b) => a + "/" + b));
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
-            }
-            return context.Server.MapPath(cacheComponents.Aggregate((a, b) => a + "/" + b));
-        }
 
         public override sealed void ProcessRequest(HttpContext context)
         {
@@ -118,8 +54,15 @@ namespace MakeMeAWorld
                     "get_packed.json"
                 };
                 if (!permittedNames.Contains(components[6]))
-                    throw new HttpException(500, "The final component of the URL must be one of {" +
-                        permittedNames.Aggregate((a, b) => a + ", " + b) + "} for fast caching to work.");
+                {
+                    var message = 
+                        "The final component of the URL must be one of {" +
+                        permittedNames.Aggregate((a, b) => a + ", " + b) +
+                        "} for fast caching to work.";
+                    throw new HttpException(
+                        500,
+                        message);
+                }
             }
             else
             {
@@ -141,7 +84,7 @@ namespace MakeMeAWorld
             request.Size = Math.Min(request.Size, 128);
 
             // Load the configuration.
-            var layer = CreateLayerFromConfig(context.Server.MapPath("~/bin/WorldConfig.xml"), request);
+            var layer = this.CreateLayerFromConfig(context.Server.MapPath("~/bin/WorldConfig.xml"), request);
             if (layer == null)
                 throw new HttpException(404, "The layer name was invalid");
 
@@ -184,6 +127,61 @@ namespace MakeMeAWorld
             this.ProcessGeneration(generation, context);
         }
 
+        public List<string> GetListOfAvailableLayers(HttpContext context)
+        {
+            return this.GetListOfAvailableLayers(context.Server.MapPath("~/bin/WorldConfig.xml"));
+        }
+
+        public string GetDefaultAvailableLayer(HttpContext context)
+        {
+            return this.GetDefaultAvailableLayer(context.Server.MapPath("~/bin/WorldConfig.xml"));
+        }
+
+        /// <summary>
+        /// Processes a request by checking the cache and handling it if possible.  Returns
+        /// true if the request has been handled by the cache.
+        /// </summary>
+        protected abstract bool ProcessCache(GenerationRequest request, HttpContext context);
+
+        /// <summary>
+        /// Processes an empty 3D result (when all of the values are the same).
+        /// </summary>
+        protected abstract void ProcessEmpty(GenerationResult result, HttpContext context);
+
+        /// <summary>
+        /// Processes a request using the generated data and layer information.
+        /// </summary>
+        protected abstract void ProcessGeneration(GenerationResult result, HttpContext context);
+        
+        protected string GetCacheName(GenerationRequest request, HttpContext context, string extension)
+        {
+            if (request.LayerName.Contains(".") || request.LayerName.Contains("/"))
+                throw new HttpException("Layer name is not valid.");
+            var cacheComponents = new string[]
+            {
+                "~",
+                "App_Cache",
+                "api-v1",
+                request.LayerName,
+                request.Seed.ToString(),
+                request.X.ToString(),
+                request.Y.ToString(),
+                request.Z.ToString(),
+                request.Size.ToString(),
+                "get" + (request.AsSquare ? "_square" : string.Empty) +
+                (request.Packed ? "_packed" : string.Empty) + "." + extension
+            };
+            
+            for (var i = 0; i < cacheComponents.Length - 1; i++)
+            {
+                var path = context.Server.MapPath(cacheComponents.Where((x, id) => id <= i).Aggregate((a, b) => a + "/" + b));
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+            }
+            
+            return context.Server.MapPath(cacheComponents.Aggregate((a, b) => a + "/" + b));
+        }
+
         private static bool DataIsAllSame(dynamic data)
         {
             for (var i = 0; i < data.Length; i++)
@@ -207,16 +205,6 @@ namespace MakeMeAWorld
                     (layer.Algorithm as AlgorithmResult).PermitInMakeMeAWorld))
                     return this.StorageAccess.ToRuntime(layer);
             return null;
-        }
-
-        public List<string> GetListOfAvailableLayers(HttpContext context)
-        {
-            return GetListOfAvailableLayers(context.Server.MapPath("~/bin/WorldConfig.xml"));
-        }
-
-        public string GetDefaultAvailableLayer(HttpContext context)
-        {
-            return GetDefaultAvailableLayer(context.Server.MapPath("~/bin/WorldConfig.xml"));
         }
 
         private List<string> GetListOfAvailableLayers(string path)
@@ -253,6 +241,26 @@ namespace MakeMeAWorld
         }
 
         #endregion
+        
+        protected class GenerationRequest
+        {
+            public long X { get; set; }
+            public long Y { get; set; }
+            public long Z { get; set; }
+            public int Size { get; set; }
+            public long Seed { get; set; }
+            public string LayerName { get; set; }
+            public bool Packed { get; set; }
+            public bool AsSquare { get; set; }
+        }
+
+        protected class GenerationResult
+        {
+            public GenerationRequest Request { get; set; }
+            public RuntimeLayer Layer { get; set; }
+            public int[] Data { get; set; }
+            public int Computations { get; set; }
+            public TimeSpan TotalTime { get; set; }
+        }
     }
 }
-

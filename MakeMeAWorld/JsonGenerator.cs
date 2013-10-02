@@ -1,13 +1,13 @@
-//
-// This source code is licensed in accordance with the licensing outlined
-// on the main Tychaia website (www.tychaia.com).  Changes to the
-// license on the website apply retroactively.
-//
+// ====================================================================== //
+// This source code is licensed in accordance with the licensing outlined //
+// on the main Tychaia website (www.tychaia.com).  Changes to the         //
+// license on the website apply retroactively.                            //
+// ====================================================================== //
 using System;
-using System.IO;
-using System.Web;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Web;
 using Tychaia.ProceduralGeneration;
 
 namespace MakeMeAWorld
@@ -23,6 +23,7 @@ namespace MakeMeAWorld
                 context.Response.TransmitFile(cache);
                 return true;
             }
+            
             return false;
         }
 
@@ -67,6 +68,7 @@ namespace MakeMeAWorld
                                                 cacheWriter.Write(",");
                                                 webWriter.Write(",");
                                             }
+                                            
                                             first = false;
 
                                             cacheWriter.Write(continuousValue);
@@ -80,6 +82,7 @@ namespace MakeMeAWorld
                                             cacheWriter.Write(",");
                                             webWriter.Write(",");
                                         }
+                                        
                                         first = false;
 
                                         // Multiple copies of the same
@@ -93,7 +96,8 @@ namespace MakeMeAWorld
                                 }
                                 else
                                     continuousCount++;
-                            } while (i < result.Data.Length);
+                            }
+                            while (i < result.Data.Length);
                         }
                     }
                     else
@@ -109,24 +113,27 @@ namespace MakeMeAWorld
                                     cacheWriter.Write(",");
                                     webWriter.Write(",");
                                 }
+                                
                                 first = false;
                                 cacheWriter.Write(result.Data[i]);
                                 webWriter.Write(result.Data[i]);
                             }
                         }
                     }
+                    
                     cacheWriter.Write("],\"mappings\":{");
                     webWriter.Write("],\"mappings\":{");
                     var mappings = new Dictionary<int, Color>();
                     var parentLayer = StorageAccess.FromRuntime(result.Layer.GetInputs()[0]);
+                    
                     for (var i = 0; i < result.Data.Length; i++)
                     {
                         if (!mappings.ContainsKey(result.Data[i]))
-                            mappings.Add(result.Data[i],
-                                         result.Layer.Algorithm.GetColorForValue(
-                                             parentLayer,
-                                result.Data[i]));
+                            mappings.Add(
+                                result.Data[i],
+                                result.Layer.Algorithm.GetColorForValue(parentLayer, result.Data[i]));
                     }
+                    
                     {
                         var first = true;
                         foreach (var kv in mappings)
@@ -136,6 +143,7 @@ namespace MakeMeAWorld
                                 cacheWriter.Write(",");
                                 webWriter.Write(",");
                             }
+                            
                             first = false;
 
                             var colorString =
@@ -147,6 +155,7 @@ namespace MakeMeAWorld
                             webWriter.Write("\"" + kv.Key + "\":" + colorString);
                         }
                     }
+                    
                     cacheWriter.Write("}}");
                     webWriter.Write("}}");
                 }
@@ -168,4 +177,3 @@ namespace MakeMeAWorld
         }
     }
 }
-
