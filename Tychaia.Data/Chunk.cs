@@ -24,4 +24,3 @@ namespace Tychaia.Data
         public Vertex[] Vertexes;
     }
 }
-

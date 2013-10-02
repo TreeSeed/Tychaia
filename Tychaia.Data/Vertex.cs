@@ -22,4 +22,3 @@ namespace Tychaia.Data
         public float V;
     }
 }
-
