@@ -10,4 +10,3 @@ namespace Tychaia.Game
         T RuntimeData { get; }
     }
 }
-

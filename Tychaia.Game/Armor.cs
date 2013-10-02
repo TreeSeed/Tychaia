@@ -9,4 +9,3 @@ namespace Tychaia.Game
     {
     }
 }
-

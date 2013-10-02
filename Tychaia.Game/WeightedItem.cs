@@ -22,8 +22,8 @@ namespace Tychaia.Game
                 case Weight.Light:
                     return 1;
             }
+            
             throw new InvalidOperationException();
         }
     }
 }
-

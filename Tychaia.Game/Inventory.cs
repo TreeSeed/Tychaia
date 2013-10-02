@@ -12,7 +12,14 @@ namespace Tychaia.Game
     {
         private List<Item> m_Items = new List<Item>();
 
-        public IEnumerable<Item> AllItems { get { return this.m_Items.AsEnumerable(); } }
+        public IEnumerable<Item> AllItems
+        {
+            get
+            {
+                return this.m_Items.AsEnumerable();
+            }
+        }
+        
         public IEnumerable<Item> UnequippedItems
         {
             get
@@ -27,6 +34,7 @@ namespace Tychaia.Game
                        select item;
             }
         }
+        
         public IEnumerable<Item> EquippedItems
         {
             get
@@ -78,6 +86,7 @@ namespace Tychaia.Game
                     this.ArmorItem = armor;
                     return true;
                 }
+                
                 return false;
             }
 
@@ -89,6 +98,7 @@ namespace Tychaia.Game
                     this.SpellBookItem = spellBook;
                     return true;
                 }
+                
                 return false;
             }
 
@@ -103,6 +113,7 @@ namespace Tychaia.Game
                     this.HeavySlotItem = weightedItem;
                     return true;
                 }
+                
                 return false;
             }
 
@@ -113,16 +124,19 @@ namespace Tychaia.Game
                     this.MediumSlot1Item = weightedItem;
                     return true;
                 }
+                
                 if (this.MediumSlot2Item == null)
                 {
                     this.MediumSlot2Item = weightedItem;
                     return true;
                 }
+                
                 if (automaticallyUnequip)
                 {
                     this.MediumSlot1Item = weightedItem;
                     return true;
                 }
+                
                 return false;
             }
 
@@ -133,6 +147,7 @@ namespace Tychaia.Game
                     this.LightSlotItem = weightedItem;
                     return true;
                 }
+                
                 return false;
             }
 
@@ -140,4 +155,3 @@ namespace Tychaia.Game
         }
     }
 }
-

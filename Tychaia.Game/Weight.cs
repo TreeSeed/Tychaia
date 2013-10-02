@@ -12,4 +12,3 @@ namespace Tychaia.Game
         Light
     }
 }
-
