@@ -10,15 +10,13 @@ namespace Tychaia
     public class TitleWorld : MenuWorld
     {
         public TitleWorld(
-            I2DRenderUtilities _2DRenderUtilities,
+            I2DRenderUtilities twodRenderUtilities,
             IAssetManagerProvider assetManagerProvider,
             IBackgroundCubeEntityFactory backgroundCubeEntityFactory,
             ILevelAPI levelAPI,
             ISkin skin)
-            : base(_2DRenderUtilities, assetManagerProvider, backgroundCubeEntityFactory, skin)
+            : base(twodRenderUtilities, assetManagerProvider, backgroundCubeEntityFactory, skin)
         {
-            this.AssetManager = assetManagerProvider.GetAssetManager(false);
-
             this.AddMenuItem(
                 this.AssetManager.Get<LanguageAsset>("language.PREGENERATE_WORLD"),
                 () =>
@@ -42,9 +40,6 @@ namespace Tychaia
                     if (this.GameContext != null)
                         this.TargetWorld = this.GameContext.CreateWorld<LoadWorld>();
                 });
-            this.AddMenuItem(
-                this.AssetManager.Get<LanguageAsset>("language.RANDOMIZE_SEED"),
-                () => { StaticSeed = Random.Next(); });
             this.AddMenuItem(
                 this.AssetManager.Get<LanguageAsset>("language.EXIT"),
                 () =>

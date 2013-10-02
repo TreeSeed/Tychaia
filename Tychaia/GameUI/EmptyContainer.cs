@@ -10,14 +10,6 @@ namespace Tychaia
 {
     public class EmptyContainer : IContainer
     {
-        public void Update(ISkin skin, Rectangle layout, GameTime gameTime, ref bool stealFocus)
-        {
-        }
-
-        public void Draw(IRenderContext context, ISkin skin, Rectangle layout)
-        {
-        }
-
         public IContainer[] Children
         {
             get
@@ -43,6 +35,13 @@ namespace Tychaia
             get;
             set;
         }
+        
+        public void Update(ISkin skin, Rectangle layout, GameTime gameTime, ref bool stealFocus)
+        {
+        }
+
+        public void Draw(IRenderContext context, ISkin skin, Rectangle layout)
+        {
+        }
     }
 }
-

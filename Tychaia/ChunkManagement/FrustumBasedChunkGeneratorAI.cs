@@ -98,6 +98,7 @@ namespace Tychaia
                         (long)position.Z);
                 }
             }
+            
             return null;
         }
 
@@ -109,6 +110,7 @@ namespace Tychaia
                 if (existing != null)
                     return existing;
             }
+            
             using (this.m_Profiler.Measure("tychaia-chunk_create"))
             {
                 return this.m_ChunkFactory.CreateChunk(
@@ -121,4 +123,3 @@ namespace Tychaia
         }
     }
 }
-

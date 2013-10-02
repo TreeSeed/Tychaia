@@ -4,29 +4,18 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using System;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Protogame;
-using Tychaia.Globals;
 
 namespace Tychaia
 {
     public class PredeterminedChunkPurgerAI : IChunkAI
     {
-        private IProfiler m_Profiler;
-        private IChunkFactory m_ChunkFactory;
-        private IChunkSizePolicy m_ChunkSizePolicy;
         private IPredeterminedChunkPositions m_PredeterminedChunkPositions;
 
         public PredeterminedChunkPurgerAI(
-            IProfiler profiler,
-            IChunkFactory chunkFactory,
-            IChunkSizePolicy chunkSizePolicy,
             IPredeterminedChunkPositions predeterminedChunkPositions)
         {
-            this.m_Profiler = profiler;
-            this.m_ChunkFactory = chunkFactory;
-            this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_PredeterminedChunkPositions = predeterminedChunkPositions;
         }
 
@@ -52,8 +41,8 @@ namespace Tychaia
                     chunk.Purge();
                 }
             }
+            
             return null;
         }
     }
 }
-

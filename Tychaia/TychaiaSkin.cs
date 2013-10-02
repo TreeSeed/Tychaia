@@ -15,11 +15,31 @@ namespace Tychaia
         private readonly IAssetManager m_AssetManager;
 
         public TychaiaSkin(
-            I2DRenderUtilities _2DRenderUtilities,
+            I2DRenderUtilities twodRenderUtilities,
             IAssetManagerProvider assetManagerProvider)
         {
-            this.m_2DRenderUtilities = _2DRenderUtilities;
+            this.m_2DRenderUtilities = twodRenderUtilities;
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
+        }
+
+        public int HeightForTreeItem
+        {
+            get { return 16; }
+        }
+
+        public int MainMenuHorizontalPadding
+        {
+            get { return 10; }
+        }
+
+        public int AdditionalMenuItemWidth
+        {
+            get { return 20; }
+        }
+
+        public int MenuItemHeight
+        {
+            get { return 24; }
         }
 
         public void DrawButton(IRenderContext context, Rectangle layout, Button button)
@@ -27,14 +47,17 @@ namespace Tychaia
             this.m_2DRenderUtilities.RenderRectangle(
                 context,
                 layout,
-                Color.White, true);
+                Color.White,
+                true);
             this.m_2DRenderUtilities.RenderText(
                 context,
                 new Vector2(
                     layout.Center.X,
                     layout.Center.Y),
                 button.Text,
-                this.m_AssetManager.Get<FontAsset>("font.Default"), HorizontalAlignment.Center, VerticalAlignment.Center);
+                this.m_AssetManager.Get<FontAsset>("font.Default"),
+                HorizontalAlignment.Center,
+                VerticalAlignment.Center);
         }
 
         public void DrawCanvas(IRenderContext context, Rectangle layout, Canvas canvas)
@@ -136,26 +159,6 @@ namespace Tychaia
                 context,
                 text,
                 this.m_AssetManager.Get<FontAsset>("font.Default"));
-        }
-
-        public int HeightForTreeItem
-        {
-            get { return 16; }
-        }
-
-        public int MainMenuHorizontalPadding
-        {
-            get { return 10; }
-        }
-
-        public int AdditionalMenuItemWidth
-        {
-            get { return 20; }
-        }
-
-        public int MenuItemHeight
-        {
-            get { return 24; }
         }
     }
 }

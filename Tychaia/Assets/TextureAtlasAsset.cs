@@ -17,10 +17,6 @@ namespace Tychaia
     /// </summary>
     public class TextureAtlasAsset : MarshalByRefObject, IAsset
     {
-        public string Name { get; private set; }
-        public TextureAsset TextureAtlas { get; private set; }
-        public Dictionary<string, Rectangle> Mappings { get; private set; } 
-
         public TextureAtlasAsset(
             string name,
             Texture2D textureAtlas,
@@ -30,6 +26,10 @@ namespace Tychaia
             this.TextureAtlas = new TextureAsset(textureAtlas);
             this.Mappings = mappings;
         }
+        
+        public string Name { get; private set; }
+        public TextureAsset TextureAtlas { get; private set; }
+        public Dictionary<string, Rectangle> Mappings { get; private set; } 
 
         public T Resolve<T>() where T : class, IAsset
         {

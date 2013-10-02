@@ -12,9 +12,9 @@ namespace Tychaia
     {
         private I2DRenderUtilities m_2DRenderUtilities;
 
-        public LeftBar(I2DRenderUtilities _2DRenderUtilities)
+        public LeftBar(I2DRenderUtilities twodRenderUtilities)
         {
-            this.m_2DRenderUtilities = _2DRenderUtilities;
+            this.m_2DRenderUtilities = twodRenderUtilities;
         }
 
         public IContainer[] Children
@@ -60,4 +60,3 @@ namespace Tychaia
         }
     }
 }
-

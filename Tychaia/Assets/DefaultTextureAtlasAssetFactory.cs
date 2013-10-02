@@ -12,7 +12,7 @@ using Protogame;
 
 namespace Tychaia
 {
-    class DefaultTextureAtlasAssetFactory : ITextureAtlasAssetFactory
+    public class DefaultTextureAtlasAssetFactory : ITextureAtlasAssetFactory
     {
         private IRenderTargetFactory m_RenderTargetFactory;
 
@@ -50,9 +50,11 @@ namespace Tychaia
             var y = 0;
             graphicsDevice.SetRenderTarget(renderTarget);
             graphicsDevice.Clear(Color.Transparent);
+            
             using (var spriteBatch = new SpriteBatch(graphicsDevice))
             {
                 spriteBatch.Begin();
+                
                 foreach (var texture in textureArray)
                 {
                     spriteBatch.Draw(texture.Texture, new Vector2(x, y));
@@ -64,8 +66,10 @@ namespace Tychaia
                         y += 16;
                     }
                 }
+                
                 spriteBatch.End();
             }
+            
             graphicsDevice.SetRenderTarget(null);
             graphicsDevice.BlendState = BlendState.Opaque;
             graphicsDevice.DepthStencilState = DepthStencilState.Default;

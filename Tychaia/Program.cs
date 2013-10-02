@@ -11,8 +11,6 @@ using Protogame;
 using ProtogameAssetManager;
 using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
-using System.Diagnostics;
-using System.Linq;
 
 namespace Tychaia
 {

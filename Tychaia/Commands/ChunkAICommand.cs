@@ -3,15 +3,22 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Protogame;
-using System.Linq;
 using System.ComponentModel;
+using System.Linq;
+using Protogame;
 
 namespace Tychaia
 {
     public class ChunkAICommand : ICommand
     {
-        public string[] Names { get { return new[] { "chunk-ai" }; } }
+        public string[] Names
+        {
+            get
+            {
+                return new[] { "chunk-ai" };
+            }
+        }
+        
         public string[] Descriptions
         {
             get
@@ -36,7 +43,7 @@ namespace Tychaia
             if (parameters.Length < 1)
                 return "AI name required.  Pick from: " +
                     (ais.Count() == 0
-                        ? ""
+                        ? string.Empty
                         : ais.Select(x => "\n- " + x.GetType().Name)
                             .Aggregate((current, next) => current + next));
 
@@ -47,7 +54,7 @@ namespace Tychaia
             if (ai == null)
                 return "No such AI.  Pick from: " +
                     (ais.Count() == 0
-                        ? ""
+                        ? string.Empty
                         : ais.Select(x => "\n- " + x.GetType().Name)
                             .Aggregate((current, next) => current + next));
 
@@ -55,7 +62,7 @@ namespace Tychaia
             if (parameters.Length < 2)
                 return "Property name required.  Pick from: " +
                     (props.Count() == 0
-                        ? ""
+                        ? string.Empty
                         : props.Select(x => "\n- " + x.Name)
                             .Aggregate((current, next) => current + next));
 
@@ -63,18 +70,14 @@ namespace Tychaia
             if (prop == null)
                 return "No such property.  Pick from: " +
                     (props.Count() == 0
-                        ? ""
+                        ? string.Empty
                         : props.Select(x => "\n- " + x.Name)
                             .Aggregate((current, next) => current + next));
 
             if (parameters.Length == 3)
-            {
                 prop.SetValue(ai, parameters[2]);
-                return prop.GetValue(ai).ToString();
-            }
-            else
-                return prop.GetValue(ai).ToString();
+            
+            return prop.GetValue(ai).ToString();
         }
     }
 }
-

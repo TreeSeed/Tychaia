@@ -25,12 +25,12 @@ namespace Tychaia
             this.m_Rotation = m_Random.Next(0, 360);
             this.m_GrassAsset = assetManagerProvider.GetAssetManager().Get<TextureAsset>("texture.Grass");
 
-            this.X = (float) (m_Random.NextDouble() - 0.5) * 25;
-            this.Z = (float) (m_Random.NextDouble() - 0.5) * 25;
+            this.X = (float)(m_Random.NextDouble() - 0.5) * 25;
+            this.Z = (float)(m_Random.NextDouble() - 0.5) * 25;
             if (atBottom)
                 this.Y = 10;
             else
-                this.Y = ((float) m_Random.NextDouble() * 60) - 50;
+                this.Y = ((float)m_Random.NextDouble() * 60) - 50;
         }
 
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)

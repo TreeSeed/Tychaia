@@ -21,4 +21,3 @@ namespace Tychaia
             Color? color = null);
     }
 }
-

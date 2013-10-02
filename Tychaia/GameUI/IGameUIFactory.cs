@@ -14,4 +14,3 @@ namespace Tychaia
         InventoryManager CreateInventoryManager();
     }
 }
-

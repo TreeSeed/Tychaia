@@ -13,4 +13,3 @@ namespace Tychaia
         Cell ConvertToCell(ResultData resultData);
     }
 }
-

@@ -16,6 +16,23 @@ namespace Tychaia
     {
         private readonly IAssetManager m_AssetManager;
 
+        #region Texture Fields
+        
+        private readonly string m_BackTextureName;
+        private readonly string m_BottomTextureName;
+        private readonly string m_FrontTextureName;
+        private readonly string m_LeftTextureName;
+        private readonly string m_RightTextureName;
+        private readonly string m_TopTextureName;
+        private TextureAsset m_BackTexture;
+        private TextureAsset m_BottomTexture;
+        private TextureAsset m_FrontTexture;
+        private TextureAsset m_LeftTexture;
+        private TextureAsset m_RightTexture;
+        private TextureAsset m_TopTexture;
+
+        #endregion
+
         public BlockAsset(
             IAssetManager assetManager,
             string name,
@@ -42,19 +59,6 @@ namespace Tychaia
 
         #region Texture Properties
 
-        private readonly string m_BackTextureName;
-        private readonly string m_BottomTextureName;
-        private readonly string m_FrontTextureName;
-        private readonly string m_LeftTextureName;
-        private readonly string m_RightTextureName;
-        private readonly string m_TopTextureName;
-        private TextureAsset m_BackTexture;
-        private TextureAsset m_BottomTexture;
-        private TextureAsset m_FrontTexture;
-        private TextureAsset m_LeftTexture;
-        private TextureAsset m_RightTexture;
-        private TextureAsset m_TopTexture;
-
         public TextureAsset TopTexture
         {
             get 
@@ -62,7 +66,11 @@ namespace Tychaia
                 return this.m_TopTexture ??
                        (this.m_TopTexture = this.m_AssetManager.TryGet<TextureAsset>(this.m_TopTextureName));
             }
-            set { this.m_TopTexture = value; }
+            
+            set
+            {
+                this.m_TopTexture = value;
+            }
         }
 
         public TextureAsset BottomTexture
@@ -72,7 +80,11 @@ namespace Tychaia
                 return this.m_BottomTexture ??
                        (this.m_BottomTexture = this.m_AssetManager.TryGet<TextureAsset>(this.m_BottomTextureName));
             }
-            set { this.m_BottomTexture = value; }
+            
+            set
+            {
+                this.m_BottomTexture = value;
+            }
         }
 
         public TextureAsset LeftTexture
@@ -82,7 +94,11 @@ namespace Tychaia
                 return this.m_LeftTexture ??
                        (this.m_LeftTexture = this.m_AssetManager.TryGet<TextureAsset>(this.m_LeftTextureName));
             }
-            set { this.m_LeftTexture = value; }
+            
+            set
+            {
+                this.m_LeftTexture = value;
+            }
         }
 
         public TextureAsset RightTexture
@@ -92,7 +108,11 @@ namespace Tychaia
                 return this.m_RightTexture ??
                        (this.m_RightTexture = this.m_AssetManager.TryGet<TextureAsset>(this.m_RightTextureName));
             }
-            set { this.m_RightTexture = value; }
+            
+            set
+            {
+                this.m_RightTexture = value;
+            }
         }
 
         public TextureAsset FrontTexture
@@ -102,7 +122,11 @@ namespace Tychaia
                 return this.m_FrontTexture ??
                        (this.m_FrontTexture = this.m_AssetManager.TryGet<TextureAsset>(this.m_FrontTextureName));
             }
-            set { this.m_FrontTexture = value; }
+            
+            set
+            {
+                this.m_FrontTexture = value;
+            }
         }
 
         public TextureAsset BackTexture
@@ -112,7 +136,11 @@ namespace Tychaia
                 return this.m_BackTexture ??
                        (this.m_BackTexture = this.m_AssetManager.TryGet<TextureAsset>(this.m_BackTextureName));
             }
-            set { this.m_BackTexture = value; }
+            
+            set
+            {
+                this.m_BackTexture = value;
+            }
         }
 
         #endregion
@@ -156,6 +184,7 @@ namespace Tychaia
                 addIndex(topRight);
                 addIndex(bottomRight);
             }
+            
             if (below == null)
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.BottomTexture.Name);
@@ -170,6 +199,7 @@ namespace Tychaia
                 addIndex(bottomRight);
                 addIndex(topRight);
             }
+            
             if (west == null)
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.LeftTexture.Name);
@@ -184,6 +214,7 @@ namespace Tychaia
                 addIndex(topRight);
                 addIndex(bottomRight);
             }
+            
             if (east == null)
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.RightTexture.Name);
@@ -198,6 +229,7 @@ namespace Tychaia
                 addIndex(bottomRight);
                 addIndex(topRight);
             }
+            
             if (north == null)
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.FrontTexture.Name);
@@ -212,6 +244,7 @@ namespace Tychaia
                 addIndex(bottomRight);
                 addIndex(topRight);
             }
+            
             if (south == null)
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.FrontTexture.Name);

@@ -17,40 +17,63 @@ namespace Tychaia
         public RenderTarget2D Create(GraphicsDevice graphicsDevice, int width, int height)
         {
             var rt = new RenderTarget2D(graphicsDevice, width, height);
-            rt.Disposing += this.rt_Disposing;
-            this.rt_Assign(rt);
+            rt.Disposing += this.OnRenderTargetDisposing;
+            this.OnRenderTargetAssign(rt);
             return rt;
         }
 
-        public RenderTarget2D Create(GraphicsDevice graphicsDevice, int width, int height, bool mipMap,
-            SurfaceFormat preferredFormat, DepthFormat preferredDepthFormat)
+        public RenderTarget2D Create(
+            GraphicsDevice graphicsDevice,
+            int width,
+            int height,
+            bool mipMap,
+            SurfaceFormat preferredFormat,
+            DepthFormat preferredDepthFormat)
         {
-            var rt = new RenderTarget2D(graphicsDevice, width, height, mipMap,
-                preferredFormat, preferredDepthFormat);
-            rt.Disposing += this.rt_Disposing;
-            this.rt_Assign(rt);
+            var rt = new RenderTarget2D(
+                graphicsDevice,
+                width,
+                height,
+                mipMap,
+                preferredFormat,
+                preferredDepthFormat);
+            rt.Disposing += this.OnRenderTargetDisposing;
+            this.OnRenderTargetAssign(rt);
             return rt;
         }
 
-        public RenderTarget2D Create(GraphicsDevice graphicsDevice, int width, int height, bool mipMap,
-            SurfaceFormat preferredFormat, DepthFormat preferredDepthFormat, int preferredMultiSampleCount,
+        public RenderTarget2D Create(
+            GraphicsDevice graphicsDevice,
+            int width,
+            int height,
+            bool mipMap,
+            SurfaceFormat preferredFormat,
+            DepthFormat preferredDepthFormat,
+            int preferredMultiSampleCount,
             RenderTargetUsage usage)
         {
-            var rt = new RenderTarget2D(graphicsDevice, width, height, mipMap,
-                preferredFormat, preferredDepthFormat, preferredMultiSampleCount, usage);
-            rt.Disposing += this.rt_Disposing;
-            this.rt_Assign(rt);
+            var rt = new RenderTarget2D(
+                graphicsDevice,
+                width,
+                height,
+                mipMap,
+                preferredFormat,
+                preferredDepthFormat,
+                preferredMultiSampleCount,
+                usage);
+            rt.Disposing += this.OnRenderTargetDisposing;
+            this.OnRenderTargetAssign(rt);
             return rt;
         }
 
-        private void rt_Disposing(object sender, EventArgs e)
+        private void OnRenderTargetDisposing(object sender, EventArgs e)
         {
             var rt = sender as RenderTarget2D;
             this.RenderTargetsUsed -= 1;
             this.RenderTargetMemory -= this.GetFormatSize(rt.Format) * rt.Width * rt.Height;
         }
 
-        private void rt_Assign(Texture2D rt)
+        private void OnRenderTargetAssign(Texture2D rt)
         {
             this.RenderTargetsUsed += 1;
             this.RenderTargetMemory += this.GetFormatSize(rt.Format) * rt.Width * rt.Height;

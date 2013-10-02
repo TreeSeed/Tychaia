@@ -14,4 +14,3 @@ namespace Tychaia
         ResultData Deserialise(BinaryReader reader);
     }
 }
-

@@ -21,4 +21,3 @@ namespace Tychaia
             IRenderContext renderContext);
     }
 }
-

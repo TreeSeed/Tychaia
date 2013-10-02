@@ -12,7 +12,20 @@ namespace Tychaia
     {
         private readonly IPersistentStorage m_PersistentStorage;
 
-        public string[] Names { get { return new[] { "profiler" }; } }
+        public ProfilingCommand(
+            IPersistentStorage persistentStorage)
+        {
+            this.m_PersistentStorage = persistentStorage;
+        }
+
+        public string[] Names
+        {
+            get
+            {
+                return new[] { "profiler" };
+            }
+        }
+        
         public string[] Descriptions
         {
             get
@@ -22,12 +35,6 @@ namespace Tychaia
                     "Configure the profiler."
                 };
             }
-        }
-
-        public ProfilingCommand(
-            IPersistentStorage persistentStorage)
-        {
-            this.m_PersistentStorage = persistentStorage;
         }
 
         public string Execute(IGameContext gameContext, string name, string[] parameters)
@@ -64,6 +71,7 @@ status - Show the status of per-method profiling.";
                         default:
                             return "Unknown command (try `per-method help`).";
                     }
+                    
                 case "visibility":
                     if (parameters.Length < 2)
                         return "Not enough parameters.";
@@ -81,10 +89,10 @@ hide - Hide profiling information.";
                         default:
                             return "Unknown command (try `visible help`).";
                     }
+                    
                 default:
                     return "Unknown command (try `help`).";
             }
         }
     }
 }
-

@@ -11,4 +11,3 @@ namespace Tychaia
         PregenerateWorld CreatePregenerateWorld(ILevel level);
     }
 }
-

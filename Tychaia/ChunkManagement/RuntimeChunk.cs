@@ -7,43 +7,28 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
-using Tychaia.Globals;
-using Tychaia.ProceduralGeneration;
 using Tychaia.Data;
-using System.Threading;
+using Tychaia.Globals;
 
 namespace Tychaia
 {
     public class RuntimeChunk : IDisposable
     {
-        private static readonly object m_AccessLock = new object();
         public readonly long X;
         public readonly long Y;
         public readonly long Z;
+        private static readonly object m_AccessLock = new object();
         private readonly IChunkFactory m_ChunkFactory;
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
-        private readonly ILevel m_Level;
         private readonly IFilteredFeatures m_FilteredFeatures;
         private readonly ChunkOctree m_Octree;
-        private readonly IRenderCache m_RenderCache;
         private readonly TextureAtlasAsset m_TextureAtlasAsset;
-        private readonly IProfiler m_Profiler;
-        public BlockAsset[,,] Blocks = null;
-        public Cell[,,] Cells = null;
         private IAssetManager m_AssetManager;
         private IChunkGenerator m_ChunkGenerator;
         private IFilteredConsole m_FilteredConsole;
 
-        public bool GraphicsEmpty { get; private set; }
-        public bool Generated { get; set; }
-        public VertexPositionTexture[] GeneratedVertexes { get; set; }
-        public int[] GeneratedIndices { get; set; } 
-
         private VertexBuffer m_VertexBuffer;
         private IndexBuffer m_IndexBuffer;
-
-        // TODO: This is ugly.
-        private int m_Seed = MenuWorld.StaticSeed; // All chunks are generated from the same seed.
 
         public RuntimeChunk(
             ILevel level,
@@ -52,10 +37,8 @@ namespace Tychaia
             IFilteredConsole filteredConsole,
             IFilteredFeatures filteredFeatures,
             IChunkSizePolicy chunkSizePolicy,
-            IRenderCache renderCache,
             IAssetManagerProvider assetManagerProvider,
             IChunkGenerator chunkGenerator,
-            IProfiler profiler,
             long x,
             long y,
             long z)
@@ -73,28 +56,185 @@ namespace Tychaia
             this.m_FilteredConsole = filteredConsole;
             this.m_FilteredFeatures = filteredFeatures;
             this.m_ChunkFactory = chunkFactory;
-            this.m_RenderCache = renderCache;
             this.m_AssetManager = assetManagerProvider.GetAssetManager();
             this.m_TextureAtlasAsset = this.m_AssetManager.Get<TextureAtlasAsset>("atlas");
             this.m_ChunkGenerator = chunkGenerator;
-            this.m_Profiler = profiler;
             this.X = x;
             this.Y = y;
             this.Z = z;
             if (this.m_Octree != null)
                 this.m_Octree.Set(this);
-            this.Blocks = new BlockAsset[this.m_ChunkSizePolicy.ChunkCellWidth, this.m_ChunkSizePolicy.ChunkCellHeight,
-                    this.m_ChunkSizePolicy.ChunkCellDepth];
-            this.Cells = new Cell[this.m_ChunkSizePolicy.ChunkCellWidth, this.m_ChunkSizePolicy.ChunkCellHeight,
-                    this.m_ChunkSizePolicy.ChunkCellDepth];
-            this.m_Level = level;
-            this.m_FilteredConsole.WriteLine(FilterCategory.ChunkValidation,
+            this.Blocks = new BlockAsset[this.m_ChunkSizePolicy.ChunkCellWidth,
+                this.m_ChunkSizePolicy.ChunkCellHeight,
+                this.m_ChunkSizePolicy.ChunkCellDepth];
+            this.Cells = new Cell[this.m_ChunkSizePolicy.ChunkCellWidth,
+                this.m_ChunkSizePolicy.ChunkCellHeight,
+                this.m_ChunkSizePolicy.ChunkCellDepth];
+            this.Level = level;
+            this.m_FilteredConsole.WriteLine(
+                FilterCategory.ChunkValidation,
                 "Chunk created for " + x + ", " + y + ", " + z + ".");
 
             this.m_ChunkGenerator.Generate(this);
         }
 
-        public ILevel Level { get { return this.m_Level; } }
+        public ILevel Level { get; private set; }
+        public BlockAsset[,,] Blocks { get; set; }
+        public Cell[,,] Cells { get; set; }
+        public bool GraphicsEmpty { get; private set; }
+        public bool Generated { get; set; }
+        public VertexPositionTexture[] GeneratedVertexes { get; set; }
+        public int[] GeneratedIndices { get; set; }
+
+        #region Relative Addressing
+
+        public RuntimeChunk West
+        {
+            get
+            {
+                lock (m_AccessLock)
+                {
+                    var c =
+                        this.m_Octree.Get(
+                            this.X - (this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.CellVoxelWidth),
+                            this.Y,
+                            this.Z);
+                    if (c == null)
+                        return this.m_ChunkFactory.CreateChunk(
+                            this.Level,
+                            this.m_Octree,
+                            this.X - (this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.CellVoxelWidth),
+                            this.Y,
+                            this.Z);
+                    if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
+                    return c;
+                }
+            }
+        }
+
+        public RuntimeChunk East
+        {
+            get
+            {
+                lock (m_AccessLock)
+                {
+                    var c =
+                        this.m_Octree.Get(
+                            this.X + (this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.CellVoxelWidth),
+                            this.Y,
+                            this.Z);
+                    if (c == null)
+                        return this.m_ChunkFactory.CreateChunk(
+                            this.Level,
+                            this.m_Octree,
+                            this.X + (this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.CellVoxelWidth),
+                            this.Y,
+                            this.Z);
+                    if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
+                    return c;
+                }
+            }
+        }
+
+        public RuntimeChunk North
+        {
+            get
+            {
+                lock (m_AccessLock)
+                {
+                    var c = this.m_Octree.Get(
+                        this.X,
+                        this.Y,
+                        this.Z - (this.m_ChunkSizePolicy.ChunkCellDepth * this.m_ChunkSizePolicy.CellVoxelDepth));
+                    if (c == null)
+                        return this.m_ChunkFactory.CreateChunk(
+                            this.Level,
+                            this.m_Octree,
+                            this.X,
+                            this.Y,
+                            this.Z - (this.m_ChunkSizePolicy.ChunkCellDepth * this.m_ChunkSizePolicy.CellVoxelDepth));
+                    if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
+                    return c;
+                }
+            }
+        }
+
+        public RuntimeChunk South
+        {
+            get
+            {
+                lock (m_AccessLock)
+                {
+                    var c = this.m_Octree.Get(
+                        this.X,
+                        this.Y,
+                        this.Z + (this.m_ChunkSizePolicy.ChunkCellDepth * this.m_ChunkSizePolicy.CellVoxelDepth));
+                    if (c == null)
+                        return this.m_ChunkFactory.CreateChunk(
+                            this.Level,
+                            this.m_Octree,
+                            this.X,
+                            this.Y,
+                            this.Z + (this.m_ChunkSizePolicy.ChunkCellDepth * this.m_ChunkSizePolicy.CellVoxelDepth));
+                    if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
+                    return c;
+                }
+            }
+        }
+
+        public RuntimeChunk Up
+        {
+            get
+            {
+                lock (m_AccessLock)
+                {
+                    var c = this.m_Octree.Get(
+                        this.X,
+                        this.Y - (this.m_ChunkSizePolicy.ChunkCellHeight * this.m_ChunkSizePolicy.CellVoxelHeight),
+                        this.Z);
+                    if (c == null)
+                        return this.m_ChunkFactory.CreateChunk(
+                            this.Level,
+                            this.m_Octree,
+                            this.X,
+                            this.Y - (this.m_ChunkSizePolicy.ChunkCellHeight * this.m_ChunkSizePolicy.CellVoxelHeight),
+                            this.Z);
+                    if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
+                    return c;
+                }
+            }
+        }
+
+        public RuntimeChunk Down
+        {
+            get
+            {
+                lock (m_AccessLock)
+                {
+                    var c = this.m_Octree.Get(
+                        this.X,
+                        this.Y + (this.m_ChunkSizePolicy.ChunkCellHeight * this.m_ChunkSizePolicy.CellVoxelHeight),
+                        this.Z);
+                    if (c == null)
+                        return this.m_ChunkFactory.CreateChunk(
+                            this.Level,
+                            this.m_Octree,
+                            this.X,
+                            this.Y + (this.m_ChunkSizePolicy.ChunkCellHeight * this.m_ChunkSizePolicy.CellVoxelHeight),
+                            this.Z);
+                    if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
+                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
+                    return c;
+                }
+            }
+        }
+
+        #endregion
 
         public void Dispose()
         {
@@ -146,6 +286,7 @@ namespace Tychaia
                 this.GraphicsEmpty = true;
                 return;
             }
+            
             this.m_VertexBuffer = new VertexBuffer(
                 renderContext.GraphicsDevice,
                 VertexPositionTexture.VertexDeclaration,
@@ -165,7 +306,7 @@ namespace Tychaia
         /// </summary>
         public void Save()
         {
-            this.m_Level.SaveChunk(this);
+            this.Level.SaveChunk(this);
         }
 
         /// <summary>
@@ -178,127 +319,5 @@ namespace Tychaia
             if (this.m_Octree != null)
                 this.m_Octree.Clear(this);
         }
-
-        #region Relative Addressing
-
-        public RuntimeChunk West
-        {
-            get
-            {
-                lock (m_AccessLock)
-                {
-                    var c =
-                        this.m_Octree.Get(
-                            this.X - (this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.CellVoxelWidth),
-                            this.Y, this.Z);
-                    if (c == null)
-                        return this.m_ChunkFactory.CreateChunk(this.m_Level, this.m_Octree,
-                            this.X - (this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.CellVoxelWidth),
-                            this.Y, this.Z);
-                    if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
-                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
-                    return c;
-                }
-            }
-        }
-
-        public RuntimeChunk East
-        {
-            get
-            {
-                lock (m_AccessLock)
-                {
-                    var c =
-                        this.m_Octree.Get(
-                            this.X + (this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.CellVoxelWidth),
-                            this.Y, this.Z);
-                    if (c == null)
-                        return this.m_ChunkFactory.CreateChunk(this.m_Level, this.m_Octree,
-                            this.X + (this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.CellVoxelWidth),
-                            this.Y, this.Z);
-                    if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
-                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
-                    return c;
-                }
-            }
-        }
-
-        public RuntimeChunk North
-        {
-            get
-            {
-                lock (m_AccessLock)
-                {
-                    var c = this.m_Octree.Get(this.X, this.Y,
-                        this.Z - (this.m_ChunkSizePolicy.ChunkCellDepth * this.m_ChunkSizePolicy.CellVoxelDepth));
-                    if (c == null)
-                        return this.m_ChunkFactory.CreateChunk(this.m_Level, this.m_Octree, this.X, this.Y,
-                            this.Z - (this.m_ChunkSizePolicy.ChunkCellDepth * this.m_ChunkSizePolicy.CellVoxelDepth));
-                    if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
-                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
-                    return c;
-                }
-            }
-        }
-
-        public RuntimeChunk South
-        {
-            get
-            {
-                lock (m_AccessLock)
-                {
-                    var c = this.m_Octree.Get(this.X, this.Y,
-                        this.Z + (this.m_ChunkSizePolicy.ChunkCellDepth * this.m_ChunkSizePolicy.CellVoxelDepth));
-                    if (c == null)
-                        return this.m_ChunkFactory.CreateChunk(this.m_Level, this.m_Octree, this.X, this.Y,
-                            this.Z + (this.m_ChunkSizePolicy.ChunkCellDepth * this.m_ChunkSizePolicy.CellVoxelDepth));
-                    if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
-                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
-                    return c;
-                }
-            }
-        }
-
-        public RuntimeChunk Up
-        {
-            get
-            {
-                lock (m_AccessLock)
-                {
-                    var c = this.m_Octree.Get(this.X,
-                        this.Y - (this.m_ChunkSizePolicy.ChunkCellHeight * this.m_ChunkSizePolicy.CellVoxelHeight),
-                        this.Z);
-                    if (c == null)
-                        return this.m_ChunkFactory.CreateChunk(this.m_Level, this.m_Octree, this.X,
-                            this.Y - (this.m_ChunkSizePolicy.ChunkCellHeight * this.m_ChunkSizePolicy.CellVoxelHeight),
-                            this.Z);
-                    if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
-                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
-                    return c;
-                }
-            }
-        }
-
-        public RuntimeChunk Down
-        {
-            get
-            {
-                lock (m_AccessLock)
-                {
-                    var c = this.m_Octree.Get(this.X,
-                        this.Y + (this.m_ChunkSizePolicy.ChunkCellHeight * this.m_ChunkSizePolicy.CellVoxelHeight),
-                        this.Z);
-                    if (c == null)
-                        return this.m_ChunkFactory.CreateChunk(this.m_Level, this.m_Octree, this.X,
-                            this.Y + (this.m_ChunkSizePolicy.ChunkCellHeight * this.m_ChunkSizePolicy.CellVoxelHeight),
-                            this.Z);
-                    if (this.m_FilteredFeatures.IsEnabled(Feature.DebugOctreeLookup) && c == this)
-                        throw new InvalidOperationException("Relative addressing of chunk resulted in same chunk.");
-                    return c;
-                }
-            }
-        }
-
-        #endregion
     }
 }

@@ -12,7 +12,6 @@ using Protogame;
 using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
 using Tychaia.Threading;
-using System.Diagnostics;
 
 namespace Tychaia
 {
@@ -65,7 +64,7 @@ namespace Tychaia
                 }
 
                 // Generate the actual data using the procedural generation library.
-                var blocks = (ResultData[]) this.m_Generator.GenerateData(
+                var blocks = (ResultData[])this.m_Generator.GenerateData(
                     chunk.X / this.m_ChunkSizePolicy.CellVoxelWidth,
                     chunk.Z / this.m_ChunkSizePolicy.CellVoxelDepth,
                     chunk.Y / this.m_ChunkSizePolicy.CellVoxelHeight,
@@ -77,10 +76,9 @@ namespace Tychaia
                     for (var y = 0; y < this.m_ChunkSizePolicy.ChunkCellHeight; y++)
                         for (var z = 0; z < this.m_ChunkSizePolicy.ChunkCellDepth; z++)
                         {
-                            var info = blocks[
-                                x +
-                                z * this.m_ChunkSizePolicy.ChunkCellWidth +
-                                y * this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.ChunkCellHeight];
+                            var info = blocks[x +
+                                (z * this.m_ChunkSizePolicy.ChunkCellWidth) +
+                                (y * this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.ChunkCellHeight)];
                             chunk.Cells[x, y, z] = this.m_FlowBundleToCellConverter.ConvertToCell(info);
                             var block = info.BlockInfo;
                             if (block.BlockAssetName == null)
@@ -120,14 +118,15 @@ namespace Tychaia
                                     vertexes.Add(
                                         new VertexPositionTexture(
                                             new Vector3(
-                                                chunk.X / (float)this.m_ChunkSizePolicy.CellVoxelWidth + xx,
-                                                chunk.Y / (float)this.m_ChunkSizePolicy.CellVoxelHeight + yy,
-                                                chunk.Z / (float)this.m_ChunkSizePolicy.CellVoxelDepth + zz),
+                                                (chunk.X / (float)this.m_ChunkSizePolicy.CellVoxelWidth) + xx,
+                                                (chunk.Y / (float)this.m_ChunkSizePolicy.CellVoxelHeight) + yy,
+                                                (chunk.Z / (float)this.m_ChunkSizePolicy.CellVoxelDepth) + zz),
                                             new Vector2(uvx, uvy)));
                                     return vertexes.Count - 1;
                                 },
                                 indices.Add);
                         }
+                        
                 chunk.GeneratedVertexes = vertexes.ToArray();
                 chunk.GeneratedIndices = indices.ToArray();
                 chunk.Generated = true;

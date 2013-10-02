@@ -3,16 +3,23 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
+using System;
 using System.Linq;
 using Protogame;
 using Tychaia.Game;
-using System;
 
 namespace Tychaia
 {
     public class GiveCommand : ICommand
     {
-        public string[] Names { get { return new[] { "give" }; } }
+        public string[] Names
+        {
+            get
+            {
+                return new[] { "give" };
+            }
+        }
+        
         public string[] Descriptions
         {
             get
@@ -50,9 +57,9 @@ namespace Tychaia
                     return "No such weighting exists.";
                 }
             }
+            
             player.RuntimeData.Inventory.Add(item);
             return "Added " + parameters[0] + " to player's inventory.";
         }
     }
 }
-

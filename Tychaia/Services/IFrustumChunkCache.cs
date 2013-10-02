@@ -22,4 +22,3 @@ namespace Tychaia
         IEnumerable<RuntimeChunk> GetChunks(ChunkOctree octree, Vector3 focus);
     }
 }
-

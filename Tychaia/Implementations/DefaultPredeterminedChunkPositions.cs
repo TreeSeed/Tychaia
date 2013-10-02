@@ -76,7 +76,6 @@ namespace Tychaia
             yield return new Vector3(-3, 1, 1);
             yield return new Vector3(0, 1, -3);
             yield return new Vector3(-3, 1, 0);
-
         }
 
         public IEnumerable<Vector3> GetScaledRelativePositions()
@@ -121,7 +120,6 @@ namespace Tychaia
             yield return new Vector3(4, 2, 0);
             yield return new Vector3(4, 3, 0);
             yield return new Vector3(4, 4, 0);
-
         }
 
         public IEnumerable<Vector3> GetPurgableScaledRelativePositions()
@@ -140,4 +138,3 @@ namespace Tychaia
         }
     }
 }
-

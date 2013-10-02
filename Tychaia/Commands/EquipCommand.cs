@@ -11,7 +11,14 @@ namespace Tychaia
 {
     public class EquipCommand : ICommand
     {
-        public string[] Names { get { return new[] { "equip" }; } }
+        public string[] Names
+        {
+            get
+            {
+                return new[] { "equip" };
+            }
+        }
+        
         public string[] Descriptions
         {
             get
@@ -42,4 +49,3 @@ namespace Tychaia
         }
     }
 }
-

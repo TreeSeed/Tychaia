@@ -12,8 +12,6 @@ namespace Tychaia
 {
     public class MenuWorld : IWorld
     {
-        protected static Random Random = new Random();
-        public static int StaticSeed = 6294563;
         private readonly I2DRenderUtilities m_2DRenderUtilities;
         private readonly IBackgroundCubeEntityFactory m_BackgroundCubeEntityFactory;
         private readonly CanvasEntity m_CanvasEntity;
@@ -24,19 +22,16 @@ namespace Tychaia
 #endif
         private readonly FontAsset m_TitleFont;
         private readonly TitleMenu m_TitleMenu;
-        protected IAssetManager AssetManager = null;
-        protected IGameContext GameContext;
         private int m_Rotation;
         private ScatterBackground m_ScatterBackground;
-        protected IWorld TargetWorld = null;
 
         public MenuWorld(
-            I2DRenderUtilities _2DRenderUtilities,
+            I2DRenderUtilities twodRenderUtilities,
             IAssetManagerProvider assetManagerProvider,
             IBackgroundCubeEntityFactory backgroundCubeEntityFactory,
             ISkin skin)
         {
-            this.m_2DRenderUtilities = _2DRenderUtilities;
+            this.m_2DRenderUtilities = twodRenderUtilities;
             this.AssetManager = assetManagerProvider.GetAssetManager();
             this.m_BackgroundCubeEntityFactory = backgroundCubeEntityFactory;
             this.m_TitleFont = this.AssetManager.Get<FontAsset>("font.Title");
@@ -50,11 +45,15 @@ namespace Tychaia
 
             this.m_CanvasEntity = new CanvasEntity(skin) { Canvas = new Canvas() };
             this.m_CanvasEntity.Canvas.SetChild(this.m_TitleMenu = new TitleMenu());
+            
             // Don't add the canvas to the entities list; that way we can explicitly
             // order it's depth.
         }
-
+        
         public List<IEntity> Entities { get; private set; }
+        protected IAssetManager AssetManager { get; private set; }
+        protected IGameContext GameContext { get; private set; }
+        protected IWorld TargetWorld { get; set; }
 
         public void Dispose()
         {
@@ -67,7 +66,8 @@ namespace Tychaia
                 renderContext.GraphicsDevice.Clear(Color.Black);
 
                 renderContext.View = Matrix.CreateLookAt(
-                    Vector3.Transform(new Vector3(0.0f, 10.0f, 10.0f),
+                    Vector3.Transform(
+                        new Vector3(0.0f, 10.0f, 10.0f),
                         Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation / 10f))),
                     Vector3.Zero,
                     Vector3.Up);
@@ -91,7 +91,8 @@ namespace Tychaia
                 renderContext,
                 new Vector2(gameContext.Window.ClientBounds.Center.X, 50),
                 "Tychaia",
-                this.m_TitleFont, HorizontalAlignment.Center);
+                this.m_TitleFont,
+                HorizontalAlignment.Center);
 
             this.m_2DRenderUtilities.RenderTexture(
                 renderContext,
@@ -113,7 +114,8 @@ namespace Tychaia
                     renderContext,
                     new Vector2(gameContext.Window.ClientBounds.Center.X, 10),
                     "Asset Manager: " + this.AssetManager.Status,
-                    this.m_DefaultFont, HorizontalAlignment.Center);
+                    this.m_DefaultFont,
+                    HorizontalAlignment.Center);
             }
         }
 

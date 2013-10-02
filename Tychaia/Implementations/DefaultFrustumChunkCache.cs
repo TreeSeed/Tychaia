@@ -59,19 +59,6 @@ namespace Tychaia
             }
         }
 
-        private BoundingBox GetBoundingBoxForChunk(long rx, long ry, long rz)
-        {
-            return new BoundingBox(
-                new Vector3(
-                    rx,
-                    ry,
-                    rz),
-                new Vector3(
-                    rx + this.m_ChunkVoxelWidth,
-                    ry + this.m_ChunkVoxelHeight,
-                    rz + this.m_ChunkVoxelDepth));
-        }
-
         public IEnumerable<Vector3> GetRelativePositions()
         {
             return this.m_PositionCache;
@@ -88,6 +75,18 @@ namespace Tychaia
             foreach (var position in this.GetAbsolutePositions(focus))
                 yield return octree.Get((long)position.X, (long)position.Y, (long)position.Z);
         }
+
+        private BoundingBox GetBoundingBoxForChunk(long rx, long ry, long rz)
+        {
+            return new BoundingBox(
+                new Vector3(
+                    rx,
+                    ry,
+                    rz),
+                new Vector3(
+                    rx + this.m_ChunkVoxelWidth,
+                    ry + this.m_ChunkVoxelHeight,
+                    rz + this.m_ChunkVoxelDepth));
+        }
     }
 }
-

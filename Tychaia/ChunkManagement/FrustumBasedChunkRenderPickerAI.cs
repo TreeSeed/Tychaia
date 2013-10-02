@@ -13,17 +13,14 @@ namespace Tychaia
 {
     public class FrustumBasedChunkRenderPickerAI : IChunkAI
     {
-        private IChunkSizePolicy m_ChunkSizePolicy;
         private IFrustumChunkCache m_FrustumChunkCache;
 
         private bool m_FirstProcess = true;
         private Vector3 m_PreviousFocusChunk;
 
         public FrustumBasedChunkRenderPickerAI(
-            IChunkSizePolicy chunkSizePolicy,
             IFrustumChunkCache frustumChunkCache)
         {
-            this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_FrustumChunkCache = frustumChunkCache;
 
             // TODO: Find some better way of doing this.  Probably need to expose this information in
@@ -62,4 +59,3 @@ namespace Tychaia
         }
     }
 }
-

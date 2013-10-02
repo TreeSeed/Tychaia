@@ -11,29 +11,18 @@ namespace Tychaia
 {
     public class ChunkManagerEntity : Entity
     {
-        private readonly IChunkFactory m_ChunkFactory;
-        private readonly IChunkSizePolicy m_ChunkSizePolicy;
         private readonly TychaiaGameWorld m_World;
-        private readonly TextureAtlasAsset m_TextureAtlasAsset;
         private readonly IProfiler m_Profiler;
-        private readonly Vector3[] m_CachedChunkPositions;
-        private readonly Vector3[] m_AOTChunkPositions;
         private readonly IChunkAI[] m_ChunkAI;
         private RuntimeChunk[] m_ChunksToRenderNext;
 
         public ChunkManagerEntity(
             TychaiaGameWorld gameWorld,
-            IChunkSizePolicy chunkSizePolicy,
-            IAssetManagerProvider assetManagerProvider,
-            IChunkFactory chunkFactory,
             IChunkAI[] chunkAI,
             IProfiler profiler)
         {
             this.m_World = gameWorld;
-            this.m_ChunkSizePolicy = chunkSizePolicy;
-            this.m_ChunkFactory = chunkFactory;
             this.m_ChunkAI = chunkAI;
-            this.m_TextureAtlasAsset = assetManagerProvider.GetAssetManager().Get<TextureAtlasAsset>("atlas");
             this.m_Profiler = profiler;
             this.m_ChunksToRenderNext = new RuntimeChunk[0];
         }

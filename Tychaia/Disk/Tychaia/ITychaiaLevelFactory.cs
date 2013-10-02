@@ -7,8 +7,6 @@ namespace Tychaia
 {
     public interface ITychaiaLevelFactory
     {
-        //TychaiaLevel CreateTychaiaLevel(string name, string path);
         SimpleLevel CreateSimpleLevel(string name, string path);
     }
 }
-

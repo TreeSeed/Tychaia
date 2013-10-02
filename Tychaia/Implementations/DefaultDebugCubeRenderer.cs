@@ -65,8 +65,8 @@ namespace Tychaia
                     0,
                     vertexes.Length / 2);
             }
+            
             renderContext.World = world;
         }
     }
 }
-

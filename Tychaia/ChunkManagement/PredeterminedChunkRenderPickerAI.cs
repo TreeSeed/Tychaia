@@ -12,17 +12,14 @@ namespace Tychaia
 {
     public class PredeterminedChunkRenderPickerAI : IChunkAI
     {
-        private IChunkSizePolicy m_ChunkSizePolicy;
         private IPredeterminedChunkPositions m_PredeterminedChunkPositions;
 
         private bool m_FirstProcess = true;
         private Vector3 m_PreviousFocusChunk;
 
         public PredeterminedChunkRenderPickerAI(
-            IChunkSizePolicy chunkSizePolicy,
             IPredeterminedChunkPositions predeterminedChunkPositions)
         {
-            this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_PredeterminedChunkPositions = predeterminedChunkPositions;
         }
 
@@ -48,4 +45,3 @@ namespace Tychaia
         }
     }
 }
-

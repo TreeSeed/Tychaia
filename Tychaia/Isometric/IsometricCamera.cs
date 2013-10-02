@@ -26,6 +26,8 @@ namespace Tychaia
         /// </summary>
         private long m_CurrentZ;
 
+        private int m_Rotation;
+        
         public IsometricCamera(ChunkOctree octree, RuntimeChunk chunk)
         {
             if (octree == null) throw new ArgumentNullException("octree");
@@ -36,9 +38,16 @@ namespace Tychaia
             this.VerticalAngle = 45;
         }
 
+        public int Distance { get; set; }
+
+        public bool Rotation { get; set; }
+        
+        public float VerticalAngle { get; set; }
+        public bool Orthographic { get; set; }
+
         public Vector3 CurrentFocus
         {
-            get { return new Vector3((float) this.m_CurrentX, (float) this.m_CurrentY, (float) this.m_CurrentZ); }
+            get { return new Vector3((float)this.m_CurrentX, (float)this.m_CurrentY, (float)this.m_CurrentZ); }
         }
 
         /// <summary>
@@ -96,14 +105,6 @@ namespace Tychaia
             if (newChunk != null)
                 this.Chunk = newChunk;
         }
-
-        public int Distance { get; set; }
-
-        private int m_Rotation;
-        public bool Rotation { get; set; }
-        
-        public float VerticalAngle { get; set; }
-        public bool Orthographic { get; set; }
 
         public void InitializeRenderContext(IRenderContext renderContext)
         {

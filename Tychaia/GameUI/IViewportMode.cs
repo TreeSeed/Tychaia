@@ -16,4 +16,3 @@ namespace Tychaia
         void SetViewportMode(ViewportMode mode);
     }
 }
-

@@ -20,4 +20,3 @@ namespace Tychaia
         IEnumerable<Vector3> GetPurgableAbsolutePositions(Vector3 absolute);
     }
 }
-

@@ -19,20 +19,17 @@ namespace Tychaia
         private readonly I2DRenderUtilities m_2DRenderUtilities;
         private readonly FontAsset m_DefaultFontAsset;
         private readonly List<FrameProfileInfo> m_ProfilingInformation;
-        private readonly IRenderTargetFactory m_RenderStateFactory;
         private readonly IPersistentStorage m_PersistentStorage;
         private readonly TychaiaProfilerEntityUtil m_TychaiaProfilerEntityUtil;
 
         public TychaiaProfilerEntity(
             TychaiaProfiler profiler,
-            IRenderTargetFactory renderStateFactory,
-            I2DRenderUtilities _2DRenderUtilities,
+            I2DRenderUtilities twodRenderUtilities,
             IAssetManagerProvider assetManagerProvider,
             IPersistentStorage persistentStorage)
         {
             this.Profiler = profiler;
-            this.m_RenderStateFactory = renderStateFactory;
-            this.m_2DRenderUtilities = _2DRenderUtilities;
+            this.m_2DRenderUtilities = twodRenderUtilities;
             this.m_DefaultFontAsset = assetManagerProvider.GetAssetManager().Get<FontAsset>("font.Default");
             this.m_ProfilingInformation = new List<FrameProfileInfo>();
             this.m_PersistentStorage = persistentStorage;
@@ -43,20 +40,6 @@ namespace Tychaia
         {
             get;
             private set;
-        }
-
-        private FrameProfileInfo Sample(IGameContext gameContext)
-        {
-            var info = new FrameProfileInfo
-            {
-                Entities = gameContext.World.Entities.Count,
-                FunctionCalls = this.Profiler.FunctionCallsSinceLastReset,
-                FPS = gameContext.FPS,
-                LastFrameLength = this.Profiler.LastFrameLength,
-                VirtualMemory = Process.GetCurrentProcess().VirtualMemorySize64 / 1024 / 1024
-            };
-            this.Profiler.ResetCalls();
-            return info;
         }
 
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
@@ -79,7 +62,8 @@ namespace Tychaia
             this.m_2DRenderUtilities.RenderRectangle(
                 renderContext,
                 new Rectangle(0, 0, 300, 224 + (stats == null ? 0 : (stats.Count * 20))),
-                new Color(0, 0, 0, 0.5f), true);
+                new Color(0, 0, 0, 0.5f),
+                true);
 
             if (this.m_ProfilingInformation.Count != 0)
             {
@@ -97,7 +81,7 @@ namespace Tychaia
                 {
                     this.m_2DRenderUtilities.RenderText(
                         renderContext,
-                        new Vector2(10, 224 + i * 20),
+                        new Vector2(10, 224 + (i * 20)),
                         kv.Key,
                         this.m_DefaultFontAsset);
                     var color = Color.White;
@@ -105,7 +89,7 @@ namespace Tychaia
                         color = Color.Red;
                     this.m_2DRenderUtilities.RenderText(
                         renderContext,
-                        new Vector2(290, 224 + i * 20),
+                        new Vector2(290, 224 + (i * 20)),
                         ((int)kv.Value) + "us",
                         this.m_DefaultFontAsset,
                         horizontalAlignment: HorizontalAlignment.Right,
@@ -128,6 +112,20 @@ namespace Tychaia
             this.m_TychaiaProfilerEntityUtil.RenderLines(
                 gameContext,
                 this.m_ProfilingInformation);
+        }
+
+        private FrameProfileInfo Sample(IGameContext gameContext)
+        {
+            var info = new FrameProfileInfo
+            {
+                Entities = gameContext.World.Entities.Count,
+                FunctionCalls = this.Profiler.FunctionCallsSinceLastReset,
+                FPS = gameContext.FPS,
+                LastFrameLength = this.Profiler.LastFrameLength,
+                VirtualMemory = Process.GetCurrentProcess().VirtualMemorySize64 / 1024 / 1024
+            };
+            this.Profiler.ResetCalls();
+            return info;
         }
     }
 }

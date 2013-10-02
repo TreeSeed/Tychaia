@@ -14,11 +14,22 @@ namespace Tychaia
 
         RenderTarget2D Create(GraphicsDevice graphicsDevice, int width, int height);
 
-        RenderTarget2D Create(GraphicsDevice graphicsDevice, int width, int height, bool mipMap,
-            SurfaceFormat preferredFormat, DepthFormat preferredDepthFormat);
+        RenderTarget2D Create(
+            GraphicsDevice graphicsDevice,
+            int width,
+            int height,
+            bool mipMap,
+            SurfaceFormat preferredFormat,
+            DepthFormat preferredDepthFormat);
 
-        RenderTarget2D Create(GraphicsDevice graphicsDevice, int width, int height, bool mipMap,
-            SurfaceFormat preferredFormat, DepthFormat preferredDepthFormat, int preferredMultiSampleCount,
+        RenderTarget2D Create(
+            GraphicsDevice graphicsDevice,
+            int width,
+            int height,
+            bool mipMap,
+            SurfaceFormat preferredFormat,
+            DepthFormat preferredDepthFormat,
+            int preferredMultiSampleCount,
             RenderTargetUsage usage);
     }
 }

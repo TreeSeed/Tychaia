@@ -10,12 +10,12 @@ namespace Tychaia
     public class LoadWorld : MenuWorld
     {
         public LoadWorld(
-            I2DRenderUtilities _2DRenderUtilities,
+            I2DRenderUtilities twodRenderUtilities,
             IAssetManagerProvider assetManagerProvider,
             IBackgroundCubeEntityFactory backgroundCubeEntityFactory,
             ILevelAPI levelAPI,
             ISkin skin)
-            : base(_2DRenderUtilities, assetManagerProvider, backgroundCubeEntityFactory, skin)
+            : base(twodRenderUtilities, assetManagerProvider, backgroundCubeEntityFactory, skin)
         {
             var assetManager = assetManagerProvider.GetAssetManager();
             var returnText = assetManager.Get<LanguageAsset>("language.RETURN");
@@ -25,7 +25,8 @@ namespace Tychaia
             // Get all available levels.
             foreach (var levelRef in levelAPI.GetAvailableLevels())
             {
-                this.AddMenuItem(new LanguageAsset(levelRef, levelRef),
+                this.AddMenuItem(
+                    new LanguageAsset(levelRef, levelRef),
                     () => { this.TargetWorld = this.GameContext.CreateWorld<TychaiaGameWorld>(); });
             }
         }

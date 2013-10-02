@@ -26,11 +26,9 @@ namespace Tychaia
         private volatile string m_Status;
         private ILevel m_Level;
 
-        public List<IEntity> Entities { get { return this.m_Entities; } }
-
         public PregenerateWorld(
             IAssetManagerProvider assetManagerProvider,
-            I2DRenderUtilities _2dRenderUtilities,
+            I2DRenderUtilities twodRenderUtilites,
             IChunkSizePolicy chunkSizePolicy,
             IGenerationPlanner generationPlanner,
             IGeneratorResolver generatorResolver,
@@ -38,7 +36,7 @@ namespace Tychaia
             ILevel level)
         {
             this.m_AssetManager = assetManagerProvider.GetAssetManager();
-            this.m_2DRenderUtilities = _2dRenderUtilities;
+            this.m_2DRenderUtilities = twodRenderUtilites;
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_GenerationPlanner = generationPlanner;
             this.m_FlowBundleToCellConverter = flowBundleToCellConverter;
@@ -73,6 +71,7 @@ namespace Tychaia
                         this.m_ChunkSizePolicy.ChunkCellDepth,
                         this.m_ChunkSizePolicy.ChunkCellHeight);
                 }
+                
                 for (var x = -10; x <= 10; x++)
                 for (var z = -10; z <= 10; z++)
                 {
@@ -93,8 +92,7 @@ namespace Tychaia
                 request.Progress += (sender, e) => this.m_Status = "Generating world... " + e.Progress + "%";
                 request.RegionComplete += (sender, e) =>
                 {
-                    var cells = new Cell[
-                        this.m_ChunkSizePolicy.ChunkCellWidth,
+                    var cells = new Cell[this.m_ChunkSizePolicy.ChunkCellWidth,
                         this.m_ChunkSizePolicy.ChunkCellHeight,
                         this.m_ChunkSizePolicy.ChunkCellDepth];
                     for (var x = 0; x < e.Region.GeneratedData.GetLength(0); x++)
@@ -113,51 +111,10 @@ namespace Tychaia
             t.Start();
         }
 
-        /*
-        public IEnumerable<object> GenerateChunks()
+        public List<IEntity> Entities
         {
-            var radius = 10;
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            var queue = new Queue<RuntimeChunk>();
-            var total = radius * 2 * radius * 2;
-            var current = 0;
-            for (var x = -radius; x < radius; x++)
-            for (var z = -radius; z < radius; z++)
-            {
-                if (stopwatch.ElapsedMilliseconds > 5)
-                {
-                    stopwatch.Restart();
-                    yield return null;
-                }
-                queue.Enqueue(this.m_ChunkFactory.CreateChunk(
-                    this.m_Level,
-                    null,
-                    x * this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.CellVoxelWidth,
-                    0 * this.m_ChunkSizePolicy.ChunkCellHeight * this.m_ChunkSizePolicy.CellVoxelHeight,
-                    z * this.m_ChunkSizePolicy.ChunkCellDepth * this.m_ChunkSizePolicy.CellVoxelDepth));
-                this.m_Status = "Queued " + queue.Count + "; Generated " + current + " / " + total + "...";
-                yield return null;
-                while (queue.Count > 0 && queue.Peek().Generated)
-                {
-                    queue.Dequeue().Save();
-                    current++;
-                    this.m_Status = "Queued " + queue.Count + "; Generated " + current + " / " + total + "...";
-                    yield return null;
-                }
-            }
-            while (current < total)
-            {
-                if (queue.Count > 0 && queue.Peek().Generated)
-                {
-                    queue.Dequeue().Save();
-                    current++;
-                }
-                this.m_Status = "Queued " + queue.Count + "; Generated " + current + " / " + total + "...";
-                yield return null;
-            }
+            get { return this.m_Entities; }
         }
-        */
 
         public void RenderBelow(IGameContext gameContext, IRenderContext renderContext)
         {
@@ -181,18 +138,10 @@ namespace Tychaia
 
         public void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
-            //var stopwatch = new Stopwatch();
-            //stopwatch.Start();
-            //while (stopwatch.ElapsedTicks < 5)
-            //{
-            //    this.m_Processor.MoveNext();
-            //}
         }
 
         public void Dispose()
         {
-            //this.m_Processor.Dispose();
         }
     }
 }
-

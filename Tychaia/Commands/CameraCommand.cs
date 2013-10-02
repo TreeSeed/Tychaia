@@ -10,7 +10,14 @@ namespace Tychaia
 {
     public class CameraCommand : ICommand
     {
-        public string[] Names { get { return new[] { "camera" }; } }
+        public string[] Names
+        {
+            get
+            {
+                return new[] { "camera" };
+            }
+        }
+        
         public string[] Descriptions
         {
             get
@@ -76,4 +83,3 @@ Use 'camera help' for a list of commands.";
         }
     }
 }
-

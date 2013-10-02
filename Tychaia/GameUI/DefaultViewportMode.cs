@@ -12,12 +12,12 @@ namespace Tychaia
     {
         private ViewportMode m_ViewportMode = ViewportMode.Full;
 
-        public int SidebarWidth { get; set; }
-
         public DefaultViewportMode()
         {
             this.SidebarWidth = 400;
         }
+
+        public int SidebarWidth { get; set; }
 
         public Viewport Get3DViewport(Viewport original)
         {
@@ -58,7 +58,7 @@ namespace Tychaia
                     {
                         X = original.X + this.SidebarWidth,
                         Y = original.Y,
-                        Width = original.Width - this.SidebarWidth * 2,
+                        Width = original.Width - (this.SidebarWidth * 2),
                         Height = original.Height,
                         MinDepth = original.MinDepth,
                         MaxDepth = original.MaxDepth
@@ -74,4 +74,3 @@ namespace Tychaia
         }
     }
 }
-
