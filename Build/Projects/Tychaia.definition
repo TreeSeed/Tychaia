@@ -51,6 +51,7 @@
     <Compile Include="Commands\EquipCommand.cs" />
     <Compile Include="Commands\GiveCommand.cs" />
     <Compile Include="Commands\ProfilingCommand.cs" />
+    <Compile Include="Commands\StatsCommand.cs" />
     <Compile Include="Disk\CombinedLevelAPI.cs" />
     <Compile Include="Disk\ILevel.cs" />
     <Compile Include="Disk\ILevelAPI.cs" />
