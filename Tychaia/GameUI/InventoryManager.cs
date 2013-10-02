@@ -15,10 +15,10 @@ namespace Tychaia
         private readonly FontAsset m_DefaultFont;
 
         public InventoryManager(
-            I2DRenderUtilities _2DRenderUtilities,
+            I2DRenderUtilities twodRenderUtilities,
             IAssetManagerProvider assetManagerProvider)
         {
-            this.m_2DRenderUtilities = _2DRenderUtilities;
+            this.m_2DRenderUtilities = twodRenderUtilities;
             this.m_AssetManager = assetManagerProvider.GetAssetManager();
             this.m_DefaultFont = this.m_AssetManager.Get<FontAsset>("font.Default");
         }
@@ -82,8 +82,7 @@ namespace Tychaia
             // Render equipped items.
             this.m_2DRenderUtilities.RenderText(
                 context,
-                new Vector2(layout.X, layout.Y) +
-                    new Vector2(20, 4),
+                new Vector2(layout.X, layout.Y) + new Vector2(20, 4),
                 "Equipped Items:",
                 this.m_DefaultFont,
                 textColor: Color.Black,
@@ -97,7 +96,7 @@ namespace Tychaia
                 new Rectangle(
                     layout.X + 20,
                     layout.Y + 20,
-                    layout.Width / 2 - 40,
+                    (layout.Width / 2) - 40,
                     equipHeight),
                 this.Inventory.HeavySlotItem == null ? Color.Purple : Color.Red,
                 filled: true);
@@ -119,10 +118,10 @@ namespace Tychaia
             this.m_2DRenderUtilities.RenderRectangle(
                 context,
                 new Rectangle(
-                    layout.X + layout.Width / 2,
+                    layout.X + (layout.Width / 2),
                     layout.Y + 20,
                     (int)(layout.Width * 0.3) - 40,
-                    equipHeight / 2 - 10),
+                    (equipHeight / 2) - 10),
                 this.Inventory.MediumSlot1Item == null ? Color.Purple : Color.Red,
                 filled: true);
             if (this.Inventory.MediumSlot1Item != null)
@@ -130,7 +129,7 @@ namespace Tychaia
                 this.m_2DRenderUtilities.RenderText(
                     context,
                     new Vector2(
-                        layout.X + layout.Width / 2,
+                        layout.X + (layout.Width / 2),
                         layout.Y + 20),
                     this.Inventory.MediumSlot1Item.Name,
                     this.m_DefaultFont,
@@ -143,10 +142,10 @@ namespace Tychaia
             this.m_2DRenderUtilities.RenderRectangle(
                 context,
                 new Rectangle(
-                    layout.X + layout.Width / 2,
-                    layout.Y + equipHeight / 2 + 30,
+                    layout.X + (layout.Width / 2),
+                    layout.Y + (equipHeight / 2) + 30,
                     (int)(layout.Width * 0.3) - 40,
-                    equipHeight / 2 - 10),
+                    (equipHeight / 2) - 10),
                 this.Inventory.MediumSlot2Item == null ? Color.Purple : Color.Red,
                 filled: true);
             if (this.Inventory.MediumSlot2Item != null)
@@ -154,8 +153,8 @@ namespace Tychaia
                 this.m_2DRenderUtilities.RenderText(
                     context,
                     new Vector2(
-                        layout.X + layout.Width / 2,
-                        layout.Y + equipHeight / 2 + 30),
+                        layout.X + (layout.Width / 2),
+                        layout.Y + (equipHeight / 2) + 30),
                     this.Inventory.MediumSlot2Item.Name,
                     this.m_DefaultFont,
                     textColor: Color.White,
@@ -167,10 +166,10 @@ namespace Tychaia
             this.m_2DRenderUtilities.RenderRectangle(
                 context,
                 new Rectangle(
-                    layout.X + layout.Width / 2 + (int)(layout.Width * 0.3) - 20,
+                    layout.X + (layout.Width / 2) + (int)(layout.Width * 0.3) - 20,
                     layout.Y + 20,
-                    layout.Width - (layout.Width / 2 + (int)(layout.Width * 0.3) - 20) - 20,
-                    layout.Width - (layout.Width / 2 + (int)(layout.Width * 0.3) - 20) - 20),
+                    layout.Width - ((layout.Width / 2) + (int)(layout.Width * 0.3) - 20) - 20,
+                    layout.Width - ((layout.Width / 2) + (int)(layout.Width * 0.3) - 20) - 20),
                 this.Inventory.LightSlotItem == null ? Color.Purple : Color.Red,
                 filled: true);
             if (this.Inventory.LightSlotItem != null)
@@ -178,7 +177,7 @@ namespace Tychaia
                 this.m_2DRenderUtilities.RenderText(
                     context,
                     new Vector2(
-                        layout.X + layout.Width / 2 + (int)(layout.Width * 0.3) - 20,
+                        layout.X + (layout.Width / 2) + (int)(layout.Width * 0.3) - 20,
                         layout.Y + 20),
                     this.Inventory.LightSlotItem.Name,
                     this.m_DefaultFont,
@@ -190,8 +189,7 @@ namespace Tychaia
             // Render unequipped items.
             this.m_2DRenderUtilities.RenderText(
                 context,
-                new Vector2(layout.X, layout.Y) +
-                    new Vector2(20, equipHeight + 40),
+                new Vector2(layout.X, layout.Y) + new Vector2(20, equipHeight + 40),
                 "Unequipped Items:",
                 this.m_DefaultFont,
                 textColor: Color.Black,
@@ -207,16 +205,16 @@ namespace Tychaia
                     context,
                     new Rectangle(
                         layout.X + 20,
-                        layout.Y + equipHeight + 60 + i * 24,
+                        layout.Y + equipHeight + 60 + (i * 24),
                         layout.Width - 40,
                         24),
                     Color.Purple,
                     filled: true);
                 this.m_2DRenderUtilities.RenderText(
                     context,
-                    new Vector2(layout.X, layout.Y) +
-                        new Vector2(40, equipHeight + 60 + 12) + 
-                        new Vector2(0, i * 24),
+                    new Vector2(
+                        layout.X + 40,
+                        layout.Y + equipHeight + 60 + 12 + (i * 24)),
                     item.Name,
                     this.m_DefaultFont,
                     textColor: Color.White,
@@ -227,4 +225,3 @@ namespace Tychaia
         }
     }
 }
-

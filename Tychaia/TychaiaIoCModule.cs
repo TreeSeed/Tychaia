@@ -36,6 +36,7 @@ namespace Tychaia
             this.Bind<IEventBinder>().To<TychaiaDefaultDesktopBinder>();
             this.Bind<ICommand>().To<GiveCommand>();
             this.Bind<ICommand>().To<EquipCommand>();
+            this.Bind<ICommand>().To<StatsCommand>();
         }
     }
 }

@@ -3,9 +3,8 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Protogame;
-using Microsoft.Xna.Framework.Input;
 using System.Linq;
+using Protogame;
 
 namespace Tychaia
 {
@@ -20,10 +19,6 @@ namespace Tychaia
         private HorizontalContainer m_StatusBarSpacing;
         private StatusBar m_StatusBar;
         private InventoryManager m_InventoryManager;
-
-        public int SidebarWidth { get; set; }
-        public bool RightExtended { get; private set; }
-        public bool LeftExtended { get; private set; }
 
         public InventoryUIEntity(
             IGameUIFactory gameUIFactory,
@@ -57,6 +52,10 @@ namespace Tychaia
             this.Canvas.SetChild(this.m_SplitHorizontal);
         }
 
+        public int SidebarWidth { get; set; }
+        public bool RightExtended { get; private set; }
+        public bool LeftExtended { get; private set; }
+
         public void Toggle(string id)
         {
             switch (id)
@@ -68,6 +67,26 @@ namespace Tychaia
                     this.ToggleLeft();
                     break;
             }
+        }
+
+        public override void Update(IGameContext gameContext, IUpdateContext updateContext)
+        {
+            base.Update(gameContext, updateContext);
+
+            this.m_ViewportMode.SidebarWidth = this.SidebarWidth;
+            if (this.RightExtended && this.LeftExtended)
+                this.m_ViewportMode.SetViewportMode(ViewportMode.Centre);
+            else if (this.RightExtended)
+                this.m_ViewportMode.SetViewportMode(ViewportMode.Left);
+            else if (this.LeftExtended)
+                this.m_ViewportMode.SetViewportMode(ViewportMode.Right);
+            else
+                this.m_ViewportMode.SetViewportMode(ViewportMode.Full);
+
+            // Assign player's data to the UI.
+            var player = gameContext.World.Entities.OfType<PlayerEntity>().First();
+            this.m_InventoryManager.Inventory = player.RuntimeData.Inventory;
+            this.m_StatusBar.Player = player.RuntimeData;
         }
 
         private void ToggleRight()
@@ -85,25 +104,5 @@ namespace Tychaia
                 this.m_LeftBar,
                 this.LeftExtended ? this.SidebarWidth.ToString() : "0");
         }
-
-        public override void Update(IGameContext gameContext, IUpdateContext updateContext)
-        {
-            base.Update(gameContext, updateContext);
-
-            this.m_ViewportMode.SidebarWidth = this.SidebarWidth;
-            if (this.RightExtended && this.LeftExtended)
-                this.m_ViewportMode.SetViewportMode(ViewportMode.Centre);
-            else if (this.RightExtended)
-                this.m_ViewportMode.SetViewportMode(ViewportMode.Left);
-            else if (this.LeftExtended)
-                this.m_ViewportMode.SetViewportMode(ViewportMode.Right);
-            else
-                this.m_ViewportMode.SetViewportMode(ViewportMode.Full);
-
-            // Assign player to the inventory manager.
-            this.m_InventoryManager.Inventory =
-                gameContext.World.Entities.OfType<PlayerEntity>().First().RuntimeData.Inventory;
-        }
     }
 }
-
