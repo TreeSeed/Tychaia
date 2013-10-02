@@ -140,4 +140,3 @@ namespace Tychaia.Game.Tests
         }
     }
 }
-
