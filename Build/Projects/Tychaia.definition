@@ -107,7 +107,6 @@
     <Compile Include="TychaiaIoCModule.cs" />
     <Compile Include="TychaiaSkin.cs" />
     <Compile Include="TychaiaWorldManager.cs" />
-    <Compile Include="UniqueRender.cs" />
     <Compile Include="Worlds\LoadWorld.cs" />
     <Compile Include="Worlds\MainMenu\BackgroundCubeEntity.cs" />
     <Compile Include="Worlds\MainMenu\IBackgroundCubeEntityFactory.cs" />
@@ -126,29 +125,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="app.config" />
-    <None Include="Disk\Minecraft\MinecraftLevel.cs" />
-    <None Include="Disk\Minecraft\MinecraftLevelImpl.cs" />
-    <None Include="Disk\Minecraft\RegionFile.cs" />
-    <None Include="Disk\Tychaia\TerrainOctree.cs" />
-    <None Include="Disk\Tychaia\TychaiaLevel.cs" />
     <None Include="Game.ico" />
     <None Include="GameThumbnail.png" />
-    <None Include="Legacy\Elements\Region.cs" />
-    <None Include="Legacy\Elements\World.cs" />
-    <None Include="Legacy\IsometricWorldManager.cs" />
-    <None Include="Legacy\Tiles\DirtTile.cs" />
-    <None Include="Legacy\Tiles\GrassLeafTile.cs" />
-    <None Include="Legacy\Tiles\GrassTile.cs" />
-    <None Include="Legacy\Tiles\LavaTile.cs" />
-    <None Include="Legacy\Tiles\LeafGreyTile.cs" />
-    <None Include="Legacy\Tiles\LeafTile.cs" />
-    <None Include="Legacy\Tiles\SandGrassTile.cs" />
-    <None Include="Legacy\Tiles\SandTile.cs" />
-    <None Include="Legacy\Tiles\SnowTile.cs" />
-    <None Include="Legacy\Tiles\StoneTile.cs" />
-    <None Include="Legacy\Tiles\TrunkTile.cs" />
-    <None Include="Legacy\Tiles\WaterTile.cs" />
-    <None Include="Legacy\TitleButton.cs" />
     <None Include="packages.config" />
     <None Include="Profiling\TychaiaProfilerEntityUtil.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
