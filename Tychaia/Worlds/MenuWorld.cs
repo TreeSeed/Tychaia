@@ -107,16 +107,6 @@ namespace Tychaia
                 new Vector2(10, 10), 
                 this.m_TextureAtlas.TextureAtlas);
 #endif
-
-            if (this.AssetManager != null && this.AssetManager.IsRemoting)
-            {
-                this.m_2DRenderUtilities.RenderText(
-                    renderContext,
-                    new Vector2(gameContext.Window.ClientBounds.Center.X, 10),
-                    "Asset Manager: " + this.AssetManager.Status,
-                    this.m_DefaultFont,
-                    HorizontalAlignment.Center);
-            }
         }
 
         public void Update(IGameContext gameContext, IUpdateContext updateContext)

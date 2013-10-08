@@ -46,28 +46,34 @@ namespace Tychaia
             var mappings = new Dictionary<string, Rectangle>();
             var renderTarget = this.m_RenderTargetFactory.Create(graphicsDevice, (int)size.X, (int)size.Y);
 
-            var x = 0;
-            var y = 0;
-            graphicsDevice.SetRenderTarget(renderTarget);
-            graphicsDevice.Clear(Color.Transparent);
-            
-            using (var spriteBatch = new SpriteBatch(graphicsDevice))
+            try
             {
-                spriteBatch.Begin();
+                var x = 0;
+                var y = 0;
+                graphicsDevice.SetRenderTarget(renderTarget);
+                graphicsDevice.Clear(Color.Transparent);
                 
-                foreach (var texture in textureArray)
+                using (var spriteBatch = new SpriteBatch(graphicsDevice))
                 {
-                    spriteBatch.Draw(texture.Texture, new Vector2(x, y));
-                    mappings.Add(texture.Name, new Rectangle(x, y, 16, 16));
-                    x += 16;
-                    if (x >= size.X)
+                    spriteBatch.Begin();
+                    
+                    foreach (var texture in textureArray)
                     {
-                        x = 0;
-                        y += 16;
+                        spriteBatch.Draw(texture.Texture, new Vector2(x, y));
+                        mappings.Add(texture.Name, new Rectangle(x, y, 16, 16));
+                        x += 16;
+                        if (x >= size.X)
+                        {
+                            x = 0;
+                            y += 16;
+                        }
                     }
+                    
+                    spriteBatch.End();
                 }
-                
-                spriteBatch.End();
+            }
+            catch (InvalidOperationException)
+            {
             }
             
             graphicsDevice.SetRenderTarget(null);

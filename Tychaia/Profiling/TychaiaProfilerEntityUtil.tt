@@ -11,7 +11,8 @@
         new Monitor("FPS", "int", "Yellow", "FPS"),
         new Monitor("FunctionCalls", "int", "Green"),
         new Monitor("LastFrameLength", "double", "White", "ms"),
-        new Monitor("VirtualMemory", "long", "Magenta", "MB")
+        new Monitor("VirtualMemory", "long", "Magenta", "MB"),
+        new Monitor("NetworkOps", "int", "Cyan")
     };
 #>
 // ====================================================================== //

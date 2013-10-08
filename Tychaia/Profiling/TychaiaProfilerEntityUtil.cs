@@ -21,6 +21,7 @@ namespace Tychaia
         public int FunctionCalls;
         public double LastFrameLength;
         public long VirtualMemory;
+        public int NetworkOps;
     }
     
     public class TychaiaProfilerEntityUtil
@@ -40,11 +41,13 @@ namespace Tychaia
             var lastFunctionCalls = info.Select(x => x.FunctionCalls).Last();
             var lastLastFrameLength = info.Select(x => x.LastFrameLength).Last();
             var lastVirtualMemory = info.Select(x => x.VirtualMemory).Last();
+            var lastNetworkOps = info.Select(x => x.NetworkOps).Last();
             drawMaximum(0, lastEntities.ToString(CultureInfo.InvariantCulture) + "", Color.Orange);
-            drawMaximum(60, lastFPS.ToString(CultureInfo.InvariantCulture) + "FPS", Color.Yellow);
-            drawMaximum(120, lastFunctionCalls.ToString(CultureInfo.InvariantCulture) + "", Color.Green);
-            drawMaximum(180, lastLastFrameLength.ToString(CultureInfo.InvariantCulture) + "ms", Color.White);
-            drawMaximum(240, lastVirtualMemory.ToString(CultureInfo.InvariantCulture) + "MB", Color.Magenta);
+            drawMaximum(50, lastFPS.ToString(CultureInfo.InvariantCulture) + "FPS", Color.Yellow);
+            drawMaximum(100, lastFunctionCalls.ToString(CultureInfo.InvariantCulture) + "", Color.Green);
+            drawMaximum(150, lastLastFrameLength.ToString(CultureInfo.InvariantCulture) + "ms", Color.White);
+            drawMaximum(200, lastVirtualMemory.ToString(CultureInfo.InvariantCulture) + "MB", Color.Magenta);
+            drawMaximum(250, lastNetworkOps.ToString(CultureInfo.InvariantCulture) + "", Color.Cyan);
         }
     
         public void RenderLines(IGameContext gameContext, List<FrameProfileInfo> info)
@@ -81,6 +84,8 @@ namespace Tychaia
             var lineLastFrameLength = new VertexPositionColor[info.Count - 1];
             var maximumVirtualMemory = info.Select(x => x.VirtualMemory).Max();
             var lineVirtualMemory = new VertexPositionColor[info.Count - 1];
+            var maximumNetworkOps = info.Select(x => x.NetworkOps).Max();
+            var lineNetworkOps = new VertexPositionColor[info.Count - 1];
             var sixteenMillisecondsLine = new VertexPositionColor[info.Count - 1];
             var lineStripIndices = new short[info.Count - 1];
             for (short i = 0; i < info.Count - 1; i++)
@@ -91,6 +96,7 @@ namespace Tychaia
                 addToLine(i, x => x.FunctionCalls, maximumFunctionCalls, lineFunctionCalls, Color.Green, 8);
                 addToLine(i, x => x.LastFrameLength, maximumLastFrameLength, lineLastFrameLength, Color.White, 12);
                 addToLine(i, x => x.VirtualMemory, maximumVirtualMemory, lineVirtualMemory, Color.Magenta, 16);
+                addToLine(i, x => x.NetworkOps, maximumNetworkOps, lineNetworkOps, Color.Cyan, 20);
                 addToLine(i, x => 1000.0 / 60.0, maximumLastFrameLength, sixteenMillisecondsLine, Color.Red, 20);
             }
             renderLine(lineEntities, lineStripIndices);
@@ -98,6 +104,7 @@ namespace Tychaia
             renderLine(lineFunctionCalls, lineStripIndices);
             renderLine(lineLastFrameLength, lineStripIndices);
             renderLine(lineVirtualMemory, lineStripIndices);
+            renderLine(lineNetworkOps, lineStripIndices);
             renderLine(sixteenMillisecondsLine, lineStripIndices);
         }
     }

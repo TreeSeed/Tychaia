@@ -6,7 +6,6 @@
 using System;
 using System.Windows.Forms;
 using Ninject;
-using Process4.Attributes;
 using Protogame;
 using ProtogameAssetManager;
 using Tychaia.Globals;
@@ -14,7 +13,6 @@ using Tychaia.ProceduralGeneration;
 
 namespace Tychaia
 {
-    [Distributed(Architecture.ServerClient, Caching.PushOnChange)]
     internal static class Program
     {
         private static void Main(string[] args)

@@ -20,7 +20,8 @@
     <Reference Include="Tychaia.Content" />
     <Reference Include="Tychaia.Threading" />
     <Reference Include="MonoGame" />
-    <Reference Include="Dx" />
+    <Reference Include="Dx.Runtime" />
+    <Reference Include="Dx.Process" />
     <Reference Include="Ninject" />
     <Reference Include="protobuf-net" />
   </References>
