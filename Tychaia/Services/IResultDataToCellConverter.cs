@@ -4,10 +4,12 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using Tychaia.Data;
+using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
 
 namespace Tychaia
 {
+    [NoProfile]
     public interface IResultDataToCellConverter
     {
         Cell ConvertToCell(ResultData resultData);

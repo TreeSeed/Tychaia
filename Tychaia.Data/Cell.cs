@@ -8,7 +8,7 @@ using ProtoBuf;
 namespace Tychaia.Data
 {
     [ProtoContract]
-    public class Cell
+    public struct Cell
     {
         [ProtoMember(1)]
         public string BlockAssetName;
