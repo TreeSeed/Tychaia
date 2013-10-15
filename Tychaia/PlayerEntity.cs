@@ -18,13 +18,18 @@ namespace Tychaia
         private readonly TextureAsset m_PlayerTexture;
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
         private readonly IConsole m_Console;
+        private readonly IFilteredFeatures m_FilteredFeatures;
+
+        private double m_DemoTicks = 0;
 
         public PlayerEntity(
             IAssetManagerProvider assetManagerProvider,
             I3DRenderUtilities threedRenderUtilities,
             IChunkSizePolicy chunkSizePolicy,
-            IConsole console)
+            IConsole console,
+            IFilteredFeatures filteredFeatures)
         {
+            this.m_FilteredFeatures = filteredFeatures;
             this.m_3DRenderUtilities = threedRenderUtilities;
             this.m_PlayerTexture = assetManagerProvider.GetAssetManager().Get<TextureAsset>("chars.player.Player");
             this.m_ChunkSizePolicy = chunkSizePolicy;
@@ -76,6 +81,13 @@ namespace Tychaia
             if (state.IsKeyDown(Keys.K))
             {
                 this.Y -= 4f;
+            }
+            
+            if (this.m_FilteredFeatures.IsEnabled(Feature.DemoMovement))
+            {
+                var t = Math.Cos(m_DemoTicks++ / 10000);
+                this.Z += (float)t * 4;
+                this.X += (float)t * 4;
             }
             
             var v = new Vector2(

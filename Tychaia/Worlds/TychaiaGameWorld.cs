@@ -55,7 +55,8 @@ namespace Tychaia
                 assetManagerProvider,
                 this.m_3DRenderUtilities,
                 this.m_ChunkSizePolicy,
-                this.m_Console);
+                this.m_Console,
+                this.m_FilteredFeatures);
             this.m_InventoryUIEntity = gameUIFactory.CreateInventoryUIEntity();
             this.Entities = new List<IEntity> { this.m_ChunkManagerEntity, this.m_Player, this.m_InventoryUIEntity };
         }

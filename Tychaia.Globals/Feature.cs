@@ -18,6 +18,7 @@ namespace Tychaia.Globals
         DebugOctreeLookup,
         RenderCellSides,
         RenderCellTops,
-        RenderWireframe
+        RenderWireframe,
+        DemoMovement
     }
 }
