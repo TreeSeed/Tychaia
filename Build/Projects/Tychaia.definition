@@ -19,6 +19,7 @@
     <Reference Include="Tychaia.ProceduralGeneration" />
     <Reference Include="Tychaia.Content" />
     <Reference Include="Tychaia.Threading" />
+    <Reference Include="Tychaia.Network" />
     <Reference Include="MonoGame" />
     <Reference Include="Dx.Runtime" />
     <Reference Include="Dx.Process" />

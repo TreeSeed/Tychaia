@@ -10,6 +10,7 @@ using Protogame;
 using ProtogameAssetManager;
 using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
+using Tychaia.Network;
 
 namespace Tychaia
 {
@@ -17,6 +18,17 @@ namespace Tychaia
     {
         private static void Main(string[] args)
         {
+            var isServer = false;
+            var options = new[]
+            {
+                new ExtraOption
+                {
+                    Prototype = "server",
+                    Description = "Whether Tychaia should run as a console-only server.",
+                    Action = x => isServer = true
+                }
+            };
+        
             var kernel = new StandardKernel();
             kernel.Load<Protogame3DIoCModule>();
             kernel.Load<ProtogameAssetIoCModule>();
@@ -29,7 +41,14 @@ namespace Tychaia
             kernel.Load<TychaiaDiskIoCModule>();
             kernel.Load<TychaiaProfilingIoCModule>();
             kernel.Load<TychaiaProceduralGenerationIoCModule>();
-            AssetManagerClient.AcceptArgumentsAndSetup<LocalAssetManagerProvider>(kernel, args);
+            AssetManagerClient.AcceptArgumentsAndSetup<LocalAssetManagerProvider>(kernel, args, options);
+
+            if (isServer)
+            {
+                var server = new TychaiaServer();
+                server.Run();
+                return;
+            }
 
             using (var game = new TychaiaGame(kernel))
             {

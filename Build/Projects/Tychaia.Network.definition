@@ -12,5 +12,6 @@
   </References>
   <Files>
     <Compile Include="TychaiaAssetManagerNetwork.cs" />
+    <Compile Include="TychaiaServer.cs" />
   </Files>
 </Project>

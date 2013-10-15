@@ -5,11 +5,13 @@
 // ====================================================================== //
 using System.Collections.Generic;
 using System.Linq;
+using Dx.Runtime;
 
 namespace Tychaia.Game
 {
     public class Inventory
     {
+        [Synchronised]
         private List<Item> m_Items = new List<Item>();
 
         public IEnumerable<Item> AllItems
