@@ -10,7 +10,6 @@
     <Reference Include="MonoGame" />
   </References>
   <Files>
-    <Compile Include="ResultDataSerialiserTests.cs" />
     <Compile Include="ViewportTests.cs" />
     <None Include="packages.config" />
   </Files>

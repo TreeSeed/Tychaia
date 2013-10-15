@@ -19,7 +19,6 @@ namespace Tychaia
         private readonly I2DRenderUtilities m_2DRenderUtilities;
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
         private readonly IGenerationPlanner m_GenerationPlanner;
-        private readonly IResultDataToCellConverter m_FlowBundleToCellConverter;
 
         private readonly FontAsset m_DefaultFont;
         private readonly List<IEntity> m_Entities;
@@ -32,14 +31,12 @@ namespace Tychaia
             IChunkSizePolicy chunkSizePolicy,
             IGenerationPlanner generationPlanner,
             IGeneratorResolver generatorResolver,
-            IResultDataToCellConverter flowBundleToCellConverter,
             ILevel level)
         {
             this.m_AssetManager = assetManagerProvider.GetAssetManager();
             this.m_2DRenderUtilities = twodRenderUtilites;
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_GenerationPlanner = generationPlanner;
-            this.m_FlowBundleToCellConverter = flowBundleToCellConverter;
 
             this.m_DefaultFont = this.m_AssetManager.Get<FontAsset>("font.Default");
             this.m_Entities = new List<IEntity>();
@@ -98,7 +95,7 @@ namespace Tychaia
                     for (var x = 0; x < e.Region.GeneratedData.GetLength(0); x++)
                     for (var y = 0; y < e.Region.GeneratedData.GetLength(1); y++)
                     for (var z = 0; z < e.Region.GeneratedData.GetLength(2); z++)
-                        cells[x, y, z] = this.m_FlowBundleToCellConverter.ConvertToCell(e.Region.GeneratedData[x, y, z]);
+                        cells[x, y, z] = e.Region.GeneratedData[x, y, z];
                     this.m_Level.SaveChunk(
                         e.Region.X * this.m_ChunkSizePolicy.CellVoxelWidth,
                         e.Region.Y * this.m_ChunkSizePolicy.CellVoxelHeight,

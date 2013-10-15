@@ -4,6 +4,7 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using System;
+using Tychaia.Data;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -11,12 +12,10 @@ namespace Tychaia.ProceduralGeneration
     {
         private int[][] m_52_7744Int;
         private int[] m_278784Int;
-        private ResultData[] m_278784ResultData;
-        private BlockInfo[] m_278784BlockInfo;
+        private Cell[] m_278784Cell;
         private int m_52_Counter;
         private bool m_278784Int_Used;
-        private bool m_278784ResultData_Used;
-        private bool m_278784BlockInfo_Used;
+        private bool m_278784Cell_Used;
 
         public PredeterminedPool()
         {
@@ -24,8 +23,7 @@ namespace Tychaia.ProceduralGeneration
             for (var i = 0; i < this.m_52_7744Int.Length; i++)
                 this.m_52_7744Int[i] = new int[7744];
             this.m_278784Int = new int[278784];
-            this.m_278784BlockInfo = new BlockInfo[278784];
-            this.m_278784ResultData = new ResultData[278784];
+            this.m_278784Cell = new Cell[278784];
             this.Begin();
         }
 
@@ -33,8 +31,7 @@ namespace Tychaia.ProceduralGeneration
         {
             this.m_52_Counter = 0;
             this.m_278784Int_Used = false;
-            this.m_278784ResultData_Used = false;
-            this.m_278784BlockInfo_Used = false;
+            this.m_278784Cell_Used = false;
         }
 
         public dynamic Get(Type type, int size)
@@ -54,6 +51,7 @@ namespace Tychaia.ProceduralGeneration
                         this.m_278784Int_Used = true;
                         return this.m_278784Int;
                     }
+                    
                     Console.WriteLine("WARNING: Predetermined pool did not have another 278784 int array.");
                 }
                 else
@@ -61,38 +59,24 @@ namespace Tychaia.ProceduralGeneration
                     Console.WriteLine("WARNING: Predetermined pool was asked for non-standard int array size.");
                 }
             }
-            else if (type == typeof(BlockInfo))
+            else if (type == typeof(Cell))
             {
                 if (size == 278784)
                 {
-                    if (!this.m_278784BlockInfo_Used)
+                    if (!this.m_278784Cell_Used)
                     {
-                        this.m_278784BlockInfo_Used = true;
-                        return this.m_278784BlockInfo;
+                        this.m_278784Cell_Used = true;
+                        return this.m_278784Cell;
                     }
-                    Console.WriteLine("WARNING: Predetermined pool did not have another 278784 block info array.");
+                    
+                    Console.WriteLine("WARNING: Predetermined pool did not have another 278784 cell array.");
                 }
                 else
                 {
-                    Console.WriteLine("WARNING: Predetermined pool was asked for non-standard BlockInfo array size.");
+                    Console.WriteLine("WARNING: Predetermined pool was asked for non-standard Cell array size.");
                 }
             }
-            else if (type == typeof(ResultData))
-            {
-                if (size == 278784)
-                {
-                    if (!this.m_278784ResultData_Used)
-                    {
-                        this.m_278784ResultData_Used = true;
-                        return this.m_278784ResultData;
-                    }
-                    Console.WriteLine("WARNING: Predetermined pool did not have another 278784 ResultData array.");
-                }
-                else
-                {
-                    Console.WriteLine("WARNING: Predetermined pool was asked for non-standard ResultData array size.");
-                }
-            }
+            
             return Activator.CreateInstance(type, size);
         }
 
@@ -105,4 +89,3 @@ namespace Tychaia.ProceduralGeneration
         }
     }
 }
-

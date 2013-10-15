@@ -74,7 +74,6 @@
     <Compile Include="Biomes\SnowBiome.cs" />
     <Compile Include="Biomes\TropicalforestBiome.cs" />
     <Compile Include="Biomes\WaterBiome.cs" />
-    <Compile Include="Blocks\BlockInfo.cs" />
     <Compile Include="Buildings\Building.cs" />
     <Compile Include="Compiler\AlgorithmRefactorer.cs" />
     <Compile Include="Compiler\ArrayPool.cs" />
@@ -125,7 +124,6 @@
     <Compile Include="Pooling\IPool.cs" />
     <Compile Include="Pooling\PredeterminedPool.cs" />
     <Compile Include="Professions\Professions.cs" />
-    <Compile Include="ResultData.cs" />
     <Compile Include="RuntimeLayer.cs" />
     <Compile Include="StorageAccess.cs" />
     <Compile Include="StorageLayer.cs" />

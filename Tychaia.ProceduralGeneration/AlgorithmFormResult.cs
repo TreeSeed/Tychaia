@@ -5,6 +5,7 @@
 // ====================================================================== //
 using System.Drawing;
 using System.Runtime.Serialization;
+using Tychaia.Data;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -12,7 +13,7 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerMajorCategory(FlowMajorCategory.Undefined)]
     [FlowDesignerCategory(FlowCategory.General)]
     [FlowDesignerName("Form Result")]
-    public class AlgorithmFormResult : Algorithm<BlockInfo, int, ResultData>
+    public class AlgorithmFormResult : Algorithm<Cell, int, Cell>
     {
         public override string[] InputNames
         {
@@ -31,18 +32,26 @@ namespace Tychaia.ProceduralGeneration
 
         public override void ProcessCell(
             IRuntimeContext context,
-            BlockInfo[] blockInfo,
+            Cell[] blockInfo,
             int[] heightMap,
-            ResultData[] output,
-            long x, long y, long z,
-            int i, int j, int k,
-            int width, int height, int depth,
-            int ox, int oy, int oz)
+            Cell[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
-            output[i + ox + (j + oy) * width + (k + oz) * width * height].BlockInfo =
-                blockInfo[i + ox + (j + oy) * width + (k + oz) * width * height];
-            output[i + ox + (j + oy) * width + (k + oz) * width * height].HeightMap =
-                heightMap[i + ox + (j + oy) * width];
+            output[i + ox + ((j + oy) * width) + ((k + oz) * width * height)].BlockAssetName =
+                blockInfo[i + ox + ((j + oy) * width) + ((k + oz) * width * height)].BlockAssetName;
+            output[i + ox + ((j + oy) * width) + ((k + oz) * width * height)].HeightMap =
+                heightMap[i + ox + ((j + oy) * width)];
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
