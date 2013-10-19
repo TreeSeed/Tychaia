@@ -697,13 +697,13 @@ namespace Tychaia.ProceduralGeneration
                 maxOffsetY,
                 maxOffsetZ,
                 (this.m_Algorithm.InputWidthAtHalfSize[idx]
-                    ? (childOffsetX / 2) + this.m_Algorithm.RequiredXBorder[idx]
+                    ? ((childOffsetX + 1) / 2) + this.m_Algorithm.RequiredXBorder[idx]
                     : childOffsetX + this.m_Algorithm.RequiredXBorder[idx]),
                 (this.m_Algorithm.InputHeightAtHalfSize[idx]
-                    ? (childOffsetY / 2) + this.m_Algorithm.RequiredYBorder[idx]
+                    ? ((childOffsetY + 1) / 2) + this.m_Algorithm.RequiredYBorder[idx]
                     : childOffsetY + this.m_Algorithm.RequiredYBorder[idx]),
                 (this.m_Algorithm.InputDepthAtHalfSize[idx]
-                    ? (childOffsetZ / 2) + this.m_Algorithm.RequiredZBorder[idx]
+                    ? ((childOffsetZ + 1) / 2) + this.m_Algorithm.RequiredZBorder[idx]
                     : childOffsetZ + this.m_Algorithm.RequiredZBorder[idx]),
                 ref computations);
         }
