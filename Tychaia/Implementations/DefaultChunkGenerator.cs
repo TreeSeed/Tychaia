@@ -62,7 +62,10 @@ namespace Tychaia
                 }
 
                 // Generate the actual data using the procedural generation library.
-                var blocks = (Cell[])this.m_Generator.GenerateData(
+                var blocks = new BlockAsset[this.m_ChunkSizePolicy.ChunkCellWidth,
+                    this.m_ChunkSizePolicy.ChunkCellHeight,
+                    this.m_ChunkSizePolicy.ChunkCellDepth];
+                var cells = (Cell[])this.m_Generator.GenerateData(
                     chunk.X / this.m_ChunkSizePolicy.CellVoxelWidth,
                     chunk.Z / this.m_ChunkSizePolicy.CellVoxelDepth,
                     chunk.Y / this.m_ChunkSizePolicy.CellVoxelHeight,
@@ -74,13 +77,13 @@ namespace Tychaia
                     for (var y = 0; y < this.m_ChunkSizePolicy.ChunkCellHeight; y++)
                         for (var z = 0; z < this.m_ChunkSizePolicy.ChunkCellDepth; z++)
                         {
-                            var info = blocks[x +
+                            var info = cells[x +
                                 (z * this.m_ChunkSizePolicy.ChunkCellWidth) +
                                 (y * this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.ChunkCellHeight)];
                             chunk.Cells[x, y, z] = info;
                             if (info.BlockAssetName == null)
                                 continue;
-                            chunk.Blocks[x, y, z] = this.m_AssetManager.Get<BlockAsset>(info.BlockAssetName);
+                            blocks[x, y, z] = this.m_AssetManager.Get<BlockAsset>(info.BlockAssetName);
                         }
 
                 // Now also generate the vertexes / indices in this thread.
@@ -90,7 +93,7 @@ namespace Tychaia
                     for (var y = 0; y < this.m_ChunkSizePolicy.ChunkCellHeight; y++)
                         for (var z = 0; z < this.m_ChunkSizePolicy.ChunkCellDepth; z++)
                         {
-                            var block = chunk.Blocks[x, y, z];
+                            var block = blocks[x, y, z];
                             if (block == null)
                                 continue;
                             var xi = x;
@@ -108,7 +111,7 @@ namespace Tychaia
                                         yi + yy >= this.m_ChunkSizePolicy.ChunkCellHeight ||
                                         zi + zz >= this.m_ChunkSizePolicy.ChunkCellDepth)
                                         return null;
-                                    return chunk.Blocks[xi + xx, yi + yy, zi + zz];
+                                    return blocks[xi + xx, yi + yy, zi + zz];
                                 },
                                 (xx, yy, zz, uvx, uvy) =>
                                 {

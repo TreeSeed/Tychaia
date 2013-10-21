@@ -22,13 +22,8 @@ namespace Tychaia
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
         private readonly IFilteredFeatures m_FilteredFeatures;
         private readonly ChunkOctree m_Octree;
-        private readonly TextureAtlasAsset m_TextureAtlasAsset;
-        private IAssetManager m_AssetManager;
         private IChunkGenerator m_ChunkGenerator;
         private IFilteredConsole m_FilteredConsole;
-
-        private VertexBuffer m_VertexBuffer;
-        private IndexBuffer m_IndexBuffer;
 
         public RuntimeChunk(
             ILevel level,
@@ -56,17 +51,13 @@ namespace Tychaia
             this.m_FilteredConsole = filteredConsole;
             this.m_FilteredFeatures = filteredFeatures;
             this.m_ChunkFactory = chunkFactory;
-            this.m_AssetManager = assetManagerProvider.GetAssetManager();
-            this.m_TextureAtlasAsset = this.m_AssetManager.Get<TextureAtlasAsset>("atlas");
+            this.AssetManager = assetManagerProvider.GetAssetManager();
             this.m_ChunkGenerator = chunkGenerator;
             this.X = x;
             this.Y = y;
             this.Z = z;
             if (this.m_Octree != null)
                 this.m_Octree.Set(this);
-            this.Blocks = new BlockAsset[this.m_ChunkSizePolicy.ChunkCellWidth,
-                this.m_ChunkSizePolicy.ChunkCellHeight,
-                this.m_ChunkSizePolicy.ChunkCellDepth];
             this.Cells = new Cell[this.m_ChunkSizePolicy.ChunkCellWidth,
                 this.m_ChunkSizePolicy.ChunkCellHeight,
                 this.m_ChunkSizePolicy.ChunkCellDepth];
@@ -79,9 +70,8 @@ namespace Tychaia
         }
 
         public ILevel Level { get; private set; }
-        public BlockAsset[,,] Blocks { get; set; }
         public Cell[,,] Cells { get; set; }
-        public bool GraphicsEmpty { get; private set; }
+        public bool GraphicsEmpty { get; protected set; }
         public bool Generated { get; set; }
         public VertexPositionTexture[] GeneratedVertexes { get; set; }
         public int[] GeneratedIndices { get; set; }
@@ -235,70 +225,27 @@ namespace Tychaia
         }
 
         #endregion
+        
+        protected IAssetManager AssetManager { get; private set; }
+        protected VertexBuffer VertexBuffer { get; set; }
+        protected IndexBuffer IndexBuffer { get; set; }
+        
+        public virtual void Render(IGameContext gameContext, IRenderContext renderContext)
+        {
+            // Overridden in ClientRuntimeChunk.
+        }
 
         public void Dispose()
         {
-            if (this.m_VertexBuffer != null)
-                this.m_VertexBuffer.Dispose();
-            if (this.m_IndexBuffer != null)
-                this.m_IndexBuffer.Dispose();
+            if (this.VertexBuffer != null)
+                this.VertexBuffer.Dispose();
+            if (this.IndexBuffer != null)
+                this.IndexBuffer.Dispose();
             this.m_FilteredConsole = null;
-            this.m_AssetManager = null;
+            this.AssetManager = null;
             this.m_ChunkGenerator = null;
-            this.Blocks = null;
             this.Cells = null;
             this.Generated = false;
-        }
-
-        public void Render(IGameContext gameContext, IRenderContext renderContext)
-        {
-            if (!renderContext.Is3DContext)
-                return;
-
-            if (this.GraphicsEmpty)
-                return;
-
-            if (this.Generated && this.m_VertexBuffer == null && this.m_IndexBuffer == null)
-                this.CalculateBuffers(renderContext);
-
-            if (this.m_VertexBuffer != null && this.m_IndexBuffer != null)
-            {
-                renderContext.EnableTextures();
-                renderContext.SetActiveTexture(this.m_TextureAtlasAsset.TextureAtlas.Texture);
-                renderContext.GraphicsDevice.Indices = this.m_IndexBuffer;
-                renderContext.GraphicsDevice.SetVertexBuffer(this.m_VertexBuffer);
-                renderContext.World = Matrix.CreateScale(32);
-                foreach (var pass in renderContext.Effect.CurrentTechnique.Passes)
-                {
-                    pass.Apply();
-                    renderContext.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, this.m_VertexBuffer.VertexCount, 0, this.m_IndexBuffer.IndexCount / 3);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Calculates the vertex and index buffers for rendering.
-        /// </summary>
-        public void CalculateBuffers(IRenderContext renderContext)
-        {
-            if (this.GeneratedVertexes.Length == 0)
-            {
-                this.GraphicsEmpty = true;
-                return;
-            }
-            
-            this.m_VertexBuffer = new VertexBuffer(
-                renderContext.GraphicsDevice,
-                VertexPositionTexture.VertexDeclaration,
-                this.GeneratedVertexes.Length,
-                BufferUsage.WriteOnly);
-            this.m_VertexBuffer.SetData(this.GeneratedVertexes);
-            this.m_IndexBuffer = new IndexBuffer(
-                renderContext.GraphicsDevice,
-                typeof(int),
-                this.GeneratedIndices.Length,
-                BufferUsage.WriteOnly);
-            this.m_IndexBuffer.SetData(this.GeneratedIndices);
         }
 
         /// <summary>

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="Tychaia.Runtime" Path="Tychaia.Runtime" Type="Library">
+  <References>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Protogame" />
+    <Reference Include="Tychaia.Globals" />
+    <Reference Include="Tychaia.Game" />
+    <Reference Include="Tychaia.Data" />
+    <Reference Include="Tychaia.Data.Serializer" />
+    <Reference Include="MonoGame" />
+    <Reference Include="Dx.Runtime" />
+    <Reference Include="Dx.Process" />
+    <Reference Include="Ninject" />
+    <Reference Include="protobuf-net" />
+  </References>
+  <Properties>
+    <Property Name="PostProcessWithDx" Value="True" />
+  </Properties>
+  <Files>
+    <Compile Include="ChunkManagement\ChunkOctree.cs" />
+    <Compile Include="ChunkManagement\IChunkFactory.cs" />
+    <Compile Include="ChunkManagement\RuntimeChunk.cs" />
+    <Compile Include="Disk\CombinedLevelAPI.cs" />
+    <Compile Include="Disk\ILevel.cs" />
+    <Compile Include="Disk\ILevelAPI.cs" />
+    <Compile Include="Disk\ILevelAPIImpl.cs" />
+    <Compile Include="Disk\Tychaia\ITychaiaLevelFactory.cs" />
+    <Compile Include="Disk\Tychaia\SimpleLevel.cs" />
+    <Compile Include="Disk\Tychaia\TychaiaLevelAPIImpl.cs" />
+    <Compile Include="Disk\TychaiaDiskIoCModule.cs" />
+    <Compile Include="Services\IChunkGenerator.cs" />
+    <Compile Include="Services\IDebugCubeRenderer.cs" />
+    <Compile Include="Services\IFrustumChunkCache.cs" />
+    <Compile Include="Services\IPredeterminedChunkPositions.cs" />
+    <Compile Include="Services\IRenderTargetFactory.cs" />
+  </Files>
+</Project>

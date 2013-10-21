@@ -9,6 +9,7 @@
     <Reference Include="Ninject" />
     <Reference Include="Dx.Runtime" />
     <Reference Include="Dx.Process" />
+    <Reference Include="Tychaia.Runtime" />
   </References>
   <Files>
     <Compile Include="TychaiaAssetManagerNetwork.cs" />
