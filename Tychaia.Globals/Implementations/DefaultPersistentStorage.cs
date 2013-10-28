@@ -52,7 +52,7 @@ namespace Tychaia.Globals
             get { return new DirectoryInfo(this.GetSavePath()); }
         }
         
-        private string GetBasePath()
+        protected virtual string GetBasePath()
         {
             // Look under %appdata%/.tychaia.
             var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);

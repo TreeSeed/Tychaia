@@ -3,12 +3,16 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-namespace Tychaia
+using Ninject.Modules;
+using Tychaia.Globals;
+
+namespace Tychaia.Network
 {
-    public interface IWorldFactory
+    public class TychaiaServerIoCModule : NinjectModule
     {
-        TychaiaGameWorld CreateTychaiaGameWorld(ILevel level);
-        PregenerateWorld CreatePregenerateWorld(ILevel level);
-        ConnectWorld CreateConnectWorld();
+        public override void Load()
+        {
+            this.Kernel.Rebind<IPersistentStorage>().To<ServerPersistentStorage>().InSingletonScope();
+        }
     }
 }

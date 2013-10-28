@@ -92,6 +92,7 @@
     <Compile Include="TychaiaIoCModule.cs" />
     <Compile Include="TychaiaSkin.cs" />
     <Compile Include="TychaiaWorldManager.cs" />
+    <Compile Include="Worlds\ConnectWorld.cs" />
     <Compile Include="Worlds\LoadWorld.cs" />
     <Compile Include="Worlds\MainMenu\BackgroundCubeEntity.cs" />
     <Compile Include="Worlds\MainMenu\IBackgroundCubeEntityFactory.cs" />

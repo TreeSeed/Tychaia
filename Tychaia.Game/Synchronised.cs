@@ -1,3 +1,8 @@
+// ====================================================================== //
+// This source code is licensed in accordance with the licensing outlined //
+// on the main Tychaia website (www.tychaia.com).  Changes to the         //
+// license on the website apply retroactively.                            //
+// ====================================================================== //
 using System;
 using Dx.Runtime;
 
@@ -9,6 +14,16 @@ namespace Tychaia.Game
         private ILocalNode m_Node;
         private string m_Name;
         private bool m_Authoritive;
+        
+        public string SynchronisationName
+        {
+            get { return this.m_Name; }
+        }
+        
+        public bool SynchronisationIsAuthoritive
+        {
+            get { return this.m_Authoritive; }
+        }
     
         public void Connect(
             ILocalNode node,
@@ -34,4 +49,3 @@ namespace Tychaia.Game
         }
     }
 }
-

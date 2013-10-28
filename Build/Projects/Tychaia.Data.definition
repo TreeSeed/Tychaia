@@ -13,6 +13,8 @@
   <Files>
     <Compile Include="Cell.cs" />
     <Compile Include="Chunk.cs" />
+    <Compile Include="InitialGameState.cs" />
+    <Compile Include="TCPMessage.cs" />
     <Compile Include="Vertex.cs" />
   </Files>
 </Project>

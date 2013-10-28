@@ -3,12 +3,18 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-namespace Tychaia
+using ProtoBuf;
+
+namespace Tychaia.Data
 {
-    public interface IWorldFactory
+    [ProtoContract]
+    public class InitialGameState
     {
-        TychaiaGameWorld CreateTychaiaGameWorld(ILevel level);
-        PregenerateWorld CreatePregenerateWorld(ILevel level);
-        ConnectWorld CreateConnectWorld();
+        [ProtoMember(1)]
+        public int Seed;
+        [ProtoMember(2)]
+        public string[] EntityNames;
+        [ProtoMember(3)]
+        public string[] EntityTypes;
     }
 }

@@ -59,7 +59,7 @@ namespace Tychaia
         {
         }
 
-        public void RenderBelow(IGameContext gameContext, IRenderContext renderContext)
+        public virtual void RenderBelow(IGameContext gameContext, IRenderContext renderContext)
         {
             if (renderContext.Is3DContext)
             {
@@ -80,7 +80,7 @@ namespace Tychaia
             }
         }
 
-        public void RenderAbove(IGameContext gameContext, IRenderContext renderContext)
+        public virtual void RenderAbove(IGameContext gameContext, IRenderContext renderContext)
         {
             if (renderContext.Is3DContext)
                 return;
@@ -109,7 +109,7 @@ namespace Tychaia
 #endif
         }
 
-        public void Update(IGameContext gameContext, IUpdateContext updateContext)
+        public virtual void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
             this.GameContext = gameContext;
 
