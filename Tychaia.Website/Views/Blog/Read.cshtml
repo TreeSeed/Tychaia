@@ -35,7 +35,13 @@ else
         )</span>
     </h2>
     <div class="block phame">
-        @Html.Raw(Model.Post.Content)
+        <div class="details">
+            <div class="author">@Model.Post.Author</div>
+            <div class="date">@DateTimeHelper.RenderTimestamp(Model.Post.UNIXDatePublished)</div>
+        </div>
+        <span class="area">
+            @Html.Raw(Model.Post.Content)
+        </span>
     </div>
     <div class="block">
     

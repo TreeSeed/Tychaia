@@ -166,17 +166,38 @@ WriteLiteral("            <a href=\"/feed\">RSS Feed</a>\r\n        )</span>\r\n
 
 
 
-WriteLiteral("    <div class=\"block phame\">\r\n        ");
+WriteLiteral("    <div class=\"block phame\">\r\n        <div class=\"details\">\r\n            <div cl" +
+"ass=\"author\">");
 
 
             
-            #line 38 "..\..\Views\Blog\Read.cshtml"
-   Write(Html.Raw(Model.Post.Content));
+            #line 39 "..\..\Views\Blog\Read.cshtml"
+                           Write(Model.Post.Author);
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n    </div>\r\n");
+WriteLiteral("</div>\r\n            <div class=\"date\">");
+
+
+            
+            #line 40 "..\..\Views\Blog\Read.cshtml"
+                         Write(DateTimeHelper.RenderTimestamp(Model.Post.UNIXDatePublished));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</div>\r\n        </div>\r\n        <span class=\"area\">\r\n            ");
+
+
+            
+            #line 43 "..\..\Views\Blog\Read.cshtml"
+       Write(Html.Raw(Model.Post.Content));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n        </span>\r\n    </div>\r\n");
 
 
 
@@ -202,7 +223,7 @@ WriteLiteral(@"    <div class=""block"">
 
 
             
-            #line 58 "..\..\Views\Blog\Read.cshtml"
+            #line 64 "..\..\Views\Blog\Read.cshtml"
 }
 
             

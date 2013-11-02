@@ -85,12 +85,12 @@ div.block
     background:#fff;
 }
 
-div.block *:first-child, div.block h3
+div.block *:first-child, div.block h3, span.area *:first-child
 {
     margin-top: 0px;
 }
 
-div.block *:last-child
+div.block *:last-child, span.area *:last-child
 {
     margin-bottom: 0px;
 }
