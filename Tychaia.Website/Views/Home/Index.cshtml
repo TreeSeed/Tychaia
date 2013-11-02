@@ -1,6 +1,4 @@
-@* Generator: MvcView *@
-@* VirtualPath: ~/Views/Home/Index.cshtml *@
-@model Tychaia.Website.ViewModels.FeedViewModel
+@model Tychaia.Website.ViewModels.BlogIndexViewModel
 @using Tychaia.Website;
 @{
     ViewBag.Title = "Home";
@@ -39,27 +37,17 @@
     </ul>
 </div>
 <h2>
-    @Model.Feed.Title.Content
-    <span class="actions">(<a href="http://code.redpointsoftware.com.au/phame/blog/feed/1/">Atom Feed</a>)</span>
+    Tychaia Devlog
+    <span class="actions">(<a href="/feed">RSS Feed</a>)</span>
 </h2>
-@foreach (var entry in Model.Feed.Entries)
+@foreach (var post in Model.Posts)
 {
     <div class="block phame">
-        @if (entry.Authors.Count > 0)
-        {
-            var name = @entry.Authors[0].Name;
-            name = name.Substring(name.IndexOf("(") + 1);
-            name = name.Substring(0, name.IndexOf(")"));
-            <div class="details">
-                <div class="author">@name</div>
-                <div class="date">@DateTimeHelper.ToPreformatted(entry.UpdatedOn)</div>
-            </div>
-            <h3>@entry.Title.Content</h3>
-        }
-        else
-        {
-            <h3>@entry.Title.Content</h3>
-        }
-        @Html.Raw(entry.Content.Content)
+        <div class="details">
+            <div class="author">@post.Author</div>
+            <div class="date">@DateTimeHelper.RenderTimestamp(post.UNIXDatePublished)</div>
+        </div>
+        <h3><a href="@post.Uri">@post.Title</a></h3>
+        @Html.Raw(post.Summary)
     </div>
 }

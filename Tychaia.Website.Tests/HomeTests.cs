@@ -20,6 +20,8 @@ namespace Tychaia.Website.Tests
 {
     public class HomeTests
     {
+        #if FALSE
+    
         [Fact]
         public void NullFeedIsPassedThroughFromPhabricator()
         {
@@ -158,6 +160,8 @@ namespace Tychaia.Website.Tests
                 new FeedViewModel { Feed = feed });
             Assert.Contains("Entry Content", html.Text);
         }
+        
+        #endif
     }
 }
 

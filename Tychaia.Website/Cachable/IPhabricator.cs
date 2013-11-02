@@ -3,8 +3,8 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
+using System.Collections.Generic;
 using System.Runtime.Caching;
-using Argotic.Syndication;
 using Phabricator.Conduit;
 using Tychaia.Website.Models;
 
@@ -21,8 +21,7 @@ namespace Tychaia.Website.Cachable
         string ProcessRemarkup(ConduitClient client, string remarkup);
         dynamic GetWikiPage(ConduitClient client, string slug);
         dynamic GetWikiHierarchy(ConduitClient client, string slug);
-        TychaiaTuesdayIssueModel GetTychaiaTuesdayIssue(ConduitClient client, int issue);
-        AtomFeed GetFeed(string id);
+        IEnumerable<BlogPostModel> GetBlogPosts(ConduitClient client);
     }
 }
 

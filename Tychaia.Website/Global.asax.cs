@@ -6,10 +6,8 @@
 using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Routing;
-using System.Web.WebPages;
 using System.Web.WebPages.Scope;
 using Ninject;
-using RazorGenerator.Mvc;
 
 namespace Tychaia.Website
 {
@@ -19,7 +17,7 @@ namespace Tychaia.Website
         {
             kernel.Load<TychaiaWebsiteIoCModule>();
         }
-    
+
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
@@ -31,29 +29,33 @@ namespace Tychaia.Website
 
             routes.MapRoute("Home", "", new { controller = "Home", action = "Index" });
             routes.MapRoute("Download", "download", new { controller = "Download", action = "Index" });
-            routes.MapRoute("Tuesday", "tuesday/{issue}", new { controller = "Tuesday", action = "Index", issue = 0 });
+            routes.MapRoute("Tuesday", "tuesday/{issue}", new { controller = "Blog", action = "Index" });
+            routes.MapRoute("BlogIndex", "blog", new { controller = "Blog", action = "Index", });
+            routes.MapRoute("BlogRead", "blog/{issue}", new { controller = "Blog", action = "Read", issue = 0 });
             routes.MapRoute("Wiki", "w/{*slug}",
                 new { controller = "Wiki", action = "Index", slug = UrlParameter.Optional });
             routes.MapRoute("Cache", "clear-cache", new { controller = "Cache", action = "Index" });
+            routes.MapRoute("Feed", "feed", new { controller = "Feed", action = "Index" });
         }
 
         protected void Application_Start()
         {
-            var engine = new PrecompiledMvcEngine(typeof(MvcApplication).Assembly) {
-                UsePhysicalViewsIfNewer = false,
-                PreemptPhysicalFiles = true
+            /*var engine = new PrecompiledMvcEngine(typeof(MvcApplication).Assembly)
+            {
+                //UsePhysicalViewsIfNewer = false,
+                //PreemptPhysicalFiles = true
             };
 
             ViewEngines.Engines.Insert(0, engine);
 
             // StartPage lookups are done by WebPages. 
-            VirtualPathFactoryManager.RegisterVirtualPathFactory(engine);
-            
+            VirtualPathFactoryManager.RegisterVirtualPathFactory(engine);*/
+
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
-            
+
             var kernel = new StandardKernel();
             this.RegisterIoC(kernel);
 

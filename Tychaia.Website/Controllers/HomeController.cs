@@ -11,21 +11,21 @@ namespace Tychaia.Website.Controllers
 {
     public class HomeController : Controller
     {
-        private IPhabricator m_Phabricator;
+        private readonly IPhabricator m_Phabricator;
+        private readonly IConduitClientProvider m_ConduitClientProvider;
 
-        public HomeController(IPhabricator phabricator)
+        public HomeController(IPhabricator phabricator, IConduitClientProvider conduitClientProvider)
         {
             this.m_Phabricator = phabricator;
+            this.m_ConduitClientProvider = conduitClientProvider;
         }
 
         public ActionResult Index()
         {
-            return View(
-                new FeedViewModel
-                {
-                    Feed = this.m_Phabricator.GetFeed("1"),
-                    PostID = null
-                });
+            var posts = this.m_Phabricator.GetBlogPosts(
+                this.m_ConduitClientProvider.GetConduitClient());
+
+            return View(new BlogIndexViewModel { Posts = posts });
         }
     }
 }

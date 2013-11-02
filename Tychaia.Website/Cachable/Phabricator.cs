@@ -4,15 +4,13 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Caching;
-using Phabricator.Conduit;
 using System.Security.Cryptography;
 using System.Text;
-using System.Collections.Generic;
-using Argotic.Syndication;
+using Phabricator.Conduit;
 using Tychaia.Website.Models;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace Tychaia.Website.Cachable
 {
@@ -59,7 +57,8 @@ namespace Tychaia.Website.Cachable
             var html = RemarkupCache.Get(sha1) as string;
             if (html == null)
             {
-                html = client.Do("remarkup.process", new {
+                html = client.Do("remarkup.process", new
+                {
                     context = "phriction",
                     content = remarkup
                 }).content;
@@ -76,7 +75,8 @@ namespace Tychaia.Website.Cachable
             var page = this.WikiPageCache.Get(slug);
             if (page == null)
             {
-                page = client.Do("phriction.info", new {
+                page = client.Do("phriction.info", new
+                {
                     slug = slug
                 });
                 this.WikiPageCache.Add(
@@ -94,7 +94,8 @@ namespace Tychaia.Website.Cachable
             {
                 try
                 {
-                    hierarchy = client.Do("phriction.hierarchy", new {
+                    hierarchy = client.Do("phriction.hierarchy", new
+                    {
                         slug = slug,
                         depth = 2
                     });
@@ -115,46 +116,99 @@ namespace Tychaia.Website.Cachable
             return hierarchy;
         }
 
-        public TychaiaTuesdayIssueModel GetTychaiaTuesdayIssue(ConduitClient client, int issue)
+        public IEnumerable<BlogPostModel> GetBlogPosts(ConduitClient client)
         {
-            // Doesn't use ConduitClient yet, waiting on feedback to see whether there's a way
-            // to get a specific issue out of Phame.  My concern is that the feed only returns the
-            // last 10 or so items, so if someone tries to visit an ID more than 10 posts ago, we
-            // won't be able to display it :/
-            var feed = this.GetFeed("2");
-            var entries = feed.Entries.ToList();
-            var entry = feed.Entries.FirstOrDefault(
-                x => x.Id.Uri == new Uri("http://code.redpointsoftware.com.au/phame/post/view/" + issue + "/"));
-            int? next = null;
-            int? previous = null;
-            var regex = new Regex("http\\:\\/\\/code.redpointsoftware.com.au\\/phame\\/post\\/view\\/(?<id>[0-9]+)");
-            if (entries.IndexOf(entry) != 0)
-                next = Convert.ToInt32(regex.Match(
-                    entries[entries.IndexOf(entry) - 1].Id.Uri.ToString()).Groups["id"].ToString());
-            if (entries.IndexOf(entry) != entries.Count - 1)
-                previous = Convert.ToInt32(regex.Match(
-                    entries[entries.IndexOf(entry) + 1].Id.Uri.ToString()).Groups["id"].ToString());
-            return new TychaiaTuesdayIssueModel
+            var cachedPosts = this.BlogCache.Get("posts");
+            if (cachedPosts != null)
+                return (IEnumerable<BlogPostModel>)cachedPosts;
+
+            var posts = new List<BlogPostModel>();
+
+            // Get all of the posts.
+            var rawPosts = client.Do("phame.querypost", new
             {
-                Title = entry.Title.Content,
-                Content = entry.Content.Content,
-                Previous = previous,
-                Next = next
-            };
+                blogPHIDs = new string[] { "PHID-BLOG-qvobh7al2y7ji3krp6ki", "PHID-BLOG-7n3gn42p5ty2jlfmpedr" }
+            });
+            foreach (var rawPost in rawPosts)
+            {
+                posts.Add(new BlogPostModel
+                {
+                    ID = Convert.ToInt32(rawPost.id),
+                    Previous = null,
+                    Next = null,
+                    Title = rawPost.title,
+                    Summary = rawPost.summary,
+                    Content = rawPost.body,
+                    Author = rawPost.bloggerPHID,
+                    Uri = "/blog/" + rawPost.id,
+                    UNIXDatePublished = Convert.ToInt64(rawPost.datePublished)
+                });
+            }
+            posts = posts.OrderByDescending(x => x.UNIXDatePublished).ToList();
+
+            // Now process all of the Remarkup fields (Content and Summary).
+            var fields = new List<FieldProcessingStruct>();
+            foreach (var post in posts)
+                fields.Add(new FieldProcessingStruct { Post = post, IsContent = true, Data = post.Content });
+            foreach (var post in posts)
+                fields.Add(new FieldProcessingStruct { Post = post, IsContent = false, Data = post.Summary });
+            var markup = client.Do("remarkup.processbulk", new
+            {
+                context = "phame",
+                contents = fields.Select(x => x.Data).ToArray()
+            });
+            for (var i = 0; i < fields.Count; i++)
+            {
+                var m = markup[i];
+                var f = fields[i];
+                if (f.IsContent)
+                    f.Post.Content = m.content;
+                else
+                    f.Post.Summary = m.content;
+            }
+
+            // Now process all of the bloggers.
+            var bloggerPHIDs = posts.Select(x => x.Author).ToArray();
+            var rawUsers = client.Do("user.query", new
+            {
+                phids = bloggerPHIDs
+            });
+            var userMappings = new List<PhabricatorUserMapping>();
+            foreach (var rawUser in rawUsers)
+            {
+                userMappings.Add(new PhabricatorUserMapping
+                {
+                    PHID = rawUser.phid,
+                    RealName = rawUser.realName
+                });
+            }
+            var users = userMappings.ToDictionary(x => x.PHID, x => x.RealName);
+            foreach (var post in posts)
+            {
+                post.Author = users[post.Author];
+            }
+
+            // Cache the posts.
+            this.BlogCache.Add(
+                new CacheItem("posts", posts),
+                new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) }
+            );
+
+            // Return the posts.
+            return posts;
         }
 
-        public AtomFeed GetFeed(string id)
+        private struct FieldProcessingStruct
         {
-            var feed = this.BlogCache.Get("feed-" + id) as AtomFeed;
-            if (feed == null)
-            {
-                feed = AtomFeed.Create(new Uri("http://code.redpointsoftware.com.au/phame/blog/feed/" + id + "/"));
-                this.BlogCache.Add(
-                    new CacheItem("feed-" + id, feed),
-                    new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) }
-                );
-            }
-            return feed;
+            public BlogPostModel Post { get; set; }
+            public bool IsContent { get; set; }
+            public string Data { get; set; }
+        }
+
+        private struct PhabricatorUserMapping
+        {
+            public string PHID { get; set; }
+            public string RealName { get; set; }
         }
     }
 }

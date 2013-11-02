@@ -1,0 +1,21 @@
+@model Tychaia.Website.ViewModels.BlogIndexViewModel
+@using Tychaia.Website;
+@{
+    ViewBag.Title = "Tychaia Devlog";
+}
+
+<h2>
+    Tychaia Devlog
+    <span class="actions">(<a href="/feed">RSS Feed</a>)</span>
+</h2>
+@foreach (var post in Model.Posts)
+{
+    <div class="block phame">
+        <div class="details">
+            <div class="author">@post.Author</div>
+            <div class="date">@DateTimeHelper.RenderTimestamp(post.UNIXDatePublished)</div>
+        </div>
+        <h3><a href="@post.Uri">@post.Title</a></h3>
+        @Html.Raw(post.Summary)
+    </div>
+}

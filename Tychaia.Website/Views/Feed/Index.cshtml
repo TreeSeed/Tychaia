@@ -1,0 +1,27 @@
+@model Tychaia.Website.ViewModels.BlogIndexViewModel
+@{
+    Layout = null;
+}
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Tychaia Devlog</title>
+        <link>http://www.tychaia.com</link>
+        <atom:link href="http://www.tychaia.com/feed" rel="self" type="application/rss+xml" />
+        <description>Tychaia is a procedurally generated, open world action-adventure game.</description>
+@foreach (var post in Model.Posts)
+{
+        <item>
+            <title>@post.Title</title>
+            <guid>http://www.tychaia.com/blog/@post.ID</guid>
+            <link>http://www.tychaia.com/blog/@post.ID</link>
+            <author>@post.Author</author>
+            <description>
+                <![CDATA[
+                @Html.Raw(post.Content)
+                ]]>
+            </description>
+        </item>
+}
+    </channel>
+</rss>

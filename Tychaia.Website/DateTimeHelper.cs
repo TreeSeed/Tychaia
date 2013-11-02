@@ -9,6 +9,11 @@ namespace Tychaia.Website
 {
     public static class DateTimeHelper
     {
+        public static string RenderTimestamp(this long timestamp)
+        {
+            return ToPreformatted(new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime().AddSeconds(timestamp));
+        }
+
         public static string ToPreformatted(this DateTime date)
         {
             var dateAppend = "th";
