@@ -27,19 +27,19 @@ namespace Tychaia
             I3DRenderUtilities threedRenderUtilities,
             IChunkSizePolicy chunkSizePolicy,
             IConsole console,
-            IFilteredFeatures filteredFeatures)
+            IFilteredFeatures filteredFeatures,
+            Player runtimeData)
         {
             this.m_FilteredFeatures = filteredFeatures;
             this.m_3DRenderUtilities = threedRenderUtilities;
             this.m_PlayerTexture = assetManagerProvider.GetAssetManager().Get<TextureAsset>("chars.player.Player");
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_Console = console;
+            this.RuntimeData = runtimeData;
 
             this.Width = 16;
             this.Height = 16;
             this.Depth = 16;
-
-            this.RuntimeData = new Player();
         }
         
         public bool InaccurateY { get; set; }
@@ -65,38 +65,52 @@ namespace Tychaia
 
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
-            if (this.m_Console.Open)
-                return;
-
-            // Update player and refocus screen.
-            var state = Keyboard.GetState();
-            var gpstate = GamePad.GetState(PlayerIndex.One);
-            var mv = (float)Math.Sqrt(this.MovementSpeed);
-            
-            if (state.IsKeyDown(Keys.I))
+            if (this.RuntimeData.SynchronisationIsAuthoritive)
             {
-                this.Y += 4f;
+                if (this.m_Console.Open)
+                    return;
+                
+                // Update player and refocus screen.
+                var state = Keyboard.GetState();
+                var gpstate = GamePad.GetState(PlayerIndex.One);
+                var mv = (float)Math.Sqrt(this.MovementSpeed);
+                
+                if (state.IsKeyDown(Keys.I))
+                {
+                    this.Y += 4f;
+                }
+                
+                if (state.IsKeyDown(Keys.K))
+                {
+                    this.Y -= 4f;
+                }
+                
+                if (this.m_FilteredFeatures.IsEnabled(Feature.DemoMovement))
+                {
+                    var t = Math.Cos(this.m_DemoTicks++ / 10000);
+                    this.Z += (float)t * 4;
+                    this.X += (float)t * 4;
+                }
+                
+                var v = new Vector2(
+                    gpstate.ThumbSticks.Left.X,
+                    -gpstate.ThumbSticks.Left.Y);
+                var m = Matrix.CreateRotationZ(MathHelper.ToRadians(-45));
+                v = Vector2.Transform(v, m);
+                this.X += v.X * mv * (float)(Math.Sqrt(2) / 1.0);
+                this.Y += v.Y * mv * (float)(Math.Sqrt(2) / 1.0);
+                
+                this.RuntimeData.X = this.X;
+                this.RuntimeData.Y = this.Y;
+                this.RuntimeData.Z = this.Z;
+            }
+            else
+            {
+                this.X = this.RuntimeData.X;
+                this.Z = this.RuntimeData.Z;
             }
             
-            if (state.IsKeyDown(Keys.K))
-            {
-                this.Y -= 4f;
-            }
-            
-            if (this.m_FilteredFeatures.IsEnabled(Feature.DemoMovement))
-            {
-                var t = Math.Cos(m_DemoTicks++ / 10000);
-                this.Z += (float)t * 4;
-                this.X += (float)t * 4;
-            }
-            
-            var v = new Vector2(
-                gpstate.ThumbSticks.Left.X,
-                -gpstate.ThumbSticks.Left.Y);
-            var m = Matrix.CreateRotationZ(MathHelper.ToRadians(-45));
-            v = Vector2.Transform(v, m);
-            this.X += v.X * mv * (float)(Math.Sqrt(2) / 1.0);
-            this.Y += v.Y * mv * (float)(Math.Sqrt(2) / 1.0);
+            this.RuntimeData.Update();
         }
 
         public override void Render(IGameContext gameContext, IRenderContext renderContext)

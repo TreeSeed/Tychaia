@@ -20,7 +20,6 @@ namespace Tychaia.Globals
         public DefaultPersistentStorage()
         {
             this.m_Stream = new FileStream(this.GetSettingsPath(), FileMode.OpenOrCreate);
-            this.m_Stream.Lock(0, this.m_Stream.Length);
             this.m_Reader = new StreamReader(this.m_Stream);
             this.m_Writer = new StreamWriter(this.m_Stream);
 

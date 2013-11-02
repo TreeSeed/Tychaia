@@ -84,9 +84,13 @@ namespace Tychaia
                 this.m_ViewportMode.SetViewportMode(ViewportMode.Full);
 
             // Assign player's data to the UI.
-            var player = gameContext.World.Entities.OfType<PlayerEntity>().First();
-            this.m_InventoryManager.Inventory = player.RuntimeData.Inventory;
-            this.m_StatusBar.Player = player.RuntimeData;
+            var players = gameContext.World.Entities.OfType<PlayerEntity>().ToArray();
+            if (players.Length > 0)
+            {
+                var player = players[0];
+                this.m_InventoryManager.Inventory = player.RuntimeData.Inventory;
+                this.m_StatusBar.Player = player.RuntimeData;
+            }
         }
 
         private void ToggleRight()

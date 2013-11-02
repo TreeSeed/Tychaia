@@ -76,6 +76,7 @@ namespace Tychaia.Network
 
         public static void SetupKernel(IKernel kernel, bool isServer, IPAddress address, int port)
         {
+            kernel.Unbind<INetworkProvider>();
             kernel.Bind<INetworkProvider>().To<TychaiaTCPNetwork>()
                 .WithConstructorArgument("isServer", isServer)
                 .WithConstructorArgument("address", address)
@@ -96,6 +97,7 @@ namespace Tychaia.Network
                 this.m_Tcp = new TcpListener(new IPEndPoint(this.IPAddress, this.DiscoveryPort));
                 this.m_Tcp.Start();
                 this.HandleDiscovery();
+                Console.WriteLine(this.IPAddress + ":" + this.DiscoveryPort);
                 return;
             }
             

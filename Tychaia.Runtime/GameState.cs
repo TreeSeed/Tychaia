@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Dx.Runtime;
 using Tychaia.Data;
 using Tychaia.Game;
@@ -20,6 +21,9 @@ namespace Tychaia
         [Local]
         private readonly List<Synchronised> m_Synchronised;
         
+        [Local]
+        private object m_Lock = new object();
+        
         public GameState()
         {
             this.m_Synchronised = new List<Synchronised>();
@@ -28,16 +32,41 @@ namespace Tychaia
         [Local]
         public void Update()
         {
-            foreach (var sync in this.m_Synchronised)
+            lock (this.m_Lock)
             {
-                sync.Update();
+                foreach (var sync in this.m_Synchronised)
+                {
+                    sync.Update();
+                }
             }
+        }
+        
+        [ClientCallable]
+        public string InternalMessage(string message)
+        {
+            if (message == "testupdate")
+            {
+                var player = this.m_Synchronised.OfType<Player>().First();
+                player.X += 50;
+                player.Z += 50;
+                return "UPD";
+            }
+            
+            return "NOP";
         }
         
         [ClientCallable]
         public void JoinGame()
         {
-            Console.WriteLine("client joined game");
+            lock (this.m_Lock)
+            {
+                Console.WriteLine("client joined game");
+                
+                var player = new Player();
+                player.Connect((this as ITransparent).Node, "player", true);
+                player.Update();
+                this.m_Synchronised.Add(player);
+            }
         }
         
         [ClientCallable]
@@ -47,7 +76,11 @@ namespace Tychaia
             
             // Make a copy so that changes to m_Synchronised don't impact
             // the setup of the initial game state.
-            var copy = this.m_Synchronised.ToArray();
+            Synchronised[] copy;
+            lock (this.m_Lock)
+            {
+                copy = this.m_Synchronised.ToArray();
+            }
             
             var state = new InitialGameState();
             state.Seed = 123456;

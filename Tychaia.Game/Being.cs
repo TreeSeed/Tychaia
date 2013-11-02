@@ -17,6 +17,24 @@ namespace Tychaia.Game
         public Inventory Inventory { get; private set; }
         
         /// <summary>
+        /// 
+        /// </summary>
+        [Synchronised]
+        public float X { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        [Synchronised]
+        public float Y { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        [Synchronised]
+        public float Z { get; set; }
+        
+        /// <summary>
         /// The current health of the being.
         /// </summary>
         [Synchronised]

@@ -52,6 +52,7 @@
     <Compile Include="Commands\EquipCommand.cs" />
     <Compile Include="Commands\GiveCommand.cs" />
     <Compile Include="Commands\ProfilingCommand.cs" />
+    <Compile Include="Commands\ServerCommand.cs" />
     <Compile Include="Commands\StatsCommand.cs" />
     <Compile Include="Events\MoveBackwardAction.cs" />
     <Compile Include="Events\MoveForwardAction.cs" />

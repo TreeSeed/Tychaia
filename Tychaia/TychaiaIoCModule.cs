@@ -36,6 +36,7 @@ namespace Tychaia
             this.Bind<ICommand>().To<GiveCommand>();
             this.Bind<ICommand>().To<EquipCommand>();
             this.Bind<ICommand>().To<StatsCommand>();
+            this.Bind<ICommand>().To<ServerCommand>();
         }
     }
 }

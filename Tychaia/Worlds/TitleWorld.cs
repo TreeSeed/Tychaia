@@ -33,14 +33,6 @@ namespace Tychaia
                         this.TargetWorld = this.GameContext.CreateWorld<IWorldFactory>(x => x.CreateConnectWorld());
                 });
             this.AddMenuItem(
-                this.AssetManager.Get<LanguageAsset>("language.GENERATE_WORLD"),
-                () =>
-                {
-                    var level = levelAPI.NewLevel("test");
-                    if (this.GameContext != null)
-                        this.TargetWorld = this.GameContext.CreateWorld<IWorldFactory>(x => x.CreateTychaiaGameWorld(level));
-                });
-            this.AddMenuItem(
                 this.AssetManager.Get<LanguageAsset>("language.LOAD_EXISTING_WORLD"),
                 () =>
                 {
