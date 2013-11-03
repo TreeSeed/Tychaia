@@ -12,13 +12,13 @@ namespace MakeMeAWorld
     {
         protected BaseHandler()
         {
-            ((Global)HttpContext.Current.ApplicationInstance).Kernel.Inject(this);
+            ((Global)HttpContext.Current.ApplicationInstance).Inject(this);
         }
 
         protected BaseHandler(RequestContext requestContext)
         {
             this.RequestContext = requestContext;
-            ((Global)HttpContext.Current.ApplicationInstance).Kernel.Inject(this);
+            ((Global)HttpContext.Current.ApplicationInstance).Inject(this);
         }
         
         public bool IsReusable

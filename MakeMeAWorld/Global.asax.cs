@@ -6,18 +6,31 @@
 using System;
 using System.Web;
 using Ninject;
+using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
 
 namespace MakeMeAWorld
 {
     public class Global : HttpApplication
     {
-        public IKernel Kernel { get; private set; }
+        public static IKernel Kernel { get; private set; }
+    
+        public void Inject(object t)
+        {
+            if (Kernel != null)
+                Kernel.Inject(t);
+            else
+            {
+                Application_Start(this, new EventArgs());
+                Kernel.Inject(t);
+            }
+        }
     
         protected virtual void Application_Start(Object sender, EventArgs e)
         {
-            this.Kernel = new StandardKernel();
-            this.Kernel.Load<TychaiaProceduralGenerationIoCModule>();
+            Kernel = new StandardKernel();
+            Kernel.Load<TychaiaProceduralGenerationIoCModule>();
+            Kernel.Load<TychaiaGlobalIoCModule>();
         }
 		
         protected virtual void Session_Start(Object sender, EventArgs e)
