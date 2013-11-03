@@ -60,8 +60,8 @@ namespace Tychaia.Website.Cachable
                 html = client.Do("remarkup.process", new
                 {
                     context = "phriction",
-                    content = remarkup
-                }).content;
+                    contents = new string[] { remarkup }
+                })[0].content;
                 this.RemarkupCache.Add(
                     new CacheItem(sha1, html),
                     new CacheItemPolicy { SlidingExpiration = new TimeSpan(1, 0, 0) }
