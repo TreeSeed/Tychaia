@@ -125,7 +125,7 @@ namespace Tychaia.Website.Cachable
             var posts = new List<BlogPostModel>();
 
             // Get all of the posts.
-            var rawPosts = client.Do("phame.querypost", new
+            var rawPosts = client.Do("phame.queryposts", new
             {
                 blogPHIDs = new string[] { "PHID-BLOG-qvobh7al2y7ji3krp6ki", "PHID-BLOG-7n3gn42p5ty2jlfmpedr" }
             });
@@ -152,7 +152,7 @@ namespace Tychaia.Website.Cachable
                 fields.Add(new FieldProcessingStruct { Post = post, IsContent = true, Data = post.Content });
             foreach (var post in posts)
                 fields.Add(new FieldProcessingStruct { Post = post, IsContent = false, Data = post.Summary });
-            var markup = client.Do("remarkup.processbulk", new
+            var markup = client.Do("remarkup.process", new
             {
                 context = "phame",
                 contents = fields.Select(x => x.Data).ToArray()
