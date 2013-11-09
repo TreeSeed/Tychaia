@@ -66,16 +66,16 @@ WriteLiteral("\r\n<h2>What is Tychaia?</h2>\r\n<div class=\"block\">\r\n    <p>\
 " <a href=\"http://forums.tigsource.com/index.php?topic=27727.0\">development logs<" +
 "/a> on TIGSource.\r\n        </li>\r\n        <li>The <a href=\"https://github.com/ha" +
 "ch-que/Tychaia\">development repository</a> on GitHub.</li>\r\n        <li>The <a h" +
-"ref=\"http://code.redpointsoftware.com.au/maniphest/view/all/\">task and code revi" +
-"ew tracker</a> called Phabricator.</li>\r\n        <li>\r\n            The\r\n        " +
-"    <a href=\"https://plus.google.com/communities/111849161186026536208\">Google+<" +
-"/a>\r\n            or\r\n            <a href=\"https://www.facebook.com/RedpointSoftw" +
-"are\">Facebook</a>\r\n            communities.\r\n        </li>\r\n    </ul>\r\n    <p>Yo" +
-"u can also contact the developers directly via:</p>\r\n    <ul>\r\n        <li><a hr" +
-"ef=\"http://www.twitter.com/#!/hachque\">James Rhodes</a> on Twitter.</li>\r\n      " +
-"  <li><a href=\"http://www.twitter.com/#!/Sabre070\">Josh Harvey</a> on Twitter.</" +
-"li>\r\n    </ul>\r\n</div>\r\n<h2>\r\n    Tychaia Devlog\r\n    <span class=\"actions\">(<a " +
-"href=\"/feed\">RSS Feed</a>)</span>\r\n</h2>\r\n");
+"ref=\"http://code.redpointsoftware.com.au/maniphest/query/all/\">task and code rev" +
+"iew tracker</a> called Phabricator.</li>\r\n        <li>\r\n            The\r\n       " +
+"     <a href=\"https://plus.google.com/communities/111849161186026536208\">Google+" +
+"</a>\r\n            or\r\n            <a href=\"https://www.facebook.com/RedpointSoft" +
+"ware\">Facebook</a>\r\n            communities.\r\n        </li>\r\n    </ul>\r\n    <p>Y" +
+"ou can also contact the developers directly via:</p>\r\n    <ul>\r\n        <li><a h" +
+"ref=\"http://www.twitter.com/#!/hachque\">James Rhodes</a> on Twitter.</li>\r\n     " +
+"   <li><a href=\"http://www.twitter.com/#!/Sabre070\">Josh Harvey</a> on Twitter.<" +
+"/li>\r\n    </ul>\r\n</div>\r\n<h2>\r\n    Tychaia Devlog\r\n    <span class=\"actions\">(<a" +
+" href=\"/feed\">RSS Feed</a>)</span>\r\n</h2>\r\n");
 
 
             
