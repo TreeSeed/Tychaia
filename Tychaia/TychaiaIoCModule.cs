@@ -32,7 +32,7 @@ namespace Tychaia
             this.Bind<ICommand>().To<ProfilingCommand>();
             this.Bind<IGameUIFactory>().ToFactory();
             this.Bind<IViewportMode>().To<DefaultViewportMode>().InSingletonScope();
-            this.Bind<IEventBinder>().To<TychaiaDefaultDesktopBinder>();
+            this.Bind<IEventBinder<IGameContext>>().To<TychaiaDefaultDesktopBinder>();
             this.Bind<ICommand>().To<GiveCommand>();
             this.Bind<ICommand>().To<EquipCommand>();
             this.Bind<ICommand>().To<StatsCommand>();

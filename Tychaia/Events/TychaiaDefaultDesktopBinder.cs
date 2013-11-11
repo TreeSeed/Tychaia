@@ -8,7 +8,7 @@ using Protogame;
 
 namespace Tychaia
 {
-    public class TychaiaDefaultDesktopBinder : StaticEventBinder
+    public class TychaiaDefaultDesktopBinder : StaticEventBinder<IGameContext>
     {
         public override void Configure()
         {
