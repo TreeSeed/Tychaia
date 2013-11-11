@@ -19,6 +19,7 @@ namespace Tychaia.ProceduralGeneration
         {
             this.XorY = true;
             this.EstimateMax = 5;
+            this.Layer2D = true;
         }
 
         public override int[] RequiredXBorder
@@ -56,6 +57,9 @@ namespace Tychaia.ProceduralGeneration
         [Description("Estimate maximum value.")]
         public int EstimateMax { get; set; }
 
+        [DataMember]
+        [DefaultValue(true)]
+        [Description("Show this layer as 2D in the editor.")]
         public bool Layer2D
         {
             get;

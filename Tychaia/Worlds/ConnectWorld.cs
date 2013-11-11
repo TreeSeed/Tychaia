@@ -50,7 +50,7 @@ namespace Tychaia
             ILocalNode node = null;
             GameState state = null;
             byte[] initial = null;
-            var level = levelAPI.NewLevel("test");
+            var level = levelAPI.NewLevel((new Random()).Next().ToString());
             Action cleanup = () =>
             {
                 this.m_NormalShutdown = true;

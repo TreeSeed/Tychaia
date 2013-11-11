@@ -65,7 +65,7 @@ namespace Tychaia
 
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
-            if (this.RuntimeData.SynchronisationIsAuthoritive)
+            //if (this.RuntimeData.SynchronisationIsAuthoritive)
             {
                 if (this.m_Console.Open)
                     return;
@@ -104,13 +104,15 @@ namespace Tychaia
                 this.RuntimeData.Y = this.Y;
                 this.RuntimeData.Z = this.Z;
             }
-            else
+            //else
+            /*
             {
                 this.X = this.RuntimeData.X;
                 this.Z = this.RuntimeData.Z;
             }
             
             this.RuntimeData.Update();
+             * */
         }
 
         public override void Render(IGameContext gameContext, IRenderContext renderContext)
