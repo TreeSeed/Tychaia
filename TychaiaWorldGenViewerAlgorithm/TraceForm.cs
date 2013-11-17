@@ -29,12 +29,14 @@ namespace TychaiaWorldGenViewerAlgorithm
         public TraceForm(
             IStorageAccess storageAccess,
             IAlgorithmTraceImageGeneration algorithmTraceImageGeneration,
-            FlowElement flowElement)
+            FlowElement flowElement,
+            ICurrentWorldSeedProvider currentWorldSeedProvider)
         {
             this.m_AlgorithmTraceImageGeneration = algorithmTraceImageGeneration;
 
             this.InitializeComponent();
             this.m_Layer = storageAccess.ToRuntime(((AlgorithmFlowElement)flowElement).Layer);
+            this.m_Layer.SetSeed(currentWorldSeedProvider.Seed);
             this.c_FormZoomSize.Items.Add(new ZoomLevel { Level = 1 });
             this.c_FormZoomSize.Items.Add(new ZoomLevel { Level = 2 });
             this.c_FormZoomSize.SelectedIndex = 0;
@@ -99,6 +101,8 @@ namespace TychaiaWorldGenViewerAlgorithm
                         this.c_TraceScrollbar.Value = 0;
                         this.ResumeLayout();
 
+                        this.Rescale(this.m_Bitmaps[0]);
+
                         // Generate GIF if desired.
                         if (this.c_GenerateGIF.Checked)
                         {
@@ -144,6 +148,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                     e.GSArrayWidth,
                     e.GSArrayHeight,
                     e.GSArrayDepth));
+                Console.WriteLine(this.m_Bitmaps[this.m_Bitmaps.Count - 1].Size);
 
                 if (this.IsHandleCreated)
                 {
@@ -172,6 +177,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                 e.GSArrayWidth,
                 e.GSArrayHeight,
                 e.GSArrayDepth));
+            Console.WriteLine(this.m_Bitmaps[this.m_Bitmaps.Count - 1].Size);
             this.m_EnableHandlers();
 
             if (this.IsHandleCreated)
@@ -195,6 +201,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             if (zoomLevel.Level == 1)
             {
                 this.c_TraceImage.Image = this.m_Bitmaps[e.NewValue];
+                this.Rescale(this.m_Bitmaps[e.NewValue]);
                 return;
             }
 
@@ -208,7 +215,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                 graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
                 graphics.DrawImage(
                     this.m_Bitmaps[e.NewValue],
-                    new Rectangle(0, 0, this.c_TraceImage.Width, this.c_TraceImage.Height),
+                    new Rectangle(0, 0, image.Width, image.Height),
                     // destination rectangle
                     0,
                     0, // upper-left corner of source rectangle
@@ -217,13 +224,22 @@ namespace TychaiaWorldGenViewerAlgorithm
                     GraphicsUnit.Pixel);
             }
             this.c_TraceImage.Image = image;
+            this.Rescale(image);
+        }
+
+        private void Rescale(Bitmap bitmap)
+        {
+            var basew = 427 - 384;
+            var baseh = 570 - 384;
+
+            if (this.c_TraceImage.Image != null)
+            {
+                this.Size = new Size(basew, baseh) + bitmap.Size;
+            }
         }
 
         private void c_FormZoomSize_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var base1 = 417 + 384 * (((ZoomLevel)this.c_FormZoomSize.SelectedItem).Level - 1);
-            var base2 = 560 + 384 * (((ZoomLevel)this.c_FormZoomSize.SelectedItem).Level - 1) + 30;
-            this.Size = new Size(base1, base2);
             this.c_TraceScrollbar_Scroll(this,
                 new ScrollEventArgs(ScrollEventType.EndScroll, this.c_TraceScrollbar.Value));
         }

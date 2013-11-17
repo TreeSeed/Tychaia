@@ -85,6 +85,8 @@
     <Compile Include="Profiling\TychaiaProfilerEntity.cs" />
     <Compile Include="Profiling\TychaiaProfilerEntityUtil.cs">
       <DependentUpon>TychaiaProfilerEntityUtil.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Profiling\TychaiaProfilingInterceptor.cs" />
     <Compile Include="Profiling\TychaiaProfilingIoCModule.cs" />

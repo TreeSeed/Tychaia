@@ -46,19 +46,19 @@ namespace TychaiaWorldGenViewerAlgorithm
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(387, 35);
             this.label1.TabIndex = 0;
             this.label1.Text = "This tool allows you to diagnose continuity issues with algorithms by tracing eac" +
-                "h step the generation.";
+    "h step the generation.";
             // 
             // c_TraceScrollbar
             // 
-            this.c_TraceScrollbar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.c_TraceScrollbar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.c_TraceScrollbar.Enabled = false;
             this.c_TraceScrollbar.LargeChange = 1;
             this.c_TraceScrollbar.Location = new System.Drawing.Point(15, 111);
@@ -81,8 +81,8 @@ namespace TychaiaWorldGenViewerAlgorithm
             // 
             // c_TraceProgress
             // 
-            this.c_TraceProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.c_TraceProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.c_TraceProgress.Location = new System.Drawing.Point(15, 75);
             this.c_TraceProgress.Name = "c_TraceProgress";
             this.c_TraceProgress.Size = new System.Drawing.Size(295, 24);
@@ -90,9 +90,9 @@ namespace TychaiaWorldGenViewerAlgorithm
             // 
             // c_TraceImage
             // 
-            this.c_TraceImage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.c_TraceImage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.c_TraceImage.Enabled = false;
             this.c_TraceImage.Location = new System.Drawing.Point(15, 136);
             this.c_TraceImage.Name = "c_TraceImage";

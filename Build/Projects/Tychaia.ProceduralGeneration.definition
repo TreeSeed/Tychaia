@@ -49,6 +49,7 @@
     <Compile Include="AlgorithmResult.cs" />
     <Compile Include="AlgorithmSmooth.cs" />
     <Compile Include="AlgorithmSmoothByInput.cs" />
+    <Compile Include="AlgorithmTerrainExtender.cs" />
     <Compile Include="AlgorithmUtility.cs" />
     <Compile Include="AlgorithmValueTo3D.cs" />
     <Compile Include="AlgorithmZoom2D.cs" />
