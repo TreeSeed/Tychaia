@@ -11,13 +11,15 @@
     "unit.csharp.coverage.match": "/^Tychaia.*\\.(dll|exe)$/",
     "unit.csharp.discovery": {
       "([^/]+)/(.*?)\\.cs": [
-        [ "$1.Tests/$1.Tests.Linux.csproj", "$1.Tests/bin/Debug/$1.Tests.dll" ]
+        [ "$1.Tests/$1.Tests.Linux.csproj", "$1.Tests/bin/Debug/$1.Tests.dll" ],
+        [ "$1.Tests/$1.Tests.Windows.csproj", "$1.Tests/bin/Debug/$1.Tests.dll" ]
       ],
       "([^\\\\]+)\\\\(.*?)\\.cs": [
         [ "$1.Tests\\$1.Tests.Windows.csproj", "$1.Tests\\bin\\Debug\\$1.Tests.dll" ]
       ],
       "([^/]+)\\.Tests/(.*?)\\.cs": [
-        [ "$1.Tests/$1.Tests.Linux.csproj", "$1.Tests/bin/Debug/$1.Tests.dll" ]
+        [ "$1.Tests/$1.Tests.Linux.csproj", "$1.Tests/bin/Debug/$1.Tests.dll" ],
+        [ "$1.Tests/$1.Tests.Windows.csproj", "$1.Tests/bin/Debug/$1.Tests.dll" ]
       ],
       "([^\\\\]+)\\.Tests\\\\(.*?)\\.cs": [
         [ "$1.Tests\\$1.Tests.Windows.csproj", "$1.Tests\\bin\\Debug\\$1.Tests.dll" ]
