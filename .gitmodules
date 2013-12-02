@@ -1,6 +1,3 @@
-[submodule "Libraries/Voxeliq"]
-	path = Libraries/Voxeliq
-	url = git://github.com/hach-que/voxeliq.git
 [submodule "Libraries/Redpoint.FlowGraph"]
 	path = Libraries/Redpoint.FlowGraph
 	url = git://github.com/hach-que/Redpoint.FlowGraph.git
