@@ -68,8 +68,8 @@ namespace Tychaia.Website.Views.Shared
             
             #line default
             #line hidden
-WriteLiteral("<!DOCTYPE html>\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">\r\n<head" +
-">\r\n    <title>Tychaia - ");
+WriteLiteral("<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">\n<head>\n" +
+"    <title>Tychaia - ");
 
 
             
@@ -79,7 +79,7 @@ WriteLiteral("<!DOCTYPE html>\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xm
             
             #line default
             #line hidden
-WriteLiteral("</title>\r\n    ");
+WriteLiteral("</title>\n    ");
 
 
             
@@ -113,7 +113,7 @@ WriteLiteral(@"
             
             #line default
             #line hidden
-WriteLiteral("\r\n                ");
+WriteLiteral("\n                ");
 
 
             
@@ -123,7 +123,7 @@ WriteLiteral("\r\n                ");
             
             #line default
             #line hidden
-WriteLiteral("\r\n                ");
+WriteLiteral("\n                ");
 
 
             
@@ -133,8 +133,8 @@ WriteLiteral("\r\n                ");
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <li><a href=\"http://makemeaworld.com/\" target=\"_blank\">Make me " +
-"a World!</a></li>\r\n            </ul>\r\n        </div>\r\n        ");
+WriteLiteral("\n                <li><a href=\"http://makemeaworld.com/\" target=\"_blank\">Make me a" +
+" World!</a></li>\n            </ul>\n        </div>\n        ");
 
 
             
@@ -144,8 +144,8 @@ WriteLiteral("\r\n                <li><a href=\"http://makemeaworld.com/\" targe
             
             #line default
             #line hidden
-WriteLiteral("\r\n        <div id=\"footer\">\r\n             &#169; <a href=\"http://www.redpointsoft" +
-"ware.com.au/\">Redpoint Software</a> ");
+WriteLiteral("\n        <div id=\"footer\">\n             &#169; <a href=\"http://www.redpointsoftwa" +
+"re.com.au/\">Redpoint Software</a> ");
 
 
             
@@ -155,7 +155,7 @@ WriteLiteral("\r\n        <div id=\"footer\">\r\n             &#169; <a href=\"h
             
             #line default
             #line hidden
-WriteLiteral("\r\n        </div>\r\n    </div>\r\n    ");
+WriteLiteral("\n        </div>\n    </div>\n    ");
 
 
             
@@ -165,7 +165,7 @@ Write(Bundles.RenderScripts());
             
             #line default
             #line hidden
-WriteLiteral("\r\n</body>\r\n</html>\r\n");
+WriteLiteral("\n</body>\n</html>\n");
 
 
         }

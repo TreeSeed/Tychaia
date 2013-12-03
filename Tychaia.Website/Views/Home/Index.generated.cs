@@ -55,63 +55,64 @@ namespace Tychaia.Website.Views.Home
             
             #line default
             #line hidden
-WriteLiteral("\r\n<h2>What is Tychaia?</h2>\r\n<div class=\"block\">\r\n    <p>\r\n        <i>\"Imagine a " +
-"game where the world never ends, the scale is infinite and there\'s always one mo" +
-"re quest. Where the game starts with nothing and ends with your death. Welcome t" +
-"o Tychaia.\"</i>\r\n    </p>\r\n    <p>\r\n        Tychaia is an isometric open world a" +
-"ction-adventure game with a procedurally generated world. Death brings a harsh p" +
-"enalty - your entire game world is regenerated, you lose everything.\r\n    </p>\r\n" +
-"    <p>\r\n        Tychaia is still in early development.  You can follow\r\n       " +
-" the latest developments via:\r\n    </p>\r\n    <ul>\r\n        <li>\r\n            The" +
-" <a href=\"http://forums.tigsource.com/index.php?topic=27727.0\">development logs<" +
-"/a> on TIGSource.\r\n        </li>\r\n        <li>The <a href=\"https://github.com/ha" +
-"ch-que/Tychaia\">development repository</a> on GitHub.</li>\r\n        <li>The <a h" +
-"ref=\"http://code.redpointsoftware.com.au/maniphest/query/all/\">task and code rev" +
-"iew tracker</a> called Phabricator.</li>\r\n        <li>\r\n            The\r\n       " +
-"     <a href=\"https://plus.google.com/communities/111849161186026536208\">Google+" +
-"</a>\r\n            or\r\n            <a href=\"https://www.facebook.com/RedpointSoft" +
-"ware\">Facebook</a>\r\n            communities.\r\n        </li>\r\n    </ul>\r\n    <p>Y" +
-"ou can also contact the developers directly via:</p>\r\n    <ul>\r\n        <li><a h" +
-"ref=\"http://www.twitter.com/#!/hachque\">James Rhodes</a> on Twitter.</li>\r\n     " +
-"   <li><a href=\"http://www.twitter.com/#!/Sabre070\">Josh Harvey</a> on Twitter.<" +
-"/li>\r\n    </ul>\r\n</div>\r\n<h2>\r\n    Tychaia Devlog\r\n    <span class=\"actions\">(<a" +
-" href=\"/feed\">RSS Feed</a>)</span>\r\n</h2>\r\n");
+WriteLiteral("\n<h2>What is Tychaia?</h2>\n<div class=\"block\">\n    <p>\n        <i>\"Imagine a game" +
+" where the world never ends, the scale is infinite and there\'s always one more q" +
+"uest. Where the game starts with nothing and ends with your death. Welcome to Ty" +
+"chaia.\"</i>\n    </p>\n    <p>\n        Tychaia is an infinite Procedural Death Env" +
+"ironment<sup><a href=\"http://gamasutra.com/blogs/LarsDoucet/20131203/206159/On_P" +
+"rocedural_Death_Labyrinths.php\">[1]</a></sup> game.\n        The game is set in a" +
+"n infinite, procedurally generated world; when you die the entire world is regen" +
+"erated and you lose everything you\'ve earnt.\n    </p>\n    <p>\n        Tychaia is" +
+" still in early development.  You can follow\n        the latest developments via" +
+":\n    </p>\n    <ul>\n        <li>\n            The <a href=\"http://forums.tigsourc" +
+"e.com/index.php?topic=27727.0\">development logs</a> on TIGSource.\n        </li>\n" +
+"        <li>The <a href=\"https://github.com/hach-que/Tychaia\">development reposi" +
+"tory</a> on GitHub.</li>\n        <li>The <a href=\"http://code.redpointsoftware.c" +
+"om.au/maniphest/query/all/\">task and code review tracker</a> called Phabricator." +
+"</li>\n        <li>\n            The\n            <a href=\"https://plus.google.com/" +
+"communities/111849161186026536208\">Google+</a>\n            or\n            <a hre" +
+"f=\"https://www.facebook.com/RedpointSoftware\">Facebook</a>\n            communiti" +
+"es.\n        </li>\n    </ul>\n    <p>You can also contact the developers directly " +
+"via:</p>\n    <ul>\n        <li><a href=\"http://www.twitter.com/#!/hachque\">James " +
+"Rhodes</a> on Twitter.</li>\n        <li><a href=\"http://www.twitter.com/#!/Sabre" +
+"070\">Josh Harvey</a> on Twitter.</li>\n    </ul>\n</div>\n<h2>\n    Tychaia Devlog\n " +
+"   <span class=\"actions\">(<a href=\"/feed\">RSS Feed</a>)</span>\n</h2>\n");
 
 
             
-            #line 43 "..\..\Views\Home\Index.cshtml"
+            #line 44 "..\..\Views\Home\Index.cshtml"
  foreach (var post in Model.Posts)
 {
 
             
             #line default
             #line hidden
-WriteLiteral("    <div class=\"block phame\">\r\n        <div class=\"details\">\r\n            <div cl" +
-"ass=\"author\">");
+WriteLiteral("    <div class=\"block phame\">\n        <div class=\"details\">\n            <div clas" +
+"s=\"author\">");
 
 
             
-            #line 47 "..\..\Views\Home\Index.cshtml"
+            #line 48 "..\..\Views\Home\Index.cshtml"
                            Write(post.Author);
 
             
             #line default
             #line hidden
-WriteLiteral("</div>\r\n            <div class=\"date\">");
+WriteLiteral("</div>\n            <div class=\"date\">");
 
 
             
-            #line 48 "..\..\Views\Home\Index.cshtml"
+            #line 49 "..\..\Views\Home\Index.cshtml"
                          Write(DateTimeHelper.RenderTimestamp(post.UNIXDatePublished));
 
             
             #line default
             #line hidden
-WriteLiteral("</div>\r\n        </div>\r\n        <h3><a href=\"");
+WriteLiteral("</div>\n        </div>\n        <h3><a href=\"");
 
 
             
-            #line 50 "..\..\Views\Home\Index.cshtml"
+            #line 51 "..\..\Views\Home\Index.cshtml"
                 Write(post.Uri);
 
             
@@ -121,27 +122,27 @@ WriteLiteral("\">");
 
 
             
-            #line 50 "..\..\Views\Home\Index.cshtml"
+            #line 51 "..\..\Views\Home\Index.cshtml"
                            Write(post.Title);
 
             
             #line default
             #line hidden
-WriteLiteral("</a></h3>\r\n        ");
+WriteLiteral("</a></h3>\n        ");
 
 
             
-            #line 51 "..\..\Views\Home\Index.cshtml"
+            #line 52 "..\..\Views\Home\Index.cshtml"
    Write(Html.Raw(post.Summary));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n    </div>\r\n");
+WriteLiteral("\n    </div>\n");
 
 
             
-            #line 53 "..\..\Views\Home\Index.cshtml"
+            #line 54 "..\..\Views\Home\Index.cshtml"
 }
 
             

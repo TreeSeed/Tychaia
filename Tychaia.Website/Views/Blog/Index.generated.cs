@@ -55,8 +55,8 @@ namespace Tychaia.Website.Views.Blog
             
             #line default
             #line hidden
-WriteLiteral("\r\n<h2>\r\n    Tychaia Devlog\r\n    <span class=\"actions\">(<a href=\"/feed\">RSS Feed</" +
-"a>)</span>\r\n</h2>\r\n");
+WriteLiteral("\n<h2>\n    Tychaia Devlog\n    <span class=\"actions\">(<a href=\"/feed\">RSS Feed</a>)" +
+"</span>\n</h2>\n");
 
 
             
@@ -67,8 +67,8 @@ WriteLiteral("\r\n<h2>\r\n    Tychaia Devlog\r\n    <span class=\"actions\">(<a 
             
             #line default
             #line hidden
-WriteLiteral("    <div class=\"block phame\">\r\n        <div class=\"details\">\r\n            <div cl" +
-"ass=\"author\">");
+WriteLiteral("    <div class=\"block phame\">\n        <div class=\"details\">\n            <div clas" +
+"s=\"author\">");
 
 
             
@@ -78,7 +78,7 @@ WriteLiteral("    <div class=\"block phame\">\r\n        <div class=\"details\">
             
             #line default
             #line hidden
-WriteLiteral("</div>\r\n            <div class=\"date\">");
+WriteLiteral("</div>\n            <div class=\"date\">");
 
 
             
@@ -88,7 +88,7 @@ WriteLiteral("</div>\r\n            <div class=\"date\">");
             
             #line default
             #line hidden
-WriteLiteral("</div>\r\n        </div>\r\n        <h3><a href=\"");
+WriteLiteral("</div>\n        </div>\n        <h3><a href=\"");
 
 
             
@@ -108,7 +108,7 @@ WriteLiteral("\">");
             
             #line default
             #line hidden
-WriteLiteral("</a></h3>\r\n        ");
+WriteLiteral("</a></h3>\n        ");
 
 
             
@@ -118,7 +118,7 @@ WriteLiteral("</a></h3>\r\n        ");
             
             #line default
             #line hidden
-WriteLiteral("\r\n    </div>\r\n");
+WriteLiteral("\n    </div>\n");
 
 
             

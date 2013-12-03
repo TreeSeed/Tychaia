@@ -55,7 +55,7 @@ namespace Tychaia.Website.Views.Blog
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
+WriteLiteral("\n");
 
 
             
@@ -66,13 +66,13 @@ WriteLiteral("\r\n");
             
             #line default
             #line hidden
-WriteLiteral("    <h2>\r\n        Post Not Found!\r\n        <span class=\"actions\">(<a href=\"/feed\"" +
-">RSS Feed</a>)</span>\r\n    </h2>\r\n");
+WriteLiteral("    <h2>\n        Post Not Found!\n        <span class=\"actions\">(<a href=\"/feed\">R" +
+"SS Feed</a>)</span>\n    </h2>\n");
 
 
 
-WriteLiteral("    <div class=\"block phame\">\r\n        <p>Sorry, but this blog post could not be " +
-"found.</p>\r\n    </div>\r\n");
+WriteLiteral("    <div class=\"block phame\">\n        <p>Sorry, but this blog post could not be f" +
+"ound.</p>\n    </div>\n");
 
 
             
@@ -84,7 +84,7 @@ else
             
             #line default
             #line hidden
-WriteLiteral("    <h2>\r\n        ");
+WriteLiteral("    <h2>\n        ");
 
 
             
@@ -94,7 +94,7 @@ WriteLiteral("    <h2>\r\n        ");
             
             #line default
             #line hidden
-WriteLiteral("\r\n        <span class=\"actions\">(\r\n");
+WriteLiteral("\n        <span class=\"actions\">(\n");
 
 
             
@@ -107,7 +107,7 @@ WriteLiteral("\r\n        <span class=\"actions\">(\r\n");
             #line hidden
 WriteLiteral("                ");
 
-WriteLiteral("\r\n                <a href=\"/blog/");
+WriteLiteral("\n                <a href=\"/blog/");
 
 
             
@@ -117,9 +117,9 @@ WriteLiteral("\r\n                <a href=\"/blog/");
             
             #line default
             #line hidden
-WriteLiteral("\">Previous Post</a> &bull; \r\n                ");
+WriteLiteral("\">Previous Post</a> &bull; \n                ");
 
-WriteLiteral("\r\n");
+WriteLiteral("\n");
 
 
             
@@ -140,7 +140,7 @@ WriteLiteral("\r\n");
             #line hidden
 WriteLiteral("                ");
 
-WriteLiteral("\r\n                <a href=\"/blog/");
+WriteLiteral("\n                <a href=\"/blog/");
 
 
             
@@ -150,9 +150,9 @@ WriteLiteral("\r\n                <a href=\"/blog/");
             
             #line default
             #line hidden
-WriteLiteral("\">Next Post</a> &bull; \r\n                ");
+WriteLiteral("\">Next Post</a> &bull; \n                ");
 
-WriteLiteral("\r\n");
+WriteLiteral("\n");
 
 
             
@@ -162,12 +162,12 @@ WriteLiteral("\r\n");
             
             #line default
             #line hidden
-WriteLiteral("            <a href=\"/feed\">RSS Feed</a>\r\n        )</span>\r\n    </h2>\r\n");
+WriteLiteral("            <a href=\"/feed\">RSS Feed</a>\n        )</span>\n    </h2>\n");
 
 
 
-WriteLiteral("    <div class=\"block phame\">\r\n        <div class=\"details\">\r\n            <div cl" +
-"ass=\"author\">");
+WriteLiteral("    <div class=\"block phame\">\n        <div class=\"details\">\n            <div clas" +
+"s=\"author\">");
 
 
             
@@ -177,7 +177,7 @@ WriteLiteral("    <div class=\"block phame\">\r\n        <div class=\"details\">
             
             #line default
             #line hidden
-WriteLiteral("</div>\r\n            <div class=\"date\">");
+WriteLiteral("</div>\n            <div class=\"date\">");
 
 
             
@@ -187,7 +187,7 @@ WriteLiteral("</div>\r\n            <div class=\"date\">");
             
             #line default
             #line hidden
-WriteLiteral("</div>\r\n        </div>\r\n        <span class=\"area\">\r\n            ");
+WriteLiteral("</div>\n        </div>\n        <span class=\"area\">\n            ");
 
 
             
@@ -197,7 +197,7 @@ WriteLiteral("</div>\r\n        </div>\r\n        <span class=\"area\">\r\n     
             
             #line default
             #line hidden
-WriteLiteral("\r\n        </span>\r\n    </div>\r\n");
+WriteLiteral("\n        </span>\n    </div>\n");
 
 
 

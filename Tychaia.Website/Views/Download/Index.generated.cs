@@ -69,20 +69,19 @@ WriteLiteral(@"
             
             #line default
             #line hidden
-WriteLiteral("        <p>\r\n            You can download the latest builds below:\r\n        </p>\r" +
-"\n");
+WriteLiteral("        <p>\n            You can download the latest builds below:\n        </p>\n");
 
 
 
-WriteLiteral("        <p class=\"download\">\r\n            <a href=\"http://update.redpointsoftware" +
-".com.au/Tychaia-Windows/zip\">\r\n                <img src=\"/Content/download_for_w" +
-"indows.png\" /> Download Pre-Alpha for Windows\r\n            </a>\r\n        </p>\r\n");
+WriteLiteral("        <p class=\"download\">\n            <a href=\"http://update.redpointsoftware." +
+"com.au/Tychaia-Windows/zip\">\n                <img src=\"/Content/download_for_win" +
+"dows.png\" /> Download Pre-Alpha for Windows\n            </a>\n        </p>\n");
 
 
 
-WriteLiteral("        <p class=\"download\">\r\n            <a href=\"http://update.redpointsoftware" +
-".com.au/Tychaia-Linux/zip\">\r\n                <img src=\"/Content/download_for_lin" +
-"ux.png\" /> Download Pre-Alpha for Linux\r\n            </a>\r\n        </p>\r\n");
+WriteLiteral("        <p class=\"download\">\n            <a href=\"http://update.redpointsoftware." +
+"com.au/Tychaia-Linux/zip\">\n                <img src=\"/Content/download_for_linux" +
+".png\" /> Download Pre-Alpha for Linux\n            </a>\n        </p>\n");
 
 
             
@@ -94,9 +93,9 @@ WriteLiteral("        <p class=\"download\">\r\n            <a href=\"http://upd
             
             #line default
             #line hidden
-WriteLiteral("        <p>\r\n            The build server is currently offline.  If you wish, you" +
-" can build a copy of\r\n            Tychaia by downloading the source code from <a" +
-" href=\"https://github.com/hach-que/Tychaia\">GitHub</a>.\r\n        </p>\r\n");
+WriteLiteral("        <p>\n            The build server is currently offline.  If you wish, you " +
+"can build a copy of\n            Tychaia by downloading the source code from <a h" +
+"ref=\"https://github.com/hach-que/Tychaia\">GitHub</a>.\n        </p>\n");
 
 
             

@@ -47,9 +47,9 @@ namespace Tychaia.Website.Views.Shared
             
             #line default
             #line hidden
-WriteLiteral("\r\n<!DOCTYPE html>\r\n<html>\r\n<head>\r\n    <title>Error</title>\r\n</head>\r\n<body>\r\n   " +
-" <h2>\r\n        Sorry, an error occurred while processing your request.\r\n    </h2" +
-">\r\n</body>\r\n</html>");
+WriteLiteral("\n<!DOCTYPE html>\n<html>\n<head>\n    <title>Error</title>\n</head>\n<body>\n    <h2>\n " +
+"       Sorry, an error occurred while processing your request.\n    </h2>\n</body>" +
+"\n</html>");
 
 
         }
