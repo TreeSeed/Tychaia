@@ -38,6 +38,11 @@ final class ArcanistTychaiaLicenseLinter extends ArcanistLinter {
 
   public function lintPath($path) {
     $data = $this->getData($path);
+    if (ord($data[0]) == 0xEF &&
+      ord($data[1]) == 0xBB &&
+      ord($data[2]) == 0xBF) {
+      $data = substr($data, 3);
+    }
     $license = <<<EOLICENSE
 // ====================================================================== //
 // This source code is licensed in accordance with the licensing outlined //
