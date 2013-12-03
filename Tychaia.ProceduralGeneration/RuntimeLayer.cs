@@ -74,9 +74,9 @@ namespace Tychaia.ProceduralGeneration
             computations = 0;
 
             // Just replicate this into the CompiledLayer system
-            int MaxOffsetX = 0;
-            int MaxOffsetY = 0;
-            int MaxOffsetZ = 0;
+            var MaxOffsetX = 0;
+            var MaxOffsetY = 0;
+            var MaxOffsetZ = 0;
 
             FindMaximumOffsets(this, ref MaxOffsetX, ref MaxOffsetY, ref MaxOffsetZ);
 
@@ -211,9 +211,9 @@ namespace Tychaia.ProceduralGeneration
             if (layer == null)
                 throw new ArgumentNullException("layer");
 
-            int offsetSaveX = offsetX;
-            int offsetSaveY = offsetY;
-            int offsetSaveZ = offsetZ;
+            var offsetSaveX = offsetX;
+            var offsetSaveY = offsetY;
+            var offsetSaveZ = offsetZ;
 
             if (layer.m_Inputs.Length != 0)
             {
