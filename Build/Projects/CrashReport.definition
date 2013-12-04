@@ -10,8 +10,10 @@
     <Reference Include="Phabricator.Conduit" />
     <Reference Include="System.Web.Helpers" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Management" />
   </References>
   <Files>
+    <Compile Include="CollectSystemInfo.cs" />
     <Compile Include="CrashReporter.cs" />
     <Compile Include="CrashReportForm.cs">
       <SubType>Form</SubType>
@@ -19,7 +21,16 @@
     <Compile Include="CrashReportForm.Designer.cs">
       <DependentUpon>CrashReportForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DiskDriveInfo.cs" />
+    <Compile Include="KeyboardInfo.cs" />
+    <Compile Include="NetworkAdapterInfo.cs" />
+    <Compile Include="OperatingSystemInfo.cs" />
+    <Compile Include="PhysicalMemoryInfo.cs" />
+    <Compile Include="PointingDeviceInfo.cs" />
+    <Compile Include="ProcessorInfo.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="SystemInfo.cs" />
+    <Compile Include="VideoControllerInfo.cs" />
     <EmbeddedResource Include="CrashReportForm.resx">
       <DependentUpon>CrashReportForm.cs</DependentUpon>
     </EmbeddedResource>

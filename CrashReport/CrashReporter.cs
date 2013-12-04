@@ -20,6 +20,7 @@ namespace CrashReport
         public static void Record(Exception e)
         {
             // Fetch all system info from the Exception
+            CollectSystemInfo.GetSystemInfo();
 
             // Gather info from the .NET APIs (research)
 

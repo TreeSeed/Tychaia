@@ -26,6 +26,7 @@
     <Reference Include="Dx.Process" />
     <Reference Include="Ninject" />
     <Reference Include="protobuf-net" />
+	<Reference Include="CrashReport" />
   </References>
   <Files>
     <Compile Include="Assets\BlockAsset.cs" />

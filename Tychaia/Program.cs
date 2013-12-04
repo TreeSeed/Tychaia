@@ -18,6 +18,18 @@ namespace Tychaia
     {
         private static void Main(string[] args)
         {
+            try
+            {
+                Run(args);
+            }
+            catch (Exception e)
+            {
+                CrashReport.CrashReporter.Record(e);
+            }
+        }
+
+        private static void Run(string[] args)
+        {
             var isServer = false;
             var address = string.Empty;
             var port = 0;
