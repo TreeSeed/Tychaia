@@ -4,6 +4,7 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Ninject;
 using Protogame;
@@ -18,13 +19,20 @@ namespace Tychaia
     {
         private static void Main(string[] args)
         {
-            try
+            if (Debugger.IsAttached)
             {
                 Run(args);
             }
-            catch (Exception e)
+            else
             {
-                CrashReport.CrashReporter.Record(e);
+                try
+                {
+                    Run(args);
+                }
+                catch (Exception e)
+                {
+                    CrashReport.CrashReporter.Record(e);
+                }
             }
         }
 
