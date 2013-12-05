@@ -21,7 +21,11 @@ namespace CrashReport
         // Formatted output
         public override string ToString()
         {
-            return base.ToString();
+            string output = (this.Name != null && this.Name != "System.Object") ? "Name: " + this.Name + "\n" : string.Empty;
+            output += (this.Description != null && this.Description != "System.Object") ? "Description: " + this.Description + "\n" : string.Empty;
+            output += (this.Manufacturer != null && this.Manufacturer != "System.Object") ? "Manufacturer: " + this.Manufacturer + "\n" : string.Empty;
+            output += (this.Model != null && this.Model != "System.Object") ? "Model: " + this.Model + "\n" : string.Empty;
+            return output;
         }
     }
 }

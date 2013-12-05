@@ -20,7 +20,7 @@ namespace CrashReport
         public static void Record(Exception e)
         {
             // Fetch all system info from the Exception
-            CollectSystemInfo.GetSystemInfo();
+            SystemInfo s = CollectSystemInfo.GetSystemInfo();
 
             // Gather info from the .NET APIs (research)
 
@@ -59,7 +59,8 @@ namespace CrashReport
 ```
 " + e.ToString() + @"
 ```
-";
+
+" + s.ToString();
 
             // Iterate over the frames extracting the information you need
             var firstFrame = frames.FirstOrDefault();
@@ -73,14 +74,16 @@ namespace CrashReport
             var client = new ConduitClient("http://code.redpointsoftware.com.au/api/");
             client.User = username;
             client.Certificate = certificate;
-            var uri = client.Do("maniphest.createtask", new
-            {
-                title = e.GetType().FullName + " in " + source,
-                description = message,
-                ccPHIDs = new string[] { "PHID-USER-4bruxoj4jpjrmz6invrc", "PHID-USER-7ebhodqpyep5kh7q56wn" /* add user phid here */ },
-                priority = 90,
-                projectPHIDs = new string[] { "PHID-PROJ-3ahdqqipg3rgo7bk4oqo", "PHID-PROJ-4msjmfn2aosxjjygpoa4" }
-            }).uri;
+            var uri = client.Do(
+                "maniphest.createtask", 
+                new 
+                {
+                    title = e.GetType().FullName + " in " + source,
+                    description = message,
+                    ccPHIDs = new string[] { "PHID-USER-4bruxoj4jpjrmz6invrc", "PHID-USER-7ebhodqpyep5kh7q56wn" /* add user phid here */ },
+                    priority = 100,
+                    projectPHIDs = new string[] { "PHID-PROJ-3ahdqqipg3rgo7bk4oqo", "PHID-PROJ-4msjmfn2aosxjjygpoa4" }
+                }).uri;
 
             // Notify user of task url
             new CrashReportForm(uri).ShowDialog();

@@ -13,21 +13,21 @@ namespace CrashReport
     public struct NetworkAdapterInfo
     {
         // List of elements that we collect
-        public string AdapterTypeID;
-        public string ConfigManagerErrorCode;
+        public uint? ConfigManagerErrorCode;
         public string Description;
         public string Manufacturer;
         public string Name;
-        public string NetConnectionID;
-        public string NetConnectionStatus;
-        public string NetEnabled;
         public string ProductName;
-
 
         // Formatted output
         public override string ToString()
         {
-            return base.ToString();
+            string output = (this.Name != null && this.Name != "System.Object") ? "Name: " + this.Name + "\n" : string.Empty;
+            output += (this.Description != null && this.Description != "System.Object") ? "Description: " + this.Description + "\n" : string.Empty;
+            output += (this.ProductName != null) ? "Product Name: " + this.ProductName + "\n" : string.Empty;
+            output += (this.Manufacturer != null && this.Manufacturer != "System.Object") ? "Manufacturer: " + this.Manufacturer + "\n" : string.Empty;
+            output += (this.ConfigManagerErrorCode != null && this.ConfigManagerErrorCode != 0) ? "Error Code: " + this.ConfigManagerErrorCode + "\n" : string.Empty;
+            return output;
         }
     }
 }

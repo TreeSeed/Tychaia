@@ -27,16 +27,15 @@ namespace CrashReport
                 Writer.WriteLine("Lock");
             }
 
-            CollectSystemInfo.GetSystemInfo();
             // Test
-            //try
-            //{
-            //    throw new NotImplementedException();
-            //}
-            //catch(Exception e)
-            //{
-            //    CrashReporter.Record(e);
-            //}
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch (Exception e)
+            {
+                CrashReporter.Record(e);
+            }
             
             // Make sure it is deleted after test
             DeleteLock();

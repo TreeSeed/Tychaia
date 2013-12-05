@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 // Platform specific usings
 #if PLATFORM_WINDOWS
 using System.Management;
@@ -16,12 +17,12 @@ namespace CrashReport
 {
     public static class CollectSystemInfo
     {
-
 #if PLATFORM_WINDOWS
-        public static void GetSystemInfo()
+        public static SystemInfo GetSystemInfo()
         {
             // Create system info struct
             SystemInfo systemInfo = new SystemInfo();
+            systemInfo.Init();
             ManagementObjectCollection classObjects;
 
             // Check VideoControllers
@@ -33,16 +34,15 @@ namespace CrashReport
             {
                 VideoControllerInfo infoStruct = new VideoControllerInfo
                 {
-                    AcceleratorCapabilities = classObject.GetPropertyValue("AcceleratorCapabilities").ToString(),
-                    AdapterRAM = classObject.GetPropertyValue("AdapterRAM").ToString(),
-                    ConfigManagerErrorCode = classObject.GetPropertyValue("ConfigManagerErrorCode").ToString(),
-                    CurrentHorizontalResolution = classObject.GetPropertyValue("CurrentHorizontalResolution").ToString(),
-                    CurrentVertialResolution = classObject.GetPropertyValue("CurrentVerticalResolution").ToString(),
-                    Description = classObject.GetPropertyValue("Description").ToString(),
-                    DriverVersion = classObject.GetPropertyValue("DriverVersion").ToString(),
-                    InstalledDisplayDrivers = classObject.GetPropertyValue("InstalledDisplayDrivers").ToString(),
-                    MaxMemorySupported = classObject.GetPropertyValue("MaxMemorySupported").ToString(),
-                    Name = classObject.GetPropertyValue("Name").ToString() 
+                    AdapterRAM = (classObject.GetPropertyValue("AdapterRAM") ?? new object()).ToString(),
+                    ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
+                    CurrentHorizontalResolution = (uint?)classObject.GetPropertyValue("CurrentHorizontalResolution"),
+                    CurrentVertialResolution = (uint?)classObject.GetPropertyValue("CurrentVerticalResolution"),
+                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                    DriverVersion = (classObject.GetPropertyValue("DriverVersion") ?? new object()).ToString(),
+                    InstalledDisplayDrivers = (classObject.GetPropertyValue("InstalledDisplayDrivers") ?? new object()).ToString(),
+                    MaxMemorySupported = (uint?)classObject.GetPropertyValue("MaxMemorySupported"),
+                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString() 
                 };
                 systemInfo.VideoControllers.Add(infoStruct);
             }
@@ -56,10 +56,10 @@ namespace CrashReport
             {
                 KeyboardInfo infoStruct = new KeyboardInfo
                 {
-                    ConfigManagerErrorCode = classObject.GetPropertyValue("ConfigManagerErrorCode").ToString(),
-                    Description = classObject.GetPropertyValue("Description").ToString(),
-                    Layout = classObject.GetPropertyValue("Layout").ToString(),
-                    Name = classObject.GetPropertyValue("Name").ToString()
+                    ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
+                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                    Layout = (classObject.GetPropertyValue("Layout") ?? new object()).ToString(),
+                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString()
                 };
                 systemInfo.Keyboards.Add(infoStruct);
             }
@@ -73,13 +73,12 @@ namespace CrashReport
             {
                 PointingDeviceInfo infoStruct = new PointingDeviceInfo
                 {
-                    ConfigManagerErrorCode = classObject.GetPropertyValue("ConfigManagerErrorCode").ToString(),
-                    Description = classObject.GetPropertyValue("Description").ToString(),
-                    Handedness = classObject.GetPropertyValue("Handedness").ToString(),
-                    HardwareType = classObject.GetPropertyValue("HardwareType").ToString(),
-                    Name = classObject.GetPropertyValue("Name").ToString(),
-                    NumberOfButtons = classObject.GetPropertyValue("NumberOfButtons").ToString(),
-                    PointingType = classObject.GetPropertyValue("PointingType").ToString()
+                    ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
+                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                    Handedness = (classObject.GetPropertyValue("Handedness") ?? new object()).ToString(),
+                    HardwareType = (classObject.GetPropertyValue("HardwareType") ?? new object()).ToString(),
+                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
+                    NumberOfButtons = (classObject.GetPropertyValue("NumberOfButtons") ?? new object()).ToString()
                 };
                 systemInfo.PointingDevices.Add(infoStruct);
             }
@@ -93,10 +92,11 @@ namespace CrashReport
             {
                 DiskDriveInfo infoStruct = new DiskDriveInfo
                 {
-                    ConfigManagerErrorCode = classObject.GetPropertyValue("ConfigManagerErrorCode").ToString(),
-                    Description = classObject.GetPropertyValue("Description").ToString(),
-                    MediaType = classObject.GetPropertyValue("MediaType").ToString(),
-                    Name = classObject.GetPropertyValue("Name").ToString()
+                    ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
+                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                    MediaType = (classObject.GetPropertyValue("MediaType") ?? new object()).ToString(),
+                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
+                    Size = (UInt64?)classObject.GetPropertyValue("Size")
                 };
                 systemInfo.DiskDrives.Add(infoStruct);
             }
@@ -110,15 +110,11 @@ namespace CrashReport
             {
                 NetworkAdapterInfo infoStruct = new NetworkAdapterInfo
                 {
-                    AdapterTypeID = classObject.GetPropertyValue("AdapterTypeID").ToString(),
-                    ConfigManagerErrorCode = classObject.GetPropertyValue("ConfigManagerErrorCode").ToString(),
-                    Description = classObject.GetPropertyValue("Description").ToString(),
-                    Manufacturer = classObject.GetPropertyValue("Manufacturer").ToString(),
-                    Name = classObject.GetPropertyValue("Name").ToString(),
-                    NetConnectionID = classObject.GetPropertyValue("NetConnectionID").ToString(),
-                    NetConnectionStatus = classObject.GetPropertyValue("NetConnectionStatus").ToString(),
-                    NetEnabled = classObject.GetPropertyValue("NetEnabled").ToString(),
-                    ProductName = classObject.GetPropertyValue("ProductName").ToString()
+                    ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
+                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                    Manufacturer = (classObject.GetPropertyValue("Manufacturer") ?? new object()).ToString(),
+                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
+                    ProductName = (classObject.GetPropertyValue("ProductName") ?? new object()).ToString()
                 };
                 systemInfo.NetworkAdapters.Add(infoStruct);
             }
@@ -132,10 +128,10 @@ namespace CrashReport
             {
                 PhysicalMemoryInfo infoStruct = new PhysicalMemoryInfo
                 {
-                    Description = classObject.GetPropertyValue("Description").ToString(),
-                    Manufacturer = classObject.GetPropertyValue("Manufacturer").ToString(),
-                    Model = classObject.GetPropertyValue("Model").ToString(),
-                    Name = classObject.GetPropertyValue("Name").ToString()
+                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                    Manufacturer = (classObject.GetPropertyValue("Manufacturer") ?? new object()).ToString(),
+                    Model = (classObject.GetPropertyValue("Model") ?? new object()).ToString(),
+                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString()
                 };
                 systemInfo.PhysicalMemory.Add(infoStruct);
             }
@@ -149,14 +145,14 @@ namespace CrashReport
             {
                 ProcessorInfo infoStruct = new ProcessorInfo
                 {
-                    Architecture = classObject.GetPropertyValue("Architecture").ToString(),
-                    ConfigManagerErrorCode = classObject.GetPropertyValue("ConfigManagerErrorCode").ToString(),
-                    Description = classObject.GetPropertyValue("Description").ToString(),
-                    Family = classObject.GetPropertyValue("Family").ToString(),
-                    Manufacturer = classObject.GetPropertyValue("Manufacturer").ToString(),
-                    MaxClockSpeed = classObject.GetPropertyValue("MaxClockSpeed").ToString(),
-                    Name = classObject.GetPropertyValue("Name").ToString(),
-                    ProcessorType = classObject.GetPropertyValue("ProcessorType").ToString()
+                    Architecture = (classObject.GetPropertyValue("Architecture") ?? new object()).ToString(),
+                    ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
+                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                    Family = (classObject.GetPropertyValue("Family") ?? new object()).ToString(),
+                    Manufacturer = (classObject.GetPropertyValue("Manufacturer") ?? new object()).ToString(),
+                    MaxClockSpeed = (classObject.GetPropertyValue("MaxClockSpeed") ?? new object()).ToString(),
+                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
+                    ProcessorType = (classObject.GetPropertyValue("ProcessorType") ?? new object()).ToString()
                 };
                 systemInfo.Processors.Add(infoStruct);
             }
@@ -170,28 +166,31 @@ namespace CrashReport
             {
                 OperatingSystemInfo infoStruct = new OperatingSystemInfo
                 {
-                    BuildNumber = classObject.GetPropertyValue("BuildNumber").ToString(),
-                    Description = classObject.GetPropertyValue("Description").ToString(),
-                    Name = classObject.GetPropertyValue("Name").ToString(),
-                    OperatingSystemSKU = classObject.GetPropertyValue("OperatingSystemSKU").ToString(),
-                    OSArchitecture = classObject.GetPropertyValue("OSArchitecture").ToString(),
-                    Primary = classObject.GetPropertyValue("Primary").ToString(),
-                    TotalVisibleMemorySize = classObject.GetPropertyValue("TotalVisibleMemorySize").ToString(),
-                    Version = classObject.GetPropertyValue("Version").ToString()
+                    BuildNumber = (classObject.GetPropertyValue("BuildNumber") ?? new object()).ToString(),
+                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
+                    OSArchitecture = (classObject.GetPropertyValue("OSArchitecture") ?? new object()).ToString(),
+                    Primary = (classObject.GetPropertyValue("Primary") ?? new object()).ToString(),
+                    TotalVisibleMemorySize = (classObject.GetPropertyValue("TotalVisibleMemorySize") ?? new object()).ToString(),
+                    Version = (classObject.GetPropertyValue("Version") ?? new object()).ToString()
                 };
                 systemInfo.OperatingSystems.Add(infoStruct);
             }
+
+            return systemInfo;
         }
 
 #elif PLATFORM_LINUX
-        public static void GetSystemInfo()
+        public static SystemInfo GetSystemInfo()
         {
+            SystemInfo systemInfo = new SystemInfo();
+            systemInfo.Init();
+            return systemInfo;
         }
 
 #else
         public static void GetSystemInfo()
         {
-            
         }
 #endif
     }

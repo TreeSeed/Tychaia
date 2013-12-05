@@ -22,10 +22,74 @@ namespace CrashReport
         public List<ProcessorInfo> Processors;
         public List<OperatingSystemInfo> OperatingSystems;
 
+        public void Init()
+        {
+            this.VideoControllers = new List<VideoControllerInfo>();
+            this.Keyboards = new List<KeyboardInfo>();
+            this.PointingDevices = new List<PointingDeviceInfo>();
+            this.DiskDrives = new List<DiskDriveInfo>();
+            this.NetworkAdapters = new List<NetworkAdapterInfo>();
+            this.PhysicalMemory = new List<PhysicalMemoryInfo>();
+            this.Processors = new List<ProcessorInfo>();
+            this.OperatingSystems = new List<OperatingSystemInfo>();
+        }
+
         // Formatted output
         public override string ToString()
         {
-            return base.ToString();
+            string output = "```lang=none, name=System Information, lines=15" + "\n";
+            
+            foreach (var v in this.Processors.Select((result, id) => new { ID = id, Result = result }))
+            {
+                output += "Processor " + v.ID.ToString() + "\n===========\n";
+                output += v.Result.ToString() + "\n";
+            }
+
+            foreach (var v in this.OperatingSystems.Select((result, id) => new { ID = id, Result = result }))
+            {
+                output += "Operating System " + v.ID.ToString() + "\n==================\n";
+                output += v.Result.ToString() + "\n";
+            }
+
+            foreach (var v in this.VideoControllers.Select((result, id) => new { ID = id, Result = result }))
+            {
+                output += "Video Controller " + v.ID.ToString() + "\n==================\n";
+                output += v.Result.ToString() + "\n";
+            }
+
+            foreach (var v in this.PhysicalMemory.Select((result, id) => new { ID = id, Result = result }))
+            {
+                output += "Physical Memory " + v.ID.ToString() + "\n=================\n";
+                output += v.Result.ToString() + "\n";
+            }
+
+            foreach (var v in this.NetworkAdapters.Select((result, id) => new { ID = id, Result = result }))
+            {
+                output += "Network Adapter " + v.ID.ToString() + "\n=================\n";
+                output += v.Result.ToString() + "\n";
+            }
+
+            foreach (var v in this.Keyboards.Select((result, id) => new { ID = id, Result = result }))
+            {
+                output += "Keyboard " + v.ID.ToString() + "\n==========\n";
+                output += v.Result.ToString() + "\n";
+            }
+
+            foreach (var v in this.PointingDevices.Select((result, id) => new { ID = id, Result = result }))
+            {
+                output += "Pointing Device " + v.ID.ToString() + "\n=================\n";
+                output += v.Result.ToString() + "\n";
+            }
+
+            foreach (var v in this.DiskDrives.Select((result, id) => new { ID = id, Result = result }))
+            {
+                output += "Disk Drive " + v.ID.ToString() + "\n============\n";
+                output += v.Result.ToString() + "\n";
+            }
+
+            output += "```";
+
+            return output;
         }
     }
 }
