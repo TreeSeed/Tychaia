@@ -12,4 +12,3 @@ namespace Tychaia.Website.Cachable
         bool IsBuildServerOnline();
     }
 }
-

@@ -27,13 +27,12 @@ namespace Tychaia.Website
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute("Home", "", new { controller = "Home", action = "Index" });
+            routes.MapRoute("Home", string.Empty, new { controller = "Home", action = "Index" });
             routes.MapRoute("Download", "download", new { controller = "Download", action = "Index" });
             routes.MapRoute("Tuesday", "tuesday/{issue}", new { controller = "Blog", action = "Index" });
             routes.MapRoute("BlogIndex", "blog", new { controller = "Blog", action = "Index", });
             routes.MapRoute("BlogRead", "blog/{issue}", new { controller = "Blog", action = "Read", issue = 0 });
-            routes.MapRoute("Wiki", "w/{*slug}",
-                new { controller = "Wiki", action = "Index", slug = UrlParameter.Optional });
+            routes.MapRoute("Wiki", "w/{*slug}", new { controller = "Wiki", action = "Index", slug = UrlParameter.Optional });
             routes.MapRoute("Cache", "clear-cache", new { controller = "Cache", action = "Index" });
             routes.MapRoute("Feed", "feed", new { controller = "Feed", action = "Index" });
         }
@@ -67,9 +66,9 @@ namespace Tychaia.Website
             // http://www.codinghub.net/2012/12/storage-scopes-cannot-be-created-when.html
             var ob = typeof(
                 AspNetRequestScopeStorageProvider).Assembly.GetType(
-                "System.Web.WebPages.WebPageHttpModule").GetProperty
-                ("AppStartExecuteCompleted",
-            BindingFlags.NonPublic | BindingFlags.Static);
+                "System.Web.WebPages.WebPageHttpModule").GetProperty(
+                "AppStartExecuteCompleted", 
+                BindingFlags.NonPublic | BindingFlags.Static);
             ob.SetValue(null, true, null);
         }
     }

@@ -3,8 +3,8 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Tychaia.Website.Models;
 using System.Collections.Generic;
+using Tychaia.Website.Models;
 
 namespace Tychaia.Website.ViewModels
 {
@@ -14,4 +14,3 @@ namespace Tychaia.Website.ViewModels
         public WikiPageModel Page;
     }
 }
-

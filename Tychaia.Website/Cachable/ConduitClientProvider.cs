@@ -3,8 +3,8 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Phabricator.Conduit;
 using System.Configuration;
+using Phabricator.Conduit;
 
 namespace Tychaia.Website
 {
@@ -19,4 +19,3 @@ namespace Tychaia.Website
         }
     }
 }
-

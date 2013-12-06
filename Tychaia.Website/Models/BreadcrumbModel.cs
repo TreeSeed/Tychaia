@@ -13,4 +13,3 @@ namespace Tychaia.Website.Models
         public string Slug;
     }
 }
-

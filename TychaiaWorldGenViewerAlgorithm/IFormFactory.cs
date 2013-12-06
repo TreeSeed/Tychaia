@@ -14,4 +14,3 @@ namespace TychaiaWorldGenViewerAlgorithm
         TraceForm CreateTraceForm(FlowElement flowElement);
     }
 }
-

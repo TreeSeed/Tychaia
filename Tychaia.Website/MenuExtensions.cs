@@ -15,8 +15,7 @@ namespace Tychaia.Website
             this HtmlHelper htmlHelper,
             string text,
             string action,
-            string controller
-        )
+            string controller)
         {
             var li = new TagBuilder("li");
             var routeData = htmlHelper.ViewContext.RouteData;
@@ -27,9 +26,9 @@ namespace Tychaia.Website
             {
                 li.AddCssClass("active");
             }
+
             li.InnerHtml = htmlHelper.ActionLink(text, action, controller).ToHtmlString();
             return MvcHtmlString.Create(li.ToString());
         }
     }
 }
-

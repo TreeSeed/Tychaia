@@ -13,4 +13,3 @@ namespace Tychaia.Website.ViewModels
         public int? PostID;
     }
 }
-

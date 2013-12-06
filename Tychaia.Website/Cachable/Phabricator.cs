@@ -21,19 +21,31 @@ namespace Tychaia.Website.Cachable
         public MemoryCache m_BlogCache = new MemoryCache("blog-cache");
         public MemoryCache m_RemarkupCache = new MemoryCache("remarkup-cache");
 
-        public MemoryCache WikiPageCache { get { return this.m_WikiPageCache; } }
-        public MemoryCache WikiHierarchyCache { get { return this.m_WikiHierarchyCache; } }
-        public MemoryCache BlogCache { get { return this.m_BlogCache; } }
-        public MemoryCache RemarkupCache { get { return this.m_RemarkupCache; } }
+        public MemoryCache WikiPageCache 
+        { 
+            get { return this.m_WikiPageCache; } 
+        }
+        public MemoryCache WikiHierarchyCache 
+        { 
+            get { return this.m_WikiHierarchyCache; } 
+        }
+        public MemoryCache BlogCache 
+        { 
+            get { return this.m_BlogCache; } 
+        }
+        public MemoryCache RemarkupCache 
+        { 
+            get { return this.m_RemarkupCache; } 
+        }
 
         public void ClearCache()
         {
             // Switch using temporary variable so that we don't have
             // any threading issues accessing a disposed cache.
-            var oldWikiPage = WikiPageCache;
-            var oldWikiHierarchy = WikiHierarchyCache;
-            var oldBlog = BlogCache;
-            var oldRemarkup = RemarkupCache;
+            var oldWikiPage = this.WikiPageCache;
+            var oldWikiHierarchy = this.WikiHierarchyCache;
+            var oldBlog = this.BlogCache;
+            var oldRemarkup = this.RemarkupCache;
             this.m_WikiPageCache = new MemoryCache("wiki-page-cache");
             this.m_WikiHierarchyCache = new MemoryCache("wiki-hierarchy-cache");
             this.m_BlogCache = new MemoryCache("blog-cache");
@@ -47,7 +59,8 @@ namespace Tychaia.Website.Cachable
         private static string SHA1(string input)
         {
             var algorithm = new SHA1Managed();
-            return BitConverter.ToString(algorithm.ComputeHash(
+            return BitConverter.ToString(
+                algorithm.ComputeHash(
                 Encoding.ASCII.GetBytes(input))).Replace("-", string.Empty);
         }
 
@@ -65,12 +78,10 @@ namespace Tychaia.Website.Cachable
                 html = client.Do("remarkup.process", new
                 {
                     context = "phriction",
-                    contents = new string[] { remarkup }
-                })[0].content;
+                    contents = new string[] { remarkup }})[0].content;
                 this.RemarkupCache.Add(
                     new CacheItem(sha1, html),
-                    new CacheItemPolicy { SlidingExpiration = new TimeSpan(1, 0, 0) }
-                );
+                    new CacheItemPolicy { SlidingExpiration = new TimeSpan(1, 0, 0) });
             }
 
             return FilterHTML(html);
@@ -83,13 +94,12 @@ namespace Tychaia.Website.Cachable
             {
                 page = client.Do("phriction.info", new
                 {
-                    slug = slug
-                });
+                    slug = slug});
                 this.WikiPageCache.Add(
                     new CacheItem(slug, page),
-                    new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) }
-                );
+                    new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) });
             }
+
             return page;
         }
 
@@ -100,11 +110,11 @@ namespace Tychaia.Website.Cachable
             {
                 try
                 {
-                    hierarchy = client.Do("phriction.hierarchy", new
-                    {
+                    hierarchy = client.Do(
+                        "phriction.hierarchy", 
+                        new {
                         slug = slug,
-                        depth = 2
-                    });
+                        depth = 2});
                 }
                 catch (ConduitException)
                 {
@@ -112,13 +122,14 @@ namespace Tychaia.Website.Cachable
                     // the phriction.hierarchy method.
                     hierarchy = new List<object>();
                 }
+
                 if (hierarchy == null)
                     throw new NotImplementedException(slug);
                 this.WikiHierarchyCache.Add(
                     new CacheItem(slug, hierarchy),
-                    new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) }
-                );
+                    new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) });
             }
+
             return hierarchy;
         }
 
@@ -137,7 +148,8 @@ namespace Tychaia.Website.Cachable
             });
             foreach (var rawPost in rawPosts)
             {
-                posts.Add(new BlogPostModel
+                posts.Add(
+                    new BlogPostModel
                 {
                     ID = Convert.ToInt32(rawPost.id),
                     Previous = null,
@@ -150,6 +162,7 @@ namespace Tychaia.Website.Cachable
                     UNIXDatePublished = Convert.ToInt64(rawPost.datePublished)
                 });
             }
+
             posts = posts.OrderByDescending(x => x.UNIXDatePublished).ToList();
 
             // Now process all of the Remarkup fields (Content and Summary).
@@ -188,6 +201,7 @@ namespace Tychaia.Website.Cachable
                     RealName = rawUser.realName
                 });
             }
+
             var users = userMappings.ToDictionary(x => x.PHID, x => x.RealName);
             foreach (var post in posts)
             {
@@ -218,4 +232,3 @@ namespace Tychaia.Website.Cachable
         }
     }
 }
-

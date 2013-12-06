@@ -14,7 +14,7 @@ using Tychaia.ProceduralGeneration.Flow;
 
 namespace TychaiaWorldGenViewerAlgorithm
 {
-    public partial class AnalyseForm : Form
+    partial class AnalyseForm : Form
     {
         private RuntimeLayer m_Layer;
 

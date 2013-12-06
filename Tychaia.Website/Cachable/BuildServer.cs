@@ -4,8 +4,8 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using System;
-using System.Runtime.Caching;
 using System.Net;
+using System.Runtime.Caching;
 
 namespace Tychaia.Website.Cachable
 {
@@ -17,14 +17,14 @@ namespace Tychaia.Website.Cachable
         {
             // Switch using temporary variable so that we don't have
             // any threading issues accessing a disposed cache.
-            var oldOnlineStatus = OnlineStatusCache;
-            OnlineStatusCache = new MemoryCache("online-status-cache");
+            var oldOnlineStatus = this.OnlineStatusCache;
+            this.OnlineStatusCache = new MemoryCache("online-status-cache");
             oldOnlineStatus.Dispose();
         }
 
         public bool IsBuildServerOnline()
         {
-            var online = OnlineStatusCache.Get("online") as bool?;
+            var online = this.OnlineStatusCache.Get("online") as bool?;
             if (online == null)
             {
                 var client = new WebClient();
@@ -37,11 +37,12 @@ namespace Tychaia.Website.Cachable
                 {
                     online = false;
                 }
-                OnlineStatusCache.Add(
+
+                this.OnlineStatusCache.Add(
                     new CacheItem("online", online),
-                    new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) }
-                );
+                    new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(15) });
             }
+
             return online.Value;
         }
     }

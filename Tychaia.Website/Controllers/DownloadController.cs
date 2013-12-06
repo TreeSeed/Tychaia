@@ -20,9 +20,11 @@ namespace Tychaia.Website.Controllers
 
         public ActionResult Index()
         {
-            return View(new DownloadViewModel {
-                BuildServerOnline = this.m_BuildServer.IsBuildServerOnline()
-            });
+            return View(
+                new DownloadViewModel 
+                {
+                    BuildServerOnline = this.m_BuildServer.IsBuildServerOnline()
+                });
         }
     }
 }

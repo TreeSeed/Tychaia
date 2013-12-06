@@ -70,6 +70,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                             element.RequestPerformanceStatistics();
                             this.m_PerformanceResultsLeftToCalculate++;
                         }
+
                         this.UpdateStatusArea();
                     });
         }
@@ -197,8 +198,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                                 {
                                     X = v.EditorX,
                                     Y = v.EditorY
-                                })
-                    );
+                                }));
                 this.UpdateStatusArea();
             }
         }
@@ -458,16 +458,19 @@ namespace TychaiaWorldGenViewerAlgorithm
                         currentName = (a as FlowDesignerNameAttribute).Name;
                         foundName = true;
                     }
+
                     if (a is FlowDesignerCategoryAttribute)
                     {
                         currentCategory = (a as FlowDesignerCategoryAttribute).Category;
                         foundCategory = true;
                     }
+
                     if (a is FlowDesignerMajorCategoryAttribute)
                     {
                         currentMajorCategory = (a as FlowDesignerMajorCategoryAttribute).MajorCategory;
                     }
                 }
+
                 if (foundName && foundCategory)
                     selectedTypes.Add(new SelectedType
                     {
@@ -508,6 +511,7 @@ namespace TychaiaWorldGenViewerAlgorithm
                                 (sender, ev) => this.CreateDynamicLayer(tempt.Type), "c_" + t.Name));
                         }
                     }
+
                     if (cont)
                     {
                         menu.Items.Add(cm);

@@ -116,8 +116,9 @@ namespace TychaiaWorldGenViewerAlgorithm
                     x = atk - maxy;
                     y = maxy;
                 }
+
                 while (y > atk / 2)
-                    result[count++] = y-- * width + x++;
+                    result[count++] = (y-- * width) + x++;
 
                 // Attack from the right.
                 if (atk < maxx)
@@ -130,8 +131,9 @@ namespace TychaiaWorldGenViewerAlgorithm
                     x = maxx;
                     y = atk - maxx;
                 }
+
                 while (y <= atk / 2)
-                    result[count++] = y++ * width + x--;
+                    result[count++] = (y++ * width) + x--;
             }
 
             return result;
@@ -160,15 +162,18 @@ namespace TychaiaWorldGenViewerAlgorithm
                     this.m_RenderingLocationProvider.X + sx,
                     this.m_RenderingLocationProvider.Y + sy,
                     this.m_RenderingLocationProvider.Z + sz,
-                    width, height, depth, out computations);
+                    width, 
+                    height, 
+                    depth, 
+                    out computations);
 
                 var render = GetCellRenderOrder(RenderToNE, width, height);
                 var ztop = layer.Algorithm.Is2DOnly ? 1 : depth;
                 var zbottom = 0;
                 for (var z = zbottom; z < ztop; z++)
                 {
-                    var rcx = width / 2 - 1 + 16;
-                    var rcy = height / 2 - 15 + 32;
+                    var rcx = (width / 2) - 1 + 16;
+                    var rcy = (height / 2) - 15 + 32;
                     var rw = 2;
                     var rh = 1;
                     for (var i = 0; i < render.Length; i++)
@@ -178,8 +183,8 @@ namespace TychaiaWorldGenViewerAlgorithm
                         var y = render[i] / width;
 
                         // Calculate the render position on screen.
-                        var rx = rcx + (int) ((x - y) / 2.0 * rw); // (int)(x / ((RenderWidth + 1) / 2.0) * rw);
-                        var ry = rcy + (x + y) * rh - (rh / 2 * (width + height)) - (z - zbottom) * 1;
+                        var rx = rcx + (int)((x - y) / (2.0 * rw)); // (int)(x / ((RenderWidth + 1) / 2.0) * rw);
+                        var ry = rcy + ((x + y) * rh) - ((rh / 2) * (width + height)) - ((z - zbottom) * 1);
 
                         while (true)
                         {
@@ -189,16 +194,15 @@ namespace TychaiaWorldGenViewerAlgorithm
                                 if (layer.GetInputs().Length > 0)
                                     lc = layer.Algorithm.GetColorForValue(
                                         this.m_StorageAccess.FromRuntime(layer.GetInputs()[0]),
-                                        data[x + y * width + z * width * height]);
+                                        data[x + (y * width) + (z * width * height)]);
                                 else
                                     lc = layer.Algorithm.GetColorForValue(
                                         null,
-                                        data[x + y * width + z * width * height]);
+                                        data[x + (y * width) + (z * width * height)]);
                                 var sb = new SolidBrush(Color.FromArgb(lc.A, lc.R, lc.G, lc.B));
                                 graphics.FillRectangle(
                                     sb,
-                                    new Rectangle(rx, ry, rw, rh)
-                                    );
+                                    new Rectangle(rx, ry, rw, rh));
                                 break;
                             }
                             catch (InvalidOperationException)
@@ -222,11 +226,12 @@ namespace TychaiaWorldGenViewerAlgorithm
         {
             var temp = this.RenderPartial3D(this.m_Layer, this.m_X, this.m_Y, this.m_Z, 32, 32, 32);
             var g = Graphics.FromImage(this.m_Bitmap);
-            var rcx = 32 / 2 + 512 - 48 + 16;
-            var rcy = 32 / 2 - 15 - 32 + 256;
-            var rx = rcx + (int) ((this.m_X / 32 - this.m_Y / 32) / 2.0 * 64);
-                // (int)(x / ((RenderWidth + 1) / 2.0) * rw);
-            var ry = rcy + (this.m_X / 32 + this.m_Y / 32) * 32 /*- (32 / 2 * (32 + 32))*/- (this.m_Z / 32 - 0) * 32;
+            var rcx = (32 / 2) + 512 - 48 + 16;
+            var rcy = (32 / 2) - 15 - 32 + 256;
+            var rx = rcx + (int)(((this.m_X / 32) - (this.m_Y / 32)) / (2.0 * 64));
+            
+            // (int)(x / ((RenderWidth + 1) / 2.0) * rw);
+            var ry = rcy + (((this.m_X / 32) + (this.m_Y / 32)) * 32) /*- (32 / 2 * (32 + 32))*/ - ((this.m_Z / 32 - 0) * 32);
             g.DrawImage(temp, rx, ry);
             temp.Dispose();
 
@@ -236,12 +241,14 @@ namespace TychaiaWorldGenViewerAlgorithm
                 this.m_X = 0;
                 this.m_Y += 32;
             }
+
             if (this.m_Y >= 512)
             {
                 this.m_X = 0;
                 this.m_Y = 0;
                 this.m_Z += 32;
             }
+
             if (this.m_Z >= 192 || (this.m_Layer.Algorithm.Is2DOnly && this.m_Z >= 32))
             {
                 this.c_Timer.Stop();
@@ -254,8 +261,8 @@ namespace TychaiaWorldGenViewerAlgorithm
                 }
             }
 
-            double count = (this.m_X / 32) + (this.m_Y / 32) * (512 / 32) + (this.m_Z / 32) * (512 / 32) * (512 / 32);
-            double total = (512 / 32) * (512 / 32) * ((this.m_Layer.Algorithm.Is2DOnly ? 32 : 192) / 32);
+            double count = (this.m_X / 32) + ((this.m_Y / 32) * (512 / 32)) + (((this.m_Z / 32) * (512 / 32)) * (512 / 32));
+            double total = ((512 / 32) * (512 / 32)) * ((this.m_Layer.Algorithm.Is2DOnly ? 32 : 192) / 32);
             this.Text = "Export Layer (" + Math.Round(count / total * 100.0, 2) + "% complete)";
 
             this.c_RenderBox.Refresh();

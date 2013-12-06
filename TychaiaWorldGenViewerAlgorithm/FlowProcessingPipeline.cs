@@ -43,23 +43,23 @@ namespace TychaiaWorldGenViewerAlgorithm
                     case FlowProcessingRequestType.GenerateRuntimeBitmap:
                         if (response.IsStartNotification)
                             this.m_Form.OnGenerateRuntimeBitmapStart(
-                                (StorageLayer) response.Results[0],
-                                (Bitmap) response.Results[1]);
+                                (StorageLayer)response.Results[0],
+                                (Bitmap)response.Results[1]);
                         else
                             this.m_Form.OnGenerateRuntimeBitmapResponse(
-                                (StorageLayer) response.Results[0],
-                                (Bitmap) response.Results[1]);
+                                (StorageLayer)response.Results[0],
+                                (Bitmap)response.Results[1]);
                         break;
                     case FlowProcessingRequestType.GeneratePerformanceResults:
                         if (response.IsStartNotification)
                             this.m_Form.OnGeneratePerformanceResultsStart(
-                                (StorageLayer) response.Results[0],
-                                (Bitmap) response.Results[1]);
+                                (StorageLayer)response.Results[0],
+                                (Bitmap)response.Results[1]);
                         else
                             this.m_Form.OnGeneratePerformanceResultsResponse(
-                                (StorageLayer) response.Results[0],
-                                (Bitmap) response.Results[1],
-                                (Bitmap) response.Results[2]);
+                                (StorageLayer)response.Results[0],
+                                (Bitmap)response.Results[1],
+                                (Bitmap)response.Results[2]);
                         break;
                 }
             }

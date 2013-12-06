@@ -28,7 +28,7 @@ namespace Tychaia.Website.Controllers
         public ActionResult Index(string slug)
         {
             if (slug == null)
-                slug = "";
+                slug = string.Empty;
             if (!string.IsNullOrWhiteSpace(slug))
                 slug = "/" + slug;
             slug = "tychaia" + slug;
@@ -73,10 +73,12 @@ namespace Tychaia.Website.Controllers
                     grandchildModel.Slug = this.RewriteSlug(grandchild.Value.slug);
                     childModel.Children.Add(grandchildModel);
                 }
+
                 if (childModel.Children.Count == 0)
                     childModel.Children = null;
                 children.Add(childModel);
             }
+
             if (children.Count == 0)
                 return null;
             return children;
@@ -95,7 +97,7 @@ namespace Tychaia.Website.Controllers
         {
             dynamic page;
             var breadcrumbs = new List<BreadcrumbModel>();
-            var slugBuilt = "";
+            var slugBuilt = string.Empty;
             var parts = slug.Split('/');
             for (int i = 0; i < parts.Length - 1; i++)
             {

@@ -6,8 +6,8 @@
 using System;
 using System.Windows.Forms;
 using Ninject;
-using Tychaia.ProceduralGeneration;
 using Tychaia.Globals;
+using Tychaia.ProceduralGeneration;
 
 namespace TychaiaWorldGenViewerAlgorithm
 {

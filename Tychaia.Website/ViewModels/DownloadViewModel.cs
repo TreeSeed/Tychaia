@@ -11,4 +11,3 @@ namespace Tychaia.Website.ViewModels
         public bool BuildServerOnline;
     }
 }
-

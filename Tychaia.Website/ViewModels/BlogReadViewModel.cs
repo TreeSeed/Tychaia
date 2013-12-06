@@ -12,4 +12,3 @@ namespace Tychaia.Website.ViewModels
         public BlogPostModel Post { get; set; }
     }
 }
-

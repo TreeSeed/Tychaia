@@ -18,4 +18,3 @@ namespace Tychaia.Website.Models
         public string Uri { get; set; }
     }
 }
-
