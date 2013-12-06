@@ -18,15 +18,15 @@ namespace Tychaia.ProceduralGeneration
 
         public Profession[] Professions; // Jobs this building creates
         public int Width;
+
         // NOTE: Each building doesn't actually provide anything to the player, those are provided by each professsion
         // This means that if you have a building that creates 2 blacksmiths it will naturally create more things
         // You can then create specializations etc to make each npc different in a single building
         // Also helps by not having to then later attach each npc to a set group of items in a building
 
-//        public WorldObject[] ObjectsProvided; // A list of the objects that go into this building.
+        // public WorldObject[] ObjectsProvided; // A list of the objects that go into this building.
         // TODO: Check if it will be better/easier to do predrawn stuff, or section-stitching or random generation
-        //                                               Still have as much random generation as we can (setting areas for where things go, etc)
-
+        // Still have as much random generation as we can (setting areas for where things go, etc)
 
         // Color that this Building draws
     }
@@ -35,7 +35,6 @@ namespace Tychaia.ProceduralGeneration
     {
         public static List<Building> Buildings = null;
 
-        //Turns out not as easy as copy pasting
         static BuildingEngine()
         {
             Buildings = new List<Building>();

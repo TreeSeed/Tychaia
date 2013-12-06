@@ -14,8 +14,9 @@ namespace Tychaia.ProceduralGeneration.Analysis.Output
         {
             if (node.IsNull)
             {
-                return "";
+                return string.Empty;
             }
+
             var stringWriter = new StringWriter();
             var wrapper = new TrackingOutputFormatter(stringWriter);
             wrapper.IndentationString = "    ";

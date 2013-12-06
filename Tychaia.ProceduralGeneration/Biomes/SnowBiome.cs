@@ -16,4 +16,3 @@ namespace Tychaia.ProceduralGeneration
         }
     }
 }
-

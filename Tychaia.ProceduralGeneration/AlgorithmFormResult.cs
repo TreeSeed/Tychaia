@@ -48,10 +48,10 @@ namespace Tychaia.ProceduralGeneration
             int oy,
             int oz)
         {
-            output[i + ox + ((j + oy) * width) + ((k + oz) * width * height)].BlockAssetName =
-                blockInfo[i + ox + ((j + oy) * width) + ((k + oz) * width * height)].BlockAssetName;
-            output[i + ox + ((j + oy) * width) + ((k + oz) * width * height)].HeightMap =
-                heightMap[i + ox + ((j + oy) * width)];
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BlockAssetName =
+                blockInfo[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BlockAssetName;
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].HeightMap =
+                heightMap[(i + ox) + ((j + oy) * width)];
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)

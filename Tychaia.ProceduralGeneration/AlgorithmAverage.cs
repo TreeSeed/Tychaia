@@ -64,24 +64,39 @@ namespace Tychaia.ProceduralGeneration
             get { return new[] { "Input A", "Input B" }; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] output, long x,
-            long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] inputA,
+            int[] inputB,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
-            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
                 (int)
-                    (((inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height] * this.InputAWorth) +
-                      (inputB[(i + ox) + (j + oy) * width + (k + oz) * width * height] * this.InputBWorth)) /
+                    (((inputA[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] * this.InputAWorth) +
+                      (inputB[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] * this.InputBWorth)) /
                      (this.InputAWorth + this.InputBWorth));
 
-            if (output[(i + ox) + (j + oy) * width + (k + oz) * width * height] > this.MaxValue)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.MaxValue;
-            else if (output[(i + ox) + (j + oy) * width + (k + oz) * width * height] < this.MinValue)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.MinValue;
+            if (output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] > this.MaxValue)
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = this.MaxValue;
+            else if (output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] < this.MinValue)
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = this.MinValue;
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            var a = (int) (255 * (value / (double) (this.MaxValue - this.MinValue)));
+            var a = (int)(255 * (value / (double)(this.MaxValue - this.MinValue)));
 
             return Color.FromArgb(a, a, a);
         }

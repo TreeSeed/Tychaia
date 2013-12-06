@@ -16,12 +16,6 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Value To 3D")]
     public class AlgorithmValueTo3D : Algorithm<int, int>
     {
-        public enum ColorScheme
-        {
-            Land,
-            Perlin,
-        }
-
         public AlgorithmValueTo3D()
         {
             this.EstimateMax = 64;
@@ -53,18 +47,32 @@ namespace Tychaia.ProceduralGeneration
             get { return false; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
-            int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] input,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
-            if (input[(i + ox) + (j + oy) * width] >= z)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = (int) z;
+            if (input[(i + ox) + ((j + oy) * width)] >= z)
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = (int) z;
             else
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = Int32.MaxValue;
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = int.MaxValue;
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            if (value == Int32.MaxValue)
+            if (value == int.MaxValue)
                 return Color.Transparent;
 
             if (this.ColorSet == ColorScheme.Land)
@@ -79,7 +87,7 @@ namespace Tychaia.ProceduralGeneration
             else if (divvalue < 1)
                 divvalue = 1;
 
-            a = (int) (value * ((double) 255 / divvalue));
+            a = (int)(value * ((double)255 / divvalue));
 
             if (a < 0)
             {
@@ -111,6 +119,12 @@ namespace Tychaia.ProceduralGeneration
                 return Color.FromArgb(a, a, a);
 
             return Color.Red;
+        }
+
+        public enum ColorScheme
+        {
+            Land,
+            Perlin,
         }
     }
 }

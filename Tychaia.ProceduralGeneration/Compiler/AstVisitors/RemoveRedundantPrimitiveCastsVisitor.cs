@@ -32,20 +32,20 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             if (value != null)
             {
                 var type = (castExpression.Type as PrimitiveType).KnownTypeCode;
-                if ((type == KnownTypeCode.Int16 && value is Int16) ||
-                    (type == KnownTypeCode.Int32 && value is Int32) ||
-                    (type == KnownTypeCode.Int64 && value is Int64) ||
-                    (type == KnownTypeCode.UInt16 && value is UInt16) ||
-                    (type == KnownTypeCode.UInt32 && value is UInt32) ||
-                    (type == KnownTypeCode.UInt64 && value is UInt64) ||
-                    (type == KnownTypeCode.Double && value is Double) ||
-                    (type == KnownTypeCode.Single && value is Single) ||
-                    (type == KnownTypeCode.String && value is String) ||
-                    (type == KnownTypeCode.Boolean && value is Boolean) ||
-                    (type == KnownTypeCode.Char && value is Char) ||
-                    (type == KnownTypeCode.Byte && value is Byte) ||
-                    (type == KnownTypeCode.SByte && value is SByte) ||
-                    (type == KnownTypeCode.Decimal && value is Decimal))
+                if ((type == KnownTypeCode.Int16 && value is short) ||
+                    (type == KnownTypeCode.Int32 && value is int) ||
+                    (type == KnownTypeCode.Int64 && value is long) ||
+                    (type == KnownTypeCode.UInt16 && value is ushort) ||
+                    (type == KnownTypeCode.UInt32 && value is uint) ||
+                    (type == KnownTypeCode.UInt64 && value is ulong) ||
+                    (type == KnownTypeCode.Double && value is double) ||
+                    (type == KnownTypeCode.Single && value is float) ||
+                    (type == KnownTypeCode.String && value is string) ||
+                    (type == KnownTypeCode.Boolean && value is bool) ||
+                    (type == KnownTypeCode.Char && value is char) ||
+                    (type == KnownTypeCode.Byte && value is byte) ||
+                    (type == KnownTypeCode.SByte && value is sbyte) ||
+                    (type == KnownTypeCode.Decimal && value is decimal))
                 {
                     castExpression.ReplaceWith(expression);
                 }

@@ -21,7 +21,6 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             // (x / 2) / 2
             // (x - 2) + 4
             // (x * 2) / 3
-
             var pattern = new BinaryOperatorExpression
             {
                 Left = new ParenthesizedExpression
@@ -49,9 +48,9 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             {
                 var match = pattern.Match(binaryOperatorExpression);
                 var outerOperator = binaryOperatorExpression.Operator;
-                var innerOperator = (BinaryOperatorType) ((dynamic) binaryOperatorExpression.Left).Expression.Operator;
-                var innerValue = AstHelpers.GetValueFromExpression((Expression) match.Get("rightA").First());
-                var outerValue = AstHelpers.GetValueFromExpression((Expression) match.Get("rightB").First());
+                var innerOperator = (BinaryOperatorType)((dynamic)binaryOperatorExpression.Left).Expression.Operator;
+                var innerValue = AstHelpers.GetValueFromExpression((Expression)match.Get("rightA").First());
+                var outerValue = AstHelpers.GetValueFromExpression((Expression)match.Get("rightB").First());
                 if (innerValue == null && outerValue == null)
                     return;
 
@@ -72,6 +71,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
                         default:
                             return;
                     }
+
                     binaryOperatorExpression.ReplaceWith(new BinaryOperatorExpression(
                         (match.Get("left").First() as Expression).Clone(),
                         binaryOperatorExpression.Operator,
@@ -90,6 +90,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
                                 result = new PrimitiveExpression(innerValue - outerValue);
                                 break;
                         }
+
                         break;
                     case BinaryOperatorType.Subtract:
                         switch (outerOperator)
@@ -98,8 +99,10 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
                                 result = new PrimitiveExpression(innerValue - outerValue);
                                 break;
                         }
+
                         break;
                 }
+
                 if (result != null)
                 {
                     binaryOperatorExpression.ReplaceWith(new BinaryOperatorExpression(

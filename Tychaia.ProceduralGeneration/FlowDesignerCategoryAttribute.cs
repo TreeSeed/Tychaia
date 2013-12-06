@@ -27,7 +27,7 @@ namespace Tychaia.ProceduralGeneration
         Manipulation,
         Debugging,
 
-        //FlowBundles Options
+        // FlowBundles Options
         Add,
         Extract,
 
@@ -45,7 +45,7 @@ namespace Tychaia.ProceduralGeneration
         Towns,
         FamilyTrees,
 
-        //Output should always be at the bottom
+        // Output should always be at the bottom
         Output
     }
 
@@ -63,7 +63,7 @@ namespace Tychaia.ProceduralGeneration
             var fi = value.GetType().GetField(value.ToString());
 
             var attributes =
-                (DescriptionAttribute[]) fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+                (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
 
             if (attributes != null && attributes.Length > 0)
                 return attributes[0].Description;
@@ -87,7 +87,7 @@ namespace Tychaia.ProceduralGeneration
             var fi = value.GetType().GetField(value.ToString());
 
             var attributes =
-                (DescriptionAttribute[]) fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+                (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
 
             if (attributes != null && attributes.Length > 0)
                 return attributes[0].Description;

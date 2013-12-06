@@ -46,33 +46,32 @@ namespace Tychaia.ProceduralGeneration
             get { return new[] { "Input A", "Input B" }; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] output, long x,
-            long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context, 
+            int[] inputA, 
+            int[] inputB, 
+            int[] output, 
+            long x,
+            long y, 
+            long z, 
+            int i, 
+            int j, 
+            int k, 
+            int width, 
+            int height, 
+            int depth, 
+            int ox, 
+            int oy, 
+            int oz)
         {
-            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
-                inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height] +
-                inputB[(i + ox) + (j + oy) * width + (k + oz) * width * height];
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                inputA[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] +
+                inputB[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);
-            /*
-            int a;
-
-            double divvalue = (double)this.EstimateMax;
-
-            if (divvalue > 255)
-                divvalue = 255;
-            else if (divvalue < 1)
-                divvalue = 1;
-
-            a = (int)(value * ((double)255 / divvalue));
-
-            if (a > 255)
-                a = 255;
-
-            return Color.FromArgb(a, a, a);*/
         }
     }
 }

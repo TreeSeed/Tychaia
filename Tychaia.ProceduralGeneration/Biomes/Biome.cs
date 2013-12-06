@@ -43,7 +43,6 @@ namespace Tychaia.ProceduralGeneration
     {
         public static List<Biome> Biomes = null;
 
-        //Turns out not as easy as copy pasting
         static BiomeEngine()
         {
             Biomes = new List<Biome>();

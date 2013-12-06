@@ -17,7 +17,6 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             // Looking for patterns like:
             //
             // 2 - 2
-
             var valueLeft = AstHelpers.GetValueFromExpression(binaryOperatorExpression.Left);
             var valueRight = AstHelpers.GetValueFromExpression(binaryOperatorExpression.Right);
             if (valueLeft == null || valueRight == null)
@@ -43,6 +42,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
                     default:
                         return;
                 }
+
                 binaryOperatorExpression.ReplaceWith(new PrimitiveExpression(valueResult));
             }
             catch (Exception)

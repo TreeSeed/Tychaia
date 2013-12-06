@@ -17,4 +17,3 @@ namespace Tychaia.ProceduralGeneration
             int depth);
     }
 }
-

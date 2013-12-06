@@ -21,16 +21,6 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Zoom 2D")]
     public class AlgorithmZoom2D : Algorithm<int, int>
     {
-        /// <summary>
-        /// An enumeration defining the type of zoom to perform.
-        /// </summary>
-        public enum ZoomType
-        {
-            Square,
-            Smooth,
-            Fuzzy,
-        }
-
         public AlgorithmZoom2D()
         {
             this.Mode = ZoomType.Smooth;
@@ -86,31 +76,43 @@ namespace Tychaia.ProceduralGeneration
             get { return true; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
-            int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] input,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
             var ocx = ((x - Math.Abs(i)) % 2 == 0 ? 0 : Math.Abs(i % 2)) - (i % 2 == -1 ? 1 : 0);
             var ocy = ((y - Math.Abs(j)) % 2 == 0 ? 0 : Math.Abs(j % 2)) - (j % 2 == -1 ? 1 : 0);
 
-            //int ocx_e = ((x - i) % 2 == 0 ? 0 : ((i + 1) % 2));
-            //int ocx_e = (x % 2 != 0) ? (int)((i + 1) % 2) : 0;
-            //int ocy_s = (y % 2 != 0) ? (int)((j + 1) % 2) : 0;
-
+            // int ocx_e = ((x - i) % 2 == 0 ? 0 : ((i + 1) % 2));
+            // int ocx_e = (x % 2 != 0) ? (int)((i + 1) % 2) : 0;
+            // int ocy_s = (y % 2 != 0) ? (int)((j + 1) % 2) : 0;
             var ocz = 0;
 
-            var current = input[
-                (i / 2) + ox + ocx +
-                ((j / 2) + oy + ocy) * width +
-                (k + oz + ocz) * width * height];
+            var current = input[(i / 2) + ox + ocx +
+                (((j / 2) + oy + ocy) * width) +
+                ((k + oz + ocz) * width * height)];
 
             if (this.Mode == ZoomType.Square)
-                output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = current;
             else
             {
                 int selected;
 
-                var ymod = (y) % 2 == 0;
-                var xmod = (x) % 2 == 0;
+                var ymod = y % 2 == 0;
+                var xmod = x % 2 == 0;
 
                 if (!xmod && !ymod)
                     if (this.Mode == ZoomType.Fuzzy)
@@ -124,12 +126,12 @@ namespace Tychaia.ProceduralGeneration
 
                 var ocx_e = ((x - Math.Abs(i)) % 2 == 0 ? 0 : Math.Abs((i + 1) % 2)) - ((i + 1) % 2 == -1 ? 1 : 0);
                 var east =
-                    input[((i + 1) / 2 + ox + ocx_e) + (j / 2 + oy + ocy) * width + ((k) + oz + ocz) * width * height];
+                    input[((i + 1) / 2 + ox + ocx_e) + ((j / 2 + oy + ocy) * width) + (((k) + oz + ocz) * width * height)];
 
                 switch (selected)
                 {
                     case 0:
-                        output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
+                        output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = current;
                         break;
                     case 1:
 
@@ -137,28 +139,28 @@ namespace Tychaia.ProceduralGeneration
                                     ((j + 1) % 2 == -1 ? 1 : 0);
                         var south =
                             input[
-                                (i / 2 + ox + ocx) + ((j + 1) / 2 + oy + ocy_s) * width +
-                                (k + oz + ocz) * width * height];
+                                (i / 2 + ox + ocx) + (((j + 1) / 2 + oy + ocy_s) * width) +
+                                ((k + oz + ocz) * width * height)];
 
                         if (xmod)
-                            output[i + ox + (j + oy) * width + (k + oz) * width * height] = south;
+                            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = south;
                         else if (ymod)
-                            output[i + ox + (j + oy) * width + (k + oz) * width * height] = east;
+                            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = east;
                         else
-                            output[i + ox + (j + oy) * width + (k + oz) * width * height] = south;
+                            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = south;
                         break;
                     case 2:
-                        output[i + ox + (j + oy) * width + (k + oz) * width * height] = east;
+                        output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = east;
                         break;
                     case 3:
                         var southEast =
                             input[
-                                ((i + 2) / 2 + ox + ocx) + ((j + 2) / 2 + oy + ocy) * width +
-                                (k + oz + ocz) * width * height];
-                        output[i + ox + (j + oy) * width + (k + oz) * width * height] = southEast;
+                                ((i + 2) / 2 + ox + ocx) + (((j + 2) / 2 + oy + ocy) * width) +
+                                ((k + oz + ocz) * width * height)];
+                        output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = southEast;
                         break;
                     case 4:
-                        output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
+                        output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = current;
                         break;
                 }
             }
@@ -167,6 +169,16 @@ namespace Tychaia.ProceduralGeneration
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);
+        }
+
+        /// <summary>
+        /// An enumeration defining the type of zoom to perform.
+        /// </summary>
+        public enum ZoomType
+        {
+            Square,
+            Smooth,
+            Fuzzy,
         }
     }
 }

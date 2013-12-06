@@ -38,13 +38,26 @@ namespace Tychaia.ProceduralGeneration
 
         public Func<long, long, long, bool> ValueShouldBePlacedAt { get; set; }
 
-        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j,
-            int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
             if (this.ValueShouldBePlacedAt == null)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = 0;
             else
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.ValueShouldBePlacedAt(x, y, z)
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = this.ValueShouldBePlacedAt(x, y, z)
                     ? 1
                     : 0;
         }

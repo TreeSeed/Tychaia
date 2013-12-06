@@ -26,10 +26,23 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j,
-            int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
-            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = (int) (x + y * 256);
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = (int)(x + (y * 256));
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
@@ -57,8 +70,21 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j,
-            int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
             var a = 0;
             if (x % 4 == 0)
@@ -68,12 +94,12 @@ namespace Tychaia.ProceduralGeneration
             if (z % 4 == 0)
                 a += 4;
 
-            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = a;
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = a;
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            switch ((int) value)
+            switch ((int)value)
             {
                 default:
                     return Color.FromArgb(150, 150, 150);

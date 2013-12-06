@@ -12,9 +12,12 @@ namespace Tychaia.ProceduralGeneration
         Bitmap RegenerateImageForLayer(
             StorageLayer layer,
             long seed,
-            long ox, long oy, long oz,
-            int width, int height, int depth,
+            long ox, 
+            long oy, 
+            long oz,
+            int width, 
+            int height, 
+            int depth,
             bool compiled = false);
     }
 }
-

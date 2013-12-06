@@ -42,19 +42,32 @@ namespace Tychaia.ProceduralGeneration
             get { return new[] { this.ShowAs2D }; }
         }
 
-        public Action<IRuntimeContext, int[], int[], long, long, long, int, int, int, int, int, int, int, int, int>
-            Delegate { get; set; }
+        public Action<IRuntimeContext, int[], int[], long, long, long, int, int, int, int, int, int, int, int, int> Delegate { get; set; }
 
         public override string[] InputNames
         {
             get { return new[] { "Parent" }; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
-            int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] input,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
             if (this.Delegate == null)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = 0;
             else
                 this.Delegate(context, input, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz);
         }

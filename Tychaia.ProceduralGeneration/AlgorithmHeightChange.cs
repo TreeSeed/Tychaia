@@ -76,17 +76,31 @@ namespace Tychaia.ProceduralGeneration
             get { return new[] { this.Layer2D }; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
-            int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] input,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
             if (!this.XorY)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
-                    input[(i + ox) + (j + oy) * width + (k + oz) * width * height] -
-                    input[(i + ox) + (j + 1 + oy) * width + (k + oz) * width * height];
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                    input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] -
+                    input[(i + ox) + ((j + 1 + oy) * width) + ((k + oz) * width * height)];
             else
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
-                    input[(i + ox) + (j + oy) * width + (k + oz) * width * height] -
-                    input[(i + 1 + ox) + (j + oy) * width + (k + oz) * width * height];
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                    input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] -
+                    input[(i + 1 + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
@@ -103,7 +117,7 @@ namespace Tychaia.ProceduralGeneration
             else if (divvalue < 1)
                 divvalue = 1;
 
-            a = (int) (value * ((double) 255 / divvalue));
+            a = (int)(value * ((double) 255 / divvalue));
 
             if (a < 0)
             {

@@ -15,17 +15,6 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Smooth 2D")]
     public class AlgorithmSmooth2D : Algorithm<int, int>
     {
-        /// <summary>
-        /// An enumeration defining the type of smooth to perform.
-        /// </summary>
-        public enum SmoothType
-        {
-            None,
-            Linear,
-            Parabolic,
-            Cubic,
-        }
-
         public AlgorithmSmooth2D()
         {
             this.Mode = SmoothType.Linear;
@@ -81,37 +70,51 @@ namespace Tychaia.ProceduralGeneration
             get { return new[] { true }; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
-            int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] input,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
             var ck = (k + oz) * width * height;
             var iox = i + ox;
             var joy = j + oy;
-            var v00 = input[(iox - 2) + (joy - 2) * width + ck];
-            var v01 = input[(iox - 2) + (joy - 1) * width + ck];
-            var v02 = input[(iox - 2) + (joy + 0) * width + ck];
-            var v03 = input[(iox - 2) + (joy + 1) * width + ck];
-            var v04 = input[(iox - 2) + (joy + 2) * width + ck];
-            var v10 = input[(iox - 1) + (joy - 2) * width + ck];
-            var v11 = input[(iox - 1) + (joy - 1) * width + ck];
-            var v12 = input[(iox - 1) + (joy + 0) * width + ck];
-            var v13 = input[(iox - 1) + (joy + 1) * width + ck];
-            var v14 = input[(iox - 1) + (joy + 2) * width + ck];
-            var v20 = input[(iox + 0) + (joy - 2) * width + ck];
-            var v21 = input[(iox + 0) + (joy - 1) * width + ck];
-            var v22 = input[(iox + 0) + (joy + 0) * width + ck];
-            var v23 = input[(iox + 0) + (joy + 1) * width + ck];
-            var v24 = input[(iox + 0) + (joy + 2) * width + ck];
-            var v30 = input[(iox + 1) + (joy - 2) * width + ck];
-            var v31 = input[(iox + 1) + (joy - 1) * width + ck];
-            var v32 = input[(iox + 1) + (joy + 0) * width + ck];
-            var v33 = input[(iox + 1) + (joy + 1) * width + ck];
-            var v34 = input[(iox + 1) + (joy + 2) * width + ck];
-            var v40 = input[(iox + 2) + (joy - 2) * width + ck];
-            var v41 = input[(iox + 2) + (joy - 1) * width + ck];
-            var v42 = input[(iox + 2) + (joy + 0) * width + ck];
-            var v43 = input[(iox + 2) + (joy + 1) * width + ck];
-            var v44 = input[(iox + 2) + (joy + 2) * width + ck];
+            var v00 = input[(iox - 2) + ((joy - 2) * width) + ck];
+            var v01 = input[(iox - 2) + ((joy - 1) * width) + ck];
+            var v02 = input[(iox - 2) + ((joy + 0) * width) + ck];
+            var v03 = input[(iox - 2) + ((joy + 1) * width) + ck];
+            var v04 = input[(iox - 2) + ((joy + 2) * width) + ck];
+            var v10 = input[(iox - 1) + ((joy - 2) * width) + ck];
+            var v11 = input[(iox - 1) + ((joy - 1) * width) + ck];
+            var v12 = input[(iox - 1) + ((joy + 0) * width) + ck];
+            var v13 = input[(iox - 1) + ((joy + 1) * width) + ck];
+            var v14 = input[(iox - 1) + ((joy + 2) * width) + ck];
+            var v20 = input[(iox + 0) + ((joy - 2) * width) + ck];
+            var v21 = input[(iox + 0) + ((joy - 1) * width) + ck];
+            var v22 = input[(iox + 0) + ((joy + 0) * width) + ck];
+            var v23 = input[(iox + 0) + ((joy + 1) * width) + ck];
+            var v24 = input[(iox + 0) + ((joy + 2) * width) + ck];
+            var v30 = input[(iox + 1) + ((joy - 2) * width) + ck];
+            var v31 = input[(iox + 1) + ((joy - 1) * width) + ck];
+            var v32 = input[(iox + 1) + ((joy + 0) * width) + ck];
+            var v33 = input[(iox + 1) + ((joy + 1) * width) + ck];
+            var v34 = input[(iox + 1) + ((joy + 2) * width) + ck];
+            var v40 = input[(iox + 2) + ((joy - 2) * width) + ck];
+            var v41 = input[(iox + 2) + ((joy - 1) * width) + ck];
+            var v42 = input[(iox + 2) + ((joy + 0) * width) + ck];
+            var v43 = input[(iox + 2) + ((joy + 1) * width) + ck];
+            var v44 = input[(iox + 2) + ((joy + 2) * width) + ck];
 
             var result = 0;
             var total = 0;
@@ -159,6 +162,7 @@ namespace Tychaia.ProceduralGeneration
                     };
                     break;
             }
+
             var sample = new[,]
             {
                 { v00, v01, v02, v03, v04 },
@@ -167,6 +171,7 @@ namespace Tychaia.ProceduralGeneration
                 { v30, v31, v32, v33, v34 },
                 { v40, v41, v42, v43, v44 }
             };
+
             var storage = new int[5, 5];
 
             foreach (var v in applier)
@@ -177,12 +182,23 @@ namespace Tychaia.ProceduralGeneration
             foreach (var v in storage)
                 result += v;
 
-            output[i + ox + (j + oy) * width + (k + oz) * width * height] = (int) (result / (double) total);
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = (int)(result / (double) total);
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);
+        }
+
+        /// <summary>
+        /// An enumeration defining the type of smooth to perform.
+        /// </summary>
+        public enum SmoothType
+        {
+            None,
+            Linear,
+            Parabolic,
+            Cubic,
         }
     }
 }

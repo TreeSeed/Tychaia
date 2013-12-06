@@ -18,6 +18,7 @@ namespace Tychaia.ProceduralGeneration.Analysis
             Console.WriteLine("Calculating absolute position...");
             Console.WriteLine("line - " + line);
             Console.WriteLine("column - " + column);
+
             for (var i = 0; i < body.Length && (line > 0 || column > 0); i++)
             {
                 count += 1;
@@ -26,6 +27,7 @@ namespace Tychaia.ProceduralGeneration.Analysis
                 else if (body[i] == '\n')
                     line -= 1;
             }
+
             Console.WriteLine("count - " + count);
             return count;
         }

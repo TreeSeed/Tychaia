@@ -30,17 +30,33 @@ namespace Tychaia.ProceduralGeneration
             get { return true; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] inputC,
-            Biome[] output, long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox,
-            int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] inputA,
+            int[] inputB,
+            int[] inputC,
+            Biome[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
-            if (inputC[(i + ox) + (j + oy) * width + (k + oz) * width * height] != 0)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
-                    BiomeEngine.GetBiomeForCell(inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height],
-                        inputB[(i + ox) + (j + oy) * width + (k + oz) * width * height],
-                        inputC[(i + ox) + (j + oy) * width + (k + oz) * width * height]);
-            else if (inputC[(i + ox) + (j + oy) * width + (k + oz) * width * height] == 0)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
+            if (inputC[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] != 0)
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                    BiomeEngine.GetBiomeForCell(
+                        inputA[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)],
+                        inputB[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)],
+                        inputC[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)]);
+            else if (inputC[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] == 0)
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
                     BiomeEngine.Biomes.First(v => v is WaterBiome);
         }
 

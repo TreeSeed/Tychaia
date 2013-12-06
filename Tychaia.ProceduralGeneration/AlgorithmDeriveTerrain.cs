@@ -66,47 +66,63 @@ namespace Tychaia.ProceduralGeneration
             get { return new[] { true }; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] inputC, int[] output,
-            long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+                    IRuntimeContext context,
+                    int[] inputA,
+                    int[] inputB,
+                    int[] inputC,
+                    int[] output,
+                    long x,
+                    long y,
+                    long z,
+                    int i,
+                    int j,
+                    int k,
+                    int width,
+                    int height,
+                    int depth,
+                    int ox,
+                    int oy,
+                    int oz)
         {
-            if (inputB[i + ox + (j + oy) * width + (k + oz) * width * height] != 0)
+            if (inputB[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] != 0)
             {
-                if (inputA[i + ox + (j + oy) * width + (k + oz) * width * height] == 0)
-                    output[i + ox + (j + oy) * width + (k + oz) * width * height] = 1;
+                if (inputA[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] == 0)
+                    output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = 1;
                 else
-                    output[i + ox + (j + oy) * width + (k + oz) * width * height] =
-                        inputA[i + ox + (j + oy) * width + (k + oz) * width * height];
+                    output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                        inputA[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
 
-                if (inputB[i + 1 + ox + (j + oy) * width + (k + oz) * width * height] != 0 &&
-                    inputB[i - 1 + ox + (j + oy) * width + (k + oz) * width * height] != 0 &&
-                    inputB[i + ox + (j + 1 + oy) * width + (k + oz) * width * height] != 0 &&
-                    inputB[i + ox + (j - 1 + oy) * width + (k + oz) * width * height] != 0)
+                if (inputB[(i + 1 + ox) + ((j + oy) * width) + ((k + oz) * width * height)] != 0 &&
+                    inputB[(i - 1 + ox) + ((j + oy) * width) + ((k + oz) * width * height)] != 0 &&
+                    inputB[(i + ox) + ((j + 1 + oy) * width) + ((k + oz) * width * height)] != 0 &&
+                    inputB[(i + ox) + ((j - 1 + oy) * width) + ((k + oz) * width * height)] != 0)
                 {
                     if (this.CheckDiagonals &&
-                        inputB[i + 1 + ox + (j + 1 + oy) * width + (k + oz) * width * height] != 0 &&
-                        inputB[i + 1 + ox + (j - 1 + oy) * width + (k + oz) * width * height] != 0 &&
-                        inputB[i - 1 + ox + (j + 1 + oy) * width + (k + oz) * width * height] != 0 &&
-                        inputB[i - 1 + ox + (j - 1 + oy) * width + (k + oz) * width * height] != 0)
+                        inputB[(i + 1 + ox) + ((j + 1 + oy) * width) + ((k + oz) * width * height)] != 0 &&
+                        inputB[(i + 1 + ox) + ((j - 1 + oy) * width) + ((k + oz) * width * height)] != 0 &&
+                        inputB[(i - 1 + ox) + ((j + 1 + oy) * width) + ((k + oz) * width * height)] != 0 &&
+                        inputB[(i - 1 + ox) + ((j - 1 + oy) * width) + ((k + oz) * width * height)] != 0)
                     {
-                        output[i + ox + (j + oy) * width + (k + oz) * width * height] += 1;
+                        output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] += 1;
                     }
                     else
                     {
-                        output[i + ox + (j + oy) * width + (k + oz) * width * height] += 1;
+                        output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] += 1;
                     }
                 }
 
-                var add = inputC[i + ox + (j + oy) * width + (k + oz) * width * height];
+                var add = inputC[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
 
                 while (add > 50)
                 {
-                    output[i + ox + (j + oy) * width + (k + oz) * width * height] += 1;
+                    output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] += 1;
                     add -= 25;
                 }
             }
             else
             {
-                output[i + ox + (j + oy) * width + (k + oz) * width * height] = 0;
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = 0;
             }
         }
 
@@ -120,7 +136,6 @@ namespace Tychaia.ProceduralGeneration
             if (a > 255)
                 a = 255;
 
-            //int a = Math.Min(Math.Max(value, 0), 255);
             return Color.FromArgb(a, a, a);
         }
     }

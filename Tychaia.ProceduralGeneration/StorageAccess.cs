@@ -132,7 +132,7 @@ namespace Tychaia.ProceduralGeneration
             var x = new DataContractSerializer(
                 typeof(StorageLayer[]),
                 SerializableTypes,
-                Int32.MaxValue,
+                int.MaxValue,
                 false,
                 true,
                 null);
@@ -191,10 +191,12 @@ namespace Tychaia.ProceduralGeneration
                         Console.WriteLine(exx);
                     }
                 }
+
                 foreach (var t in assemblyTypes.Where(x => x != null))
                     if (typeof(IAlgorithm).IsAssignableFrom(t) && !t.IsGenericType)
                         types.Add(t);
             }
+
             SerializableTypes = types.ToArray();
         }
 

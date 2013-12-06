@@ -20,12 +20,6 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Increment Water Distance")]
     public class AlgorithmIncrementWaterDistance : Algorithm<int, int>
     {
-        public enum ColorScheme
-        {
-            Land,
-            Perlin,
-        }
-
         public AlgorithmIncrementWaterDistance()
         {
             this.MaxTerrainBinary = 0;
@@ -95,18 +89,32 @@ namespace Tychaia.ProceduralGeneration
             get { return new[] { true }; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
-            int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] input,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
-            var v00 = input[((i - 1) + ox) + ((j - 1) + oy) * width];
-            var v01 = input[((i - 1) + ox) + ((j + 0) + oy) * width];
-            var v02 = input[((i - 1) + ox) + ((j + 1) + oy) * width];
-            var v10 = input[((i + 0) + ox) + ((j - 1) + oy) * width];
-            var v11 = input[((i + 0) + ox) + ((j + 0) + oy) * width];
-            var v12 = input[((i + 0) + ox) + ((j + 1) + oy) * width];
-            var v20 = input[((i + 1) + ox) + ((j - 1) + oy) * width];
-            var v21 = input[((i + 1) + ox) + ((j + 0) + oy) * width];
-            var v22 = input[((i + 1) + ox) + ((j + 1) + oy) * width];
+            var v00 = input[((i - 1) + ox) + (((j - 1) + oy) * width)];
+            var v01 = input[((i - 1) + ox) + (((j + 0) + oy) * width)];
+            var v02 = input[((i - 1) + ox) + (((j + 1) + oy) * width)];
+            var v10 = input[((i + 0) + ox) + (((j - 1) + oy) * width)];
+            var v11 = input[((i + 0) + ox) + (((j + 0) + oy) * width)];
+            var v12 = input[((i + 0) + ox) + (((j + 1) + oy) * width)];
+            var v20 = input[((i + 1) + ox) + (((j - 1) + oy) * width)];
+            var v21 = input[((i + 1) + ox) + (((j + 0) + oy) * width)];
+            var v22 = input[((i + 1) + ox) + (((j + 1) + oy) * width)];
 
             if (this.Initial)
             {
@@ -142,7 +150,7 @@ namespace Tychaia.ProceduralGeneration
                 else
                     result = v11;
 
-                output[i + ox + (j + oy) * width + (k + oz) * width * height] = result;
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = result;
             }
             else
             {
@@ -152,7 +160,7 @@ namespace Tychaia.ProceduralGeneration
                 else if (v11 < 0 && (v01 > v11 || v10 > v11 || v21 > v11 || v12 > v11))
                     mod = -1;
 
-                output[i + ox + (j + oy) * width + (k + oz) * width * height] = v11 * 2 - mod;
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = (v11 * 2) - mod;
             }
         }
 
@@ -175,13 +183,19 @@ namespace Tychaia.ProceduralGeneration
             var minValue = -(1 << this.MaxTerrainBinary);
             int a;
             if (value < 0)
-                a = 215 - (int) (value / (double) minValue * 180);
+                a = 215 - (int)(value / (double) minValue * 180);
             else
-                a = 64 + (int) (value / (double) maxValue * 127);
+                a = 64 + (int)(value / (double) maxValue * 127);
             if (a < 0 || a > 255)
                 return Color.Red;
 
-            return Color.FromArgb(0, value < 0 ? 0 : a, value < 0 ? a : 0);
+            return Color.FromArgb (0, value < 0 ? 0 : a, value < 0 ? a : 0);
+        }
+
+        public enum ColorScheme
+        {
+            Land,
+            Perlin,
         }
     }
 }

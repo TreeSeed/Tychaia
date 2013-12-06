@@ -83,9 +83,7 @@ namespace Tychaia.ProceduralGeneration
         Color GetColorForValue(StorageLayer parent, dynamic value);
     }
 
-    /// These algoritms implement a ProcessCell function which is used to
-    /// generate data.
-    /// 
+    /// These algoritms implement a ProcessCell function which is used to generate data.
     /// The x, y, z parameters represent the current absolute location.
     /// -- This is the one to use with GetRandomNumber etc.
     /// The i, j, k parameters represent the current x, y, z location relative to the top-left corner.
@@ -102,7 +100,6 @@ namespace Tychaia.ProceduralGeneration
     /// reads from input like so:
     /// 
     /// input[(x + this.RequiredBorder) + (y + this.RequiredBorder) * width + (z + this.RequiredBorder) * width * height]
-
     #region Abstract Algorithm Classes
     [DataContract]
     public abstract class Algorithm : IAlgorithm
@@ -269,7 +266,8 @@ namespace Tychaia.ProceduralGeneration
             get { return typeof(TOutput); }
         }
 
-        public abstract void ProcessCell(IRuntimeContext context,
+        public abstract void ProcessCell(
+            IRuntimeContext context,
             TOutput[] output,
             long x,
             long y,
@@ -298,7 +296,8 @@ namespace Tychaia.ProceduralGeneration
             get { return typeof(TOutput); }
         }
 
-        public abstract void ProcessCell(IRuntimeContext context,
+        public abstract void ProcessCell(
+            IRuntimeContext context,
             TInput[] input,
             TOutput[] output,
             long x,
@@ -328,7 +327,8 @@ namespace Tychaia.ProceduralGeneration
             get { return typeof(TOutput); }
         }
 
-        public abstract void ProcessCell(IRuntimeContext context,
+        public abstract void ProcessCell(
+            IRuntimeContext context,
             TInputA[] inputA,
             TInputB[] inputB,
             TOutput[] output,
@@ -367,7 +367,8 @@ namespace Tychaia.ProceduralGeneration
             get { return typeof(TOutput); }
         }
 
-        public abstract void ProcessCell(IRuntimeContext context,
+        public abstract void ProcessCell(
+            IRuntimeContext context,
             TInputA[] inputA,
             TInputB[] inputB,
             TInputC[] inputC,
@@ -408,7 +409,8 @@ namespace Tychaia.ProceduralGeneration
             get { return typeof(TOutput); }
         }
 
-        public abstract void ProcessCell(IRuntimeContext context,
+        public abstract void ProcessCell(
+            IRuntimeContext context,
             TInputA[] inputA,
             TInputB[] inputB,
             TInputC[] inputC,
@@ -451,7 +453,8 @@ namespace Tychaia.ProceduralGeneration
             get { return typeof(TOutput); }
         }
 
-        public abstract void ProcessCell(IRuntimeContext context,
+        public abstract void ProcessCell(
+            IRuntimeContext context,
             TInputA[] inputA,
             TInputB[] inputB,
             TInputC[] inputC,

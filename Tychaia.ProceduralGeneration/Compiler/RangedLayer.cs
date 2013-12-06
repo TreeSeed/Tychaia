@@ -67,15 +67,22 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 "Layer={9}, " +
                 "Inputs={10}" +
                 "]",
-                X, Y, Z,
-                Width, Height, Depth,
-                OuterX, OuterY, OuterZ,
-                Layer, Inputs);
+                this.X,
+                this.Y,
+                this.Z,
+                this.Width,
+                this.Height,
+                this.Depth,
+                this.OuterX,
+                this.OuterY,
+                this.OuterZ,
+                this.Layer,
+                this.Inputs);
         }
 
         public string GetPrintableStructure()
         {
-            var str = "";
+            var str = string.Empty;
             foreach (var input in this.Inputs)
                 if (input != null)
                     str += input.GetPrintableStructure() + Environment.NewLine;
@@ -121,8 +128,17 @@ namespace Tychaia.ProceduralGeneration.Compiler
                     continue;
 
                 Expression ix, iy, iz, iwidth, iheight, idepth, iouterx, ioutery, iouterz;
-                FindMaximumBounds(input, out ix, out iy, out iz, out iwidth, out iheight, out idepth, out iouterx,
-                    out ioutery, out iouterz);
+                FindMaximumBounds(
+                    input, 
+                    out ix, 
+                    out iy, 
+                    out iz, 
+                    out iwidth, 
+                    out iheight, 
+                    out idepth, 
+                    out iouterx,
+                    out ioutery, 
+                    out iouterz);
 
                 x = GetSmallestOrLargestExpression(x, ix, false);
                 y = GetSmallestOrLargestExpression(y, iy, false);
@@ -145,8 +161,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
             // Use the visitor to replace the identifiers with numeric values.
             var aEvaluated = EvaluateExpression(a);
             var bEvaluated = EvaluateExpression(b);
-            var aValue = (int) (aEvaluated as PrimitiveExpression).Value;
-            var bValue = (int) (bEvaluated as PrimitiveExpression).Value;
+            var aValue = (int)(aEvaluated as PrimitiveExpression).Value;
+            var bValue = (int)(bEvaluated as PrimitiveExpression).Value;
             if ((!largest && aValue < bValue) ||
                 (largest && aValue > bValue))
                 return a;
@@ -157,18 +173,20 @@ namespace Tychaia.ProceduralGeneration.Compiler
         {
             try
             {
-                return (int) value;
+                return (int)value;
             }
             catch
             {
             }
+
             try
             {
-                return (int) (long) value;
+                return (int)(long)value;
             }
             catch
             {
             }
+
             throw new InvalidOperationException(value.GetType().FullName);
         }
 
@@ -198,6 +216,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
                         throw new NotSupportedException(op.ToString());
                 }
             }
+
             if (expr is ParenthesizedExpression)
                 return EvaluateExpression((expr as ParenthesizedExpression).Expression, values);
             if (expr is IdentifierExpression)
@@ -206,12 +225,14 @@ namespace Tychaia.ProceduralGeneration.Compiler
                     return new PrimitiveExpression(SanitizeValue(values[(expr as IdentifierExpression).Identifier]));
                 return new PrimitiveExpression(SanitizeValue(100));
             }
+
             if (expr is UnaryOperatorExpression &&
                 (expr as UnaryOperatorExpression).Operator == UnaryOperatorType.Minus)
             {
                 var primitive = EvaluateExpression((expr as UnaryOperatorExpression).Expression);
-                return new PrimitiveExpression(-((dynamic) primitive.Value));
+                return new PrimitiveExpression(-((dynamic)primitive.Value));
             }
+
             if (expr is PrimitiveExpression)
                 return expr as PrimitiveExpression;
             throw new NotSupportedException(expr.GetType().FullName);
@@ -314,9 +335,15 @@ namespace Tychaia.ProceduralGeneration.Compiler
             Expression mx, my, mz, mwidth, mheight, mdepth, mouterx, moutery, mouterz;
             FindMaximumBounds(
                 ranged,
-                out mx, out my, out mz,
-                out mwidth, out mheight, out mdepth,
-                out mouterx, out moutery, out mouterz);
+                out mx, 
+                out my, 
+                out mz,
+                out mwidth, 
+                out mheight, 
+                out mdepth,
+                out mouterx, 
+                out moutery, 
+                out mouterz);
 
             // And recalculate back all of the calculation start / end values.
             ranged.CalculationStartI = DetermineCalculationStartForRootLayerFromMaximumBound(mx.Clone(), "x");
@@ -455,11 +482,13 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 inputRanged.Width = CreateDivideByTwo(inputRanged.Width);
                 inputRanged.OuterX = CreateDivideByTwo(inputRanged.OuterX);
             }
+
             if (currentRuntime.Algorithm.InputHeightAtHalfSize[idx])
             {
                 inputRanged.Height = CreateDivideByTwo(inputRanged.Height);
                 inputRanged.OuterY = CreateDivideByTwo(inputRanged.OuterY);
             }
+
             if (currentRuntime.Algorithm.InputDepthAtHalfSize[idx])
             {
                 inputRanged.Depth = CreateDivideByTwo(inputRanged.Depth);
@@ -479,6 +508,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
                     inputRanged.OuterX,
                     currentRuntime.Algorithm.RequiredXBorder[idx]);
             }
+
             if (currentRuntime.Algorithm.RequiredYBorder[idx] > 0)
             {
                 inputRanged.Y = CreateSubtraction(
@@ -491,6 +521,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
                     inputRanged.OuterY,
                     currentRuntime.Algorithm.RequiredYBorder[idx]);
             }
+
             if (currentRuntime.Algorithm.RequiredZBorder[idx] > 0)
             {
                 inputRanged.Z = CreateSubtraction(
@@ -539,9 +570,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 new BinaryOperatorExpression(
                     input.Clone(),
                     BinaryOperatorType.Subtract,
-                    new PrimitiveExpression(border)
-                    )
-                );
+                    new PrimitiveExpression(border)));
         }
 
         /// <summary>
@@ -553,9 +582,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 new BinaryOperatorExpression(
                     input.Clone(),
                     BinaryOperatorType.Add,
-                    new PrimitiveExpression(border)
-                    )
-                );
+                    new PrimitiveExpression(border)));
         }
 
         /// <summary>
@@ -567,9 +594,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 new BinaryOperatorExpression(
                     input.Clone(),
                     BinaryOperatorType.Divide,
-                    new PrimitiveExpression(2)
-                    )
-                );
+                    new PrimitiveExpression(2)));
         }
     }
 }

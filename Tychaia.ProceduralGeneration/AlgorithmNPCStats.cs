@@ -15,20 +15,6 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("NPC Stats")]
     public class AlgorithmNPCStats : Algorithm<int, int>
     {
-        public enum Stat
-        {
-            // For each value certain professions will favor near certain values
-            Trust, // How much the NPC trusts people
-            LocalReputation, // How much the local trusts this person
-            RegionReputation, // How much the region trusts this person
-            SelfishGiving, // If this person cares more for themself or others
-            GoodEvil, // If this person is generall good or evil
-            SimpleComplex, // If this person thinks of the bigger picture or for the quick solution
-            OptimisticPessimistic,
-            // How this person is effected by events, if a negative event affects an optimistic person they may not have as many problems
-            AdventurousCautious // If this person favors going out and doing the task themself
-        }
-
         public AlgorithmNPCStats()
         {
             this.StatSelected = Stat.Trust;
@@ -54,15 +40,29 @@ namespace Tychaia.ProceduralGeneration
             get { return new[] { true }; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
-            int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] input,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
             // IF Input has favored value then take 10% towards that value, else take random 0 - 100.
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            var a = (int) (value * 2.55);
+            var a = (int)(value * 2.55);
 
             if (a < 0)
                 a = 0;
@@ -70,6 +70,19 @@ namespace Tychaia.ProceduralGeneration
                 a = 255;
 
             return Color.FromArgb(a, a, a);
+        }
+
+        public enum Stat
+        {
+            // For each value certain professions will favor near certain values
+            Trust, // How much the NPC trusts people
+            LocalReputation, // How much the local trusts this person
+            RegionReputation, // How much the region trusts this person
+            SelfishGiving, // If this person cares more for themself or others
+            GoodEvil, // If this person is generall good or evil
+            SimpleComplex, // If this person thinks of the bigger picture or for the quick solution
+            OptimisticPessimistic, // How this person is effected by events, if a negative event affects an optimistic person they may not have as many problems
+            AdventurousCautious // If this person favors going out and doing the task themself
         }
     }
 }

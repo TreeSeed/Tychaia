@@ -53,7 +53,11 @@ namespace Tychaia.ProceduralGeneration.Analysis.Reporting
         [DataMember(Name = "hash")]
         public uint Hash
         {
-            get { return (uint) this.Name.GetHashCode(); }
+            get 
+            { 
+                return (uint)this.Name.GetHashCode(); 
+            }
+
             set
             {
                 // Useless operation to use value just so that

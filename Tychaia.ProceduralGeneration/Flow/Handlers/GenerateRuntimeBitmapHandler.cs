@@ -38,7 +38,9 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
                 this.m_RenderingLocationProvider.X,
                 this.m_RenderingLocationProvider.Y,
                 this.m_RenderingLocationProvider.Z,
-                64, 64, 64);
+                64, 
+                64, 
+                64);
 
             put(new FlowProcessingResponse
             {

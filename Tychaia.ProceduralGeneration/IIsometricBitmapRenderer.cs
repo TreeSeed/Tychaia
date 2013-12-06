@@ -13,13 +13,18 @@ namespace Tychaia.ProceduralGeneration
         Bitmap GenerateImage(
             IGenerator generator,
             Func<dynamic, Color> getColor,
-            long x, long y, long z,
-            int width, int height, int depth);
+            long x, 
+            long y, 
+            long z,
+            int width, 
+            int height, 
+            int depth);
 
         Bitmap GenerateImage(
             dynamic data,
             Func<dynamic, Color> getColor,
-            int width, int height, int depth);
+            int width, 
+            int height, 
+            int depth);
     }
 }
-

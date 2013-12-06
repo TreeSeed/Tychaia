@@ -4,8 +4,8 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -20,7 +20,7 @@ namespace Tychaia.ProceduralGeneration
         {
             operation(layer);
             foreach (var input in layer.GetInputs().Where(input => input != null))
-                PerformOperationRecursively(operation, input);
+                this.PerformOperationRecursively(operation, input);
         }
 
         private void PerformOperation(Action<IGenerator> operation, IGenerator generator)
@@ -50,10 +50,10 @@ namespace Tychaia.ProceduralGeneration
 
         private float GetSavingsRatio(GenerationRegion regionA, GenerationRegion regionB)
         {
-            var volumeA = GetVolume(regionA);
-            var volumeB = GetVolume(regionB);
-            var regionC = CombinedRegion(regionA, regionB);
-            var volumeC = GetVolume(regionC);
+            var volumeA = this.GetVolume(regionA);
+            var volumeB = this.GetVolume(regionB);
+            var regionC = this.CombinedRegion(regionA, regionB);
+            var volumeC = this.GetVolume(regionC);
             return (volumeA + volumeB) / (float)volumeC;
         }
 
@@ -70,22 +70,25 @@ namespace Tychaia.ProceduralGeneration
                     {
                         if (regionA == regionB)
                             continue;
-                        var combined = CombinedRegion(regionA, regionB);
+                        var combined = this.CombinedRegion(regionA, regionB);
                         if (combined.Width * combined.Height * combined.Depth > 50 * 1024 * 1024 &&
-                            GetSavingsRatio(regionA, regionB) > 0.5)
+                            this.GetSavingsRatio(regionA, regionB) > 0.5)
                         {
                             regions.Remove(regionA);
                             regions.Remove(regionB);
-                            regions.Add(CombinedRegion(regionA, regionB));
+                            regions.Add(this.CombinedRegion(regionA, regionB));
                             restart = true;
                             break;
                         }
                     }
+
                     if (restart) break;
                 }
+
                 if (restart) continue;
                 break;
             }
+
             request.PlannedRegions = regions;
 
             // Set up progress tracking.
@@ -96,6 +99,7 @@ namespace Tychaia.ProceduralGeneration
                 current++;
                 request.InvokeProgress(sender, new ProgressEventArgs(current / (float)total * 100f));
             };
+
             this.PerformOperation(x => total++, request.Generator);
             this.PerformOperation(x => x.DataGenerated += onProgress, request.Generator);
             total *= request.PlannedRegions.Count();
@@ -131,17 +135,16 @@ namespace Tychaia.ProceduralGeneration
                         for (var x = original.X - planned.X; x < (original.X - planned.X) + original.Width; x++)
                         for (var y = original.Y - planned.Y; y < (original.Y - planned.Y) + original.Height; y++)
                         for (var z = original.Z - planned.Z; z < (original.Z - planned.Z) + original.Depth; z++)
-                            original.GeneratedData[
-                                (x - (original.X - planned.X)),
+                            original.GeneratedData[(x - (original.X - planned.X)),
                                 (y - (original.Y - planned.Y)),
                                 (z - (original.Z - planned.Z))] =
-                                result[x + y * planned.Width + z * planned.Width * planned.Height];
+                                result[x + (y * planned.Width) + (z * planned.Width * planned.Height)];
                         request.InvokeRegionComplete(this, new RegionCompleteEventArgs(original));
                     }
                 }
             }
+
             this.PerformOperation(x => x.DataGenerated -= onProgress, request.Generator);
         }
     }
 }
-

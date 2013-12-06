@@ -66,11 +66,13 @@ namespace Tychaia.ProceduralGeneration
         public static Dictionary<int, Color> GetGradientBrushes(int minValue, int maxValue)
         {
             var brushes = new Dictionary<int, Color>();
+
             for (var i = 0; i < maxValue - minValue; i++)
             {
-                var a = (int) (256 * (i / (double) (maxValue - minValue)));
+                var a = (int)(256 * (i / (double)(maxValue - minValue)));
                 brushes.Add(i + minValue, Color.FromArgb(a, a, a));
             }
+
             return brushes;
         }
 
@@ -84,11 +86,13 @@ namespace Tychaia.ProceduralGeneration
         public static Dictionary<int, Color> GetGradientBrushesWater(int minValue, int maxValue)
         {
             var brushes = new Dictionary<int, Color>();
+
             for (var i = 0; i < maxValue - minValue; i++)
             {
-                var a = (int) (256 * (i / (double) (maxValue - minValue)));
+                var a = (int)(256 * (i / (double)(maxValue - minValue)));
                 brushes.Add(i + minValue, Color.FromArgb(i + minValue < 0 ? 0 : a, i + minValue < 0 ? 0 : a, a));
             }
+
             return brushes;
         }
     }

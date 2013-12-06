@@ -18,7 +18,7 @@ namespace Tychaia.ProceduralGeneration.Flow
         {
             var info = new Bitmap(
                 128,
-                (message.Split(new[] { "\r\n" }, StringSplitOptions.None).Length) * 16);
+                message.Split(new[] { "\r\n" }, StringSplitOptions.None).Length * 16);
             var graphics = Graphics.FromImage(info);
             var font = new Font(SystemFonts.DefaultFont, FontStyle.Bold);
             var brush = new SolidBrush(Color.White);

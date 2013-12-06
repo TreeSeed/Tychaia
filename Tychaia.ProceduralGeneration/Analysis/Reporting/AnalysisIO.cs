@@ -45,7 +45,7 @@ namespace Tychaia.ProceduralGeneration.Analysis.Reporting
                 var x = new DataContractSerializer(
                     typeof(Analysis),
                     m_SerializableTypes,
-                    Int32.MaxValue,
+                    int.MaxValue,
                     false,
                     false,
                     null);

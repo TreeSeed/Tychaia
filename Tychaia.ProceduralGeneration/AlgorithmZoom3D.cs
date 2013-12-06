@@ -65,19 +65,32 @@ namespace Tychaia.ProceduralGeneration
             get { return false; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
-            int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] input,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
             var ocx = ((x - Math.Abs(i)) % 2 == 0 ? 0 : Math.Abs(i % 2)) - (i % 2 == -1 ? 1 : 0);
             var ocy = ((y - Math.Abs(j)) % 2 == 0 ? 0 : Math.Abs(j % 2)) - (j % 2 == -1 ? 1 : 0);
             var ocz = ((z - Math.Abs(k)) % 2 == 0 ? 0 : Math.Abs(k % 2)) - (k % 2 == -1 ? 1 : 0);
 
-            var current = input[
-                (i / 2) + ox + ocx +
-                ((j / 2) + oy + ocy) * width +
-                ((k / 2) + oz + ocz) * width * height];
+            var current = input[(i / 2) + ox + ocx +
+                (((j / 2) + oy + ocy) * width) +
+                (((k / 2) + oz + ocz) * width * height)];
 
-            output[i + ox + (j + oy) * width + (k + oz) * width * height] = current;
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = current;
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)

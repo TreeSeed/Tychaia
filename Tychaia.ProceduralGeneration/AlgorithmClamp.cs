@@ -65,20 +65,30 @@ namespace Tychaia.ProceduralGeneration
         }
 
         public override void ProcessCell(
-            IRuntimeContext context, int[] input, int[] output,
-            long x, long y, long z,
-            int i, int j, int k,
-            int width, int height, int depth,
-            int ox, int oy, int oz)
+            IRuntimeContext context,
+            int[] input,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
-            var value = input[(i + ox) + (j + oy) * width + (k + oz) * width * height];
+            var value = input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
             if (this.ClampMinimum)
                 if (value < this.Minimum)
                     value = this.Minimum;
             if (this.ClampMaximum)
                 if (value > this.Maximum)
                     value = this.Maximum;
-            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = value;
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = value;
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)

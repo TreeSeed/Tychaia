@@ -39,51 +39,58 @@ namespace Tychaia.ProceduralGeneration
             get { return new[] { true }; }
         }
 
-        // Will be able to use this algorithm for:
-        // Land - This is the equivelent of ExtendLand
-        // Towns - This is the equivelent of ExtendTowns
-        // Landmarks/Terrain - We can spread landmarks over the world, we can create mountain landmarks by spreading their size out then modifying the terrain.
-        // Monsters - We can spread monster villages out, simmilar to towns.
-        // Dungeons - We can use this to smooth dungeons out, so that there are less or more pointy bits. Alternatively we can also use this to spread out some side sections.
-        // Anything else?
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
-            int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] input,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
             var selected = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, 8, context.Modifier);
 
             switch (selected)
             {
                 case 0:
-                    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
-                        input[((i + ox) + 1) + ((j + oy) + 1) * width + (k + oz) * width * height];
+                    output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                        input[((i + ox) + 1) + (((j + oy) + 1) * width) + ((k + oz) * width * height)];
                     break;
                 case 1:
-                    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
-                        input[((i + ox) - 1) + ((j + oy) - 1) * width + (k + oz) * width * height];
+                    output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                        input[((i + ox) - 1) + (((j + oy) - 1) * width) + ((k + oz) * width * height)];
                     break;
                 case 2:
-                    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
-                        input[((i + ox) - 1) + ((j + oy) + 1) * width + (k + oz) * width * height];
+                    output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                        input[((i + ox) - 1) + (((j + oy) + 1) * width) + ((k + oz) * width * height)];
                     break;
                 case 3:
-                    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
-                        input[((i + ox) + 1) + ((j + oy) - 1) * width + (k + oz) * width * height];
+                    output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                        input[((i + ox) + 1) + (((j + oy) - 1) * width) + ((k + oz) * width * height)];
                     break;
                 case 4:
-                    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
-                        input[((i + ox) + 0) + ((j + oy) + 1) * width + (k + oz) * width * height];
+                    output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                        input[((i + ox) + 0) + (((j + oy) + 1) * width) + ((k + oz) * width * height)];
                     break;
                 case 5:
-                    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
-                        input[((i + ox) + 1) + ((j + oy) + 0) * width + (k + oz) * width * height];
+                    output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                        input[((i + ox) + 1) + (((j + oy) + 0) * width) + ((k + oz) * width * height)];
                     break;
                 case 6:
-                    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
-                        input[((i + ox) + 0) + ((j + oy) - 1) * width + (k + oz) * width * height];
+                    output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                        input[((i + ox) + 0) + (((j + oy) - 1) * width) + ((k + oz) * width * height)];
                     break;
                 case 7:
-                    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
-                        input[((i + ox) - 1) + ((j + oy) + 0) * width + (k + oz) * width * height];
+                    output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                        input[((i + ox) - 1) + (((j + oy) + 0) * width) + ((k + oz) * width * height)];
                     break;
             }
         }

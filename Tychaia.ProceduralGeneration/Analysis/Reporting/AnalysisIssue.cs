@@ -66,10 +66,11 @@ namespace Tychaia.ProceduralGeneration.Analysis.Reporting
                         foreach (var parent in locationStack.ToArray())
                             copy.UniqueIDRefs += "[" + parent.UniqueID + "]";
 
-                        if (copy.UniqueIDRefs == "")
+                        if (copy.UniqueIDRefs == string.Empty)
                             throw new InvalidOperationException();
                         newLocations.Add(copy);
                     }
+
                     lastOriginalLocation = locationStack.Peek();
                 }
                 else

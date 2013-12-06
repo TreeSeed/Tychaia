@@ -10,4 +10,3 @@ namespace Tychaia.ProceduralGeneration
         int[] CalculateCellRenderOrder(int width, int height);
     }
 }
-

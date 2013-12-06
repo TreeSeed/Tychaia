@@ -29,8 +29,12 @@ namespace Tychaia.ProceduralGeneration.Flow
         public Bitmap RegenerateImageForLayer(
             StorageLayer layer,
             long seed,
-            long ox, long oy, long oz,
-            int width, int height, int depth,
+            long ox, 
+            long oy, 
+            long oz,
+            int width, 
+            int height, 
+            int depth,
             bool compiled = false)
         {
             try
@@ -44,8 +48,12 @@ namespace Tychaia.ProceduralGeneration.Flow
                         return this.m_IsometricBitmapRenderer.GenerateImage(
                             runtime,
                             x => runtime.Algorithm.GetColorForValue(this.m_StorageAccess.FromRuntime(runtime), x),
-                            ox, oy, oz,
-                            width, height, runtime.Algorithm.Is2DOnly ? 1 : depth);
+                            ox, 
+                            oy, 
+                            oz,
+                            width, 
+                            height, 
+                            runtime.Algorithm.Is2DOnly ? 1 : depth);
                         /*return Regenerate3DImageForLayer(
                             runtime,
                             ox, oy, oz,
@@ -57,11 +65,16 @@ namespace Tychaia.ProceduralGeneration.Flow
                         return null;
                     }
                 }
+
                 return this.m_IsometricBitmapRenderer.GenerateImage(
                     runtime,
                     x => runtime.Algorithm.GetColorForValue(this.m_StorageAccess.FromRuntime(runtime), x),
-                    ox, oy, oz,
-                    width, height, runtime.Algorithm.Is2DOnly ? 1 : depth);
+                    ox, 
+                    oy, 
+                    oz,
+                    width, 
+                    height, 
+                    runtime.Algorithm.Is2DOnly ? 1 : depth);
             }
             catch (InvalidOperationException)
             {

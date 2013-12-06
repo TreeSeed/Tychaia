@@ -53,6 +53,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
                     "Unable to decompile algorithm source code for " + algorithmType.FullName + ".",
                     ex);
             }
+
             astBuilder.CompilationUnit.AcceptVisitor(new InsertParenthesesVisitor
             {
                 InsertParenthesesForReadability = true
@@ -66,7 +67,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
         /// <summary>
         /// Finds the Mono.Cecil.MethodDefinition for ProcessCell in the specified algorithm type.
         /// </summary>
-        public static void FindMethodName(ModuleDefinition module,
+        public static void FindMethodName(
+            ModuleDefinition module,
             Type algorithmType,
             string methodName,
             out MethodDefinition methodDefinition,
@@ -87,6 +89,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
                     }
                 }
             }
+
             throw new MissingMethodException();
         }
     }

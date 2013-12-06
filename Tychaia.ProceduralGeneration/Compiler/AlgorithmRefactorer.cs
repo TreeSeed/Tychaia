@@ -13,8 +13,11 @@ namespace Tychaia.ProceduralGeneration.Compiler
 {
     public static class AlgorithmRefactorer
     {
-        public static void FactorOutAlgorithmFields(Type algorithmType, MethodDeclaration method,
-            MethodDeclaration initialize, ref string declarations)
+        public static void FactorOutAlgorithmFields(
+            Type algorithmType, 
+            MethodDeclaration method,
+            MethodDeclaration initialize, 
+            ref string declarations)
         {
             var mappings = new Dictionary<string, string>();
             foreach (var field in algorithmType.GetFields(BindingFlags.NonPublic | BindingFlags.Instance))
@@ -36,12 +39,23 @@ namespace Tychaia.ProceduralGeneration.Compiler
         /// Refactors the names of parameters and their references so the
         /// method body can be copied directly into the output.
         /// </summary>
-        public static void InlineMethod(IAlgorithm algorithm, MethodDeclaration method, string outputName,
+        public static void InlineMethod(
+            IAlgorithm algorithm, 
+            MethodDeclaration method, 
+            string outputName,
             string[] inputNames,
-            Expression x, Expression y, Expression z,
-            Expression i, Expression j, Expression k,
-            Expression width, Expression height, Expression depth,
-            Expression ox, Expression oy, Expression oz)
+            Expression x, 
+            Expression y, 
+            Expression z,
+            Expression i, 
+            Expression j, 
+            Expression k,
+            Expression width, 
+            Expression height, 
+            Expression depth,
+            Expression ox, 
+            Expression oy, 
+            Expression oz)
         {
             if (algorithm == null) throw new ArgumentNullException("algorithm");
             if (method == null) throw new ArgumentNullException("method");
@@ -134,8 +148,10 @@ namespace Tychaia.ProceduralGeneration.Compiler
         /// </summary>
         public static void InlineInitialize(IAlgorithm algorithm, MethodDeclaration method)
         {
-            if (algorithm == null) throw new ArgumentNullException("algorithm");
-            if (method == null) throw new ArgumentNullException("method");
+            if (algorithm == null)
+                throw new ArgumentNullException("algorithm");
+            if (method == null)
+                throw new ArgumentNullException("method");
 
             var parameterContext = method.Parameters.ElementAt(0);
 

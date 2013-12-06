@@ -61,31 +61,46 @@ namespace Tychaia.ProceduralGeneration
             get { return false; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j,
-            int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
-            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = 0;
 
             if (this.Xcalculation)
             {
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] +=
-                    ((int) (Math.Abs(x) / this.Xdivider) > int.MaxValue
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] +=
+                    ((int)(Math.Abs(x) / this.Xdivider) > int.MaxValue
                         ? int.MaxValue
-                        : (int) (Math.Abs(x) / this.Xdivider));
+                        : (int)(Math.Abs(x) / this.Xdivider));
             }
+
             if (this.Ycalculation)
             {
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] +=
-                    ((int) (Math.Abs(y) / this.Ydivider) > int.MaxValue
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] +=
+                    ((int)(Math.Abs(y) / this.Ydivider) > int.MaxValue
                         ? int.MaxValue
                         : (int) (Math.Abs(y) / this.Ydivider));
             }
+
             if (this.Zcalculation)
             {
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] +=
-                    ((int) (Math.Abs(z) / this.Zdivider) > int.MaxValue
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] +=
+                    ((int)(Math.Abs(z) / this.Zdivider) > int.MaxValue
                         ? int.MaxValue
-                        : (int) (Math.Abs(z) / this.Zdivider));
+                        : (int)(Math.Abs(z) / this.Zdivider));
             }
         }
 

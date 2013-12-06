@@ -35,9 +35,9 @@ namespace Tychaia.ProceduralGeneration.Compiler
 
         internal static string GenerateRandomIdentifier()
         {
-            var result = "";
+            var result = string.Empty;
             for (var i = 0; i < 8; i++)
-                result += (char) ('a' + m_Random.Next(0, 26));
+                result += (char)('a' + m_Random.Next(0, 26));
             return result;
         }
 
@@ -46,8 +46,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
             // Create our own processed result; a copy of our own state plus
             // somewhere to accumulate code.
             var result = new ProcessedResult();
-            result.ProcessedCode = "";
-            result.InitializationCode = "";
+            result.ProcessedCode = string.Empty;
+            result.InitializationCode = string.Empty;
 
             // Get a reference to the algorithm that the runtime layer is using.
             var algorithm = layer.Algorithm;
@@ -93,6 +93,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
             catch (MissingMethodException)
             {
             }
+
             AlgorithmRefactorer.InlineMethod(
                 algorithm,
                 method,
@@ -172,8 +173,8 @@ namespace Tychaia.ProceduralGeneration.Compiler
             // Create our own processed result; a copy of our own state plus
             // somewhere to accumulate code.
             var result = new ProcessedResult();
-            result.ProcessedCode = "";
-            result.InitializationCode = "";
+            result.ProcessedCode = string.Empty;
+            result.InitializationCode = string.Empty;
 
             // Get a reference to the algorithm that the runtime layer is using.
             var algorithm = layer.Algorithm;
@@ -185,9 +186,15 @@ namespace Tychaia.ProceduralGeneration.Compiler
             Expression ix, iy, iz, iwidth, iheight, idepth, iouterx, ioutery, iouterz;
             RangedLayer.FindMaximumBounds(
                 ranged,
-                out ix, out iy, out iz,
-                out iwidth, out iheight, out idepth,
-                out iouterx, out ioutery, out iouterz);
+                out ix, 
+                out iy, 
+                out iz,
+                out iwidth, 
+                out iheight, 
+                out idepth,
+                out iouterx, 
+                out ioutery, 
+                out iouterz);
 
             // Add __cwidth, __cheight and __cdepth declarations.
             result.Declarations += "int __cx = (int)(" + ix.GetText(null) + ");\n";
@@ -233,25 +240,28 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 .Replace("/****** %OUTPUT_TYPE% ******/", result.OutputVariableType)
                 .Replace("/****** %DECLS% ******/", result.Declarations)
                 .Replace("/****** %USING% ******/",
-                    result.UsingStatements
-                        .Where(v => v != "System" && v != "Tychaia.ProceduralGeneration")
-                        .Select(v => "using " + v + ";")
-                        .DefaultIfEmpty("")
-                        .Aggregate((a, b) => a + "\n" + b));
+                result.UsingStatements
+                    .Where(v => v != "System" && v != "Tychaia.ProceduralGeneration")
+                    .Select(v => "using " + v + ";")
+                    .DefaultIfEmpty(string.Empty)
+                    .Aggregate((a, b) => a + "\n" + b));
             var parser = new CSharpParser();
             var tree = parser.Parse(final, "layer.cs");
             if (optimize)
             {
                 AstHelpers.OptimizeCompilationUnit(tree);
             }
+
             var stringWriter = new StringWriter();
             var formatter = FormattingOptionsFactory.CreateMono();
             formatter.SpaceBeforeMethodCallParentheses = false;
             formatter.SpaceBeforeIndexerDeclarationBracket = false;
-            tree.AcceptVisitor(new CSharpOutputVisitor(new TextWriterOutputFormatter(stringWriter)
+            tree.AcceptVisitor(new CSharpOutputVisitor(
+                new TextWriterOutputFormatter(stringWriter)
             {
                 IndentationString = "  "
-            }, formatter));
+            }, 
+            formatter));
             final = stringWriter.ToString();
             return final;
         }
@@ -285,6 +295,7 @@ namespace Tychaia.ProceduralGeneration.Compiler
                 throw new InvalidOperationException(
                     "Unable to compile code for layer generation.  Compiled code contained errors.");
             }
+
             var assembly = results.CompiledAssembly;
             var newType = assembly.GetType("CompiledLayer");
             return newType.GetConstructor(Type.EmptyTypes).Invoke(null) as IGenerator;

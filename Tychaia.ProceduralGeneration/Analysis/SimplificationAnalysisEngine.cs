@@ -14,12 +14,6 @@ namespace Tychaia.ProceduralGeneration.Analysis
 {
     public class SimplificationAnalysisEngine : AnalysisEngine
     {
-        public enum WarningGradientMode
-        {
-            BetweenLimits,
-            Relative
-        }
-
         public SimplificationAnalysisEngine()
         {
             this.WarningLimit = 5;
@@ -38,7 +32,7 @@ namespace Tychaia.ProceduralGeneration.Analysis
             report.Name = "Simplification Report";
 
             // Perform various analysis operations.
-            ProcessFrequentExpressions(layer, report);
+            this.ProcessFrequentExpressions(layer, report);
 
             // Add our layers and report to the analysis result.
             if (report.Issues.Count > 0)
@@ -88,20 +82,22 @@ namespace Tychaia.ProceduralGeneration.Analysis
                         if (maxCounts - Math.Max(this.WarningLimit, minCounts) == 0)
                             location.Importance = 100;
                         else
-                            location.Importance = (int) Math.Round(
+                            location.Importance = (int)Math.Round(
                                 (kv.Value.Count - Math.Max(this.WarningLimit, minCounts)) /
-                                (double) (maxCounts - Math.Max(this.WarningLimit, minCounts)) * 100);
+                                (double)(maxCounts - Math.Max(this.WarningLimit, minCounts)) * 100);
                     }
                     else
                     {
                         var count = Math.Min(Math.Max(kv.Value.Count, this.WarningLimit), this.ErrorLimit);
                         location.Importance =
-                            (int) (((count - this.WarningLimit) / (double) (this.ErrorLimit - this.WarningLimit)) * 100);
+                            (int)(((count - this.WarningLimit) / (double)(this.ErrorLimit - this.WarningLimit)) * 100);
                     }
+
                     location.Message = "Occurs " + kv.Value.Count + " times";
                     issue.Locations.Add(location);
                 }
             }
+
             issue.FlattenLocations();
             if (issue.Locations.Count == 0)
                 return;
@@ -177,6 +173,7 @@ namespace Tychaia.ProceduralGeneration.Analysis
                         expr.AcceptVisitor(this);
                     }
                 }
+
                 assignmentExpression.Right.AcceptVisitor(this);
             }
 
@@ -200,5 +197,11 @@ namespace Tychaia.ProceduralGeneration.Analysis
         }
 
         #endregion
+
+        public enum WarningGradientMode
+        {
+            BetweenLimits,
+            Relative
+        }
     }
 }

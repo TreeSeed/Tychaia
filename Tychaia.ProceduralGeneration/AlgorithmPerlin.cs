@@ -63,32 +63,42 @@ namespace Tychaia.ProceduralGeneration
             this.m_PerlinNoise = new PerlinNoise(context.Seed + this.Modifier);
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j,
-            int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
             if (!this.Layer2D)
             {
-                var noise = this.m_PerlinNoise.Noise((x) / this.Scale, (y) / this.Scale, (z) / this.Scale) / 2.0 + 0.5;
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
-                    (int) ((noise * (this.MaxValue - this.MinValue)) + this.MinValue);
+                var noise = (this.m_PerlinNoise.Noise(x / this.Scale, y / this.Scale, z / this.Scale) / 2.0) + 0.5;
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                    (int)((noise * (this.MaxValue - this.MinValue)) + this.MinValue);
             }
             else
             {
-                var noise = this.m_PerlinNoise.Noise((x) / this.Scale, (y) / this.Scale, 0) / 2.0 + 0.5;
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
-                    (int) ((noise * (this.MaxValue - this.MinValue)) + this.MinValue);
+                var noise = (this.m_PerlinNoise.Noise(x / this.Scale, y / this.Scale, 0) / 2.0) + 0.5;
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                    (int)((noise * (this.MaxValue - this.MinValue)) + this.MinValue);
             }
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return Color.FromArgb(
-                Math.Max(0, Math.Min(255,
-                    (int) (255 * ((value - this.MinValue) / (float) (this.MaxValue - this.MinValue))))),
-                Math.Max(0, Math.Min(255,
-                    (int) (255 * ((value - this.MinValue) / (float) (this.MaxValue - this.MinValue))))),
-                Math.Max(0, Math.Min(255,
-                    (int) (255 * ((value - this.MinValue) / (float) (this.MaxValue - this.MinValue))))));
+                Math.Max(0, Math.Min(255,(int)(255 * ((value - this.MinValue) / (float)(this.MaxValue - this.MinValue))))),
+                Math.Max(0, Math.Min(255,(int)(255 * ((value - this.MinValue) / (float)(this.MaxValue - this.MinValue))))),
+                Math.Max(0, Math.Min(255,(int)(255 * ((value - this.MinValue) / (float)(this.MaxValue - this.MinValue))))));
         }
     }
 }

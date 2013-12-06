@@ -63,6 +63,7 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
                 runtime.GenerateData(0, 0, 0, 32, 32, 32, out runtimeComputations);
                 iterations++;
             }
+
             var runtimeEnd = DateTime.Now;
 
             // Now check how long it takes the compiled layer to do as many iterations of generating 8x8x8.
@@ -80,6 +81,7 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
                     compiled = null;
                 }
             }
+
             var compiledEnd = DateTime.Now;
 
             // Determine the per-operation cost.
@@ -137,6 +139,7 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
                 else
                     graphics.DrawString("Unable to compile.", font, bad, new PointF(0, 16));
             }
+
             var additionalInformation = bitmap;
             Bitmap compiledBitmap = null;
 
@@ -149,7 +152,10 @@ namespace Tychaia.ProceduralGeneration.Flow.Handlers
                     this.m_RenderingLocationProvider.X,
                     this.m_RenderingLocationProvider.Y,
                     this.m_RenderingLocationProvider.Z,
-                    64, 64, 64, true);
+                    64, 
+                    64, 
+                    64, 
+                    true);
             }
 
             put(new FlowProcessingResponse

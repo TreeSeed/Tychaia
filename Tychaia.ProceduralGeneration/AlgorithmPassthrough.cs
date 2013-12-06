@@ -72,11 +72,25 @@ namespace Tychaia.ProceduralGeneration
             get { return new[] { this.Layer2D }; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z,
-            int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] input,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
-            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
-                input[(i + ox) + (j + oy) * width + (k + oz) * width * height];
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
@@ -186,8 +200,8 @@ namespace Tychaia.ProceduralGeneration
         public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] inputC, int[] output,
             long x, long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
         {
-            output[i + ox + (j + oy) * width + (k + oz) * width * height] =
-                inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height];
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
+                inputA[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)

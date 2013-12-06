@@ -30,14 +30,28 @@ namespace Tychaia.ProceduralGeneration
             get { return true; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] input, Biome[] output, long x, long y, long z,
-            int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] input,
+            Biome[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
-            if (input[(i + ox) + (j + oy) * width + (k + oz) * width * height] >= 0)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
+            if (input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] >= 0)
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
                     BiomeEngine.Biomes[AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, BiomeEngine.Biomes.Count)];
             else
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
                     BiomeEngine.Biomes.First(v => v is WaterBiome);
         }
 

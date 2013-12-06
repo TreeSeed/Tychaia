@@ -15,12 +15,6 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Terrain Extender")]
     public class AlgorithmTerrainExtender : Algorithm<int, int>
     {
-        public enum ColorScheme
-        {
-            Land,
-            Perlin,
-        }
-
         public AlgorithmTerrainExtender()
         {
             this.Limit = 0.8;
@@ -64,28 +58,42 @@ namespace Tychaia.ProceduralGeneration
             }
         }
 
-        // Will be able to use this algorithm for:
-        // Land - This is the equivelent of InitialLand
-        // Towns - This is the equivelent of InitialTowns
-        // Landmarks - We can spread landmarks over the world, which we can then use values to determine the size/value of the landmarks.
-        // Monsters - By utilising multiple value scaling we can either distribute individual monsters or monster groups or even monster villages.
-        // Tresure chests - Spreading tresure chests in dungeons (can be used as an estimated location then moved slightly too).
-        public override void ProcessCell(IRuntimeContext context, int[] input, int[] output, long x, long y, long z, int i, int j,
-            int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] input,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
             if (!this.Layer2D &&
                      AlgorithmUtility.GetRandomDouble(context.Seed, x, y, z, context.Modifier) > this.Limit)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = (input[(i + ox) + (j + oy) * width + (k + oz) * width * height] == -1 ? 1 : input[(i + ox) + (j + oy) * width + (k + oz) * width * height] + 1);
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = (input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] == -1 ? 1 : input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] + 1);
             else if (this.Layer2D &&
                      AlgorithmUtility.GetRandomDouble(context.Seed, x, y, 0, context.Modifier) > this.Limit)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = (input[(i + ox) + (j + oy) * width + (k + oz) * width * height] == -1 ? 1 : input[(i + ox) + (j + oy) * width + (k + oz) * width * height] + 1);
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = (input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] == -1 ? 1 : input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] + 1);
             else
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = input[(i + ox) + (j + oy) * width + (k + oz) * width * height];
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);
+        }
+
+        public enum ColorScheme
+        {
+            Land,
+            Perlin,
         }
     }
 }

@@ -21,4 +21,3 @@ namespace Tychaia.ProceduralGeneration
         StorageLayer[] LoadStorage(StreamReader input);
     }
 }
-

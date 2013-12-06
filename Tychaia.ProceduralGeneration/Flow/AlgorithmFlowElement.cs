@@ -30,7 +30,9 @@ namespace Tychaia.ProceduralGeneration.Flow
 
         private volatile Bitmap m_RuntimeBitmap = null;
 
-        public AlgorithmFlowElement(FlowInterfaceControl control, IFlowProcessingPipeline processingPipeline,
+        public AlgorithmFlowElement(
+            FlowInterfaceControl control, 
+            IFlowProcessingPipeline processingPipeline,
             StorageLayer l)
         {
             this.m_Control = control;
@@ -72,7 +74,9 @@ namespace Tychaia.ProceduralGeneration.Flow
             this.m_CompiledViewToggleThread.Start();*/
         }
 
-        public AlgorithmFlowElement(FlowInterfaceControl control, IFlowProcessingPipeline processingPipeline,
+        public AlgorithmFlowElement(
+            FlowInterfaceControl control, 
+            IFlowProcessingPipeline processingPipeline,
             IAlgorithm algorithm)
             : this(control, processingPipeline, new StorageLayer { Algorithm = algorithm })
         {
@@ -91,7 +95,7 @@ namespace Tychaia.ProceduralGeneration.Flow
 
         ~AlgorithmFlowElement()
         {
-            //this.m_CompiledViewToggleThread.Abort();
+            // this.m_CompiledViewToggleThread.Abort();
         }
 
         private int[] ParentsIndexOf(StorageLayer find)
@@ -142,6 +146,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                     }
                 }
             }
+
             return fll.ToArray();
         }
 
@@ -155,8 +160,7 @@ namespace Tychaia.ProceduralGeneration.Flow
                     throw new InvalidOperationException("An input can not be connected to more than one output.");
                 if (this.m_Layer.Inputs == null)
                     throw new InvalidOperationException("Input array for an algorithm can not be null.");
-                this.m_Layer.Inputs[
-                    this.m_InputConnectors.IndexOf(connector)] =
+                this.m_Layer.Inputs[this.m_InputConnectors.IndexOf(connector)] =
                     (targets[0].Owner as AlgorithmFlowElement).m_Layer;
                 this.ObjectPropertyUpdated();
             }

@@ -61,12 +61,12 @@ namespace Tychaia.ProceduralGeneration.Flow
                 {
                     case FlowProcessingRequestType.GenerateRuntimeBitmap:
                         generateRuntimeBitmapHandler.Handle(
-                            (StorageLayer) request.Parameters[0],
+                            (StorageLayer)request.Parameters[0],
                             x => this.m_ProcessingPipeline.OutputPipeline.Put(x));
                         break;
                     case FlowProcessingRequestType.GeneratePerformanceResults:
                         generatePerformanceResultsHandler.Handle(
-                            (StorageLayer) request.Parameters[0],
+                            (StorageLayer)request.Parameters[0],
                             x => this.m_ProcessingPipeline.OutputPipeline.Put(x));
                         break;
                 }

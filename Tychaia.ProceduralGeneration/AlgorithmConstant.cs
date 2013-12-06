@@ -34,10 +34,23 @@ namespace Tychaia.ProceduralGeneration
             get { return this.Layer2D; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j,
-            int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
-            output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.Constant;
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = this.Constant;
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)

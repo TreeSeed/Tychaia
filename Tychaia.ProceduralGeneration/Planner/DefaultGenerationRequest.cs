@@ -14,7 +14,11 @@ namespace Tychaia.ProceduralGeneration
         public event ProgressEventHandler Progress;
         public event RegionCompleteEventHandler RegionComplete;
 
-        public IEnumerable<GenerationRegion> OriginalRegions { get { return this.m_OriginalRegions; } }
+        public IEnumerable<GenerationRegion> OriginalRegions 
+        { 
+            get { return this.m_OriginalRegions; } 
+        }
+
         public IEnumerable<GenerationRegion> PlannedRegions { get; set; }
         public IGenerator Generator { get; set; }
 
@@ -49,4 +53,3 @@ namespace Tychaia.ProceduralGeneration
         }
     }
 }
-

@@ -65,8 +65,9 @@ namespace Tychaia.ProceduralGeneration
                     x = atk - maxy;
                     y = maxy;
                 }
+
                 while (y > atk / 2)
-                    result[count++] = y-- * width + x++;
+                    result[count++] = (y-- * width) + x++;
 
                 // Attack from the right.
                 if (atk < maxx)
@@ -79,12 +80,12 @@ namespace Tychaia.ProceduralGeneration
                     x = maxx;
                     y = atk - maxx;
                 }
+
                 while (y <= atk / 2)
-                    result[count++] = y++ * width + x--;
+                    result[count++] = (y++ * width) + x--;
             }
 
             return result;
         }
     }
 }
-

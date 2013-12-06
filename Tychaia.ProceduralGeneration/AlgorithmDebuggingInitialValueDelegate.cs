@@ -24,13 +24,26 @@ namespace Tychaia.ProceduralGeneration
 
         public Func<long, long, long, int, int, int, int> GetValueForPosition { get; set; }
 
-        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j,
-            int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
             if (this.GetValueForPosition == null)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = 0;
             else
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.GetValueForPosition(x, y, z, i, j,
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = this.GetValueForPosition(x, y, z, i, j,
                     k);
         }
 

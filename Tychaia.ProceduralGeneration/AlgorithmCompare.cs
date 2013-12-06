@@ -52,22 +52,37 @@ namespace Tychaia.ProceduralGeneration
             get { return new[] { "Input A", "Input B" }; }
         }
 
-        public override void ProcessCell(IRuntimeContext context, int[] inputA, int[] inputB, int[] output, long x,
-            long y, long z, int i, int j, int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+                    IRuntimeContext context,
+                    int[] inputA,
+                    int[] inputB,
+                    int[] output,
+                    long x,
+                    long y,
+                    long z,
+                    int i,
+                    int j,
+                    int k,
+                    int width,
+                    int height,
+                    int depth,
+                    int ox,
+                    int oy,
+                    int oz)
         {
-            if (inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height] >
-                inputB[(i + ox) + (j + oy) * width + (k + oz) * width * height])
+            if (inputA[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] >
+                inputB[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)])
             {
                 if (this.AddAnother <= 0)
-                    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 1;
+                    output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = 1;
                 else
-                    output[(i + ox) + (j + oy) * width + (k + oz) * width * height] =
+                    output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] =
                         (int)
-                            ((inputA[(i + ox) + (j + oy) * width + (k + oz) * width * height] -
-                              inputB[(i + ox) + (j + oy) * width + (k + oz) * width * height]) / this.AddAnother);
+                            ((inputA[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] -
+                              inputB[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)]) / this.AddAnother);
             }
             else
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = 0;
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = 0;
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
@@ -90,12 +105,11 @@ namespace Tychaia.ProceduralGeneration
                 else if (divvalue < 1)
                     divvalue = 1;
 
-                a = (int) (value * ((double) 255 / divvalue));
+                a = (int)(value * ((double)255 / divvalue));
 
                 if (a > 255)
                     a = 255;
             }
-
 
             return Color.FromArgb(a, a, a);
         }

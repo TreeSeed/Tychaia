@@ -23,7 +23,7 @@ namespace Tychaia.ProceduralGeneration
     {
         public static List<Profession> Professions = null;
 
-        //Turns out not as easy as copy pasting
+        // Turns out not as easy as copy pasting
         static ProfessionEngine()
         {
             Professions = new List<Profession>();

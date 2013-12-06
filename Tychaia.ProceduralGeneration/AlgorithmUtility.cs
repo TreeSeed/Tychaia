@@ -35,7 +35,7 @@ namespace Tychaia.ProceduralGeneration
                 var a = GetRandomInt(seed, x, y, z, modifier);
                 if (a < 0)
                     a += int.MaxValue;
-                return a % (end - start) + start;
+                return (a % (end - start)) + start;
             }
         }
 
@@ -47,7 +47,7 @@ namespace Tychaia.ProceduralGeneration
         {
             unchecked
             {
-                return (int) (GetRandomNumber(seed, x, y, z, modifier) % int.MaxValue);
+                return (int)(GetRandomNumber(seed, x, y, z, modifier) % int.MaxValue);
             }
         }
 
@@ -69,28 +69,29 @@ namespace Tychaia.ProceduralGeneration
             var a = GetRandomNumber(seed, x, y, z, modifier) / 2;
             if (a < 0)
                 a += long.MaxValue;
-            return a / (double) long.MaxValue;
+            return a / (double)long.MaxValue;
         }
 
-        private static long GetRandomNumber(long _seed, long x, long y, long z, long modifier)
+        private static long GetRandomNumber(long baseseed, long x, long y, long z, long modifier)
         {
             /* From: http://stackoverflow.com/questions/2890040/implementing-gethashcode
              * Although we aren't implementing GetHashCode, it's still a good way to generate
              * a unique number given a limited set of fields */
             unchecked
             {
-                var seed = (x - 1) * 3661988493967 + (y - 1);
+                var seed = ((x - 1) * 3661988493967) + (y - 1);
                 seed += (x - 2) * 2990430311017;
                 seed *= (y - 3) * 14475080218213;
                 seed += modifier;
                 seed += (y - 4) * 28124722524383;
                 seed += (z - 5) * 25905201761893;
                 seed *= (x - 6) * 16099760261113;
-                seed += (x - 7) * _seed;
-                seed *= (y - 8) * _seed;
+                seed += (x - 7) * baseseed;
+                seed *= (y - 8) * baseseed;
                 seed += (z - 9) * 55497960863;
                 seed *= (z - 10) * 611286883423;
                 seed += modifier;
+
                 // Prevents the seed from being 0 along an axis.
                 seed += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
 
@@ -100,8 +101,8 @@ namespace Tychaia.ProceduralGeneration
                 rng *= (z - 13) * 23281823741513;
                 rng -= seed * 28124722524383;
                 rng *= (x - 14) * 16099760261113;
-                rng += seed * _seed;
-                rng *= (y - 15) * _seed;
+                rng += seed * baseseed;
+                rng *= (y - 15) * baseseed;
                 rng *= (z - 16) * 18193477834921;
                 rng += (x - 199) * (y - 241) * (z - 1471) * 9018110272013;
                 rng += modifier;
@@ -111,18 +112,28 @@ namespace Tychaia.ProceduralGeneration
             }
         }
 
-
         /// <summary>
         /// Smoothes the specified data according to smoothing logic.  Apparently
         /// inlining this functionality causes the algorithms to run slower, so we
         /// leave this function on it's own.
         /// </summary>
         public static int Smooth(
-            long seed, bool isFuzzy,
-            long x, long y,
-            int northValue, int southValue, int westValue, int eastValue, int southEastValue,
+            long seed, 
+            bool isFuzzy,
+            long x, 
+            long y,
+            int northValue, 
+            int southValue, 
+            int westValue, 
+            int eastValue, 
+            int southEastValue,
             int currentValue,
-            long i, long j, long ox, long oy, long rw, int[] parent)
+            long i, 
+            long j, 
+            long ox, 
+            long oy, 
+            long rw, 
+            int[] parent)
         {
             // Parent-based Smoothing
             var selected = 0;
@@ -133,6 +144,7 @@ namespace Tychaia.ProceduralGeneration
                 {
                     return currentValue;
                 }
+
                 selected = GetRandomRange(seed, x, y, 0, 2);
                 switch (selected)
                 {

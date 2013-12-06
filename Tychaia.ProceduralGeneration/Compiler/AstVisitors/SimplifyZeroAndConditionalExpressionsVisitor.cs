@@ -17,23 +17,26 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             if (a is PrimitiveExpression &&
                 (a as PrimitiveExpression).Value is bool)
             {
-                value = (bool) (a as PrimitiveExpression).Value;
+                value = (bool)(a as PrimitiveExpression).Value;
             }
+
             if (a is UnaryOperatorExpression &&
                 (a as UnaryOperatorExpression).Operator == UnaryOperatorType.Not &&
                 (a as UnaryOperatorExpression).Expression is PrimitiveExpression &&
-                (((a as UnaryOperatorExpression).Expression as PrimitiveExpression).Value) is bool)
+                ((a as UnaryOperatorExpression).Expression as PrimitiveExpression).Value is bool)
             {
-                value = !(bool) (((a as UnaryOperatorExpression).Expression as PrimitiveExpression).Value);
+                value = !(bool)((a as UnaryOperatorExpression).Expression as PrimitiveExpression).Value;
             }
+
             if (value != null)
             {
-                if ((bool) value)
+                if ((bool)value)
                     root.ReplaceWith(b);
                 else
                     root.ReplaceWith(new PrimitiveExpression(false));
                 return true;
             }
+
             return false;
         }
 
@@ -43,23 +46,26 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             if (a is PrimitiveExpression &&
                 (a as PrimitiveExpression).Value is bool)
             {
-                value = (bool) (a as PrimitiveExpression).Value;
+                value = (bool)(a as PrimitiveExpression).Value;
             }
+
             if (a is UnaryOperatorExpression &&
                 (a as UnaryOperatorExpression).Operator == UnaryOperatorType.Not &&
                 (a as UnaryOperatorExpression).Expression is PrimitiveExpression &&
-                (((a as UnaryOperatorExpression).Expression as PrimitiveExpression).Value) is bool)
+                ((a as UnaryOperatorExpression).Expression as PrimitiveExpression).Value is bool)
             {
-                value = !(bool) (((a as UnaryOperatorExpression).Expression as PrimitiveExpression).Value);
+                value = !(bool)((a as UnaryOperatorExpression).Expression as PrimitiveExpression).Value;
             }
+
             if (value != null)
             {
-                if ((bool) value)
+                if ((bool)value)
                     root.ReplaceWith(new PrimitiveExpression(true));
                 else
                     root.ReplaceWith(b);
                 return true;
             }
+
             return false;
         }
 
@@ -69,7 +75,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
 
             if (unaryOperatorExpression.Operator == UnaryOperatorType.Minus &&
                 unaryOperatorExpression.Expression is PrimitiveExpression &&
-                (dynamic) ((PrimitiveExpression) unaryOperatorExpression.Expression).Value == 0)
+                (dynamic)((PrimitiveExpression)unaryOperatorExpression.Expression).Value == 0)
                 unaryOperatorExpression.ReplaceWith(new PrimitiveExpression(0));
         }
 
@@ -97,7 +103,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
 
             if (right is PrimitiveExpression &&
                 (right as PrimitiveExpression).Value is int &&
-                (int) ((right as PrimitiveExpression).Value) == 0)
+                (int)(right as PrimitiveExpression).Value == 0)
             {
                 if (binaryOperatorExpression.Operator == BinaryOperatorType.Add ||
                     binaryOperatorExpression.Operator == BinaryOperatorType.Subtract)
@@ -129,7 +135,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
             if (ifElseStatement.Condition is PrimitiveExpression &&
                 (ifElseStatement.Condition as PrimitiveExpression).Value is bool)
             {
-                var value = (bool) (ifElseStatement.Condition as PrimitiveExpression).Value;
+                var value = (bool)(ifElseStatement.Condition as PrimitiveExpression).Value;
                 if (value)
                     ifElseStatement.ReplaceWith(ifElseStatement.TrueStatement);
                 else

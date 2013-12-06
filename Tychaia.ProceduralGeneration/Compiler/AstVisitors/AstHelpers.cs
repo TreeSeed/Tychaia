@@ -36,11 +36,11 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
         public static dynamic GetValueFromExpression(Expression expr)
         {
             if (expr is PrimitiveExpression)
-                return ((PrimitiveExpression) expr).Value;
+                return ((PrimitiveExpression)expr).Value;
             if (expr is UnaryOperatorExpression)
-                return GetValueFromUnaryExpression((UnaryOperatorExpression) expr);
+                return GetValueFromUnaryExpression((UnaryOperatorExpression)expr);
             if (expr is ParenthesizedExpression)
-                return GetValueFromParenthesizedExpression((ParenthesizedExpression) expr);
+                return GetValueFromParenthesizedExpression((ParenthesizedExpression)expr);
             return null;
         }
 
@@ -81,6 +81,7 @@ namespace Tychaia.ProceduralGeneration.AstVisitors
                 foreach (var visitor in visitors)
                     root.Expression.AcceptVisitor(visitor);
             }
+
             return root.Expression;
         }
     }

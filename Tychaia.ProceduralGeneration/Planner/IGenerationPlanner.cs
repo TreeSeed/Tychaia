@@ -11,4 +11,3 @@ namespace Tychaia.ProceduralGeneration
         void Execute(IGenerationRequest request);
     }
 }
-

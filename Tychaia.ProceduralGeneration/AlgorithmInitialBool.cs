@@ -15,12 +15,6 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("On / Off Values")]
     public class AlgorithmInitialBool : Algorithm<int>
     {
-        public enum ColorScheme
-        {
-            Land,
-            Perlin,
-        }
-
         public AlgorithmInitialBool()
         {
             this.Limit = 0.8;
@@ -72,19 +66,30 @@ namespace Tychaia.ProceduralGeneration
         // Landmarks - We can spread landmarks over the world, which we can then use values to determine the size/value of the landmarks.
         // Monsters - By utilising multiple value scaling we can either distribute individual monsters or monster groups or even monster villages.
         // Tresure chests - Spreading tresure chests in dungeons (can be used as an estimated location then moved slightly too).
-        public override void ProcessCell(IRuntimeContext context, int[] output, long x, long y, long z, int i, int j,
-            int k, int width, int height, int depth, int ox, int oy, int oz)
+        public override void ProcessCell(
+            IRuntimeContext context,
+            int[] output,
+            long x,
+            long y,
+            long z,
+            int i,
+            int j,
+            int k,
+            int width,
+            int height,
+            int depth,
+            int ox,
+            int oy,
+            int oz)
         {
             if (this.GuaranteeStartingPoint && x == 0 && y == 0)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.HigherValue;
-            else if (!this.Layer2D &&
-                     AlgorithmUtility.GetRandomDouble(context.Seed, x, y, z, context.Modifier) > this.Limit)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.HigherValue;
-            else if (this.Layer2D &&
-                     AlgorithmUtility.GetRandomDouble(context.Seed, x, y, 0, context.Modifier) > this.Limit)
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.HigherValue;
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = this.HigherValue;
+            else if (!this.Layer2D && AlgorithmUtility.GetRandomDouble(context.Seed, x, y, z, context.Modifier) > this.Limit)
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = this.HigherValue;
+            else if (this.Layer2D && AlgorithmUtility.GetRandomDouble(context.Seed, x, y, 0, context.Modifier) > this.Limit)
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = this.HigherValue;
             else
-                output[(i + ox) + (j + oy) * width + (k + oz) * width * height] = this.LowerValue;
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = this.LowerValue;
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
@@ -95,13 +100,21 @@ namespace Tychaia.ProceduralGeneration
                     return Color.Black;
                 return Color.White;
             }
+
             if (this.ColorSet == ColorScheme.Land)
             {
                 if (value == this.LowerValue)
                     return Color.Blue;
                 return Color.Green;
             }
+
             return Color.Gray;
+        }
+
+        public enum ColorScheme
+        {
+            Land,
+            Perlin,
         }
     }
 }
