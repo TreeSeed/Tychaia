@@ -51,6 +51,11 @@ namespace Tychaia.Website.Cachable
                 Encoding.ASCII.GetBytes(input))).Replace("-", string.Empty);
         }
 
+        private static string FilterHTML(string html)
+        {
+            return html.Replace(@"href=""/T", @"href=""http://code.redpointsoftware.com.au/T");
+        }
+
         public string ProcessRemarkup(ConduitClient client, string remarkup)
         {
             var sha1 = SHA1(remarkup);
@@ -67,7 +72,8 @@ namespace Tychaia.Website.Cachable
                     new CacheItemPolicy { SlidingExpiration = new TimeSpan(1, 0, 0) }
                 );
             }
-            return html;
+
+            return FilterHTML(html);
         }
 
         public dynamic GetWikiPage(ConduitClient client, string slug)
@@ -162,9 +168,9 @@ namespace Tychaia.Website.Cachable
                 var m = markup[i];
                 var f = fields[i];
                 if (f.IsContent)
-                    f.Post.Content = m.content;
+                    f.Post.Content = FilterHTML(m.content);
                 else
-                    f.Post.Summary = m.content;
+                    f.Post.Summary = FilterHTML(m.content);
             }
 
             // Now process all of the bloggers.

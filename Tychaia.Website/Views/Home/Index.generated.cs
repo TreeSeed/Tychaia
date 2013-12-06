@@ -55,28 +55,29 @@ namespace Tychaia.Website.Views.Home
             
             #line default
             #line hidden
-WriteLiteral("\n<h2>What is Tychaia?</h2>\n<div class=\"block\">\n    <p>\n        <i>\"Imagine a game" +
-" where the world never ends, the scale is infinite and there\'s always one more q" +
-"uest. Where the game starts with nothing and ends with your death. Welcome to Ty" +
-"chaia.\"</i>\n    </p>\n    <p>\n        Tychaia is an infinite Procedural Death Env" +
-"ironment<sup><a href=\"http://gamasutra.com/blogs/LarsDoucet/20131203/206159/On_P" +
-"rocedural_Death_Labyrinths.php\">[1]</a></sup> game.\n        The game is set in a" +
-"n infinite, procedurally generated world; when you die the entire world is regen" +
-"erated and you lose everything you\'ve earnt.\n    </p>\n    <p>\n        Tychaia is" +
-" still in early development.  You can follow\n        the latest developments via" +
-":\n    </p>\n    <ul>\n        <li>\n            The <a href=\"http://forums.tigsourc" +
-"e.com/index.php?topic=27727.0\">development logs</a> on TIGSource.\n        </li>\n" +
-"        <li>The <a href=\"https://github.com/hach-que/Tychaia\">development reposi" +
-"tory</a> on GitHub.</li>\n        <li>The <a href=\"http://code.redpointsoftware.c" +
-"om.au/maniphest/query/all/\">task and code review tracker</a> called Phabricator." +
-"</li>\n        <li>\n            The\n            <a href=\"https://plus.google.com/" +
-"communities/111849161186026536208\">Google+</a>\n            or\n            <a hre" +
-"f=\"https://www.facebook.com/RedpointSoftware\">Facebook</a>\n            communiti" +
-"es.\n        </li>\n    </ul>\n    <p>You can also contact the developers directly " +
-"via:</p>\n    <ul>\n        <li><a href=\"http://www.twitter.com/#!/hachque\">James " +
-"Rhodes</a> on Twitter.</li>\n        <li><a href=\"http://www.twitter.com/#!/Sabre" +
-"070\">Josh Harvey</a> on Twitter.</li>\n    </ul>\n</div>\n<h2>\n    Tychaia Devlog\n " +
-"   <span class=\"actions\">(<a href=\"/feed\">RSS Feed</a>)</span>\n</h2>\n");
+WriteLiteral("\r\n<h2>What is Tychaia?</h2>\r\n<div class=\"block\">\r\n    <p>\r\n        <i>\"Imagine a " +
+"game where the world never ends, the scale is infinite and there\'s always one mo" +
+"re quest. Where the game starts with nothing and ends with your death. Welcome t" +
+"o Tychaia.\"</i>\r\n    </p>\r\n    <p>\r\n        Tychaia is an infinite Procedural De" +
+"ath Environment<sup><a href=\"http://gamasutra.com/blogs/LarsDoucet/20131203/2061" +
+"59/On_Procedural_Death_Labyrinths.php\">[1]</a></sup> game.\r\n        The game is " +
+"set in an infinite, procedurally generated world; when you die the entire world " +
+"is regenerated and you lose everything you\'ve earnt.\r\n    </p>\r\n    <p>\r\n       " +
+" Tychaia is still in early development.  You can follow\r\n        the latest deve" +
+"lopments via:\r\n    </p>\r\n    <ul>\r\n        <li>\r\n            The <a href=\"http:/" +
+"/forums.tigsource.com/index.php?topic=27727.0\">development logs</a> on TIGSource" +
+".\r\n        </li>\r\n        <li>The <a href=\"https://github.com/hach-que/Tychaia\">" +
+"development repository</a> on GitHub.</li>\r\n        <li>The <a href=\"http://code" +
+".redpointsoftware.com.au/maniphest/query/all/\">task and code review tracker</a> " +
+"called Phabricator.</li>\r\n        <li>\r\n            The\r\n            <a href=\"ht" +
+"tps://plus.google.com/communities/111849161186026536208\">Google+</a>\r\n          " +
+"  or\r\n            <a href=\"https://www.facebook.com/RedpointSoftware\">Facebook</" +
+"a>\r\n            communities.\r\n        </li>\r\n    </ul>\r\n    <p>You can also cont" +
+"act the developers directly via:</p>\r\n    <ul>\r\n        <li><a href=\"http://www." +
+"twitter.com/#!/hachque\">James Rhodes</a> on Twitter.</li>\r\n        <li><a href=\"" +
+"http://www.twitter.com/#!/Sabre070\">Josh Harvey</a> on Twitter.</li>\r\n    </ul>\r" +
+"\n</div>\r\n<h2>\r\n    Tychaia Devlog\r\n    <span class=\"actions\">(<a href=\"/feed\">RS" +
+"S Feed</a>)</span>\r\n</h2>\r\n");
 
 
             
@@ -87,8 +88,8 @@ WriteLiteral("\n<h2>What is Tychaia?</h2>\n<div class=\"block\">\n    <p>\n     
             
             #line default
             #line hidden
-WriteLiteral("    <div class=\"block phame\">\n        <div class=\"details\">\n            <div clas" +
-"s=\"author\">");
+WriteLiteral("    <div class=\"block phame\">\r\n        <div class=\"details\">\r\n            <div cl" +
+"ass=\"author\">");
 
 
             
@@ -98,7 +99,7 @@ WriteLiteral("    <div class=\"block phame\">\n        <div class=\"details\">\n
             
             #line default
             #line hidden
-WriteLiteral("</div>\n            <div class=\"date\">");
+WriteLiteral("</div>\r\n            <div class=\"date\">");
 
 
             
@@ -108,7 +109,7 @@ WriteLiteral("</div>\n            <div class=\"date\">");
             
             #line default
             #line hidden
-WriteLiteral("</div>\n        </div>\n        <h3><a href=\"");
+WriteLiteral("</div>\r\n        </div>\r\n        <h3><a href=\"");
 
 
             
@@ -128,7 +129,7 @@ WriteLiteral("\">");
             
             #line default
             #line hidden
-WriteLiteral("</a></h3>\n        ");
+WriteLiteral("</a></h3>\r\n        ");
 
 
             
@@ -138,7 +139,7 @@ WriteLiteral("</a></h3>\n        ");
             
             #line default
             #line hidden
-WriteLiteral("\n    </div>\n");
+WriteLiteral("\r\n    </div>\r\n");
 
 
             

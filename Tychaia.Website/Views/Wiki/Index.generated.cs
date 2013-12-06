@@ -68,7 +68,7 @@ namespace Tychaia.Website.Views.Wiki
             
             #line default
             #line hidden
-WriteLiteral("\n<h2>\n");
+WriteLiteral("\r\n<h2>\r\n");
 
 
             
@@ -105,7 +105,7 @@ WriteLiteral("\">");
             
             #line default
             #line hidden
-WriteLiteral("</a> &gt;\n");
+WriteLiteral("</a> &gt;\r\n");
 
 
             
@@ -134,8 +134,8 @@ WriteLiteral("</a> &gt;\n");
             
             #line default
             #line hidden
-WriteLiteral("    <span class=\"actions\">\n    (\n        <a href=\"http://code.redpointsoftware.co" +
-"m.au/phriction/edit/?slug=");
+WriteLiteral("    <span class=\"actions\">\r\n    (\r\n        <a href=\"http://code.redpointsoftware." +
+"com.au/phriction/edit/?slug=");
 
 
             
@@ -145,8 +145,8 @@ WriteLiteral("    <span class=\"actions\">\n    (\n        <a href=\"http://code
             
             #line default
             #line hidden
-WriteLiteral("\">Edit</a> &bull;\n        <a href=\"http://code.redpointsoftware.com.au/phriction/" +
-"history/");
+WriteLiteral("\">Edit</a> &bull;\r\n        <a href=\"http://code.redpointsoftware.com.au/phriction" +
+"/history/");
 
 
             
@@ -156,8 +156,8 @@ WriteLiteral("\">Edit</a> &bull;\n        <a href=\"http://code.redpointsoftware
             
             #line default
             #line hidden
-WriteLiteral("\">History</a> &bull;\n        <a href=\"http://code.redpointsoftware.com.au/phricti" +
-"on/new/?slug=");
+WriteLiteral("\">History</a> &bull;\r\n        <a href=\"http://code.redpointsoftware.com.au/phrict" +
+"ion/new/?slug=");
 
 
             
@@ -167,7 +167,7 @@ WriteLiteral("\">History</a> &bull;\n        <a href=\"http://code.redpointsoftw
             
             #line default
             #line hidden
-WriteLiteral("\">Create Sub-Page</a>\n    )\n    </span>\n</h2>\n<div class=\"block\">\n    ");
+WriteLiteral("\">Create Sub-Page</a>\r\n    )\r\n    </span>\r\n</h2>\r\n<div class=\"block\">\r\n    ");
 
 
             
@@ -177,7 +177,7 @@ Write(Model.Page.Content);
             
             #line default
             #line hidden
-WriteLiteral("\n</div>\n");
+WriteLiteral("\r\n</div>\r\n");
 
 
             
@@ -188,11 +188,11 @@ WriteLiteral("\n</div>\n");
             
             #line default
             #line hidden
-WriteLiteral("    <h2>Document Hierarchy</h2>\n");
+WriteLiteral("    <h2>Document Hierarchy</h2>\r\n");
 
 
 
-WriteLiteral("    <div class=\"block\">\n        <ul>\n");
+WriteLiteral("    <div class=\"block\">\r\n        <ul>\r\n");
 
 
             
@@ -208,7 +208,7 @@ WriteLiteral("    <div class=\"block\">\n        <ul>\n");
             
             #line default
             #line hidden
-WriteLiteral("            <li>\n");
+WriteLiteral("            <li>\r\n");
 
 
             
@@ -256,7 +256,7 @@ WriteLiteral("\">");
             
             #line default
             #line hidden
-WriteLiteral("</a>\n");
+WriteLiteral("</a>\r\n");
 
 
             
@@ -275,7 +275,7 @@ WriteLiteral("</a>\n");
             
             #line default
             #line hidden
-WriteLiteral("                    <ul>\n");
+WriteLiteral("                    <ul>\r\n");
 
 
             
@@ -291,7 +291,7 @@ WriteLiteral("                    <ul>\n");
             
             #line default
             #line hidden
-WriteLiteral("                            <li>\n");
+WriteLiteral("                            <li>\r\n");
 
 
             
@@ -339,7 +339,7 @@ WriteLiteral("\">");
             
             #line default
             #line hidden
-WriteLiteral("</a>\n");
+WriteLiteral("</a>\r\n");
 
 
             
@@ -349,7 +349,7 @@ WriteLiteral("</a>\n");
             
             #line default
             #line hidden
-WriteLiteral("\t\t\t            \t</li>\n");
+WriteLiteral("\t\t\t            \t</li>\r\n");
 
 
             
@@ -359,7 +359,7 @@ WriteLiteral("\t\t\t            \t</li>\n");
             
             #line default
             #line hidden
-WriteLiteral("                    </ul>\n");
+WriteLiteral("                    </ul>\r\n");
 
 
             
@@ -369,7 +369,7 @@ WriteLiteral("                    </ul>\n");
             
             #line default
             #line hidden
-WriteLiteral("            </li>\n");
+WriteLiteral("            </li>\r\n");
 
 
             
@@ -379,7 +379,7 @@ WriteLiteral("            </li>\n");
             
             #line default
             #line hidden
-WriteLiteral("        </ul>\n    </div>\n");
+WriteLiteral("        </ul>\r\n    </div>\r\n");
 
 
             

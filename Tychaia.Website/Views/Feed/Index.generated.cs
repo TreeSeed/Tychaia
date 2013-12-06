@@ -66,7 +66,7 @@ WriteLiteral(@"<?xml version=""1.0"" encoding=""ISO-8859-1"" ?>
             
             #line default
             #line hidden
-WriteLiteral("        <item>\n            <title>");
+WriteLiteral("        <item>\r\n            <title>");
 
 
             
@@ -76,7 +76,7 @@ WriteLiteral("        <item>\n            <title>");
             
             #line default
             #line hidden
-WriteLiteral("</title>\n            <guid>http://www.tychaia.com/blog/");
+WriteLiteral("</title>\r\n            <guid>http://www.tychaia.com/blog/");
 
 
             
@@ -86,7 +86,7 @@ WriteLiteral("</title>\n            <guid>http://www.tychaia.com/blog/");
             
             #line default
             #line hidden
-WriteLiteral("</guid>\n            <link>http://www.tychaia.com/blog/");
+WriteLiteral("</guid>\r\n            <link>http://www.tychaia.com/blog/");
 
 
             
@@ -96,7 +96,7 @@ WriteLiteral("</guid>\n            <link>http://www.tychaia.com/blog/");
             
             #line default
             #line hidden
-WriteLiteral("</link>\n            <author>");
+WriteLiteral("</link>\r\n            <author>");
 
 
             
@@ -106,7 +106,8 @@ WriteLiteral("</link>\n            <author>");
             
             #line default
             #line hidden
-WriteLiteral("</author>\n            <description>\n                <![CDATA[\n                ");
+WriteLiteral("</author>\r\n            <description>\r\n                <![CDATA[\r\n                " +
+"");
 
 
             
@@ -116,7 +117,7 @@ WriteLiteral("</author>\n            <description>\n                <![CDATA[\n 
             
             #line default
             #line hidden
-WriteLiteral("\n                ]]>\n            </description>\n        </item>\n");
+WriteLiteral("\r\n                ]]>\r\n            </description>\r\n        </item>\r\n");
 
 
             
@@ -126,7 +127,7 @@ WriteLiteral("\n                ]]>\n            </description>\n        </item>
             
             #line default
             #line hidden
-WriteLiteral("    </channel>\n</rss>\n");
+WriteLiteral("    </channel>\r\n</rss>\r\n");
 
 
         }
