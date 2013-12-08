@@ -38,12 +38,57 @@ namespace CrashReport
             var formattedStackTrace = @"| Filename | Line Number | Column Number
 | -----  | -----  | -----
 ";
+
+            // Develop the crash report
             foreach (var frame in frames)
             {
                 formattedStackTrace += "| " + frame.GetFileName() + " | " + frame.GetFileLineNumber() + " | " + frame.GetFileColumnNumber() + "\r\n";
             }
 
-            var message = @"**Exception:**
+            // Create a conduit client
+            var client = new ConduitClient("http://code.redpointsoftware.com.au/api/");
+            client.User = username;
+            client.Certificate = certificate;
+
+            // Check if a task already exists.
+            dynamic searchResult = client.Do(
+                "maniphest.query",
+                new
+                {
+                    fullText = "\"" + e.ToString().Replace("\r\n", string.Empty) + "\"",
+                    status = "status-open",
+                    projectPHIDs = new string[] { "PHID-PROJ-3ahdqqipg3rgo7bk4oqo", "PHID-PROJ-4msjmfn2aosxjjygpoa4" }
+                });
+
+            var uri = string.Empty;
+            KeyValuePair<string, object>? task = null;
+
+            foreach (var result in searchResult)
+            {
+                task = result;
+                break;
+            }
+
+            if (task != null)
+            {
+                dynamic realTask = task.Value.Value;
+                var id = realTask.id;
+                var ccPHIDs = realTask.ccPHIDs;
+                uri = realTask.uri;
+                //// Add this client's ccPHID
+
+                // Update that task with users system information
+                client.Do(
+                    "maniphest.update",
+                    new
+                    {
+                        id = id,
+                        comments = s.ToString()
+                    });
+            }
+            else
+            {
+                var message = @"**Exception:**
 " + e.GetType().FullName + ": " + e.Message + @"
 
 **Stack Trace:**
@@ -62,29 +107,27 @@ namespace CrashReport
 
 " + s.ToString();
 
-            // Iterate over the frames extracting the information you need
-            var firstFrame = frames.FirstOrDefault();
-            var source = e.Source + " (no location information)";
-            if (firstFrame != null)
-            {
-                source = firstFrame.GetFileName() + ":" + firstFrame.GetFileLineNumber();
-            }
-
-            // Create Phabricator task
-            var client = new ConduitClient("http://code.redpointsoftware.com.au/api/");
-            client.User = username;
-            client.Certificate = certificate;
-            var uri = client.Do(
-                "maniphest.createtask", 
-                new 
+                // Iterate over the frames extracting the information you need
+                var firstFrame = frames.FirstOrDefault();
+                var source = e.Source + " (no location information)";
+                if (firstFrame != null)
                 {
-                    title = e.GetType().FullName + " in " + source,
-                    description = message,
-                    ccPHIDs = new string[] { "PHID-USER-4bruxoj4jpjrmz6invrc", "PHID-USER-7ebhodqpyep5kh7q56wn" /* add user phid here */ },
-                    priority = 100,
-                    projectPHIDs = new string[] { "PHID-PROJ-3ahdqqipg3rgo7bk4oqo", "PHID-PROJ-4msjmfn2aosxjjygpoa4" }
-                }).uri;
+                    source = firstFrame.GetFileName() + ":" + firstFrame.GetFileLineNumber();
+                }
 
+                // Create Phabricator task
+                uri = client.Do(
+                    "maniphest.createtask",
+                    new
+                    {
+                        title = e.GetType().FullName + " in " + source,
+                        description = message,
+                        ccPHIDs = new string[] { "PHID-USER-4bruxoj4jpjrmz6invrc", "PHID-USER-7ebhodqpyep5kh7q56wn" /* add user phid here */ },
+                        priority = 100,
+                        projectPHIDs = new string[] { "PHID-PROJ-3ahdqqipg3rgo7bk4oqo", "PHID-PROJ-4msjmfn2aosxjjygpoa4" }
+                    }).uri;
+            }
+                
             // Notify user of task url
             new CrashReportForm(uri).ShowDialog();
 

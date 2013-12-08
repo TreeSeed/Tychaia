@@ -3,6 +3,7 @@
     "csharp": {
       "type": "csharp",
       "include": "(\\.cs$)",
+	  "exclude": "(\\.Designer\\.cs$)",
       "binary": "cstools/cslint/bin/Debug/cslint.exe",
       "discovery": {
         "([^/]+)/(.*?)\\.cs": [

@@ -96,7 +96,7 @@ namespace CrashReport
                     Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
                     MediaType = (classObject.GetPropertyValue("MediaType") ?? new object()).ToString(),
                     Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
-                    Size = (UInt64?)classObject.GetPropertyValue("Size")
+                    Size = (ulong?)classObject.GetPropertyValue("Size")
                 };
                 systemInfo.DiskDrives.Add(infoStruct);
             }
