@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="DeployTool" Path="DeployTool" Type="Console">
+  <References>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </References>
+  <Files>
+    <Compile Include="FileFilter.cs" />
+    <Compile Include="FileFilterParser.cs" />
+    <Compile Include="Program.cs" />
+  </Files>
+</Project>

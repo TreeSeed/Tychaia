@@ -93,6 +93,11 @@ namespace Tychaia
                 return;
             }
 
+#if PLATFORM_LINUX
+            // TODO: Check if the following libraries are present:
+            // * libXi (sudo ln -s /usr/lib64/libXi.so.6 /usr/lib/libXi.so.6)
+#endif
+
             using (var game = new TychaiaGame(kernel))
             {
                 try
