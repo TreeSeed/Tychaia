@@ -25,156 +25,204 @@ namespace CrashReport
             systemInfo.Init();
             ManagementObjectCollection classObjects;
 
-            // Check VideoControllers
-            ManagementClass videoController = new ManagementClass("Win32_VideoController");
-            classObjects = videoController.GetInstances();
-
-            foreach (ManagementObject classObject in
-                classObjects)
+            try
             {
-                VideoControllerInfo infoStruct = new VideoControllerInfo
+                // Check VideoControllers
+                ManagementClass videoController = new ManagementClass("Win32_VideoController");
+                classObjects = videoController.GetInstances();
+
+                foreach (ManagementObject classObject in
+                    classObjects)
                 {
-                    AdapterRAM = (classObject.GetPropertyValue("AdapterRAM") ?? new object()).ToString(),
-                    ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
-                    CurrentHorizontalResolution = (uint?)classObject.GetPropertyValue("CurrentHorizontalResolution"),
-                    CurrentVertialResolution = (uint?)classObject.GetPropertyValue("CurrentVerticalResolution"),
-                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
-                    DriverVersion = (classObject.GetPropertyValue("DriverVersion") ?? new object()).ToString(),
-                    InstalledDisplayDrivers = (classObject.GetPropertyValue("InstalledDisplayDrivers") ?? new object()).ToString(),
-                    MaxMemorySupported = (uint?)classObject.GetPropertyValue("MaxMemorySupported"),
-                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString() 
-                };
-                systemInfo.VideoControllers.Add(infoStruct);
+                    VideoControllerInfo infoStruct = new VideoControllerInfo
+                    {
+                        AdapterRAM = (classObject.GetPropertyValue("AdapterRAM") ?? new object()).ToString(),
+                        ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
+                        CurrentHorizontalResolution = (uint?)classObject.GetPropertyValue("CurrentHorizontalResolution"),
+                        CurrentVertialResolution = (uint?)classObject.GetPropertyValue("CurrentVerticalResolution"),
+                        Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                        DriverVersion = (classObject.GetPropertyValue("DriverVersion") ?? new object()).ToString(),
+                        InstalledDisplayDrivers = (classObject.GetPropertyValue("InstalledDisplayDrivers") ?? new object()).ToString(),
+                        MaxMemorySupported = (uint?)classObject.GetPropertyValue("MaxMemorySupported"),
+                        Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString()
+                    };
+                    systemInfo.VideoControllers.Add(infoStruct);
+                }
+            }
+            catch
+            {
             }
 
-            // Check Keyboards
-            ManagementClass keyboard = new ManagementClass("Win32_Keyboard");
-            classObjects = keyboard.GetInstances();
-
-            foreach (ManagementObject classObject in
-                classObjects)
+            try
             {
-                KeyboardInfo infoStruct = new KeyboardInfo
+                // Check Keyboards
+                ManagementClass keyboard = new ManagementClass("Win32_Keyboard");
+                classObjects = keyboard.GetInstances();
+
+                foreach (ManagementObject classObject in
+                    classObjects)
                 {
-                    ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
-                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
-                    Layout = (classObject.GetPropertyValue("Layout") ?? new object()).ToString(),
-                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString()
-                };
-                systemInfo.Keyboards.Add(infoStruct);
+                    KeyboardInfo infoStruct = new KeyboardInfo
+                    {
+                        ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
+                        Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                        Layout = (classObject.GetPropertyValue("Layout") ?? new object()).ToString(),
+                        Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString()
+                    };
+                    systemInfo.Keyboards.Add(infoStruct);
+                }
+            }
+            catch
+            {
             }
 
-            // Check Pointing Devices
-            ManagementClass pointingDevice = new ManagementClass("Win32_PointingDevice");
-            classObjects = pointingDevice.GetInstances();
-
-            foreach (ManagementObject classObject in
-                classObjects)
+            try
             {
-                PointingDeviceInfo infoStruct = new PointingDeviceInfo
+                // Check Pointing Devices
+                ManagementClass pointingDevice = new ManagementClass("Win32_PointingDevice");
+                classObjects = pointingDevice.GetInstances();
+
+                foreach (ManagementObject classObject in
+                    classObjects)
                 {
-                    ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
-                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
-                    Handedness = (classObject.GetPropertyValue("Handedness") ?? new object()).ToString(),
-                    HardwareType = (classObject.GetPropertyValue("HardwareType") ?? new object()).ToString(),
-                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
-                    NumberOfButtons = (classObject.GetPropertyValue("NumberOfButtons") ?? new object()).ToString()
-                };
-                systemInfo.PointingDevices.Add(infoStruct);
+                    PointingDeviceInfo infoStruct = new PointingDeviceInfo
+                    {
+                        ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
+                        Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                        Handedness = (classObject.GetPropertyValue("Handedness") ?? new object()).ToString(),
+                        HardwareType = (classObject.GetPropertyValue("HardwareType") ?? new object()).ToString(),
+                        Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
+                        NumberOfButtons = (classObject.GetPropertyValue("NumberOfButtons") ?? new object()).ToString()
+                    };
+                    systemInfo.PointingDevices.Add(infoStruct);
+                }
+            }
+            catch
+            {
             }
 
-            // Check Disk Drives
-            ManagementClass diskDrive = new ManagementClass("Win32_DiskDrive");
-            classObjects = diskDrive.GetInstances();
-
-            foreach (ManagementObject classObject in
-                classObjects)
+            try
             {
-                DiskDriveInfo infoStruct = new DiskDriveInfo
+                // Check Disk Drives
+                ManagementClass diskDrive = new ManagementClass("Win32_DiskDrive");
+                classObjects = diskDrive.GetInstances();
+
+                foreach (ManagementObject classObject in
+                    classObjects)
                 {
-                    ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
-                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
-                    MediaType = (classObject.GetPropertyValue("MediaType") ?? new object()).ToString(),
-                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
-                    Size = (ulong?)classObject.GetPropertyValue("Size")
-                };
-                systemInfo.DiskDrives.Add(infoStruct);
+                    DiskDriveInfo infoStruct = new DiskDriveInfo
+                    {
+                        ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
+                        Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                        MediaType = (classObject.GetPropertyValue("MediaType") ?? new object()).ToString(),
+                        Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
+                        Size = (ulong?)classObject.GetPropertyValue("Size")
+                    };
+                    systemInfo.DiskDrives.Add(infoStruct);
+                }
+            }
+            catch
+            {
             }
 
-            // Check Network Adapters
-            ManagementClass networkAdapter = new ManagementClass("Win32_NetworkAdapter");
-            classObjects = networkAdapter.GetInstances();
-
-            foreach (ManagementObject classObject in
-                classObjects)
+            try
             {
-                NetworkAdapterInfo infoStruct = new NetworkAdapterInfo
+                // Check Network Adapters
+                ManagementClass networkAdapter = new ManagementClass("Win32_NetworkAdapter");
+                classObjects = networkAdapter.GetInstances();
+
+                foreach (ManagementObject classObject in
+                    classObjects)
                 {
-                    ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
-                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
-                    Manufacturer = (classObject.GetPropertyValue("Manufacturer") ?? new object()).ToString(),
-                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
-                    ProductName = (classObject.GetPropertyValue("ProductName") ?? new object()).ToString()
-                };
-                systemInfo.NetworkAdapters.Add(infoStruct);
+                    NetworkAdapterInfo infoStruct = new NetworkAdapterInfo
+                    {
+                        ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
+                        Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                        Manufacturer = (classObject.GetPropertyValue("Manufacturer") ?? new object()).ToString(),
+                        Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
+                        ProductName = (classObject.GetPropertyValue("ProductName") ?? new object()).ToString()
+                    };
+                    systemInfo.NetworkAdapters.Add(infoStruct);
+                }
+            }
+            catch
+            {
             }
 
-            // Check Physical Memory
-            ManagementClass physicalMemory = new ManagementClass("Win32_PhysicalMemory");
-            classObjects = physicalMemory.GetInstances();
-
-            foreach (ManagementObject classObject in
-                classObjects)
+            try
             {
-                PhysicalMemoryInfo infoStruct = new PhysicalMemoryInfo
+                // Check Physical Memory
+                ManagementClass physicalMemory = new ManagementClass("Win32_PhysicalMemory");
+                classObjects = physicalMemory.GetInstances();
+
+                foreach (ManagementObject classObject in
+                    classObjects)
                 {
-                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
-                    Manufacturer = (classObject.GetPropertyValue("Manufacturer") ?? new object()).ToString(),
-                    Model = (classObject.GetPropertyValue("Model") ?? new object()).ToString(),
-                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString()
-                };
-                systemInfo.PhysicalMemory.Add(infoStruct);
+                    PhysicalMemoryInfo infoStruct = new PhysicalMemoryInfo
+                    {
+                        Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                        Manufacturer = (classObject.GetPropertyValue("Manufacturer") ?? new object()).ToString(),
+                        Model = (classObject.GetPropertyValue("Model") ?? new object()).ToString(),
+                        Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString()
+                    };
+                    systemInfo.PhysicalMemory.Add(infoStruct);
+                }
+            }
+            catch
+            {
             }
 
-            // Check Proceessors
-            ManagementClass processor = new ManagementClass("Win32_Processor");
-            classObjects = processor.GetInstances();
-
-            foreach (ManagementObject classObject in
-                classObjects)
+            try
             {
-                ProcessorInfo infoStruct = new ProcessorInfo
+                // Check Proceessors
+                ManagementClass processor = new ManagementClass("Win32_Processor");
+                classObjects = processor.GetInstances();
+
+                foreach (ManagementObject classObject in
+                    classObjects)
                 {
-                    Architecture = (classObject.GetPropertyValue("Architecture") ?? new object()).ToString(),
-                    ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
-                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
-                    Family = (classObject.GetPropertyValue("Family") ?? new object()).ToString(),
-                    Manufacturer = (classObject.GetPropertyValue("Manufacturer") ?? new object()).ToString(),
-                    MaxClockSpeed = (classObject.GetPropertyValue("MaxClockSpeed") ?? new object()).ToString(),
-                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
-                    ProcessorType = (classObject.GetPropertyValue("ProcessorType") ?? new object()).ToString()
-                };
-                systemInfo.Processors.Add(infoStruct);
+                    ProcessorInfo infoStruct = new ProcessorInfo
+                    {
+                        Architecture = (classObject.GetPropertyValue("Architecture") ?? new object()).ToString(),
+                        ConfigManagerErrorCode = (uint?)classObject.GetPropertyValue("ConfigManagerErrorCode"),
+                        Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                        Family = (classObject.GetPropertyValue("Family") ?? new object()).ToString(),
+                        Manufacturer = (classObject.GetPropertyValue("Manufacturer") ?? new object()).ToString(),
+                        MaxClockSpeed = (classObject.GetPropertyValue("MaxClockSpeed") ?? new object()).ToString(),
+                        Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
+                        ProcessorType = (classObject.GetPropertyValue("ProcessorType") ?? new object()).ToString()
+                    };
+                    systemInfo.Processors.Add(infoStruct);
+                }
+            }
+            catch
+            {
             }
 
-            // Check Operating Systems
-            ManagementClass operatingSystem = new ManagementClass("Win32_OperatingSystem");
-            classObjects = operatingSystem.GetInstances();
-
-            foreach (ManagementObject classObject in
-                classObjects)
+            try
             {
-                OperatingSystemInfo infoStruct = new OperatingSystemInfo
+                // Check Operating Systems
+                ManagementClass operatingSystem = new ManagementClass("Win32_OperatingSystem");
+                classObjects = operatingSystem.GetInstances();
+
+                foreach (ManagementObject classObject in
+                    classObjects)
                 {
-                    BuildNumber = (classObject.GetPropertyValue("BuildNumber") ?? new object()).ToString(),
-                    Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
-                    Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
-                    OSArchitecture = (classObject.GetPropertyValue("OSArchitecture") ?? new object()).ToString(),
-                    Primary = (classObject.GetPropertyValue("Primary") ?? new object()).ToString(),
-                    TotalVisibleMemorySize = (classObject.GetPropertyValue("TotalVisibleMemorySize") ?? new object()).ToString(),
-                    Version = (classObject.GetPropertyValue("Version") ?? new object()).ToString()
-                };
-                systemInfo.OperatingSystems.Add(infoStruct);
+                    OperatingSystemInfo infoStruct = new OperatingSystemInfo
+                    {
+                        BuildNumber = (classObject.GetPropertyValue("BuildNumber") ?? new object()).ToString(),
+                        Description = (classObject.GetPropertyValue("Description") ?? new object()).ToString(),
+                        Name = (classObject.GetPropertyValue("Name") ?? new object()).ToString(),
+                        OSArchitecture = (classObject.GetPropertyValue("OSArchitecture") ?? new object()).ToString(),
+                        Primary = (classObject.GetPropertyValue("Primary") ?? new object()).ToString(),
+                        TotalVisibleMemorySize = (classObject.GetPropertyValue("TotalVisibleMemorySize") ?? new object()).ToString(),
+                        Version = (classObject.GetPropertyValue("Version") ?? new object()).ToString()
+                    };
+                    systemInfo.OperatingSystems.Add(infoStruct);
+                }
+            }
+            catch
+            {
             }
 
             return systemInfo;

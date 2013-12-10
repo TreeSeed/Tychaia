@@ -37,7 +37,7 @@ namespace CrashReport
         // Formatted output
         public override string ToString()
         {
-            string output = "```lang=none, name=System Information, lines=15" + "\n";
+            string output = "```lang=none, lines=15" + "\n";
             
             foreach (var v in this.Processors.Select((result, id) => new { ID = id, Result = result }))
             {

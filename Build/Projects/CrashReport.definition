@@ -34,8 +34,5 @@
     <EmbeddedResource Include="CrashReportForm.resx">
       <DependentUpon>CrashReportForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
   </Files>
 </Project>

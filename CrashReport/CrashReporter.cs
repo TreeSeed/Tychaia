@@ -21,28 +21,46 @@ namespace CrashReport
         {
             // Fetch all system info from the Exception
             SystemInfo s = CollectSystemInfo.GetSystemInfo();
-
-            // Gather info from the .NET APIs (research)
-
+            
             // Check user information from registry
             // For now always use default
-            var username = ConfigurationManager.AppSettings["generic-username"];
-            var certificate = ConfigurationManager.AppSettings["generic-certificate"];
-            var clientPHID = ConfigurationManager.AppSettings["generic-PHID"];
+            var username = "crash-reporter";
+            var certificate = "y3jplv35imfesns5wxin7i6iv6jlqnasfs6mjwvvgp6mfnkagkrp6v2roif53gtcp56tuf3vd3dlb2vaue5radybntoidyrfk7teifi6u4lxotlev7go45ebz7brmlkgeruta53e2yi54vacsgbiqd7lty2pn3hsyewnwkwmanxyqjdkwvujg2pelojwjr567hco3nn4o64pfmlddhvcn4utnpu6zdeuig5fua6g6calljcdlev53v5aaptv6gg";
+            var clientPHID = "PHID-USER-qeop3bethxve7d3dcdqc";
 
             // Get stack trace information.
             var st = new StackTrace(e, true);
             var frames = st.GetFrames();
+            var formattedStackTrace = string.Empty;
 
-            // Construct the message.
-            var formattedStackTrace = @"| Filename | Line Number | Column Number
-| -----  | -----  | -----
+            try
+            {
+                // Construct the message.
+                formattedStackTrace += @"| Type | Method | Filename | Line Number | Column Number
+| ----- | ----- | ----- | -----  | -----
 ";
 
-            // Develop the crash report
-            foreach (var frame in frames)
+                // Develop the crash report
+                foreach (var frame in frames)
+                {
+                    var method = frame.GetMethod();
+                    var type = (method == null ? null : method.DeclaringType);
+                    var name = (type == null ? null : type.FullName);
+                    var file = frame.GetFileName();
+                    var line = frame.GetFileLineNumber();
+                    var column = frame.GetFileColumnNumber();
+
+                    formattedStackTrace += "| " + 
+                        name + " | " + 
+                        method + " | " +
+                        file + " | " +
+                        line + " | " +
+                        column + "\r\n";
+                }
+            }
+            catch
             {
-                formattedStackTrace += "| " + frame.GetFileName() + " | " + frame.GetFileLineNumber() + " | " + frame.GetFileColumnNumber() + "\r\n";
+                formattedStackTrace = "Error collecting stack trace.";
             }
 
             // Create a conduit client
@@ -101,10 +119,11 @@ namespace CrashReport
 " + e.TargetSite.DeclaringType.FullName + "." + e.TargetSite.Name + @"
 
 **Full Information:**
-```
+```lang=none, lines=20
 " + e.ToString() + @"
 ```
 
+**System Information:**
 " + s.ToString();
 
                 // Iterate over the frames extracting the information you need
@@ -112,7 +131,7 @@ namespace CrashReport
                 var source = e.Source + " (no location information)";
                 if (firstFrame != null)
                 {
-                    source = firstFrame.GetFileName() + ":" + firstFrame.GetFileLineNumber();
+                    source = (string.IsNullOrEmpty(firstFrame.GetFileName()) ? firstFrame.GetMethod().ToString() : firstFrame.GetFileName()) + ":" + firstFrame.GetFileLineNumber();
                 }
 
                 // Create Phabricator task
@@ -127,8 +146,17 @@ namespace CrashReport
                         projectPHIDs = new string[] { "PHID-PROJ-3ahdqqipg3rgo7bk4oqo", "PHID-PROJ-4msjmfn2aosxjjygpoa4" }
                     }).uri;
             }
-                
+
             // Notify user of task url
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+            }
+            catch
+            {
+            }
+
             new CrashReportForm(uri).ShowDialog();
 
             // Restart Tychaia

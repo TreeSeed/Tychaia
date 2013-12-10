@@ -42,18 +42,18 @@ namespace CrashReport
             // 
             // c_RestartButton
             // 
-            this.c_RestartButton.Location = new System.Drawing.Point(344, 129);
+            this.c_RestartButton.Location = new System.Drawing.Point(344, 65);
             this.c_RestartButton.Name = "c_RestartButton";
             this.c_RestartButton.Size = new System.Drawing.Size(75, 23);
             this.c_RestartButton.TabIndex = 0;
-            this.c_RestartButton.Text = "Restart";
+            this.c_RestartButton.Text = "Close";
             this.c_RestartButton.UseVisualStyleBackColor = true;
             this.c_RestartButton.Click += new System.EventHandler(this.c_RestartButton_Click);
             // 
             // c_ErrorLabel
             // 
             this.c_ErrorLabel.AutoSize = true;
-            this.c_ErrorLabel.Location = new System.Drawing.Point(12, 22);
+            this.c_ErrorLabel.Location = new System.Drawing.Point(12, 14);
             this.c_ErrorLabel.Name = "c_ErrorLabel";
             this.c_ErrorLabel.Size = new System.Drawing.Size(407, 13);
             this.c_ErrorLabel.TabIndex = 2;
@@ -63,16 +63,16 @@ namespace CrashReport
             // c_RestartLabel
             // 
             this.c_RestartLabel.AutoSize = true;
-            this.c_RestartLabel.Location = new System.Drawing.Point(12, 82);
+            this.c_RestartLabel.Location = new System.Drawing.Point(12, 70);
             this.c_RestartLabel.Name = "c_RestartLabel";
-            this.c_RestartLabel.Size = new System.Drawing.Size(203, 13);
+            this.c_RestartLabel.Size = new System.Drawing.Size(199, 13);
             this.c_RestartLabel.TabIndex = 3;
-            this.c_RestartLabel.Text = "Press the button below to restart Tychaia.";
+            this.c_RestartLabel.Text = "Press the button below to close Tychaia.";
             // 
             // c_LinkLabel
             // 
             this.c_LinkLabel.AutoSize = true;
-            this.c_LinkLabel.Location = new System.Drawing.Point(12, 50);
+            this.c_LinkLabel.Location = new System.Drawing.Point(12, 42);
             this.c_LinkLabel.Name = "c_LinkLabel";
             this.c_LinkLabel.Size = new System.Drawing.Size(89, 13);
             this.c_LinkLabel.TabIndex = 4;
@@ -84,12 +84,16 @@ namespace CrashReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(441, 164);
+            this.ClientSize = new System.Drawing.Size(434, 105);
             this.Controls.Add(this.c_LinkLabel);
             this.Controls.Add(this.c_RestartLabel);
             this.Controls.Add(this.c_ErrorLabel);
             this.Controls.Add(this.c_RestartButton);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "CrashReportForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tychaia has encountered an error.";
             this.ResumeLayout(false);
             this.PerformLayout();

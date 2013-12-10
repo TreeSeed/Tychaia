@@ -32,6 +32,7 @@ namespace CrashReport
         private void c_LinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(c_LinkLabel.Text);
+            this.Close();
         }
     }
 }
