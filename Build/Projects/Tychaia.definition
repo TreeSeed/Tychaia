@@ -29,12 +29,20 @@
     <Reference Include="CrashReport" />
   </References>
   <Files>
+    <Compile Include="Assets\BeingDefinitionAsset.cs" />
+    <Compile Include="Assets\BeingDefinitionAssetEditor.cs" />
+    <Compile Include="Assets\BeingDefinitionAssetLoader.cs" />
+    <Compile Include="Assets\BeingDefinitionAssetSaver.cs" />
     <Compile Include="Assets\BlockAsset.cs" />
     <Compile Include="Assets\BlockAssetEditor.cs" />
     <Compile Include="Assets\BlockAssetLoader.cs" />
     <Compile Include="Assets\BlockAssetSaver.cs" />
     <Compile Include="Assets\DefaultTextureAtlasAssetFactory.cs" />
     <Compile Include="Assets\ITextureAtlasAssetFactory.cs" />
+    <Compile Include="Assets\SpellDefinitionAsset.cs" />
+    <Compile Include="Assets\SpellDefinitionAssetEditor.cs" />
+    <Compile Include="Assets\SpellDefinitionAssetLoader.cs" />
+    <Compile Include="Assets\SpellDefinitionAssetSaver.cs" />
     <Compile Include="Assets\TextureAtlasAsset.cs" />
     <Compile Include="Assets\TextureAtlasAssetSaver.cs" />
     <Compile Include="Assets\TychaiaAssetIoCModule.cs" />
