@@ -4,8 +4,10 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using System.Drawing;
+using System.Reflection;
 using System.Runtime.Serialization;
 using Tychaia.Data;
+using System.Linq;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -13,11 +15,11 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerMajorCategory(FlowMajorCategory.Undefined)]
     [FlowDesignerCategory(FlowCategory.General)]
     [FlowDesignerName("Form Result")]
-    public class AlgorithmFormResult : Algorithm<Cell, int, Cell>
+    public class AlgorithmFormResult : Algorithm<Cell, int, Cell, Cell>
     {
         public override string[] InputNames
         {
-            get { return new[] { "Block Info", "Heightmap" }; }
+            get { return new[] { "Block Info", "Heightmap", "Beings" }; }
         }
 
         public override bool Is2DOnly
@@ -27,13 +29,14 @@ namespace Tychaia.ProceduralGeneration
 
         public override bool[] InputIs2D
         {
-            get { return new[] { false, true }; }
+            get { return new[] { false, true, true }; }
         }
 
         public override void ProcessCell(
             IRuntimeContext context,
             Cell[] blockInfo,
             int[] heightMap,
+            Cell[] beingsInfo,
             Cell[] output,
             long x,
             long y,
@@ -48,16 +51,29 @@ namespace Tychaia.ProceduralGeneration
             int oy,
             int oz)
         {
+            // Block generation
             output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BlockAssetName =
                 blockInfo[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BlockAssetName;
             output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].HeightMap =
                 heightMap[(i + ox) + ((j + oy) * width)];
+
+            // Beings generation
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            // TODO: Combine colours like the flow bundles did.
-            return Color.White;
+            unchecked
+            {
+                var u = 0;
+                foreach (var v in ((object)value).GetType().GetFields(BindingFlags.Instance | BindingFlags.Public).Select(x => x.GetValue(value)))
+                {
+                    if (v != null)
+                    {
+                        u += v.GetHashCode();
+                    }
+                }
+                return Color.FromArgb(u);
+            }
         }
     }
 }

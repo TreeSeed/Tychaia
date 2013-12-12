@@ -18,7 +18,7 @@ namespace Tychaia.ProceduralGeneration
         public AlgorithmAdd()
         {
             this.EstimateMax = 20;
-            this.Layer2d = false;
+            this.Layer2d = true;
         }
 
         [DataMember]
@@ -27,7 +27,7 @@ namespace Tychaia.ProceduralGeneration
         public int EstimateMax { get; set; }
 
         [DataMember]
-        [DefaultValue(false)]
+        [DefaultValue(true)]
         [Description("This layer is 2d.")]
         public bool Layer2d { get; set; }
 

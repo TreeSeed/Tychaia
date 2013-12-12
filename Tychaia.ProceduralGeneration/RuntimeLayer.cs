@@ -74,15 +74,18 @@ namespace Tychaia.ProceduralGeneration
             computations = 0;
 
             // Just replicate this into the CompiledLayer system
-            var MaxOffsetX = 0;
-            var MaxOffsetY = 0;
-            var MaxOffsetZ = 0;
+            var maxOffsetX = 0;
+            var maxOffsetY = 0;
+            var maxOffsetZ = 0;
+            var offsetX = 0;
+            var offsetY = 0;
+            var offsetZ = 0;
 
-            FindMaximumOffsets(this, ref MaxOffsetX, ref MaxOffsetY, ref MaxOffsetZ);
+            FindMaximumOffsets(this, ref offsetX, ref offsetY, ref offsetZ, ref maxOffsetX, ref maxOffsetY, ref maxOffsetZ);
 
-            var arrayWidth = width + (MaxOffsetX * 2);
-            var arrayHeight = height + (MaxOffsetY * 2);
-            var arrayDepth = depth + (MaxOffsetZ * 2);
+            var arrayWidth = width + (maxOffsetX * 2);
+            var arrayHeight = height + (maxOffsetY * 2);
+            var arrayDepth = depth + (maxOffsetZ * 2);
 
             this.m_Pool.Begin();
             dynamic resultArray = this.PerformAlgorithmRuntimeCall(
@@ -95,9 +98,9 @@ namespace Tychaia.ProceduralGeneration
                 arrayWidth,
                 arrayHeight,
                 arrayDepth,
-                MaxOffsetX,
-                MaxOffsetY,
-                MaxOffsetZ,
+                maxOffsetX,
+                maxOffsetY,
+                maxOffsetZ,
                 0, 
                 0, 
                 0,
@@ -112,9 +115,9 @@ namespace Tychaia.ProceduralGeneration
                 for (var i = 0; i < width; i++)
                     for (var j = 0; j < height; j++)
                         correctArray[i + (j * width) + (k * width * height)] =
-                            resultArray[(i + MaxOffsetX) +
-                                        ((j + MaxOffsetY) * arrayWidth) +
-                                        ((k + MaxOffsetZ) * arrayWidth * arrayHeight)];
+                            resultArray[(i + maxOffsetX) +
+                                        ((j + maxOffsetY) * arrayWidth) +
+                                        ((k + maxOffsetZ) * arrayWidth * arrayHeight)];
             this.m_Pool.End();
 
             // Return the result.
@@ -209,17 +212,20 @@ namespace Tychaia.ProceduralGeneration
             RuntimeLayer layer,
             ref int offsetX,
             ref int offsetY,
-            ref int offsetZ)
+            ref int offsetZ,
+            ref int maxOffsetX,
+            ref int maxOffsetY,
+            ref int maxOffsetZ)
         {
             if (layer == null)
                 throw new ArgumentNullException("layer");
 
-            var offsetSaveX = offsetX;
-            var offsetSaveY = offsetY;
-            var offsetSaveZ = offsetZ;
-
             if (layer.m_Inputs.Length != 0)
             {
+                var offsetSaveX = offsetX;
+                var offsetSaveY = offsetY;
+                var offsetSaveZ = offsetZ;
+
                 var inputs = 0;
                 var TempOffsetX = new int[layer.m_Inputs.Length];
                 var TempOffsetY = new int[layer.m_Inputs.Length];
@@ -234,35 +240,37 @@ namespace Tychaia.ProceduralGeneration
                     offsetY = offsetSaveY;
                     offsetZ = offsetSaveZ;
 
-                    bool x = false;
-                    bool y = false;
-                    bool z = false;
-
-                    // TODO: Fix this so that it gets if the input is at half then get the full offset of this and 1/2 of all of the parents.
-                    // Need to make this so that it gets all of the offset then scales it based off of how many times it is halved.
-                    if (layer.m_Algorithm.InputWidthAtHalfSize[inputs] && !x && offsetX != 0)
+                    if (layer.m_Algorithm.InputWidthAtHalfSize[inputs] && offsetX != 0)
                     {
-                        offsetX = (offsetX + 1) / 2;
-                        x = true;
+                        offsetX = offsetX / 2;
                     }
 
-                    if (layer.m_Algorithm.InputHeightAtHalfSize[inputs] && !y && offsetY != 0)
+                    if (layer.m_Algorithm.InputHeightAtHalfSize[inputs] && offsetY != 0)
                     {
-                        offsetY = (offsetY + 1) / 2;
-                        y = true;
+                        offsetY = offsetY / 2;
                     }
 
-                    if (layer.m_Algorithm.InputDepthAtHalfSize[inputs] && !z && offsetZ != 0)
+                    if (layer.m_Algorithm.InputDepthAtHalfSize[inputs] && offsetZ != 0)
                     {
-                        offsetZ = (offsetZ + 1) / 2;
-                        z = true;
+                        offsetZ = offsetZ / 2;
                     }
 
-                    FindMaximumOffsets(input, ref offsetX, ref offsetY, ref offsetZ);
+                    offsetX = offsetX + Math.Abs(layer.m_Algorithm.RequiredXBorder[inputs]);
+                    offsetY = offsetY + Math.Abs(layer.m_Algorithm.RequiredYBorder[inputs]);
+                    offsetZ = offsetZ + Math.Abs(layer.m_Algorithm.RequiredZBorder[inputs]);
 
-                    TempOffsetX[inputs] = offsetX + Math.Abs(layer.m_Algorithm.RequiredXBorder[inputs]);
-                    TempOffsetY[inputs] = offsetY + Math.Abs(layer.m_Algorithm.RequiredYBorder[inputs]);
-                    TempOffsetZ[inputs] = offsetZ + Math.Abs(layer.m_Algorithm.RequiredZBorder[inputs]);
+                    if (offsetX > maxOffsetX)
+                        maxOffsetX = offsetX;
+                    if (offsetY > maxOffsetY)
+                        maxOffsetY = offsetY;
+                    if (offsetZ > maxOffsetZ)
+                        maxOffsetZ = offsetZ;
+
+                    FindMaximumOffsets(input, ref offsetX, ref offsetY, ref offsetZ, ref maxOffsetX, ref maxOffsetY, ref maxOffsetZ);
+
+                    TempOffsetX[inputs] = offsetX;
+                    TempOffsetY[inputs] = offsetY;
+                    TempOffsetZ[inputs] = offsetZ;
                     inputs++;
                 }
 
@@ -806,13 +814,13 @@ namespace Tychaia.ProceduralGeneration
                     ? (absoluteZ < 0 ? (absoluteZ - 1) / 2 : absoluteZ / 2)
                     : absoluteZ),
                 (this.m_Algorithm.InputWidthAtHalfSize[idx]
-                    ? ((width + 1) / 2) + this.m_Algorithm.RequiredXBorder[idx] * 2
+                    ? (width / 2) + this.m_Algorithm.RequiredXBorder[idx] * 2
                     : width + (this.m_Algorithm.RequiredXBorder[idx] * 2)),
                 (this.m_Algorithm.InputHeightAtHalfSize[idx]
-                    ? ((height + 1) / 2) + this.m_Algorithm.RequiredYBorder[idx] * 2
+                    ? (height / 2) + this.m_Algorithm.RequiredYBorder[idx] * 2
                     : height + (this.m_Algorithm.RequiredYBorder[idx] * 2)),
                 (this.m_Algorithm.InputDepthAtHalfSize[idx]
-                    ? ((depth + 1) / 2) + this.m_Algorithm.RequiredZBorder[idx] * 2
+                    ? (depth / 2) + this.m_Algorithm.RequiredZBorder[idx] * 2
                     : depth + (this.m_Algorithm.RequiredZBorder[idx] * 2)),
                 arrayWidth,
                 arrayHeight,
@@ -821,13 +829,13 @@ namespace Tychaia.ProceduralGeneration
                 maxOffsetY,
                 maxOffsetZ,
                 (this.m_Algorithm.InputWidthAtHalfSize[idx]
-                    ? ((childOffsetX + 1) / 2) + this.m_Algorithm.RequiredXBorder[idx]
+                    ? (childOffsetX / 2) + this.m_Algorithm.RequiredXBorder[idx]
                     : childOffsetX + this.m_Algorithm.RequiredXBorder[idx]),
                 (this.m_Algorithm.InputHeightAtHalfSize[idx]
-                    ? ((childOffsetY + 1) / 2) + this.m_Algorithm.RequiredYBorder[idx]
+                    ? (childOffsetY / 2) + this.m_Algorithm.RequiredYBorder[idx]
                     : childOffsetY + this.m_Algorithm.RequiredYBorder[idx]),
                 (this.m_Algorithm.InputDepthAtHalfSize[idx]
-                    ? ((childOffsetZ + 1) / 2) + this.m_Algorithm.RequiredZBorder[idx]
+                    ? (childOffsetZ / 2) + this.m_Algorithm.RequiredZBorder[idx]
                     : childOffsetZ + this.m_Algorithm.RequiredZBorder[idx]),
                 ref computations);
         }
