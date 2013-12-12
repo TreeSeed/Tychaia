@@ -36,7 +36,7 @@ namespace Tychaia.ProceduralGeneration
 
         // Specific Layers
         Biomes, // Includes things such as BiomeToTerrain, BiomeToColor, BiomeToTreeDensity
-        NPCs,
+        Beings,
         Terrain,
 
         // Not yet implemented / not needed

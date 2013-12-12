@@ -29,6 +29,10 @@
     <Reference Include="CrashReport" />
   </References>
   <Files>
+    <Compile Include="Assets\BeingClusterDefinitionAsset.cs" />
+    <Compile Include="Assets\BeingClusterDefinitionAssetEditor.cs" />
+    <Compile Include="Assets\BeingClusterDefinitionAssetLoader.cs" />
+    <Compile Include="Assets\BeingClusterDefinitionAssetSaver.cs" />
     <Compile Include="Assets\BeingDefinitionAsset.cs" />
     <Compile Include="Assets\BeingDefinitionAssetEditor.cs" />
     <Compile Include="Assets\BeingDefinitionAssetLoader.cs" />

@@ -11,7 +11,7 @@ namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
-    [FlowDesignerCategory(FlowCategory.NPCs)]
+    [FlowDesignerCategory(FlowCategory.Beings)]
     [FlowDesignerName("NPC Stats")]
     public class AlgorithmNPCStats : Algorithm<int, int>
     {

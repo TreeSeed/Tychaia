@@ -4,16 +4,16 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using System.Drawing;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Tychaia.Data;
-using System.Linq;
 
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.Undefined)]
-    [FlowDesignerCategory(FlowCategory.General)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
+    [FlowDesignerCategory(FlowCategory.Output)]
     [FlowDesignerName("Form Result")]
     public class AlgorithmFormResult : Algorithm<Cell, int, Cell, Cell>
     {
@@ -72,6 +72,7 @@ namespace Tychaia.ProceduralGeneration
                         u += v.GetHashCode();
                     }
                 }
+
                 return Color.FromArgb(u);
             }
         }

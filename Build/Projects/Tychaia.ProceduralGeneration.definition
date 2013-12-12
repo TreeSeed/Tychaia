@@ -39,6 +39,7 @@
     <Compile Include="AlgorithmGenerateBlockInfo.cs" />
     <Compile Include="AlgorithmHeightChange.cs" />
     <Compile Include="AlgorithmIncrementWaterDistance.cs" />
+    <Compile Include="AlgorithmInitialBeings.cs" />
     <Compile Include="AlgorithmInitialBool.cs" />
     <Compile Include="AlgorithmInitialTowns.cs" />
     <Compile Include="AlgorithmMultiply.cs" />
