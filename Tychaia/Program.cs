@@ -5,6 +5,7 @@
 // ====================================================================== //
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Windows.Forms;
 using Ninject;
 using Protogame;
@@ -97,6 +98,18 @@ namespace Tychaia
 #if PLATFORM_LINUX
             // TODO: Check if the following libraries are present:
             // * libXi (sudo ln -s /usr/lib64/libXi.so.6 /usr/lib/libXi.so.6)
+
+            // If we are running Linux, we need to mark the Tychaia.exe file as executable.
+            // This allows the server to run as a seperate process.
+            try
+            {
+                var p = Process.Start("chmod", "u+x '" + Assembly.GetExecutingAssembly().Location + "'");
+                p.WaitForExit();
+            }
+            catch
+            {
+                Console.WriteLine("WARNING: Unable to mark Tychaia.exe as executable.  You may have trouble running the game!");
+            }
 #endif
 
             using (var game = new TychaiaGame(kernel))
