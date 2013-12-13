@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
 
-namespace Tychaia
+namespace Tychaia.Asset
 {
     public class SpellDefinitionAsset : MarshalByRefObject, IAsset
     {

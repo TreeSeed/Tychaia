@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="Tychaia.Asset" Path="Tychaia.Asset" Type="Library">
+  <References>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MonoGame" />
+    <Reference Include="Ninject" />
+    <Reference Include="Protogame" />
+  </References>
+  <Files>
+    <Compile Include="BeingClusterDefinitionAsset.cs" />
+    <Compile Include="BeingClusterDefinitionAssetEditor.cs" />
+    <Compile Include="BeingClusterDefinitionAssetLoader.cs" />
+    <Compile Include="BeingClusterDefinitionAssetSaver.cs" />
+    <Compile Include="BeingDefinitionAsset.cs" />
+    <Compile Include="BeingDefinitionAssetEditor.cs" />
+    <Compile Include="BeingDefinitionAssetLoader.cs" />
+    <Compile Include="BeingDefinitionAssetSaver.cs" />
+    <Compile Include="BlockAsset.cs" />
+    <Compile Include="BlockAssetEditor.cs" />
+    <Compile Include="BlockAssetLoader.cs" />
+    <Compile Include="BlockAssetSaver.cs" />
+    <Compile Include="SpellDefinitionAsset.cs" />
+    <Compile Include="SpellDefinitionAssetEditor.cs" />
+    <Compile Include="SpellDefinitionAssetLoader.cs" />
+    <Compile Include="SpellDefinitionAssetSaver.cs" />
+    <Compile Include="TextureAtlasAsset.cs" />
+    <Compile Include="TextureAtlasAssetSaver.cs" />
+    <Compile Include="TychaiaAssetIoCModule.cs" />
+  </Files>
+</Project>

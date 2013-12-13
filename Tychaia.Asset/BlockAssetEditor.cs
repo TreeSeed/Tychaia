@@ -5,7 +5,7 @@
 // ====================================================================== //
 using Protogame;
 
-namespace Tychaia
+namespace Tychaia.Asset
 {
     public class BlockAssetEditor : AssetEditor<BlockAsset>
     {

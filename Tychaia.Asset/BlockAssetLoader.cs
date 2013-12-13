@@ -6,26 +6,27 @@
 using System;
 using Protogame;
 
-namespace Tychaia
+namespace Tychaia.Asset
 {
-    public class SpellDefinitionAssetLoader : IAssetLoader
+    public class BlockAssetLoader : IAssetLoader
     {
         public bool CanHandle(dynamic data)
         {
-            return data.Loader == typeof(SpellDefinitionAssetLoader).FullName;
+            return data.Loader == typeof(BlockAssetLoader).FullName;
         }
 
         public IAsset Handle(IAssetManager assetManager, string name, dynamic data)
         {
-            return new SpellDefinitionAsset(
+            return new BlockAsset(
                 assetManager,
                 name,
-                (string)data.Description,
-                (string)data.Target,
-                (string)data.Type,
-                (string)data.Range,
-                (string)data.Effect,
-                (string)data.EffectPerLevel);
+                (string)data.TopTextureName,
+                (string)data.BottomTextureName,
+                (string)data.LeftTextureName,
+                (string)data.RightTextureName,
+                (string)data.FrontTextureName,
+                (string)data.BackTextureName,
+                (bool)data.Impassable);
         }
 
         public IAsset GetDefault(IAssetManager assetManager, string name)
@@ -40,15 +41,16 @@ namespace Tychaia
 
         public IAsset GetNew(IAssetManager assetManager, string name)
         {
-            return new SpellDefinitionAsset(
+            return new BlockAsset(
                 assetManager,
                 name,
-                null, 
-                null, 
                 null,
-                null, 
-                null, 
-                null);
+                null,
+                null,
+                null,
+                null,
+                null,
+                true);
         }
     }
 }

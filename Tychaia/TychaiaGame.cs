@@ -6,6 +6,7 @@
 using System.Linq;
 using Ninject;
 using Protogame;
+using Tychaia.Asset;
 
 namespace Tychaia
 {

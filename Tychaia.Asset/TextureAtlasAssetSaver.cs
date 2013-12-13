@@ -3,17 +3,20 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
 using Protogame;
 
-namespace Tychaia
+namespace Tychaia.Asset
 {
-    public interface ITextureAtlasAssetFactory
+    public class TextureAtlasAssetSaver : IAssetSaver
     {
-        TextureAtlasAsset CreateTextureAtlasAsset(
-            string name,
-            GraphicsDevice graphicsDevice,
-            IEnumerable<TextureAsset> textures);
+        public bool CanHandle(IAsset asset)
+        {
+            return asset is TextureAtlasAsset;
+        }
+
+        public dynamic Handle(IAsset asset)
+        {
+            return null;
+        }
     }
 }

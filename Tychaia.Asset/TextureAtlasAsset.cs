@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Protogame;
 using BoundingBox = Protogame.BoundingBox;
 
-namespace Tychaia
+namespace Tychaia.Asset
 {
     /// <summary>
     /// This is an asset representing a generated texture atlas.

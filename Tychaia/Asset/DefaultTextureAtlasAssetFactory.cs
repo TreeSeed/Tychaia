@@ -9,6 +9,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
+using Tychaia.Asset;
 
 namespace Tychaia
 {

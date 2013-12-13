@@ -6,23 +6,26 @@
 using System;
 using Protogame;
 
-namespace Tychaia
+namespace Tychaia.Asset
 {
-    public class BeingClusterDefinitionAssetLoader : IAssetLoader
+    public class BeingDefinitionAssetLoader : IAssetLoader
     {
         public bool CanHandle(dynamic data)
         {
-            return data.Loader == typeof(BeingClusterDefinitionAssetLoader).FullName;
+            return data.Loader == typeof(BeingDefinitionAssetLoader).FullName;
         }
 
         public IAsset Handle(IAssetManager assetManager, string name, dynamic data)
         {
-            return new BeingClusterDefinitionAsset(
+            return new BeingDefinitionAsset(
                 assetManager,
                 name,
-                (string[])data.BeingDefinition,
-                (int[])data.Minimum,
-                (int[])data.Maximum);
+                (string)data.DisplayNameName,
+                (string)data.DescriptionName,
+                (string)data.TextureName,
+                (string)data.HealthPerLevel,
+                (string)data.MovementSpeed,
+                (bool)data.Enemy);
         }
 
         public IAsset GetDefault(IAssetManager assetManager, string name)
@@ -37,12 +40,15 @@ namespace Tychaia
 
         public IAsset GetNew(IAssetManager assetManager, string name)
         {
-            return new BeingClusterDefinitionAsset(
+            return new BeingDefinitionAsset(
                 assetManager,
                 name,
                 null,
                 null,
-                null);
+                null,
+                null,
+                null,
+                true);
         }
     }
 }

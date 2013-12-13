@@ -12,6 +12,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Protogame" />
     <Reference Include="ProtogameAssetManager" />
+    <Reference Include="Tychaia.Asset" />
     <Reference Include="Tychaia.Globals" />
     <Reference Include="Tychaia.Game" />
     <Reference Include="Tychaia.Data" />
@@ -29,27 +30,8 @@
     <Reference Include="CrashReport" />
   </References>
   <Files>
-    <Compile Include="Assets\BeingClusterDefinitionAsset.cs" />
-    <Compile Include="Assets\BeingClusterDefinitionAssetEditor.cs" />
-    <Compile Include="Assets\BeingClusterDefinitionAssetLoader.cs" />
-    <Compile Include="Assets\BeingClusterDefinitionAssetSaver.cs" />
-    <Compile Include="Assets\BeingDefinitionAsset.cs" />
-    <Compile Include="Assets\BeingDefinitionAssetEditor.cs" />
-    <Compile Include="Assets\BeingDefinitionAssetLoader.cs" />
-    <Compile Include="Assets\BeingDefinitionAssetSaver.cs" />
-    <Compile Include="Assets\BlockAsset.cs" />
-    <Compile Include="Assets\BlockAssetEditor.cs" />
-    <Compile Include="Assets\BlockAssetLoader.cs" />
-    <Compile Include="Assets\BlockAssetSaver.cs" />
-    <Compile Include="Assets\DefaultTextureAtlasAssetFactory.cs" />
-    <Compile Include="Assets\ITextureAtlasAssetFactory.cs" />
-    <Compile Include="Assets\SpellDefinitionAsset.cs" />
-    <Compile Include="Assets\SpellDefinitionAssetEditor.cs" />
-    <Compile Include="Assets\SpellDefinitionAssetLoader.cs" />
-    <Compile Include="Assets\SpellDefinitionAssetSaver.cs" />
-    <Compile Include="Assets\TextureAtlasAsset.cs" />
-    <Compile Include="Assets\TextureAtlasAssetSaver.cs" />
-    <Compile Include="Assets\TychaiaAssetIoCModule.cs" />
+    <Compile Include="Asset\DefaultTextureAtlasAssetFactory.cs" />
+    <Compile Include="Asset\ITextureAtlasAssetFactory.cs" />
     <Compile Include="Client\ChunkManagerEntity.cs" />
     <Compile Include="Client\ClientRuntimeChunk.cs" />
     <Compile Include="Client\FrustumBasedChunkGeneratorAI.cs" />

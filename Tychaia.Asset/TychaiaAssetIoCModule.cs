@@ -3,20 +3,18 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
+using Ninject.Modules;
 using Protogame;
 
-namespace Tychaia
+namespace Tychaia.Asset
 {
-    public class TextureAtlasAssetSaver : IAssetSaver
+    public class TychaiaAssetIoCModule : NinjectModule
     {
-        public bool CanHandle(IAsset asset)
+        public override void Load()
         {
-            return asset is TextureAtlasAsset;
-        }
-
-        public dynamic Handle(IAsset asset)
-        {
-            return null;
+            this.Bind<IAssetLoader>().To<BlockAssetLoader>();
+            this.Bind<IAssetSaver>().To<BlockAssetSaver>();
+            this.Bind<IAssetSaver>().To<TextureAtlasAssetSaver>();
         }
     }
 }

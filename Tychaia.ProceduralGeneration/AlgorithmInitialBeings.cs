@@ -6,6 +6,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Serialization;
+using Tychaia.Asset;
 using Tychaia.Data;
 
 namespace Tychaia.ProceduralGeneration
@@ -20,10 +21,8 @@ namespace Tychaia.ProceduralGeneration
         {
             this.Limit = 0.9;
             this.GuaranteeStartingPoint = true;
-            this.Layer2D = true;
             this.ColorSet = ColorScheme.Beings;
-            this.LowerValue = 0;
-            this.HigherValue = 50;
+            this.PlacementType = BeingType.Enemies;
         }
 
         [DataMember]
@@ -37,28 +36,22 @@ namespace Tychaia.ProceduralGeneration
         public bool GuaranteeStartingPoint { get; set; }
 
         [DataMember]
-        [DefaultValue(0)]
-        [Description("The Lower value selected.")]
-        public int LowerValue { get; set; }
-
-        [DataMember]
-        [DefaultValue(1)]
-        [Description("The Higher value selected.")]
-        public int HigherValue { get; set; }
-
-        [DataMember]
         [DefaultValue(ColorScheme.Beings)]
         [Description("The color scheme to use.")]
         public ColorScheme ColorSet { get; set; }
 
         [DataMember]
-        [DefaultValue(true)]
-        [Description("Show this layer as 2D in the editor.")]
-        public bool Layer2D { get; set; }
+        [DefaultValue(BeingType.Enemies)]
+        [Description("Determines if you spawn \"Enemies\" or \"NPCs\".")]
+        public BeingType PlacementType
+        {
+            get;
+            set;
+        }
 
         public override bool Is2DOnly
         {
-            get { return this.Layer2D; }
+            get { return true; }
         }
 
         // Will be able to use this algorithm for:
@@ -86,10 +79,9 @@ namespace Tychaia.ProceduralGeneration
             var numBeings = 0;
             if (this.GuaranteeStartingPoint && x == 0 && y == 0)
                 numBeings = 0;
-            else if (!this.Layer2D && AlgorithmUtility.GetRandomDouble(context.Seed, x, y, z, context.Modifier) > this.Limit)
-                numBeings = AlgorithmUtility.GetRandomRange(context.Seed, x, y, z, this.LowerValue, this.HigherValue, context.Modifier);
-            else if (this.Layer2D && AlgorithmUtility.GetRandomDouble(context.Seed, x, y, 0, context.Modifier) > this.Limit)
-                numBeings = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, this.LowerValue, this.HigherValue, context.Modifier);
+            else if (AlgorithmUtility.GetRandomDouble(context.Seed, x, y, 0, context.Modifier) > this.Limit)
+                numBeings = 1;
+            //// numBeings = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, this.LowerValue, this.HigherValue, context.Modifier);
             else
                 numBeings = 0;
 
@@ -102,26 +94,32 @@ namespace Tychaia.ProceduralGeneration
         {
             if (this.ColorSet == ColorScheme.Perlin)
             {
-                if (value == this.LowerValue)
+                if (string.IsNullOrEmpty(value.ClusterDefinitionAssetName))
                     return Color.White;
                 return Color.Black;
             }
 
             if (this.ColorSet == ColorScheme.Beings)
             {
-                if (value == this.LowerValue)
-                    return Color.LightGray;
+                if (string.IsNullOrEmpty(value.ClusterDefinitionAssetName))
+                    return Color.White;
                 
                 return Color.Red;
             }
 
             return Color.Gray;
         }
-
+        
         public enum ColorScheme
         {
             Beings,
             Perlin,
+        }
+
+        public enum BeingType
+        {
+            Enemies,
+            NPCs,
         }
     }
 }

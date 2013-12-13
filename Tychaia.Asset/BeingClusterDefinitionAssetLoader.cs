@@ -6,26 +6,26 @@
 using System;
 using Protogame;
 
-namespace Tychaia
+namespace Tychaia.Asset
 {
-    public class BeingDefinitionAssetLoader : IAssetLoader
+    public class BeingClusterDefinitionAssetLoader : IAssetLoader
     {
         public bool CanHandle(dynamic data)
         {
-            return data.Loader == typeof(BeingDefinitionAssetLoader).FullName;
+            return data.Loader == typeof(BeingClusterDefinitionAssetLoader).FullName;
         }
 
         public IAsset Handle(IAssetManager assetManager, string name, dynamic data)
         {
-            return new BeingDefinitionAsset(
+            return new BeingClusterDefinitionAsset(
                 assetManager,
                 name,
-                (string)data.DisplayNameName,
-                (string)data.DescriptionName,
-                (string)data.TextureName,
-                (string)data.HealthPerLevel,
-                (string)data.MovementSpeed,
-                (bool)data.Enemy);
+                (string)data.Keyword,
+                (int)data.LevelRequirement,
+                (bool)data.Enemy,
+                (string[])data.BeingDefinition,
+                (int[])data.Minimum,
+                (int[])data.Maximum);
         }
 
         public IAsset GetDefault(IAssetManager assetManager, string name)
@@ -40,15 +40,15 @@ namespace Tychaia
 
         public IAsset GetNew(IAssetManager assetManager, string name)
         {
-            return new BeingDefinitionAsset(
+            return new BeingClusterDefinitionAsset(
                 assetManager,
                 name,
                 null,
+                -1,
+                false,
                 null,
                 null,
-                null,
-                null,
-                true);
+                null);
         }
     }
 }

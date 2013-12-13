@@ -5,7 +5,7 @@
 // ====================================================================== //
 using Protogame;
 
-namespace Tychaia
+namespace Tychaia.Asset
 {
     public class BeingDefinitionAssetEditor : AssetEditor<BeingDefinitionAsset>
     {
@@ -65,11 +65,11 @@ namespace Tychaia
             };
             this.m_EnemyTextBox = new TextBox
             {
-                Text = (this.m_Asset.Enemy ? "True" : "False")
+                Text = this.m_Asset.Enemy ? "True" : "False"
             };
             this.m_EnemyTextBox.TextChanged += (sender, e) =>
             {
-                this.m_Asset.Enemy = (this.m_EnemyTextBox.Text.ToLower() == "true" ? true : false);
+                this.m_Asset.Enemy = this.m_EnemyTextBox.Text.ToLower() == "true" ? true : false;
                 assetManager.Save(this.m_Asset);
             };
 

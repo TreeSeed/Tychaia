@@ -6,7 +6,7 @@
 using System.Linq;
 using Protogame;
 
-namespace Tychaia
+namespace Tychaia.Asset
 {
     public class BeingClusterDefinitionAssetSaver : IAssetSaver
     {
@@ -28,6 +28,9 @@ namespace Tychaia
             return new
             {
                 Loader = typeof(BeingClusterDefinitionAssetLoader).FullName,
+                Keyword = beingClusterDefinitionAsset.Keyword,
+                LevelRequirement = beingClusterDefinitionAsset.LevelRequirement,
+                Enemy = beingClusterDefinitionAsset.Enemy,
                 BeingDefinitions = beingDefinitions,
                 Minimum = beingClusterDefinitionAsset.Minimum,
                 Maximum = beingClusterDefinitionAsset.Maximum

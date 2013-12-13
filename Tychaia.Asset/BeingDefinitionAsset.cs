@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
 
-namespace Tychaia
+namespace Tychaia.Asset
 {
     public class BeingDefinitionAsset : MarshalByRefObject, IAsset
     {
@@ -76,6 +76,7 @@ namespace Tychaia
                 this.m_DisplayNameLanguage = value;
             }
         }
+
         public LanguageAsset Description
         {
             get

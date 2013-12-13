@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
 
-namespace Tychaia
+namespace Tychaia.Asset
 {
     public class BeingClusterDefinitionAsset : MarshalByRefObject, IAsset
     {
@@ -24,11 +24,17 @@ namespace Tychaia
         public BeingClusterDefinitionAsset(
             IAssetManager assetManager,
             string name,
+            string keyword,
+            int levelRequirement,
+            bool enemy,
             string[] beingDefinitionsName,
             int[] minimum,
             int[] maximum)
         {
             this.Name = name;
+            this.Keyword = keyword;
+            this.Enemy = enemy;
+            this.LevelRequirement = levelRequirement;
             this.m_BeingDefinitionsName = beingDefinitionsName;
             this.Minimum = minimum;
             this.Maximum = maximum;
@@ -59,6 +65,9 @@ namespace Tychaia
         #endregion
 
         public string Name { get; private set; }
+        public string Keyword { get; set; }
+        public int LevelRequirement { get; set; }
+        public bool Enemy { get; set; }
         //// public string Keyword { get; set; }
         public int[] Minimum { get; set; }
         public int[] Maximum { get; set; }
@@ -69,7 +78,7 @@ namespace Tychaia
         {
             if (typeof(T).IsAssignableFrom(typeof(BeingClusterDefinitionAsset)))
                 return this as T;
-            throw new InvalidOperationException("Asset already resolved to BeingDefinitionAsset.");
+            throw new InvalidOperationException("Asset already resolved to BeingClusterDefinitionAsset.");
         }
     }
 }

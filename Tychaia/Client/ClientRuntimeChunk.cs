@@ -6,6 +6,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
+using Tychaia.Asset;
 using Tychaia.Globals;
 
 namespace Tychaia
