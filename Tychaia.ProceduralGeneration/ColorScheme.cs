@@ -3,15 +3,11 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Protogame;
-
-namespace Tychaia
+namespace Tychaia.ProceduralGeneration
 {
-    public class MoveBackwardAction : IEventEntityAction<PlayerEntity>
+    public enum ColorScheme
     {
-        public void Handle(IGameContext context, PlayerEntity entity, Event @event)
-        {
-            entity.MoveInDirection(context, 180);
-        }
+        Land,
+        Perlin,
     }
 }

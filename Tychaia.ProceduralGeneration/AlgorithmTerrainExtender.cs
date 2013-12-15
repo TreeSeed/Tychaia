@@ -75,25 +75,30 @@ namespace Tychaia.ProceduralGeneration
             int oy,
             int oz)
         {
-            if (!this.Layer2D &&
-                     AlgorithmUtility.GetRandomDouble(context.Seed, x, y, z, context.Modifier) > this.Limit)
-                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = (input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] == -1 ? 1 : input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] + 1);
-            else if (this.Layer2D &&
-                     AlgorithmUtility.GetRandomDouble(context.Seed, x, y, 0, context.Modifier) > this.Limit)
-                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = (input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] == -1 ? 1 : input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] + 1);
-            else
-                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
+            var self = input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
+            var value = self;
+
+            if (!this.Layer2D && AlgorithmUtility.GetRandomDouble(context.Seed, x, y, z, context.Modifier) > this.Limit)
+            {
+                if (self == -1 || self == 0)
+                {
+                    value = 1;
+                }
+            }
+            else if (this.Layer2D && AlgorithmUtility.GetRandomDouble(context.Seed, x, y, 0, context.Modifier) > this.Limit)
+            {
+                if (self == -1 || self == 0)
+                {
+                    value = 1;
+                }
+            }
+
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = value;
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);
-        }
-
-        public enum ColorScheme
-        {
-            Land,
-            Perlin,
         }
     }
 }

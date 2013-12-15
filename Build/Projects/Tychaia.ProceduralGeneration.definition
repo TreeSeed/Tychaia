@@ -45,6 +45,7 @@
     <Compile Include="AlgorithmInitialBool.cs" />
     <Compile Include="AlgorithmInitialTowns.cs" />
     <Compile Include="AlgorithmMultiply.cs" />
+    <Compile Include="AlgorithmNormalizeHeight.cs" />
     <Compile Include="AlgorithmNPCStats.cs" />
     <Compile Include="AlgorithmPassthrough.cs" />
     <Compile Include="AlgorithmPerlin.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Biomes\TropicalforestBiome.cs" />
     <Compile Include="Biomes\WaterBiome.cs" />
     <Compile Include="Buildings\Building.cs" />
+    <Compile Include="ColorScheme.cs" />
     <Compile Include="Compiler\AlgorithmRefactorer.cs" />
     <Compile Include="Compiler\ArrayPool.cs" />
     <Compile Include="Compiler\AstVisitors\AstHelpers.cs" />

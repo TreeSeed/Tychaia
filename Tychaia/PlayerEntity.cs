@@ -55,64 +55,84 @@ namespace Tychaia
             set;
         }
 
-        public void MoveInDirection(int directionInDegrees)
+        public void MoveInDirection(IGameContext context, int directionInDegrees)
         {
             var x = Math.Sin(MathHelper.ToRadians(directionInDegrees - 45)) * this.MovementSpeed;
             var y = -Math.Cos(MathHelper.ToRadians(directionInDegrees - 45)) * this.MovementSpeed;
-            this.X += (float)x;
-            this.Z += (float)y;
+
+            // Determine if moving here would require us to move up by more than 32 pixels.
+            var targetX = this.GetSurfaceY(context, this.X + (float)x, this.Z);
+            var targetZ = this.GetSurfaceY(context, this.X, this.Z + (float)y);
+
+            // We calculate X and Z independently so that we can "slide" along the edge of somewhere
+            // that the player can't go.  This creates a more natural feel when walking into something
+            // that it isn't entirely possible to walk through.
+
+            // If the target returns null, then the chunk hasn't been generated so don't permit
+            // the character to move onto it.
+            if (targetX != null)
+            {
+                // If the target height difference and our current height is greater than 32, don't permit
+                // the character to move onto it.  This also prevents the character from falling off
+                // tall cliffs.
+                if (Math.Abs(targetX.Value - this.Y) <= 32)
+                {
+                    this.X += (float)x;
+                }
+            }
+
+            // If the target returns null, then the chunk hasn't been generated so don't permit
+            // the character to move onto it.
+            if (targetZ != null)
+            {
+                // If the target height difference and our current height is greater than 32, don't permit
+                // the character to move onto it.  This also prevents the character from falling off
+                // tall cliffs.
+                if (Math.Abs(targetZ.Value - this.Y) <= 32)
+                {
+                    this.Z += (float)y;
+                }
+            }
         }
 
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
-            //if (this.RuntimeData.SynchronisationIsAuthoritive)
+            if (this.m_Console.Open)
+                return;
+            
+            // Update player and refocus screen.
+            var state = Keyboard.GetState();
+            var gpstate = GamePad.GetState(PlayerIndex.One);
+            var mv = (float)Math.Sqrt(this.MovementSpeed);
+            
+            if (state.IsKeyDown(Keys.I))
             {
-                if (this.m_Console.Open)
-                    return;
-                
-                // Update player and refocus screen.
-                var state = Keyboard.GetState();
-                var gpstate = GamePad.GetState(PlayerIndex.One);
-                var mv = (float)Math.Sqrt(this.MovementSpeed);
-                
-                if (state.IsKeyDown(Keys.I))
-                {
-                    this.Y += 4f;
-                }
-                
-                if (state.IsKeyDown(Keys.K))
-                {
-                    this.Y -= 4f;
-                }
-                
-                if (this.m_FilteredFeatures.IsEnabled(Feature.DemoMovement))
-                {
-                    var t = Math.Cos(this.m_DemoTicks++ / 10000);
-                    this.Z += (float)t * 4;
-                    this.X += (float)t * 4;
-                }
-                
-                var v = new Vector2(
-                    gpstate.ThumbSticks.Left.X,
-                    -gpstate.ThumbSticks.Left.Y);
-                var m = Matrix.CreateRotationZ(MathHelper.ToRadians(-45));
-                v = Vector2.Transform(v, m);
-                this.X += v.X * mv * (float)(Math.Sqrt(2) / 1.0);
-                this.Y += v.Y * mv * (float)(Math.Sqrt(2) / 1.0);
-                
-                this.RuntimeData.X = this.X;
-                this.RuntimeData.Y = this.Y;
-                this.RuntimeData.Z = this.Z;
-            }
-            //else
-            /*
-            {
-                this.X = this.RuntimeData.X;
-                this.Z = this.RuntimeData.Z;
+                this.Y += 4f;
             }
             
-            this.RuntimeData.Update();
-             * */
+            if (state.IsKeyDown(Keys.K))
+            {
+                this.Y -= 4f;
+            }
+            
+            if (this.m_FilteredFeatures.IsEnabled(Feature.DemoMovement))
+            {
+                var t = Math.Cos(this.m_DemoTicks++ / 10000);
+                this.Z += (float)t * 4;
+                this.X += (float)t * 4;
+            }
+            
+            var v = new Vector2(
+                gpstate.ThumbSticks.Left.X,
+                -gpstate.ThumbSticks.Left.Y);
+            var m = Matrix.CreateRotationZ(MathHelper.ToRadians(-45));
+            v = Vector2.Transform(v, m);
+            this.X += v.X * mv * (float)(Math.Sqrt(2) / 1.0);
+            this.Y += v.Y * mv * (float)(Math.Sqrt(2) / 1.0);
+            
+            this.RuntimeData.X = this.X;
+            this.RuntimeData.Y = this.Y;
+            this.RuntimeData.Z = this.Z;
         }
 
         public override void Render(IGameContext gameContext, IRenderContext renderContext)
@@ -133,6 +153,11 @@ namespace Tychaia
                 renderContext,
                 matrix,
                 this.m_PlayerTexture);
+        }
+
+        private float? GetSurfaceY(IGameContext context, float xx, float zz)
+        {
+            return ((TychaiaGameWorld)context.World).GetSurfaceY(context, xx, zz);
         }
     }
 }
