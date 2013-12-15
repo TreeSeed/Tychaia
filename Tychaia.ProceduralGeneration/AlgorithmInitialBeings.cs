@@ -54,12 +54,6 @@ namespace Tychaia.ProceduralGeneration
             get { return true; }
         }
 
-        // Will be able to use this algorithm for:
-        // Land - This is the equivelent of InitialLand
-        // Towns - This is the equivelent of InitialTowns
-        // Landmarks - We can spread landmarks over the world, which we can then use values to determine the size/value of the landmarks.
-        // Monsters - By utilising multiple value scaling we can either distribute individual monsters or monster groups or even monster villages.
-        // Tresure chests - Spreading tresure chests in dungeons (can be used as an estimated location then moved slightly too).
         public override void ProcessCell(
             IRuntimeContext context,
             Cell[] output,
