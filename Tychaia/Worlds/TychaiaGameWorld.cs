@@ -184,13 +184,40 @@ namespace Tychaia
             return this.m_GameState.InternalMessage(message);
         }
 
-        private float? GetSurfaceY(IGameContext context, float xx, float zz)
+        /// <summary>
+        /// Returns the surface Y based on the chunk that is currently active in the camera.  Will
+        /// return null if you attempt to determine the height of a location that is not within
+        /// the available area.
+        /// </summary>
+        public float? GetSurfaceY(IGameContext context, float xx, float zz)
         {
             var ax = (int)(xx - this.IsometricCamera.Chunk.X) / this.m_ChunkSizePolicy.CellVoxelWidth;
             var az = (int)(zz - this.IsometricCamera.Chunk.Z) / this.m_ChunkSizePolicy.CellVoxelDepth;
+
             if (ax >= 0 && ax < this.m_ChunkSizePolicy.ChunkCellWidth &&
                 az >= 0 && az < this.m_ChunkSizePolicy.ChunkCellDepth)
+            {
                 return this.IsometricCamera.Chunk.Cells[ax, 0, az].HeightMap * this.m_ChunkSizePolicy.CellVoxelDepth;
+            }
+
+            if (ax >= this.m_ChunkSizePolicy.ChunkCellWidth && ax < this.m_ChunkSizePolicy.ChunkCellWidth * 2 &&
+                az >= 0 && az < this.m_ChunkSizePolicy.ChunkCellDepth)
+            {
+                return this.IsometricCamera.Chunk.East.Cells[ax - this.m_ChunkSizePolicy.ChunkCellWidth, 0, az].HeightMap * this.m_ChunkSizePolicy.CellVoxelDepth;
+            }
+
+            if (ax >= 0 && ax < this.m_ChunkSizePolicy.ChunkCellWidth &&
+                az >= this.m_ChunkSizePolicy.ChunkCellWidth && az < this.m_ChunkSizePolicy.ChunkCellDepth * 2)
+            {
+                return this.IsometricCamera.Chunk.South.Cells[ax, 0, az - this.m_ChunkSizePolicy.ChunkCellWidth].HeightMap * this.m_ChunkSizePolicy.CellVoxelDepth;
+            }
+
+            if (ax >= this.m_ChunkSizePolicy.ChunkCellWidth && ax < this.m_ChunkSizePolicy.ChunkCellWidth * 2 &&
+                az >= this.m_ChunkSizePolicy.ChunkCellWidth && az < this.m_ChunkSizePolicy.ChunkCellDepth * 2)
+            {
+                return this.IsometricCamera.Chunk.South.East.Cells[ax - this.m_ChunkSizePolicy.ChunkCellWidth, 0, az - this.m_ChunkSizePolicy.ChunkCellWidth].HeightMap * this.m_ChunkSizePolicy.CellVoxelDepth;
+            }
+
             return null;
         }
     }

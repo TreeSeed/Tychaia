@@ -233,6 +233,16 @@ namespace CrashReport
         {
             SystemInfo systemInfo = new SystemInfo();
             systemInfo.Init();
+            systemInfo.OperatingSystems.Add(new OperatingSystemInfo
+            {
+                BuildNumber = "",
+                Description = "Linux",
+                Name = "Linux",
+                OSArchitecture = "",
+                Primary = "True",
+                TotalVisibleMemorySize = "",
+                Version = ""
+            });
             return systemInfo;
         }
 

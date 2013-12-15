@@ -9,9 +9,9 @@ namespace Tychaia
 {
     public class MoveForwardAction : IEventEntityAction<PlayerEntity>
     {
-        public void Handle(PlayerEntity entity, Event @event)
+        public void Handle(IGameContext context, PlayerEntity entity, Event @event)
         {
-            entity.MoveInDirection(0);
+            entity.MoveInDirection(context, 0);
         }
     }
 }

@@ -3,15 +3,16 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Protogame;
-
-namespace Tychaia
+namespace Tychaia.ProceduralGeneration
 {
-    public class MoveBackwardAction : IEventEntityAction<PlayerEntity>
+    /// <summary>
+    /// An enumeration defining the type of zoom to perform.
+    /// </summary>
+    public enum ZoomType
     {
-        public void Handle(IGameContext context, PlayerEntity entity, Event @event)
-        {
-            entity.MoveInDirection(context, 180);
-        }
+        Square,
+        Smooth,
+        Fuzzy,
+        Spread
     }
 }
