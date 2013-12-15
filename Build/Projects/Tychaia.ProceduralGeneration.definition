@@ -49,6 +49,7 @@
     <Compile Include="AlgorithmPassthrough.cs" />
     <Compile Include="AlgorithmPerlin.cs" />
     <Compile Include="AlgorithmReduceWaterDepth.cs" />
+    <Compile Include="AlgorithmRemoveSinglePoints.cs" />
     <Compile Include="AlgorithmResult.cs" />
     <Compile Include="AlgorithmSmooth.cs" />
     <Compile Include="AlgorithmSmoothByInput.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Tracing\AlgorithmTraceImageGeneration.cs" />
     <Compile Include="Tracing\IAlgorithmTraceImageGeneration.cs" />
     <Compile Include="TychaiaProceduralGenerationIoCModule.cs" />
+    <Compile Include="ZoomType.cs" />
     <EmbeddedResource Include="Compiler\CompiledLayerTemplate.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>

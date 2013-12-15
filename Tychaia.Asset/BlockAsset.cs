@@ -164,16 +164,24 @@ namespace Tychaia.Asset
             Func<float, float, float, float, float, int> addOrGetVertex,
             Action<int> addIndex)
         {
-            var missingAbove = (edges & 1) != 0;
-            var missingBelow = (edges & 2) != 0;
-            var missingEast = (edges & 4) != 0;
-            var missingWest = (edges & 8) != 0;
-            var missingNorth = (edges & 16) != 0;
-            var missingSouth = (edges & 32) != 0;
-            var missingNorthEast = (edges & 64) != 0;
-            var missingNorthWest = (edges & 128) != 0;
-            var missingSouthEast = (edges & 256) != 0;
-            var missingSouthWest = (edges & 512) != 0;
+            var missingAbove = (edges & 0x00001) != 0;
+            var missingBelow = (edges & 0x00002) != 0;
+            var missingEast = (edges & 0x00004) != 0;
+            var missingWest = (edges & 0x00008) != 0;
+            var missingNorth = (edges & 0x00010) != 0;
+            var missingSouth = (edges & 0x00020) != 0;
+            var missingNorthEast = (edges & 0x00040) != 0;
+            var missingNorthWest = (edges & 0x00080) != 0;
+            var missingSouthEast = (edges & 0x00100) != 0;
+            var missingSouthWest = (edges & 0x00200) != 0;
+            var missingBelowEast = (edges & 0x00400) != 0;
+            var missingBelowWest = (edges & 0x00800) != 0;
+            var missingBelowNorth = (edges & 0x01000) != 0;
+            var missingBelowSouth = (edges & 0x02000) != 0;
+            var missingBelowNorthEast = (edges & 0x04000) != 0;
+            var missingBelowNorthWest = (edges & 0x08000) != 0;
+            var missingBelowSouthEast = (edges & 0x10000) != 0;
+            var missingBelowSouthWest = (edges & 0x20000) != 0;
 
             var topLeftCorner = 0;
             var topRightCorner = 0;
@@ -184,13 +192,13 @@ namespace Tychaia.Asset
             {
                 if (!(missingEast && missingWest))
                 {
-                    if (missingEast)
+                    if (missingEast && !missingBelowEast)
                     {
                         topRightCorner = 1;
                         bottomRightCorner = 1;
                     }
 
-                    if (missingWest)
+                    if (missingWest && !missingBelowWest)
                     {
                         topLeftCorner = 1;
                         bottomLeftCorner = 1;
@@ -199,35 +207,35 @@ namespace Tychaia.Asset
 
                 if (!(missingNorth && missingSouth))
                 {
-                    if (missingNorth)
+                    if (missingNorth && !missingBelowNorth)
                     {
                         topLeftCorner = 1;
                         topRightCorner = 1;
                     }
 
-                    if (missingSouth)
+                    if (missingSouth && !missingBelowSouth)
                     {
                         bottomLeftCorner = 1;
                         bottomRightCorner = 1;
                     }
                 }
 
-                if (missingSouthEast && !missingNorthEast && !missingSouthWest)
+                if (missingSouthEast && !missingNorthEast && !missingSouthWest && !missingBelowSouthEast)
                 {
                     bottomRightCorner = 1;
                 }
 
-                if (missingNorthEast && !missingSouthEast && !missingNorthWest)
+                if (missingNorthEast && !missingSouthEast && !missingNorthWest && !missingBelowNorthEast)
                 {
                     topRightCorner = 1;
                 }
 
-                if (missingSouthWest && !missingNorthWest && !missingSouthEast)
+                if (missingSouthWest && !missingNorthWest && !missingSouthEast && !missingBelowSouthWest)
                 {
                     bottomLeftCorner = 1;
                 }
 
-                if (missingNorthWest && !missingSouthWest && !missingNorthEast)
+                if (missingNorthWest && !missingSouthWest && !missingNorthEast && !missingBelowNorthWest)
                 {
                     topLeftCorner = 1;
                 }
@@ -264,7 +272,7 @@ namespace Tychaia.Asset
                 addIndex(topRight);
             }
             
-            if (missingWest || missingNorthWest || missingSouthWest)
+            if (missingWest || missingNorthWest || missingSouthWest || (missingSouth && !missingAbove) || (missingNorth && !missingAbove))
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.LeftTexture.Name);
                 var topLeft = addOrGetVertex(x, y + 1 - topLeftCorner, z, uv.X, uv.Y);
@@ -279,7 +287,7 @@ namespace Tychaia.Asset
                 addIndex(bottomRight);
             }
             
-            if (missingEast || missingNorthEast || missingSouthEast)
+            if (missingEast || missingNorthEast || missingSouthEast || (missingSouth && !missingAbove) || (missingNorth && !missingAbove))
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.RightTexture.Name);
                 var topLeft = addOrGetVertex(x + 1, y + 1 - topRightCorner, z, uv.X, uv.Y);
@@ -294,7 +302,7 @@ namespace Tychaia.Asset
                 addIndex(topRight);
             }
             
-            if (missingNorth || missingNorthEast || missingNorthWest)
+            if (missingNorth || missingNorthEast || missingNorthWest || (missingEast && !missingAbove) || (missingWest && !missingAbove))
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.FrontTexture.Name);
                 var topLeft = addOrGetVertex(x, y + 1 - topLeftCorner, z, uv.X, uv.Y);
@@ -309,7 +317,7 @@ namespace Tychaia.Asset
                 addIndex(topRight);
             }
             
-            if (missingSouth || missingSouthEast || missingSouthWest)
+            if (missingSouth || missingSouthEast || missingSouthWest || (missingEast && !missingAbove) || (missingWest && !missingAbove))
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.FrontTexture.Name);
                 var topLeft = addOrGetVertex(x, y + 1 - bottomLeftCorner, z + 1, uv.X, uv.Y);

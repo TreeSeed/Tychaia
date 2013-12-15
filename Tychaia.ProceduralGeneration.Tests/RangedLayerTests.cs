@@ -96,7 +96,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         public void XBorderTest()
         {
             var perlin = this.CreateRuntimeLayer(new AlgorithmPerlin());
-            var passthrough = this.CreateRuntimeLayer(new AlgorithmPassthrough {XBorder = 2});
+            var passthrough = this.CreateRuntimeLayer(new AlgorithmPassthrough { XBorder = 2 });
             passthrough.SetInput(0, perlin);
 
             var ranged = new RangedLayer(passthrough);
@@ -150,7 +150,7 @@ namespace Tychaia.ProceduralGeneration.Tests
         public void AllBorderTest()
         {
             var perlin = this.CreateRuntimeLayer(new AlgorithmPerlin());
-            var passthrough = this.CreateRuntimeLayer(new AlgorithmPassthrough {XBorder = 7, YBorder = 9, ZBorder = 11});
+            var passthrough = this.CreateRuntimeLayer(new AlgorithmPassthrough { XBorder = 7, YBorder = 9, ZBorder = 11 });
             passthrough.SetInput(0, perlin);
 
             var ranged = new RangedLayer(passthrough);
@@ -203,11 +203,11 @@ namespace Tychaia.ProceduralGeneration.Tests
         [Fact]
         public void ComplexBorderTest()
         {
-            var perlin = this.CreateRuntimeLayer(new AlgorithmPerlin());
-            var add = this.CreateRuntimeLayer(new AlgorithmAdd());
-            var perlin2 = this.CreateRuntimeLayer(new AlgorithmPerlin());
-            var passthrough = this.CreateRuntimeLayer(new AlgorithmPassthrough {XBorder = 7, YBorder = 9, ZBorder = 11});
-            var heightC = this.CreateRuntimeLayer(new AlgorithmHeightChange());
+            var perlin = this.CreateRuntimeLayer(new AlgorithmPerlin { Layer2D = false });
+            var add = this.CreateRuntimeLayer(new AlgorithmAdd { Layer2d = false });
+            var perlin2 = this.CreateRuntimeLayer(new AlgorithmPerlin { Layer2D = false });
+            var passthrough = this.CreateRuntimeLayer(new AlgorithmPassthrough { XBorder = 7, YBorder = 9, ZBorder = 11, Layer2D = false });
+            var heightC = this.CreateRuntimeLayer(new AlgorithmHeightChange { Layer2D = false });
             passthrough.SetInput(0, perlin2);
             add.SetInput(0, perlin);
             add.SetInput(1, passthrough);

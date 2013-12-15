@@ -93,25 +93,21 @@ namespace Tychaia.ProceduralGeneration
             int oy,
             int oz)
         {
-            var ocx = ((x - i) % 2 == 0 ? (i % 2 == -1 ? -1 : 0) : (i % 2 == 1 ? 1 : 0));
-            var ocy = ((y - j) % 2 == 0 ? (j % 2 == -1 ? -1 : 0) : (j % 2 == 1 ? 1 : 0));
-
-            // int ocx_e = ((x - i) % 2 == 0 ? 0 : ((i + 1) % 2));
-            // int ocx_e = (x % 2 != 0) ? (int)((i + 1) % 2) : 0;
-            // int ocy_s = (y % 2 != 0) ? (int)((j + 1) % 2) : 0;
-            var ocz = 0;
+            var ocx = (x - i) % 2 == 0 ? (i % 2 == -1 ? -1 : 0) : (i % 2 == 1 ? 1 : 0);
+            var ocy = (y - j) % 2 == 0 ? (j % 2 == -1 ? -1 : 0) : (j % 2 == 1 ? 1 : 0);
 
             var current = input[(i / 2) + ox + ocx +
-                (((j / 2) + oy + ocy) * width) +
-                ((k + oz + ocz) * width * height)];
+                (((j / 2) + oy + ocy) * width)];
 
             if (this.Mode == ZoomType.Square)
-                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = current;
-            else if(this.Mode == ZoomType.Spread)
+            {
+                output[(i + ox) + ((j + oy) * width)] = current;
+            }
+            else if (this.Mode == ZoomType.Spread)
             {
                 var remainder = current % 4;
                 int selected = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, 4);
-                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = (selected < remainder ? 1 : 0) + (current / 4);
+                output[(i + ox) + ((j + oy) * width)] = (selected < remainder ? 1 : 0) + (current / 4);
             }
             else
             {
@@ -130,37 +126,37 @@ namespace Tychaia.ProceduralGeneration
                 else
                     selected = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, 2);
 
-                var ocx_e = ((x - i) % 2 == 0 ? ((i + 1) % 2 == -1 ? -1 : 0) : ((i + 1) % 2 == 1 ? 1 : 0));
+                var ocx_e = (x - i) % 2 == 0 ? ((i + 1) % 2 == -1 ? -1 : 0) : ((i + 1) % 2 == 1 ? 1 : 0);
                 var east =
-                    input[((i + 1) / 2 + ox + ocx_e) + ((j / 2 + oy + ocy) * width) + (((k) + oz + ocz) * width * height)];
+                    input[(((i + 1) / 2) + ox + ocx_e) + (((j / 2) + oy + ocy) * width)];
 
-                var ocy_s = ((y - j) % 2 == 0 ? ((j + 1) % 2 == -1 ? -1 : 0) : ((j + 1) % 2 == 1 ? 1 : 0));
+                var ocy_s = (y - j) % 2 == 0 ? ((j + 1) % 2 == -1 ? -1 : 0) : ((j + 1) % 2 == 1 ? 1 : 0);
 
                 switch (selected)
                 {
                     case 0:
-                        output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = current;
+                        output[(i + ox) + ((j + oy) * width)] = current;
                         break;
                     case 1:
-                        var south = input[(i / 2 + ox + ocx) + (((j + 1) / 2 + oy + ocy_s) * width) + ((k + oz + ocz) * width * height)];
+                        var south = input[((i / 2) + ox + ocx) + ((((j + 1) / 2) + oy + ocy_s) * width)];
 
                         if (xmod)
-                            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = south;
+                            output[(i + ox) + ((j + oy) * width)] = south;
                         else if (ymod)
-                            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = east;
+                            output[(i + ox) + ((j + oy) * width)] = east;
                         else
-                            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = south;
+                            output[(i + ox) + ((j + oy) * width)] = south;
                         break;
                     case 2:
-                        output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = east;
+                        output[(i + ox) + ((j + oy) * width)] = east;
                         break;
                     case 3:
-                        var southEast = input[((i + 1) / 2 + ox + ocx_e) + (((j + 1) / 2 + oy + ocy_s) * width) + ((k + oz + ocz) * width * height)];
+                        var southEast = input[(((i + 1) / 2) + ox + ocx_e) + ((((j + 1) / 2) + oy + ocy_s) * width)];
 
-                        output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = southEast;
+                        output[(i + ox) + ((j + oy) * width)] = southEast;
                         break;
                     case 4:
-                        output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = current;
+                        output[(i + ox) + ((j + oy) * width)] = current;
                         break;
                 }
             }
@@ -169,17 +165,6 @@ namespace Tychaia.ProceduralGeneration
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
             return this.DelegateColorForValueToParent(parent, value);
-        }
-
-        /// <summary>
-        /// An enumeration defining the type of zoom to perform.
-        /// </summary>
-        public enum ZoomType
-        {
-            Square,
-            Smooth,
-            Fuzzy,
-            Spread
         }
     }
 }

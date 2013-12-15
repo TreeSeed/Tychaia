@@ -77,56 +77,105 @@ namespace Tychaia.ProceduralGeneration
             var southEast = input[(i + 1 + ox) + ((j + 1 + oy) * width) + ((k + oz) * width * height)];
             var southWest = input[(i - 1 + ox) + ((j + 1 + oy) * width) + ((k + oz) * width * height)];
 
+            var belowEast = input[(i + 1 + ox) + ((j + oy) * width) + ((k - 1 + oz) * width * height)];
+            var belowWest = input[(i - 1 + ox) + ((j + oy) * width) + ((k - 1 + oz) * width * height)];
+            var belowNorth = input[(i + ox) + ((j - 1 + oy) * width) + ((k - 1 + oz) * width * height)];
+            var belowSouth = input[(i + ox) + ((j + 1 + oy) * width) + ((k - 1 + oz) * width * height)];
+            var belowNorthEast = input[(i + 1 + ox) + ((j - 1 + oy) * width) + ((k - 1 + oz) * width * height)];
+            var belowNorthWest = input[(i - 1 + ox) + ((j - 1 + oy) * width) + ((k - 1 + oz) * width * height)];
+            var belowSouthEast = input[(i + 1 + ox) + ((j + 1 + oy) * width) + ((k - 1 + oz) * width * height)];
+            var belowSouthWest = input[(i - 1 + ox) + ((j + 1 + oy) * width) + ((k - 1 + oz) * width * height)];
+
             var value = 0;
 
             if (above == int.MaxValue)
             {
-                value |= 1;
+                value |= 0x00001;
             }
 
             if (below == int.MaxValue)
             {
-                value |= 2;
+                value |= 0x00002;
             }
 
             if (east == int.MaxValue)
             {
-                value |= 4;
+                value |= 0x00004;
             }
 
             if (west == int.MaxValue)
             {
-                value |= 8;
+                value |= 0x00008;
             }
 
             if (north == int.MaxValue)
             {
-                value |= 16;
+                value |= 0x00010;
             }
 
             if (south == int.MaxValue)
             {
-                value |= 32;
+                value |= 0x00020;
             }
 
             if (northEast == int.MaxValue)
             {
-                value |= 64;
+                value |= 0x00040;
             }
 
             if (northWest == int.MaxValue)
             {
-                value |= 128;
+                value |= 0x00080;
             }
 
             if (southEast == int.MaxValue)
             {
-                value |= 256;
+                value |= 0x00100;
             }
 
             if (southWest == int.MaxValue)
             {
-                value |= 512;
+                value |= 0x00200;
+            }
+
+            if (belowEast == int.MaxValue)
+            {
+                value |= 0x00400;
+            }
+
+            if (belowWest == int.MaxValue)
+            {
+                value |= 0x00800;
+            }
+
+            if (belowNorth == int.MaxValue)
+            {
+                value |= 0x01000;
+            }
+
+            if (belowSouth == int.MaxValue)
+            {
+                value |= 0x02000;
+            }
+
+            if (belowNorthEast == int.MaxValue)
+            {
+                value |= 0x04000;
+            }
+
+            if (belowNorthWest == int.MaxValue)
+            {
+                value |= 0x08000;
+            }
+
+            if (belowSouthEast == int.MaxValue)
+            {
+                value |= 0x10000;
+            }
+
+            if (belowSouthWest == int.MaxValue)
+            {
+                value |= 0x20000;
             }
 
             output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = value;
