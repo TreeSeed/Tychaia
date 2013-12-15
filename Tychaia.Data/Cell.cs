@@ -15,6 +15,8 @@ namespace Tychaia.Data
         public string BlockAssetName;
         [ProtoMember(2)]
         public int HeightMap;
+        [ProtoMember(15)]
+        public int EdgeDetection;
 
         // Being Clusters Generation
         [ProtoMember(3)]

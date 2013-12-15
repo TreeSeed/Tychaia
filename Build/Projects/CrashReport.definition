@@ -8,7 +8,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Configuration" />
     <Reference Include="Phabricator.Conduit" />
-    <Reference Include="System.Web.Helpers" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Management" />
   </References>

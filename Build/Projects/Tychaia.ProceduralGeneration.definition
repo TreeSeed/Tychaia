@@ -35,6 +35,7 @@
     <Compile Include="AlgorithmDebuggingOffset.cs" />
     <Compile Include="AlgorithmDeriveTerrain.cs" />
     <Compile Include="AlgorithmDistanceFrom0.cs" />
+    <Compile Include="AlgorithmEdgeDetection.cs" />
     <Compile Include="AlgorithmExtend2D.cs" />
     <Compile Include="AlgorithmFormResult.cs" />
     <Compile Include="AlgorithmGenerateBlockInfo.cs" />

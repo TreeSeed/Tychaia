@@ -159,24 +159,88 @@ namespace Tychaia.Asset
             int x,
             int y,
             int z,
+            int edges,
             Func<int, int, int, BlockAsset> getRelativeBlock,
             Func<float, float, float, float, float, int> addOrGetVertex,
             Action<int> addIndex)
         {
-            var above = getRelativeBlock(0, 1, 0);
-            var below = getRelativeBlock(0, -1, 0);
-            var east = getRelativeBlock(1, 0, 0);
-            var west = getRelativeBlock(-1, 0, 0);
-            var north = getRelativeBlock(0, 0, -1);
-            var south = getRelativeBlock(0, 0, 1);
+            var missingAbove = (edges & 1) != 0;
+            var missingBelow = (edges & 2) != 0;
+            var missingEast = (edges & 4) != 0;
+            var missingWest = (edges & 8) != 0;
+            var missingNorth = (edges & 16) != 0;
+            var missingSouth = (edges & 32) != 0;
+            var missingNorthEast = (edges & 64) != 0;
+            var missingNorthWest = (edges & 128) != 0;
+            var missingSouthEast = (edges & 256) != 0;
+            var missingSouthWest = (edges & 512) != 0;
 
-            if (above == null)
+            var topLeftCorner = 0;
+            var topRightCorner = 0;
+            var bottomLeftCorner = 0;
+            var bottomRightCorner = 0;
+
+            if (missingAbove)
+            {
+                if (!(missingEast && missingWest))
+                {
+                    if (missingEast)
+                    {
+                        topRightCorner = 1;
+                        bottomRightCorner = 1;
+                    }
+
+                    if (missingWest)
+                    {
+                        topLeftCorner = 1;
+                        bottomLeftCorner = 1;
+                    }
+                }
+
+                if (!(missingNorth && missingSouth))
+                {
+                    if (missingNorth)
+                    {
+                        topLeftCorner = 1;
+                        topRightCorner = 1;
+                    }
+
+                    if (missingSouth)
+                    {
+                        bottomLeftCorner = 1;
+                        bottomRightCorner = 1;
+                    }
+                }
+
+                if (missingSouthEast && !missingNorthEast && !missingSouthWest)
+                {
+                    bottomRightCorner = 1;
+                }
+
+                if (missingNorthEast && !missingSouthEast && !missingNorthWest)
+                {
+                    topRightCorner = 1;
+                }
+
+                if (missingSouthWest && !missingNorthWest && !missingSouthEast)
+                {
+                    bottomLeftCorner = 1;
+                }
+
+                if (missingNorthWest && !missingSouthWest && !missingNorthEast)
+                {
+                    topLeftCorner = 1;
+                }
+            }
+
+            if (missingAbove)
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.TopTexture.Name);
-                var topLeft = addOrGetVertex(x, y + 1, z, uv.X, uv.Y);
-                var topRight = addOrGetVertex(x + 1, y + 1, z, uv.X + uv.Width, uv.Y);
-                var bottomLeft = addOrGetVertex(x, y + 1, z + 1, uv.X, uv.Y + uv.Height);
-                var bottomRight = addOrGetVertex(x + 1, y + 1, z + 1, uv.X + uv.Width, uv.Y + uv.Height);
+
+                var topLeft = addOrGetVertex(x, y + 1 - topLeftCorner, z, uv.X, uv.Y);
+                var topRight = addOrGetVertex(x + 1, y + 1 - topRightCorner, z, uv.X + uv.Width, uv.Y);
+                var bottomLeft = addOrGetVertex(x, y + 1 - bottomLeftCorner, z + 1, uv.X, uv.Y + uv.Height);
+                var bottomRight = addOrGetVertex(x + 1, y + 1 - bottomRightCorner, z + 1, uv.X + uv.Width, uv.Y + uv.Height);
                 addIndex(topLeft);
                 addIndex(topRight);
                 addIndex(bottomLeft);
@@ -185,7 +249,7 @@ namespace Tychaia.Asset
                 addIndex(bottomRight);
             }
             
-            if (below == null)
+            if (missingBelow)
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.BottomTexture.Name);
                 var topLeft = addOrGetVertex(x, y, z, uv.X, uv.Y);
@@ -200,11 +264,11 @@ namespace Tychaia.Asset
                 addIndex(topRight);
             }
             
-            if (west == null)
+            if (missingWest || missingNorthWest || missingSouthWest)
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.LeftTexture.Name);
-                var topLeft = addOrGetVertex(x, y + 1, z, uv.X, uv.Y);
-                var topRight = addOrGetVertex(x, y + 1, z + 1, uv.X + uv.Width, uv.Y);
+                var topLeft = addOrGetVertex(x, y + 1 - topLeftCorner, z, uv.X, uv.Y);
+                var topRight = addOrGetVertex(x, y + 1 - bottomLeftCorner, z + 1, uv.X + uv.Width, uv.Y);
                 var bottomLeft = addOrGetVertex(x, y, z, uv.X, uv.Y + uv.Height);
                 var bottomRight = addOrGetVertex(x, y, z + 1, uv.X + uv.Width, uv.Y + uv.Height);
                 addIndex(topLeft);
@@ -215,11 +279,11 @@ namespace Tychaia.Asset
                 addIndex(bottomRight);
             }
             
-            if (east == null)
+            if (missingEast || missingNorthEast || missingSouthEast)
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.RightTexture.Name);
-                var topLeft = addOrGetVertex(x + 1, y + 1, z, uv.X, uv.Y);
-                var topRight = addOrGetVertex(x + 1, y + 1, z + 1, uv.X + uv.Width, uv.Y);
+                var topLeft = addOrGetVertex(x + 1, y + 1 - topRightCorner, z, uv.X, uv.Y);
+                var topRight = addOrGetVertex(x + 1, y + 1 - bottomRightCorner, z + 1, uv.X + uv.Width, uv.Y);
                 var bottomLeft = addOrGetVertex(x + 1, y, z, uv.X, uv.Y + uv.Height);
                 var bottomRight = addOrGetVertex(x + 1, y, z + 1, uv.X + uv.Width, uv.Y + uv.Height);
                 addIndex(topLeft);
@@ -230,11 +294,11 @@ namespace Tychaia.Asset
                 addIndex(topRight);
             }
             
-            if (north == null)
+            if (missingNorth || missingNorthEast || missingNorthWest)
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.FrontTexture.Name);
-                var topLeft = addOrGetVertex(x, y + 1, z, uv.X, uv.Y);
-                var topRight = addOrGetVertex(x + 1, y + 1, z, uv.X + uv.Width, uv.Y);
+                var topLeft = addOrGetVertex(x, y + 1 - topLeftCorner, z, uv.X, uv.Y);
+                var topRight = addOrGetVertex(x + 1, y + 1 - topRightCorner, z, uv.X + uv.Width, uv.Y);
                 var bottomLeft = addOrGetVertex(x, y, z, uv.X, uv.Y + uv.Height);
                 var bottomRight = addOrGetVertex(x + 1, y, z, uv.X + uv.Width, uv.Y + uv.Height);
                 addIndex(topLeft);
@@ -245,11 +309,11 @@ namespace Tychaia.Asset
                 addIndex(topRight);
             }
             
-            if (south == null)
+            if (missingSouth || missingSouthEast || missingSouthWest)
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.FrontTexture.Name);
-                var topLeft = addOrGetVertex(x, y + 1, z + 1, uv.X, uv.Y);
-                var topRight = addOrGetVertex(x + 1, y + 1, z + 1, uv.X + uv.Width, uv.Y);
+                var topLeft = addOrGetVertex(x, y + 1 - bottomLeftCorner, z + 1, uv.X, uv.Y);
+                var topRight = addOrGetVertex(x + 1, y + 1 - bottomRightCorner, z + 1, uv.X + uv.Width, uv.Y);
                 var bottomLeft = addOrGetVertex(x, y, z + 1, uv.X, uv.Y + uv.Height);
                 var bottomRight = addOrGetVertex(x + 1, y, z + 1, uv.X + uv.Width, uv.Y + uv.Height);
                 addIndex(topLeft);

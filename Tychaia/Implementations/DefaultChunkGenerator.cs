@@ -24,13 +24,16 @@ namespace Tychaia
         private readonly TextureAtlasAsset m_TextureAtlasAsset;
         private readonly ThreadedTaskPipeline<RuntimeChunk> m_Pipeline;
         private readonly IGenerator m_Generator;
+        private readonly IPersistentStorage m_PersistentStorage;
 
         public DefaultChunkGenerator(
             IChunkSizePolicy chunkSizePolicy,
             IAssetManagerProvider assetManagerProvider,
-            IGeneratorResolver generatorResolver)
+            IGeneratorResolver generatorResolver,
+            IPersistentStorage persistentStorage)
         {
             this.m_ChunkSizePolicy = chunkSizePolicy;
+            this.m_PersistentStorage = persistentStorage;
             this.m_AssetManager = assetManagerProvider.GetAssetManager();
             this.m_TextureAtlasAsset = this.m_AssetManager.Get<TextureAtlasAsset>("atlas");
             this.m_Pipeline = new ThreadedTaskPipeline<RuntimeChunk>();
@@ -56,7 +59,7 @@ namespace Tychaia
                 int computations;
 
                 // Check to see if we can load the chunk instead.
-                if (chunk.Level.HasChunk(chunk))
+                if (chunk.Level.HasChunk(chunk) && !(this.m_PersistentStorage.Settings.IgnoreSavedChunks ?? false))
                 {
                     chunk.Level.LoadChunk(chunk);
                     continue;
@@ -105,6 +108,7 @@ namespace Tychaia
                                 x,
                                 y,
                                 z,
+                                chunk.Cells[x, y, z].EdgeDetection,
                                 (xx, yy, zz) =>
                                 {
                                     if (xi + xx < 0 || yi + yy < 0 || zi + zz < 0 ||
