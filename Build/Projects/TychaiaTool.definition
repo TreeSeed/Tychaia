@@ -14,7 +14,7 @@
     <Reference Include="Tychaia.Threading" />
     <Reference Include="Ninject" />
     <Reference Include="ICSharpCode.NRefactory" />
-    <Reference Include="protobuf-net" />
+    <Reference Include="protobuf-net-client" />
     <Reference Include="Protogame" />
   </References>
   <Files>

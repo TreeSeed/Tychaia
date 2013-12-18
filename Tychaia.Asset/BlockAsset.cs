@@ -55,6 +55,9 @@ namespace Tychaia.Asset
             this.m_BackTextureName = backTextureName;
         }
 
+        public bool SourceOnly { get { return false; } }
+        public bool CompiledOnly { get { return false; } }
+
         public bool Impassable { get; set; }
 
         #region Texture Properties

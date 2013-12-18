@@ -39,22 +39,8 @@ namespace TychaiaTool
                 }
             }
 
-            var fontSaver = new FontAssetSaver();
-            var rawSaver = new RawAssetSaver();
-            using (var b = new BinaryReader(File.Open(this.m_InputFile, FileMode.Open)))
-            {
-                var fi = new FileInfo(this.m_OutputFile);
-                var font = new FontAsset(
-                    null,
-                    null,
-                    fi.Name.Substring(0, fi.Name.Length - fi.Extension.Length),
-                    this.m_FontName,
-                    this.m_FontSize.Value,
-                    b.ReadBytes(int.MaxValue));
-                rawSaver.SaveRawAsset(this.m_OutputFile, fontSaver.Handle(font));
-            }
-
-            return 0;
+            Console.WriteLine("Not implemented.");
+            return 1;
         }
     }
 }

@@ -17,7 +17,7 @@
     <Reference Include="Dx.Runtime" />
     <Reference Include="Dx.Process" />
     <Reference Include="Ninject" />
-    <Reference Include="protobuf-net" />
+    <Reference Include="protobuf-net-client" />
   </References>
   <Properties>
     <Property Name="PostProcessWithDx" Value="True" />

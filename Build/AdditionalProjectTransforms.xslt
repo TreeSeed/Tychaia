@@ -35,10 +35,10 @@
       <xsl:attribute name="Command">
         <xsl:if test="/Input/Generation/Platform != 'Windows'">
           <xsl:text>mono </xsl:text>
-          <xsl:text>Libraries/protobuf-net/precompiler/precompile.exe </xsl:text>
+          <xsl:text>Protogame/ThirdParty/Dx/protobuf-net/precompile.exe </xsl:text>
         </xsl:if>
         <xsl:if test="/Input/Generation/Platform = 'Windows'">
-          <xsl:text>Libraries\protobuf-net\precompiler\precompile.exe </xsl:text>
+          <xsl:text>Protogame\ThirdParty\Dx\protobuf-net\precompile.exe </xsl:text>
         </xsl:if>
         <xsl:value-of select="/Input/Properties/PrecompileProtobufInputPath" />
         <xsl:text> -o:</xsl:text>

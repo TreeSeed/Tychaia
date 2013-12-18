@@ -2,6 +2,7 @@
 <Project Name="Tychaia" Path="Tychaia" Type="XNA">
   <Properties>
     <Property Name="PostProcessWithDx" Value="True" />
+    <Property Name="ForceArchitecture" Value="x86" />
   </Properties>
   <References>
     <Reference Include="System" />
@@ -26,7 +27,7 @@
     <Reference Include="Dx.Runtime" />
     <Reference Include="Dx.Process" />
     <Reference Include="Ninject" />
-    <Reference Include="protobuf-net" />
+    <Reference Include="protobuf-net-client" />
     <Reference Include="CrashReport" />
   </References>
   <Files>

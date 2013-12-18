@@ -27,6 +27,9 @@ namespace Tychaia.Asset
             this.Mappings = mappings;
         }
         
+        public bool SourceOnly { get { return false; } }
+        public bool CompiledOnly { get { return false; } }
+
         public string Name { get; private set; }
         public TextureAsset TextureAtlas { get; private set; }
         public Dictionary<string, Rectangle> Mappings { get; private set; } 

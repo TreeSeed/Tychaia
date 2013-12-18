@@ -14,7 +14,7 @@ namespace Tychaia.Asset
             return asset is BeingDefinitionAsset;
         }
 
-        public dynamic Handle(IAsset asset)
+        public dynamic Handle(IAsset asset, AssetTarget target)
         {
             var beingDefinitionAsset = (BeingDefinitionAsset)asset;
 

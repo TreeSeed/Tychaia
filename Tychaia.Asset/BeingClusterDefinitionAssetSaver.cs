@@ -15,7 +15,7 @@ namespace Tychaia.Asset
             return asset is BeingClusterDefinitionAsset;
         }
 
-        public dynamic Handle(IAsset asset)
+        public dynamic Handle(IAsset asset, AssetTarget target)
         {
             var beingClusterDefinitionAsset = (BeingClusterDefinitionAsset)asset;
 

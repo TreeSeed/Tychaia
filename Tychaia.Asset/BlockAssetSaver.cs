@@ -14,7 +14,7 @@ namespace Tychaia.Asset
             return asset is BlockAsset;
         }
 
-        public dynamic Handle(IAsset asset)
+        public dynamic Handle(IAsset asset, AssetTarget target)
         {
             var blockAsset = (BlockAsset)asset;
 

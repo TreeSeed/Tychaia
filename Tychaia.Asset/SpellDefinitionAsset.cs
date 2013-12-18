@@ -36,6 +36,9 @@ namespace Tychaia.Asset
             this.EffectPerLevel = effect;
         }
 
+        public bool SourceOnly { get { return false; } }
+        public bool CompiledOnly { get { return false; } }
+
         // Depending on ability:
         // Auras for example: Target = Area, Type = The type of effect, Element = null, Range = The radius of the area, Effect = The effect of the aura
         public string Name { get; private set; }

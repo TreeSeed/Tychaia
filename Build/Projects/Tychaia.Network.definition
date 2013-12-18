@@ -13,7 +13,7 @@
     <Reference Include="Tychaia.Runtime" />
     <Reference Include="Tychaia.Data" />
     <Reference Include="Tychaia.Data.Serializer" />
-    <Reference Include="protobuf-net" />
+    <Reference Include="protobuf-net-client" />
   </References>
   <Files>
     <Compile Include="DependencyInjectedDxFactory.cs" />

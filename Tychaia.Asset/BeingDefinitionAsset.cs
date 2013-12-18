@@ -47,6 +47,9 @@ namespace Tychaia.Asset
             this.Enemy = enemy;
         }
 
+        public bool SourceOnly { get { return false; } }
+        public bool CompiledOnly { get { return false; } }
+
         #region Asset Properties
 
         public TextureAsset Texture

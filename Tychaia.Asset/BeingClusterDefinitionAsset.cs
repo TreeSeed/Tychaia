@@ -39,6 +39,9 @@ namespace Tychaia.Asset
             this.Minimum = minimum;
             this.Maximum = maximum;
         }
+        
+        public bool SourceOnly { get { return false; } }
+        public bool CompiledOnly { get { return false; } }
 
         #region Asset Properties
 

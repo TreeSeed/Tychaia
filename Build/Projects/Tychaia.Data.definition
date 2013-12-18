@@ -8,7 +8,7 @@
   </Properties>
   <References>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="protobuf-net" />
+    <Reference Include="protobuf-net-client" />
   </References>
   <Files>
     <Compile Include="Cell.cs" />
