@@ -64,7 +64,7 @@ namespace CrashReport
             }
 
             // Create a conduit client
-            var client = new ConduitClient("http://code.redpointsoftware.com.au/api/");
+            var client = new ConduitClient("https://code.redpointsoftware.com.au/api/");
             client.User = username;
             client.Certificate = certificate;
 
