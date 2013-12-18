@@ -15,14 +15,21 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Beings)]
     [FlowDesignerName("Initial Beings")]
-    public class AlgorithmInitialBeings : Algorithm<Cell>
+    public class AlgorithmInitialBeings : Algorithm<int, Cell>
     {
         public AlgorithmInitialBeings()
         {
             this.Limit = 0.9;
             this.GuaranteeStartingPoint = true;
-            this.ColorSet = ColorScheme.Beings;
             this.PlacementType = BeingType.Enemies;
+        }
+        
+        public override string[] InputNames
+        {
+            get
+            {
+                return new[] { "Area Level" };
+            }
         }
 
         [DataMember]
@@ -36,17 +43,20 @@ namespace Tychaia.ProceduralGeneration
         public bool GuaranteeStartingPoint { get; set; }
 
         [DataMember]
-        [DefaultValue(ColorScheme.Beings)]
-        [Description("The color scheme to use.")]
-        public ColorScheme ColorSet { get; set; }
-
-        [DataMember]
         [DefaultValue(BeingType.Enemies)]
         [Description("Determines if you spawn \"Enemies\" or \"NPCs\".")]
         public BeingType PlacementType
         {
             get;
             set;
+        }
+
+        public override bool[] InputIs2D
+        {
+            get
+            {
+                return new[] { true };
+            }
         }
 
         public override bool Is2DOnly
@@ -56,6 +66,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override void ProcessCell(
             IRuntimeContext context,
+            int[] input,
             Cell[] output,
             long x,
             long y,
@@ -70,44 +81,30 @@ namespace Tychaia.ProceduralGeneration
             int oy,
             int oz)
         {
-            var numBeings = 0;
-            if (this.GuaranteeStartingPoint && x == 0 && y == 0)
-                numBeings = 0;
-            else if (AlgorithmUtility.GetRandomDouble(context.Seed, x, y, 0, context.Modifier) > this.Limit)
-                numBeings = 1;
-            //// numBeings = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, this.LowerValue, this.HigherValue, context.Modifier);
-            else
-                numBeings = 0;
-
+            // TODO: Figure out how this should be done.
+            // var BeingClusterList = context.PreceduralAssetManager.GetAll("BeingClusterDefinitionAsset");
+            var beingCluster = string.Empty;
             var outputCell = new Cell();
 
-            // output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] 
+            // foreach (var cluster in BeingClusterList)
+            // if (input > cluster.level)
+            // remove cluster;
+
+            // if (!(this.GuaranteeStartingPoint && x == 0 && y == 0) && AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, BeingClusterList.Count(), context.Modifier) > this.Limit)
+            // {
+            // outputCell.ClusterDefinitionAssetName = 
+            // etc
+            // }
+
+            // output[(i + ox) + ((j + oy) * width)] = outputCell;
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            if (this.ColorSet == ColorScheme.Perlin)
-            {
-                if (string.IsNullOrEmpty(value.ClusterDefinitionAssetName))
-                    return Color.White;
-                return Color.Black;
-            }
+            if (string.IsNullOrEmpty(value.ClusterDefinitionAssetName))
+                return Color.White;
 
-            if (this.ColorSet == ColorScheme.Beings)
-            {
-                if (string.IsNullOrEmpty(value.ClusterDefinitionAssetName))
-                    return Color.White;
-                
-                return Color.Red;
-            }
-
-            return Color.Gray;
-        }
-        
-        public enum ColorScheme
-        {
-            Beings,
-            Perlin,
+            return Color.FromArgb(value.ClusterDefinitionAssetName.GetHashCode());
         }
 
         public enum BeingType

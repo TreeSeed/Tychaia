@@ -41,9 +41,11 @@ namespace Tychaia.Data
         public int Count8;
         [ProtoMember(13)]
         public int Count9;
+        [ProtoMember(14)]
+        public bool ClusterComplete;
 
         // Beings Generation
-        [ProtoMember(14)]
+        [ProtoMember(15)]
         public int BeingHealth;
     }
 }
