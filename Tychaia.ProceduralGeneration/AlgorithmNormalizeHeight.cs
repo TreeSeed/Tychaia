@@ -68,25 +68,26 @@ namespace Tychaia.ProceduralGeneration
 
             var value = input[(i + ox) + ((j + oy) * width)];
 
-            if (east == value && west == value && north == value && south <= value - 2)
+            if ((east == value || west == value || north == value) && south <= value - 2)
             {
                 value -= 1;
             }
 
-            if (east == value && west == value && north <= value - 2 && south == value)
+            if ((east == value || west == value || south == value) && north <= value - 2)
             {
                 value -= 1;
             }
 
-            if (east == value && west <= value - 2 && north == value && south == value)
+            if (west <= value - 2 && (east == value || north == value || south == value))
             {
                 value -= 1;
             }
 
-            if (east <= value - 2 && west == value && north == value && south == value)
+            if (east <= value - 2 && (west == value || north == value || south == value))
             {
                 value -= 1;
             }
+            
 
             output[(i + ox) + ((j + oy) * width)] = value;
         }
