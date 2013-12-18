@@ -26,7 +26,7 @@ namespace Tychaia
             ISkin skin) : base(skin)
         {
             this.m_ViewportMode = viewportMode;
-            this.SidebarWidth = 400;
+            this.SidebarWidth = 300;
 
             this.m_InventoryManager = gameUIFactory.CreateInventoryManager();
 
