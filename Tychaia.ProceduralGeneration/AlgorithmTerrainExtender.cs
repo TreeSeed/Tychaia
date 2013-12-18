@@ -10,11 +10,12 @@ using System.Runtime.Serialization;
 namespace Tychaia.ProceduralGeneration
 {
     [DataContract]
-    [FlowDesignerMajorCategory(FlowMajorCategory.General)]
-    [FlowDesignerCategory(FlowCategory.Terrain)]
+    [FlowDesignerMajorCategory(FlowMajorCategory.Undefined)]
+    [FlowDesignerCategory(FlowCategory.Buggy)]
     [FlowDesignerName("Terrain Extender")]
     public class AlgorithmTerrainExtender : Algorithm<int, int>
     {
+    // This layer will end up screwing the water depth.
         public AlgorithmTerrainExtender()
         {
             this.Limit = 0.8;
@@ -37,16 +38,26 @@ namespace Tychaia.ProceduralGeneration
         [Description("Show this layer as 2D in the editor.")]
         public bool Layer2D { get; set; }
 
+        public override int[] RequiredXBorder
+        {
+            get { return new[] { 1 }; }
+        }
+
+        public override int[] RequiredYBorder
+        {
+            get { return new[] { 1 }; }
+        }
+        
         public override bool Is2DOnly
         {
-            get { return this.Layer2D; }
+            get { return true; }
         }
 
         public override bool[] InputIs2D
         {
             get
             {
-                return new[] { this.Layer2D };
+                return new[] { true };
             }
         }
 
@@ -75,23 +86,24 @@ namespace Tychaia.ProceduralGeneration
             int oy,
             int oz)
         {
-            var self = input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
+            var east = input[(i + 1 + ox) + ((j + oy) * width)];
+            var west = input[(i - 1 + ox) + ((j + oy) * width)];
+            var north = input[(i + ox) + ((j - 1 + oy) * width)];
+            var south = input[(i + ox) + ((j + 1 + oy) * width)];
+            
+            var self = input[(i + ox) + ((j + oy) * width)];
             var value = self;
 
-            if (!this.Layer2D && AlgorithmUtility.GetRandomDouble(context.Seed, x, y, z, context.Modifier) > this.Limit)
-            {
-                if (self == -1 || self == 0)
-                {
-                    value = 1;
-                }
-            }
-            else if (this.Layer2D && AlgorithmUtility.GetRandomDouble(context.Seed, x, y, 0, context.Modifier) > this.Limit)
-            {
-                if (self == -1 || self == 0)
-                {
-                    value = 1;
-                }
-            }
+            if (self == -1 && AlgorithmUtility.GetRandomDouble(context.Seed, x, y, 0, context.Modifier) > this.Limit)
+                value = 1;
+            else if (east == -1 && self < 0 && AlgorithmUtility.GetRandomDouble(context.Seed, x + 1, y, 0, context.Modifier) > this.Limit)
+                value = -1;
+            else if (west == -1 && self < 0 && AlgorithmUtility.GetRandomDouble(context.Seed, x - 1, y, 0, context.Modifier) > this.Limit)
+                value = -1;
+            else if (north == -1 && self < 0 && AlgorithmUtility.GetRandomDouble(context.Seed, x, y - 1, 0, context.Modifier) > this.Limit)
+                value = -1;
+            else if (south == -1 && self < 0 && AlgorithmUtility.GetRandomDouble(context.Seed, x, y + 1, 0, context.Modifier) > this.Limit)
+                value = -1;
 
             output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = value;
         }

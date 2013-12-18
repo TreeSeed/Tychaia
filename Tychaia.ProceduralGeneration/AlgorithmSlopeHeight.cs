@@ -12,10 +12,10 @@ namespace Tychaia.ProceduralGeneration
     [DataContract]
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Manipulation)]
-    [FlowDesignerName("Normalize Terrain")]
-    public class AlgorithmNormalizeHeight : Algorithm<int, int>
+    [FlowDesignerName("Slope Terrain")]
+    public class AlgorithmSlopeHeight : Algorithm<int, int>
     {
-        public AlgorithmNormalizeHeight()
+        public AlgorithmSlopeHeight()
         {
         }
 
@@ -68,22 +68,22 @@ namespace Tychaia.ProceduralGeneration
 
             var value = input[(i + ox) + ((j + oy) * width)];
 
-            if ((east == value || west == value || north == value) && (value >= 0 ? (south <= value - 2) : (south >= value + 2)))
+            if (east == value && west == value && north == value && (value >= 0 ? (south <= value - 2) : (south >= value + 2)))
             {
                 value -= value >= 0 ? 1 : -1;
             }
 
-            if ((east == value || west == value || south == value) && (value >= 0 ? (north <= value - 2) : (north >= value + 2)))
+            if (east == value && west == value && south == value && (value >= 0 ? (north <= value - 2) : (north >= value + 2)))
             {
                 value -= value >= 0 ? 1 : -1;
             }
 
-            if ((value >= 0 ? (west <= value - 2) : (west >= value + 2)) && (east == value || north == value || south == value))
+            if ((value >= 0 ? (west <= value - 2) : (west >= value + 2)) && east == value && north == value && south == value)
             {
                 value -= value >= 0 ? 1 : -1;
             }
 
-            if ((value >= 0 ? (east <= value - 2) : (east >= value + 2)) && (west == value || north == value || south == value))
+            if ((value >= 0 ? (east <= value - 2) : (east >= value + 2)) && west == value && north == value && south == value)
             {
                 value -= value >= 0 ? 1 : -1;
             }

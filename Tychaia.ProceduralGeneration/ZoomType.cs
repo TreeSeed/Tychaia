@@ -13,6 +13,7 @@ namespace Tychaia.ProceduralGeneration
         Square,
         Smooth,
         Fuzzy,
-        Spread
+        Spread,
+        SmoothSpread
     }
 }

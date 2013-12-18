@@ -38,6 +38,7 @@
     <Compile Include="AlgorithmDistanceFrom0.cs" />
     <Compile Include="AlgorithmEdgeDetection.cs" />
     <Compile Include="AlgorithmExtend2D.cs" />
+    <Compile Include="AlgorithmFlattenTerrain.cs" />
     <Compile Include="AlgorithmFormResult.cs" />
     <Compile Include="AlgorithmGenerateBlockInfo.cs" />
     <Compile Include="AlgorithmHeightChange.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="AlgorithmReduceWaterDepth.cs" />
     <Compile Include="AlgorithmRemoveSinglePoints.cs" />
     <Compile Include="AlgorithmResult.cs" />
+    <Compile Include="AlgorithmSlopeHeight.cs" />
     <Compile Include="AlgorithmSmooth.cs" />
     <Compile Include="AlgorithmSmoothByInput.cs" />
     <Compile Include="AlgorithmTerrainExtender.cs" />

@@ -65,6 +65,8 @@ namespace Tychaia.ProceduralGeneration
                 result = "block.Water";
             else if (value == int.MaxValue)
                 result = null;
+            else if (input[(i + ox) + ((j + oy) * width) + ((k + oz + 1) * width * height)] == int.MaxValue && z == 1)
+                result = "block.Sand";
             else if (input[(i + ox) + ((j + oy) * width) + ((k + oz + 1) * width * height)] == int.MaxValue)
                 result = "block.Grass";
             else

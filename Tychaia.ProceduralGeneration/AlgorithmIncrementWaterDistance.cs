@@ -118,46 +118,14 @@ namespace Tychaia.ProceduralGeneration
 
             if (this.Initial)
             {
-                int result;
-                if (v11 > 0)
-                    result = v11;
-                else if (
-                    (v00 > 0
-                        ? 1
-                        : 0 +
-                          v01 > 0
-                            ? 1
-                            : 0 +
-                              v02 > 0
-                                ? 1
-                                : 0 +
-                                  v10 > 0
-                                    ? 1
-                                    : 0 +
-                                      v12 > 0
-                                        ? 1
-                                        : 0 +
-                                          v20 > 0
-                                            ? 1
-                                            : 0 +
-                                              v21 > 0
-                                                ? 1
-                                                : 0 +
-                                                  v22 > 0
-                                                    ? 1
-                                                    : 0) > 0)
-                    result = 0;
-                else
-                    result = v11;
-
-                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = result;
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = v11;
             }
             else
             {
                 var mod = 0;
                 if ((v00 < v11 || v20 < v11 || v02 < v11 || v22 < v11) && v11 > 0)
                     mod = 1;
-                else if (v11 < 0 && (v01 > v11 || v10 > v11 || v21 > v11 || v12 > v11))
+                else if (v11 < 0 && (v20 > v11 || v02 > v11 || v22 > v11 || v00 > v11))
                     mod = -1;
 
                 output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = (v11 * 2) - mod;
@@ -183,13 +151,13 @@ namespace Tychaia.ProceduralGeneration
             var minValue = -(1 << this.MaxTerrainBinary);
             int a;
             if (value < 0)
-                a = 215 - (int)(value / (double) minValue * 180);
+                a = 215 - (int)(value / (double)minValue * 180);
             else
-                a = 64 + (int)(value / (double) maxValue * 127);
+                a = 64 + (int)(value / (double)maxValue * 127);
             if (a < 0 || a > 255)
                 return Color.Red;
 
-            return Color.FromArgb (0, value < 0 ? 0 : a, value < 0 ? a : 0);
+            return Color.FromArgb(0, value < 0 ? 0 : a, value < 0 ? a : 0);
         }
 
         public enum ColorScheme

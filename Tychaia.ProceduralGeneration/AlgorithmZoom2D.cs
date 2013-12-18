@@ -76,6 +76,8 @@ namespace Tychaia.ProceduralGeneration
             get { return true; }
         }
 
+// add modifier so that it won't constantly shift the same thing?
+// only a temporary solution?
         public override void ProcessCell(
             IRuntimeContext context,
             int[] input,
@@ -105,9 +107,90 @@ namespace Tychaia.ProceduralGeneration
             }
             else if (this.Mode == ZoomType.Spread)
             {
-                var remainder = current % 4;
+                var remainder = current % 2;
                 int selected = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, 4);
-                output[(i + ox) + ((j + oy) * width)] = (selected < remainder ? 1 : 0) + (current / 4);
+                var selected2 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, 4);
+                
+                var ymod = y % 2 == 0;
+                var xmod = x % 2 == 0;
+                
+                var ocx_e = (x - i) % 2 == 0 ? ((i + 1) % 2 == -1 ? -1 : 0) : ((i + 1) % 2 == 1 ? 1 : 0);
+                var east =
+                    input[(((i + 1) / 2) + ox + ocx_e) + (((j / 2) + oy + ocy) * width)];
+
+                var ocy_s = (y - j) % 2 == 0 ? ((j + 1) % 2 == -1 ? -1 : 0) : ((j + 1) % 2 == 1 ? 1 : 0);
+
+                switch (selected2)
+                {
+                    case 0:
+                        output[(i + ox) + ((j + oy) * width)] = (selected < remainder ? remainder : 0) + (current / 2);
+                        break;
+                    case 1:
+                        var south = input[((i / 2) + ox + ocx) + ((((j + 1) / 2) + oy + ocy_s) * width)];
+
+                        if (xmod)
+                        {
+                            remainder = (south + current) % 2;
+                            output[(i + ox) + ((j + oy) * width)] = (selected < remainder ? remainder : 0) + ((south + current) / 2);
+                        }
+                        else if (ymod)
+                        {
+                            remainder = (east + current) % 2;
+                            output[(i + ox) + ((j + oy) * width)] = (selected < remainder ? remainder : 0) + ((east + current) / 2);
+                        }
+                        else
+                        {
+                            remainder = (south + current) % 2;
+                            output[(i + ox) + ((j + oy) * width)] = (selected < remainder ? remainder : 0) + ((south + current) / 2);
+                        }
+                        
+                        break;
+                    case 2:
+                        remainder = (east + current) % 2;
+                        output[(i + ox) + ((j + oy) * width)] = (selected < remainder ? remainder : 0) + ((east + current) / 2);
+                        break;
+                    case 3:
+                        var southEast = input[(((i + 1) / 2) + ox + ocx_e) + ((((j + 1) / 2) + oy + ocy_s) * width)];
+
+                        remainder = (southEast + current) % 2;
+                        output[(i + ox) + ((j + oy) * width)] = (selected < remainder ? remainder : 0) + ((southEast + current) / 2);
+                        break;
+                }
+            }
+            else if (this.Mode == ZoomType.SmoothSpread)
+            {
+                var remainder = current % 2;
+                var selected = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, 4);
+                
+                var ymod = y % 2 == 0;
+                var xmod = x % 2 == 0;
+                
+                var ocx_e = (x - i) % 2 == 0 ? ((i + 1) % 2 == -1 ? -1 : 0) : ((i + 1) % 2 == 1 ? 1 : 0);
+                var east = input[(((i + 1) / 2) + ox + ocx_e) + (((j / 2) + oy + ocy) * width)];
+                var ocy_s = (y - j) % 2 == 0 ? ((j + 1) % 2 == -1 ? -1 : 0) : ((j + 1) % 2 == 1 ? 1 : 0);
+                var south = input[((i / 2) + ox + ocx) + ((((j + 1) / 2) + oy + ocy_s) * width)];
+
+                if (!xmod && !ymod)
+                {
+                    var southEast = input[(((i + 1) / 2) + ox + ocx_e) + ((((j + 1) / 2) + oy + ocy_s) * width)];
+                    remainder = (southEast + current) % 2;
+                    output[(i + ox) + ((j + oy) * width)] = (selected < remainder ? remainder : 0) + ((southEast + current) / 2);
+                } 
+                else if (xmod)
+                {
+                    remainder = (south + current) % 2;
+                    output[(i + ox) + ((j + oy) * width)] = (selected < remainder ? remainder : 0) + ((south + current) / 2);
+                } 
+                else if (ymod)
+                {
+                    remainder = (east + current) % 2;
+                    output[(i + ox) + ((j + oy) * width)] = (selected < remainder ? remainder : 0) + ((east + current) / 2);
+                } 
+                else
+                {
+                    remainder = current % 2;
+                    output[(i + ox) + ((j + oy) * width)] = selected < remainder ? remainder : 0 + (current / 2);
+                }
             }
             else
             {

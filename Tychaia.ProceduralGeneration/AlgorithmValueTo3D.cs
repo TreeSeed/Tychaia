@@ -64,8 +64,10 @@ namespace Tychaia.ProceduralGeneration
             int oy,
             int oz)
         {
-            if (input[(i + ox) + ((j + oy) * width)] >= z)
-                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = (int) z;
+            if (input[(i + ox) + ((j + oy) * width)] >= z && input[(i + ox) + ((j + oy) * width)] > 0)
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = (int)z;
+            else if (input[(i + ox) + ((j + oy) * width)] < 0 && input[(i + ox) + ((j + oy) * width)] >= z - 1)
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = (int)z - 1;
             else
                 output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = int.MaxValue;
         }
