@@ -9,7 +9,6 @@ using System.Reflection;
 using System.Windows.Forms;
 using Ninject;
 using Protogame;
-using ProtogameAssetManager;
 using Tychaia.Asset;
 using Tychaia.Globals;
 using Tychaia.Network;

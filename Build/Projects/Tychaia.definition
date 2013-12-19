@@ -2,7 +2,6 @@
 <Project Name="Tychaia" Path="Tychaia" Type="XNA">
   <Properties>
     <Property Name="PostProcessWithDx" Value="True" />
-    <Property Name="ForceArchitecture" Value="x86" />
   </Properties>
   <References>
     <Reference Include="System" />
@@ -12,7 +11,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Protogame" />
-    <Reference Include="ProtogameAssetManager" />
     <Reference Include="Tychaia.Asset" />
     <Reference Include="Tychaia.Globals" />
     <Reference Include="Tychaia.Game" />

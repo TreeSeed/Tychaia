@@ -28,6 +28,7 @@ namespace CrashReport
             }
 
             // Test
+            /*
             try
             {
                 throw new NotImplementedException();
@@ -36,6 +37,7 @@ namespace CrashReport
             {
                 CrashReporter.Record(e);
             }
+            */
             
             // Make sure it is deleted after test
             DeleteLock();
