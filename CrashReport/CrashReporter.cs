@@ -44,8 +44,8 @@ namespace CrashReport
                 foreach (var frame in frames)
                 {
                     var method = frame.GetMethod();
-                    var type = (method == null ? null : method.DeclaringType);
-                    var name = (type == null ? null : type.FullName);
+                    var type = method == null ? null : method.DeclaringType;
+                    var name = type == null ? null : type.FullName;
                     var file = frame.GetFileName();
                     var line = frame.GetFileLineNumber();
                     var column = frame.GetFileColumnNumber();
@@ -106,6 +106,17 @@ namespace CrashReport
             }
             else
             {
+                var methodPrefix = string.Empty;
+                var methodName = string.Empty;
+                if (e.TargetSite != null)
+                {
+                    methodName = e.TargetSite.Name;
+                    if (e.TargetSite.DeclaringType != null)
+                    {
+                        methodPrefix = e.TargetSite.DeclaringType.FullName;
+                    }
+                }
+
                 var message = @"**Exception:**
 " + e.GetType().FullName + ": " + e.Message + @"
 
@@ -116,7 +127,7 @@ namespace CrashReport
 " + e.Source + @"
 
 **Method:**
-" + e.TargetSite.DeclaringType.FullName + "." + e.TargetSite.Name + @"
+" + methodPrefix + "." + methodName + @"
 
 **Full Information:**
 ```lang=none, lines=20
