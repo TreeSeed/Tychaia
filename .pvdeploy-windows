@@ -1,0 +1,9 @@
+# Include our game output.
+include ^Tychaia/bin/Debug/(.*?).(exe|dll)$
+include ^Tychaia/bin/Debug/(.*?).(exe|dll)\.config$
+include ^Tychaia\.Content/compiled/Windows/(.*)$
+include ^Tychaia/bin/Debug/WorldConfig\.xml$
+
+# Rewrite to be relative to root.
+rewrite ^Tychaia/bin/Debug/(.*?)$ $1
+rewrite ^Tychaia\.Content/compiled/Windows/(.*?)$ Content/$1

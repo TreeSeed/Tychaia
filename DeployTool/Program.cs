@@ -15,7 +15,7 @@ namespace DeployTool
         public static void Main(string[] args)
         {
             var target = args[0];
-            var filter = FileFilterParser.Parse(".pvdeploy", GetRecursiveFilesInCwd());
+            var filter = FileFilterParser.Parse(args[1], GetRecursiveFilesInCwd());
 
             using (var file = new FileStream(target, FileMode.Create))
             {
