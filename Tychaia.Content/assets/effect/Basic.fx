@@ -151,11 +151,4 @@ float4 PSBasicTx(VSOutputTx pin) : SV_Target0
     return color;
 }
 
-technique Ambient
-{
-    pass Pass1
-    {
-        VertexShader = compile vs_4_0_level_9_1 VSBasicTx();
-        PixelShader = compile ps_4_0_level_9_1 PSBasicTx();
-    }
-}
+TECHNIQUE(Basic, VSBasicTx, PSBasicTx)
