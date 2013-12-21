@@ -61,7 +61,11 @@ namespace Tychaia.ProceduralGeneration
         {
             var value = input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
             string result = null;
-            if (value <= 0)
+            if (value <= 0 && value >= -5)
+                result = "block.Sand";
+            else if (value <= -5)
+                result = "block.Dirt";
+            else if (value == int.MaxValue && z <= 0)
                 result = "block.Water";
             else if (value == int.MaxValue)
                 result = null;
@@ -78,6 +82,8 @@ namespace Tychaia.ProceduralGeneration
         {
             switch ((string)value.BlockAssetName)
             {
+                case "block.Sand":
+                    return Color.Yellow;
                 case "block.Grass":
                     return Color.Green;
                 case "block.Dirt":
