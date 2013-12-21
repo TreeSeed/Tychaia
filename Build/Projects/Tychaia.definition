@@ -11,6 +11,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Protogame" />
+    <Reference Include="ProtogameAssetManager" />
     <Reference Include="Tychaia.Asset" />
     <Reference Include="Tychaia.Globals" />
     <Reference Include="Tychaia.Game" />
@@ -48,6 +49,7 @@
     <Compile Include="Commands\ProfilingCommand.cs" />
     <Compile Include="Commands\SaveCommand.cs" />
     <Compile Include="Commands\ServerCommand.cs" />
+    <Compile Include="Commands\ShaderCommand.cs" />
     <Compile Include="Commands\StatsCommand.cs" />
     <Compile Include="Events\MoveBackwardAction.cs" />
     <Compile Include="Events\MoveForwardAction.cs" />

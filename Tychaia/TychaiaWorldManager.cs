@@ -13,6 +13,8 @@ namespace Tychaia
     public class TychaiaWorldManager : IWorldManager
     {
         private readonly IViewportMode m_ViewportMode;
+        private readonly EffectAsset m_BasicEffectAsset;
+
 #if DEBUG
         private readonly TychaiaProfilerEntity m_TychaiaProfilerEntity;
         private readonly TychaiaProfiler m_TychaiaProfiler;
@@ -21,22 +23,26 @@ namespace Tychaia
         public TychaiaWorldManager(
             TychaiaProfilerEntity tychaiaProfilerEntity,
             IViewportMode viewportMode,
-            IConsole console)
+            IConsole console,
+            IAssetManagerProvider assetManagerProvider)
         {
             this.m_TychaiaProfilerEntity = tychaiaProfilerEntity;
             this.m_TychaiaProfiler = this.m_TychaiaProfilerEntity.Profiler;
             this.m_ViewportMode = viewportMode;
             this.m_Console = console;
+            this.m_BasicEffectAsset = assetManagerProvider.GetAssetManager().Get<EffectAsset>("effect.Basic");
         }
 #else
         private readonly IConsole m_Console;
 
         public TychaiaWorldManager(
             IViewportMode viewportMode,
-            IConsole console)
+            IConsole console,
+            IAssetManagerProvider assetManagerProvider)
         {
             this.m_ViewportMode = viewportMode;
             this.m_Console = console;
+            this.m_BasicEffectAsset = assetManagerProvider.GetAssetManager().Get<EffectAsset>("effect.Basic");
         }
 #endif
 
@@ -53,6 +59,8 @@ namespace Tychaia
             game.RenderContext.GraphicsDevice.Viewport = newViewport;
 
             game.RenderContext.Is3DContext = true;
+
+            game.RenderContext.PushEffect(this.m_BasicEffectAsset.Effect);
 
 #if DEBUG
             using (this.m_TychaiaProfiler.Measure("tychaia-render_3d"))
@@ -83,6 +91,8 @@ namespace Tychaia
                 }
             }
 #endif
+
+            game.RenderContext.PopEffect();
 
             game.RenderContext.GraphicsDevice.Viewport = viewport;
 
@@ -145,7 +155,10 @@ namespace Tychaia
             game.RenderContext.World = Matrix.Identity;
             game.RenderContext.View = Matrix.Identity;
             game.RenderContext.Projection = halfPixelOffset * projection;
-            ((BasicEffect)game.RenderContext.Effect).LightingEnabled = false;
+            if (game.RenderContext.Effect is BasicEffect)
+            {
+                ((BasicEffect)game.RenderContext.Effect).LightingEnabled = false;
+            }
             game.RenderContext.EnableVertexColors();
 
             // Render profiler.

@@ -30,7 +30,13 @@ namespace Tychaia
         private string m_Message = string.Empty;
         private Process m_Process;
         private bool m_NormalShutdown = false;
-    
+
+        private IGameContext m_GameContext;
+
+        private volatile bool m_PerformFinalAction = false;
+
+        private Action m_FinalAction;
+
         public ConnectWorld(
             IKernel kernel,
             IDxFactory dxFactory,
@@ -79,8 +85,15 @@ namespace Tychaia
                 () => this.m_Message = "Retrieving initial game state...",
                 () => initial = state.LoadInitialState(),
                 () => this.m_Message = "Starting client...",
-                () => this.TargetWorld = this.GameContext.CreateWorld<IWorldFactory>(x => x.CreateTychaiaGameWorld(state, initial, cleanup))
+                () => this.m_PerformFinalAction = true
             };
+            this.m_FinalAction =
+                () =>
+                this.TargetWorld =
+                this.GameContext.CreateWorld<IWorldFactory>(x => x.CreateTychaiaGameWorld(state, initial, cleanup));
+
+            var thread = new Thread(this.Run) { IsBackground = true };
+            thread.Start();
             
             AppDomain.CurrentDomain.ProcessExit += (sender, e) => 
             {
@@ -115,15 +128,20 @@ namespace Tychaia
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
             base.Update(gameContext, updateContext);
-            
-            if (this.m_ActionStep < this.m_Actions.Length)
+
+            this.m_GameContext = gameContext;
+
+            if (this.m_PerformFinalAction)
             {
-                this.m_Actions[this.m_ActionStep++]();
+                this.m_FinalAction();
             }
-            
-            if (this.m_ActionStep >= this.m_Actions.Length && this.TargetWorld == null)
+        }
+
+        public void Run()
+        {
+            foreach (var action in this.m_Actions)
             {
-                throw new InvalidOperationException();
+                action();
             }
         }
         
@@ -205,10 +223,7 @@ namespace Tychaia
             this.m_Process.Exited += (sender, e) => 
             {
                 Console.WriteLine("server exited");
-                if (!this.m_NormalShutdown)
-                {
-                    throw new InvalidOperationException("server exited, game exiting too");
-                }
+                this.m_GameContext.SwitchWorld<TitleWorld>();
             };
             this.m_Process.Start();
         }

@@ -504,15 +504,6 @@ h2 + .row {
   margin-top: 5px;
 }
 
-/* Example sites showcase */
-.example-sites {
-  xmargin-left: 20px;
-}
-.example-sites img {
-  max-width: 100%;
-  margin: 0 auto;
-}
-
 .scrollspy-example {
   height: 200px;
   overflow: auto;

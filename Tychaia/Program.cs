@@ -77,7 +77,7 @@ namespace Tychaia
             
             // Modules after this point require IPersistentStorage, so we need to parse our command line
             // and then load the server module if needed, to rebind previous bindings.
-            AssetManagerClient.AcceptArgumentsAndSetup<LocalAssetManagerProvider>(kernel, args, options);
+            AssetManagerClient.AcceptArgumentsAndSetup<GameAssetManagerProvider>(kernel, args, options);
             if (isServer)
                 kernel.Load<TychaiaServerIoCModule>();
                 

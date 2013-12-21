@@ -15,6 +15,8 @@ namespace Tychaia
     {
         private readonly TextureAtlasAsset m_TextureAtlasAsset;
 
+        private readonly EffectAsset m_TerrainEffectAsset;
+
         public ClientRuntimeChunk(
             ILevel level,
             ChunkOctree octree,
@@ -40,6 +42,7 @@ namespace Tychaia
                 z)
         {
             this.m_TextureAtlasAsset = this.AssetManager.Get<TextureAtlasAsset>("atlas");
+            this.m_TerrainEffectAsset = this.AssetManager.Get<EffectAsset>("effect.Lighting");
         }
         
         public override void Render(IGameContext gameContext, IRenderContext renderContext)
@@ -55,6 +58,8 @@ namespace Tychaia
 
             if (this.VertexBuffer != null && this.IndexBuffer != null)
             {
+                renderContext.PushEffect(this.m_TerrainEffectAsset.Effect);
+
                 renderContext.EnableTextures();
                 renderContext.SetActiveTexture(this.m_TextureAtlasAsset.TextureAtlas.Texture);
                 renderContext.GraphicsDevice.Indices = this.IndexBuffer;
@@ -65,6 +70,8 @@ namespace Tychaia
                     pass.Apply();
                     renderContext.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, this.VertexBuffer.VertexCount, 0, this.IndexBuffer.IndexCount / 3);
                 }
+
+                renderContext.PopEffect();
             }
         }
 
