@@ -1,5 +1,6 @@
 # Include our game output.
 include ^Tychaia/bin/Debug/(.*?).(exe|dll)$
+include ^Tychaia/bin/Debug/(.*?).(exe|dll)\.mdb$
 include ^Tychaia/bin/Debug/(.*?).(exe|dll)\.config$
 include ^Tychaia\.Content/compiled/Linux/(.*)$
 include ^Tychaia/bin/Debug/WorldConfig\.xml$
