@@ -11,6 +11,8 @@
     <Reference Include="ICSharpCode.NRefactory" />
     <Reference Include="Ninject" />
     <Reference Include="Ninject.MockingKernel" />
+    <Reference Include="Protogame" />
+    <Reference Include="Tychaia.Content" />
   </References>
   <Files>
     <Compile Include="AlgorithmConstantTest.cs" />

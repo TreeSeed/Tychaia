@@ -21,6 +21,7 @@
   <Files>
     <Compile Include="AlgorithmAdd.cs" />
     <Compile Include="AlgorithmAverage.cs" />
+    <Compile Include="AlgorithmBeingsComplete.cs" />
     <Compile Include="AlgorithmBeingsZoom2D.cs" />
     <Compile Include="AlgorithmBiomes.cs" />
     <Compile Include="AlgorithmBiomesSimple.cs" />

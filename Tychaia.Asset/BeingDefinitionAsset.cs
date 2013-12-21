@@ -33,7 +33,7 @@ namespace Tychaia.Asset
             string displayNameLanguageName,
             string descriptionLanguageName,
             string textureName,
-            string healthPerLevel,
+            int healthPerLevel,
             string movementSpeed,
             bool enemy)
         {
@@ -96,7 +96,7 @@ namespace Tychaia.Asset
         #endregion
 
         public string Name { get; private set; }
-        public string HealthPerLevel { get; set; }
+        public int HealthPerLevel { get; set; }
         public string MovementSpeed { get; set; }
         public bool Enemy { get; set; }
         //// public List<SpellDefinitionAsset> Spells { get; set; }

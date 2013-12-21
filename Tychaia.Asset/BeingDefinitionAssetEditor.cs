@@ -47,11 +47,16 @@ namespace Tychaia.Asset
             };
             this.m_HealthPerLevelTextBox = new TextBox
             {
-                Text = this.m_Asset.HealthPerLevel
+                Text = this.m_Asset.HealthPerLevel.ToString()
             };
             this.m_HealthPerLevelTextBox.TextChanged += (sender, e) =>
             {
-                this.m_Asset.HealthPerLevel = this.m_HealthPerLevelTextBox.Text;
+                var heathPerLevel = -1;
+                if (int.TryParse(this.m_HealthPerLevelTextBox.Text, out heathPerLevel))
+                {
+                    this.m_Asset.HealthPerLevel = heathPerLevel;
+                }
+
                 assetManager.Save(this.m_Asset);
             };
             this.m_MovementSpeedTextBox = new TextBox

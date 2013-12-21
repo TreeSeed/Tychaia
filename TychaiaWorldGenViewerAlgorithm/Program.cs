@@ -6,6 +6,7 @@
 using System;
 using System.Windows.Forms;
 using Ninject;
+using Protogame;
 using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
 
@@ -23,6 +24,10 @@ namespace TychaiaWorldGenViewerAlgorithm
             kernel.Load<TychaiaGlobalIoCModule>();
             kernel.Load<TychaiaProceduralGenerationIoCModule>();
             kernel.Load<TychaiaWorldGenViewerAlgorithmIoCModule>();
+            kernel.Load<Protogame3DIoCModule>();
+            kernel.Load<ProtogameAssetIoCModule>();
+            kernel.Bind<IAssetContentManager>().To<NullAssetContentManager>();
+            kernel.Bind<IAssetManagerProvider>().To<LocalAssetManagerProvider>();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

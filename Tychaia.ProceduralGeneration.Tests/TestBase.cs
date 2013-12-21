@@ -4,6 +4,7 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using Ninject;
+using Protogame;
 using Tychaia.Globals;
 using Tychaia.ProceduralGeneration.Compiler;
 
@@ -16,6 +17,10 @@ namespace Tychaia.ProceduralGeneration.Tests
             var kernel = new StandardKernel();
             kernel.Load<TychaiaGlobalIoCModule>();
             kernel.Load<TychaiaProceduralGenerationIoCModule>();
+            kernel.Load<Protogame3DIoCModule>();
+            kernel.Load<ProtogameAssetIoCModule>();
+            kernel.Bind<IAssetContentManager>().To<NullAssetContentManager>();
+            kernel.Bind<IAssetManagerProvider>().To<LocalAssetManagerProvider>();
             return kernel.Get<IRuntimeLayerFactory>().CreateRuntimeLayer(algorithm);
         }
         

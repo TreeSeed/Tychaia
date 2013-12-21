@@ -25,6 +25,6 @@ namespace Tychaia.ProceduralGeneration
         /// This is the Asset Manager located in Protogame.
         /// This lets us look up a list of all the types of assets.
         /// </summary>
-        //// IAssetManager PreceduralAssetManager { get; }
+        IAssetManager AssetManager { get; }
     }
 }

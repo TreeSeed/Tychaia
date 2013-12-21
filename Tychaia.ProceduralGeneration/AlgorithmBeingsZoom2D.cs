@@ -18,7 +18,7 @@ namespace Tychaia.ProceduralGeneration
     /// </summary>
     [DataContract]
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
-    [FlowDesignerCategory(FlowCategory.Zooming)]
+    [FlowDesignerCategory(FlowCategory.Beings)]
     [FlowDesignerName("Beings Zoom 2D")]
     public class AlgorithmBeingsZoom2D : Algorithm<Cell, Cell>
     {
@@ -109,11 +109,14 @@ namespace Tychaia.ProceduralGeneration
             }
             else if (this.Mode == ZoomType.Spread)
             {
-                if (current.ClusterComplete)
+                if (current.ClusterComplete && x % 2 == 0 && y % 2 == 0)
                     output[(i + ox) + ((j + oy) * width)] = current;
+                else if (current.ClusterComplete)
+                    output[(i + ox) + ((j + oy) * width)] = new Cell();
                 else
                 {
                     output[(i + ox) + ((j + oy) * width)] = new Cell();
+                    output[(i + ox) + ((j + oy) * width)].ClusterLevel = current.ClusterLevel;
                     output[(i + ox) + ((j + oy) * width)].ClusterDefinitionAssetName = current.ClusterDefinitionAssetName;
                     var order = 0;
                     if (x % 2 == 0 && y % 2 == 0)
@@ -234,6 +237,20 @@ namespace Tychaia.ProceduralGeneration
                             order = 3;
                         }
                     }
+
+                    if (output[(i + ox) + ((j + oy) * width)].Count0 +
+                        output[(i + ox) + ((j + oy) * width)].Count1 +
+                        output[(i + ox) + ((j + oy) * width)].Count2 +
+                        output[(i + ox) + ((j + oy) * width)].Count3 +
+                        output[(i + ox) + ((j + oy) * width)].Count4 +
+                        output[(i + ox) + ((j + oy) * width)].Count5 +
+                        output[(i + ox) + ((j + oy) * width)].Count6 +
+                        output[(i + ox) + ((j + oy) * width)].Count7 +
+                        output[(i + ox) + ((j + oy) * width)].Count8 +
+                        output[(i + ox) + ((j + oy) * width)].Count9 == 1)
+                        output[(i + ox) + ((j + oy) * width)].ClusterComplete = true;
+                    else 
+                        output[(i + ox) + ((j + oy) * width)].ClusterComplete = false;
                 }
             }
             else

@@ -23,7 +23,7 @@ namespace Tychaia.Asset
                 (string)data.DisplayNameName,
                 (string)data.DescriptionName,
                 (string)data.TextureName,
-                (string)data.HealthPerLevel,
+                (int)data.HealthPerLevel,
                 (string)data.MovementSpeed,
                 (bool)data.Enemy);
         }
@@ -46,7 +46,7 @@ namespace Tychaia.Asset
                 null,
                 null,
                 null,
-                null,
+                -1,
                 null,
                 true);
         }

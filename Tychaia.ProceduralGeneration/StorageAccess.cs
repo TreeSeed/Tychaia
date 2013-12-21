@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Xml;
+using Protogame;
 using Redpoint.FlowGraph;
 using Tychaia.Globals;
 using Tychaia.ProceduralGeneration.Compiler;
@@ -21,13 +22,16 @@ namespace Tychaia.ProceduralGeneration
     {
         private readonly IPool m_Pool;
         private readonly IArrayPool m_ArrayPool;
+        private readonly IAssetManagerProvider m_AssetManagerProvider;
         
         public StorageAccess(
             IPool pool,
-            IArrayPool arrayPool)
+            IArrayPool arrayPool,
+            IAssetManagerProvider assetManagerProvider)
         {
             this.m_Pool = pool;
             this.m_ArrayPool = arrayPool;
+            this.m_AssetManagerProvider = assetManagerProvider;
         }
     
         #region Conversion to runtime and compiled layers
@@ -69,7 +73,8 @@ namespace Tychaia.ProceduralGeneration
             var runtime = new RuntimeLayer(
                 this.m_Pool,
                 this.m_ArrayPool,
-                layer.Algorithm);
+                layer.Algorithm,
+                this.m_AssetManagerProvider);
             if (layer.Inputs != null)
                 for (var i = 0; i < layer.Inputs.Length; i++)
                     runtime.SetInput(i, ToRuntime(layer.Inputs[i]));
@@ -146,7 +151,8 @@ namespace Tychaia.ProceduralGeneration
         {
             var x = new DataContractSerializer(typeof(StorageLayer[]), SerializableTypes);
             using (
-                var reader = XmlDictionaryReader.CreateTextReader(input.BaseStream,
+                var reader = XmlDictionaryReader.CreateTextReader(
+                    input.BaseStream,
                     new XmlDictionaryReaderQuotas { MaxDepth = 1000 }))
                 return x.ReadObject(reader, true) as StorageLayer[];
         }

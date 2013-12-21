@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using Tychaia.Globals;
+using Protogame;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -31,7 +32,6 @@ namespace Tychaia.ProceduralGeneration
         [DataMember] private RuntimeLayer[]
             m_Inputs;
 
-        private long m_Seed;
         private readonly IArrayPool m_ArrayPool;
         private readonly IPool m_Pool;
 
@@ -41,7 +41,8 @@ namespace Tychaia.ProceduralGeneration
         public RuntimeLayer(
             IPool pool,
             IArrayPool arrayPool,
-            IAlgorithm algorithm)
+            IAlgorithm algorithm,
+            IAssetManagerProvider assetManagerProvider)
         {
             if (algorithm == null)
                 throw new ArgumentNullException("algorithm");
@@ -55,6 +56,7 @@ namespace Tychaia.ProceduralGeneration
 
             this.Seed = 0;
             this.Modifier = 0;
+            this.AssetManager = assetManagerProvider.GetAssetManager();
         }
 
         /// <summary>
@@ -151,8 +153,19 @@ namespace Tychaia.ProceduralGeneration
         /// </summary>
         public long Seed
         {
-            get { return this.m_Seed; }
-            private set { this.m_Seed = value; }
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// This is the Asset Manager located in Protogame.
+        /// This lets us look up a list of all the types of assets.
+        /// </summary>
+        /// <value>The asset manager.</value>
+        public IAssetManager AssetManager
+        {
+            get;
+            private set;
         }
 
         /// <summary>

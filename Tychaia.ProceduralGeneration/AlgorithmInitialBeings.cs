@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Runtime.Serialization;
 using Tychaia.Asset;
 using Tychaia.Data;
+using System.Linq;
 
 namespace Tychaia.ProceduralGeneration
 {
@@ -81,22 +82,40 @@ namespace Tychaia.ProceduralGeneration
             int oy,
             int oz)
         {
-            // TODO: Figure out how this should be done.
-            // var BeingClusterList = context.PreceduralAssetManager.GetAll("BeingClusterDefinitionAsset");
-            var beingCluster = string.Empty;
+            var BeingClusterList = (BeingClusterDefinitionAsset[])context.AssetManager.GetAll().OfType<BeingClusterDefinitionAsset>().Where(b => b.Enemy == true).Where(a => a.LevelRequirement < input[(i + ox) + ((j + oy) * width)]).ToArray();
+
             var outputCell = new Cell();
 
-            // foreach (var cluster in BeingClusterList)
-            // if (input > cluster.level)
-            // remove cluster;
 
-            // if (!(this.GuaranteeStartingPoint && x == 0 && y == 0) && AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, BeingClusterList.Count(), context.Modifier) > this.Limit)
-            // {
-            // outputCell.ClusterDefinitionAssetName = 
-            // etc
-            // }
+            if (!(this.GuaranteeStartingPoint && x == 0 && y == 0) && BeingClusterList.Count() > 0 && AlgorithmUtility.GetRandomDouble(context.Seed, x, y, 0, context.Modifier) > this.Limit)
+            {
+                var a = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, BeingClusterList.Count(), context.Modifier);
+                outputCell.ClusterDefinitionAssetName = BeingClusterList[a].Name;
+                outputCell.Count0 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[0], BeingClusterList[a].Maximum[0] + 1, context.Modifier);
+                outputCell.Count1 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[1], BeingClusterList[a].Maximum[1] + 1, context.Modifier);
+                outputCell.Count2 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[2], BeingClusterList[a].Maximum[2] + 1, context.Modifier);
+                outputCell.Count3 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[3], BeingClusterList[a].Maximum[3] + 1, context.Modifier);
+                outputCell.Count4 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[4], BeingClusterList[a].Maximum[4] + 1, context.Modifier);
+                outputCell.Count5 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[5], BeingClusterList[a].Maximum[5] + 1, context.Modifier);
+                outputCell.Count6 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[6], BeingClusterList[a].Maximum[6] + 1, context.Modifier);
+                outputCell.Count7 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[7], BeingClusterList[a].Maximum[7] + 1, context.Modifier);
+                outputCell.Count8 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[8], BeingClusterList[a].Maximum[8] + 1, context.Modifier);
+                outputCell.Count9 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[9], BeingClusterList[a].Maximum[9] + 1, context.Modifier);
+            }
 
-            // output[(i + ox) + ((j + oy) * width)] = outputCell;
+            if (outputCell.Count0 + 
+                outputCell.Count1 +
+                outputCell.Count2 +
+                outputCell.Count3 +
+                outputCell.Count4 +
+                outputCell.Count5 +
+                outputCell.Count6 +
+                outputCell.Count7 +
+                outputCell.Count8 +
+                outputCell.Count9 == 1)
+                outputCell.ClusterComplete = true;
+
+            output[(i + ox) + ((j + oy) * width)] = outputCell;
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)

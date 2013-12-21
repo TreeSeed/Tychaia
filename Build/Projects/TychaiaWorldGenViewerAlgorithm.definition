@@ -17,6 +17,8 @@
     <Reference Include="Tychaia.Globals" />
     <Reference Include="Ninject" />
     <Reference Include="Tychaia.Threading" />
+    <Reference Include="Protogame" />
+    <Reference Include="Tychaia.Content" />
   </References>
   <Files>
     <Compile Include="AnalyseForm.cs">
