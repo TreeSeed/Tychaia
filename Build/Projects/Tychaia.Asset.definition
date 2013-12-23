@@ -9,6 +9,10 @@
     <Reference Include="Protogame" />
   </References>
   <Files>
+    <Compile Include="AbilityTypeDefinitionAsset.cs" />
+    <Compile Include="AbilityTypeDefinitionAssetEditor.cs" />
+    <Compile Include="AbilityTypeDefinitionAssetLoader.cs" />
+    <Compile Include="AbilityTypeDefinitionAssetSaver.cs" />
     <Compile Include="BeingClusterDefinitionAsset.cs" />
     <Compile Include="BeingClusterDefinitionAssetEditor.cs" />
     <Compile Include="BeingClusterDefinitionAssetLoader.cs" />
@@ -21,6 +25,10 @@
     <Compile Include="BlockAssetEditor.cs" />
     <Compile Include="BlockAssetLoader.cs" />
     <Compile Include="BlockAssetSaver.cs" />
+    <Compile Include="ElementDefinitionAsset.cs" />
+    <Compile Include="ElementDefinitionAssetEditor.cs" />
+    <Compile Include="ElementDefinitionAssetLoader.cs" />
+    <Compile Include="ElementDefinitionAssetSaver.cs" />
     <Compile Include="SpellDefinitionAsset.cs" />
     <Compile Include="SpellDefinitionAssetEditor.cs" />
     <Compile Include="SpellDefinitionAssetLoader.cs" />

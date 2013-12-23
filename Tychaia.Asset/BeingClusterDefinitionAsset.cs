@@ -40,9 +40,21 @@ namespace Tychaia.Asset
             this.Maximum = maximum;
         }
         
-        public bool SourceOnly { get { return false; } }
-        public bool CompiledOnly { get { return false; } }
+        public bool SourceOnly
+        {
+            get
+            {
+                return false;
+            }
+        }
 
+        public bool CompiledOnly
+        {
+            get
+            {
+                return false;
+            }
+        }
         #region Asset Properties
 
         public BeingDefinitionAsset[] BeingDefinitions

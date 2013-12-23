@@ -23,6 +23,7 @@
     <Property Name="PostProcessWithDx" Value="True" />
   </Properties>
   <Files>
+    <Compile Include="Abilities\AbilityTypes\BallType.cs" />
     <Compile Include="ChunkManagement\ChunkOctree.cs" />
     <Compile Include="ChunkManagement\IChunkFactory.cs" />
     <Compile Include="ChunkManagement\RuntimeChunk.cs" />

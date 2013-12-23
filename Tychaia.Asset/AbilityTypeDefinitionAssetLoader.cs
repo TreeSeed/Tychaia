@@ -8,24 +8,22 @@ using Protogame;
 
 namespace Tychaia.Asset
 {
-    public class BeingDefinitionAssetLoader : IAssetLoader
+    public class AbilityTypeDefinitionAssetLoader : IAssetLoader
     {
         public bool CanHandle(dynamic data)
         {
-            return data.Loader == typeof(BeingDefinitionAssetLoader).FullName;
+            return data.Loader == typeof(AbilityTypeDefinitionAssetLoader).FullName;
         }
 
         public IAsset Handle(IAssetManager assetManager, string name, dynamic data)
         {
-            return new BeingDefinitionAsset(
+            return new AbilityTypeDefinitionAsset(
                 assetManager,
                 name,
                 (string)data.DisplayName,
                 (string)data.Description,
-                (string)data.TextureName,
-                (int)data.HealthPerLevel,
-                (string)data.MovementSpeed,
-                (bool)data.Enemy);
+                (string)data.AIName,
+                (string)data.Category);
         }
 
         public IAsset GetDefault(IAssetManager assetManager, string name)
@@ -40,15 +38,13 @@ namespace Tychaia.Asset
 
         public IAsset GetNew(IAssetManager assetManager, string name)
         {
-            return new BeingDefinitionAsset(
+            return new AbilityTypeDefinitionAsset(
                 assetManager,
                 name,
                 null,
                 null,
                 null,
-                -1,
-                null,
-                true);
+                null);
         }
     }
 }
