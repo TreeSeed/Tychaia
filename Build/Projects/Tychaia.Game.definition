@@ -20,6 +20,7 @@
   <Files>
     <Compile Include="Armor.cs" />
     <Compile Include="Being.cs" />
+    <Compile Include="Enemy.cs" />
     <Compile Include="IHasRuntimeData.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="Item.cs" />

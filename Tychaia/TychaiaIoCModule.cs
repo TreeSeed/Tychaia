@@ -15,6 +15,7 @@ namespace Tychaia
         {
             this.Bind<IBackgroundCubeEntityFactory>().ToFactory();
             this.Bind<IChunkOctreeFactory>().ToFactory();
+            this.Bind<IEntityFactory>().ToFactory();
             this.Bind<IChunkFactory>().To<ClientChunkFactory>().InSingletonScope();
             this.Bind<ISkin>().To<TychaiaSkin>();
             this.Bind<IRenderTargetFactory>().To<DefaultRenderTargetFactory>().InSingletonScope();

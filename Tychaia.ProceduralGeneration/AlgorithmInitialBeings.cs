@@ -82,10 +82,9 @@ namespace Tychaia.ProceduralGeneration
             int oy,
             int oz)
         {
-            var BeingClusterList = (BeingClusterDefinitionAsset[])context.AssetManager.GetAll().OfType<BeingClusterDefinitionAsset>().Where(b => b.Enemy == true).Where(a => a.LevelRequirement < input[(i + ox) + ((j + oy) * width)]).ToArray();
+            var BeingClusterList = (BeingClusterDefinitionAsset[])context.AssetManager.GetAll().OfType<BeingClusterDefinitionAsset>().Where(b => b.Enemy == true).Where(a => a.LevelRequirement <= input[(i + ox) + ((j + oy) * width)]).ToArray();
 
             var outputCell = new Cell();
-
 
             if (!(this.GuaranteeStartingPoint && x == 0 && y == 0) && BeingClusterList.Count() > 0 && AlgorithmUtility.GetRandomDouble(context.Seed, x, y, 0, context.Modifier) > this.Limit)
             {

@@ -55,6 +55,9 @@ namespace Tychaia
 
             if (this.Generated && this.VertexBuffer == null && this.IndexBuffer == null)
                 this.CalculateBuffers(renderContext);
+            
+            if (this.Generated && !this.EntitiesInitialized)
+                gameContext.World.Entities.AddRange(this.Enemies);
 
             if (this.VertexBuffer != null && this.IndexBuffer != null)
             {

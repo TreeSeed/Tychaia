@@ -20,6 +20,7 @@ namespace Tychaia
     public class DefaultChunkGenerator : IChunkGenerator
     {
         private readonly IAssetManager m_AssetManager;
+        private readonly IEntityFactory m_EntityFactory;
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
         private readonly TextureAtlasAsset m_TextureAtlasAsset;
         private readonly ThreadedTaskPipeline<RuntimeChunk> m_Pipeline;
@@ -30,7 +31,8 @@ namespace Tychaia
             IChunkSizePolicy chunkSizePolicy,
             IAssetManagerProvider assetManagerProvider,
             IGeneratorResolver generatorResolver,
-            IPersistentStorage persistentStorage)
+            IPersistentStorage persistentStorage,
+            IEntityFactory entityFactory)
         {
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_PersistentStorage = persistentStorage;
@@ -39,6 +41,7 @@ namespace Tychaia
             this.m_Pipeline = new ThreadedTaskPipeline<RuntimeChunk>();
             this.m_Generator = generatorResolver.GetGeneratorForGame();
             this.m_Generator.SetSeed(10000);
+            this.m_EntityFactory = entityFactory;
             
             var thread = new Thread(this.Run) { IsBackground = true, Priority = ThreadPriority.Highest };
             thread.Start();
@@ -69,6 +72,7 @@ namespace Tychaia
                 var blocks = new BlockAsset[this.m_ChunkSizePolicy.ChunkCellWidth,
                     this.m_ChunkSizePolicy.ChunkCellHeight,
                     this.m_ChunkSizePolicy.ChunkCellDepth];
+                var enemies = new List<EnemyEntity>();
                 var cells = (Cell[])this.m_Generator.GenerateData(
                     chunk.X / this.m_ChunkSizePolicy.CellVoxelWidth,
                     chunk.Z / this.m_ChunkSizePolicy.CellVoxelDepth,
@@ -88,8 +92,14 @@ namespace Tychaia
                             if (info.BlockAssetName == null)
                                 continue;
                             blocks[x, y, z] = this.m_AssetManager.Get<BlockAsset>(info.BlockAssetName);
+                            
+                            if (!string.IsNullOrEmpty(info.BeingDefinitionAssetName))
+                                enemies.Add(this.m_EntityFactory.CreateEnemyEntity(info));
+                            
                         }
 
+                chunk.Enemies = enemies.ToArray();
+                
                 // Now also generate the vertexes / indices in this thread.
                 var vertexes = new List<VertexPositionTexture>();
                 var indices = new List<int>();

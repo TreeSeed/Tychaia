@@ -71,6 +71,8 @@ namespace Tychaia
 
         public ILevel Level { get; private set; }
         public Cell[,,] Cells { get; set; }
+        public EnemyEntity[] Enemies { get; set; }
+        public bool EntitiesInitialized { get; set; }
         public bool GraphicsEmpty { get; protected set; }
         public bool Generated { get; set; }
         public VertexPositionTexture[] GeneratedVertexes { get; set; }
