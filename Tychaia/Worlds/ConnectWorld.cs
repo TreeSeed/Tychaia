@@ -6,6 +6,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
@@ -237,7 +238,7 @@ namespace Tychaia
             var file = Assembly.GetExecutingAssembly().Location;
             this.m_Process = new Process();
             this.m_Process.StartInfo.FileName = file;
-            this.m_Process.StartInfo.Arguments = "--server --address 127.0.0.1 --port 9091";
+            this.m_Process.StartInfo.Arguments = "--server --address " + this.m_Address + " --port " + this.m_Port;
             this.m_Process.EnableRaisingEvents = true;
             this.m_Process.Exited += (sender, e) => 
             {
