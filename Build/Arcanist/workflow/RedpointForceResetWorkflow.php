@@ -56,7 +56,7 @@ EOTEXT
     }
     $console->writeOut("<bg:green> %s </bg>\n", $msg);
   }
-
+  
   public function run() {
     $working_copy = $this->getWorkingCopy();
     $root = $working_copy->getProjectRoot();
@@ -64,6 +64,28 @@ EOTEXT
 
     // All commands have to execute at the root of the site.
     chdir($root);
+
+    list($out, $err) = execx("git status -s");
+    $changes = phutil_split_lines($out);
+    
+    $console->writeOut("\n<bg:red> WARNING WARNING WARNING </bg>\n\n");
+    $console->writeOut("You are about to permanently lose the ");
+    $console->writeOut("changes to the following files:\n");
+    foreach ($changes as $change) {
+      $console->writeOut("\n * ".substr($change, 2));
+    }
+    
+    $phrase = "Revert ".count($changes)." files";
+    if (count($changes) === 1) {
+      $phrase = "Revert ".count($changes)." file";
+    }
+    
+    $answer = phutil_console_prompt('Exactly the phrase "'.$phrase.'":');
+    if ($answer !== $phrase) {
+      throw new ArcanistUsageException(
+        "You did not type '".$phrase."'.  Refusing to run!");
+    }
+    $console->writeOut("\n\n");
 
     $console->writeOut("Resetting working directory... ");
     execx("git reset --hard HEAD");
