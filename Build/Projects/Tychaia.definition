@@ -88,6 +88,7 @@
     <Compile Include="Profiling\TychaiaProfilingInterceptor.cs" />
     <Compile Include="Profiling\TychaiaProfilingIoCModule.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="TychaiaBasicSkin.cs" />
     <Compile Include="TychaiaGame.cs" />
     <Compile Include="TychaiaIoCModule.cs" />
     <Compile Include="TychaiaSkin.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Worlds\MainMenu\ScatterBackground.cs" />
     <Compile Include="Worlds\MainMenu\TitleMenu.cs" />
     <Compile Include="Worlds\MenuWorld.cs" />
+    <Compile Include="Worlds\MultiplayerWorld.cs" />
     <Compile Include="Worlds\PregenerateWorld.cs" />
     <Compile Include="Worlds\TitleWorld.cs" />
     <Compile Include="Worlds\TychaiaGameWorld.cs" />
@@ -110,7 +112,9 @@
       <Link>WorldConfig.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Game.ico" />
     <None Include="GameThumbnail.png" />
     <None Include="packages.config" />

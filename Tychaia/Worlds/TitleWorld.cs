@@ -3,6 +3,7 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
+using System.Net;
 using Protogame;
 
 namespace Tychaia
@@ -13,31 +14,22 @@ namespace Tychaia
             I2DRenderUtilities twodRenderUtilities,
             IAssetManagerProvider assetManagerProvider,
             IBackgroundCubeEntityFactory backgroundCubeEntityFactory,
-            ILevelAPI levelAPI,
             ISkin skin)
             : base(twodRenderUtilities, assetManagerProvider, backgroundCubeEntityFactory, skin)
         {
+            this.Title = this.AssetManager.Get<LanguageAsset>("language.TYCHAIA");
+
             this.AddMenuItem(
-                this.AssetManager.Get<LanguageAsset>("language.PREGENERATE_WORLD"),
+                this.AssetManager.Get<LanguageAsset>("language.SINGLEPLAYER"),
                 () =>
                 {
-                    var level = levelAPI.NewLevel("test");
-                    if (this.GameContext != null)
-                        this.TargetWorld = this.GameContext.CreateWorld<IWorldFactory>(x => x.CreatePregenerateWorld(level));
+                    this.TargetWorld = this.GameContext.CreateWorld<IWorldFactory>(x => x.CreateConnectWorld(true, IPAddress.Loopback, 9091));
                 });
             this.AddMenuItem(
-                this.AssetManager.Get<LanguageAsset>("language.CONNECT_TEST"),
+                this.AssetManager.Get<LanguageAsset>("language.MULTIPLAYER"),
                 () =>
                 {
-                    if (this.GameContext != null)
-                        this.TargetWorld = this.GameContext.CreateWorld<IWorldFactory>(x => x.CreateConnectWorld());
-                });
-            this.AddMenuItem(
-                this.AssetManager.Get<LanguageAsset>("language.LOAD_EXISTING_WORLD"),
-                () =>
-                {
-                    if (this.GameContext != null)
-                        this.TargetWorld = this.GameContext.CreateWorld<LoadWorld>();
+                    this.TargetWorld = this.GameContext.CreateWorld<IWorldFactory>(x => x.CreateMultiplayerWorld());
                 });
             this.AddMenuItem(
                 this.AssetManager.Get<LanguageAsset>("language.EXIT"),

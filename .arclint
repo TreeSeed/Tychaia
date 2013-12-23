@@ -3,7 +3,7 @@
     "csharp": {
       "type": "csharp",
       "include": "(\\.cs$)",
-	  "exclude": "(\\.Designer\\.cs$)",
+	  "exclude": [ "(\\.Designer\\.cs$)", "(Phabricator\\.Conduit(.*+))" ],
       "binary": "cstools/cslint/bin/Debug/cslint.exe",
       "discovery": {
         "([^/]+)/(.*?)\\.cs": [
@@ -16,7 +16,8 @@
     },
     "license": {
       "type": "tychaialicense",
-      "include": "(\\.cs$)"
+      "include": "(\\.cs$)",
+	  "exclude": [ "(\\.Designer\\.cs$)", "(Phabricator\\.Conduit(.*+))" ]
     }
   }
 }
