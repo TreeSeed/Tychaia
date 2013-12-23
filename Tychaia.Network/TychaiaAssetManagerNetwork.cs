@@ -57,7 +57,7 @@ namespace Tychaia.Network
             get { return this.IsAssetManager ? 9837 : 9838; }
         }
 
-        public IPAddress IPAddress
+        public IPAddress LocalIPAddress
         {
             get { return IPAddress.Loopback; }
         }
