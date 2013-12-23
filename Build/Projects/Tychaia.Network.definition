@@ -14,6 +14,7 @@
     <Reference Include="Tychaia.Data" />
     <Reference Include="Tychaia.Data.Serializer" />
     <Reference Include="protobuf-net-client" />
+    <Reference Include="Phabricator.Conduit" />
   </References>
   <Files>
     <Compile Include="DependencyInjectedDxFactory.cs" />
