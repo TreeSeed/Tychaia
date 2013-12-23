@@ -764,7 +764,7 @@ namespace Tychaia.ProceduralGeneration
                     break;
                 }
                 
-                case 18: // 3 inputs
+                case 18: // 4 inputs
                 {
                     // context, input0, input1, input2, input3, output, x, y, z, i, j, k, width, height, depth, ox, oy, oz
                         if (this.m_Inputs[0] != null && this.m_Inputs[1] != null && this.m_Inputs[2] != null && this.m_Inputs[3] != null)

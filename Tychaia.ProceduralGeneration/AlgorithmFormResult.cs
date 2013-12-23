@@ -15,11 +15,11 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerMajorCategory(FlowMajorCategory.General)]
     [FlowDesignerCategory(FlowCategory.Output)]
     [FlowDesignerName("Form Result")]
-    public class AlgorithmFormResult : Algorithm<Cell, int, int, Cell>
+    public class AlgorithmFormResult : Algorithm<Cell, int, int, Cell, Cell>
     {
         public override string[] InputNames
         {
-            get { return new[] { "Block Info", "Heightmap", "Edges" }; }
+            get { return new[] { "Block Info", "Heightmap", "Edges", "Enemies" }; }
         }
 
         public override bool Is2DOnly
@@ -29,7 +29,7 @@ namespace Tychaia.ProceduralGeneration
 
         public override bool[] InputIs2D
         {
-            get { return new[] { false, true, false }; }
+            get { return new[] { false, true, false, true }; }
         }
 
         public override void ProcessCell(
@@ -37,6 +37,7 @@ namespace Tychaia.ProceduralGeneration
             Cell[] blockInfo,
             int[] heightMap,
             int[] edges,
+            Cell[] enemies,
             Cell[] output,
             long x,
             long y,
@@ -60,6 +61,10 @@ namespace Tychaia.ProceduralGeneration
                 edges[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
 
             // Beings generation
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BeingDefinitionAssetName =
+                enemies[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BeingDefinitionAssetName;
+            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BeingHealth =
+                enemies[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BeingHealth;            
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
