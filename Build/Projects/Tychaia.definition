@@ -9,6 +9,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Protogame" />
     <Reference Include="ProtogameAssetManager" />
@@ -32,6 +33,8 @@
   <Files>
     <Compile Include="Asset\DefaultTextureAtlasAssetFactory.cs" />
     <Compile Include="Asset\ITextureAtlasAssetFactory.cs" />
+    <Compile Include="Capture\DefaultCaptureService.cs" />
+    <Compile Include="Capture\ICaptureService.cs" />
     <Compile Include="Client\ChunkManagerEntity.cs" />
     <Compile Include="Client\ClientRuntimeChunk.cs" />
     <Compile Include="Client\FrustumBasedChunkGeneratorAI.cs" />
@@ -47,6 +50,7 @@
     <Compile Include="Commands\EquipCommand.cs" />
     <Compile Include="Commands\GiveCommand.cs" />
     <Compile Include="Commands\ProfilingCommand.cs" />
+    <Compile Include="Commands\ReportCommand.cs" />
     <Compile Include="Commands\SaveCommand.cs" />
     <Compile Include="Commands\ServerCommand.cs" />
     <Compile Include="Commands\ShaderCommand.cs" />

@@ -19,6 +19,7 @@ namespace Tychaia
             this.Bind<KeyHeldEvent>(x => x.Key == Keys.S).On<PlayerEntity>().To<MoveBackwardAction>();
             this.Bind<KeyHeldEvent>(x => x.Key == Keys.D).On<PlayerEntity>().To<MoveRightAction>();
             this.Bind<KeyPressEvent>(x => x.Key == Keys.F5).ToCommand<ShaderCommand>();
+            this.Bind<KeyPressEvent>(x => x.Key == Keys.F9).ToCommand<ReportCommand>();
         }
     }
 }
