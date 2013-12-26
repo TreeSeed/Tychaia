@@ -65,7 +65,7 @@ namespace Tychaia.ProceduralGeneration
                 result = "block.Sand";
             else if (value <= -5)
                 result = "block.Dirt";
-            else if (value == int.MaxValue && z <= 0)
+            else if (value == int.MaxValue && z <= 1)
                 result = "block.Water";
             else if (value == int.MaxValue)
                 result = null;

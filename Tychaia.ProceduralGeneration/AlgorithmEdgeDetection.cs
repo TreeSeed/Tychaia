@@ -66,6 +66,13 @@ namespace Tychaia.ProceduralGeneration
             int oy, 
             int oz)
         {
+            // If the definition for water changes, this will need to change as well.
+            if (input[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] == int.MaxValue)
+            {
+                output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)] = z == 1 ? 1 : 0;
+                return;
+            }
+
             var above = input[(i + ox) + ((j + oy) * width) + ((k + 1 + oz) * width * height)];
             var below = input[(i + ox) + ((j + oy) * width) + ((k - 1 + oz) * width * height)];
             var east = input[(i + 1 + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
