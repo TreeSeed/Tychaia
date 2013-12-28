@@ -15,23 +15,18 @@ namespace Tychaia
 {
     public class TychaiaServer
     {
-        private readonly IDxFactory m_DxFactory;
-
         private readonly IKernel m_Kernel;
 
-        public TychaiaServer(IDxFactory dxFactory, IKernel kernel)
+        public TychaiaServer(IKernel kernel)
         {
-            this.m_DxFactory = dxFactory;
             this.m_Kernel = kernel;
         }
 
         public void Run(string address, int port)
         {
-            TychaiaTCPNetwork.SetupKernel(this.m_Kernel, true, IPAddress.Parse(address), port);
-
             Console.WriteLine("Creating distributed node on " + address + ":" + port + "...");
-            var node = this.m_DxFactory.CreateLocalNode(Caching.PushOnChange, Architecture.ServerClient);
-            node.Join(null);
+            var node = new LocalNode(Architecture.ServerClient, Caching.PushOnChange) { IsServer = true };
+            node.Bind(IPAddress.Parse(address), port);
 
             // Register the local node with Ninject so that entities and worlds can
             // gain access to it.

@@ -90,7 +90,6 @@ namespace Tychaia
             kernel.Load<TychaiaDiskIoCModule>();
             kernel.Load<TychaiaProfilingIoCModule>();
             kernel.Load<TychaiaProceduralGenerationIoCModule>();
-            kernel.Load<TychaiaNetworkIoCModule>();
 
             if (isServer)
             {

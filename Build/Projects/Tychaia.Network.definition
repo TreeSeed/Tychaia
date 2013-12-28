@@ -17,12 +17,8 @@
     <Reference Include="Phabricator.Conduit" />
   </References>
   <Files>
-    <Compile Include="DependencyInjectedDxFactory.cs" />
-    <Compile Include="TychaiaAssetManagerNetwork.cs" />
-    <Compile Include="TychaiaNetworkIoCModule.cs" />
     <Compile Include="TychaiaServer.cs" />
     <Compile Include="TychaiaServerIoCModule.cs" />
     <Compile Include="TychaiaServerQuery.cs" />
-    <Compile Include="TychaiaTCPNetwork.cs" />
   </Files>
 </Project>

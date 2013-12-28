@@ -24,7 +24,7 @@ namespace CrashReport
         private static readonly string[] PROJECTPHIDS = new string[] { "PHID-PROJ-3ahdqqipg3rgo7bk4oqo", "PHID-PROJ-4msjmfn2aosxjjygpoa4" };
 
         // Accepts an exception then creates a task in Phabricator
-        public static void Record(Exception e)
+        public static void Record(Exception e, bool noPrompt = false)
         {
             // Fetch all system info from the Exception
             SystemInfo s = CollectSystemInfo.GetSystemInfo();
@@ -165,19 +165,22 @@ namespace CrashReport
                     }).uri;
             }
 
-            // Notify user of task url
-            try
+            if (!noPrompt)
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-            }
-            catch
-            {
-            }
+                // Notify user of task url
+                try
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                }
+                catch
+                {
+                }
 
-            new CrashReportForm(uri).ShowDialog();
+                new CrashReportForm(uri).ShowDialog();
 
-            // Restart Tychaia
+                // Restart Tychaia
+            }
         }
 
         /// <summary>
