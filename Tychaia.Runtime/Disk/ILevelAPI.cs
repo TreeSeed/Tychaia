@@ -5,7 +5,7 @@
 // ====================================================================== //
 using System.Collections.Generic;
 
-namespace Tychaia
+namespace Tychaia.Runtime
 {
     public interface ILevelAPI
     {

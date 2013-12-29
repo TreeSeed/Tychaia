@@ -5,7 +5,7 @@
 // ====================================================================== //
 using Tychaia.Data;
 
-namespace Tychaia
+namespace Tychaia.Runtime
 {
     public interface ILevel
     {

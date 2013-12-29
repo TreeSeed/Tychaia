@@ -14,6 +14,7 @@ using Tychaia.Asset;
 using Tychaia.Globals;
 using Tychaia.Network;
 using Tychaia.ProceduralGeneration;
+using Tychaia.Runtime;
 
 namespace Tychaia
 {
@@ -88,7 +89,7 @@ namespace Tychaia
                 kernel.Load<TychaiaServerIoCModule>();
                 
             // Load somewhat more advanced modules that may depend on services registered previously.
-            kernel.Load<TychaiaDiskIoCModule>();
+            kernel.Load<TychaiaRuntimeIoCModule>();
             kernel.Load<TychaiaProfilingIoCModule>();
             kernel.Load<TychaiaProceduralGenerationIoCModule>();
 

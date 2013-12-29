@@ -13,6 +13,7 @@ using Protogame;
 using Tychaia.Game;
 using Tychaia.Globals;
 using Tychaia.Network;
+using Tychaia.Runtime;
 
 namespace Tychaia
 {
@@ -81,7 +82,7 @@ namespace Tychaia
             this.m_DefaultFontAsset = this.m_AssetManagerProvider.GetAssetManager().Get<FontAsset>("font.Default");
 
             this.ChunkOctree = chunkOctreeFactory.CreateChunkOctree();
-            var chunk = chunkFactory.CreateChunk(this.Level, this.ChunkOctree, 0, 0, 0);
+            var chunk = new RuntimeChunk(0, 0, 0);
             this.IsometricCamera = isometricCameraFactory.CreateIsometricCamera(this.ChunkOctree, chunk);
             this.m_ChunkManagerEntity = chunkManagerEntityFactory.CreateChunkManagerEntity(this);
 

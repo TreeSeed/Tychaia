@@ -3,15 +3,10 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-namespace Tychaia
+namespace Tychaia.Runtime
 {
-    public interface IChunkFactory
+    public interface IChunkOctreeFactory
     {
-        RuntimeChunk CreateChunk(
-            ILevel level,
-            ChunkOctree octree,
-            long x,
-            long y,
-            long z);
+        ChunkOctree CreateChunkOctree();
     }
 }

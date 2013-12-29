@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ninject;
 
-namespace Tychaia
+namespace Tychaia.Runtime
 {
     public class CombinedLevelAPI : ILevelAPI
     {

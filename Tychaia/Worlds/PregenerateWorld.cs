@@ -10,6 +10,7 @@ using Protogame;
 using Tychaia.Data;
 using Tychaia.Globals;
 using Tychaia.ProceduralGeneration;
+using Tychaia.Runtime;
 
 namespace Tychaia
 {

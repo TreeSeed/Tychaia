@@ -9,10 +9,13 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Protogame" />
+    <Reference Include="Tychaia.Asset" />
     <Reference Include="Tychaia.Globals" />
     <Reference Include="Tychaia.Game" />
     <Reference Include="Tychaia.Data" />
     <Reference Include="Tychaia.Data.Serializer" />
+    <Reference Include="Tychaia.ProceduralGeneration" />
+    <Reference Include="Tychaia.Threading" />
     <Reference Include="MonoGame" />
     <Reference Include="Ninject" />
     <Reference Include="protobuf-net-client" />
@@ -20,8 +23,8 @@
   <Files>
     <Compile Include="Abilities\AbilityTypes\BallType.cs" />
     <Compile Include="ChunkManagement\ChunkOctree.cs" />
-    <Compile Include="ChunkManagement\IChunkFactory.cs" />
     <Compile Include="ChunkManagement\RuntimeChunk.cs" />
+    <Compile Include="DefaultServerWorld.cs" />
     <Compile Include="Disk\CombinedLevelAPI.cs" />
     <Compile Include="Disk\ILevel.cs" />
     <Compile Include="Disk\ILevelAPI.cs" />
@@ -29,11 +32,13 @@
     <Compile Include="Disk\Tychaia\ITychaiaLevelFactory.cs" />
     <Compile Include="Disk\Tychaia\SimpleLevel.cs" />
     <Compile Include="Disk\Tychaia\TychaiaLevelAPIImpl.cs" />
-    <Compile Include="Disk\TychaiaDiskIoCModule.cs" />
+    <Compile Include="Implementations\DefaultChunkGenerator.cs" />
+    <Compile Include="Implementations\DefaultPredeterminedChunkPositions.cs" />
+    <Compile Include="IServerWorld.cs" />
     <Compile Include="Services\IChunkGenerator.cs" />
+    <Compile Include="Services\IChunkOctreeFactory.cs" />
     <Compile Include="Services\IDebugCubeRenderer.cs" />
-    <Compile Include="Services\IFrustumChunkCache.cs" />
     <Compile Include="Services\IPredeterminedChunkPositions.cs" />
-    <Compile Include="Services\IRenderTargetFactory.cs" />
+    <Compile Include="TychaiaRuntimeIocModule.cs" />
   </Files>
 </Project>

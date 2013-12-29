@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Tychaia.Globals;
 
-namespace Tychaia
+namespace Tychaia.Runtime
 {
     public class DefaultPredeterminedChunkPositions : IPredeterminedChunkPositions
     {

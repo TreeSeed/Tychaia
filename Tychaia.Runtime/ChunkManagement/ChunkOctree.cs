@@ -7,7 +7,7 @@ using System;
 using Protogame;
 using Tychaia.Globals;
 
-namespace Tychaia
+namespace Tychaia.Runtime
 {
     public class ChunkOctree
     {

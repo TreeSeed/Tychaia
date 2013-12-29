@@ -6,7 +6,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace Tychaia
+namespace Tychaia.Runtime
 {
     public interface IPredeterminedChunkPositions
     {

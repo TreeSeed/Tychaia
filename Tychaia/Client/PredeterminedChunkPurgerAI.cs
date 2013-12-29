@@ -6,6 +6,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Protogame;
+using Tychaia.Runtime;
 
 namespace Tychaia
 {
@@ -37,8 +38,8 @@ namespace Tychaia
                     (long)position.Z);
                 if (chunk != null)
                 {
-                    Console.WriteLine("PURGING CHUNK");
-                    chunk.Purge();
+                    Console.WriteLine("FIXME: PURGING CHUNK");
+                    //chunk.Purge();
                 }
             }
             

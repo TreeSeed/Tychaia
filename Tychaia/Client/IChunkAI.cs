@@ -4,6 +4,7 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using Protogame;
+using Tychaia.Runtime;
 
 namespace Tychaia
 {

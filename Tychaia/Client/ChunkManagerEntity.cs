@@ -3,28 +3,32 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Microsoft.Xna.Framework;
 using Protogame;
-using Tychaia.Globals;
+using Tychaia.Client;
+using Tychaia.Runtime;
 
 namespace Tychaia
 {
     public class ChunkManagerEntity : Entity
     {
-        private readonly TychaiaGameWorld m_World;
-        private readonly IProfiler m_Profiler;
         private readonly IChunkAI[] m_ChunkAI;
-        private RuntimeChunk[] m_ChunksToRenderNext;
+
+        private readonly IChunkRenderer m_ChunkRenderer;
+
+        private readonly IProfiler m_Profiler;
+
+        private readonly TychaiaGameWorld m_World;
 
         public ChunkManagerEntity(
-            TychaiaGameWorld gameWorld,
-            IChunkAI[] chunkAI,
-            IProfiler profiler)
+            TychaiaGameWorld gameWorld, 
+            IChunkAI[] chunkAI, 
+            IProfiler profiler, 
+            IChunkRenderer chunkRenderer)
         {
             this.m_World = gameWorld;
             this.m_ChunkAI = chunkAI;
             this.m_Profiler = profiler;
-            this.m_ChunksToRenderNext = new RuntimeChunk[0];
+            this.m_ChunkRenderer = chunkRenderer;
         }
 
         public IChunkAI[] GetAIs()
@@ -36,6 +40,8 @@ namespace Tychaia
         {
             base.Render(gameContext, renderContext);
 
+            var chunksToRenderNext = new RuntimeChunk[0];
+
             // For each of the chunk AIs, process them.  It's not ideal to have this in
             // the Render() call, but some AIs need access to the render context so that
             // they can do bounding frustum checks to find out what's on screen.
@@ -45,17 +51,21 @@ namespace Tychaia
                 {
                     var result = ai.Process(this.m_World, this, gameContext, renderContext);
                     if (result != null)
-                        this.m_ChunksToRenderNext = result;
+                    {
+                        chunksToRenderNext = result;
+                    }
                 }
             }
 
             // Find the chunk that belongs at this position.
             using (this.m_Profiler.Measure("tychaia-chunk_render"))
             {
-                foreach (var chunk in this.m_ChunksToRenderNext)
+                foreach (var chunk in chunksToRenderNext)
                 {
                     if (chunk != null)
-                        chunk.Render(gameContext, renderContext);
+                    {
+                        this.m_ChunkRenderer.Render(renderContext, chunk);
+                    }
                 }
             }
         }
