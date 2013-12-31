@@ -79,6 +79,7 @@ namespace Tychaia
             kernel.Load<TychaiaAssetIoCModule>();
             kernel.Load<TychaiaIsometricIoCModule>();
             kernel.Load<TychaiaGlobalIoCModule>();
+            kernel.Load<TychaiaNetworkIoCModule>();
             
             // Modules after this point require IPersistentStorage, so we need to parse our command line
             // and then load the server module if needed, to rebind previous bindings.

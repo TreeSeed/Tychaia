@@ -40,6 +40,23 @@ namespace Tychaia.Network
                     this.SendMessage("join confirm", playerName);
                     this.m_PlayerLookup.Add(client, Encoding.ASCII.GetString(playerName));
                 });
+
+            this.ListenForMessage(
+                "change name",
+                (client, newPlayerName) =>
+                {
+                    // Check to make sure this client is joined.
+                    if (!this.m_PlayerLookup.ContainsKey(client))
+                    {
+                        return;
+                    }
+
+                    var existingName = this.m_PlayerLookup[client];
+                    var newName = Encoding.ASCII.GetString(newPlayerName);
+
+                    this.m_PlayerLookup[client] = newName;
+                    Console.WriteLine("\"" + existingName + "\" has changed their name to \"" + newName + "\"");
+                });
         }
 
         public string[] PlayersInGame

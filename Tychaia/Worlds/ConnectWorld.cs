@@ -12,6 +12,7 @@ using System.Threading;
 using Microsoft.Xna.Framework;
 using Ninject;
 using Protogame;
+using Tychaia.Globals;
 using Tychaia.Network;
 
 namespace Tychaia
@@ -19,6 +20,8 @@ namespace Tychaia
     public class ConnectWorld : MenuWorld
     {
         private readonly I2DRenderUtilities m_2DRenderUtilities;
+
+        private readonly IPersistentStorage m_PersistentStorage;
 
         private readonly Action[] m_Actions;
 
@@ -44,12 +47,14 @@ namespace Tychaia
             IAssetManagerProvider assetManagerProvider, 
             IBackgroundCubeEntityFactory backgroundCubeEntityFactory, 
             ISkin skin, 
+            IPersistentStorage persistentStorage,
             bool startServer, 
             IPAddress address, 
             int port)
             : base(twodRenderUtilities, assetManagerProvider, backgroundCubeEntityFactory, skin)
         {
             this.m_2DRenderUtilities = twodRenderUtilities;
+            this.m_PersistentStorage = persistentStorage;
 
             this.m_DefaultFont = assetManagerProvider.GetAssetManager().Get<FontAsset>("font.Default");
             this.m_Address = address;
@@ -178,12 +183,17 @@ namespace Tychaia
 
         public void JoinGame(TychaiaClient client)
         {
-            var random = new Random();
-            var playerID = random.Next();
+            if (this.m_PersistentStorage.Settings.Name == null)
+            {
+                var random = new Random();
+                var playerID = "player " + random.Next();
+
+                this.m_PersistentStorage.Settings.Name = playerID;
+            }
 
             var hasJoinedGame = false;
 
-            Console.WriteLine("You are player " + playerID);
+            Console.WriteLine("You are '" + this.m_PersistentStorage.Settings.Name + "'");
             
             client.ListenForMessage(
                 "join confirm",
@@ -195,7 +205,7 @@ namespace Tychaia
 
             while (!hasJoinedGame)
             {
-                client.SendMessage("join", Encoding.ASCII.GetBytes("player " + playerID));
+                client.SendMessage("join", Encoding.ASCII.GetBytes(this.m_PersistentStorage.Settings.Name));
 
                 client.Update();
 
