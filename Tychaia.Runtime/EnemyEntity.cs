@@ -30,7 +30,7 @@ namespace Tychaia
             IChunkSizePolicy chunkSizePolicy,
             IConsole console,
             IFilteredFeatures filteredFeatures,
-            Player runtimeData,
+            Enemy runtimeData,
             Cell cell)
         {
             this.m_FilteredFeatures = filteredFeatures;
