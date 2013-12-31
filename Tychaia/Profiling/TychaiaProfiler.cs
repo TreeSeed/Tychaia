@@ -8,11 +8,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Protogame;
-using Dx.Runtime;
 
 namespace Tychaia
 {
-    public class TychaiaProfiler : IProfiler, INetworkProfilerEndpoint
+    public class TychaiaProfiler : IProfiler
     {
         private static TychaiaProfiler SingletonProtection;
     
@@ -48,12 +47,7 @@ namespace Tychaia
             else
                 return new NullProfilerHandle();
         }
-        
-        public void Hit(NetworkProfilerEndpointType type, string id, string target)
-        {
-            this.m_NetworkOps++;
-        }
-        
+
         public void StartRenderStats()
         {
             this.MeasureCosts = new Dictionary<string, double>();
@@ -103,9 +97,9 @@ namespace Tychaia
         
         public class TychaiaProfilerHandle : IDisposable
         {
-            private TychaiaProfiler m_Profiler;
-            private string m_Name;
-            private Stopwatch m_Stopwatch;
+            private readonly TychaiaProfiler m_Profiler;
+            private readonly string m_Name;
+            private readonly Stopwatch m_Stopwatch;
         
             public TychaiaProfilerHandle(TychaiaProfiler profiler, string name)
             {

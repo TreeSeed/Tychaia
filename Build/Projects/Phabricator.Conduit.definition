@@ -10,5 +10,6 @@
     <Compile Include="ConduitClient.cs" />
     <Compile Include="ConduitException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="packages.config" />
   </Files>
 </Project>

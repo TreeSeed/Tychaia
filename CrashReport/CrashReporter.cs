@@ -16,17 +16,24 @@ namespace CrashReport
 {
     public static class CrashReporter
     {
+        private const string USERNAME = "crash-reporter";
+        private const string CERTIFICATE = "y3jplv35imfesns5wxin7i6iv6jlqnasfs6mjwvvgp6mfnkagkrp6v2roif53gtcp56tuf3vd3dlb2vaue5radybntoidyrfk7teifi6u4lxotlev7go45ebz7brmlkgeruta53e2yi54vacsgbiqd7lty2pn3hsyewnwkwmanxyqjdkwvujg2pelojwjr567hco3nn4o64pfmlddhvcn4utnpu6zdeuig5fua6g6calljcdlev53v5aaptv6gg";
+        private const string CLIENTPHID = "PHID-USER-qeop3bethxve7d3dcdqc";
+
+        private static readonly string[] CCPHIDS = new string[] { "PHID-USER-4bruxoj4jpjrmz6invrc", "PHID-USER-7ebhodqpyep5kh7q56wn" };
+        private static readonly string[] PROJECTPHIDS = new string[] { "PHID-PROJ-3ahdqqipg3rgo7bk4oqo", "PHID-PROJ-4msjmfn2aosxjjygpoa4" };
+
         // Accepts an exception then creates a task in Phabricator
-        public static void Record(Exception e)
+        public static void Record(Exception e, bool noPrompt = false)
         {
             // Fetch all system info from the Exception
             SystemInfo s = CollectSystemInfo.GetSystemInfo();
             
             // Check user information from registry
             // For now always use default
-            var username = "crash-reporter";
-            var certificate = "y3jplv35imfesns5wxin7i6iv6jlqnasfs6mjwvvgp6mfnkagkrp6v2roif53gtcp56tuf3vd3dlb2vaue5radybntoidyrfk7teifi6u4lxotlev7go45ebz7brmlkgeruta53e2yi54vacsgbiqd7lty2pn3hsyewnwkwmanxyqjdkwvujg2pelojwjr567hco3nn4o64pfmlddhvcn4utnpu6zdeuig5fua6g6calljcdlev53v5aaptv6gg";
-            var clientPHID = "PHID-USER-qeop3bethxve7d3dcdqc";
+            var username = USERNAME;
+            var certificate = CERTIFICATE;
+            var clientPHID = CLIENTPHID;
 
             // Get stack trace information.
             var st = new StackTrace(e, true);
@@ -152,11 +159,80 @@ namespace CrashReport
                     {
                         title = e.GetType().FullName + " in " + source,
                         description = message,
-                        ccPHIDs = new string[] { "PHID-USER-4bruxoj4jpjrmz6invrc", "PHID-USER-7ebhodqpyep5kh7q56wn" /* add user phid here */ },
+                        ccPHIDs = CCPHIDS,
                         priority = 100,
-                        projectPHIDs = new string[] { "PHID-PROJ-3ahdqqipg3rgo7bk4oqo", "PHID-PROJ-4msjmfn2aosxjjygpoa4" }
+                        projectPHIDs = PROJECTPHIDS
                     }).uri;
             }
+
+            if (!noPrompt)
+            {
+                // Notify user of task url
+                try
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                }
+                catch
+                {
+                }
+
+                new CrashReportForm(uri).ShowDialog();
+
+                // Restart Tychaia
+            }
+        }
+
+        /// <summary>
+        /// Accepts a PNG as a stream of bytes and reports an issue to Phabricator with the screenshot
+        /// attached.  This is used so that players can report shader and rendering issues.
+        /// </summary>
+        /// <param name="bytes">Bytes.</param>
+        public static void RecordScreenshot(byte[] bytes)
+        {
+            var base64 = Convert.ToBase64String(bytes);
+
+            // Fetch all system info from the Exception
+            var s = CollectSystemInfo.GetSystemInfo();
+
+            // Create a conduit client
+            var client = new ConduitClient("https://code.redpointsoftware.com.au/api/");
+            client.User = USERNAME;
+            client.Certificate = CERTIFICATE;
+
+            // Upload the screenshot.
+            var result = client.Do(
+                "file.upload",
+                new
+                {
+                    data_base64 = base64,
+                    name = "screenshot.png"
+                });
+            var fileInfo = client.Do(
+                "file.info",
+                new
+                {
+                    phid = result.Value
+                });
+
+            // Create the message.
+            var message = @"**Attached Screenshot:**
+{" + fileInfo["objectName"].Value + @"}
+
+**System Information:**
+" + s.ToString();
+
+            // Create the task.
+            var uri = client.Do(
+                "maniphest.createtask",
+                new
+                {
+                    title = "Rendering issue report (screenshot attached)",
+                    description = message,
+                    ccPHIDs = CCPHIDS,
+                    priority = 100,
+                    projectPHIDs = PROJECTPHIDS
+                }).uri;
 
             // Notify user of task url
             try
@@ -168,14 +244,7 @@ namespace CrashReport
             {
             }
 
-            new CrashReportForm(uri).ShowDialog();
-
-            // Restart Tychaia
-        }
-
-        // A method that captures information about the client's computer
-        private static void CaptureInformation()
-        {
+            new CrashReportForm(uri.Value).ShowDialog();
         }
     }
 }

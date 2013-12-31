@@ -5,6 +5,8 @@
 // ====================================================================== //
 using System;
 using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
@@ -39,54 +41,77 @@ namespace Tychaia
 
         public ConnectWorld(
             IKernel kernel,
-            IDxFactory dxFactory,
-            ILevelAPI levelAPI,
             I2DRenderUtilities twodRenderUtilities,
             IAssetManagerProvider assetManagerProvider,
             IBackgroundCubeEntityFactory backgroundCubeEntityFactory,
-            ISkin skin)
+            ISkin skin,
+            bool startServer,
+            IPAddress address,
+            int port)
             : base(twodRenderUtilities, assetManagerProvider, backgroundCubeEntityFactory, skin)
         {
             this.m_AssetManager = assetManagerProvider.GetAssetManager();
             this.m_2DRenderUtilities = twodRenderUtilities;
             
             this.m_DefaultFont = this.m_AssetManager.Get<FontAsset>("font.Default");
-            this.m_Address = IPAddress.Loopback;
-            this.m_Port = 9091;
+            this.m_Address = address;
+            this.m_Port = port;
             ILocalNode node = null;
             GameState state = null;
             byte[] initial = null;
-            var level = levelAPI.NewLevel((new Random()).Next().ToString());
             Action cleanup = () =>
             {
                 this.m_NormalShutdown = true;
                 kernel.Unbind<ILocalNode>();
-                node.Leave();
+                node.Close();
                 this.TerminateExistingProcess();
             };
-            this.m_Actions = new Action[]
+
+            if (startServer)
             {
-                () => this.m_Message = "Closing old process...",
-                () => this.TerminateExistingProcess(),
-                () => this.m_Message = "Starting server...",
-                () => this.StartServer(),
-                () => this.m_Message = "Setting up kernel...",
-                () => TychaiaTCPNetwork.SetupKernel(kernel, false, this.m_Address, this.m_Port),
-                () => this.m_Message = "Creating distributed node...",
-                () => node = dxFactory.CreateLocalNode(Caching.PushOnChange, Architecture.ServerClient),
-                () => this.m_Message = "Binding node to kernel...",
-                () => kernel.Bind<ILocalNode>().ToMethod(x => node),
-                () => this.m_Message = "Joining network...",
-                () => this.AttemptJoin(node),
-                () => this.m_Message = "Retrieving reference to game state...",
-                () => state = this.AttemptStateRetrieval(node),
-                () => this.m_Message = "Joining game...",
-                () => state.JoinGame(),
-                () => this.m_Message = "Retrieving initial game state...",
-                () => initial = state.LoadInitialState(),
-                () => this.m_Message = "Starting client...",
-                () => this.m_PerformFinalAction = true
-            };
+                this.m_Actions = new Action[]
+                {
+                    () => this.m_Message = "Closing old process...", 
+                    () => this.TerminateExistingProcess(),
+                    () => this.m_Message = "Starting server...", 
+                    () => this.StartServer(),
+                    () => this.m_Message = "Creating distributed node...",
+                    () => node = new LocalNode(Architecture.ServerClient, Caching.PushOnChange),
+                    () => this.m_Message = "Binding node to kernel...",
+                    () => kernel.Bind<ILocalNode>().ToMethod(x => node),
+                    () => this.m_Message = "Joining network...",
+                    () => this.AttemptJoin(node), 
+                    () => this.m_Message = "Retrieving reference to game state...",
+                    () => state = this.AttemptStateRetrieval(node),
+                    () => this.m_Message = "Joining game...",
+                    () => state.JoinGame(),
+                    () => this.m_Message = "Retrieving initial game state...",
+                    () => initial = state.LoadInitialState(), 
+                    () => this.m_Message = "Starting client...",
+                    () => this.m_PerformFinalAction = true
+                };
+            }
+            else
+            {
+                this.m_Actions = new Action[]
+                {
+                    () => this.m_Message = "Creating distributed node...",
+                    () => node = new LocalNode(Architecture.ServerClient, Caching.PushOnChange),
+                    () => this.m_Message = "Binding node to kernel...",
+                    () => kernel.Bind<ILocalNode>().ToMethod(x => node),
+                    () => this.m_Message = "Joining network...",
+                    () => this.AttemptJoin(node),
+                    () => this.m_Message = "Retrieving reference to game state...",
+                    () => state = this.AttemptStateRetrieval(node),
+                    () => this.m_Message = "Joining game...",
+                    () => state.JoinGame(),
+                    () => this.m_Message = "Retrieving initial game state...",
+                    () => initial = state.LoadInitialState(),
+                    () => this.m_Message = "Starting client...",
+                    () => this.m_PerformFinalAction = true
+                };
+            }
+
             this.m_FinalAction =
                 () =>
                 this.TargetWorld =
@@ -163,6 +188,8 @@ namespace Tychaia
         {
             for (var i = 0; i < 5; i++)
             {
+                this.m_Message = "Retrieving reference to game state (attempt " + i + ")...";
+
                 var state = new Distributed<GameState>(node, GameState.NAME, true);
                 if ((GameState)state != null)
                     return state;
@@ -178,18 +205,18 @@ namespace Tychaia
             {
                 try
                 {
-                    // We can only call node.Join when we're sure we can make a connection.
-                    // So we basically try to do a basic connection with TcpClient.
-                    var client = new TcpClient();
-                    client.Connect(new IPEndPoint(this.m_Address, this.m_Port));
-                    client.Close();
-                    
-                    // If we got to here, then we can actually connect.
-                    node.Join(null);
+                    // Since we are running as a client, it doesn't really matter
+                    // what address the node binds on, as this address is only used
+                    // to accept incoming connections.  When we explicitly connect
+                    // to the server, we'll be establishing a connection to it's IP
+                    // address over TCP, which supplies two-way communication.
+                    node.Bind(IPAddress.Loopback, this.m_Port);
+                    node.GetService<IClientConnector>().Connect(this.m_Address, this.m_Port);
                     return;
                 }
                 catch (SocketException ex)
                 {
+                    node.Close();
                     Console.WriteLine(ex);
                     Thread.Sleep(1000);
                 }
@@ -218,7 +245,7 @@ namespace Tychaia
             var file = Assembly.GetExecutingAssembly().Location;
             this.m_Process = new Process();
             this.m_Process.StartInfo.FileName = file;
-            this.m_Process.StartInfo.Arguments = "--server --address 127.0.0.1 --port 9091";
+            this.m_Process.StartInfo.Arguments = "--server --address " + this.m_Address + " --port " + this.m_Port;
             this.m_Process.EnableRaisingEvents = true;
             this.m_Process.Exited += (sender, e) => 
             {

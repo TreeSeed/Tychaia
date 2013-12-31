@@ -5,6 +5,7 @@
 // ====================================================================== //
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using Ninject;
@@ -39,6 +40,10 @@ namespace Tychaia
 
         private static void Run(string[] args)
         {
+            // Fixes T266.
+            var directory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
+            Environment.CurrentDirectory = directory.FullName;
+
             var isServer = false;
             var address = string.Empty;
             var port = 0;
@@ -85,7 +90,6 @@ namespace Tychaia
             kernel.Load<TychaiaDiskIoCModule>();
             kernel.Load<TychaiaProfilingIoCModule>();
             kernel.Load<TychaiaProceduralGenerationIoCModule>();
-            kernel.Load<TychaiaNetworkIoCModule>();
 
             if (isServer)
             {

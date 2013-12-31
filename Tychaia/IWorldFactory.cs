@@ -4,6 +4,7 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using System;
+using System.Net;
 
 namespace Tychaia
 {
@@ -11,6 +12,8 @@ namespace Tychaia
     {
         TychaiaGameWorld CreateTychaiaGameWorld(GameState gameState, byte[] initialState, Action cleanup);
         PregenerateWorld CreatePregenerateWorld(ILevel level);
-        ConnectWorld CreateConnectWorld();
+        ConnectWorld CreateConnectWorld(bool startServer, IPAddress address, int port);
+
+        MultiplayerWorld CreateMultiplayerWorld();
     }
 }

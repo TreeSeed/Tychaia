@@ -1,17 +1,12 @@
-//
-// This source code is licensed in accordance with the licensing outlined
-// on the main Tychaia website (www.tychaia.com).  Changes to the
-// license on the website apply retroactively.
-//
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.ComponentModel;
 using System.Net;
 using System.Collections.Specialized;
-using System.Web.Helpers;
-using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace Phabricator.Conduit
 {
@@ -87,7 +82,7 @@ namespace Phabricator.Conduit
             this.m_ConnectionID = result.connectionID;
         }
 
-        public dynamic Do(string call, object json)
+        public dynamic Do(string call, object json, bool allowReauth = true)
         {
             // Ensure our session key exists.
             // TODO: If we get invalid session
@@ -114,26 +109,39 @@ namespace Phabricator.Conduit
             }
 
             // Serialize parameters.
-            var serializer = new JavaScriptSerializer();
-            var requestParams = serializer.Serialize(parameterStore);
+            var serializer = new JsonSerializer();
+            var requestParams = new StringWriter();
+            serializer.Serialize(requestParams, parameterStore);
 
             // Send web request.
-            var resultJson = "";
+            string resultJson;
             using (var client = new WebClient())
             {
                 var reqparam = new NameValueCollection();
-                reqparam.Add("params", requestParams);
+                reqparam.Add("params", requestParams.GetStringBuilder().ToString());
                 reqparam.Add("output", "json");
                 reqparam.Add("__conduit__", "true");
                 var bytes = client.UploadValues(this.m_URI + "/" + call, reqparam);
                 resultJson = Encoding.ASCII.GetString(bytes);
             }
 
-            dynamic result = Json.Decode(resultJson);
-            if (!string.IsNullOrWhiteSpace(result.error_code) ||
-                !string.IsNullOrWhiteSpace(result.error_info))
+            var result = serializer.Deserialize<dynamic>(new JsonTextReader(new StringReader(resultJson)));
+            if (!string.IsNullOrWhiteSpace(result.error_code.ToString()) ||
+                !string.IsNullOrWhiteSpace(result.error_info.ToString()))
             {
-                throw new ConduitException(result.error_code, result.error_info);
+                if (result.error_code == "ERR-INVALID-SESSION")
+                {
+                    if (!allowReauth)
+                    {
+                        throw new ConduitException(result.error_code.ToString(), result.error_info.ToString());
+                    }
+
+                    // Our conduit session has expired, so let's reauth.
+                    this.CreateSession();
+                    return this.Do(call, json, false);
+                }
+
+                throw new ConduitException(result.error_code.ToString(), result.error_info.ToString());
             }
             return result.result;
         }

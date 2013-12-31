@@ -180,6 +180,21 @@ namespace Tychaia.Asset
             Func<float, float, float, float, float, int> addOrGetVertex,
             Action<int> addIndex)
         {
+            // TODO: Make this a togglable option on the asset.
+            if (this.Name == "block.Water")
+            {
+                this.BuildWaterRenderList(
+                    textureAtlasAsset,
+                    x,
+                    y,
+                    z,
+                    edges,
+                    getRelativeBlock,
+                    addOrGetVertex,
+                    addIndex);
+                return;
+            }
+
             var missingAbove = (edges & 0x00000001) != 0;
             var missingBelow = (edges & 0x00000002) != 0;
             var missingEast = (edges & 0x00000004) != 0;
@@ -342,6 +357,20 @@ namespace Tychaia.Asset
                 topLeftCorner = 1;
             }
 
+            // TODO: Make this a togglable option on the asset.
+            if (y == 1 && (topLeftCorner != 0 || topRightCorner != 0 || bottomLeftCorner != 0 || bottomRightCorner != 0))
+            {
+                this.BuildWaterRenderList(
+                    textureAtlasAsset,
+                    x,
+                    y,
+                    z,
+                    edges,
+                    getRelativeBlock,
+                    addOrGetVertex,
+                    addIndex);
+            }
+
             if (missingAbove)
             {
                 var uv = textureAtlasAsset.GetUVBounds(this.TopTexture.Name);
@@ -432,6 +461,30 @@ namespace Tychaia.Asset
                 addIndex(topRight);
                 addIndex(bottomRight);
             }
+        }
+
+        private void BuildWaterRenderList(
+            TextureAtlasAsset textureAtlasAsset,
+            int x,
+            int y,
+            int z,
+            int edges,
+            Func<int, int, int, BlockAsset> getRelativeBlock,
+            Func<float, float, float, float, float, int> addOrGetVertex,
+            Action<int> addIndex)
+        {
+            var uv = textureAtlasAsset.GetUVBounds("texture.Water");
+
+            var topLeft = addOrGetVertex(x, y + 0.75f, z, uv.X, uv.Y);
+            var topRight = addOrGetVertex(x + 1, y + 0.75f, z, uv.X + uv.Width, uv.Y);
+            var bottomLeft = addOrGetVertex(x, y + 0.75f, z + 1, uv.X, uv.Y + uv.Height);
+            var bottomRight = addOrGetVertex(x + 1, y + 0.75f, z + 1, uv.X + uv.Width, uv.Y + uv.Height);
+            addIndex(topLeft);
+            addIndex(topRight);
+            addIndex(bottomLeft);
+            addIndex(bottomLeft);
+            addIndex(topRight);
+            addIndex(bottomRight);
         }
     }
 }

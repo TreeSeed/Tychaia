@@ -12,13 +12,18 @@ namespace Tychaia
     public class TychaiaSkin : ISkin
     {
         private readonly I2DRenderUtilities m_2DRenderUtilities;
+
+        private readonly BasicSkin m_BasicSkin;
+
         private readonly IAssetManager m_AssetManager;
 
         public TychaiaSkin(
             I2DRenderUtilities twodRenderUtilities,
-            IAssetManagerProvider assetManagerProvider)
+            IAssetManagerProvider assetManagerProvider,
+            BasicSkin basicSkin)
         {
             this.m_2DRenderUtilities = twodRenderUtilities;
+            this.m_BasicSkin = basicSkin;
             this.m_AssetManager = assetManagerProvider.GetAssetManager(false);
         }
 
@@ -70,12 +75,12 @@ namespace Tychaia
 
         public void DrawLabel(IRenderContext context, Rectangle layout, Label label)
         {
-            throw new NotSupportedException();
+            this.m_BasicSkin.DrawLabel(context, layout, label);
         }
 
         public void DrawLink(IRenderContext context, Rectangle layout, Link link)
         {
-            throw new NotSupportedException();
+            this.m_BasicSkin.DrawLink(context, layout, link);
         }
 
         public void DrawVerticalContainer(IRenderContext context, Rectangle layout, VerticalContainer verticalContainer)
@@ -91,27 +96,27 @@ namespace Tychaia
 
         public void DrawMenuItem(IRenderContext context, Rectangle layout, MenuItem menuItem)
         {
-            throw new NotSupportedException();
+            this.m_BasicSkin.DrawMenuItem(context, layout, menuItem);
         }
 
         public void DrawMenuList(IRenderContext context, Rectangle layout, MenuItem menuItem)
         {
-            throw new NotSupportedException();
+            this.m_BasicSkin.DrawMenuList(context, layout, menuItem);
         }
 
         public void DrawMainMenu(IRenderContext context, Rectangle layout, MainMenu mainMenu)
         {
-            throw new NotSupportedException();
+            this.m_BasicSkin.DrawMainMenu(context, layout, mainMenu);
         }
 
         public void DrawTreeView(IRenderContext context, Rectangle layout, TreeView treeView)
         {
-            throw new NotSupportedException();
+            this.m_BasicSkin.DrawTreeView(context, layout, treeView);
         }
 
         public void DrawTreeItem(IRenderContext context, Rectangle layout, TreeItem treeItem)
         {
-            throw new NotSupportedException();
+            this.m_BasicSkin.DrawTreeItem(context, layout, treeItem);
         }
 
         public void DrawSingleContainer(IRenderContext context, Rectangle layout, SingleContainer singleContainer)
@@ -120,37 +125,47 @@ namespace Tychaia
 
         public void DrawTextBox(IRenderContext context, Rectangle layout, TextBox textBox)
         {
-            throw new NotSupportedException();
+            this.m_BasicSkin.DrawTextBox(context, layout, textBox);
         }
 
         public void DrawForm(IRenderContext context, Rectangle layout, Form form)
         {
-            throw new NotSupportedException();
+            this.m_BasicSkin.DrawForm(context, layout, form);
         }
 
         public void DrawFontViewer(IRenderContext context, Rectangle layout, FontViewer fontViewer)
         {
-            throw new NotSupportedException();
+            this.m_BasicSkin.DrawFontViewer(context, layout, fontViewer);
         }
 
         public void DrawFileSelect(IRenderContext context, Rectangle layout, FileSelect fileSelect)
         {
-            throw new NotSupportedException();
+            this.m_BasicSkin.DrawFileSelect(context, layout, fileSelect);
         }
 
         public void DrawTextureViewer(IRenderContext context, Rectangle layout, TextureViewer textureViewer)
         {
-            throw new NotSupportedException();
+            this.m_BasicSkin.DrawTextureViewer(context, layout, textureViewer);
         }
 
         public void DrawAudioPlayer(IRenderContext context, Rectangle layout, AudioPlayer audioPlayer)
         {
-            throw new NotSupportedException();
+            this.m_BasicSkin.DrawAudioPlayer(context, layout, audioPlayer);
         }
 
         public void DrawWindow(IRenderContext context, Rectangle layout, Window window)
         {
-            throw new NotSupportedException();
+            this.m_BasicSkin.DrawWindow(context, layout, window);
+        }
+
+        public void DrawListView(IRenderContext context, Rectangle layout, ListView listView)
+        {
+            this.m_BasicSkin.DrawListView(context, layout, listView);
+        }
+
+        public void DrawListItem(IRenderContext context, Rectangle layout, ListItem listItem)
+        {
+            this.m_BasicSkin.DrawListItem(context, layout, listItem);
         }
 
         public Vector2 MeasureText(IRenderContext context, string text)

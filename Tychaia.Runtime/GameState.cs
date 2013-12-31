@@ -58,13 +58,14 @@ namespace Tychaia
         [ClientCallable]
         public void JoinGame()
         {
+            Console.WriteLine("client joined game");
+            
+            var player = new Player();
+            player.Connect((this as ITransparent).Node, "player", true);
+            player.Update();
+
             lock (this.m_Lock)
             {
-                Console.WriteLine("client joined game");
-                
-                var player = new Player();
-                player.Connect((this as ITransparent).Node, "player", true);
-                player.Update();
                 this.m_Synchronised.Add(player);
             }
         }

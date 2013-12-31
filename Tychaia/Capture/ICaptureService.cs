@@ -3,16 +3,23 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Dx.Runtime;
-using Ninject.Modules;
+using System;
+using Protogame;
+using Tychaia.Globals;
 
-namespace Tychaia.Network
+namespace Tychaia
 {
-    public class TychaiaNetworkIoCModule : NinjectModule
+    [NoProfile]
+    public interface ICaptureService
     {
-        public override void Load()
-        {
-            this.Bind<IDxFactory>().To<DependencyInjectedDxFactory>();
-        }
+        void RenderBelow(ICoreGame coreGame);
+
+        void RenderAbove(ICoreGame coreGame);
+
+        void Render2D(ICoreGame coreGame);
+
+        void Update(ICoreGame coreGame);
+
+        void CaptureFrame(IGameContext gameContext, Action<byte[]> action);
     }
 }

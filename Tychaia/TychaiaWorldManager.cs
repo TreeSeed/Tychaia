@@ -3,7 +3,12 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
+using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
@@ -14,6 +19,7 @@ namespace Tychaia
     {
         private readonly IViewportMode m_ViewportMode;
         private readonly EffectAsset m_BasicEffectAsset;
+        private readonly ICaptureService m_CaptureService;
 
 #if DEBUG
         private readonly TychaiaProfilerEntity m_TychaiaProfilerEntity;
@@ -24,12 +30,14 @@ namespace Tychaia
             TychaiaProfilerEntity tychaiaProfilerEntity,
             IViewportMode viewportMode,
             IConsole console,
-            IAssetManagerProvider assetManagerProvider)
+            IAssetManagerProvider assetManagerProvider,
+            ICaptureService captureService)
         {
             this.m_TychaiaProfilerEntity = tychaiaProfilerEntity;
             this.m_TychaiaProfiler = this.m_TychaiaProfilerEntity.Profiler;
             this.m_ViewportMode = viewportMode;
             this.m_Console = console;
+            this.m_CaptureService = captureService;
             this.m_BasicEffectAsset = assetManagerProvider.GetAssetManager().Get<EffectAsset>("effect.Basic");
         }
 #else
@@ -38,16 +46,25 @@ namespace Tychaia
         public TychaiaWorldManager(
             IViewportMode viewportMode,
             IConsole console,
-            IAssetManagerProvider assetManagerProvider)
+            IAssetManagerProvider assetManagerProvider,
+            ICaptureService captureService)
         {
             this.m_ViewportMode = viewportMode;
             this.m_Console = console;
+            this.m_CaptureService = captureService;
             this.m_BasicEffectAsset = assetManagerProvider.GetAssetManager().Get<EffectAsset>("effect.Basic");
         }
 #endif
 
+        public void CaptureNextFrame(IGameContext gameContext, Action<byte[]> onCapture)
+        {
+            this.m_CaptureService.CaptureFrame(gameContext, onCapture);
+        }
+
         public void Render<T>(T game) where T : Microsoft.Xna.Framework.Game, ICoreGame
         {
+            this.m_CaptureService.RenderBelow(game);
+
 #if DEBUG
             var handle = this.m_TychaiaProfiler.Measure("tychaia-render");
 #endif
@@ -149,8 +166,13 @@ namespace Tychaia
             var oldWorld = game.RenderContext.World;
 
             // Set up the matrix to match the sprite batch.
-            var projection = Matrix.CreateOrthographicOffCenter(0, game.GraphicsDevice.Viewport.Width,
-                game.GraphicsDevice.Viewport.Height, 0, 0, 1);
+            var projection = Matrix.CreateOrthographicOffCenter(
+                0,
+                game.GraphicsDevice.Viewport.Width,
+                game.GraphicsDevice.Viewport.Height,
+                0,
+                0,
+                1);
             var halfPixelOffset = Matrix.CreateTranslation(-0.5f, -0.5f, 0);
             game.RenderContext.World = Matrix.Identity;
             game.RenderContext.View = Matrix.Identity;
@@ -159,6 +181,7 @@ namespace Tychaia
             {
                 ((BasicEffect)game.RenderContext.Effect).LightingEnabled = false;
             }
+
             game.RenderContext.EnableVertexColors();
 
             // Render profiler.
@@ -183,16 +206,22 @@ namespace Tychaia
                 this.m_Console.Render(game.GameContext, game.RenderContext);
             }
 
+            this.m_CaptureService.Render2D(game);
+
             game.RenderContext.SpriteBatch.End();
 
             game.GraphicsDevice.BlendState = BlendState.Opaque;
             game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             game.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
             game.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+
+            this.m_CaptureService.RenderAbove(game);
         }
 
         public void Update<T>(T game) where T : Microsoft.Xna.Framework.Game, ICoreGame
         {
+            this.m_CaptureService.Update(game);
+
 #if DEBUG
             this.m_TychaiaProfiler.StartRenderStats();
             using (this.m_TychaiaProfiler.Measure("tychaia-update"))
