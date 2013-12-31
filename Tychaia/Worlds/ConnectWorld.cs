@@ -59,6 +59,12 @@ namespace Tychaia
             Action cleanup = () =>
             {
                 kernel.Unbind<INetworkAPI>();
+                kernel.Unbind<IClientNetworkAPI>();
+                if (client != null)
+                {
+                    client.Close();
+                }
+
                 this.TerminateExistingProcess();
             };
 

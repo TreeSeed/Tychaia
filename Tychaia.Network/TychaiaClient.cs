@@ -54,6 +54,11 @@ namespace Tychaia.Network
             this.m_MxDispatcher.Connect(endpoint);
         }
 
+        public void Close()
+        {
+            this.m_MxDispatcher.Close();
+        }
+
         public void ListenForMessage(string type, Action<MxClient, byte[]> callback)
         {
             if (this.m_MessageEvents.ContainsKey(type))
