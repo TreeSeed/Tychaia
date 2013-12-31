@@ -45,7 +45,11 @@ namespace Tychaia.Network
                 var start = DateTime.Now;
                 server.Update();
 
-                Thread.Sleep((1000 / 30) - (int)(DateTime.Now - start).TotalMilliseconds);
+                var amount = (1000 / 30) - (int)(DateTime.Now - start).TotalMilliseconds;
+                if (amount > 0)
+                {
+                    Thread.Sleep(amount);
+                }
             }
 
             // ReSharper disable once FunctionNeverReturns

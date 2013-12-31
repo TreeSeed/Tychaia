@@ -72,7 +72,7 @@ namespace Tychaia
                     () => client.Connect(new IPEndPoint(address, port)),
                     () => this.m_Message = "Binding node to kernel...", 
                     () => kernel.Bind<INetworkAPI>().ToMethod(x => client), () => this.m_Message = "Joining game...", 
-                    () => client.JoinGame(), () => this.m_Message = "Retrieving initial game state...", 
+                    () => this.JoinGame(client), () => this.m_Message = "Retrieving initial game state...", 
                     () => initial = client.LoadInitialState(), () => this.m_Message = "Starting client...", 
                     () => this.m_PerformFinalAction = true
                 };
@@ -86,7 +86,7 @@ namespace Tychaia
                     () => client.Connect(new IPEndPoint(address, port)),
                     () => this.m_Message = "Binding node to kernel...", 
                     () => kernel.Bind<INetworkAPI>().ToMethod(x => client), () => this.m_Message = "Joining game...", 
-                    () => client.JoinGame(), () => this.m_Message = "Retrieving initial game state...", 
+                    () => this.JoinGame(client), () => this.m_Message = "Retrieving initial game state...", 
                     () => initial = client.LoadInitialState(), () => this.m_Message = "Starting client...", 
                     () => this.m_PerformFinalAction = true
                 };
@@ -163,6 +163,28 @@ namespace Tychaia
             if (this.m_PerformFinalAction)
             {
                 this.m_FinalAction();
+            }
+        }
+
+        public void JoinGame(TychaiaClient client)
+        {
+            var hasJoinedGame = false;
+            
+            client.ListenForMessage(
+                "join confirm",
+                s =>
+                {
+                    Console.WriteLine("Informed by server we have joined!");
+                    hasJoinedGame = true;
+                });
+
+            while (!hasJoinedGame)
+            {
+                client.SendMessage("join", "player");
+
+                client.Update();
+
+                Thread.Sleep(1000 / 30);
             }
         }
 

@@ -30,11 +30,6 @@ namespace Tychaia.Network
             this.m_MxDispatcher.Connect(endpoint);
         }
 
-        public void JoinGame()
-        {
-            // TODO: Tell the server we have joined.
-        }
-
         public void ListenForMessage(string type, Action<string> callback)
         {
             if (this.m_MessageEvents.ContainsKey(type))

@@ -17,16 +17,36 @@ namespace Tychaia.Network
 
         private readonly MxDispatcher m_MxDispatcher;
 
+        // TODO: Make this suitable for multiple players.
+        private bool m_PlayerHasJoinedGame;
+
         public TychaiaServer(int port)
         {
             this.m_MxDispatcher = new MxDispatcher(port);
             this.m_MxDispatcher.MessageReceived += this.OnMessageReceived;
             this.m_MessageEvents = new Dictionary<string, Action<string>>();
+
+            this.m_PlayerHasJoinedGame = false;
+
+            this.ListenForMessage(
+                "join",
+                s =>
+                {
+                    // The client will repeatedly send join messages until we confirm.
+                    if (this.m_PlayerHasJoinedGame)
+                    {
+                        return;
+                    }
+
+                    Console.WriteLine("Detected player has joined");
+                    this.SendMessage("join confirm", s);
+                    this.m_PlayerHasJoinedGame = true;
+                });
         }
 
         public void ListenForMessage(string type, Action<string> callback)
         {
-            if (!this.m_MessageEvents.ContainsKey(type))
+            if (this.m_MessageEvents.ContainsKey(type))
             {
                 throw new InvalidOperationException("callback already registered");
             }
