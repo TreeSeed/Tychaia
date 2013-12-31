@@ -1,24 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Name="Tychaia.Network" Path="Tychaia.Network" Type="Library">
-  <Properties>
-    <Property Name="PostProcessWithDx" Value="True" />
-  </Properties>
   <References>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
     <Reference Include="Ninject" />
-    <Reference Include="Dx.Runtime" />
-    <Reference Include="Dx.Process" />
     <Reference Include="Tychaia.Globals" />
     <Reference Include="Tychaia.Runtime" />
     <Reference Include="Tychaia.Data" />
     <Reference Include="Tychaia.Data.Serializer" />
     <Reference Include="protobuf-net-client" />
     <Reference Include="Phabricator.Conduit" />
+    <Reference Include="Protogame" />
   </References>
   <Files>
+    <Compile Include="INetworkAPI.cs" />
+    <Compile Include="TychaiaClient.cs" />
+    <Compile Include="TychaiaInternalMessage.cs" />
     <Compile Include="TychaiaServer.cs" />
     <Compile Include="TychaiaServerIoCModule.cs" />
     <Compile Include="TychaiaServerQuery.cs" />
+    <Compile Include="TychaiaServerRunner.cs" />
   </Files>
 </Project>

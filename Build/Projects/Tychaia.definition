@@ -1,8 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Name="Tychaia" Path="Tychaia" Type="XNA">
-  <Properties>
-    <Property Name="PostProcessWithDx" Value="True" />
-  </Properties>
   <References>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -24,8 +21,6 @@
     <Reference Include="Tychaia.Network" />
     <Reference Include="Tychaia.Runtime" />
     <Reference Include="MonoGame" />
-    <Reference Include="Dx.Runtime" />
-    <Reference Include="Dx.Process" />
     <Reference Include="Ninject" />
     <Reference Include="protobuf-net-client" />
     <Reference Include="CrashReport" />

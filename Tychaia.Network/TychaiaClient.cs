@@ -6,32 +6,49 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using ProtoBuf;
 using Protogame;
 
 namespace Tychaia.Network
 {
-    public class TychaiaServer : INetworkAPI
+    public class TychaiaClient : INetworkAPI
     {
         private readonly Dictionary<string, Action<string>> m_MessageEvents;
 
         private readonly MxDispatcher m_MxDispatcher;
 
-        public TychaiaServer(int port)
+        public TychaiaClient(int port)
         {
             this.m_MxDispatcher = new MxDispatcher(port);
             this.m_MxDispatcher.MessageReceived += this.OnMessageReceived;
             this.m_MessageEvents = new Dictionary<string, Action<string>>();
         }
 
+        public void Connect(IPEndPoint endpoint)
+        {
+            this.m_MxDispatcher.Connect(endpoint);
+        }
+
+        public void JoinGame()
+        {
+            // TODO: Tell the server we have joined.
+        }
+
         public void ListenForMessage(string type, Action<string> callback)
         {
-            if (!this.m_MessageEvents.ContainsKey(type))
+            if (this.m_MessageEvents.ContainsKey(type))
             {
                 throw new InvalidOperationException("callback already registered");
             }
 
             this.m_MessageEvents[type] = callback;
+        }
+
+        public byte[] LoadInitialState()
+        {
+            // TODO: Get the initial state.
+            return null;
         }
 
         public void SendMessage(string type, string data)

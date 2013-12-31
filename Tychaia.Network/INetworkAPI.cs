@@ -1,17 +1,16 @@
-// ====================================================================== //
+﻿// ====================================================================== //
 // This source code is licensed in accordance with the licensing outlined //
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-namespace Tychaia.Game
-{
-    public class Item
-    {
-        public string Name { get; set; }
+using System;
 
-        public virtual float GetNumericWeight()
-        {
-            return 0;
-        }
+namespace Tychaia.Network
+{
+    public interface INetworkAPI
+    {
+        void ListenForMessage(string type, Action<string> callback);
+
+        void SendMessage(string type, string data);
     }
 }

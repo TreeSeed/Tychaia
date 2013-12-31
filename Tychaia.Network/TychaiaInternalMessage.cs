@@ -1,17 +1,19 @@
-// ====================================================================== //
+﻿// ====================================================================== //
 // This source code is licensed in accordance with the licensing outlined //
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-namespace Tychaia.Game
-{
-    public class Item
-    {
-        public string Name { get; set; }
+using ProtoBuf;
 
-        public virtual float GetNumericWeight()
-        {
-            return 0;
-        }
+namespace Tychaia.Network
+{
+    [ProtoContract]
+    public class TychaiaInternalMessage
+    {
+        [ProtoMember(2)]
+        public string Data { get; set; }
+
+        [ProtoMember(1)]
+        public string Type { get; set; }
     }
 }

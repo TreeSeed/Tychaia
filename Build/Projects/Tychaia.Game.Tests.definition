@@ -6,7 +6,6 @@
     <Reference Include="Ninject" />
     <Reference Include="Ninject.MockingKernel" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Dx.Runtime" />
   </References>
   <Files>
     <Compile Include="InventoryTests.cs" />

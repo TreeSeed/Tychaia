@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Name="PerspectiveTest" Path="PerspectiveTest" Type="XNA">
+<Project Name="NetworkTest" Path="NetworkTest" Type="XNA">
   <References>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -15,14 +15,10 @@
     <Reference Include="Tychaia.Threading" />
     <Reference Include="MonoGame" />
     <Reference Include="Ninject" />
+    <Reference Include="protobuf-net-client" />
   </References>
   <Files>
-    <Compile Include="EverythingDemo.cs" />
-    <Compile Include="IRenderDemo.cs" />
-    <Compile Include="PerspectiveGame.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="SingleCubeDemo.cs" />
-    <Compile Include="UncachedChunkDemo.cs" />
     <None Include="..\Other\OpenTK.dll.config">
       <Link>OpenTK.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
