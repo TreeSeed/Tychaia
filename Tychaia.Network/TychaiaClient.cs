@@ -10,7 +10,7 @@ using Protogame;
 
 namespace Tychaia.Network
 {
-    public class TychaiaClient : INetworkAPI
+    public class TychaiaClient : IClientNetworkAPI
     {
         private readonly Dictionary<string, Action<MxClient, byte[]>> m_MessageEvents;
 
@@ -18,14 +18,19 @@ namespace Tychaia.Network
 
         private DateTime m_LastUpdateCall;
 
+        private DateTime m_LastDisconnectionWarningTime;
+
         public TychaiaClient(int port)
         {
             this.m_MxDispatcher = new MxDispatcher(port);
             this.m_MxDispatcher.MessageReceived += this.OnMessageReceived;
+            this.m_MxDispatcher.ClientDisconnectWarning += this.OnClientDisconnectWarning;
+            this.m_MxDispatcher.ClientDisconnected += this.OnClientDisconnected;
             this.m_MessageEvents = new Dictionary<string, Action<MxClient, byte[]>>();
 
             this.PlayersInGame = new string[0];
             this.m_LastUpdateCall = new DateTime(1970, 1, 1, 0, 0, 0);
+            this.m_LastDisconnectionWarningTime = new DateTime(1970, 1, 1, 0, 0, 0);
 
             this.ListenForMessage(
                 "player list", 
@@ -35,6 +40,12 @@ namespace Tychaia.Network
                     this.PlayersInGame = list.Players ?? new string[0];
                 });
         }
+
+        public double DisconnectingForSeconds { get; private set; }
+
+        public bool IsPotentiallyDisconnecting { get; private set; }
+
+        public bool IsDisconnected { get; private set; }
 
         public string[] PlayersInGame { get; private set; }
 
@@ -71,11 +82,28 @@ namespace Tychaia.Network
 
         public void Update()
         {
+            if ((DateTime.Now - this.m_LastDisconnectionWarningTime).TotalSeconds > 1)
+            {
+                this.IsPotentiallyDisconnecting = false;
+            }
+
             if ((DateTime.Now - this.m_LastUpdateCall).TotalMilliseconds > 1000 / 30)
             {
                 this.m_MxDispatcher.Update();
                 this.m_LastUpdateCall = DateTime.Now;
             }
+        }
+
+        private void OnClientDisconnectWarning(object sender, MxDisconnectEventArgs e)
+        {
+            this.IsPotentiallyDisconnecting = true;
+            this.m_LastDisconnectionWarningTime = DateTime.Now;
+            this.DisconnectingForSeconds = e.DisconnectAccumulator / 30.0;
+        }
+
+        private void OnClientDisconnected(object sender, MxClientEventArgs e)
+        {
+            this.IsDisconnected = true;
         }
 
         private void OnMessageReceived(object sender, MxMessageEventArgs e)

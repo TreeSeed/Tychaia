@@ -32,7 +32,7 @@ namespace Tychaia
 
         private readonly I2DRenderUtilities m_2DRenderUtilities;
 
-        private readonly INetworkAPI m_NetworkAPI;
+        private readonly IClientNetworkAPI m_NetworkAPI;
 
         private readonly IFilteredFeatures m_FilteredFeatures;
 
@@ -58,7 +58,7 @@ namespace Tychaia
             ILevelAPI levelAPI /* temporary */, 
             IGameUIFactory gameUIFactory, 
             I2DRenderUtilities twodRenderUtilities,
-            INetworkAPI networkAPI,
+            IClientNetworkAPI networkAPI,
             byte[] initialState, 
             Action cleanup)
         {
@@ -164,9 +164,19 @@ namespace Tychaia
 
             if (!renderContext.Is3DContext)
             {
+                if (this.m_NetworkAPI.IsPotentiallyDisconnecting)
+                {
+                    this.m_2DRenderUtilities.RenderText(
+                        renderContext,
+                        new Vector2(20, 600),
+                        this.m_NetworkAPI.DisconnectingForSeconds.ToString("F2") + " secs disconnected",
+                        this.m_DefaultFontAsset,
+                        textColor: Color.Red);
+                }
+
                 this.m_2DRenderUtilities.RenderText(
                     renderContext,
-                    new Vector2(20, 450),
+                    new Vector2(20, 620),
                     this.m_NetworkAPI.PlayersInGame.Aggregate(string.Empty, (a, b) => a + " " + b).Trim(),
                     this.m_DefaultFontAsset);
             }
@@ -205,6 +215,13 @@ namespace Tychaia
             if (keyboard.IsKeyPressed(this, Keys.Escape))
             {
                 gameContext.SwitchWorld<TitleWorld>();
+            }
+
+            // Handle disconnection.
+            if (this.m_NetworkAPI.IsDisconnected)
+            {
+                gameContext.SwitchWorld<TitleWorld>();
+                return;
             }
 
             if (this.m_Player == null)

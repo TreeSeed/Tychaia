@@ -72,7 +72,8 @@ namespace Tychaia
                     () => this.m_Message = "Connecting to server...", 
                     () => client.Connect(new IPEndPoint(address, port)),
                     () => this.m_Message = "Binding node to kernel...", 
-                    () => kernel.Bind<INetworkAPI>().ToMethod(x => client), () => this.m_Message = "Joining game...", 
+                    () => kernel.Bind<INetworkAPI>().ToMethod(x => client), 
+                    () => kernel.Bind<IClientNetworkAPI>().ToMethod(x => client), () => this.m_Message = "Joining game...", 
                     () => this.JoinGame(client), () => this.m_Message = "Retrieving initial game state...", 
                     () => initial = client.LoadInitialState(), () => this.m_Message = "Starting client...", 
                     () => this.m_PerformFinalAction = true
@@ -86,7 +87,9 @@ namespace Tychaia
                     () => this.m_Message = "Connecting to server...", 
                     () => client.Connect(new IPEndPoint(address, port)),
                     () => this.m_Message = "Binding node to kernel...", 
-                    () => kernel.Bind<INetworkAPI>().ToMethod(x => client), () => this.m_Message = "Joining game...", 
+                    () => kernel.Bind<INetworkAPI>().ToMethod(x => client),
+                    () => kernel.Bind<IClientNetworkAPI>().ToMethod(x => client), 
+                    () => this.m_Message = "Joining game...", 
                     () => this.JoinGame(client), () => this.m_Message = "Retrieving initial game state...", 
                     () => initial = client.LoadInitialState(), () => this.m_Message = "Starting client...", 
                     () => this.m_PerformFinalAction = true
