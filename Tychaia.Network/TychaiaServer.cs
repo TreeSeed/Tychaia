@@ -5,46 +5,52 @@
 // ====================================================================== //
 using System;
 using System.Collections.Generic;
-using System.IO;
-using ProtoBuf;
+using System.Linq;
+using System.Text;
 using Protogame;
 
 namespace Tychaia.Network
 {
     public class TychaiaServer : INetworkAPI
     {
-        private readonly Dictionary<string, Action<string>> m_MessageEvents;
+        private readonly Dictionary<string, Action<MxClient, byte[]>> m_MessageEvents;
 
         private readonly MxDispatcher m_MxDispatcher;
 
-        // TODO: Make this suitable for multiple players.
-        private bool m_PlayerHasJoinedGame;
+        private readonly Dictionary<MxClient, string> m_PlayerLookup;
 
         public TychaiaServer(int port)
         {
             this.m_MxDispatcher = new MxDispatcher(port);
             this.m_MxDispatcher.MessageReceived += this.OnMessageReceived;
-            this.m_MessageEvents = new Dictionary<string, Action<string>>();
-
-            this.m_PlayerHasJoinedGame = false;
+            this.m_MessageEvents = new Dictionary<string, Action<MxClient, byte[]>>();
+            this.m_PlayerLookup = new Dictionary<MxClient, string>();
 
             this.ListenForMessage(
-                "join",
-                s =>
+                "join", 
+                (client, playerName) =>
                 {
                     // The client will repeatedly send join messages until we confirm.
-                    if (this.m_PlayerHasJoinedGame)
+                    if (this.m_PlayerLookup.ContainsKey(client))
                     {
                         return;
                     }
 
-                    Console.WriteLine("Detected player has joined");
-                    this.SendMessage("join confirm", s);
-                    this.m_PlayerHasJoinedGame = true;
+                    Console.WriteLine("Detected \"" + Encoding.ASCII.GetString(playerName) + "\" has joined");
+                    this.SendMessage("join confirm", playerName);
+                    this.m_PlayerLookup.Add(client, Encoding.ASCII.GetString(playerName));
                 });
         }
 
-        public void ListenForMessage(string type, Action<string> callback)
+        public string[] PlayersInGame
+        {
+            get
+            {
+                return this.m_PlayerLookup.Values.ToArray();
+            }
+        }
+
+        public void ListenForMessage(string type, Action<MxClient, byte[]> callback)
         {
             if (this.m_MessageEvents.ContainsKey(type))
             {
@@ -54,38 +60,34 @@ namespace Tychaia.Network
             this.m_MessageEvents[type] = callback;
         }
 
-        public void SendMessage(string type, string data)
+        public void SendMessage(string type, byte[] data)
         {
-            using (var memory = new MemoryStream())
-            {
-                Serializer.Serialize(memory, new TychaiaInternalMessage { Type = type, Data = data });
-                var length = (int)memory.Position;
-                memory.Seek(0, SeekOrigin.Begin);
-                var bytes = new byte[length];
-                memory.Read(bytes, 0, length);
+            var bytes = InMemorySerializer.Serialize(new TychaiaInternalMessage { Type = type, Data = data });
 
-                foreach (var endpoint in this.m_MxDispatcher.Endpoints)
-                {
-                    this.m_MxDispatcher.Send(endpoint, bytes);
-                }
+            foreach (var endpoint in this.m_MxDispatcher.Endpoints)
+            {
+                this.m_MxDispatcher.Send(endpoint, bytes);
             }
         }
 
         public void Update()
         {
+            // TODO: Send a real world state.
+            this.SendMessage(
+                "player list", 
+                InMemorySerializer.Serialize(
+                    new PlayerList { Players = this.m_PlayerLookup.Select(x => x.Value).ToArray() }));
+
             this.m_MxDispatcher.Update();
         }
 
         private void OnMessageReceived(object sender, MxMessageEventArgs e)
         {
-            using (var memory = new MemoryStream(e.Payload))
-            {
-                var message = Serializer.Deserialize<TychaiaInternalMessage>(memory);
+            var message = InMemorySerializer.Deserialize<TychaiaInternalMessage>(e.Payload);
 
-                if (this.m_MessageEvents.ContainsKey(message.Type))
-                {
-                    this.m_MessageEvents[message.Type](message.Data);
-                }
+            if (this.m_MessageEvents.ContainsKey(message.Type))
+            {
+                this.m_MessageEvents[message.Type](e.Client, message.Data);
             }
         }
     }

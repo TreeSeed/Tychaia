@@ -4,13 +4,18 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using System;
+using Protogame;
 
 namespace Tychaia.Network
 {
     public interface INetworkAPI
     {
-        void ListenForMessage(string type, Action<string> callback);
+        string[] PlayersInGame { get; }
 
-        void SendMessage(string type, string data);
+        void ListenForMessage(string type, Action<MxClient, byte[]> callback);
+
+        void SendMessage(string type, byte[] data);
+
+        void Update();
     }
 }

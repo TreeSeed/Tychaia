@@ -7,6 +7,7 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Ninject;
@@ -168,11 +169,16 @@ namespace Tychaia
 
         public void JoinGame(TychaiaClient client)
         {
+            var random = new Random();
+            var playerID = random.Next();
+
             var hasJoinedGame = false;
+
+            Console.WriteLine("You are player " + playerID);
             
             client.ListenForMessage(
                 "join confirm",
-                s =>
+                (mcx, s) =>
                 {
                     Console.WriteLine("Informed by server we have joined!");
                     hasJoinedGame = true;
@@ -180,7 +186,7 @@ namespace Tychaia
 
             while (!hasJoinedGame)
             {
-                client.SendMessage("join", "player");
+                client.SendMessage("join", Encoding.ASCII.GetBytes("player " + playerID));
 
                 client.Update();
 

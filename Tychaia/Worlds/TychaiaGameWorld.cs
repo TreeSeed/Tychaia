@@ -5,12 +5,14 @@
 // ====================================================================== //
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Protogame;
 using Tychaia.Game;
 using Tychaia.Globals;
+using Tychaia.Network;
 
 namespace Tychaia
 {
@@ -28,6 +30,10 @@ namespace Tychaia
 
         private readonly IConsole m_Console;
 
+        private readonly I2DRenderUtilities m_2DRenderUtilities;
+
+        private readonly INetworkAPI m_NetworkAPI;
+
         private readonly IFilteredFeatures m_FilteredFeatures;
 
         private readonly InventoryUIEntity m_InventoryUIEntity;
@@ -35,6 +41,8 @@ namespace Tychaia
         private readonly PlayerEntity m_Player;
 
         private readonly IProfiler m_Profiler;
+
+        private readonly FontAsset m_DefaultFontAsset;
 
         public TychaiaGameWorld(
             IAssetManagerProvider assetManagerProvider, 
@@ -49,6 +57,8 @@ namespace Tychaia
             IConsole console, 
             ILevelAPI levelAPI /* temporary */, 
             IGameUIFactory gameUIFactory, 
+            I2DRenderUtilities twodRenderUtilities,
+            INetworkAPI networkAPI,
             byte[] initialState, 
             Action cleanup)
         {
@@ -57,60 +67,19 @@ namespace Tychaia
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_Profiler = profiler;
             this.m_Console = console;
+            this.m_2DRenderUtilities = twodRenderUtilities;
+            this.m_NetworkAPI = networkAPI;
             this.m_AssetManagerProvider = assetManagerProvider;
             this.m_Cleanup = cleanup;
             this.Level = levelAPI.NewLevel("test");
+
+            this.m_DefaultFontAsset = this.m_AssetManagerProvider.GetAssetManager().Get<FontAsset>("font.Default");
 
             this.ChunkOctree = chunkOctreeFactory.CreateChunkOctree();
             var chunk = chunkFactory.CreateChunk(this.Level, this.ChunkOctree, 0, 0, 0);
             this.IsometricCamera = isometricCameraFactory.CreateIsometricCamera(this.ChunkOctree, chunk);
             this.m_ChunkManagerEntity = chunkManagerEntityFactory.CreateChunkManagerEntity(this);
 
-            /*
-            // Deserialize the initial game state.
-            var state = new InitialGameState();
-            var serializer = new TychaiaDataSerializer();
-            using (var memory = new MemoryStream(initialState))
-            {
-                if (serializer.Deserialize(memory, state, typeof(InitialGameState)) == null)
-                {
-                    throw new InvalidOperationException("invalid initial game state");
-                }
-            }
-            
-            // Load initial game state.
-            if (state.EntityNames == null)
-                state.EntityNames = new string[0];
-            if (state.EntityTypes == null)
-                state.EntityTypes = new string[0];
-            if (state.EntityNames.Length != state.EntityTypes.Length)
-            {
-                throw new InvalidOperationException("game state not valid; arrays not same length");
-            }
-            
-            for (var i = 0; i < state.EntityNames.Length; i++)
-            {
-                var name = state.EntityNames[i];
-                var type = state.EntityTypes[i];
-                
-                // We have the name of our synchronised type (i.e. that sits inside
-                // Tychaia.Game), but we need to create the client type.
-                if (type == typeof(Player).AssemblyQualifiedName)
-                {
-                    var data = new Player();
-                    
-                    // TODO: If this player is for this client, then we should be authoritive.
-                    var player = new PlayerEntity(
-                        this.m_AssetManagerProvider,
-                        this.m_3DRenderUtilities,
-                        this.m_ChunkSizePolicy,
-                        this.m_Console,
-                        this.m_FilteredFeatures,
-                        data);
-                    this.m_Player = player;
-                }
-            }
-            */
             var player = new PlayerEntity(
                 this.m_AssetManagerProvider, 
                 this.m_3DRenderUtilities, 
@@ -192,6 +161,15 @@ namespace Tychaia
             {
                 renderContext.GraphicsDevice.RasterizerState = new RasterizerState { FillMode = FillMode.Solid };
             }
+
+            if (!renderContext.Is3DContext)
+            {
+                this.m_2DRenderUtilities.RenderText(
+                    renderContext,
+                    new Vector2(20, 450),
+                    this.m_NetworkAPI.PlayersInGame.Aggregate(string.Empty, (a, b) => a + " " + b).Trim(),
+                    this.m_DefaultFontAsset);
+            }
         }
 
         public void RenderBelow(IGameContext gameContext, IRenderContext renderContext)
@@ -257,6 +235,8 @@ namespace Tychaia
                     this.m_Player.Y = newY.Value;
                 }
             }
+
+            this.m_NetworkAPI.Update();
         }
     }
 }

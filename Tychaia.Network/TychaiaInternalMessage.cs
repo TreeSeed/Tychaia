@@ -11,7 +11,7 @@ namespace Tychaia.Network
     public class TychaiaInternalMessage
     {
         [ProtoMember(2)]
-        public string Data { get; set; }
+        public byte[] Data { get; set; }
 
         [ProtoMember(1)]
         public string Type { get; set; }
