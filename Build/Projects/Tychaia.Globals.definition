@@ -5,7 +5,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Core" />
     <Reference Include="Ninject" />
-    <Reference Include="cscjvm" />
     <Reference Include="Microsoft.CSharp" />
   </References>
   <Files>

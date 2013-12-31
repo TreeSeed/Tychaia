@@ -93,7 +93,7 @@ namespace Tychaia
 
             if (isServer)
             {
-                var server = kernel.Get<TychaiaServer>();
+                var server = kernel.Get<TychaiaServerRunner>();
                 server.Run(address, port);
                 return;
             }

@@ -3,29 +3,18 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
+using CrashReport;
+using Protogame;
 
 namespace Tychaia
 {
-    using Protogame;
-
     public class ReportCommand : ICommand
     {
-        private readonly IAssetManager m_AssetManager;
+        private readonly ICaptureService m_CaptureService;
 
-        public ReportCommand(IAssetManagerProvider assetManagerProvider)
+        public ReportCommand(ICaptureService captureService)
         {
-            this.m_AssetManager = assetManagerProvider.GetAssetManager();
-        }
-
-        public string[] Names
-        {
-            get
-            {
-                return new[] { "report" };
-            }
+            this.m_CaptureService = captureService;
         }
 
         public string[] Descriptions
@@ -36,13 +25,17 @@ namespace Tychaia
             }
         }
 
+        public string[] Names
+        {
+            get
+            {
+                return new[] { "report" };
+            }
+        }
+
         public string Execute(IGameContext gameContext, string name, string[] parameters)
         {
-            var worldManager = (TychaiaWorldManager)gameContext.WorldManager;
-
-            worldManager.CaptureNextFrame(
-                gameContext,
-                CrashReport.CrashReporter.RecordScreenshot);
+            this.m_CaptureService.CaptureFrame(gameContext, CrashReporter.RecordScreenshot);
 
             return "Next frame will be captured";
         }

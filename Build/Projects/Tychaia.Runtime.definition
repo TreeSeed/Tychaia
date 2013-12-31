@@ -14,14 +14,9 @@
     <Reference Include="Tychaia.Data" />
     <Reference Include="Tychaia.Data.Serializer" />
     <Reference Include="MonoGame" />
-    <Reference Include="Dx.Runtime" />
-    <Reference Include="Dx.Process" />
     <Reference Include="Ninject" />
     <Reference Include="protobuf-net-client" />
   </References>
-  <Properties>
-    <Property Name="PostProcessWithDx" Value="True" />
-  </Properties>
   <Files>
     <Compile Include="Abilities\AbilityTypes\BallType.cs" />
     <Compile Include="ChunkManagement\ChunkOctree.cs" />

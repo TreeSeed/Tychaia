@@ -10,7 +10,7 @@ namespace Tychaia
 {
     public interface IWorldFactory
     {
-        TychaiaGameWorld CreateTychaiaGameWorld(GameState gameState, byte[] initialState, Action cleanup);
+        TychaiaGameWorld CreateTychaiaGameWorld(byte[] initialState, Action cleanup);
         PregenerateWorld CreatePregenerateWorld(ILevel level);
         ConnectWorld CreateConnectWorld(bool startServer, IPAddress address, int port);
 

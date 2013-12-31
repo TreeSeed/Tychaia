@@ -6,42 +6,28 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using ProtoBuf;
 using Protogame;
 
 namespace Tychaia.Network
 {
-    public class TychaiaServer : INetworkAPI
+    public class TychaiaClient : INetworkAPI
     {
         private readonly Dictionary<string, Action<string>> m_MessageEvents;
 
         private readonly MxDispatcher m_MxDispatcher;
 
-        // TODO: Make this suitable for multiple players.
-        private bool m_PlayerHasJoinedGame;
-
-        public TychaiaServer(int port)
+        public TychaiaClient(int port)
         {
             this.m_MxDispatcher = new MxDispatcher(port);
             this.m_MxDispatcher.MessageReceived += this.OnMessageReceived;
             this.m_MessageEvents = new Dictionary<string, Action<string>>();
+        }
 
-            this.m_PlayerHasJoinedGame = false;
-
-            this.ListenForMessage(
-                "join",
-                s =>
-                {
-                    // The client will repeatedly send join messages until we confirm.
-                    if (this.m_PlayerHasJoinedGame)
-                    {
-                        return;
-                    }
-
-                    Console.WriteLine("Detected player has joined");
-                    this.SendMessage("join confirm", s);
-                    this.m_PlayerHasJoinedGame = true;
-                });
+        public void Connect(IPEndPoint endpoint)
+        {
+            this.m_MxDispatcher.Connect(endpoint);
         }
 
         public void ListenForMessage(string type, Action<string> callback)
@@ -52,6 +38,12 @@ namespace Tychaia.Network
             }
 
             this.m_MessageEvents[type] = callback;
+        }
+
+        public byte[] LoadInitialState()
+        {
+            // TODO: Get the initial state.
+            return null;
         }
 
         public void SendMessage(string type, string data)

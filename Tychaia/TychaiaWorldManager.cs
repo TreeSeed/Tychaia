@@ -56,11 +56,6 @@ namespace Tychaia
         }
 #endif
 
-        public void CaptureNextFrame(IGameContext gameContext, Action<byte[]> onCapture)
-        {
-            this.m_CaptureService.CaptureFrame(gameContext, onCapture);
-        }
-
         public void Render<T>(T game) where T : Microsoft.Xna.Framework.Game, ICoreGame
         {
             this.m_CaptureService.RenderBelow(game);

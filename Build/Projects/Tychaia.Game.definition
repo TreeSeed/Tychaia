@@ -11,12 +11,7 @@
     <Reference Include="Protogame" />
     <Reference Include="Tychaia.Globals" />
     <Reference Include="MonoGame" />
-    <Reference Include="Dx.Runtime" />
-    <Reference Include="Dx.Process" />
   </References>
-  <Properties>
-    <Property Name="PostProcessWithDx" Value="True" />
-  </Properties>
   <Files>
     <Compile Include="Armor.cs" />
     <Compile Include="Being.cs" />
@@ -26,7 +21,6 @@
     <Compile Include="Item.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="SpellBook.cs" />
-    <Compile Include="Synchronised.cs" />
     <Compile Include="Weight.cs" />
     <Compile Include="WeightedItem.cs" />
   </Files>
