@@ -1,12 +1,6 @@
 [submodule "Libraries/Redpoint.FlowGraph"]
 	path = Libraries/Redpoint.FlowGraph
 	url = git://github.com/hach-que/Redpoint.FlowGraph.git
-[submodule "Libraries/cscjvm"]
-	path = Libraries/cscjvm
-	url = git://github.com/hach-que/cscjvm.git
-[submodule "Libraries/Dx"]
-	path = Libraries/Dx
-	url = git://github.com/hach-que/Dx.git
 [submodule "Protogame"]
 	path = Protogame
 	url = git://github.com/hach-que/Protogame.git
