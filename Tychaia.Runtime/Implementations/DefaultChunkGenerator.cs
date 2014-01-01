@@ -27,8 +27,7 @@ namespace Tychaia.Runtime
 
         private readonly ThreadedTaskPipeline<ChunkGenerationRequest> m_Pipeline;
 
-        private readonly TextureAtlasAsset m_TextureAtlasAsset;
-
+        ////private readonly TextureAtlasAsset m_TextureAtlasAsset;
         public DefaultChunkGenerator(
             IChunkSizePolicy chunkSizePolicy, 
             IAssetManagerProvider assetManagerProvider, 
@@ -36,7 +35,8 @@ namespace Tychaia.Runtime
         {
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_AssetManager = assetManagerProvider.GetAssetManager();
-            this.m_TextureAtlasAsset = this.m_AssetManager.Get<TextureAtlasAsset>("atlas");
+
+            ////this.m_TextureAtlasAsset = this.m_AssetManager.Get<TextureAtlasAsset>("atlas");
             this.m_Pipeline = new ThreadedTaskPipeline<ChunkGenerationRequest>();
             this.m_Generator = generatorResolver.GetGeneratorForGame();
             this.m_Generator.SetSeed(10000);
@@ -47,11 +47,17 @@ namespace Tychaia.Runtime
 
         public void Generate(IChunk chunk, Action callback)
         {
-            this.m_Pipeline.Put(new ChunkGenerationRequest()
-            {
-                Callback = callback,
-                Chunk = chunk
-            });
+            this.m_Pipeline.Put(new ChunkGenerationRequest { Callback = callback, Chunk = chunk });
+        }
+
+        public void InputConnect()
+        {
+            this.m_Pipeline.InputConnect();
+        }
+
+        public void InputDisconnect()
+        {
+            this.m_Pipeline.InputDisconnect();
         }
 
         private void Run()
@@ -120,7 +126,8 @@ namespace Tychaia.Runtime
                                       + (y * this.m_ChunkSizePolicy.ChunkCellWidth
                                          * this.m_ChunkSizePolicy.ChunkCellHeight);
                             block.BuildRenderList(
-                                this.m_TextureAtlasAsset, 
+                                null, 
+                                ////this.m_TextureAtlasAsset, 
                                 x, 
                                 y, 
                                 z, 

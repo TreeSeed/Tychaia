@@ -15,10 +15,15 @@ namespace Tychaia.Network
 
         private readonly TychaiaServer m_Server;
 
-        public TychaiaServerWorld(TychaiaServer server)
+        private readonly ServerChunkManager m_ServerChunkManager;
+
+        public TychaiaServerWorld(TychaiaServer server, ServerChunkManager serverChunkManager)
         {
             this.m_Server = server;
             this.m_Entities = new Dictionary<MxClient, List<IServerEntity>>();
+            
+            // TODO: Move server chunk manager into entities list.
+            this.m_ServerChunkManager = serverChunkManager;
 
             server.ListenForMessage("user input", this.OnUserInput);
         }
@@ -49,6 +54,8 @@ namespace Tychaia.Network
             {
                 entity.Update();
             }
+
+            this.m_ServerChunkManager.Update();
         }
 
         private List<IServerEntity> GetListForClient(MxClient client)

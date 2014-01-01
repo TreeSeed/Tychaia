@@ -371,9 +371,17 @@ namespace Tychaia.Asset
                     addIndex);
             }
 
+            var uv = new Protogame.BoundingBox
+            {
+                X = 0,
+                Y = 0,
+                Width = 0.25f,
+                Height = 0.25f,
+            };
+
             if (missingAbove)
             {
-                var uv = textureAtlasAsset.GetUVBounds(this.TopTexture.Name);
+                ////var uv = textureAtlasAsset.GetUVBounds(this.TopTexture.Name);
 
                 var topLeft = addOrGetVertex(x, y + 1 - topLeftCorner, z, uv.X, uv.Y);
                 var topRight = addOrGetVertex(x + 1, y + 1 - topRightCorner, z, uv.X + uv.Width, uv.Y);
@@ -389,7 +397,7 @@ namespace Tychaia.Asset
             
             if (missingBelow)
             {
-                var uv = textureAtlasAsset.GetUVBounds(this.BottomTexture.Name);
+                ////var uv = textureAtlasAsset.GetUVBounds(this.BottomTexture.Name);
                 var topLeft = addOrGetVertex(x, y - lowerTopLeftCorner, z, uv.X, uv.Y);
                 var topRight = addOrGetVertex(x + 1, y - lowerTopRightCorner, z, uv.X + uv.Width, uv.Y);
                 var bottomLeft = addOrGetVertex(x, y - lowerBottomLeftCorner, z + 1, uv.X, uv.Y + uv.Height);
@@ -404,7 +412,7 @@ namespace Tychaia.Asset
             
             if (missingWest || missingNorthWest || missingSouthWest || (missingSouth && !missingAbove) || (missingNorth && !missingAbove))
             {
-                var uv = textureAtlasAsset.GetUVBounds(this.LeftTexture.Name);
+                //// var uv = textureAtlasAsset.GetUVBounds(this.LeftTexture.Name);
                 var topLeft = addOrGetVertex(x, y + 1 - topLeftCorner, z, uv.X, uv.Y);
                 var topRight = addOrGetVertex(x, y + 1 - bottomLeftCorner, z + 1, uv.X + uv.Width, uv.Y);
                 var bottomLeft = addOrGetVertex(x, y - lowerTopLeftCorner, z, uv.X, uv.Y + uv.Height);
@@ -419,7 +427,7 @@ namespace Tychaia.Asset
             
             if (missingEast || missingNorthEast || missingSouthEast || (missingSouth && !missingAbove) || (missingNorth && !missingAbove))
             {
-                var uv = textureAtlasAsset.GetUVBounds(this.RightTexture.Name);
+                ////var uv = textureAtlasAsset.GetUVBounds(this.RightTexture.Name);
                 var topLeft = addOrGetVertex(x + 1, y + 1 - topRightCorner, z, uv.X, uv.Y);
                 var topRight = addOrGetVertex(x + 1, y + 1 - bottomRightCorner, z + 1, uv.X + uv.Width, uv.Y);
                 var bottomLeft = addOrGetVertex(x + 1, y - lowerTopRightCorner, z, uv.X, uv.Y + uv.Height);
@@ -434,7 +442,7 @@ namespace Tychaia.Asset
             
             if (missingNorth || missingNorthEast || missingNorthWest || (missingEast && !missingAbove) || (missingWest && !missingAbove))
             {
-                var uv = textureAtlasAsset.GetUVBounds(this.FrontTexture.Name);
+                ////var uv = textureAtlasAsset.GetUVBounds(this.FrontTexture.Name);
                 var topLeft = addOrGetVertex(x, y + 1 - topLeftCorner, z, uv.X, uv.Y);
                 var topRight = addOrGetVertex(x + 1, y + 1 - topRightCorner, z, uv.X + uv.Width, uv.Y);
                 var bottomLeft = addOrGetVertex(x, y - lowerTopLeftCorner, z, uv.X, uv.Y + uv.Height);
@@ -449,7 +457,7 @@ namespace Tychaia.Asset
             
             if (missingSouth || missingSouthEast || missingSouthWest || (missingEast && !missingAbove) || (missingWest && !missingAbove))
             {
-                var uv = textureAtlasAsset.GetUVBounds(this.FrontTexture.Name);
+                ////var uv = textureAtlasAsset.GetUVBounds(this.FrontTexture.Name);
                 var topLeft = addOrGetVertex(x, y + 1 - bottomLeftCorner, z + 1, uv.X, uv.Y);
                 var topRight = addOrGetVertex(x + 1, y + 1 - bottomRightCorner, z + 1, uv.X + uv.Width, uv.Y);
                 var bottomLeft = addOrGetVertex(x, y - lowerBottomLeftCorner, z + 1, uv.X, uv.Y + uv.Height);
@@ -473,7 +481,14 @@ namespace Tychaia.Asset
             Func<float, float, float, float, float, int> addOrGetVertex,
             Action<int> addIndex)
         {
-            var uv = textureAtlasAsset.GetUVBounds("texture.Water");
+            var uv = new Protogame.BoundingBox
+            {
+                X = 0,
+                Y = 0,
+                Width = 0.25f,
+                Height = 0.25f,
+            };
+            ////var uv = textureAtlasAsset.GetUVBounds("texture.Water");
 
             var topLeft = addOrGetVertex(x, y + 0.75f, z, uv.X, uv.Y);
             var topRight = addOrGetVertex(x + 1, y + 0.75f, z, uv.X + uv.Width, uv.Y);

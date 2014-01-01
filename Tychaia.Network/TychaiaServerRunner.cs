@@ -25,6 +25,7 @@ namespace Tychaia.Network
         {
             Console.WriteLine("Creating server on " + port + "...");
             var server = new TychaiaServer(port);
+            server.StartWorld(this.m_Kernel);
 
             // Register the local node with Ninject so that entities and worlds can
             // gain access to it.

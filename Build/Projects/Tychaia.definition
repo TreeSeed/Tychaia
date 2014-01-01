@@ -31,10 +31,13 @@
     <Compile Include="Capture\DefaultCaptureService.cs" />
     <Compile Include="Capture\ICaptureService.cs" />
     <Compile Include="Client\ChunkManagerEntity.cs" />
+    <Compile Include="Client\ClientChunk.cs" />
     <Compile Include="Client\DefaultChunkRenderer.cs" />
+    <Compile Include="Client\DefaultClientChunkFactory.cs" />
     <Compile Include="Client\IChunkAI.cs" />
     <Compile Include="Client\IChunkManagerEntityFactory.cs" />
     <Compile Include="Client\IChunkRenderer.cs" />
+    <Compile Include="Client\IClientChunkFactory.cs" />
     <Compile Include="Client\PredeterminedChunkGeneratorAI.cs" />
     <Compile Include="Client\PredeterminedChunkPurgerAI.cs" />
     <Compile Include="Client\PredeterminedChunkRenderPickerAI.cs" />

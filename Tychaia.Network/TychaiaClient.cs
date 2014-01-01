@@ -22,7 +22,7 @@ namespace Tychaia.Network
 
         public TychaiaClient(int port)
         {
-            this.m_MxDispatcher = new MxDispatcher(port);
+            this.m_MxDispatcher = new MxDispatcher(port, port + 1);
             this.m_MxDispatcher.MessageReceived += this.OnMessageReceived;
             this.m_MxDispatcher.ClientDisconnectWarning += this.OnClientDisconnectWarning;
             this.m_MxDispatcher.ClientDisconnected += this.OnClientDisconnected;
@@ -51,7 +51,10 @@ namespace Tychaia.Network
 
         public void Connect(IPEndPoint endpoint)
         {
-            this.m_MxDispatcher.Connect(endpoint);
+            this.m_MxDispatcher.Connect(new DualIPEndPoint(
+                endpoint.Address,
+                endpoint.Port,
+                endpoint.Port + 1));
         }
 
         public void Close()

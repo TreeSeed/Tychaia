@@ -4,8 +4,8 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using Ninject.Modules;
+using Protogame;
 using Tychaia.Globals;
-using Tychaia.Runtime;
 
 namespace Tychaia.Network
 {
@@ -14,6 +14,8 @@ namespace Tychaia.Network
         public override void Load()
         {
             this.Kernel.Rebind<IPersistentStorage>().To<ServerPersistentStorage>().InSingletonScope();
+
+            this.Kernel.Bind<IAssetContentManager>().To<NullAssetContentManager>();
         }
     }
 }

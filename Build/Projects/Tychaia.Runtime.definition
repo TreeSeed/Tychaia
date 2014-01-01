@@ -22,9 +22,12 @@
   </References>
   <Files>
     <Compile Include="Abilities\AbilityTypes\BallType.cs" />
+    <Compile Include="ChunkManagement\ChunkGenerationRequest.cs" />
     <Compile Include="ChunkManagement\ChunkOctree.cs" />
-    <Compile Include="ChunkManagement\RuntimeChunk.cs" />
-    <Compile Include="DefaultServerWorld.cs" />
+    <Compile Include="ChunkManagement\ChunkRequest.cs" />
+    <Compile Include="ChunkManagement\DefaultChunkConverter.cs" />
+    <Compile Include="ChunkManagement\IChunk.cs" />
+    <Compile Include="ChunkManagement\IChunkConverter.cs" />
     <Compile Include="Disk\CombinedLevelAPI.cs" />
     <Compile Include="Disk\ILevel.cs" />
     <Compile Include="Disk\ILevelAPI.cs" />
@@ -34,7 +37,6 @@
     <Compile Include="Disk\Tychaia\TychaiaLevelAPIImpl.cs" />
     <Compile Include="Implementations\DefaultChunkGenerator.cs" />
     <Compile Include="Implementations\DefaultPredeterminedChunkPositions.cs" />
-    <Compile Include="IServerWorld.cs" />
     <Compile Include="Services\IChunkGenerator.cs" />
     <Compile Include="Services\IChunkOctreeFactory.cs" />
     <Compile Include="Services\IDebugCubeRenderer.cs" />

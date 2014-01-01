@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Ninject;
+using Ninject.Parameters;
 using Protogame;
 
 namespace Tychaia.Network
@@ -19,21 +21,20 @@ namespace Tychaia.Network
 
         private readonly Dictionary<MxClient, string> m_PlayerLookup;
 
-        private readonly Dictionary<MxClient, int> m_UniqueIDLookup; 
-
-        private readonly TychaiaServerWorld m_World;
+        private readonly Dictionary<MxClient, int> m_UniqueIDLookup;
 
         private int m_UniqueIDIncrementer;
 
+        private TychaiaServerWorld m_World;
+
         public TychaiaServer(int port)
         {
-            this.m_MxDispatcher = new MxDispatcher(port);
+            this.m_MxDispatcher = new MxDispatcher(port, port + 1);
             this.m_MxDispatcher.MessageReceived += this.OnMessageReceived;
             this.m_MessageEvents = new Dictionary<string, Action<MxClient, byte[]>>();
             this.m_PlayerLookup = new Dictionary<MxClient, string>();
             this.m_UniqueIDLookup = new Dictionary<MxClient, int>();
             this.m_UniqueIDIncrementer = 1;
-            this.m_World = new TychaiaServerWorld(this);
 
             this.ListenForMessage(
                 "join", 
@@ -55,7 +56,7 @@ namespace Tychaia.Network
                 });
 
             this.ListenForMessage(
-                "change name",
+                "change name", 
                 (client, newPlayerName) =>
                 {
                     // Check to make sure this client is joined.
@@ -81,6 +82,11 @@ namespace Tychaia.Network
             }
         }
 
+        public int GetUniqueIDForClient(MxClient client)
+        {
+            return this.m_UniqueIDLookup[client];
+        }
+
         public void ListenForMessage(string type, Action<MxClient, byte[]> callback)
         {
             if (this.m_MessageEvents.ContainsKey(type))
@@ -89,16 +95,6 @@ namespace Tychaia.Network
             }
 
             this.m_MessageEvents[type] = callback;
-        }
-
-        public void StopListeningForMessage(string type)
-        {
-            if (!this.m_MessageEvents.ContainsKey(type))
-            {
-                throw new InvalidOperationException("callback not registered");
-            }
-
-            this.m_MessageEvents.Remove(type);
         }
 
         public void SendMessage(string type, byte[] data)
@@ -111,6 +107,21 @@ namespace Tychaia.Network
             }
         }
 
+        public void StartWorld(IKernel kernel)
+        {
+            this.m_World = kernel.Get<TychaiaServerWorld>(new ConstructorArgument("server", this, true));
+        }
+
+        public void StopListeningForMessage(string type)
+        {
+            if (!this.m_MessageEvents.ContainsKey(type))
+            {
+                throw new InvalidOperationException("callback not registered");
+            }
+
+            this.m_MessageEvents.Remove(type);
+        }
+
         public void Update()
         {
             // TODO: Send a real world state.
@@ -119,7 +130,10 @@ namespace Tychaia.Network
                 InMemorySerializer.Serialize(
                     new PlayerList { Players = this.m_PlayerLookup.Select(x => x.Value).ToArray() }));
 
-            this.m_World.Update();
+            if (this.m_World != null)
+            {
+                this.m_World.Update();
+            }
 
             this.m_MxDispatcher.Update();
         }
@@ -132,11 +146,6 @@ namespace Tychaia.Network
             {
                 this.m_MessageEvents[message.Type](e.Client, message.Data);
             }
-        }
-
-        public int GetUniqueIDForClient(MxClient client)
-        {
-            return this.m_UniqueIDLookup[client];
         }
     }
 }

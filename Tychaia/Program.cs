@@ -28,6 +28,8 @@ namespace Tychaia
             }
             else
             {
+                AppDomain.CurrentDomain.UnhandledException += (sender, e) => CrashReport.CrashReporter.Record((Exception)e.ExceptionObject);
+
                 try
                 {
                     Run(args);

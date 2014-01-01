@@ -40,6 +40,8 @@ namespace Tychaia.Network
             this.m_ChunkConverter = chunkConverter;
             this.m_RequestedChunks = new ConcurrentQueue<ChunkRequest>();
 
+            this.m_ChunkGenerator.InputDisconnect();
+
             this.m_Server.ListenForMessage(
                 "require chunk", 
                 (client, data) =>
@@ -99,6 +101,8 @@ namespace Tychaia.Network
 
         private void ThreadedUpdate()
         {
+            this.m_ChunkGenerator.InputConnect();
+
             this.m_ChunkOctree = this.m_ChunkOctreeFactory.CreateChunkOctree<ServerChunk>();
 
             while (true)
@@ -108,13 +112,20 @@ namespace Tychaia.Network
                 if (!this.m_RequestedChunks.TryDequeue(out request))
                 {
                     Thread.Sleep(10);
+                    continue;
                 }
 
                 var existing = this.m_ChunkOctree.Get(request.X, request.Y, request.Z);
-                if (existing != null)
+                if (existing == null)
                 {
                     var chunk = new ServerChunk(request.X, request.Y, request.Z);
+                    this.m_ChunkOctree.Set(chunk);
                     this.m_ChunkGenerator.Generate(chunk, () => this.AnnounceChunk(chunk));
+                }
+                else
+                {
+                    // This might have been double-queued depending on timing.
+                    this.AnnounceChunk(existing);
                 }
             }
         }

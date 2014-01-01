@@ -15,9 +15,9 @@ namespace NetworkTest
     {
         public static void Main(string[] args)
         {
-            var dispatcher = new MxDispatcher(int.Parse(args[0]));
+            var dispatcher = new MxDispatcher(int.Parse(args[0]), int.Parse(args[0]) + 1);
 
-            dispatcher.Connect(new IPEndPoint(IPAddress.Parse(args[1]), int.Parse(args[2])));
+            dispatcher.Connect(new DualIPEndPoint(IPAddress.Parse(args[1]), int.Parse(args[2]), int.Parse(args[2]) + 1));
 
             dispatcher.MessageSent += (sender, eventArgs) => Console.WriteLine("message sent " + Encoding.ASCII.GetString(eventArgs.Payload));
             dispatcher.MessageReceived += (sender, eventArgs) => Console.WriteLine("message received " + Encoding.ASCII.GetString(eventArgs.Payload));
