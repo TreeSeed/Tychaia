@@ -10,6 +10,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="Tychaia.Network" />
     <Reference Include="Ninject" />
+    <Reference Include="Protogame" />
   </References>
   <Files>
     <Compile Include="BasicTests.cs" />

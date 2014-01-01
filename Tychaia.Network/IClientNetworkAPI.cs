@@ -3,15 +3,17 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using System;
-using Tychaia.Data;
-using Tychaia.Game;
-
-namespace Tychaia
+namespace Tychaia.Network
 {
-    public interface IEntityFactory
+    public interface IClientNetworkAPI : INetworkAPI
     {
-        EnemyEntity CreateEnemyEntity(Cell cell);
-        PlayerEntity CreatePlayerEntity(Player runtimeData);
+        double DisconnectingForSeconds
+        {
+            get;
+        }
+
+        bool IsDisconnected { get; }
+
+        bool IsPotentiallyDisconnecting { get; }
     }
 }

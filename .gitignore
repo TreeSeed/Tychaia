@@ -68,3 +68,5 @@ Tychaia/Tychaia.Windows.nuspec
 TychaiaPuzzleEditor/TychaiaPuzzleEditor.Windows.nuspec
 TychaiaTool/TychaiaTool.Windows.nuspec
 TychaiaWorldGenViewerAlgorithm/TychaiaWorldGenViewerAlgorithm.Windows.nuspec
+*.psess
+*.vsp

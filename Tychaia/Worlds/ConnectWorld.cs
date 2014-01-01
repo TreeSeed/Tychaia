@@ -7,10 +7,13 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
+using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Ninject;
 using Protogame;
+using Tychaia.Globals;
 using Tychaia.Network;
 
 namespace Tychaia
@@ -18,6 +21,8 @@ namespace Tychaia
     public class ConnectWorld : MenuWorld
     {
         private readonly I2DRenderUtilities m_2DRenderUtilities;
+
+        private readonly IPersistentStorage m_PersistentStorage;
 
         private readonly Action[] m_Actions;
 
@@ -37,18 +42,22 @@ namespace Tychaia
 
         private Process m_Process;
 
+        private int m_UniqueClientIdentifier;
+
         public ConnectWorld(
             IKernel kernel, 
             I2DRenderUtilities twodRenderUtilities, 
             IAssetManagerProvider assetManagerProvider, 
             IBackgroundCubeEntityFactory backgroundCubeEntityFactory, 
             ISkin skin, 
+            IPersistentStorage persistentStorage,
             bool startServer, 
             IPAddress address, 
             int port)
             : base(twodRenderUtilities, assetManagerProvider, backgroundCubeEntityFactory, skin)
         {
             this.m_2DRenderUtilities = twodRenderUtilities;
+            this.m_PersistentStorage = persistentStorage;
 
             this.m_DefaultFont = assetManagerProvider.GetAssetManager().Get<FontAsset>("font.Default");
             this.m_Address = address;
@@ -58,6 +67,12 @@ namespace Tychaia
             Action cleanup = () =>
             {
                 kernel.Unbind<INetworkAPI>();
+                kernel.Unbind<IClientNetworkAPI>();
+                if (client != null)
+                {
+                    client.Close();
+                }
+
                 this.TerminateExistingProcess();
             };
 
@@ -71,8 +86,9 @@ namespace Tychaia
                     () => this.m_Message = "Connecting to server...", 
                     () => client.Connect(new IPEndPoint(address, port)),
                     () => this.m_Message = "Binding node to kernel...", 
-                    () => kernel.Bind<INetworkAPI>().ToMethod(x => client), () => this.m_Message = "Joining game...", 
-                    () => this.JoinGame(client), () => this.m_Message = "Retrieving initial game state...", 
+                    () => kernel.Bind<INetworkAPI>().ToMethod(x => client), 
+                    () => kernel.Bind<IClientNetworkAPI>().ToMethod(x => client), () => this.m_Message = "Joining game...", 
+                    () => this.m_UniqueClientIdentifier = this.JoinGame(client), () => this.m_Message = "Retrieving initial game state...", 
                     () => initial = client.LoadInitialState(), () => this.m_Message = "Starting client...", 
                     () => this.m_PerformFinalAction = true
                 };
@@ -85,8 +101,10 @@ namespace Tychaia
                     () => this.m_Message = "Connecting to server...", 
                     () => client.Connect(new IPEndPoint(address, port)),
                     () => this.m_Message = "Binding node to kernel...", 
-                    () => kernel.Bind<INetworkAPI>().ToMethod(x => client), () => this.m_Message = "Joining game...", 
-                    () => this.JoinGame(client), () => this.m_Message = "Retrieving initial game state...", 
+                    () => kernel.Bind<INetworkAPI>().ToMethod(x => client),
+                    () => kernel.Bind<IClientNetworkAPI>().ToMethod(x => client), 
+                    () => this.m_Message = "Joining game...", 
+                    () => this.m_UniqueClientIdentifier = this.JoinGame(client), () => this.m_Message = "Retrieving initial game state...", 
                     () => initial = client.LoadInitialState(), () => this.m_Message = "Starting client...", 
                     () => this.m_PerformFinalAction = true
                 };
@@ -95,7 +113,7 @@ namespace Tychaia
             this.m_FinalAction =
                 () =>
                 this.TargetWorld =
-                this.GameContext.CreateWorld<IWorldFactory>(x => x.CreateTychaiaGameWorld(initial, cleanup));
+                this.GameContext.CreateWorld<IWorldFactory>(x => x.CreateTychaiaGameWorld(this.m_UniqueClientIdentifier, cleanup));
 
             var thread = new Thread(this.Run) { IsBackground = true };
             thread.Start();
@@ -163,29 +181,44 @@ namespace Tychaia
             if (this.m_PerformFinalAction)
             {
                 this.m_FinalAction();
+                this.m_PerformFinalAction = false;
             }
         }
 
-        public void JoinGame(TychaiaClient client)
+        public int JoinGame(TychaiaClient client)
         {
+            if (this.m_PersistentStorage.Settings.Name == null)
+            {
+                var random = new Random();
+                var playerID = "player " + random.Next();
+
+                this.m_PersistentStorage.Settings.Name = playerID;
+            }
+
             var hasJoinedGame = false;
+            var uniqueClientIdentifier = -1;
+
+            Console.WriteLine("You are '" + this.m_PersistentStorage.Settings.Name + "'");
             
             client.ListenForMessage(
                 "join confirm",
-                s =>
+                (mcx, s) =>
                 {
                     Console.WriteLine("Informed by server we have joined!");
                     hasJoinedGame = true;
+                    uniqueClientIdentifier = BitConverter.ToInt32(s, 0);
                 });
 
             while (!hasJoinedGame)
             {
-                client.SendMessage("join", "player");
+                client.SendMessage("join", Encoding.ASCII.GetBytes(this.m_PersistentStorage.Settings.Name));
 
                 client.Update();
 
                 Thread.Sleep(1000 / 30);
             }
+
+            return uniqueClientIdentifier;
         }
 
         private void StartServer()

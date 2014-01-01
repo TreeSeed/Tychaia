@@ -5,32 +5,61 @@
 // ====================================================================== //
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
-using ProtoBuf;
 using Protogame;
 
 namespace Tychaia.Network
 {
-    public class TychaiaClient : INetworkAPI
+    public class TychaiaClient : IClientNetworkAPI
     {
-        private readonly Dictionary<string, Action<string>> m_MessageEvents;
+        private readonly Dictionary<string, Action<MxClient, byte[]>> m_MessageEvents;
 
         private readonly MxDispatcher m_MxDispatcher;
+
+        private DateTime m_LastUpdateCall;
+
+        private DateTime m_LastDisconnectionWarningTime;
 
         public TychaiaClient(int port)
         {
             this.m_MxDispatcher = new MxDispatcher(port);
             this.m_MxDispatcher.MessageReceived += this.OnMessageReceived;
-            this.m_MessageEvents = new Dictionary<string, Action<string>>();
+            this.m_MxDispatcher.ClientDisconnectWarning += this.OnClientDisconnectWarning;
+            this.m_MxDispatcher.ClientDisconnected += this.OnClientDisconnected;
+            this.m_MessageEvents = new Dictionary<string, Action<MxClient, byte[]>>();
+
+            this.PlayersInGame = new string[0];
+            this.m_LastUpdateCall = new DateTime(1970, 1, 1, 0, 0, 0);
+            this.m_LastDisconnectionWarningTime = new DateTime(1970, 1, 1, 0, 0, 0);
+
+            this.ListenForMessage(
+                "player list", 
+                (mxc, data) =>
+                {
+                    var list = InMemorySerializer.Deserialize<PlayerList>(data);
+                    this.PlayersInGame = list.Players ?? new string[0];
+                });
         }
+
+        public double DisconnectingForSeconds { get; private set; }
+
+        public bool IsPotentiallyDisconnecting { get; private set; }
+
+        public bool IsDisconnected { get; private set; }
+
+        public string[] PlayersInGame { get; private set; }
 
         public void Connect(IPEndPoint endpoint)
         {
             this.m_MxDispatcher.Connect(endpoint);
         }
 
-        public void ListenForMessage(string type, Action<string> callback)
+        public void Close()
+        {
+            this.m_MxDispatcher.Close();
+        }
+
+        public void ListenForMessage(string type, Action<MxClient, byte[]> callback)
         {
             if (this.m_MessageEvents.ContainsKey(type))
             {
@@ -40,44 +69,65 @@ namespace Tychaia.Network
             this.m_MessageEvents[type] = callback;
         }
 
+        public void StopListeningForMessage(string type)
+        {
+            if (!this.m_MessageEvents.ContainsKey(type))
+            {
+                throw new InvalidOperationException("callback not registered");
+            }
+
+            this.m_MessageEvents.Remove(type);
+        }
+
         public byte[] LoadInitialState()
         {
             // TODO: Get the initial state.
             return null;
         }
 
-        public void SendMessage(string type, string data)
+        public void SendMessage(string type, byte[] data)
         {
-            using (var memory = new MemoryStream())
-            {
-                Serializer.Serialize(memory, new TychaiaInternalMessage { Type = type, Data = data });
-                var length = (int)memory.Position;
-                memory.Seek(0, SeekOrigin.Begin);
-                var bytes = new byte[length];
-                memory.Read(bytes, 0, length);
+            var bytes = InMemorySerializer.Serialize(new TychaiaInternalMessage { Type = type, Data = data });
 
-                foreach (var endpoint in this.m_MxDispatcher.Endpoints)
-                {
-                    this.m_MxDispatcher.Send(endpoint, bytes);
-                }
+            foreach (var endpoint in this.m_MxDispatcher.Endpoints)
+            {
+                this.m_MxDispatcher.Send(endpoint, bytes);
             }
         }
 
         public void Update()
         {
-            this.m_MxDispatcher.Update();
+            if ((DateTime.Now - this.m_LastDisconnectionWarningTime).TotalSeconds > 1)
+            {
+                this.IsPotentiallyDisconnecting = false;
+            }
+
+            if ((DateTime.Now - this.m_LastUpdateCall).TotalMilliseconds > 1000 / 30)
+            {
+                this.m_MxDispatcher.Update();
+                this.m_LastUpdateCall = DateTime.Now;
+            }
+        }
+
+        private void OnClientDisconnectWarning(object sender, MxDisconnectEventArgs e)
+        {
+            this.IsPotentiallyDisconnecting = true;
+            this.m_LastDisconnectionWarningTime = DateTime.Now;
+            this.DisconnectingForSeconds = e.DisconnectAccumulator / 30.0;
+        }
+
+        private void OnClientDisconnected(object sender, MxClientEventArgs e)
+        {
+            this.IsDisconnected = true;
         }
 
         private void OnMessageReceived(object sender, MxMessageEventArgs e)
         {
-            using (var memory = new MemoryStream(e.Payload))
-            {
-                var message = Serializer.Deserialize<TychaiaInternalMessage>(memory);
+            var message = InMemorySerializer.Deserialize<TychaiaInternalMessage>(e.Payload);
 
-                if (this.m_MessageEvents.ContainsKey(message.Type))
-                {
-                    this.m_MessageEvents[message.Type](message.Data);
-                }
+            if (this.m_MessageEvents.ContainsKey(message.Type))
+            {
+                this.m_MessageEvents[message.Type](e.Client, message.Data);
             }
         }
     }

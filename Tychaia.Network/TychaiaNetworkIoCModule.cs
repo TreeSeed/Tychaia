@@ -3,10 +3,15 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-namespace Tychaia.Game
+using Ninject.Modules;
+
+namespace Tychaia.Network
 {
-    public class Player : Being
+    public class TychaiaNetworkIoCModule : NinjectModule
     {
-        public int UniqueClientIdentifier { get; set; }
+        public override void Load()
+        {
+            this.Kernel.Bind<INetworkAPIProvider>().To<CurrentNetworkAPIProvider>();
+        }
     }
 }

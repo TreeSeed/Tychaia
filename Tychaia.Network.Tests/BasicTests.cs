@@ -24,9 +24,9 @@ namespace Tychaia.Network.Tests
             server.Update();
 
             var hit = false;
-            client.ListenForMessage("hit", s => hit = true);
+            client.ListenForMessage("hit", (mxc, s) => hit = true);
 
-            server.SendMessage("hit", string.Empty);
+            server.SendMessage("hit", new byte[0]);
 
             server.Update();
             client.Update();
@@ -53,10 +53,10 @@ namespace Tychaia.Network.Tests
 
             var hit1 = false;
             var hit2 = false;
-            client1.ListenForMessage("hit", s => hit1 = true);
-            client2.ListenForMessage("hit", s => hit2 = true);
+            client1.ListenForMessage("hit", (mxc, s) => hit1 = true);
+            client2.ListenForMessage("hit", (mxc, s) => hit2 = true);
 
-            server.SendMessage("hit", string.Empty);
+            server.SendMessage("hit", new byte[0]);
 
             server.Update();
             client1.Update();

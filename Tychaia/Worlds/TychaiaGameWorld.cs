@@ -5,12 +5,14 @@
 // ====================================================================== //
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Protogame;
 using Tychaia.Game;
 using Tychaia.Globals;
+using Tychaia.Network;
 
 namespace Tychaia
 {
@@ -28,13 +30,21 @@ namespace Tychaia
 
         private readonly IConsole m_Console;
 
+        private readonly I2DRenderUtilities m_2DRenderUtilities;
+
+        private readonly IClientNetworkAPI m_NetworkAPI;
+
+        private readonly IEntityFactory m_EntityFactory;
+
+        private readonly int m_UniqueClientIdentifier;
+
         private readonly IFilteredFeatures m_FilteredFeatures;
 
         private readonly InventoryUIEntity m_InventoryUIEntity;
 
-        private readonly PlayerEntity m_Player;
-
         private readonly IProfiler m_Profiler;
+
+        private readonly FontAsset m_DefaultFontAsset;
 
         public TychaiaGameWorld(
             IAssetManagerProvider assetManagerProvider, 
@@ -49,7 +59,10 @@ namespace Tychaia
             IConsole console, 
             ILevelAPI levelAPI /* temporary */, 
             IGameUIFactory gameUIFactory, 
-            byte[] initialState, 
+            I2DRenderUtilities twodRenderUtilities,
+            IClientNetworkAPI networkAPI,
+            IEntityFactory entityFactory,
+            int uniqueClientIdentifier,
             Action cleanup)
         {
             this.m_3DRenderUtilities = threedRenderUtilities;
@@ -57,75 +70,49 @@ namespace Tychaia
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_Profiler = profiler;
             this.m_Console = console;
+            this.m_2DRenderUtilities = twodRenderUtilities;
+            this.m_NetworkAPI = networkAPI;
+            this.m_EntityFactory = entityFactory;
+            this.m_UniqueClientIdentifier = uniqueClientIdentifier;
             this.m_AssetManagerProvider = assetManagerProvider;
             this.m_Cleanup = cleanup;
             this.Level = levelAPI.NewLevel("test");
+
+            this.m_DefaultFontAsset = this.m_AssetManagerProvider.GetAssetManager().Get<FontAsset>("font.Default");
 
             this.ChunkOctree = chunkOctreeFactory.CreateChunkOctree();
             var chunk = chunkFactory.CreateChunk(this.Level, this.ChunkOctree, 0, 0, 0);
             this.IsometricCamera = isometricCameraFactory.CreateIsometricCamera(this.ChunkOctree, chunk);
             this.m_ChunkManagerEntity = chunkManagerEntityFactory.CreateChunkManagerEntity(this);
 
-            /*
-            // Deserialize the initial game state.
-            var state = new InitialGameState();
-            var serializer = new TychaiaDataSerializer();
-            using (var memory = new MemoryStream(initialState))
-            {
-                if (serializer.Deserialize(memory, state, typeof(InitialGameState)) == null)
-                {
-                    throw new InvalidOperationException("invalid initial game state");
-                }
-            }
-            
-            // Load initial game state.
-            if (state.EntityNames == null)
-                state.EntityNames = new string[0];
-            if (state.EntityTypes == null)
-                state.EntityTypes = new string[0];
-            if (state.EntityNames.Length != state.EntityTypes.Length)
-            {
-                throw new InvalidOperationException("game state not valid; arrays not same length");
-            }
-            
-            for (var i = 0; i < state.EntityNames.Length; i++)
-            {
-                var name = state.EntityNames[i];
-                var type = state.EntityTypes[i];
-                
-                // We have the name of our synchronised type (i.e. that sits inside
-                // Tychaia.Game), but we need to create the client type.
-                if (type == typeof(Player).AssemblyQualifiedName)
-                {
-                    var data = new Player();
-                    
-                    // TODO: If this player is for this client, then we should be authoritive.
-                    var player = new PlayerEntity(
-                        this.m_AssetManagerProvider,
-                        this.m_3DRenderUtilities,
-                        this.m_ChunkSizePolicy,
-                        this.m_Console,
-                        this.m_FilteredFeatures,
-                        data);
-                    this.m_Player = player;
-                }
-            }
-            */
-            var player = new PlayerEntity(
-                this.m_AssetManagerProvider, 
-                this.m_3DRenderUtilities, 
-                this.m_ChunkSizePolicy, 
-                this.m_Console, 
-                this.m_FilteredFeatures, 
-                new Player());
-            this.m_Player = player;
-
             this.m_InventoryUIEntity = gameUIFactory.CreateInventoryUIEntity();
             this.Entities = new List<IEntity> { this.m_ChunkManagerEntity, this.m_InventoryUIEntity };
-            if (this.m_Player != null)
-            {
-                this.Entities.Add(this.m_Player);
-            }
+
+            // TODO: Map back to multiple player entities...
+            this.m_NetworkAPI.ListenForMessage(
+                "player update",
+                (client, data) =>
+                {
+                    var playerState = InMemorySerializer.Deserialize<PlayerServerEntity.PlayerServerState>(data);
+
+                    // Lookup the player entity for this unique client ID if we have one.
+                    var player =
+                        this.Entities.OfType<PlayerEntity>()
+                            .FirstOrDefault(x => x.RuntimeData.UniqueClientIdentifier == playerState.UniqueClientID);
+
+                    if (player == null)
+                    {
+                        // Need to create a new player entity.
+                        player =
+                            this.m_EntityFactory.CreatePlayerEntity(
+                                new Player { UniqueClientIdentifier = playerState.UniqueClientID });
+                        this.Entities.Add(player);
+                    }
+
+                    player.X = playerState.X;
+                    player.Y = playerState.Y;
+                    player.Z = playerState.Z;
+                });
         }
 
         public ChunkOctree ChunkOctree { get; private set; }
@@ -134,10 +121,26 @@ namespace Tychaia
 
         public IsometricCamera IsometricCamera { get; private set; }
 
-        public ILevel Level { get; private set; }
+        public ILevel Level
+        {
+            get;
+            private set;
+        }
+
+        private PlayerEntity LocalPlayer
+        {
+            get
+            {
+                return
+                    this.Entities.OfType<PlayerEntity>()
+                        .FirstOrDefault(x => x.RuntimeData.UniqueClientIdentifier == this.m_UniqueClientIdentifier);
+            }
+        }
 
         public void Dispose()
         {
+            this.m_NetworkAPI.StopListeningForMessage("player update");
+
             if (this.m_Cleanup != null)
             {
                 this.m_Cleanup();
@@ -192,6 +195,36 @@ namespace Tychaia
             {
                 renderContext.GraphicsDevice.RasterizerState = new RasterizerState { FillMode = FillMode.Solid };
             }
+
+            if (!renderContext.Is3DContext)
+            {
+                this.m_2DRenderUtilities.RenderText(
+                    renderContext,
+                    new Vector2(20, 600),
+                    "Unique ID: " + this.m_UniqueClientIdentifier,
+                    this.m_DefaultFontAsset);
+
+                if (this.m_NetworkAPI.IsPotentiallyDisconnecting)
+                {
+                    this.m_2DRenderUtilities.RenderText(
+                        renderContext,
+                        new Vector2(20, 620),
+                        this.m_NetworkAPI.DisconnectingForSeconds.ToString("F2") + " secs disconnected",
+                        this.m_DefaultFontAsset,
+                        textColor: Color.Red);
+                }
+
+                var i = 0;
+                foreach (var player in this.m_NetworkAPI.PlayersInGame)
+                {
+                    this.m_2DRenderUtilities.RenderText(
+                        renderContext,
+                        new Vector2(20, 640 + i * 20),
+                        player,
+                        this.m_DefaultFontAsset);
+                    i++;
+                }
+            }
         }
 
         public void RenderBelow(IGameContext gameContext, IRenderContext renderContext)
@@ -229,33 +262,46 @@ namespace Tychaia
                 gameContext.SwitchWorld<TitleWorld>();
             }
 
-            if (this.m_Player == null)
+            // Handle disconnection.
+            if (this.m_NetworkAPI.IsDisconnected)
             {
+                gameContext.SwitchWorld<TitleWorld>();
                 return;
             }
 
+            // Update the camera to focus on the local player.
+            if (this.LocalPlayer != null)
+            {
+                this.UpdateCamera(gameContext);
+            }
+
+            this.m_NetworkAPI.Update();
+        }
+
+        private void UpdateCamera(IGameContext gameContext)
+        {
             // Focus the camera.
             var current = this.IsometricCamera.CurrentFocus;
-            if (Math.Abs(current.Y - this.m_Player.Y) < 2)
+            if (Math.Abs(current.Y - this.LocalPlayer.Y) < 2)
             {
-                this.IsometricCamera.Focus((long)this.m_Player.X, (long)this.m_Player.Y, (long)this.m_Player.Z);
+                this.IsometricCamera.Focus((long)this.LocalPlayer.X, (long)this.LocalPlayer.Y, (long)this.LocalPlayer.Z);
             }
             else
             {
                 this.IsometricCamera.Focus(
-                    (long)this.m_Player.X, 
-                    (long)MathHelper.Lerp(current.Y, this.m_Player.Y, 0.1f), 
-                    (long)this.m_Player.Z);
+                    (long)this.LocalPlayer.X,
+                    (long)MathHelper.Lerp(current.Y, this.LocalPlayer.Y, 0.1f),
+                    (long)this.LocalPlayer.Z);
             }
 
             if (this.IsometricCamera.Chunk.Generated)
             {
-                var newY = this.GetSurfaceY(gameContext, this.m_Player.X, this.m_Player.Z);
-                this.m_Player.InaccurateY = newY == null;
+                /*var newY = this.GetSurfaceY(gameContext, this.LocalPlayer.X, this.LocalPlayer.Z);
+                this.LocalPlayer.InaccurateY = newY == null;
                 if (newY != null)
                 {
-                    this.m_Player.Y = newY.Value;
-                }
+                    this.LocalPlayer.Y = newY.Value;
+                }*/
             }
         }
     }

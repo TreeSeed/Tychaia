@@ -12,14 +12,24 @@
     <Reference Include="protobuf-net-client" />
     <Reference Include="Phabricator.Conduit" />
     <Reference Include="Protogame" />
+    <Reference Include="MonoGame" />
   </References>
   <Files>
+    <Compile Include="CurrentNetworkAPIProvider.cs" />
+    <Compile Include="Entities\PlayerServerEntity.cs" />
+    <Compile Include="IClientNetworkAPI.cs" />
     <Compile Include="INetworkAPI.cs" />
+    <Compile Include="INetworkAPIProvider.cs" />
+    <Compile Include="InMemorySerializer.cs" />
+    <Compile Include="PlayerList.cs" />
     <Compile Include="TychaiaClient.cs" />
     <Compile Include="TychaiaInternalMessage.cs" />
+    <Compile Include="TychaiaNetworkIoCModule.cs" />
     <Compile Include="TychaiaServer.cs" />
     <Compile Include="TychaiaServerIoCModule.cs" />
     <Compile Include="TychaiaServerQuery.cs" />
     <Compile Include="TychaiaServerRunner.cs" />
+    <Compile Include="TychaiaServerWorld.cs" />
+    <Compile Include="UserInput.cs" />
   </Files>
 </Project>

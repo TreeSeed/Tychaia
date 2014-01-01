@@ -44,6 +44,7 @@
     <Compile Include="Commands\ChunkAICommand.cs" />
     <Compile Include="Commands\EquipCommand.cs" />
     <Compile Include="Commands\GiveCommand.cs" />
+    <Compile Include="Commands\NameCommand.cs" />
     <Compile Include="Commands\ProfilingCommand.cs" />
     <Compile Include="Commands\ReportCommand.cs" />
     <Compile Include="Commands\SaveCommand.cs" />

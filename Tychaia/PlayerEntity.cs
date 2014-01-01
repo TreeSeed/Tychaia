@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Protogame;
 using Tychaia.Game;
 using Tychaia.Globals;
+using Tychaia.Network;
 
 namespace Tychaia
 {
@@ -20,6 +21,8 @@ namespace Tychaia
         private readonly IConsole m_Console;
         private readonly IFilteredFeatures m_FilteredFeatures;
 
+        private readonly INetworkAPI m_NetworkAPI;
+
         private double m_DemoTicks = 0;
 
         public PlayerEntity(
@@ -28,9 +31,11 @@ namespace Tychaia
             IChunkSizePolicy chunkSizePolicy,
             IConsole console,
             IFilteredFeatures filteredFeatures,
+            INetworkAPI networkAPI,
             Player runtimeData)
         {
             this.m_FilteredFeatures = filteredFeatures;
+            this.m_NetworkAPI = networkAPI;
             this.m_3DRenderUtilities = threedRenderUtilities;
             this.m_PlayerTexture = assetManagerProvider.GetAssetManager().Get<TextureAsset>("chars.player.Player");
             this.m_ChunkSizePolicy = chunkSizePolicy;
@@ -57,42 +62,11 @@ namespace Tychaia
 
         public void MoveInDirection(IGameContext context, int directionInDegrees)
         {
-            var x = Math.Sin(MathHelper.ToRadians(directionInDegrees - 45)) * this.MovementSpeed;
-            var y = -Math.Cos(MathHelper.ToRadians(directionInDegrees - 45)) * this.MovementSpeed;
+            var input = new UserInput();
+            input.SetAction(UserInputAction.Move);
+            input.DirectionInDegrees = directionInDegrees;
 
-            // Determine if moving here would require us to move up by more than 32 pixels.
-            var targetX = this.GetSurfaceY(context, this.X + (float)x, this.Z);
-            var targetZ = this.GetSurfaceY(context, this.X, this.Z + (float)y);
-
-            // We calculate X and Z independently so that we can "slide" along the edge of somewhere
-            // that the player can't go.  This creates a more natural feel when walking into something
-            // that it isn't entirely possible to walk through.
-
-            // If the target returns null, then the chunk hasn't been generated so don't permit
-            // the character to move onto it.
-            if (targetX != null)
-            {
-                // If the target height difference and our current height is greater than 32, don't permit
-                // the character to move onto it.  This also prevents the character from falling off
-                // tall cliffs.
-                if (Math.Abs(targetX.Value - this.Y) <= 32)
-                {
-                    this.X += (float)x;
-                }
-            }
-
-            // If the target returns null, then the chunk hasn't been generated so don't permit
-            // the character to move onto it.
-            if (targetZ != null)
-            {
-                // If the target height difference and our current height is greater than 32, don't permit
-                // the character to move onto it.  This also prevents the character from falling off
-                // tall cliffs.
-                if (Math.Abs(targetZ.Value - this.Y) <= 32)
-                {
-                    this.Z += (float)y;
-                }
-            }
+            this.m_NetworkAPI.SendMessage("user input", InMemorySerializer.Serialize(input));
         }
 
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
@@ -153,11 +127,6 @@ namespace Tychaia
                 renderContext,
                 matrix,
                 this.m_PlayerTexture);
-        }
-
-        private float? GetSurfaceY(IGameContext context, float xx, float zz)
-        {
-            return ((TychaiaGameWorld)context.World).GetSurfaceY(context, xx, zz);
         }
     }
 }

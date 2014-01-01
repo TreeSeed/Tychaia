@@ -5,46 +5,83 @@
 // ====================================================================== //
 using System;
 using System.Collections.Generic;
-using System.IO;
-using ProtoBuf;
+using System.Linq;
+using System.Text;
 using Protogame;
 
 namespace Tychaia.Network
 {
     public class TychaiaServer : INetworkAPI
     {
-        private readonly Dictionary<string, Action<string>> m_MessageEvents;
+        private readonly Dictionary<string, Action<MxClient, byte[]>> m_MessageEvents;
 
         private readonly MxDispatcher m_MxDispatcher;
 
-        // TODO: Make this suitable for multiple players.
-        private bool m_PlayerHasJoinedGame;
+        private readonly Dictionary<MxClient, string> m_PlayerLookup;
+
+        private readonly Dictionary<MxClient, int> m_UniqueIDLookup; 
+
+        private readonly TychaiaServerWorld m_World;
+
+        private int m_UniqueIDIncrementer;
 
         public TychaiaServer(int port)
         {
             this.m_MxDispatcher = new MxDispatcher(port);
             this.m_MxDispatcher.MessageReceived += this.OnMessageReceived;
-            this.m_MessageEvents = new Dictionary<string, Action<string>>();
-
-            this.m_PlayerHasJoinedGame = false;
+            this.m_MessageEvents = new Dictionary<string, Action<MxClient, byte[]>>();
+            this.m_PlayerLookup = new Dictionary<MxClient, string>();
+            this.m_UniqueIDLookup = new Dictionary<MxClient, int>();
+            this.m_UniqueIDIncrementer = 1;
+            this.m_World = new TychaiaServerWorld(this);
 
             this.ListenForMessage(
-                "join",
-                s =>
+                "join", 
+                (client, playerName) =>
                 {
                     // The client will repeatedly send join messages until we confirm.
-                    if (this.m_PlayerHasJoinedGame)
+                    if (this.m_PlayerLookup.ContainsKey(client))
                     {
                         return;
                     }
 
-                    Console.WriteLine("Detected player has joined");
-                    this.SendMessage("join confirm", s);
-                    this.m_PlayerHasJoinedGame = true;
+                    var uniqueID = this.m_UniqueIDIncrementer++;
+
+                    Console.WriteLine("Detected \"" + Encoding.ASCII.GetString(playerName) + "\" has joined");
+                    this.SendMessage("join confirm", BitConverter.GetBytes(uniqueID));
+                    this.m_PlayerLookup.Add(client, Encoding.ASCII.GetString(playerName));
+                    this.m_UniqueIDLookup.Add(client, uniqueID);
+                    this.m_World.AddPlayer(client, Encoding.ASCII.GetString(playerName));
+                });
+
+            this.ListenForMessage(
+                "change name",
+                (client, newPlayerName) =>
+                {
+                    // Check to make sure this client is joined.
+                    if (!this.m_PlayerLookup.ContainsKey(client))
+                    {
+                        return;
+                    }
+
+                    var existingName = this.m_PlayerLookup[client];
+                    var newName = Encoding.ASCII.GetString(newPlayerName);
+
+                    this.m_PlayerLookup[client] = newName;
+                    Console.WriteLine("\"" + existingName + "\" has changed their name to \"" + newName + "\"");
+                    this.m_World.ChangePlayerName(client, newName);
                 });
         }
 
-        public void ListenForMessage(string type, Action<string> callback)
+        public string[] PlayersInGame
+        {
+            get
+            {
+                return this.m_PlayerLookup.Values.ToArray();
+            }
+        }
+
+        public void ListenForMessage(string type, Action<MxClient, byte[]> callback)
         {
             if (this.m_MessageEvents.ContainsKey(type))
             {
@@ -54,39 +91,52 @@ namespace Tychaia.Network
             this.m_MessageEvents[type] = callback;
         }
 
-        public void SendMessage(string type, string data)
+        public void StopListeningForMessage(string type)
         {
-            using (var memory = new MemoryStream())
+            if (!this.m_MessageEvents.ContainsKey(type))
             {
-                Serializer.Serialize(memory, new TychaiaInternalMessage { Type = type, Data = data });
-                var length = (int)memory.Position;
-                memory.Seek(0, SeekOrigin.Begin);
-                var bytes = new byte[length];
-                memory.Read(bytes, 0, length);
+                throw new InvalidOperationException("callback not registered");
+            }
 
-                foreach (var endpoint in this.m_MxDispatcher.Endpoints)
-                {
-                    this.m_MxDispatcher.Send(endpoint, bytes);
-                }
+            this.m_MessageEvents.Remove(type);
+        }
+
+        public void SendMessage(string type, byte[] data)
+        {
+            var bytes = InMemorySerializer.Serialize(new TychaiaInternalMessage { Type = type, Data = data });
+
+            foreach (var endpoint in this.m_MxDispatcher.Endpoints)
+            {
+                this.m_MxDispatcher.Send(endpoint, bytes);
             }
         }
 
         public void Update()
         {
+            // TODO: Send a real world state.
+            this.SendMessage(
+                "player list", 
+                InMemorySerializer.Serialize(
+                    new PlayerList { Players = this.m_PlayerLookup.Select(x => x.Value).ToArray() }));
+
+            this.m_World.Update();
+
             this.m_MxDispatcher.Update();
         }
 
         private void OnMessageReceived(object sender, MxMessageEventArgs e)
         {
-            using (var memory = new MemoryStream(e.Payload))
-            {
-                var message = Serializer.Deserialize<TychaiaInternalMessage>(memory);
+            var message = InMemorySerializer.Deserialize<TychaiaInternalMessage>(e.Payload);
 
-                if (this.m_MessageEvents.ContainsKey(message.Type))
-                {
-                    this.m_MessageEvents[message.Type](message.Data);
-                }
+            if (this.m_MessageEvents.ContainsKey(message.Type))
+            {
+                this.m_MessageEvents[message.Type](e.Client, message.Data);
             }
+        }
+
+        public int GetUniqueIDForClient(MxClient client)
+        {
+            return this.m_UniqueIDLookup[client];
         }
     }
 }

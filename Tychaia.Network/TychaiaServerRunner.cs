@@ -50,6 +50,10 @@ namespace Tychaia.Network
                 {
                     Thread.Sleep(amount);
                 }
+                else
+                {
+                    Console.WriteLine("WARNING: Tick took " + (int)(DateTime.Now - start).TotalMilliseconds + "ms, which is longer than 33ms.");
+                }
             }
 
             // ReSharper disable once FunctionNeverReturns

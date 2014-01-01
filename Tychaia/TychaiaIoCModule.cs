@@ -40,9 +40,11 @@ namespace Tychaia
             this.Bind<ICommand>().To<ServerCommand>();
             this.Bind<ICommand>().To<SaveCommand>();
             this.Bind<ICommand>().To<ShaderCommand>();
+            this.Bind<ICommand>().To<NameCommand>();
             this.Bind<IBasicSkin>().To<TychaiaBasicSkin>();
             this.Bind<ICommand>().To<ReportCommand>();
             this.Bind<ICaptureService>().To<DefaultCaptureService>().InSingletonScope();
+            this.Bind<IEntityFactory>().ToFactory();
         }
     }
 }
