@@ -44,7 +44,6 @@ namespace Tychaia
             this.Bind<IBasicSkin>().To<TychaiaBasicSkin>();
             this.Bind<ICommand>().To<ReportCommand>();
             this.Bind<ICaptureService>().To<DefaultCaptureService>().InSingletonScope();
-            this.Bind<IEntityFactory>().ToFactory();
         }
     }
 }

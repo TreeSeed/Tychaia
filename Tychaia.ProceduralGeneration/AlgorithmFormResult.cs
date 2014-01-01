@@ -61,10 +61,13 @@ namespace Tychaia.ProceduralGeneration
                 edges[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
 
             // Beings generation
-            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BeingDefinitionAssetName =
-                enemies[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BeingDefinitionAssetName;
-            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BeingHealth =
-                enemies[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BeingHealth;            
+            if (enemies[(i + ox) + ((j + oy) * width)].ClusterComplete && (heightMap[(i + ox) + ((j + oy) * width)] + (heightMap[(i + ox) + ((j + oy) * width)] < 0 ? 1 : 0)) == z - 1)
+                {
+                    output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BeingDefinitionAssetName =
+                        enemies[(i + ox) + ((j + oy) * width)].BeingDefinitionAssetName;
+                    output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BeingHealth =
+                        enemies[(i + ox) + ((j + oy) * width)].BeingHealth;
+                }
         }
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)

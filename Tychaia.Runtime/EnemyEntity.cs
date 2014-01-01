@@ -16,7 +16,7 @@ namespace Tychaia
     public class EnemyEntity : Entity, IHasRuntimeData<Enemy>
     {
         private readonly I3DRenderUtilities m_3DRenderUtilities;
-        private readonly TextureAsset m_PlayerTexture;
+        private readonly TextureAsset m_EnemyTexture;
         private readonly string m_BeingDefinitionAssetName;
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
         private readonly IConsole m_Console;
@@ -35,7 +35,7 @@ namespace Tychaia
         {
             this.m_FilteredFeatures = filteredFeatures;
             this.m_3DRenderUtilities = threedRenderUtilities;
-            this.m_PlayerTexture = assetManagerProvider.GetAssetManager().Get<TextureAsset>("chars.player.Player");
+            this.m_EnemyTexture = assetManagerProvider.GetAssetManager().Get<TextureAsset>("chars.player.Player");
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_Console = console;
             this.RuntimeData = runtimeData;
@@ -102,6 +102,9 @@ namespace Tychaia
 
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
+            this.RuntimeData.X = this.X;
+            this.RuntimeData.Y = this.Y;
+            this.RuntimeData.Z = this.Z;
         }
 
         public override void Render(IGameContext gameContext, IRenderContext renderContext)
@@ -121,7 +124,7 @@ namespace Tychaia
             this.m_3DRenderUtilities.RenderTexture(
                 renderContext,
                 matrix,
-                this.m_PlayerTexture);
+                this.m_EnemyTexture);
         }
 
         private float? GetSurfaceY(IGameContext context, float xx, float zz)

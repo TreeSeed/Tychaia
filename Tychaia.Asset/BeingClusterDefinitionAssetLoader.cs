@@ -23,7 +23,7 @@ namespace Tychaia.Asset
                 (string)data.Keyword,
                 (int)data.LevelRequirement,
                 (bool)data.Enemy,
-                (string[])data.BeingDefinition,
+                (string[])data.BeingDefinitions,
                 (int[])data.Minimum,
                 (int[])data.Maximum);
         }

@@ -89,12 +89,15 @@ namespace Tychaia
                                 (z * this.m_ChunkSizePolicy.ChunkCellWidth) +
                                 (y * this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.ChunkCellHeight)];
                             chunk.Cells[x, y, z] = info;
-                            if (info.BlockAssetName == null)
-                                continue;
-                            blocks[x, y, z] = this.m_AssetManager.Get<BlockAsset>(info.BlockAssetName);
+                            if (info.BlockAssetName != null)
+                            {
+                                blocks[x, y, z] = this.m_AssetManager.Get<BlockAsset>(info.BlockAssetName);
+                            }
                             
                             if (!string.IsNullOrEmpty(info.BeingDefinitionAssetName))
+                            {
                                 enemies.Add(this.m_EntityFactory.CreateEnemyEntity(info));
+                            }
                             
                         }
 

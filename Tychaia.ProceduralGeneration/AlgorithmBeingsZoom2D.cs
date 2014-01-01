@@ -113,6 +113,8 @@ namespace Tychaia.ProceduralGeneration
                     output[(i + ox) + ((j + oy) * width)] = current;
                 else if (current.ClusterComplete)
                     output[(i + ox) + ((j + oy) * width)] = new Cell();
+                else if (string.IsNullOrEmpty(current.BeingDefinitionAssetName))
+                    output[(i + ox) + ((j + oy) * width)] = new Cell();
                 else
                 {
                     output[(i + ox) + ((j + oy) * width)] = new Cell();
@@ -128,7 +130,7 @@ namespace Tychaia.ProceduralGeneration
                     else
                         order = 3;
 
-                    while (current.Count0 > 0)
+                    for (var a = 0; a < current.Count0; a++)
                     {
                         if (order > 0)
                             order--;
@@ -139,7 +141,7 @@ namespace Tychaia.ProceduralGeneration
                         }
                     }
 
-                    while (current.Count1 > 0)
+                    for (var a = 0; a < current.Count1; a++)
                     {
                         if (order > 0)
                             order--;
@@ -150,7 +152,7 @@ namespace Tychaia.ProceduralGeneration
                         }
                     }
 
-                    while (current.Count2 > 0)
+                    for (var a = 0; a < current.Count2; a++)
                     {
                         if (order > 0)
                             order--;
@@ -161,7 +163,7 @@ namespace Tychaia.ProceduralGeneration
                         }
                     }
 
-                    while (current.Count3 > 0)
+                    for (var a = 0; a < current.Count3; a++)
                     {
                         if (order > 0)
                             order--;
@@ -172,7 +174,7 @@ namespace Tychaia.ProceduralGeneration
                         }
                     }
 
-                    while (current.Count4 > 0)
+                    for (var a = 0; a < current.Count4; a++)
                     {
                         if (order > 0)
                             order--;
@@ -183,7 +185,7 @@ namespace Tychaia.ProceduralGeneration
                         }
                     }
 
-                    while (current.Count5 > 0)
+                    for (var a = 0; a < current.Count5; a++)
                     {
                         if (order > 0)
                             order--;
@@ -194,7 +196,7 @@ namespace Tychaia.ProceduralGeneration
                         }
                     }
 
-                    while (current.Count6 > 0)
+                    for (var a = 0; a < current.Count6; a++)
                     {
                         if (order > 0)
                             order--;
@@ -205,7 +207,7 @@ namespace Tychaia.ProceduralGeneration
                         }
                     }
 
-                    while (current.Count7 > 0)
+                    for (var a = 0; a < current.Count7; a++)
                     {
                         if (order > 0)
                             order--;
@@ -216,7 +218,7 @@ namespace Tychaia.ProceduralGeneration
                         }
                     }
 
-                    while (current.Count8 > 0)
+                    for (var a = 0; a < current.Count8; a++)
                     {
                         if (order > 0)
                             order--;
@@ -227,7 +229,7 @@ namespace Tychaia.ProceduralGeneration
                         }
                     }
 
-                    while (current.Count9 > 0)
+                    for (var a = 0; a < current.Count9; a++)
                     {
                         if (order > 0)
                             order--;

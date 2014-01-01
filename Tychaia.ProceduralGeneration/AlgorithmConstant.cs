@@ -15,14 +15,15 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Constant Value")]
     public class AlgorithmConstant : Algorithm<int>
     {
-        
         public AlgorithmConstant()
         {
             this.Layer2D = true;
+            this.Constant = 0;
+            this.Color = Color.White;
         }
         
         [DataMember]
-        [DefaultValue(true)]
+        [DefaultValue(0)]
         [Description("The constant value to return.")]
         public int Constant { get; set; }
 

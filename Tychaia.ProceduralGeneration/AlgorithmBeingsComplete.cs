@@ -87,7 +87,7 @@ namespace Tychaia.ProceduralGeneration
                 else if (current.Count9 == 1)
                     a = 9;
 
-                if (a != -1)
+                if (a != -1 && !string.IsNullOrEmpty(context.AssetManager.Get<BeingClusterDefinitionAsset>(current.ClusterDefinitionAssetName).BeingDefinitions[a].Name))
                 {
                     outputCell.BeingDefinitionAssetName = context.AssetManager.Get<BeingClusterDefinitionAsset>(current.ClusterDefinitionAssetName).BeingDefinitions[a].Name;
                     outputCell.BeingHealth = context.AssetManager.Get<BeingDefinitionAsset>(outputCell.BeingDefinitionAssetName).HealthPerLevel * current.ClusterLevel;
@@ -99,10 +99,10 @@ namespace Tychaia.ProceduralGeneration
 
         public override Color GetColorForValue(StorageLayer parent, dynamic value)
         {
-            if (string.IsNullOrEmpty(value.ClusterDefinitionAssetName))
+            if (string.IsNullOrEmpty(value.BeingDefinitionAssetName))
                 return Color.White;
 
-            return Color.FromArgb(value.ClusterDefinitionAssetName.GetHashCode());
+            return Color.FromArgb(value.BeingDefinitionAssetName.GetHashCode());
         }
 
         public enum BeingType
