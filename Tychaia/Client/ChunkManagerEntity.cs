@@ -4,8 +4,6 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using Protogame;
-using Tychaia.Client;
-using Tychaia.Runtime;
 
 namespace Tychaia
 {
@@ -40,7 +38,7 @@ namespace Tychaia
         {
             base.Render(gameContext, renderContext);
 
-            var chunksToRenderNext = new RuntimeChunk[0];
+            var chunksToRenderNext = new ClientChunk[0];
 
             // For each of the chunk AIs, process them.  It's not ideal to have this in
             // the Render() call, but some AIs need access to the render context so that

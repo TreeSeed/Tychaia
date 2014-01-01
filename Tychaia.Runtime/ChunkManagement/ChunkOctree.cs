@@ -9,11 +9,11 @@ using Tychaia.Globals;
 
 namespace Tychaia.Runtime
 {
-    public class ChunkOctree
+    public class ChunkOctree<T> where T : class, IChunk
     {
         private readonly IFilteredFeatures m_FilteredFeatures;
         private readonly IPositionScaleTranslation m_PositionScaleTranslation;
-        private readonly PositionOctree<RuntimeChunk> m_Octree = new PositionOctree<RuntimeChunk>();
+        private readonly PositionOctree<T> m_Octree = new PositionOctree<T>();
 
         public ChunkOctree(
             IFilteredFeatures filteredFeatures,
@@ -23,7 +23,7 @@ namespace Tychaia.Runtime
             this.m_PositionScaleTranslation = positionScaleTranslation;
         }
         
-        public RuntimeChunk Get(long x, long y, long z)
+        public T Get(long x, long y, long z)
         {
             var c = PositionOctreeUtil.GetFast64(
                 this.m_Octree,
@@ -37,7 +37,7 @@ namespace Tychaia.Runtime
             return c;
         }
 
-        public void Set(RuntimeChunk chunk)
+        public void Set(T chunk)
         {
             var xx = this.m_PositionScaleTranslation.Translate(chunk.X);
             var yy = this.m_PositionScaleTranslation.Translate(chunk.Y);
@@ -51,7 +51,7 @@ namespace Tychaia.Runtime
             }
         }
 
-        public void Clear(RuntimeChunk chunk)
+        public void Clear(T chunk)
         {
             var xx = this.m_PositionScaleTranslation.Translate(chunk.X);
             var yy = this.m_PositionScaleTranslation.Translate(chunk.Y);

@@ -6,7 +6,7 @@
 using Protogame;
 using Tychaia.Runtime;
 
-namespace Tychaia.Client
+namespace Tychaia
 {
     public interface IChunkRenderer
     {
@@ -15,6 +15,6 @@ namespace Tychaia.Client
         /// </summary>
         /// <param name="renderContext">The rendering context.</param>
         /// <param name="runtimeChunk">The runtime chunk to render.</param>
-        void Render(IRenderContext renderContext, RuntimeChunk runtimeChunk);
+        void Render(IRenderContext renderContext, IChunk runtimeChunk);
     }
 }

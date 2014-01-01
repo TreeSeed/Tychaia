@@ -3,7 +3,6 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
@@ -14,15 +13,14 @@ namespace Tychaia.Client
 {
     public class DefaultChunkRenderer : IChunkRenderer
     {
-        private readonly TextureAtlasAsset m_TextureAtlasAsset;
-
         private readonly EffectAsset m_TerrainEffectAsset;
+
+        private readonly TextureAtlasAsset m_TextureAtlasAsset;
 
         public DefaultChunkRenderer(IAssetManagerProvider assetManagerProvider)
         {
             this.m_TextureAtlasAsset = assetManagerProvider.GetAssetManager().Get<TextureAtlasAsset>("atlas");
-            this.m_TerrainEffectAsset =
-                assetManagerProvider.GetAssetManager().Get<EffectAsset>("effect.Lighting");
+            this.m_TerrainEffectAsset = assetManagerProvider.GetAssetManager().Get<EffectAsset>("effect.Lighting");
         }
 
         /// <summary>
@@ -30,16 +28,22 @@ namespace Tychaia.Client
         /// </summary>
         /// <param name="renderContext">The rendering context.</param>
         /// <param name="runtimeChunk">The runtime chunk to render.</param>
-        public void Render(IRenderContext renderContext, RuntimeChunk runtimeChunk)
+        public void Render(IRenderContext renderContext, IChunk runtimeChunk)
         {
             if (!renderContext.Is3DContext)
+            {
                 return;
+            }
 
             if (runtimeChunk.GraphicsEmpty)
+            {
                 return;
+            }
 
             if (runtimeChunk.Generated && runtimeChunk.VertexBuffer == null && runtimeChunk.IndexBuffer == null)
+            {
                 this.CalculateBuffers(renderContext, runtimeChunk);
+            }
 
             if (runtimeChunk.VertexBuffer != null && runtimeChunk.IndexBuffer != null)
             {
@@ -54,11 +58,11 @@ namespace Tychaia.Client
                 {
                     pass.Apply();
                     renderContext.GraphicsDevice.DrawIndexedPrimitives(
-                        PrimitiveType.TriangleList,
-                        0,
-                        0,
-                        runtimeChunk.VertexBuffer.VertexCount,
-                        0,
+                        PrimitiveType.TriangleList, 
+                        0, 
+                        0, 
+                        runtimeChunk.VertexBuffer.VertexCount, 
+                        0, 
                         runtimeChunk.IndexBuffer.IndexCount / 3);
                 }
 
@@ -69,7 +73,7 @@ namespace Tychaia.Client
         /// <summary>
         /// Calculates the vertex and index buffers for rendering.
         /// </summary>
-        private void CalculateBuffers(IRenderContext renderContext, RuntimeChunk runtimeChunk)
+        private void CalculateBuffers(IRenderContext renderContext, IChunk runtimeChunk)
         {
             if (runtimeChunk.GeneratedVertexes.Length == 0)
             {
@@ -78,15 +82,15 @@ namespace Tychaia.Client
             }
 
             runtimeChunk.VertexBuffer = new VertexBuffer(
-                renderContext.GraphicsDevice,
-                VertexPositionTexture.VertexDeclaration,
-                runtimeChunk.GeneratedVertexes.Length,
+                renderContext.GraphicsDevice, 
+                VertexPositionTexture.VertexDeclaration, 
+                runtimeChunk.GeneratedVertexes.Length, 
                 BufferUsage.WriteOnly);
             runtimeChunk.VertexBuffer.SetData(runtimeChunk.GeneratedVertexes);
             runtimeChunk.IndexBuffer = new IndexBuffer(
-                renderContext.GraphicsDevice,
-                typeof(int),
-                runtimeChunk.GeneratedIndices.Length,
+                renderContext.GraphicsDevice, 
+                typeof(int), 
+                runtimeChunk.GeneratedIndices.Length, 
                 BufferUsage.WriteOnly);
             runtimeChunk.IndexBuffer.SetData(runtimeChunk.GeneratedIndices);
         }

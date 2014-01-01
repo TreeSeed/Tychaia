@@ -7,6 +7,6 @@ namespace Tychaia.Runtime
 {
     public interface IChunkOctreeFactory
     {
-        ChunkOctree CreateChunkOctree();
+        ChunkOctree<T> CreateChunkOctree<T>() where T : class, IChunk;
     }
 }

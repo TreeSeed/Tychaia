@@ -13,7 +13,7 @@ namespace Tychaia.Runtime
         IEnumerable<Vector3> GetRelativePositions();
         IEnumerable<Vector3> GetScaledRelativePositions();
         IEnumerable<Vector3> GetAbsolutePositions(Vector3 absolute);
-        IEnumerable<RuntimeChunk> GetChunks(ChunkOctree octree, Vector3 focus);
+        IEnumerable<T> GetChunks<T>(ChunkOctree<T> octree, Vector3 focus) where T : class, IChunk;
 
         IEnumerable<Vector3> GetPurgableRelativePositions();
         IEnumerable<Vector3> GetPurgableScaledRelativePositions();

@@ -10,7 +10,7 @@ using Tychaia.Runtime;
 
 namespace Tychaia
 {
-    public class IsometricCamera : IIsometricCamera
+    public class IsometricCamera<T> : IIsometricCamera<T> where T : class, IChunk
     {
         /// <summary>
         /// The X position in 3D space where we are focusing the camera.
@@ -29,7 +29,7 @@ namespace Tychaia
 
         private int m_Rotation;
 
-        public IsometricCamera(ChunkOctree octree, RuntimeChunk chunk)
+        public IsometricCamera(ChunkOctree<T> octree, T chunk)
         {
             if (octree == null)
             {
@@ -50,7 +50,7 @@ namespace Tychaia
         /// <summary>
         /// The chunk that is currently the focus of the camera.
         /// </summary>
-        public RuntimeChunk Chunk { get; private set; }
+        public T Chunk { get; private set; }
 
         /// <summary>
         /// The X position on the screen of the current chunk.
@@ -65,7 +65,7 @@ namespace Tychaia
         /// <summary>
         /// The octree that holds all of the chunks.
         /// </summary>
-        public ChunkOctree ChunkOctree { get; private set; }
+        public ChunkOctree<T> ChunkOctree { get; private set; }
 
         public Vector3 CurrentFocus
         {

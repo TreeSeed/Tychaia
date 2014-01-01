@@ -14,9 +14,6 @@ namespace Tychaia.Network
         public override void Load()
         {
             this.Kernel.Rebind<IPersistentStorage>().To<ServerPersistentStorage>().InSingletonScope();
-
-            // TODO: Move this to it's own module.
-            this.Bind<IServerWorld>().To<DefaultServerWorld>();
         }
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Protogame;
+using Tychaia.Data;
 using Tychaia.Game;
 using Tychaia.Globals;
 using Tychaia.Network;
@@ -37,6 +38,8 @@ namespace Tychaia
 
         private readonly IEntityFactory m_EntityFactory;
 
+        private readonly IChunkConverter m_ChunkConverter;
+
         private readonly int m_UniqueClientIdentifier;
 
         private readonly IFilteredFeatures m_FilteredFeatures;
@@ -52,7 +55,6 @@ namespace Tychaia
             I3DRenderUtilities threedRenderUtilities, 
             IFilteredFeatures filteredFeatures, 
             IChunkOctreeFactory chunkOctreeFactory, 
-            IChunkFactory chunkFactory, 
             IIsometricCameraFactory isometricCameraFactory, 
             IChunkSizePolicy chunkSizePolicy, 
             IChunkManagerEntityFactory chunkManagerEntityFactory, 
@@ -63,6 +65,7 @@ namespace Tychaia
             I2DRenderUtilities twodRenderUtilities,
             IClientNetworkAPI networkAPI,
             IEntityFactory entityFactory,
+            IChunkConverter chunkConverter,
             int uniqueClientIdentifier,
             Action cleanup)
         {
@@ -74,6 +77,7 @@ namespace Tychaia
             this.m_2DRenderUtilities = twodRenderUtilities;
             this.m_NetworkAPI = networkAPI;
             this.m_EntityFactory = entityFactory;
+            this.m_ChunkConverter = chunkConverter;
             this.m_UniqueClientIdentifier = uniqueClientIdentifier;
             this.m_AssetManagerProvider = assetManagerProvider;
             this.m_Cleanup = cleanup;
@@ -81,8 +85,8 @@ namespace Tychaia
 
             this.m_DefaultFontAsset = this.m_AssetManagerProvider.GetAssetManager().Get<FontAsset>("font.Default");
 
-            this.ChunkOctree = chunkOctreeFactory.CreateChunkOctree();
-            var chunk = new RuntimeChunk(0, 0, 0);
+            this.ChunkOctree = chunkOctreeFactory.CreateChunkOctree<ClientChunk>();
+            var chunk = new ClientChunk(0, 0, 0);
             this.IsometricCamera = isometricCameraFactory.CreateIsometricCamera(this.ChunkOctree, chunk);
             this.m_ChunkManagerEntity = chunkManagerEntityFactory.CreateChunkManagerEntity(this);
 
@@ -114,13 +118,30 @@ namespace Tychaia
                     player.Y = playerState.Y;
                     player.Z = playerState.Z;
                 });
+
+            // TODO: Move this somewhere better.
+            this.m_NetworkAPI.ListenForMessage(
+                "chunk available",
+                (client, data) =>
+                {
+                    var dataChunk = InMemorySerializer.Deserialize<Chunk>(data);
+
+                    var clientChunk = this.ChunkOctree.Get(dataChunk.X, dataChunk.Y, dataChunk.Z);
+                    if (clientChunk == null)
+                    {
+                        clientChunk = new ClientChunk(dataChunk.X, dataChunk.Y, dataChunk.Z);
+                        this.ChunkOctree.Set(clientChunk);
+                    }
+
+                    this.m_ChunkConverter.FromChunk(dataChunk, clientChunk);
+                });
         }
 
-        public ChunkOctree ChunkOctree { get; private set; }
+        public ChunkOctree<ClientChunk> ChunkOctree { get; private set; }
 
         public List<IEntity> Entities { get; private set; }
 
-        public IsometricCamera IsometricCamera { get; private set; }
+        public IsometricCamera<ClientChunk> IsometricCamera { get; private set; }
 
         public ILevel Level
         {
@@ -155,6 +176,9 @@ namespace Tychaia
         /// </summary>
         public float? GetSurfaceY(IGameContext context, float xx, float zz)
         {
+            return 0;
+
+            /*
             var ax = (int)(xx - this.IsometricCamera.Chunk.X) / this.m_ChunkSizePolicy.CellVoxelWidth;
             var az = (int)(zz - this.IsometricCamera.Chunk.Z) / this.m_ChunkSizePolicy.CellVoxelDepth;
 
@@ -188,6 +212,7 @@ namespace Tychaia
             }
 
             return null;
+            */
         }
 
         public void RenderAbove(IGameContext gameContext, IRenderContext renderContext)
@@ -220,7 +245,7 @@ namespace Tychaia
                 {
                     this.m_2DRenderUtilities.RenderText(
                         renderContext,
-                        new Vector2(20, 640 + i * 20),
+                        new Vector2(20, 640 + (i * 20)),
                         player,
                         this.m_DefaultFontAsset);
                     i++;

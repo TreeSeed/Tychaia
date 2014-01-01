@@ -4,7 +4,6 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using Protogame;
-using Tychaia.Runtime;
 
 namespace Tychaia
 {
@@ -15,7 +14,7 @@ namespace Tychaia
         /// if the render list shouldn't be changed.  There should only be one chunk AI that
         /// returns a non-null value from this function.
         /// </summary>
-        RuntimeChunk[] Process(
+        ClientChunk[] Process(
             TychaiaGameWorld world,
             ChunkManagerEntity manager,
             IGameContext gameContext,

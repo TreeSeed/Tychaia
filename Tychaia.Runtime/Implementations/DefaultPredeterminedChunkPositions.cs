@@ -93,7 +93,7 @@ namespace Tychaia.Runtime
                 yield return absolute + relative;
         }
 
-        public IEnumerable<RuntimeChunk> GetChunks(ChunkOctree octree, Vector3 focus)
+        public IEnumerable<T> GetChunks<T>(ChunkOctree<T> octree, Vector3 focus) where T : class, IChunk
         {
             foreach (var position in this.GetAbsolutePositions(focus))
                 yield return octree.Get((long)position.X, (long)position.Y, (long)position.Z);

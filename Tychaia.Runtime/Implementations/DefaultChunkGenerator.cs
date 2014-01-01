@@ -3,6 +3,7 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Microsoft.Xna.Framework;
@@ -24,7 +25,7 @@ namespace Tychaia.Runtime
 
         private readonly IGenerator m_Generator;
 
-        private readonly ThreadedTaskPipeline<RuntimeChunk> m_Pipeline;
+        private readonly ThreadedTaskPipeline<ChunkGenerationRequest> m_Pipeline;
 
         private readonly TextureAtlasAsset m_TextureAtlasAsset;
 
@@ -36,7 +37,7 @@ namespace Tychaia.Runtime
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_AssetManager = assetManagerProvider.GetAssetManager();
             this.m_TextureAtlasAsset = this.m_AssetManager.Get<TextureAtlasAsset>("atlas");
-            this.m_Pipeline = new ThreadedTaskPipeline<RuntimeChunk>();
+            this.m_Pipeline = new ThreadedTaskPipeline<ChunkGenerationRequest>();
             this.m_Generator = generatorResolver.GetGeneratorForGame();
             this.m_Generator.SetSeed(10000);
 
@@ -44,9 +45,13 @@ namespace Tychaia.Runtime
             thread.Start();
         }
 
-        public void Generate(RuntimeChunk chunk)
+        public void Generate(IChunk chunk, Action callback)
         {
-            this.m_Pipeline.Put(chunk);
+            this.m_Pipeline.Put(new ChunkGenerationRequest()
+            {
+                Callback = callback,
+                Chunk = chunk
+            });
         }
 
         private void Run()
@@ -55,7 +60,8 @@ namespace Tychaia.Runtime
 
             while (true)
             {
-                var chunk = this.m_Pipeline.Take();
+                var request = this.m_Pipeline.Take();
+                var chunk = request.Chunk;
                 int computations;
 
                 // Generate the actual data using the procedural generation library.
@@ -150,6 +156,11 @@ namespace Tychaia.Runtime
                 chunk.GeneratedVertexes = vertexes.ToArray();
                 chunk.GeneratedIndices = indices.ToArray();
                 chunk.Generated = true;
+
+                if (request.Callback != null)
+                {
+                    request.Callback();
+                }
             }
 
             // ReSharper disable once FunctionNeverReturns

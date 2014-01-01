@@ -3,7 +3,6 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Protogame;
@@ -22,26 +21,6 @@ namespace Tychaia.Network
             this.m_Entities = new Dictionary<MxClient, List<IServerEntity>>();
 
             server.ListenForMessage("user input", this.OnUserInput);
-        }
-
-        private void OnUserInput(MxClient client, byte[] data)
-        {
-            var userInput = InMemorySerializer.Deserialize<UserInput>(data);
-
-            // Find the player entity for this client.
-            var entities = this.GetListForClient(client);
-            var player = entities.OfType<PlayerServerEntity>().FirstOrDefault();
-            if (player == null)
-            {
-                return;
-            }
-
-            switch (userInput.GetAction())
-            {
-                case UserInputAction.Move:
-                    player.MoveInDirection(userInput.DirectionInDegrees);
-                    break;
-            }
         }
 
         public void AddPlayer(MxClient client, string playerName)
@@ -80,6 +59,26 @@ namespace Tychaia.Network
             }
 
             return this.m_Entities[client];
+        }
+
+        private void OnUserInput(MxClient client, byte[] data)
+        {
+            var userInput = InMemorySerializer.Deserialize<UserInput>(data);
+
+            // Find the player entity for this client.
+            var entities = this.GetListForClient(client);
+            var player = entities.OfType<PlayerServerEntity>().FirstOrDefault();
+            if (player == null)
+            {
+                return;
+            }
+
+            switch (userInput.GetAction())
+            {
+                case UserInputAction.Move:
+                    player.MoveInDirection(userInput.DirectionInDegrees);
+                    break;
+            }
         }
     }
 }

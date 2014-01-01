@@ -6,6 +6,7 @@
 using Ninject.Extensions.Factory;
 using Ninject.Modules;
 using Protogame;
+using Tychaia.Client;
 using Tychaia.Runtime;
 
 namespace Tychaia
@@ -39,6 +40,8 @@ namespace Tychaia
             this.Bind<ICaptureService>().To<DefaultCaptureService>().InSingletonScope();
             this.Bind<IEntityFactory>().ToFactory();
             this.Bind<IDebugCubeRenderer>().To<DefaultDebugCubeRenderer>();
+            this.Bind<IClientChunkFactory>().To<DefaultClientChunkFactory>();
+            this.Bind<IChunkRenderer>().To<DefaultChunkRenderer>();
         }
     }
 }

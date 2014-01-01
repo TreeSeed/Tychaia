@@ -7,15 +7,15 @@ using Tychaia.Runtime;
 
 namespace Tychaia
 {
-    public interface IIsometricCamera
+    public interface IIsometricCamera<T> where T : class, IChunk
     {
-        RuntimeChunk Chunk { get; }
+        T Chunk { get; }
 
         int ChunkCenterX { get; set; }
 
         int ChunkCenterY { get; set; }
 
-        ChunkOctree ChunkOctree { get; }
+        ChunkOctree<T> ChunkOctree { get; }
 
         int Distance { get; set; }
 

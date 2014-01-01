@@ -18,6 +18,8 @@ namespace Tychaia.Runtime
 
             this.Bind<IPredeterminedChunkPositions>().To<DefaultPredeterminedChunkPositions>();
 
+            this.Bind<IChunkConverter>().To<DefaultChunkConverter>();
+
             this.Bind<ILevelAPI>().To<CombinedLevelAPI>();
             this.Bind<ILevelAPIImpl>().To<TychaiaLevelAPIImpl>().Named("Default");
             this.Bind<ITychaiaLevelFactory>().ToFactory();

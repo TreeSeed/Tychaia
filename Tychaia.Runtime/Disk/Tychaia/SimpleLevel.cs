@@ -23,7 +23,7 @@ namespace Tychaia.Runtime
             this.m_Path = path;
         }
 
-        public bool HasChunk(RuntimeChunk chunk)
+        public bool HasChunk(IChunk chunk)
         {
             return File.Exists(Path.Combine(this.m_Path, this.GetName(chunk)));
         }
@@ -33,7 +33,7 @@ namespace Tychaia.Runtime
             return File.Exists(Path.Combine(this.m_Path, this.GetName(x, y, z)));
         }
 
-        public void LoadChunk(RuntimeChunk runtimeChunk)
+        public void LoadChunk(IChunk runtimeChunk)
         {
             using (var file = new FileStream(Path.Combine(this.m_Path, this.GetName(runtimeChunk)), FileMode.Open))
             {
@@ -65,7 +65,7 @@ namespace Tychaia.Runtime
             }
         }
 
-        public void SaveChunk(RuntimeChunk runtimeChunk)
+        public void SaveChunk(IChunk runtimeChunk)
         {
             using (var file = new FileStream(Path.Combine(this.m_Path, this.GetName(runtimeChunk)), FileMode.Create))
             {
@@ -144,7 +144,7 @@ namespace Tychaia.Runtime
         {
         }
 
-        private string GetName(RuntimeChunk chunk)
+        private string GetName(IChunk chunk)
         {
             return chunk.X + "." + chunk.Y + "." + chunk.Z;
         }
