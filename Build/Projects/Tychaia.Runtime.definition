@@ -31,7 +31,6 @@
     <Compile Include="Disk\Tychaia\TychaiaLevelAPIImpl.cs" />
     <Compile Include="Disk\TychaiaDiskIoCModule.cs" />
     <Compile Include="EnemyEntity.cs" />
-    <Compile Include="GameState.cs" />
     <Compile Include="Services\IChunkGenerator.cs" />
     <Compile Include="Services\IDebugCubeRenderer.cs" />
     <Compile Include="Services\IFrustumChunkCache.cs" />
