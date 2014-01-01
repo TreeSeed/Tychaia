@@ -34,11 +34,13 @@ namespace Tychaia
 
         private readonly IClientNetworkAPI m_NetworkAPI;
 
+        private readonly IEntityFactory m_EntityFactory;
+
+        private readonly int m_UniqueClientIdentifier;
+
         private readonly IFilteredFeatures m_FilteredFeatures;
 
         private readonly InventoryUIEntity m_InventoryUIEntity;
-
-        private readonly PlayerEntity m_Player;
 
         private readonly IProfiler m_Profiler;
 
@@ -59,7 +61,8 @@ namespace Tychaia
             IGameUIFactory gameUIFactory, 
             I2DRenderUtilities twodRenderUtilities,
             IClientNetworkAPI networkAPI,
-            byte[] initialState, 
+            IEntityFactory entityFactory,
+            int uniqueClientIdentifier,
             Action cleanup)
         {
             this.m_3DRenderUtilities = threedRenderUtilities;
@@ -69,6 +72,8 @@ namespace Tychaia
             this.m_Console = console;
             this.m_2DRenderUtilities = twodRenderUtilities;
             this.m_NetworkAPI = networkAPI;
+            this.m_EntityFactory = entityFactory;
+            this.m_UniqueClientIdentifier = uniqueClientIdentifier;
             this.m_AssetManagerProvider = assetManagerProvider;
             this.m_Cleanup = cleanup;
             this.Level = levelAPI.NewLevel("test");
@@ -80,21 +85,34 @@ namespace Tychaia
             this.IsometricCamera = isometricCameraFactory.CreateIsometricCamera(this.ChunkOctree, chunk);
             this.m_ChunkManagerEntity = chunkManagerEntityFactory.CreateChunkManagerEntity(this);
 
-            var player = new PlayerEntity(
-                this.m_AssetManagerProvider, 
-                this.m_3DRenderUtilities, 
-                this.m_ChunkSizePolicy, 
-                this.m_Console, 
-                this.m_FilteredFeatures, 
-                new Player());
-            this.m_Player = player;
-
             this.m_InventoryUIEntity = gameUIFactory.CreateInventoryUIEntity();
             this.Entities = new List<IEntity> { this.m_ChunkManagerEntity, this.m_InventoryUIEntity };
-            if (this.m_Player != null)
-            {
-                this.Entities.Add(this.m_Player);
-            }
+
+            // TODO: Map back to multiple player entities...
+            this.m_NetworkAPI.ListenForMessage(
+                "player update",
+                (client, data) =>
+                {
+                    var playerState = InMemorySerializer.Deserialize<PlayerServerEntity.PlayerServerState>(data);
+
+                    // Lookup the player entity for this unique client ID if we have one.
+                    var player =
+                        this.Entities.OfType<PlayerEntity>()
+                            .FirstOrDefault(x => x.RuntimeData.UniqueClientIdentifier == playerState.UniqueClientID);
+
+                    if (player == null)
+                    {
+                        // Need to create a new player entity.
+                        player =
+                            this.m_EntityFactory.CreatePlayerEntity(
+                                new Player { UniqueClientIdentifier = playerState.UniqueClientID });
+                        this.Entities.Add(player);
+                    }
+
+                    player.X = playerState.X;
+                    player.Y = playerState.Y;
+                    player.Z = playerState.Z;
+                });
         }
 
         public ChunkOctree ChunkOctree { get; private set; }
@@ -103,10 +121,26 @@ namespace Tychaia
 
         public IsometricCamera IsometricCamera { get; private set; }
 
-        public ILevel Level { get; private set; }
+        public ILevel Level
+        {
+            get;
+            private set;
+        }
+
+        private PlayerEntity LocalPlayer
+        {
+            get
+            {
+                return
+                    this.Entities.OfType<PlayerEntity>()
+                        .FirstOrDefault(x => x.RuntimeData.UniqueClientIdentifier == this.m_UniqueClientIdentifier);
+            }
+        }
 
         public void Dispose()
         {
+            this.m_NetworkAPI.StopListeningForMessage("player update");
+
             if (this.m_Cleanup != null)
             {
                 this.m_Cleanup();
@@ -164,21 +198,32 @@ namespace Tychaia
 
             if (!renderContext.Is3DContext)
             {
+                this.m_2DRenderUtilities.RenderText(
+                    renderContext,
+                    new Vector2(20, 600),
+                    "Unique ID: " + this.m_UniqueClientIdentifier,
+                    this.m_DefaultFontAsset);
+
                 if (this.m_NetworkAPI.IsPotentiallyDisconnecting)
                 {
                     this.m_2DRenderUtilities.RenderText(
                         renderContext,
-                        new Vector2(20, 600),
+                        new Vector2(20, 620),
                         this.m_NetworkAPI.DisconnectingForSeconds.ToString("F2") + " secs disconnected",
                         this.m_DefaultFontAsset,
                         textColor: Color.Red);
                 }
 
-                this.m_2DRenderUtilities.RenderText(
-                    renderContext,
-                    new Vector2(20, 620),
-                    this.m_NetworkAPI.PlayersInGame.Aggregate(string.Empty, (a, b) => a + " " + b).Trim(),
-                    this.m_DefaultFontAsset);
+                var i = 0;
+                foreach (var player in this.m_NetworkAPI.PlayersInGame)
+                {
+                    this.m_2DRenderUtilities.RenderText(
+                        renderContext,
+                        new Vector2(20, 640 + i * 20),
+                        player,
+                        this.m_DefaultFontAsset);
+                    i++;
+                }
             }
         }
 
@@ -224,36 +269,40 @@ namespace Tychaia
                 return;
             }
 
-            if (this.m_Player == null)
+            // Update the camera to focus on the local player.
+            if (this.LocalPlayer != null)
             {
-                return;
+                this.UpdateCamera(gameContext);
             }
 
+            this.m_NetworkAPI.Update();
+        }
+
+        private void UpdateCamera(IGameContext gameContext)
+        {
             // Focus the camera.
             var current = this.IsometricCamera.CurrentFocus;
-            if (Math.Abs(current.Y - this.m_Player.Y) < 2)
+            if (Math.Abs(current.Y - this.LocalPlayer.Y) < 2)
             {
-                this.IsometricCamera.Focus((long)this.m_Player.X, (long)this.m_Player.Y, (long)this.m_Player.Z);
+                this.IsometricCamera.Focus((long)this.LocalPlayer.X, (long)this.LocalPlayer.Y, (long)this.LocalPlayer.Z);
             }
             else
             {
                 this.IsometricCamera.Focus(
-                    (long)this.m_Player.X, 
-                    (long)MathHelper.Lerp(current.Y, this.m_Player.Y, 0.1f), 
-                    (long)this.m_Player.Z);
+                    (long)this.LocalPlayer.X,
+                    (long)MathHelper.Lerp(current.Y, this.LocalPlayer.Y, 0.1f),
+                    (long)this.LocalPlayer.Z);
             }
 
             if (this.IsometricCamera.Chunk.Generated)
             {
-                var newY = this.GetSurfaceY(gameContext, this.m_Player.X, this.m_Player.Z);
-                this.m_Player.InaccurateY = newY == null;
+                /*var newY = this.GetSurfaceY(gameContext, this.LocalPlayer.X, this.LocalPlayer.Z);
+                this.LocalPlayer.InaccurateY = newY == null;
                 if (newY != null)
                 {
-                    this.m_Player.Y = newY.Value;
-                }
+                    this.LocalPlayer.Y = newY.Value;
+                }*/
             }
-
-            this.m_NetworkAPI.Update();
         }
     }
 }

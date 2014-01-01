@@ -14,6 +14,8 @@ namespace Tychaia.Network
 
         void ListenForMessage(string type, Action<MxClient, byte[]> callback);
 
+        void StopListeningForMessage(string type);
+
         void SendMessage(string type, byte[] data);
 
         void Update();

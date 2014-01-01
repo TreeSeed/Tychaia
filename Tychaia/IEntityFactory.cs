@@ -1,12 +1,14 @@
-// ====================================================================== //
+﻿// ====================================================================== //
 // This source code is licensed in accordance with the licensing outlined //
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-namespace Tychaia.Game
+using Tychaia.Game;
+
+namespace Tychaia
 {
-    public class Player : Being
+    public interface IEntityFactory
     {
-        public int UniqueClientIdentifier { get; set; }
+        PlayerEntity CreatePlayerEntity(Player runtimeData);
     }
 }

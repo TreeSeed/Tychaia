@@ -66,6 +66,7 @@
     <Compile Include="GameUI\RightBar.cs" />
     <Compile Include="GameUI\StatusBar.cs" />
     <Compile Include="GameUI\ViewportMode.cs" />
+    <Compile Include="IEntityFactory.cs" />
     <Compile Include="Implementations\ClientChunkFactory.cs" />
     <Compile Include="Implementations\DefaultChunkGenerator.cs" />
     <Compile Include="Implementations\DefaultDebugCubeRenderer.cs" />

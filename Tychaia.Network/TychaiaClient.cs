@@ -69,6 +69,16 @@ namespace Tychaia.Network
             this.m_MessageEvents[type] = callback;
         }
 
+        public void StopListeningForMessage(string type)
+        {
+            if (!this.m_MessageEvents.ContainsKey(type))
+            {
+                throw new InvalidOperationException("callback not registered");
+            }
+
+            this.m_MessageEvents.Remove(type);
+        }
+
         public byte[] LoadInitialState()
         {
             // TODO: Get the initial state.
