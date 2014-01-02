@@ -7,6 +7,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using Ninject;
 using Protogame;
@@ -99,6 +100,8 @@ namespace Tychaia
             {
                 var server = kernel.Get<TychaiaServerRunner>();
                 server.Run(address, port);
+
+                Thread.Sleep(10000000);
                 return;
             }
 

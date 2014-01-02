@@ -16,7 +16,7 @@ namespace Tychaia.Network
 
         void StopListeningForMessage(string type);
 
-        void SendMessage(string type, byte[] data);
+        void SendMessage(string type, byte[] data, bool reliable = false);
 
         void Update();
     }

@@ -31,7 +31,8 @@ namespace Tychaia.Client
 
             this.m_NetworkAPI.SendMessage(
                 "require chunk", 
-                InMemorySerializer.Serialize(new ChunkRequest { X = x, Y = y, Z = z }));
+                InMemorySerializer.Serialize(new ChunkRequest { X = x, Y = y, Z = z }),
+                true);
 
             return @new;
         }

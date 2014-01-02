@@ -27,5 +27,8 @@ namespace Tychaia.Data
 
         [ProtoMember(3)]
         public long Z;
+
+        [ProtoMember(7)]
+        public bool Generated;
     }
 }

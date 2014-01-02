@@ -12,7 +12,8 @@
         new Monitor("FunctionCalls", "int", "Green"),
         new Monitor("LastFrameLength", "double", "White", "ms"),
         new Monitor("VirtualMemory", "long", "Magenta", "MB"),
-        new Monitor("NetworkOps", "int", "Cyan")
+        new Monitor("SendNetworkOps", "int", "DarkSalmon"),
+		new Monitor("ReceiveNetworkOps", "int", "Cyan")
     };
 #>
 // ====================================================================== //

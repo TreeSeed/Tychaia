@@ -16,9 +16,17 @@ namespace Tychaia.Runtime
         {
             target.Cells = chunk.Cells;
             target.GeneratedIndices = chunk.Indexes;
-            target.GeneratedVertexes =
-                chunk.Vertexes.Select(x => new VertexPositionTexture(new Vector3(x.X, x.Y, x.Z), new Vector2(x.U, x.V)))
-                    .ToArray();
+            target.Generated = chunk.Generated;
+            if (chunk.Vertexes == null)
+            {
+                target.GeneratedVertexes = new VertexPositionTexture[0];
+            }
+            else
+            {
+                target.GeneratedVertexes =
+                    chunk.Vertexes.Select(
+                        x => new VertexPositionTexture(new Vector3(x.X, x.Y, x.Z), new Vector2(x.U, x.V))).ToArray();
+            }
 
             if (target.IndexBuffer != null)
             {
@@ -35,21 +43,27 @@ namespace Tychaia.Runtime
 
         public Chunk ToChunk<T>(T chunk) where T : IChunk
         {
+            var vertexes = new Vertex[0];
+            if (chunk.GeneratedVertexes != null)
+            {
+                vertexes = chunk.GeneratedVertexes.Select(
+                    x =>
+                    new Vertex
+                    {
+                        U = x.TextureCoordinate.X,
+                        V = x.TextureCoordinate.Y,
+                        X = x.Position.X,
+                        Y = x.Position.Y,
+                        Z = x.Position.Z
+                    }).ToArray();
+            }
+
             return new Chunk
             {
                 Cells = chunk.Cells, 
                 Indexes = chunk.GeneratedIndices, 
-                Vertexes =
-                    chunk.GeneratedVertexes.Select(
-                        x =>
-                        new Vertex
-                        {
-                            U = x.TextureCoordinate.X, 
-                            V = x.TextureCoordinate.Y, 
-                            X = x.Position.X, 
-                            Y = x.Position.Y, 
-                            Z = x.Position.Z
-                        }).ToArray(), 
+                Vertexes = vertexes, 
+                Generated = chunk.Generated,
                 X = chunk.X, 
                 Y = chunk.Y, 
                 Z = chunk.Z

@@ -123,7 +123,8 @@ namespace Tychaia
                 FPS = gameContext.FPS,
                 LastFrameLength = this.Profiler.LastFrameLength,
                 VirtualMemory = Process.GetCurrentProcess().VirtualMemorySize64 / 1024 / 1024,
-                NetworkOps = this.Profiler.GetNetworkOps()
+                SendNetworkOps = this.Profiler.GetSendNetworkOps(),
+                ReceiveNetworkOps = this.Profiler.GetReceiveNetworkOps()
             };
             this.Profiler.ResetCalls();
             return info;

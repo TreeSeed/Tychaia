@@ -27,9 +27,9 @@ namespace Tychaia.Network
 
         private TychaiaServerWorld m_World;
 
-        public TychaiaServer(int port)
+        public TychaiaServer(int realtimePort, int reliablePort)
         {
-            this.m_MxDispatcher = new MxDispatcher(port, port + 1);
+            this.m_MxDispatcher = new MxDispatcher(realtimePort, reliablePort);
             this.m_MxDispatcher.MessageReceived += this.OnMessageReceived;
             this.m_MessageEvents = new Dictionary<string, Action<MxClient, byte[]>>();
             this.m_PlayerLookup = new Dictionary<MxClient, string>();
@@ -97,13 +97,13 @@ namespace Tychaia.Network
             this.m_MessageEvents[type] = callback;
         }
 
-        public void SendMessage(string type, byte[] data)
+        public void SendMessage(string type, byte[] data, bool reliable = false)
         {
             var bytes = InMemorySerializer.Serialize(new TychaiaInternalMessage { Type = type, Data = data });
 
             foreach (var endpoint in this.m_MxDispatcher.Endpoints)
             {
-                this.m_MxDispatcher.Send(endpoint, bytes);
+                this.m_MxDispatcher.Send(endpoint, bytes, reliable);
             }
         }
 

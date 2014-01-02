@@ -96,7 +96,8 @@ namespace Tychaia.Network
         {
             this.m_Server.SendMessage(
                 "chunk available", 
-                InMemorySerializer.Serialize(this.m_ChunkConverter.ToChunk(serverChunk)));
+                InMemorySerializer.Serialize(this.m_ChunkConverter.ToChunk(serverChunk)),
+                true);
         }
 
         private void ThreadedUpdate()
