@@ -18,6 +18,9 @@ namespace Tychaia.Data
         [ProtoMember(15)]
         public int EdgeDetection;
 
+        [ProtoMember(19)]
+        public short EdgePoint;
+
         // Being Clusters Generation
         [ProtoMember(3)]
         public string ClusterDefinitionAssetName;

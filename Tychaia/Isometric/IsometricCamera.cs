@@ -6,10 +6,11 @@
 using System;
 using Microsoft.Xna.Framework;
 using Protogame;
+using Tychaia.Runtime;
 
 namespace Tychaia
 {
-    public class IsometricCamera : IIsometricCamera
+    public class IsometricCamera<T> : IIsometricCamera<T> where T : class, IChunk
     {
         /// <summary>
         /// The X position in 3D space where we are focusing the camera.
@@ -27,28 +28,29 @@ namespace Tychaia
         private long m_CurrentZ;
 
         private int m_Rotation;
-        
-        public IsometricCamera(ChunkOctree octree, RuntimeChunk chunk)
+
+        public IsometricCamera(ChunkOctree<T> octree, T chunk)
         {
-            if (octree == null) throw new ArgumentNullException("octree");
-            if (chunk == null) throw new ArgumentNullException("chunk");
+            if (octree == null)
+            {
+                throw new ArgumentNullException("octree");
+            }
+
+            if (chunk == null)
+            {
+                throw new ArgumentNullException("chunk");
+            }
+
             this.ChunkOctree = octree;
             this.Chunk = chunk;
             this.Distance = 80;
             this.VerticalAngle = 45;
         }
 
-        public int Distance { get; set; }
-
-        public bool Rotation { get; set; }
-        
-        public float VerticalAngle { get; set; }
-        public bool Orthographic { get; set; }
-
-        public Vector3 CurrentFocus
-        {
-            get { return new Vector3((float)this.m_CurrentX, (float)this.m_CurrentY, (float)this.m_CurrentZ); }
-        }
+        /// <summary>
+        /// The chunk that is currently the focus of the camera.
+        /// </summary>
+        public T Chunk { get; private set; }
 
         /// <summary>
         /// The X position on the screen of the current chunk.
@@ -61,26 +63,25 @@ namespace Tychaia
         public int ChunkCenterY { get; set; }
 
         /// <summary>
-        /// The chunk that is currently the focus of the camera.
-        /// </summary>
-        public RuntimeChunk Chunk { get; private set; }
-
-        /// <summary>
         /// The octree that holds all of the chunks.
         /// </summary>
-        public ChunkOctree ChunkOctree { get; private set; }
+        public ChunkOctree<T> ChunkOctree { get; private set; }
 
-        /// <summary>
-        /// Checks the current relative position, applying the relative X, Y and Z positions
-        /// to it and adjusting the center chunk as needed.
-        /// </summary>
-        public void Pan(long x, long y, long z)
+        public Vector3 CurrentFocus
         {
-            this.Focus(
-                this.m_CurrentX + x,
-                this.m_CurrentY + y,
-                this.m_CurrentZ + z);
+            get
+            {
+                return new Vector3(this.m_CurrentX, this.m_CurrentY, this.m_CurrentZ);
+            }
         }
+
+        public int Distance { get; set; }
+
+        public bool Orthographic { get; set; }
+
+        public bool Rotation { get; set; }
+
+        public float VerticalAngle { get; set; }
 
         /// <summary>
         /// Sets the current focus of the screen such the center of the screen
@@ -90,7 +91,9 @@ namespace Tychaia
         {
             // Skip if there is no octree.
             if (this.ChunkOctree == null)
+            {
                 return;
+            }
 
             // Adjust the position.
             this.m_CurrentX = x;
@@ -98,39 +101,60 @@ namespace Tychaia
             this.m_CurrentZ = z;
 
             // Pan current chunk.
-            var newChunk = this.ChunkOctree.Get(
-                this.m_CurrentX,
-                this.m_CurrentY,
-                this.m_CurrentZ);
+            var newChunk = this.ChunkOctree.Get(this.m_CurrentX, this.m_CurrentY, this.m_CurrentZ);
             if (newChunk != null)
+            {
                 this.Chunk = newChunk;
+            }
         }
 
         public void InitializeRenderContext(IRenderContext renderContext)
         {
             if (this.Rotation)
+            {
                 this.m_Rotation++;
+            }
             else
+            {
                 this.m_Rotation = 0;
+            }
+
             var angle = new Vector3(0, 0, 15);
             angle = Vector3.Transform(angle, Matrix.CreateRotationX(MathHelper.ToRadians(-this.VerticalAngle)));
             angle = Vector3.Transform(angle, Matrix.CreateRotationY(MathHelper.PiOver4));
-            renderContext.View = Matrix.CreateLookAt(
-                this.CurrentFocus + Vector3.Transform(angle * this.Distance, Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation))),
-                this.CurrentFocus,
-                Vector3.Up);
+            renderContext.View =
+                Matrix.CreateLookAt(
+                    this.CurrentFocus
+                    + Vector3.Transform(
+                        angle * this.Distance, 
+                        Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation))), 
+                    this.CurrentFocus, 
+                    Vector3.Up);
             if (this.Orthographic)
+            {
                 renderContext.Projection = Matrix.CreateOrthographic(
-                    renderContext.GraphicsDevice.Viewport.Width,
-                    renderContext.GraphicsDevice.Viewport.Height,
-                    1.0f,
+                    renderContext.GraphicsDevice.Viewport.Width, 
+                    renderContext.GraphicsDevice.Viewport.Height, 
+                    1.0f, 
                     5000.0f);
+            }
             else
+            {
                 renderContext.Projection = Matrix.CreatePerspectiveFieldOfView(
-                    MathHelper.PiOver4,
-                    renderContext.GraphicsDevice.Viewport.Width / (float)renderContext.GraphicsDevice.Viewport.Height,
-                    1.0f,
+                    MathHelper.PiOver4, 
+                    renderContext.GraphicsDevice.Viewport.Width / (float)renderContext.GraphicsDevice.Viewport.Height, 
+                    1.0f, 
                     5000.0f);
+            }
+        }
+
+        /// <summary>
+        /// Checks the current relative position, applying the relative X, Y and Z positions
+        /// to it and adjusting the center chunk as needed.
+        /// </summary>
+        public void Pan(long x, long y, long z)
+        {
+            this.Focus(this.m_CurrentX + x, this.m_CurrentY + y, this.m_CurrentZ + z);
         }
     }
 }

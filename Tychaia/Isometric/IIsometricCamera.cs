@@ -3,22 +3,30 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Microsoft.Xna.Framework;
+using Tychaia.Runtime;
 
 namespace Tychaia
 {
-    public interface IIsometricCamera
+    public interface IIsometricCamera<T> where T : class, IChunk
     {
-        bool Rotation { get; set; }
-        bool Orthographic { get; set; }
-        float VerticalAngle { get; set; }
-        int Distance { get; set; }
+        T Chunk { get; }
+
         int ChunkCenterX { get; set; }
+
         int ChunkCenterY { get; set; }
-        RuntimeChunk Chunk { get; }
-        ChunkOctree ChunkOctree { get; }
+
+        ChunkOctree<T> ChunkOctree { get; }
+
+        int Distance { get; set; }
+
+        bool Orthographic { get; set; }
+
+        bool Rotation { get; set; }
+
+        float VerticalAngle { get; set; }
+
+        void Focus(long x, long y, long z);
 
         void Pan(long x, long y, long z);
-        void Focus(long x, long y, long z);
     }
 }

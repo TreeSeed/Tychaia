@@ -14,44 +14,47 @@ namespace Tychaia
     public class TychaiaProfiler : IProfiler
     {
         private static TychaiaProfiler SingletonProtection;
-    
+
         private int m_CallCount;
+
         private DateTime m_LastStart = DateTime.Now;
-        private int m_NetworkOps;
+
+        private MxDispatcher m_MxDispatcher;
+
+        private int m_ReceiveNetworkVal;
+
+        private int m_SendNetworkVal;
 
         public TychaiaProfiler()
         {
             if (SingletonProtection != null)
+            {
                 throw new InvalidOperationException();
+            }
+
             SingletonProtection = this;
             this.MeasureCosts = new Dictionary<string, double>();
-        }
-        
-        public double LastFrameLength
-        {
-            get;
-            set;
         }
 
         public int FunctionCallsSinceLastReset
         {
-            get { return this.m_CallCount; }
+            get
+            {
+                return this.m_CallCount;
+            }
         }
+
+        public double LastFrameLength { get; set; }
 
         internal Dictionary<string, double> MeasureCosts { get; private set; }
-        
-        public IDisposable Measure(string name, params string[] parameters)
-        {
-            if (name.StartsWith("tychaia-"))
-                return new TychaiaProfilerHandle(this, name.Substring(8));
-            else
-                return new NullProfilerHandle();
-        }
 
-        public void StartRenderStats()
+        public void AttachNetworkDispatcher(MxDispatcher dispatcher)
         {
-            this.MeasureCosts = new Dictionary<string, double>();
-            this.m_LastStart = DateTime.Now;
+            this.m_MxDispatcher = dispatcher;
+            this.m_MxDispatcher.ReliableSendProgress += this.MxDispatcherOnReliableSendProgress;
+            this.m_MxDispatcher.ReliableReceivedProgress += this.MxDispatcherOnReliableReceivedProgress;
+            this.m_MxDispatcher.MessageReceived += this.MxDispatcherOnMessageReceived;
+            this.m_MxDispatcher.MessageAcknowledged += this.MxDispatcherOnMessageAcknowledged;
         }
 
         public void CheckSlowFrames()
@@ -64,24 +67,59 @@ namespace Tychaia
                 Console.WriteLine("=============================");
                 Console.WriteLine("WARNING: SLOW FRAME DETECTED!");
                 Console.WriteLine("TOTAL TIME: " + span.TotalMilliseconds + "ms");
-                
+
                 foreach (var kv in this.GetRenderStats().OrderByDescending(x => x.Value))
                 {
                     Console.WriteLine(kv.Key + ": " + kv.Value + "us");
                 }
-                
+
                 Console.WriteLine("=============================");
             }
         }
-        
+
+        public void DetachNetworkDispatcher(MxDispatcher dispatcher)
+        {
+            if (this.m_MxDispatcher != dispatcher)
+            {
+                return;
+            }
+
+            this.m_MxDispatcher.ReliableSendProgress -= this.MxDispatcherOnReliableSendProgress;
+            this.m_MxDispatcher.ReliableReceivedProgress -= this.MxDispatcherOnReliableReceivedProgress;
+            this.m_MxDispatcher.MessageReceived -= this.MxDispatcherOnMessageReceived;
+            this.m_MxDispatcher.MessageAcknowledged -= this.MxDispatcherOnMessageAcknowledged;
+            this.m_MxDispatcher = null;
+        }
+
+        public int GetReceiveNetworkOps()
+        {
+            return this.m_ReceiveNetworkVal;
+        }
+
         public Dictionary<string, double> GetRenderStats()
         {
             return this.MeasureCosts;
         }
-        
-        public int GetNetworkOps()
+
+        public int GetSendNetworkOps()
         {
-            return this.m_NetworkOps;
+            return this.m_SendNetworkVal;
+        }
+
+        public IDisposable Measure(string name, params string[] parameters)
+        {
+            if (name.StartsWith("tychaia-"))
+            {
+                return new TychaiaProfilerHandle(this, name.Substring(8));
+            }
+
+            return new NullProfilerHandle();
+        }
+
+        public void StartRenderStats()
+        {
+            this.MeasureCosts = new Dictionary<string, double>();
+            this.m_LastStart = DateTime.Now;
         }
 
         internal void FunctionCalled()
@@ -92,15 +130,42 @@ namespace Tychaia
         internal void ResetCalls()
         {
             this.m_CallCount = 0;
-            this.m_NetworkOps = 0;
         }
-        
+
+        private void MxDispatcherOnMessageAcknowledged(object sender, MxMessageEventArgs mxMessageEventArgs)
+        {
+            if (mxMessageEventArgs.Client.IsReliable)
+            {
+                this.m_SendNetworkVal = 0;
+            }
+        }
+
+        private void MxDispatcherOnMessageReceived(object sender, MxMessageEventArgs mxMessageEventArgs)
+        {
+            if (mxMessageEventArgs.Client.IsReliable)
+            {
+                this.m_ReceiveNetworkVal = 0;
+            }
+        }
+
+        private void MxDispatcherOnReliableReceivedProgress(object sender, MxReliabilityTransmitEventArgs e)
+        {
+            this.m_ReceiveNetworkVal = e.CurrentFragments;
+        }
+
+        private void MxDispatcherOnReliableSendProgress(object sender, MxReliabilityTransmitEventArgs e)
+        {
+            this.m_SendNetworkVal = e.CurrentFragments;
+        }
+
         public class TychaiaProfilerHandle : IDisposable
         {
-            private readonly TychaiaProfiler m_Profiler;
             private readonly string m_Name;
+
+            private readonly TychaiaProfiler m_Profiler;
+
             private readonly Stopwatch m_Stopwatch;
-        
+
             public TychaiaProfilerHandle(TychaiaProfiler profiler, string name)
             {
                 this.m_Profiler = profiler;
@@ -108,12 +173,15 @@ namespace Tychaia
                 this.m_Stopwatch = new Stopwatch();
                 this.m_Stopwatch.Start();
             }
-            
+
             public void Dispose()
             {
                 this.m_Stopwatch.Stop();
                 if (!this.m_Profiler.MeasureCosts.ContainsKey(this.m_Name))
+                {
                     this.m_Profiler.MeasureCosts[this.m_Name] = 0;
+                }
+
                 this.m_Profiler.MeasureCosts[this.m_Name] += this.m_Stopwatch.Elapsed.TotalMilliseconds * 1000;
             }
         }

@@ -1,17 +1,14 @@
-// ====================================================================== //
+﻿// ====================================================================== //
 // This source code is licensed in accordance with the licensing outlined //
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-namespace Tychaia
+using Tychaia.Data;
+
+namespace Tychaia.Runtime
 {
-    public interface IChunkFactory
+    public interface IEdgePointCalculator
     {
-        RuntimeChunk CreateChunk(
-            ILevel level,
-            ChunkOctree octree,
-            long x,
-            long y,
-            long z);
+        EdgePoint CalculateEdgePoint(int edges);
     }
 }

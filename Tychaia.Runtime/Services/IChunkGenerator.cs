@@ -3,10 +3,16 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-namespace Tychaia
+using System;
+
+namespace Tychaia.Runtime
 {
     public interface IChunkGenerator
     {
-        void Generate(RuntimeChunk chunk);
+        void Generate(IChunk chunk, Action callback = null);
+
+        void InputConnect();
+
+        void InputDisconnect();
     }
 }

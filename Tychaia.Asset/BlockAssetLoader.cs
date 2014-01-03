@@ -3,7 +3,6 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using System;
 using Protogame;
 
 namespace Tychaia.Asset
@@ -15,18 +14,9 @@ namespace Tychaia.Asset
             return data.Loader == typeof(BlockAssetLoader).FullName;
         }
 
-        public IAsset Handle(IAssetManager assetManager, string name, dynamic data)
+        public bool CanNew()
         {
-            return new BlockAsset(
-                assetManager,
-                name,
-                (string)data.TopTextureName,
-                (string)data.BottomTextureName,
-                (string)data.LeftTextureName,
-                (string)data.RightTextureName,
-                (string)data.FrontTextureName,
-                (string)data.BackTextureName,
-                (bool)data.Impassable);
+            return true;
         }
 
         public IAsset GetDefault(IAssetManager assetManager, string name)
@@ -34,23 +24,24 @@ namespace Tychaia.Asset
             return null;
         }
 
-        public bool CanNew()
-        {
-            return true;
-        }
-
         public IAsset GetNew(IAssetManager assetManager, string name)
         {
+            return new BlockAsset(assetManager, name, 0, null, null, null, null, null, null, true);
+        }
+
+        public IAsset Handle(IAssetManager assetManager, string name, dynamic data)
+        {
             return new BlockAsset(
-                assetManager,
-                name,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                true);
+                assetManager, 
+                name, 
+                (int)data.BlockID, 
+                (string)data.TopTextureName, 
+                (string)data.BottomTextureName, 
+                (string)data.LeftTextureName, 
+                (string)data.RightTextureName, 
+                (string)data.FrontTextureName, 
+                (string)data.BackTextureName, 
+                (bool)data.Impassable);
         }
     }
 }

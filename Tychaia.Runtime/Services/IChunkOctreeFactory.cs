@@ -3,18 +3,10 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Ninject.Extensions.Factory;
-using Ninject.Modules;
-
-namespace Tychaia
+namespace Tychaia.Runtime
 {
-    public class TychaiaDiskIoCModule : NinjectModule
+    public interface IChunkOctreeFactory
     {
-        public override void Load()
-        {
-            this.Bind<ILevelAPI>().To<CombinedLevelAPI>();
-            this.Bind<ILevelAPIImpl>().To<TychaiaLevelAPIImpl>().Named("Default");
-            this.Bind<ITychaiaLevelFactory>().ToFactory();
-        }
+        ChunkOctree<T> CreateChunkOctree<T>() where T : class, IChunk;
     }
 }

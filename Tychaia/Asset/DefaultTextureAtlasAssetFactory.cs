@@ -15,14 +15,6 @@ namespace Tychaia
 {
     public class DefaultTextureAtlasAssetFactory : ITextureAtlasAssetFactory
     {
-        private IRenderTargetFactory m_RenderTargetFactory;
-
-        public DefaultTextureAtlasAssetFactory(
-            IRenderTargetFactory renderTargetFactory)
-        {
-            this.m_RenderTargetFactory = renderTargetFactory;
-        }
-
         public TextureAtlasAsset CreateTextureAtlasAsset(
             string name,
             GraphicsDevice graphicsDevice,
@@ -45,7 +37,7 @@ namespace Tychaia
             var size = this.CalculateSizeForTextures(textureArray);
 
             var mappings = new Dictionary<string, Rectangle>();
-            var renderTarget = this.m_RenderTargetFactory.Create(graphicsDevice, (int)size.X, (int)size.Y);
+            var renderTarget = new RenderTarget2D(graphicsDevice, (int)size.X, (int)size.Y);
 
             try
             {

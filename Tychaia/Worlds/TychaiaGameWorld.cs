@@ -10,9 +10,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Protogame;
+using Tychaia.Data;
 using Tychaia.Game;
 using Tychaia.Globals;
 using Tychaia.Network;
+using Tychaia.Runtime;
 
 namespace Tychaia
 {
@@ -36,6 +38,14 @@ namespace Tychaia
 
         private readonly IEntityFactory m_EntityFactory;
 
+        private readonly IChunkConverter m_ChunkConverter;
+
+        private readonly IChunkCompressor m_ChunkCompressor;
+
+        private readonly IChunkGenerator m_ChunkGenerator;
+
+        private readonly ITerrainSurfaceCalculator m_TerrainSurfaceCalculator;
+
         private readonly int m_UniqueClientIdentifier;
 
         private readonly IFilteredFeatures m_FilteredFeatures;
@@ -51,7 +61,6 @@ namespace Tychaia
             I3DRenderUtilities threedRenderUtilities, 
             IFilteredFeatures filteredFeatures, 
             IChunkOctreeFactory chunkOctreeFactory, 
-            IChunkFactory chunkFactory, 
             IIsometricCameraFactory isometricCameraFactory, 
             IChunkSizePolicy chunkSizePolicy, 
             IChunkManagerEntityFactory chunkManagerEntityFactory, 
@@ -62,6 +71,10 @@ namespace Tychaia
             I2DRenderUtilities twodRenderUtilities,
             IClientNetworkAPI networkAPI,
             IEntityFactory entityFactory,
+            IChunkConverter chunkConverter,
+            IChunkCompressor chunkCompressor,
+            IChunkGenerator chunkGenerator,
+            ITerrainSurfaceCalculator terrainSurfaceCalculator,
             int uniqueClientIdentifier,
             Action cleanup)
         {
@@ -73,6 +86,10 @@ namespace Tychaia
             this.m_2DRenderUtilities = twodRenderUtilities;
             this.m_NetworkAPI = networkAPI;
             this.m_EntityFactory = entityFactory;
+            this.m_ChunkConverter = chunkConverter;
+            this.m_ChunkCompressor = chunkCompressor;
+            this.m_ChunkGenerator = chunkGenerator;
+            this.m_TerrainSurfaceCalculator = terrainSurfaceCalculator;
             this.m_UniqueClientIdentifier = uniqueClientIdentifier;
             this.m_AssetManagerProvider = assetManagerProvider;
             this.m_Cleanup = cleanup;
@@ -80,8 +97,8 @@ namespace Tychaia
 
             this.m_DefaultFontAsset = this.m_AssetManagerProvider.GetAssetManager().Get<FontAsset>("font.Default");
 
-            this.ChunkOctree = chunkOctreeFactory.CreateChunkOctree();
-            var chunk = chunkFactory.CreateChunk(this.Level, this.ChunkOctree, 0, 0, 0);
+            this.ChunkOctree = chunkOctreeFactory.CreateChunkOctree<ClientChunk>();
+            var chunk = new ClientChunk(0, 0, 0);
             this.IsometricCamera = isometricCameraFactory.CreateIsometricCamera(this.ChunkOctree, chunk);
             this.m_ChunkManagerEntity = chunkManagerEntityFactory.CreateChunkManagerEntity(this);
 
@@ -113,13 +130,41 @@ namespace Tychaia
                     player.Y = playerState.Y;
                     player.Z = playerState.Z;
                 });
+
+            // TODO: Move this somewhere better.
+            this.m_NetworkAPI.ListenForMessage(
+                "chunk available",
+                (client, data) =>
+                {
+                    var dataChunk = this.m_ChunkCompressor.Decompress(data);
+
+                    var clientChunk = this.ChunkOctree.Get(dataChunk.X, dataChunk.Y, dataChunk.Z);
+                    if (clientChunk == null)
+                    {
+                        clientChunk = new ClientChunk(dataChunk.X, dataChunk.Y, dataChunk.Z);
+                        this.ChunkOctree.Set(clientChunk);
+                    }
+                    else if (clientChunk.Generated)
+                    {
+                        // TODO: We already have this chunk.  The server shouldn't announce it to
+                        // us because we've already had it sent before, but at the moment the server
+                        // doesn't track this.  We just ignore it for now (so we don't recompute
+                        // graphics data).
+                        Console.WriteLine("Chunk is marked as generated, will not reload from server");
+                        return;
+                    }
+
+                    this.m_ChunkConverter.FromChunk(dataChunk, clientChunk);
+
+                    this.m_ChunkGenerator.Generate(clientChunk);
+                });
         }
 
-        public ChunkOctree ChunkOctree { get; private set; }
+        public ChunkOctree<ClientChunk> ChunkOctree { get; private set; }
 
         public List<IEntity> Entities { get; private set; }
 
-        public IsometricCamera IsometricCamera { get; private set; }
+        public IsometricCamera<ClientChunk> IsometricCamera { get; private set; }
 
         public ILevel Level
         {
@@ -145,48 +190,6 @@ namespace Tychaia
             {
                 this.m_Cleanup();
             }
-        }
-
-        /// <summary>
-        /// Returns the surface Y based on the chunk that is currently active in the camera.  Will
-        /// return null if you attempt to determine the height of a location that is not within
-        /// the available area.
-        /// </summary>
-        public float? GetSurfaceY(IGameContext context, float xx, float zz)
-        {
-            var ax = (int)(xx - this.IsometricCamera.Chunk.X) / this.m_ChunkSizePolicy.CellVoxelWidth;
-            var az = (int)(zz - this.IsometricCamera.Chunk.Z) / this.m_ChunkSizePolicy.CellVoxelDepth;
-
-            if (ax >= 0 && ax < this.m_ChunkSizePolicy.ChunkCellWidth && az >= 0
-                && az < this.m_ChunkSizePolicy.ChunkCellDepth)
-            {
-                return this.IsometricCamera.Chunk.Cells[ax, 0, az].HeightMap * this.m_ChunkSizePolicy.CellVoxelDepth;
-            }
-
-            if (ax >= this.m_ChunkSizePolicy.ChunkCellWidth && ax < this.m_ChunkSizePolicy.ChunkCellWidth * 2 && az >= 0
-                && az < this.m_ChunkSizePolicy.ChunkCellDepth)
-            {
-                return
-                    this.IsometricCamera.Chunk.East.Cells[ax - this.m_ChunkSizePolicy.ChunkCellWidth, 0, az].HeightMap
-                    * this.m_ChunkSizePolicy.CellVoxelDepth;
-            }
-
-            if (ax >= 0 && ax < this.m_ChunkSizePolicy.ChunkCellWidth && az >= this.m_ChunkSizePolicy.ChunkCellWidth
-                && az < this.m_ChunkSizePolicy.ChunkCellDepth * 2)
-            {
-                return
-                    this.IsometricCamera.Chunk.South.Cells[ax, 0, az - this.m_ChunkSizePolicy.ChunkCellWidth].HeightMap
-                    * this.m_ChunkSizePolicy.CellVoxelDepth;
-            }
-
-            if (ax >= this.m_ChunkSizePolicy.ChunkCellWidth && ax < this.m_ChunkSizePolicy.ChunkCellWidth * 2
-                && az >= this.m_ChunkSizePolicy.ChunkCellWidth && az < this.m_ChunkSizePolicy.ChunkCellDepth * 2)
-            {
-                return
-                    this.IsometricCamera.Chunk.South.East.Cells[ax - this.m_ChunkSizePolicy.ChunkCellWidth, 0, az - this.m_ChunkSizePolicy.ChunkCellWidth].HeightMap * this.m_ChunkSizePolicy.CellVoxelDepth;
-            }
-
-            return null;
         }
 
         public void RenderAbove(IGameContext gameContext, IRenderContext renderContext)
@@ -219,7 +222,7 @@ namespace Tychaia
                 {
                     this.m_2DRenderUtilities.RenderText(
                         renderContext,
-                        new Vector2(20, 640 + i * 20),
+                        new Vector2(20, 640 + (i * 20)),
                         player,
                         this.m_DefaultFontAsset);
                     i++;
@@ -296,12 +299,12 @@ namespace Tychaia
 
             if (this.IsometricCamera.Chunk.Generated)
             {
-                /*var newY = this.GetSurfaceY(gameContext, this.LocalPlayer.X, this.LocalPlayer.Z);
+                var newY = this.m_TerrainSurfaceCalculator.GetSurfaceY(this.ChunkOctree, this.LocalPlayer.X, this.LocalPlayer.Z);
                 this.LocalPlayer.InaccurateY = newY == null;
                 if (newY != null)
                 {
                     this.LocalPlayer.Y = newY.Value;
-                }*/
+                }
             }
         }
     }

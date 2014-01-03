@@ -8,31 +8,56 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using ProtoBuf;
 using Protogame;
+using Tychaia.Runtime;
 
 namespace Tychaia.Network
 {
     public class PlayerServerEntity : IServerEntity
     {
+        private readonly MxClient m_Client;
+
         private readonly TychaiaServer m_Server;
 
-        private readonly MxClient m_Client;
+        private readonly IServerEntityFactory m_ServerEntityFactory;
+
+        private readonly TychaiaServerWorld m_ServerWorld;
+
+        private readonly ITerrainSurfaceCalculator m_TerrainSurfaceCalculator;
 
         private readonly int m_UniqueClientIdentifier;
 
-        public PlayerServerEntity(TychaiaServer server, MxClient client, int uniqueClientIdentifier)
+        public PlayerServerEntity(
+            ITerrainSurfaceCalculator terrainSurfaceCalculator, 
+            IServerEntityFactory serverEntityFactory, 
+            TychaiaServer server, 
+            TychaiaServerWorld serverWorld, 
+            MxClient client, 
+            int uniqueClientIdentifier)
         {
+            this.m_TerrainSurfaceCalculator = terrainSurfaceCalculator;
+            this.m_ServerEntityFactory = serverEntityFactory;
             this.m_Server = server;
+            this.m_ServerWorld = serverWorld;
             this.m_Client = client;
             this.m_UniqueClientIdentifier = uniqueClientIdentifier;
         }
+
+        [Obsolete("This needs to be unified with the PlayerEntity some how")]
+        public int MovementSpeed
+        {
+            get
+            {
+                return 4;
+            }
+        }
+
+        public string Name { get; set; }
 
         public float X { get; set; }
 
         public float Y { get; set; }
 
         public float Z { get; set; }
-
-        public string Name { get; set; }
 
         public void ApplyDelta(BinaryReader reader)
         {
@@ -88,67 +113,9 @@ namespace Tychaia.Network
             }
         }
 
-        public IServerEntity Snapshot()
+        public float? GetSurfaceY(float x, float z)
         {
-            return new PlayerServerEntity(this.m_Server, this.m_Client, this.m_UniqueClientIdentifier)
-            {
-                Name = this.Name,
-                X = this.X,
-                Y = this.Y,
-                Z = this.Z
-            };
-        }
-
-        public void Update()
-        {
-            // TODO: Use the delta functions.
-            this.m_Server.SendMessage(
-                "player update",
-                InMemorySerializer.Serialize(
-                    new PlayerServerState
-                    {
-                        UniqueClientID = this.m_UniqueClientIdentifier,
-                        X = this.X,
-                        Y = this.Y,
-                        Z = this.Z
-                    }));
-        }
-
-        [ProtoContract]
-        public class PlayerServerState
-        {
-            [ProtoMember(4)]
-            public int UniqueClientID { get; set; }
-
-            [ProtoMember(1)]
-            public float X
-            {
-                get;
-                set;
-            }
-
-            [ProtoMember(2)]
-            public float Y
-            {
-                get;
-                set;
-            }
-
-            [ProtoMember(3)]
-            public float Z
-            {
-                get;
-                set;
-            }
-        }
-
-        [Obsolete("This needs to be unified with the PlayerEntity some how")]
-        public int MovementSpeed
-        {
-            get
-            {
-                return 4;
-            }
+            return this.m_TerrainSurfaceCalculator.GetSurfaceY(this.m_ServerWorld.Octree, x, z);
         }
 
         public void MoveInDirection(int directionInDegrees)
@@ -156,16 +123,9 @@ namespace Tychaia.Network
             var x = Math.Sin(MathHelper.ToRadians(directionInDegrees - 45)) * this.MovementSpeed;
             var y = -Math.Cos(MathHelper.ToRadians(directionInDegrees - 45)) * this.MovementSpeed;
 
-            this.X += (float)x;
-            this.Z += (float)y;
-
-            // Temporary until chunks are migrated.
-            this.Y = 32;
-
-            /*
             // Determine if moving here would require us to move up by more than 32 pixels.
-            var targetX = this.GetSurfaceY(context, this.X + (float)x, this.Z);
-            var targetZ = this.GetSurfaceY(context, this.X, this.Z + (float)y);
+            var targetX = this.GetSurfaceY(this.X + (float)x, this.Z);
+            var targetZ = this.GetSurfaceY(this.X, this.Z + (float)y);
 
             // We calculate X and Z independently so that we can "slide" along the edge of somewhere
             // that the player can't go.  This creates a more natural feel when walking into something
@@ -196,7 +156,58 @@ namespace Tychaia.Network
                     this.Z += (float)y;
                 }
             }
-            */
+        }
+
+        public IServerEntity Snapshot()
+        {
+            var entity = this.m_ServerEntityFactory.CreatePlayerServerEntity(
+                this.m_Server, 
+                this.m_ServerWorld, 
+                this.m_Client, 
+                this.m_UniqueClientIdentifier);
+            entity.Name = this.Name;
+            entity.X = this.X;
+            entity.Y = this.Y;
+            entity.Z = this.Z;
+            return entity;
+        }
+
+        public void Update()
+        {
+            // Adjust the player's Y position.
+            var surfaceY = this.GetSurfaceY(this.X, this.Z);
+            if (surfaceY != null)
+            {
+                this.Y = surfaceY.Value;
+            }
+
+            // TODO: Use the delta functions.
+            this.m_Server.SendMessage(
+                "player update", 
+                InMemorySerializer.Serialize(
+                    new PlayerServerState
+                    {
+                        UniqueClientID = this.m_UniqueClientIdentifier, 
+                        X = this.X, 
+                        Y = this.Y, 
+                        Z = this.Z
+                    }));
+        }
+
+        [ProtoContract]
+        public class PlayerServerState
+        {
+            [ProtoMember(4)]
+            public int UniqueClientID { get; set; }
+
+            [ProtoMember(1)]
+            public float X { get; set; }
+
+            [ProtoMember(2)]
+            public float Y { get; set; }
+
+            [ProtoMember(3)]
+            public float Z { get; set; }
         }
     }
 }

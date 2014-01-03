@@ -3,7 +3,7 @@
     "csharp": {
       "type": "csharp",
       "include": "(\\.cs$)",
-	  "exclude": [ "(\\.Designer\\.cs$)", "(Phabricator\\.Conduit(.*+))" ],
+      "exclude": [ "(\\.Designer\\.cs$)", "(Phabricator\\.Conduit(.*+))", "(TychaiaProfilerEntityUtil\\.cs)" ],
       "binary": "cstools/cslint/bin/Debug/cslint.exe",
       "discovery": {
         "([^/]+)/(.*?)\\.cs": [
@@ -17,7 +17,7 @@
     "license": {
       "type": "tychaialicense",
       "include": "(\\.cs$)",
-	  "exclude": [ "(\\.Designer\\.cs$)", "(Phabricator\\.Conduit(.*+))" ]
+      "exclude": [ "(\\.Designer\\.cs$)", "(Phabricator\\.Conduit(.*+))", "(TychaiaProfilerEntityUtil\\.cs)" ]
     }
   }
 }

@@ -50,6 +50,7 @@ namespace Tychaia
             IAssetManagerProvider assetManagerProvider, 
             IBackgroundCubeEntityFactory backgroundCubeEntityFactory, 
             ISkin skin, 
+            IProfiler profiler,
             IPersistentStorage persistentStorage,
             bool startServer, 
             IPAddress address, 
@@ -82,9 +83,10 @@ namespace Tychaia
                 {
                     () => this.m_Message = "Closing old process...", () => this.TerminateExistingProcess(), 
                     () => this.m_Message = "Starting server...", () => this.StartServer(), 
-                    () => this.m_Message = "Creating client...", () => client = new TychaiaClient(9090), 
+                    () => this.m_Message = "Creating client...", () => client = new TychaiaClient(port + 2, port + 3), 
+                    () => client.AttachProfiler(profiler),
                     () => this.m_Message = "Connecting to server...", 
-                    () => client.Connect(new IPEndPoint(address, port)),
+                    () => client.Connect(new DualIPEndPoint(address, port, port + 1)),
                     () => this.m_Message = "Binding node to kernel...", 
                     () => kernel.Bind<INetworkAPI>().ToMethod(x => client), 
                     () => kernel.Bind<IClientNetworkAPI>().ToMethod(x => client), () => this.m_Message = "Joining game...", 
@@ -97,9 +99,10 @@ namespace Tychaia
             {
                 this.m_Actions = new Action[]
                 {
-                    () => this.m_Message = "Creating client...", () => client = new TychaiaClient(9090), 
+                    () => this.m_Message = "Creating client...", () => client = new TychaiaClient(port + 2, port + 3), 
+                    () => client.AttachProfiler(profiler),
                     () => this.m_Message = "Connecting to server...", 
-                    () => client.Connect(new IPEndPoint(address, port)),
+                    () => client.Connect(new DualIPEndPoint(address, port, port + 1)),
                     () => this.m_Message = "Binding node to kernel...", 
                     () => kernel.Bind<INetworkAPI>().ToMethod(x => client),
                     () => kernel.Bind<IClientNetworkAPI>().ToMethod(x => client), 

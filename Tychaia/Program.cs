@@ -7,6 +7,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using Ninject;
 using Protogame;
@@ -14,6 +15,7 @@ using Tychaia.Asset;
 using Tychaia.Globals;
 using Tychaia.Network;
 using Tychaia.ProceduralGeneration;
+using Tychaia.Runtime;
 
 namespace Tychaia
 {
@@ -27,6 +29,8 @@ namespace Tychaia
             }
             else
             {
+                AppDomain.CurrentDomain.UnhandledException += (sender, e) => CrashReport.CrashReporter.Record((Exception)e.ExceptionObject);
+
                 try
                 {
                     Run(args);
@@ -80,6 +84,7 @@ namespace Tychaia
             kernel.Load<TychaiaIsometricIoCModule>();
             kernel.Load<TychaiaGlobalIoCModule>();
             kernel.Load<TychaiaNetworkIoCModule>();
+            kernel.Load<TychaiaRuntimeIoCModule>();
             
             // Modules after this point require IPersistentStorage, so we need to parse our command line
             // and then load the server module if needed, to rebind previous bindings.
@@ -88,7 +93,6 @@ namespace Tychaia
                 kernel.Load<TychaiaServerIoCModule>();
                 
             // Load somewhat more advanced modules that may depend on services registered previously.
-            kernel.Load<TychaiaDiskIoCModule>();
             kernel.Load<TychaiaProfilingIoCModule>();
             kernel.Load<TychaiaProceduralGenerationIoCModule>();
 
@@ -96,6 +100,8 @@ namespace Tychaia
             {
                 var server = kernel.Get<TychaiaServerRunner>();
                 server.Run(address, port);
+
+                Thread.Sleep(10000000);
                 return;
             }
 

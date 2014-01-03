@@ -5,14 +5,14 @@
 // ====================================================================== //
 using Tychaia.Data;
 
-namespace Tychaia
+namespace Tychaia.Runtime
 {
     public interface ILevel
     {
-        bool HasChunk(RuntimeChunk chunk);
+        bool HasChunk(IChunk chunk);
         bool HasChunk(long x, long y, long z);
-        void LoadChunk(RuntimeChunk chunk);
-        void SaveChunk(RuntimeChunk chunk);
+        void LoadChunk(IChunk chunk);
+        void SaveChunk(IChunk chunk);
         void SaveChunk(long x, long y, long z, Cell[,,] data);
         void ScanChunks();
     }

@@ -5,7 +5,6 @@
 // ====================================================================== //
 using System;
 using System.Collections.Generic;
-using System.Net;
 using Protogame;
 
 namespace Tychaia.Network
@@ -16,13 +15,15 @@ namespace Tychaia.Network
 
         private readonly MxDispatcher m_MxDispatcher;
 
-        private DateTime m_LastUpdateCall;
-
         private DateTime m_LastDisconnectionWarningTime;
 
-        public TychaiaClient(int port)
+        private DateTime m_LastUpdateCall;
+
+        private IProfiler m_Profiler;
+
+        public TychaiaClient(int realtimePort, int reliablePort)
         {
-            this.m_MxDispatcher = new MxDispatcher(port);
+            this.m_MxDispatcher = new MxDispatcher(realtimePort, reliablePort);
             this.m_MxDispatcher.MessageReceived += this.OnMessageReceived;
             this.m_MxDispatcher.ClientDisconnectWarning += this.OnClientDisconnectWarning;
             this.m_MxDispatcher.ClientDisconnected += this.OnClientDisconnected;
@@ -41,22 +42,41 @@ namespace Tychaia.Network
                 });
         }
 
-        public double DisconnectingForSeconds { get; private set; }
+        ~TychaiaClient()
+        {
+            if (this.m_Profiler != null)
+            {
+                this.m_Profiler.DetachNetworkDispatcher(this.m_MxDispatcher);
+            }
+        }
 
-        public bool IsPotentiallyDisconnecting { get; private set; }
+        public double DisconnectingForSeconds { get; private set; }
 
         public bool IsDisconnected { get; private set; }
 
+        public bool IsPotentiallyDisconnecting { get; private set; }
+
         public string[] PlayersInGame { get; private set; }
 
-        public void Connect(IPEndPoint endpoint)
+        public void AttachProfiler(IProfiler profiler)
         {
-            this.m_MxDispatcher.Connect(endpoint);
+            if (profiler == null)
+            {
+                throw new ArgumentNullException("profiler");
+            }
+
+            this.m_Profiler = profiler;
+            this.m_Profiler.AttachNetworkDispatcher(this.m_MxDispatcher);
         }
 
         public void Close()
         {
             this.m_MxDispatcher.Close();
+        }
+
+        public void Connect(DualIPEndPoint endpoint)
+        {
+            this.m_MxDispatcher.Connect(endpoint);
         }
 
         public void ListenForMessage(string type, Action<MxClient, byte[]> callback)
@@ -69,30 +89,37 @@ namespace Tychaia.Network
             this.m_MessageEvents[type] = callback;
         }
 
-        public void StopListeningForMessage(string type)
-        {
-            if (!this.m_MessageEvents.ContainsKey(type))
-            {
-                throw new InvalidOperationException("callback not registered");
-            }
-
-            this.m_MessageEvents.Remove(type);
-        }
-
         public byte[] LoadInitialState()
         {
             // TODO: Get the initial state.
             return null;
         }
 
-        public void SendMessage(string type, byte[] data)
+        public void SendMessage(string type, byte[] data, MxClient client = null, bool reliable = false)
         {
             var bytes = InMemorySerializer.Serialize(new TychaiaInternalMessage { Type = type, Data = data });
 
-            foreach (var endpoint in this.m_MxDispatcher.Endpoints)
+            if (client == null)
             {
-                this.m_MxDispatcher.Send(endpoint, bytes);
+                foreach (var endpoint in this.m_MxDispatcher.Endpoints)
+                {
+                    this.m_MxDispatcher.Send(endpoint, bytes, reliable);
+                }
             }
+            else
+            {
+                this.m_MxDispatcher.Send(client.DualEndpoint, bytes, reliable);
+            }
+        }
+
+        public void StopListeningForMessage(string type)
+        {
+            if (!this.m_MessageEvents.ContainsKey(type))
+            {
+                return;
+            }
+
+            this.m_MessageEvents.Remove(type);
         }
 
         public void Update()

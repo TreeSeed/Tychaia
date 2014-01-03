@@ -4,6 +4,8 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using System.Net;
+using System.Threading;
+using Protogame;
 using Xunit;
 
 namespace Tychaia.Network.Tests
@@ -13,23 +15,19 @@ namespace Tychaia.Network.Tests
         [Fact]
         public void TestConnection()
         {
-            var server = new TychaiaServer(9090);
-            var client = new TychaiaClient(9091);
+            var server = new TychaiaServer(9090, 9091);
+            var client = new TychaiaClient(9092, 9093);
 
-            client.Connect(new IPEndPoint(IPAddress.Loopback, 9090));
+            client.Connect(new DualIPEndPoint(IPAddress.Loopback, 9090, 9091));
 
-            client.Update();
-            server.Update();
-            client.Update();
-            server.Update();
+            this.SimulateNetworkCycles(2, server, client);
 
             var hit = false;
             client.ListenForMessage("hit", (mxc, s) => hit = true);
 
             server.SendMessage("hit", new byte[0]);
 
-            server.Update();
-            client.Update();
+            this.SimulateNetworkCycles(2, server, client);
 
             Assert.True(hit);
         }
@@ -37,19 +35,14 @@ namespace Tychaia.Network.Tests
         [Fact]
         public void TestMultipleClients()
         {
-            var server = new TychaiaServer(9092);
-            var client1 = new TychaiaClient(9093);
-            var client2 = new TychaiaClient(9094);
+            var server = new TychaiaServer(9094, 9095);
+            var client1 = new TychaiaClient(9096, 9097);
+            var client2 = new TychaiaClient(9098, 9099);
 
-            client1.Connect(new IPEndPoint(IPAddress.Loopback, 9092));
-            client2.Connect(new IPEndPoint(IPAddress.Loopback, 9092));
+            client1.Connect(new DualIPEndPoint(IPAddress.Loopback, 9094, 9095));
+            client2.Connect(new DualIPEndPoint(IPAddress.Loopback, 9094, 9095));
 
-            client1.Update();
-            client2.Update();
-            server.Update();
-            client1.Update();
-            client2.Update();
-            server.Update();
+            this.SimulateNetworkCycles(2, server, client1, client2);
 
             var hit1 = false;
             var hit2 = false;
@@ -58,12 +51,24 @@ namespace Tychaia.Network.Tests
 
             server.SendMessage("hit", new byte[0]);
 
-            server.Update();
-            client1.Update();
-            client2.Update();
+            this.SimulateNetworkCycles(1, server, client1, client2);
 
             Assert.True(hit1);
             Assert.True(hit2);
+        }
+
+        private void SimulateNetworkCycles(int cycles, TychaiaServer server, params TychaiaClient[] clients)
+        {
+            for (var i = 0; i < cycles; i++)
+            {
+                Thread.Sleep(1000 / 30);
+
+                server.Update();
+                foreach (var client in clients)
+                {
+                    client.Update();
+                }
+            }
         }
     }
 }

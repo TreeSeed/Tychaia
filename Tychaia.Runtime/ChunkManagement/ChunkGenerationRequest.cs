@@ -1,17 +1,16 @@
-// ====================================================================== //
+﻿// ====================================================================== //
 // This source code is licensed in accordance with the licensing outlined //
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Xunit;
+using System;
 
-namespace Tychaia.Runtime.Tests
+namespace Tychaia.Runtime
 {
-    public class ATest
+    public class ChunkGenerationRequest
     {
-        [Fact]
-        public void Pass()
-        {
-        }
+        public Action Callback { get; set; }
+
+        public IChunk Chunk { get; set; }
     }
 }

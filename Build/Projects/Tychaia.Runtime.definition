@@ -9,19 +9,29 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Protogame" />
+    <Reference Include="Tychaia.Asset" />
     <Reference Include="Tychaia.Globals" />
     <Reference Include="Tychaia.Game" />
     <Reference Include="Tychaia.Data" />
     <Reference Include="Tychaia.Data.Serializer" />
+    <Reference Include="Tychaia.ProceduralGeneration" />
+    <Reference Include="Tychaia.Threading" />
     <Reference Include="MonoGame" />
     <Reference Include="Ninject" />
     <Reference Include="protobuf-net-client" />
   </References>
   <Files>
     <Compile Include="Abilities\AbilityTypes\BallType.cs" />
+    <Compile Include="ChunkManagement\ChunkGenerationRequest.cs" />
     <Compile Include="ChunkManagement\ChunkOctree.cs" />
-    <Compile Include="ChunkManagement\IChunkFactory.cs" />
-    <Compile Include="ChunkManagement\RuntimeChunk.cs" />
+    <Compile Include="ChunkManagement\ChunkRequest.cs" />
+    <Compile Include="ChunkManagement\DefaultChunkCompressor.cs" />
+    <Compile Include="ChunkManagement\DefaultChunkConverter.cs" />
+    <Compile Include="ChunkManagement\DefaultEdgePointCalculator.cs" />
+    <Compile Include="ChunkManagement\IChunk.cs" />
+    <Compile Include="ChunkManagement\IChunkCompressor.cs" />
+    <Compile Include="ChunkManagement\IChunkConverter.cs" />
+    <Compile Include="ChunkManagement\IEdgePointCalculator.cs" />
     <Compile Include="Disk\CombinedLevelAPI.cs" />
     <Compile Include="Disk\ILevel.cs" />
     <Compile Include="Disk\ILevelAPI.cs" />
@@ -29,11 +39,15 @@
     <Compile Include="Disk\Tychaia\ITychaiaLevelFactory.cs" />
     <Compile Include="Disk\Tychaia\SimpleLevel.cs" />
     <Compile Include="Disk\Tychaia\TychaiaLevelAPIImpl.cs" />
-    <Compile Include="Disk\TychaiaDiskIoCModule.cs" />
+    <Compile Include="Implementations\ClientChunkGenerator.cs" />
+    <Compile Include="Implementations\DefaultPredeterminedChunkPositions.cs" />
+    <Compile Include="Implementations\DefaultTerrainSurfaceCalculator.cs" />
+    <Compile Include="Implementations\ServerChunkGenerator.cs" />
     <Compile Include="Services\IChunkGenerator.cs" />
+    <Compile Include="Services\IChunkOctreeFactory.cs" />
     <Compile Include="Services\IDebugCubeRenderer.cs" />
-    <Compile Include="Services\IFrustumChunkCache.cs" />
     <Compile Include="Services\IPredeterminedChunkPositions.cs" />
-    <Compile Include="Services\IRenderTargetFactory.cs" />
+    <Compile Include="Services\ITerrainSurfaceCalculator.cs" />
+    <Compile Include="TychaiaRuntimeIocModule.cs" />
   </Files>
 </Project>

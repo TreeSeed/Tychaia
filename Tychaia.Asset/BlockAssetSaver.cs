@@ -20,7 +20,7 @@ namespace Tychaia.Asset
 
             return new
             {
-                Loader = typeof(BlockAssetLoader).FullName,
+                Loader = typeof(BlockAssetLoader).FullName, blockAsset.BlockID,
                 TopTextureName = blockAsset.TopTexture != null ? blockAsset.TopTexture.Name : null,
                 BottomTextureName = blockAsset.BottomTexture != null ? blockAsset.BottomTexture.Name : null,
                 LeftTextureName = blockAsset.LeftTexture != null ? blockAsset.LeftTexture.Name : null,

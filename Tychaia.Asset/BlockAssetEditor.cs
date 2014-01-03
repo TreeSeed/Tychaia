@@ -3,6 +3,8 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
+using System;
+using System.Globalization;
 using Protogame;
 
 namespace Tychaia.Asset
@@ -15,9 +17,32 @@ namespace Tychaia.Asset
         private TextBox m_LeftTextureNameTextBox;
         private TextBox m_RightTextureNameTextBox;
         private TextBox m_TopTextureNameTextBox;
+        private TextBox m_BlockIDTextBox;
 
         public override void BuildLayout(SingleContainer editorContainer, IAssetManager assetManager)
         {
+            this.m_BlockIDTextBox = new TextBox
+            {
+                Text = this.m_Asset.BlockID.ToString(CultureInfo.InvariantCulture)
+            };
+            this.m_BlockIDTextBox.TextChanged += (sender, e) =>
+            {
+                try
+                {
+                    this.m_Asset.BlockID = int.Parse(this.m_BlockIDTextBox.Text);
+                }
+                catch (FormatException)
+                {
+                }
+                catch (OverflowException)
+                {
+                }
+                catch (ArgumentNullException)
+                {
+                }
+
+                assetManager.Save(this.m_Asset);
+            };
             this.m_TopTextureNameTextBox = new TextBox
             {
                 Text = this.m_Asset.TopTexture == null ? null : this.m_Asset.TopTexture.Name
@@ -74,6 +99,7 @@ namespace Tychaia.Asset
             };
 
             var form = new Form();
+            form.AddControl("Unique Block ID:", this.m_BlockIDTextBox);
             form.AddControl("Top Texture Asset Name:", this.m_TopTextureNameTextBox);
             form.AddControl("Bottom Texture Asset Name:", this.m_BottomTextureNameTextBox);
             form.AddControl("Left Texture Asset Name:", this.m_LeftTextureNameTextBox);

@@ -7,6 +7,7 @@
     <Reference Include="MonoGame" />
     <Reference Include="Ninject" />
     <Reference Include="Protogame" />
+    <Reference Include="Tychaia.Data" />
   </References>
   <Files>
     <Compile Include="AbilityTypeDefinitionAsset.cs" />

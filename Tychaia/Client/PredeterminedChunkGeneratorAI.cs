@@ -6,36 +6,39 @@
 using System;
 using Microsoft.Xna.Framework;
 using Protogame;
+using Tychaia.Client;
 using Tychaia.Globals;
+using Tychaia.Runtime;
 
 namespace Tychaia
 {
     public class PredeterminedChunkGeneratorAI : IChunkAI
     {
         private IProfiler m_Profiler;
-        private IChunkFactory m_ChunkFactory;
+
+        private IClientChunkFactory m_ClientChunkFactory;
         private IChunkSizePolicy m_ChunkSizePolicy;
         private IDebugCubeRenderer m_DebugCubeRenderer;
         private IPredeterminedChunkPositions m_PredeterminedChunkPositions;
 
         public PredeterminedChunkGeneratorAI(
             IProfiler profiler,
-            IChunkFactory chunkFactory,
             IChunkSizePolicy chunkSizePolicy,
             IDebugCubeRenderer debugCubeRenderer,
-            IPredeterminedChunkPositions predeterminedChunkPositions)
+            IPredeterminedChunkPositions predeterminedChunkPositions,
+            IClientChunkFactory clientChunkFactory)
         {
             this.m_Profiler = profiler;
-            this.m_ChunkFactory = chunkFactory;
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_DebugCubeRenderer = debugCubeRenderer;
             this.m_PredeterminedChunkPositions = predeterminedChunkPositions;
+            this.m_ClientChunkFactory = clientChunkFactory;
             this.ShowDebugInfo = "false";
         }
 
         public string ShowDebugInfo { get; set; }
 
-        public RuntimeChunk[] Process(
+        public ClientChunk[] Process(
             TychaiaGameWorld world,
             ChunkManagerEntity manager,
             IGameContext gameContext,
@@ -95,7 +98,7 @@ namespace Tychaia
             return null;
         }
 
-        private RuntimeChunk GetChunkOrGenerate(ChunkOctree octree, ILevel level, long x, long y, long z)
+        private ClientChunk GetChunkOrGenerate(ChunkOctree<ClientChunk> octree, ILevel level, long x, long y, long z)
         {
             using (this.m_Profiler.Measure("tychaia-chunk_test"))
             {
@@ -106,8 +109,7 @@ namespace Tychaia
             
             using (this.m_Profiler.Measure("tychaia-chunk_create"))
             {
-                return this.m_ChunkFactory.CreateChunk(
-                    level,
+                return this.m_ClientChunkFactory.CreateClientChunk(
                     octree,
                     x,
                     y,

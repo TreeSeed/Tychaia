@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using Tychaia.Globals;
 
-namespace Tychaia
+namespace Tychaia.Runtime
 {
     public class TychaiaLevelAPIImpl : ILevelAPIImpl
     {

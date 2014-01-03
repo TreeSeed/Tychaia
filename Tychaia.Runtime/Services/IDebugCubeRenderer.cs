@@ -6,7 +6,7 @@
 using Microsoft.Xna.Framework;
 using Protogame;
 
-namespace Tychaia
+namespace Tychaia.Runtime
 {
     public interface IDebugCubeRenderer
     {

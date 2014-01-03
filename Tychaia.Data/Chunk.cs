@@ -10,17 +10,25 @@ namespace Tychaia.Data
     [ProtoContract]
     public class Chunk
     {
-        [ProtoMember(1)]
-        public long X;
-        [ProtoMember(2)]
-        public long Y;
-        [ProtoMember(3)]
-        public long Z;
         [ProtoMember(4)]
         public Cell[] Cells;
+
         [ProtoMember(5)]
         public int[] Indexes;
+
         [ProtoMember(6)]
         public Vertex[] Vertexes;
+
+        [ProtoMember(1)]
+        public long X;
+
+        [ProtoMember(2)]
+        public long Y;
+
+        [ProtoMember(3)]
+        public long Z;
+
+        [ProtoMember(7)]
+        public bool Generated;
     }
 }

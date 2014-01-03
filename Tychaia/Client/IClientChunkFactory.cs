@@ -1,12 +1,14 @@
-// ====================================================================== //
+﻿// ====================================================================== //
 // This source code is licensed in accordance with the licensing outlined //
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-namespace Tychaia
+using Tychaia.Runtime;
+
+namespace Tychaia.Client
 {
-    public interface IChunkOctreeFactory
+    public interface IClientChunkFactory
     {
-        ChunkOctree CreateChunkOctree();
+        ClientChunk CreateClientChunk(ChunkOctree<ClientChunk> octree, long x, long y, long z);
     }
 }
