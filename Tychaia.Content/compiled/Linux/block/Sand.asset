@@ -1,1 +1,1 @@
-﻿{"Loader":"Tychaia.Asset.BlockAssetLoader","TopTextureName":"texture.Sand","BottomTextureName":"texture.Sand","LeftTextureName":"texture.Sand","RightTextureName":"texture.Sand","FrontTextureName":"texture.Sand","BackTextureName":"texture.Sand","Impassable":true}
+﻿{"Loader":"Tychaia.Asset.BlockAssetLoader","BlockID":2,"TopTextureName":"texture.Sand","BottomTextureName":"texture.Sand","LeftTextureName":"texture.Sand","RightTextureName":"texture.Sand","FrontTextureName":"texture.Sand","BackTextureName":"texture.Sand","Impassable":true}
