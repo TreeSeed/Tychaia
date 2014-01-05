@@ -25,6 +25,8 @@ namespace Tychaia
 
         private double m_DemoTicks = 0;
 
+        private bool m_IgnoreGamePad = false;
+
         public PlayerEntity(
             IAssetManagerProvider assetManagerProvider,
             I3DRenderUtilities threedRenderUtilities,
@@ -74,19 +76,30 @@ namespace Tychaia
             if (this.m_Console.Open)
                 return;
             
-            // Update player and refocus screen.
-            var state = Keyboard.GetState();
-            var gpstate = GamePad.GetState(PlayerIndex.One);
+            // Handle gamepad (if present).
             var mv = (float)Math.Sqrt(this.MovementSpeed);
-            
-            if (state.IsKeyDown(Keys.I))
+            if (!this.m_IgnoreGamePad)
             {
-                this.Y += 4f;
-            }
+                try
+                {
+                    var gpstate = GamePad.GetState(PlayerIndex.One);
             
-            if (state.IsKeyDown(Keys.K))
-            {
-                this.Y -= 4f;
+                    if (gpstate.IsConnected)
+                    {
+                        if (gpstate.ThumbSticks.Left.LengthSquared() > 0.5)
+                        {
+                            var angle = Math.Atan2(
+                                gpstate.ThumbSticks.Left.X,
+                                gpstate.ThumbSticks.Left.Y);
+                            this.MoveInDirection(gameContext, (int)MathHelper.ToDegrees((float)angle));
+                        }
+                    }
+                }
+                catch (DllNotFoundException)
+                {
+                    // The user might not have a version of DirectX that supports game pads.
+                    this.m_IgnoreGamePad = true;
+                }
             }
             
             if (this.m_FilteredFeatures.IsEnabled(Feature.DemoMovement))
@@ -95,14 +108,6 @@ namespace Tychaia
                 this.Z += (float)t * 4;
                 this.X += (float)t * 4;
             }
-            
-            var v = new Vector2(
-                gpstate.ThumbSticks.Left.X,
-                -gpstate.ThumbSticks.Left.Y);
-            var m = Matrix.CreateRotationZ(MathHelper.ToRadians(-45));
-            v = Vector2.Transform(v, m);
-            this.X += v.X * mv * (float)(Math.Sqrt(2) / 1.0);
-            this.Y += v.Y * mv * (float)(Math.Sqrt(2) / 1.0);
             
             this.RuntimeData.X = this.X;
             this.RuntimeData.Y = this.Y;
