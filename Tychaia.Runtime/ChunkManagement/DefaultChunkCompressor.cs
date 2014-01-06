@@ -67,7 +67,7 @@ namespace Tychaia.Runtime
                     {
                         for (var z = 0; z < this.m_ChunkSizePolicy.ChunkCellDepth; z++)
                         {
-                            var i = x + (z * this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.ChunkCellDepth);
+                            var i = x + (z * this.m_ChunkSizePolicy.ChunkCellWidth * this.m_ChunkSizePolicy.ChunkCellHeight);
                             writer.Write(chunk.Cells[i].HeightMap);
                         }
                     }

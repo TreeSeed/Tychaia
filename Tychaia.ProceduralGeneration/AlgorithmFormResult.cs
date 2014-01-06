@@ -54,10 +54,13 @@ namespace Tychaia.ProceduralGeneration
             // Block generation
             output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BlockAssetName =
                 blockInfo[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].BlockAssetName;
-            output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].HeightMap =
-                heightMap[(i + ox) + ((j + oy) * width)] + (heightMap[(i + ox) + ((j + oy) * width)] < 0 ? 1 : 0);
             output[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)].EdgeDetection =
                 edges[(i + ox) + ((j + oy) * width) + ((k + oz) * width * height)];
+
+            // 2D layers have to be rotated on Y-Z
+            output[(i + ox) + ((k + oy) * width) + ((j + oz) * width * height)].HeightMap =
+                heightMap[(i + ox) + ((j + oy) * width)] + 
+                (heightMap[(i + ox) + ((j + oy) * width)] < 0 ? 1 : 0);
 
             // Beings generation
         }
