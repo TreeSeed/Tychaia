@@ -78,7 +78,14 @@ namespace Tychaia.Network
             {
                 Console.WriteLine("Pinging server list...");
 
-                client.Do("serverlist.ping", new { name = "game server", host = address.ToString(), port });
+                try
+                {
+                    client.Do("serverlist.ping", new { name = "game server", host = address.ToString(), port });
+                }
+                catch (WebException)
+                {
+                    Console.WriteLine("Failed to ping server list!");
+                }
 
                 var wait = (last.AddSeconds(60) - DateTime.Now).TotalSeconds;
                 if (wait > 0)
