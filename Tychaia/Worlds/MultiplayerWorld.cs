@@ -4,6 +4,7 @@
 // license on the website apply retroactively.                            //
 // ====================================================================== //
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Threading;
 using Microsoft.Xna.Framework;
@@ -21,6 +22,8 @@ namespace Tychaia
         private readonly ListView m_ServersListView;
 
         private IGameContext m_GameContext;
+        
+        private volatile bool m_Terminating = false;
 
         public MultiplayerWorld(ISkin skin)
         {
@@ -61,33 +64,40 @@ namespace Tychaia
 
         public void Dispose()
         {
+            this.m_Terminating = true;
             this.m_QueryServersThread.Abort();
         }
 
         public void QueryServers()
         {
-            while (true)
+            while (!this.m_Terminating)
             {
-                var servers = TychaiaServerQuery.QueryServers();
-
-                lock (this.m_ServersListView)
+                try
                 {
-                    this.m_ServersListView.RemoveAllChildren();
-
-                    foreach (var server in servers)
+                    var servers = TychaiaServerQuery.QueryServers();
+    
+                    lock (this.m_ServersListView)
                     {
-                        this.m_ServersListView.AddChild(
-                            new ServerListItem
-                            {
-                                Text = server.name + "(" + server.host + ":" + server.port + ")", 
-                                Address = IPAddress.Parse(server.host.ToString()), // FIXME: Support non-IP addresses
-                                Port = int.Parse(server.port.ToString()), 
-                                Valid = true
-                            });
+                        this.m_ServersListView.RemoveAllChildren();
+    
+                        foreach (var server in servers)
+                        {
+                            this.m_ServersListView.AddChild(
+                                new ServerListItem
+                                {
+                                    Text = server.name + "(" + server.host + ":" + server.port + ")", 
+                                    Address = IPAddress.Parse(server.host.ToString()), // FIXME: Support non-IP addresses
+                                    Port = int.Parse(server.port.ToString()), 
+                                    Valid = true
+                                });
+                        }
                     }
+    
+                    Thread.Sleep(10 * 1000);
                 }
-
-                Thread.Sleep(10 * 1000);
+                catch (WebException ex)
+                {
+                }
             }
         }
 
