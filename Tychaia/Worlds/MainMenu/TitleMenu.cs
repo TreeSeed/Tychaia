@@ -24,30 +24,30 @@ namespace Tychaia
         public bool Focused { get; set; }
 
         public void Update(ISkin skin, Rectangle layout, GameTime gameTime, ref bool stealFocus)
-        {
+        {            
             var buttonLayout = new Rectangle(
-                layout.Center.X - 150,
-                layout.Bottom - (this.m_Children.Count * 45) - 30,
-                300,
-                30);
+                layout.Center.X - 100,
+                layout.Bottom - (this.m_Children.Count * 75) - 30,
+                200,
+                50);
             foreach (var button in this.m_Children)
             {
                 button.Update(skin, buttonLayout, gameTime, ref stealFocus);
-                buttonLayout.Y += 45;
+                buttonLayout.Y += 75;
             }
         }
 
         public void Draw(IRenderContext context, ISkin skin, Rectangle layout)
         {
             var buttonLayout = new Rectangle(
-                layout.Center.X - 150,
-                layout.Bottom - (this.m_Children.Count * 45) - 30,
-                300,
-                30);
+                layout.Center.X - 100,
+                layout.Bottom - (this.m_Children.Count * 75) - 30,
+                200,
+                50);
             foreach (var button in this.m_Children)
             {
                 button.Draw(context, skin, buttonLayout);
-                buttonLayout.Y += 45;
+                buttonLayout.Y += 75;
             }
         }
 
