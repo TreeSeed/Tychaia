@@ -28,6 +28,7 @@ namespace Tychaia
     public interface ITychaiaSkin
     {
         void DrawUIBorder(IRenderContext context, Rectangle layout, Side side);
-        void DrawUICorner(IRenderContext context, Rectangle layout, Corner corner);
+        void DrawUICorner(IRenderContext context, Rectangle layout, Corner corner, string button = null);
+        void DrawUIBackground(IRenderContext context, Rectangle layout);
     }
 }

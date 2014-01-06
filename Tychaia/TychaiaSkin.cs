@@ -46,84 +46,93 @@ namespace Tychaia
         {
             get { return 24; }
         }
-
-        // The size that DrawUIBorder and DrawUICorner use to scale their images.
+        
+        public int ListVerticalPadding
+        {
+            get { return this.UIBorderSize; }
+        } 
+       
+        public int ListHorizontalPadding
+        {
+            get { return this.UIBorderSize; }
+        } 
+            
         public int UIBorderSize
         {
-            get { return 20; }
+            get { return 10; }
         }
-                
+        
         // UI Elements
         // This if for major elements such as windows
         public void DrawUIBorder(IRenderContext context, Rectangle layout, Side side)
         {
             // TODO: Funky maths that selects textures based off of a random selection and blends
-            // Will need to do
-            // rotation: (float)(Math.PI/2)
             switch (side)
             {
                 case Side.Top:
                     this.m_2DRenderUtilities.RenderTexture(
                         context,
-                        new Vector2(layout.X, layout.Y - this.UIBorderSize),
+                        new Vector2(layout.X, layout.Y),
                         this.m_AssetManager.Get<TextureAsset>("texture.ui.borders.1"),
                         new Vector2(layout.Width, this.UIBorderSize));
                     break;
                 case Side.Bottom:
                     this.m_2DRenderUtilities.RenderTexture(
                         context,
-                        new Vector2(layout.X, layout.Y + layout.Height),
+                        new Vector2(layout.X, layout.Y + layout.Height - this.UIBorderSize),
                         this.m_AssetManager.Get<TextureAsset>("texture.ui.borders.1"),
                         new Vector2(layout.Width, this.UIBorderSize));
                     break;
                 case Side.Left:
                     this.m_2DRenderUtilities.RenderTexture(
                         context,
-                        new Vector2(layout.X - this.UIBorderSize, layout.Y),
+                        new Vector2(layout.X + this.UIBorderSize, layout.Y),
                         this.m_AssetManager.Get<TextureAsset>("texture.ui.borders.1"),
-                        new Vector2(this.UIBorderSize, layout.Height));
+                        new Vector2(layout.Height, this.UIBorderSize), 
+                        rotation: (float)(Math.PI / 2));
                     break;
                 case Side.Right:
                     this.m_2DRenderUtilities.RenderTexture(
                         context,
-                        new Vector2(layout.X + layout.Height, layout.Y),
+                        new Vector2(layout.X + layout.Width, layout.Y),
                         this.m_AssetManager.Get<TextureAsset>("texture.ui.borders.1"),
-                        new Vector2(this.UIBorderSize, layout.Height));
+                        new Vector2(layout.Height, this.UIBorderSize),
+                        rotation: (float)(Math.PI / 2));
                     break;
             }
         }
         
-        public void DrawUICorner(IRenderContext context, Rectangle layout, Corner corner)
+        public void DrawUICorner(IRenderContext context, Rectangle layout, Corner corner, string button = null)
         {
             switch (corner)
             {
                 case Corner.TopLeft:
                     this.m_2DRenderUtilities.RenderTexture(
                         context,
-                        new Vector2(layout.X - this.UIBorderSize, layout.Y - this.UIBorderSize),
+                        new Vector2(layout.X - (float)(this.UIBorderSize * 0.3), layout.Y - (float)(this.UIBorderSize * 0.3)),
                         this.m_AssetManager.Get<TextureAsset>("texture.ui.corners.top_left.Default"),
-                        new Vector2(this.UIBorderSize, this.UIBorderSize));
+                        new Vector2((float)(this.UIBorderSize * 2.2), (float)(this.UIBorderSize * 2.2)));
                     break;
                 case Corner.TopRight:
                     this.m_2DRenderUtilities.RenderTexture(
                         context,
-                        new Vector2(layout.X + layout.Width, layout.Y - this.UIBorderSize),
+                        new Vector2(layout.X + layout.Width - ((float)(this.UIBorderSize * 2.2)) + (float)(this.UIBorderSize * 0.3), layout.Y - (float)(this.UIBorderSize * 0.3)),
                         this.m_AssetManager.Get<TextureAsset>("texture.ui.corners.top_right.Default"),
-                        new Vector2(this.UIBorderSize, this.UIBorderSize));
+                        new Vector2((float)(this.UIBorderSize * 2.2), (float)(this.UIBorderSize * 2.2)));
                     break;
                 case Corner.BottomLeft:
                     this.m_2DRenderUtilities.RenderTexture(
                         context,
-                        new Vector2(layout.X - this.UIBorderSize, layout.Y + layout.Height),
+                        new Vector2(layout.X - (float)(this.UIBorderSize * 0.3), layout.Y + layout.Height - ((float)(this.UIBorderSize * 2.2)) + (float)(this.UIBorderSize * 0.3)),
                         this.m_AssetManager.Get<TextureAsset>("texture.ui.corners.bottom_left.Default"),
-                        new Vector2(this.UIBorderSize, this.UIBorderSize));
+                        new Vector2((float)(this.UIBorderSize * 2.2), (float)(this.UIBorderSize * 2.2)));
                     break;
                 case Corner.BottomRight:
                     this.m_2DRenderUtilities.RenderTexture(
                         context,
-                        new Vector2(layout.X + layout.Width, layout.Y + layout.Height),
+                        new Vector2(layout.X + layout.Width - ((float)(this.UIBorderSize * 2.2)) + (float)(this.UIBorderSize * 0.3), layout.Y + layout.Height - ((float)(this.UIBorderSize * 2.2)) + (float)(this.UIBorderSize * 0.3)),
                         this.m_AssetManager.Get<TextureAsset>("texture.ui.corners.bottom_right.Default"),
-                        new Vector2(this.UIBorderSize, this.UIBorderSize));
+                        new Vector2((float)(this.UIBorderSize * 2.2), (float)(this.UIBorderSize * 2.2)));
                     break;
                 default:
                     throw new NotSupportedException("DrawUICorner: Corner not specified.");
@@ -137,27 +146,18 @@ namespace Tychaia
             for (var i = 0; i <= (layout.Width / texture.Texture.Width); i++)
                 for (var j = 0; j <= (layout.Height / texture.Texture.Height); j++)
                 {
-                    if ((i * (texture.Texture.Width + 1)) > layout.Width || (j * (texture.Texture.Height + 1)) > layout.Height)
-                    {
                         var area = new Rectangle(
                         0, 
                         0,
-                        (i * (texture.Texture.Width + 1)) > layout.Width ? texture.Texture.Width + (layout.Width - (i * (texture.Texture.Width + 1))) : texture.Texture.Width, 
-                        (j * (texture.Texture.Height + 1)) > layout.Height ? texture.Texture.Height + (layout.Height - (j * (texture.Texture.Height + 1))) : texture.Texture.Height);
+                        (i + 1) * texture.Texture.Width > layout.Width - this.UIBorderSize ? texture.Texture.Width + layout.Width - ((i + 1) * texture.Texture.Width) - this.UIBorderSize : texture.Texture.Width, 
+                        (j + 1) * texture.Texture.Height > layout.Height - this.UIBorderSize ? texture.Texture.Height + layout.Height - ((j + 1) * texture.Texture.Height) - this.UIBorderSize : texture.Texture.Height);
                         
                         this.m_2DRenderUtilities.RenderTexture(
                             context,
                             new Vector2(layout.X + (i * texture.Texture.Width), layout.Y + (j * texture.Texture.Height)),
                             texture,
+                            new Vector2(area.Width, area.Height),
                             sourceArea: area);
-                    }
-                    else
-                    {
-                        this.m_2DRenderUtilities.RenderTexture(
-                            context,
-                            new Vector2(layout.X + (i * texture.Texture.Width), layout.Y + (j * texture.Texture.Height)),
-                            texture);
-                    }
                 }
         }
         
@@ -169,7 +169,7 @@ namespace Tychaia
             this.m_2DRenderUtilities.RenderTexture(
                 context,
                 new Vector2(layout.X, layout.Y),
-                this.m_AssetManager.Get<TextureAsset>("texture.ui.Button"),
+                this.m_AssetManager.Get<TextureAsset>("texture.ui.buttons.Default"),
                 new Vector2(layout.Width, layout.Height));
                 
             // Text
@@ -287,7 +287,15 @@ namespace Tychaia
 
         public void DrawListView(IRenderContext context, Rectangle layout, ListView listView)
         {
-            this.m_BasicSkin.DrawListView(context, layout, listView);
+            this.DrawUIBackground(context, layout);
+            this.DrawUIBorder(context, layout, Side.Top);
+            this.DrawUIBorder(context, layout, Side.Bottom);
+            this.DrawUIBorder(context, layout, Side.Left);
+            this.DrawUIBorder(context, layout, Side.Right);
+            this.DrawUICorner(context, layout, Corner.TopLeft);
+            this.DrawUICorner(context, layout, Corner.TopRight);
+            this.DrawUICorner(context, layout, Corner.BottomLeft);
+            this.DrawUICorner(context, layout, Corner.BottomRight);        
         }
 
         public void DrawListItem(IRenderContext context, Rectangle layout, ListItem listItem)

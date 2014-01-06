@@ -25,15 +25,6 @@ namespace Tychaia
             if (textures == null) throw new ArgumentNullException("textures");
 
             var textureArray = textures.ToArray();
-            foreach (var texture in textureArray)
-            {
-                if (texture.Texture.Width != 16 ||
-                    texture.Texture.Height != 16)
-                {
-                    throw new InvalidOperationException("Texture atlas can only support textures 16x16.");
-                }
-            }
-
             var size = this.CalculateSizeForTextures(textureArray);
 
             var mappings = new Dictionary<string, Rectangle>();
@@ -52,13 +43,17 @@ namespace Tychaia
                     
                     foreach (var texture in textureArray)
                     {
-                        spriteBatch.Draw(texture.Texture, new Vector2(x, y));
-                        mappings.Add(texture.Name, new Rectangle(x, y, 16, 16));
-                        x += 16;
-                        if (x >= size.X)
+                        if (texture.Texture.Width == 16 ||
+                            texture.Texture.Height == 16)
                         {
-                            x = 0;
-                            y += 16;
+                            spriteBatch.Draw(texture.Texture, new Vector2(x, y));
+                            mappings.Add(texture.Name, new Rectangle(x, y, 16, 16));
+                            x += 16;
+                            if (x >= size.X)
+                            {
+                                x = 0;
+                                y += 16;
+                            }
                         }
                     }
                     
