@@ -55,6 +55,8 @@ namespace Tychaia
         private readonly IProfiler m_Profiler;
 
         private readonly FontAsset m_DefaultFontAsset;
+        
+        private readonly IViewportMode m_ViewportMode;
 
         public TychaiaGameWorld(
             IAssetManagerProvider assetManagerProvider, 
@@ -76,7 +78,8 @@ namespace Tychaia
             IChunkGenerator chunkGenerator,
             ITerrainSurfaceCalculator terrainSurfaceCalculator,
             int uniqueClientIdentifier,
-            Action cleanup)
+            Action cleanup,
+            IViewportMode viewportMode)
         {
             this.m_3DRenderUtilities = threedRenderUtilities;
             this.m_FilteredFeatures = filteredFeatures;
@@ -94,6 +97,7 @@ namespace Tychaia
             this.m_AssetManagerProvider = assetManagerProvider;
             this.m_Cleanup = cleanup;
             this.Level = levelAPI.NewLevel("test");
+            this.m_ViewportMode = viewportMode;
 
             this.m_DefaultFontAsset = this.m_AssetManagerProvider.GetAssetManager().Get<FontAsset>("font.Default");
 
@@ -185,6 +189,7 @@ namespace Tychaia
         public void Dispose()
         {
             this.m_NetworkAPI.StopListeningForMessage("player update");
+            this.m_ViewportMode.SetViewportMode(ViewportMode.Full);
 
             if (this.m_Cleanup != null)
             {
