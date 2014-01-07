@@ -72,6 +72,8 @@ namespace Tychaia
                 6, 3, 2, 7, 3, 6
             };
 
+            var oldWorld = renderContext.World;
+
             renderContext.EnableTextures();
             renderContext.SetActiveTexture(this.m_GrassAsset.Texture);
             renderContext.World =
@@ -91,6 +93,8 @@ namespace Tychaia
                     0, // first index element to read
                     indicies.Length / 3);
             }
+
+            renderContext.World = oldWorld;
         }
     }
 }

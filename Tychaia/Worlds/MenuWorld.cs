@@ -5,8 +5,11 @@
 // ====================================================================== //
 using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Protogame;
+using Matrix = Microsoft.Xna.Framework.Matrix;
 
 namespace Tychaia
 {
@@ -28,6 +31,10 @@ namespace Tychaia
 
         private ScatterBackground m_ScatterBackground;
 
+        private ModelAsset m_PlayerModel;
+
+        private TextureAsset m_PlayerModelTexture;
+
         public MenuWorld(
             I2DRenderUtilities twodRenderUtilities, 
             IAssetManagerProvider assetManagerProvider, 
@@ -39,6 +46,8 @@ namespace Tychaia
             this.m_BackgroundCubeEntityFactory = backgroundCubeEntityFactory;
             this.m_TitleFont = this.AssetManager.Get<FontAsset>("font.Title");
             this.m_PlayerTexture = this.AssetManager.Get<TextureAsset>("chars.player.Player");
+            this.m_PlayerModel = this.AssetManager.Get<ModelAsset>("model.Character");
+            this.m_PlayerModelTexture = this.AssetManager.Get<TextureAsset>("model.CharacterTex");
 
             this.Entities = new List<IEntity>();
 
@@ -67,6 +76,18 @@ namespace Tychaia
         {
             if (renderContext.Is3DContext)
             {
+                renderContext.SetActiveTexture(this.m_PlayerModelTexture.Texture);
+
+                renderContext.GraphicsDevice.RasterizerState = RasterizerState.CullClockwise;
+                
+                this.m_PlayerModel.Draw(
+                    renderContext,
+                    Matrix.CreateRotationZ(MathHelper.PiOver2) * Matrix.CreateRotationY(-MathHelper.PiOver4) * Matrix.CreateScale(0.2f),
+                    Animation.AnimationNullName,
+                    0);
+
+                renderContext.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+                
                 return;
             }
 
@@ -79,10 +100,10 @@ namespace Tychaia
                 this.m_TitleFont, 
                 HorizontalAlignment.Center);
 
-            this.m_2DRenderUtilities.RenderTexture(
+            /*this.m_2DRenderUtilities.RenderTexture(
                 renderContext, 
                 new Vector2(gameContext.Window.ClientBounds.Center.X, gameContext.Window.ClientBounds.Center.Y), 
-                this.m_PlayerTexture);
+                this.m_PlayerTexture);*/
         }
 
         public virtual void RenderBelow(IGameContext gameContext, IRenderContext renderContext)
