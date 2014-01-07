@@ -37,11 +37,13 @@ namespace Tychaia
             backButton.Click += (sender, args) => this.m_GameContext.SwitchWorld<TitleWorld>();
 
             var buttonContainer = new HorizontalContainer();
-            buttonContainer.AddChild(backButton, "*");
+            buttonContainer.AddChild(new EmptyContainer(), "*");
+            buttonContainer.AddChild(backButton, "100");
+            buttonContainer.AddChild(new EmptyContainer(), "*");
 
             var verticalContainer = new VerticalContainer();
             verticalContainer.AddChild(new EmptyContainer(), "*");
-            verticalContainer.AddChild(this.m_ServersListView, "400");
+            verticalContainer.AddChild(this.m_ServersListView, "370");
             verticalContainer.AddChild(new EmptyContainer(), "10");
             verticalContainer.AddChild(buttonContainer, "24");
             verticalContainer.AddChild(new EmptyContainer(), "*");

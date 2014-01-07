@@ -177,7 +177,7 @@ namespace Tychaia
                 context,
                 new Vector2(
                     layout.Center.X,
-                    layout.Center.Y),
+                    layout.Center.Y - 5),
                 button.Text,
                 this.m_AssetManager.Get<FontAsset>("font.Default"),
                 HorizontalAlignment.Center,
