@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Protogame;
@@ -20,8 +21,6 @@ namespace Tychaia
         private readonly IBackgroundCubeEntityFactory m_BackgroundCubeEntityFactory;
 
         private readonly CanvasEntity m_CanvasEntity;
-
-        private readonly TextureAsset m_PlayerTexture;
 
         private readonly FontAsset m_TitleFont;
 
@@ -45,7 +44,6 @@ namespace Tychaia
             this.AssetManager = assetManagerProvider.GetAssetManager();
             this.m_BackgroundCubeEntityFactory = backgroundCubeEntityFactory;
             this.m_TitleFont = this.AssetManager.Get<FontAsset>("font.Title");
-            this.m_PlayerTexture = this.AssetManager.Get<TextureAsset>("chars.player.Player");
             this.m_PlayerModel = this.AssetManager.Get<ModelAsset>("model.Character");
             this.m_PlayerModelTexture = this.AssetManager.Get<TextureAsset>("model.CharacterTex");
 
@@ -74,6 +72,8 @@ namespace Tychaia
 
         public virtual void RenderAbove(IGameContext gameContext, IRenderContext renderContext)
         {
+            this.m_PlayerModel.LoadBuffers(renderContext.GraphicsDevice);
+
             if (renderContext.Is3DContext)
             {
                 renderContext.SetActiveTexture(this.m_PlayerModelTexture.Texture);
@@ -82,9 +82,9 @@ namespace Tychaia
                 
                 this.m_PlayerModel.Draw(
                     renderContext,
-                    Matrix.CreateRotationZ(MathHelper.PiOver2) * Matrix.CreateRotationY(-MathHelper.PiOver4) * Matrix.CreateScale(0.2f),
-                    Animation.AnimationNullName,
-                    0);
+                    Matrix.CreateRotationY(-MathHelper.PiOver4) * Matrix.CreateScale(0.2f),
+                    "AnimStack::Take 001",
+                    gameContext.GameTime.TotalGameTime);
 
                 renderContext.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
                 
@@ -99,11 +99,6 @@ namespace Tychaia
                 this.Title == null ? string.Empty : this.Title.Value, 
                 this.m_TitleFont, 
                 HorizontalAlignment.Center);
-
-            /*this.m_2DRenderUtilities.RenderTexture(
-                renderContext, 
-                new Vector2(gameContext.Window.ClientBounds.Center.X, gameContext.Window.ClientBounds.Center.Y), 
-                this.m_PlayerTexture);*/
         }
 
         public virtual void RenderBelow(IGameContext gameContext, IRenderContext renderContext)
@@ -113,13 +108,15 @@ namespace Tychaia
                 return;
             }
 
+            renderContext.World = Matrix.Identity;
+
             renderContext.GraphicsDevice.Clear(Color.Black);
 
             renderContext.View =
                 Matrix.CreateLookAt(
                     Vector3.Transform(
                         new Vector3(0.0f, 10.0f, 10.0f), 
-                        Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation / 10f))), 
+                        Matrix.CreateRotationY(MathHelper.ToRadians(this.m_Rotation))), 
                     Vector3.Zero, 
                     Vector3.Up);
             renderContext.Projection = Matrix.CreatePerspectiveFieldOfView(
