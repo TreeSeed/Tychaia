@@ -5,6 +5,7 @@
 // ====================================================================== //
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Protogame;
 using Tychaia.Game;
@@ -16,16 +17,23 @@ namespace Tychaia
     public class PlayerEntity : Entity, IHasRuntimeData<Player>
     {
         private readonly I3DRenderUtilities m_3DRenderUtilities;
-        private readonly TextureAsset m_PlayerTexture;
         private readonly IChunkSizePolicy m_ChunkSizePolicy;
         private readonly IConsole m_Console;
         private readonly IFilteredFeatures m_FilteredFeatures;
 
         private readonly INetworkAPI m_NetworkAPI;
 
+        private ModelAsset m_PlayerModel;
+
+        private TextureAsset m_PlayerModelTexture;
+
         private double m_DemoTicks = 0;
 
         private bool m_IgnoreGamePad = false;
+
+        private float m_LastDirection = 0;
+
+        private int m_LastWalkingTick;
 
         public PlayerEntity(
             IAssetManagerProvider assetManagerProvider,
@@ -36,10 +44,13 @@ namespace Tychaia
             INetworkAPI networkAPI,
             Player runtimeData)
         {
+            var assetManager = assetManagerProvider.GetAssetManager();
+
             this.m_FilteredFeatures = filteredFeatures;
             this.m_NetworkAPI = networkAPI;
             this.m_3DRenderUtilities = threedRenderUtilities;
-            this.m_PlayerTexture = assetManagerProvider.GetAssetManager().Get<TextureAsset>("chars.player.Player");
+            this.m_PlayerModel = assetManager.Get<ModelAsset>("model.Character");
+            this.m_PlayerModelTexture = assetManager.Get<TextureAsset>("model.CharacterTex");
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_Console = console;
             this.RuntimeData = runtimeData;
@@ -64,6 +75,9 @@ namespace Tychaia
 
         public void MoveInDirection(IGameContext context, int directionInDegrees)
         {
+            this.m_LastDirection = directionInDegrees;
+            this.m_LastWalkingTick = context.FrameCount;
+
             var input = new UserInput();
             input.SetAction(UserInputAction.Move);
             input.DirectionInDegrees = directionInDegrees;
@@ -116,22 +130,28 @@ namespace Tychaia
 
         public override void Render(IGameContext gameContext, IRenderContext renderContext)
         {
-            if (!renderContext.Is3DContext)
-                return;
-            
-            var matrix = Matrix.CreateTranslation(-0.5f, 1, 0);
-            matrix *= Matrix.CreateScale((float)Math.Sqrt(2f) / 2f, 1, 1);
-            matrix *= Matrix.CreateRotationY(MathHelper.PiOver4);
-            matrix *= this.InaccurateY ? Matrix.CreateRotationY(MathHelper.PiOver4 * 0.75f) : Matrix.Identity;
-            matrix *= Matrix.CreateTranslation(
-                this.X / this.m_ChunkSizePolicy.CellVoxelWidth,
-                this.Y / this.m_ChunkSizePolicy.CellVoxelHeight,
-                this.Z / this.m_ChunkSizePolicy.CellVoxelDepth);
-                
-            this.m_3DRenderUtilities.RenderTexture(
-                renderContext,
-                matrix,
-                this.m_PlayerTexture);
+            if (renderContext.Is3DContext)
+            {
+                renderContext.SetActiveTexture(this.m_PlayerModelTexture.Texture);
+
+                renderContext.GraphicsDevice.RasterizerState = RasterizerState.CullClockwise;
+
+                var matrix = Matrix.Identity;
+                matrix *= Matrix.CreateRotationY(MathHelper.ToRadians(-this.m_LastDirection + 135));
+                matrix *= Matrix.CreateScale(0.1f);
+                matrix *= Matrix.CreateTranslation(this.X, this.Y, this.Z);
+                matrix *= Matrix.CreateTranslation(0, 32f, 0);
+
+                var walking = gameContext.FrameCount - this.m_LastWalkingTick < 10;
+
+                this.m_PlayerModel.Draw(
+                    renderContext,
+                    matrix,
+                    "AnimStack::Take 001",
+                    walking ? gameContext.GameTime.TotalGameTime : new TimeSpan(0));
+
+                renderContext.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+            }
         }
     }
 }
