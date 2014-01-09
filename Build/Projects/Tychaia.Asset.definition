@@ -30,6 +30,11 @@
     <Compile Include="ElementDefinitionAssetEditor.cs" />
     <Compile Include="ElementDefinitionAssetLoader.cs" />
     <Compile Include="ElementDefinitionAssetSaver.cs" />
+    <Compile Include="ItemCategory.cs" />
+    <Compile Include="ItemModifierDefinitionAsset.cs" />
+    <Compile Include="ItemModifierDefinitionAssetEditor.cs" />
+    <Compile Include="ItemModifierDefinitionAssetLoader.cs" />
+    <Compile Include="ItemModifierDefinitionAssetSaver.cs" />
     <Compile Include="SpellDefinitionAsset.cs" />
     <Compile Include="SpellDefinitionAssetEditor.cs" />
     <Compile Include="SpellDefinitionAssetLoader.cs" />
