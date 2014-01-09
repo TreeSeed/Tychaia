@@ -15,18 +15,21 @@ namespace Tychaia.Asset
     public class ItemModifierDefinitionAsset : MarshalByRefObject, IAsset
     {
         private readonly IAssetManager m_AssetManager;
+        
+        private readonly string m_DisplayNameLanguageName;
+        private LanguageAsset m_DisplayNameLanguage;
 
         public ItemModifierDefinitionAsset(
             IAssetManager assetManager,
             string name,
-            string nameText,
+            string displayNameLanguageName,
             ItemCategory category,
             string effect,
             string effectPerLevel)
         {
             this.Name = name;
             this.m_AssetManager = assetManager;
-            this.NameText = nameText;
+            this.m_DisplayNameLanguageName = displayNameLanguageName;
             this.Category = category;
             this.Effect = effect;
             this.EffectPerLevel = effect;
@@ -48,9 +51,22 @@ namespace Tychaia.Asset
             }
         }
         
-        // Depending on ability:
-        // Auras for example: Target = Area, Type = The type of effect, Element = null, Range = The radius of the area, Effect = The effect of the aura
+        public LanguageAsset DisplayName
+        {
+            get
+            {
+                return this.m_DisplayNameLanguage ??
+                       (this.m_DisplayNameLanguage = this.m_AssetManager.TryGet<LanguageAsset>(this.m_DisplayNameLanguageName));
+            }
+
+            set
+            {
+                this.m_DisplayNameLanguage = value;
+            }
+        }
+        
         public string Name { get; private set; }
+        
         // The in game name such as "<something> Ring".
         public string NameText { get; set; }
         public ItemCategory Category { get; set; }

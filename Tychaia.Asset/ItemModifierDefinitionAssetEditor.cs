@@ -3,8 +3,8 @@
 // on the main Tychaia website (www.tychaia.com).  Changes to the         //
 // license on the website apply retroactively.                            //
 // ====================================================================== //
-using Protogame;
 using System;
+using Protogame;
 
 namespace Tychaia.Asset
 {
@@ -28,14 +28,18 @@ namespace Tychaia.Asset
             };
             this.m_CategoryTextBox = new TextBox
             {
-                Text = this.m_Asset.Category
+                Text = this.m_Asset.Category.ToString()
             };
             this.m_CategoryTextBox.TextChanged += (sender, e) =>
             {
-                if (Enum.GetNames(typeof(ItemCategory)).Equals(this.m_CategoryTextBox.Text))
+                foreach (var i in Enum.GetValues(typeof(ItemCategory)))
                 {
-                    this.m_Asset.Category = this.m_CategoryTextBox.Text;
-                    assetManager.Save(this.m_Asset);
+                    if (i.Equals(this.m_CategoryTextBox.Text))
+                    {
+                        this.m_Asset.Category = (ItemCategory)i;
+                        assetManager.Save(this.m_Asset);
+                        break;
+                    }
                 }
             };
             this.m_EffectTextBox = new TextBox

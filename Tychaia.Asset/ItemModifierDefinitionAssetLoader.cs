@@ -21,7 +21,7 @@ namespace Tychaia.Asset
                 assetManager,
                 name,
                 (string)data.DisplayName,
-                (string)data.Category,
+                (ItemCategory)data.Category,
                 (string)data.Effect,
                 (string)data.EffectPerLevel);
         }
@@ -42,7 +42,7 @@ namespace Tychaia.Asset
                 assetManager,
                 name,
                 null, 
-                null, 
+                ItemCategory.NULL, 
                 null,
                 null);
         }
