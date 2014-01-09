@@ -83,7 +83,7 @@ namespace Tychaia
                 this.m_PlayerModel.Draw(
                     renderContext,
                     Matrix.CreateRotationY(-MathHelper.PiOver4) * Matrix.CreateScale(0.2f),
-                    "AnimStack::Take 001",
+                    "walk",
                     gameContext.GameTime.TotalGameTime);
 
                 renderContext.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;

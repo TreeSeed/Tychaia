@@ -147,7 +147,7 @@ namespace Tychaia
                 this.m_PlayerModel.Draw(
                     renderContext,
                     matrix,
-                    "AnimStack::Take 001",
+                    "walk",
                     walking ? gameContext.GameTime.TotalGameTime : new TimeSpan(0));
 
                 renderContext.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
