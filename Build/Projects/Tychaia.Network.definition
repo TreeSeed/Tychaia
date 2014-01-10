@@ -16,6 +16,7 @@
   </References>
   <Files>
     <Compile Include="CurrentNetworkAPIProvider.cs" />
+    <Compile Include="Entities\EnemyServerEntity.cs" />
     <Compile Include="Entities\PlayerServerEntity.cs" />
     <Compile Include="Entities\ServerChunk.cs" />
     <Compile Include="IClientNetworkAPI.cs" />

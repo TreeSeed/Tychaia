@@ -7,5 +7,6 @@ namespace Tychaia.Game
 {
     public class Enemy : Being
     {
+        public int UniqueEnemyIdentifier { get; set; }
     }
 }

@@ -9,6 +9,7 @@ namespace Tychaia.Network
 {
     public interface IServerEntityFactory
     {
+        EnemyServerEntity CreateEnemyServerEntity(TychaiaServer server, TychaiaServerWorld serverWorld, int uniqueEnemyIdentifier);
         PlayerServerEntity CreatePlayerServerEntity(TychaiaServer server, TychaiaServerWorld serverWorld, MxClient client, int uniqueClientIdentifier);
     }
 }

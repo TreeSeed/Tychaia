@@ -41,7 +41,6 @@
     <Compile Include="Disk\Tychaia\TychaiaLevelAPIImpl.cs" />
     <Compile Include="Implementations\ClientChunkGenerator.cs" />
     <Compile Include="Implementations\DefaultPredeterminedChunkPositions.cs" />
-    <Compile Include="EnemyEntity.cs" />
     <Compile Include="Implementations\DefaultTerrainSurfaceCalculator.cs" />
     <Compile Include="Implementations\ServerChunkGenerator.cs" />
     <Compile Include="Services\IChunkGenerator.cs" />

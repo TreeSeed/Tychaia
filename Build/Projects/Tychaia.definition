@@ -52,6 +52,7 @@
     <Compile Include="Commands\ServerCommand.cs" />
     <Compile Include="Commands\ShaderCommand.cs" />
     <Compile Include="Commands\StatsCommand.cs" />
+    <Compile Include="EnemyEntity.cs" />
     <Compile Include="Events\MoveBackwardAction.cs" />
     <Compile Include="Events\MoveForwardAction.cs" />
     <Compile Include="Events\MoveLeftAction.cs" />
