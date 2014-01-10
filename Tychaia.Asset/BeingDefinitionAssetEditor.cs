@@ -10,6 +10,7 @@ namespace Tychaia.Asset
     public class BeingDefinitionAssetEditor : AssetEditor<BeingDefinitionAsset>
     {
         private TextBox m_TextureNameTextBox;
+        private TextBox m_ModelNameTextBox;
         private TextBox m_DisplayNameTextBox;
         private TextBox m_DescriptionTextBox;
         private TextBox m_HealthPerLevelTextBox;
@@ -25,6 +26,15 @@ namespace Tychaia.Asset
             this.m_TextureNameTextBox.TextChanged += (sender, e) =>
             {
                 this.m_Asset.Texture = assetManager.TryGet<TextureAsset>(this.m_TextureNameTextBox.Text);
+                assetManager.Save(this.m_Asset);
+            };
+            this.m_ModelNameTextBox = new TextBox
+            {
+                Text = this.m_Asset.Model == null ? null : this.m_Asset.Model.Name
+            };
+            this.m_ModelNameTextBox.TextChanged += (sender, e) =>
+            {
+                this.m_Asset.Model = assetManager.TryGet<ModelAsset>(this.m_ModelNameTextBox.Text);
                 assetManager.Save(this.m_Asset);
             };
             this.m_DisplayNameTextBox = new TextBox
@@ -80,6 +90,7 @@ namespace Tychaia.Asset
 
             var form = new Form();
             form.AddControl("Texture Asset Name:", this.m_TextureNameTextBox);
+            form.AddControl("Model Asset Name:", this.m_ModelNameTextBox);
             form.AddControl("Display Name:", this.m_DisplayNameTextBox);
             form.AddControl("Description:", this.m_DescriptionTextBox);
             form.AddControl("Health per level:", this.m_HealthPerLevelTextBox);

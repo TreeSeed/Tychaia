@@ -19,9 +19,11 @@ namespace Tychaia.Asset
         #region Asset Fields
         
         private readonly string m_TextureName;
+        private readonly string m_ModelName;
         private readonly string m_DisplayNameLanguageName;
         private readonly string m_DescriptionLanguageName;
         private TextureAsset m_Texture;
+        private ModelAsset m_Model;
         private LanguageAsset m_DisplayNameLanguage;
         private LanguageAsset m_DescriptionLanguage;
 
@@ -33,6 +35,7 @@ namespace Tychaia.Asset
             string displayNameLanguageName,
             string descriptionLanguageName,
             string textureName,
+            string modelName,
             int healthPerLevel,
             string movementSpeed,
             bool enemy)
@@ -42,6 +45,7 @@ namespace Tychaia.Asset
             this.m_DescriptionLanguageName = descriptionLanguageName;
             this.m_AssetManager = assetManager;
             this.m_TextureName = textureName;
+            this.m_ModelName = modelName;
             this.HealthPerLevel = healthPerLevel;
             this.MovementSpeed = movementSpeed;
             this.Enemy = enemy;
@@ -76,6 +80,20 @@ namespace Tychaia.Asset
             set
             {
                 this.m_Texture = value;
+            }
+        }
+
+        public ModelAsset Model
+        {
+            get
+            {
+                return this.m_Model ??
+                       (this.m_Model = this.m_AssetManager.TryGet<ModelAsset>(this.m_ModelName));
+            }
+
+            set
+            {
+                this.m_Model = value;
             }
         }
 
