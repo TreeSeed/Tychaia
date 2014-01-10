@@ -16,6 +16,7 @@ namespace Tychaia
         public override void Load()
         {
             this.Bind<IBackgroundCubeEntityFactory>().ToFactory();
+            this.Bind<IEntityFactory>().ToFactory();
             this.Bind<ISkin>().To<TychaiaSkin>();
             this.Bind<IChunkManagerEntityFactory>().ToFactory();
             this.Bind<ITextureAtlasAssetFactory>().To<DefaultTextureAtlasAssetFactory>();
@@ -38,7 +39,6 @@ namespace Tychaia
             this.Bind<IBasicSkin>().To<TychaiaBasicSkin>();
             this.Bind<ICommand>().To<ReportCommand>();
             this.Bind<ICaptureService>().To<DefaultCaptureService>().InSingletonScope();
-            this.Bind<IEntityFactory>().ToFactory();
             this.Bind<IDebugCubeRenderer>().To<DefaultDebugCubeRenderer>();
             this.Bind<IClientChunkFactory>().To<DefaultClientChunkFactory>();
             this.Bind<IChunkRenderer>().To<DefaultChunkRenderer>();

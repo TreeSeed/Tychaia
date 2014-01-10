@@ -1,0 +1,1 @@
+﻿{"Loader":"Tychaia.Asset.BeingDefinitionAssetLoader","DisplayName":"Test","Description":"A test enemy","TextureName":"chars.player.Player","HealthPerLevel":1,"MovementSpeed":1,"Enemy":true}

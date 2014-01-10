@@ -15,8 +15,15 @@ namespace Tychaia.ProceduralGeneration
     [FlowDesignerName("Constant Value")]
     public class AlgorithmConstant : Algorithm<int>
     {
+        public AlgorithmConstant()
+        {
+            this.Layer2D = true;
+            this.Constant = 0;
+            this.Color = Color.White;
+        }
+        
         [DataMember]
-        [DefaultValue(true)]
+        [DefaultValue(0)]
         [Description("The constant value to return.")]
         public int Constant { get; set; }
 
@@ -24,9 +31,13 @@ namespace Tychaia.ProceduralGeneration
         [Description("The color to use when representing this value in the flow editor.")]
         public Color Color { get; set; }
 
+        [DataMember]
+        [DefaultValue(true)]
+        [Description("This layer is 2d.")]
         public bool Layer2D
         {
-            get; set;
+            get; 
+            set;
         }
 
         public override bool Is2DOnly

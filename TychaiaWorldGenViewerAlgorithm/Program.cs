@@ -27,7 +27,7 @@ namespace TychaiaWorldGenViewerAlgorithm
             kernel.Load<Protogame3DIoCModule>();
             kernel.Load<ProtogameAssetIoCModule>();
             kernel.Bind<IAssetContentManager>().To<NullAssetContentManager>();
-            kernel.Bind<IAssetManagerProvider>().To<LocalAssetManagerProvider>();
+            kernel.Bind<IAssetManagerProvider>().To<WorldGenViewerAssetManagerProvider>();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

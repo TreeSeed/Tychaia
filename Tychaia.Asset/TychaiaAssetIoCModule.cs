@@ -15,6 +15,10 @@ namespace Tychaia.Asset
             this.Bind<IAssetLoader>().To<BlockAssetLoader>();
             this.Bind<IAssetSaver>().To<BlockAssetSaver>();
             this.Bind<IAssetSaver>().To<TextureAtlasAssetSaver>();
+            this.Bind<IAssetLoader>().To<BeingDefinitionAssetLoader>();
+            this.Bind<IAssetSaver>().To<BeingDefinitionAssetSaver>();
+            this.Bind<IAssetLoader>().To<BeingClusterDefinitionAssetLoader>();
+            this.Bind<IAssetSaver>().To<BeingClusterDefinitionAssetSaver>();
         }
     }
 }

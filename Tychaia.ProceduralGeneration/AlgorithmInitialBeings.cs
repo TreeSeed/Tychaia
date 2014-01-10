@@ -64,7 +64,18 @@ namespace Tychaia.ProceduralGeneration
         {
             get { return true; }
         }
+        
+        public BeingClusterDefinitionAsset[] BeingClusterList
+        {
+            get;
+            set;
+        }
 
+        public override void Initialize(IRuntimeContext context)
+        {
+            BeingClusterList = (BeingClusterDefinitionAsset[])context.AssetManager.GetAll().OfType<BeingClusterDefinitionAsset>().Where(b => b.Enemy == true).ToArray();
+        }
+        
         public override void ProcessCell(
             IRuntimeContext context,
             int[] input,
@@ -82,39 +93,42 @@ namespace Tychaia.ProceduralGeneration
             int oy,
             int oz)
         {
-            var BeingClusterList = (BeingClusterDefinitionAsset[])context.AssetManager.GetAll().OfType<BeingClusterDefinitionAsset>().Where(b => b.Enemy == true).Where(a => a.LevelRequirement < input[(i + ox) + ((j + oy) * width)]).ToArray();
-
             var outputCell = new Cell();
-
-
-            if (!(this.GuaranteeStartingPoint && x == 0 && y == 0) && BeingClusterList.Count() > 0 && AlgorithmUtility.GetRandomDouble(context.Seed, x, y, 0, context.Modifier) > this.Limit)
+            var tempBeingClusterList = BeingClusterList.Where(a => a.LevelRequirement <= input[(i + ox) + ((j + oy) * width)]).ToArray();
+            
+            if (tempBeingClusterList.Count() > 0)
             {
-                var a = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, BeingClusterList.Count(), context.Modifier);
-                outputCell.ClusterDefinitionAssetName = BeingClusterList[a].Name;
-                outputCell.Count0 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[0], BeingClusterList[a].Maximum[0] + 1, context.Modifier);
-                outputCell.Count1 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[1], BeingClusterList[a].Maximum[1] + 1, context.Modifier);
-                outputCell.Count2 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[2], BeingClusterList[a].Maximum[2] + 1, context.Modifier);
-                outputCell.Count3 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[3], BeingClusterList[a].Maximum[3] + 1, context.Modifier);
-                outputCell.Count4 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[4], BeingClusterList[a].Maximum[4] + 1, context.Modifier);
-                outputCell.Count5 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[5], BeingClusterList[a].Maximum[5] + 1, context.Modifier);
-                outputCell.Count6 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[6], BeingClusterList[a].Maximum[6] + 1, context.Modifier);
-                outputCell.Count7 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[7], BeingClusterList[a].Maximum[7] + 1, context.Modifier);
-                outputCell.Count8 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[8], BeingClusterList[a].Maximum[8] + 1, context.Modifier);
-                outputCell.Count9 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, BeingClusterList[a].Minimum[9], BeingClusterList[a].Maximum[9] + 1, context.Modifier);
+                if (!(this.GuaranteeStartingPoint && x == 0 && y == 0) && AlgorithmUtility.GetRandomDouble(context.Seed, x, y, 0, context.Modifier) > this.Limit)
+                {
+                    var a = AlgorithmUtility.GetRandomRange(context.Seed, x, y, 0, tempBeingClusterList.Count(), context.Modifier);
+                    outputCell.ClusterDefinitionAssetName = tempBeingClusterList[a].Name;
+                    outputCell.Count0 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, tempBeingClusterList[a].Minimum[0], tempBeingClusterList[a].Maximum[0] + 1, context.Modifier);
+                    outputCell.Count1 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, tempBeingClusterList[a].Minimum[1], tempBeingClusterList[a].Maximum[1] + 1, context.Modifier);
+                    outputCell.Count2 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, tempBeingClusterList[a].Minimum[2], tempBeingClusterList[a].Maximum[2] + 1, context.Modifier);
+                    outputCell.Count3 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, tempBeingClusterList[a].Minimum[3], tempBeingClusterList[a].Maximum[3] + 1, context.Modifier);
+                    outputCell.Count4 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, tempBeingClusterList[a].Minimum[4], tempBeingClusterList[a].Maximum[4] + 1, context.Modifier);
+                    outputCell.Count5 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, tempBeingClusterList[a].Minimum[5], tempBeingClusterList[a].Maximum[5] + 1, context.Modifier);
+                    outputCell.Count6 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, tempBeingClusterList[a].Minimum[6], tempBeingClusterList[a].Maximum[6] + 1, context.Modifier);
+                    outputCell.Count7 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, tempBeingClusterList[a].Minimum[7], tempBeingClusterList[a].Maximum[7] + 1, context.Modifier);
+                    outputCell.Count8 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, tempBeingClusterList[a].Minimum[8], tempBeingClusterList[a].Maximum[8] + 1, context.Modifier);
+                    outputCell.Count9 = AlgorithmUtility.GetRandomRange(context.Seed, x, y, tempBeingClusterList[a].Minimum[9], tempBeingClusterList[a].Maximum[9] + 1, context.Modifier);
+                
+                    if (outputCell.Count0 + 
+                        outputCell.Count1 +
+                        outputCell.Count2 +
+                        outputCell.Count3 +
+                        outputCell.Count4 +
+                        outputCell.Count5 +
+                        outputCell.Count6 +
+                        outputCell.Count7 +
+                        outputCell.Count8 +
+                        outputCell.Count9 == 1)
+                    {
+                        outputCell.ClusterComplete = true;
+                    }
+                }
             }
-
-            if (outputCell.Count0 + 
-                outputCell.Count1 +
-                outputCell.Count2 +
-                outputCell.Count3 +
-                outputCell.Count4 +
-                outputCell.Count5 +
-                outputCell.Count6 +
-                outputCell.Count7 +
-                outputCell.Count8 +
-                outputCell.Count9 == 1)
-                outputCell.ClusterComplete = true;
-
+            
             output[(i + ox) + ((j + oy) * width)] = outputCell;
         }
 

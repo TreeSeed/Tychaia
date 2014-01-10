@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="TychaiaWorldGenViewerAlgorithmIoCModule.cs" />
     <Compile Include="UsefulExtensions.cs" />
+    <Compile Include="WorldGenViewerAssetManagerProvider.cs" />
     <EmbeddedResource Include="disk.png" />
     <EmbeddedResource Include="disk-rename.png" />
     <EmbeddedResource Include="folder-open-document.png" />
