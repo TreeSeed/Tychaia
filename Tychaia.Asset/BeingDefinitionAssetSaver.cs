@@ -24,6 +24,7 @@ namespace Tychaia.Asset
                 DisplayName = beingDefinitionAsset.DisplayName != null ? beingDefinitionAsset.DisplayName.Name : null,
                 Description = beingDefinitionAsset.Description != null ? beingDefinitionAsset.Description.Name : null,
                 TextureName = beingDefinitionAsset.Texture != null ? beingDefinitionAsset.Texture.Name : null,
+                ModelName = beingDefinitionAsset.Model != null ? beingDefinitionAsset.Model.Name : null,
                 HealthPerLevel = beingDefinitionAsset.HealthPerLevel,
                 MovementSpeed = beingDefinitionAsset.MovementSpeed,
                 Enemy = beingDefinitionAsset.Enemy

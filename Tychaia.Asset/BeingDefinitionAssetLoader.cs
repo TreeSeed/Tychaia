@@ -23,6 +23,7 @@ namespace Tychaia.Asset
                 (string)data.DisplayName,
                 (string)data.Description,
                 (string)data.TextureName,
+                (string)data.ModelName,
                 (int)data.HealthPerLevel,
                 (string)data.MovementSpeed,
                 (bool)data.Enemy);
@@ -43,6 +44,7 @@ namespace Tychaia.Asset
             return new BeingDefinitionAsset(
                 assetManager,
                 name,
+                null,
                 null,
                 null,
                 null,
