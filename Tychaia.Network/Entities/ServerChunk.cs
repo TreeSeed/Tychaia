@@ -37,5 +37,7 @@ namespace Tychaia.Network
         public long Y { get; private set; }
 
         public long Z { get; private set; }
+        
+        public byte[] CompressedData { get; set; }
     }
 }

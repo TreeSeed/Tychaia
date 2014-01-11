@@ -29,5 +29,7 @@ namespace Tychaia.Runtime
         long Y { get; }
 
         long Z { get; }
+        
+        byte[] CompressedData { get; set; }
     }
 }

@@ -13,10 +13,6 @@ namespace Tychaia.Network
 {
     public class ServerChunkManager : IServerEntity
     {
-        private readonly IChunkConverter m_ChunkConverter;
-
-        private readonly IChunkCompressor m_ChunkCompressor;
-
         private readonly IChunkGenerator m_ChunkGenerator;
 
         private readonly IChunkOctreeFactory m_ChunkOctreeFactory;
@@ -30,15 +26,11 @@ namespace Tychaia.Network
         public ServerChunkManager(
             TychaiaServer server, 
             IChunkOctreeFactory chunkOctreeFactory, 
-            IChunkGenerator chunkGenerator, 
-            IChunkConverter chunkConverter,
-            IChunkCompressor chunkCompressor)
+            IChunkGenerator chunkGenerator)
         {
             this.m_Server = server;
             this.m_ChunkOctreeFactory = chunkOctreeFactory;
             this.m_ChunkGenerator = chunkGenerator;
-            this.m_ChunkConverter = chunkConverter;
-            this.m_ChunkCompressor = chunkCompressor;
             this.m_RequestedChunks = new ConcurrentQueue<ChunkRequest>();
 
             this.m_ChunkGenerator.InputDisconnect();
@@ -99,7 +91,7 @@ namespace Tychaia.Network
         {
             this.m_Server.SendMessage(
                 "chunk available", 
-                this.m_ChunkCompressor.Compress(this.m_ChunkConverter.ToChunk(serverChunk)),
+                serverChunk.CompressedData,
                 client,
                 true);
         }
@@ -108,7 +100,7 @@ namespace Tychaia.Network
         {
             this.m_Server.SendMessage(
                 "chunk available",
-                this.m_ChunkCompressor.Compress(this.m_ChunkConverter.ToChunk(serverChunk)),
+                serverChunk.CompressedData,
                 reliable: true);
         }
 

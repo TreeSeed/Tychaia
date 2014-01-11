@@ -25,16 +25,24 @@ namespace Tychaia.Runtime
         private readonly IGenerator m_Generator;
 
         private readonly ThreadedTaskPipeline<ChunkGenerationRequest> m_Pipeline;
+        
+        private readonly IChunkCompressor m_ChunkCompressor;
+        
+        private readonly IChunkConverter m_ChunkConverter;
 
         public ServerChunkGenerator(
             IChunkSizePolicy chunkSizePolicy, 
             IAssetManagerProvider assetManagerProvider, 
             IGeneratorResolver generatorResolver,
-            IEdgePointCalculator edgePointCalculator)
+            IEdgePointCalculator edgePointCalculator,
+            IChunkConverter chunkConverter,
+            IChunkCompressor chunkCompressor)
         {
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_EdgePointCalculator = edgePointCalculator;
             this.m_AssetManager = assetManagerProvider.GetAssetManager();
+            this.m_ChunkCompressor = chunkCompressor;
+            this.m_ChunkConverter = chunkConverter;
 
             this.m_Pipeline = new ThreadedTaskPipeline<ChunkGenerationRequest>();
             this.m_Generator = generatorResolver.GetGeneratorForGame();
@@ -96,7 +104,28 @@ namespace Tychaia.Runtime
                     chunk.Y,
                     chunk.Z,
                     DateTime.Now - start);
+                start = DateTime.Now;
+                
+                var converted = this.m_ChunkConverter.ToChunk(chunk);
+                
+                Console.WriteLine(
+                    "Converted chunk {0}, {1}, {2} in {3}",
+                    chunk.X,
+                    chunk.Y,
+                    chunk.Z,
+                    DateTime.Now - start);
+                start = DateTime.Now;
 
+                chunk.CompressedData = this.m_ChunkCompressor.Compress(converted);
+
+                Console.WriteLine(
+                    "Compressed chunk {0}, {1}, {2} in {3}",
+                    chunk.X,
+                    chunk.Y,
+                    chunk.Z,
+                    DateTime.Now - start);
+                start = DateTime.Now;
+                
                 if (request.Callback != null)
                 {
                     request.Callback();
