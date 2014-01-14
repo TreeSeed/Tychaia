@@ -19,12 +19,6 @@ namespace Tychaia.Network
 
         private readonly MxDispatcher m_MxDispatcher;
 
-        private readonly Dictionary<MxClient, string> m_PlayerLookup;
-
-        private readonly Dictionary<MxClient, int> m_UniqueIDLookup;
-
-        private int m_UniqueIDIncrementer;
-
         private TychaiaServerWorld m_World;
 
         public TychaiaServer(int realtimePort, int reliablePort)
@@ -33,59 +27,14 @@ namespace Tychaia.Network
             this.m_MxDispatcher.MessageReceived += this.OnMessageReceived;
             this.m_MxDispatcher.ClientDisconnected += this.OnClientDisconnected;
             this.m_MessageEvents = new Dictionary<string, Action<MxClient, byte[]>>();
-            this.m_PlayerLookup = new Dictionary<MxClient, string>();
-            this.m_UniqueIDLookup = new Dictionary<MxClient, int>();
-            this.m_UniqueIDIncrementer = 1;
-
-            this.ListenForMessage(
-                "join", 
-                (client, playerName) =>
-                {
-                    // The client will repeatedly send join messages until we confirm.
-                    if (this.m_PlayerLookup.ContainsKey(client))
-                    {
-                        return;
-                    }
-
-                    var uniqueID = this.m_UniqueIDIncrementer++;
-
-                    Console.WriteLine("Detected \"" + Encoding.ASCII.GetString(playerName) + "\" has joined");
-                    this.SendMessage("join confirm", BitConverter.GetBytes(uniqueID));
-                    this.m_PlayerLookup.Add(client, Encoding.ASCII.GetString(playerName));
-                    this.m_UniqueIDLookup.Add(client, uniqueID);
-                    this.m_World.AddPlayer(client, Encoding.ASCII.GetString(playerName));
-                });
-
-            this.ListenForMessage(
-                "change name", 
-                (client, newPlayerName) =>
-                {
-                    // Check to make sure this client is joined.
-                    if (!this.m_PlayerLookup.ContainsKey(client))
-                    {
-                        return;
-                    }
-
-                    var existingName = this.m_PlayerLookup[client];
-                    var newName = Encoding.ASCII.GetString(newPlayerName);
-
-                    this.m_PlayerLookup[client] = newName;
-                    Console.WriteLine("\"" + existingName + "\" has changed their name to \"" + newName + "\"");
-                    this.m_World.ChangePlayerName(client, newName);
-                });
         }
 
         public string[] PlayersInGame
         {
             get
             {
-                return this.m_PlayerLookup.Values.ToArray();
+                return this.m_World.PlayersInGame;
             }
-        }
-
-        public int GetUniqueIDForClient(MxClient client)
-        {
-            return this.m_UniqueIDLookup[client];
         }
 
         public void ListenForMessage(string type, Action<MxClient, byte[]> callback)
@@ -117,7 +66,9 @@ namespace Tychaia.Network
 
         public void StartWorld(IKernel kernel)
         {
-            this.m_World = kernel.Get<TychaiaServerWorld>(new ConstructorArgument("server", this, true));
+            kernel.Bind<TychaiaServer>().ToMethod(x => this);
+            
+            this.m_World = kernel.Get<TychaiaServerWorld>();
         }
 
         public void StopListeningForMessage(string type)
@@ -132,12 +83,6 @@ namespace Tychaia.Network
 
         public void Update()
         {
-            // TODO: Send a real world state.
-            this.SendMessage(
-                "player list", 
-                InMemorySerializer.Serialize(
-                    new PlayerList { Players = this.m_PlayerLookup.Select(x => x.Value).ToArray() }));
-
             if (this.m_World != null)
             {
                 this.m_World.Update();
@@ -158,16 +103,10 @@ namespace Tychaia.Network
         
         private void OnClientDisconnected(object sender, MxClientEventArgs e)
         {
-            // Check to make sure this client is joined.
-            if (!this.m_PlayerLookup.ContainsKey(e.Client))
+            if (this.m_World != null)
             {
-                return;
+                this.m_World.OnClientDisconnected(sender, e);
             }
-            
-            // Remove the unique ID and player from the world.
-            this.m_PlayerLookup.Remove(e.Client);
-            this.m_UniqueIDLookup.Remove(e.Client);
-            this.m_World.DisconnectPlayer(e.Client);
         }
     }
 }

@@ -15,6 +15,7 @@
     <Reference Include="MonoGame" />
   </References>
   <Files>
+    <Compile Include="ClientChunkStateManager.cs" />
     <Compile Include="CurrentNetworkAPIProvider.cs" />
     <Compile Include="Entities\PlayerServerEntity.cs" />
     <Compile Include="Entities\ServerChunk.cs" />
@@ -23,9 +24,11 @@
     <Compile Include="INetworkAPIProvider.cs" />
     <Compile Include="InMemorySerializer.cs" />
     <Compile Include="IServerEntityFactory.cs" />
+    <Compile Include="IServerFactory.cs" />
     <Compile Include="IServerWorldFactory.cs" />
     <Compile Include="PlayerList.cs" />
     <Compile Include="ServerChunkManager.cs" />
+    <Compile Include="ServerClientManager.cs" />
     <Compile Include="TychaiaClient.cs" />
     <Compile Include="TychaiaInternalMessage.cs" />
     <Compile Include="TychaiaNetworkIoCModule.cs" />

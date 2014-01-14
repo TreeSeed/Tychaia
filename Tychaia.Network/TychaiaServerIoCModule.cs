@@ -22,6 +22,8 @@ namespace Tychaia.Network
             this.Kernel.Bind<IAssetContentManager>().To<NullAssetContentManager>();
 
             this.Kernel.Bind<IServerEntityFactory>().ToFactory();
+            
+            this.Kernel.Bind<IServerFactory>().ToFactory();
         }
     }
 }

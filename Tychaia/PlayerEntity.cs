@@ -11,6 +11,7 @@ using Protogame;
 using Tychaia.Game;
 using Tychaia.Globals;
 using Tychaia.Network;
+using Tychaia.Runtime;
 
 namespace Tychaia
 {
@@ -22,6 +23,8 @@ namespace Tychaia
         private readonly IFilteredFeatures m_FilteredFeatures;
 
         private readonly INetworkAPI m_NetworkAPI;
+
+        private readonly ITerrainSurfaceCalculator m_TerrainSurfaceCalculator;
 
         private ModelAsset m_PlayerModel;
 
@@ -40,6 +43,7 @@ namespace Tychaia
             I3DRenderUtilities threedRenderUtilities,
             IChunkSizePolicy chunkSizePolicy,
             IConsole console,
+            ITerrainSurfaceCalculator terrainSurfaceCalculator,
             IFilteredFeatures filteredFeatures,
             INetworkAPI networkAPI,
             Player runtimeData)
@@ -53,6 +57,7 @@ namespace Tychaia
             this.m_PlayerModelTexture = assetManager.Get<TextureAsset>("model.CharacterTex");
             this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_Console = console;
+            this.m_TerrainSurfaceCalculator = terrainSurfaceCalculator;
             this.RuntimeData = runtimeData;
 
             this.Width = 16;
@@ -81,10 +86,52 @@ namespace Tychaia
             var input = new UserInput();
             input.SetAction(UserInputAction.Move);
             input.DirectionInDegrees = directionInDegrees;
+            
+            this.PredictMoveInDirection(context, directionInDegrees);
 
             this.m_NetworkAPI.SendMessage("user input", InMemorySerializer.Serialize(input));
         }
 
+        public void PredictMoveInDirection(IGameContext context, int directionInDegrees)
+        {
+            var x = Math.Sin(MathHelper.ToRadians(directionInDegrees - 45)) * this.MovementSpeed;
+            var y = -Math.Cos(MathHelper.ToRadians(directionInDegrees - 45)) * this.MovementSpeed;
+
+            // Determine if moving here would require us to move up by more than 32 pixels.
+            var targetX = this.GetSurfaceY(context, this.X + (float)x, this.Z);
+            var targetZ = this.GetSurfaceY(context, this.X, this.Z + (float)y);
+
+            // We calculate X and Z independently so that we can "slide" along the edge of somewhere
+            // that the player can't go.  This creates a more natural feel when walking into something
+            // that it isn't entirely possible to walk through.
+
+            // If the target returns null, then the chunk hasn't been generated so don't permit
+            // the character to move onto it.
+            if (targetX != null)
+            {
+                // If the target height difference and our current height is greater than 32, don't permit
+                // the character to move onto it.  This also prevents the character from falling off
+                // tall cliffs.
+                if (Math.Abs(targetX.Value - this.Y) <= 32)
+                {
+                    this.X += (float)x;
+                }
+            }
+
+            // If the target returns null, then the chunk hasn't been generated so don't permit
+            // the character to move onto it.
+            if (targetZ != null)
+            {
+                // If the target height difference and our current height is greater than 32, don't permit
+                // the character to move onto it.  This also prevents the character from falling off
+                // tall cliffs.
+                if (Math.Abs(targetZ.Value - this.Y) <= 32)
+                {
+                    this.Z += (float)y;
+                }
+            }
+        }
+        
         public override void Update(IGameContext gameContext, IUpdateContext updateContext)
         {
             if (this.m_Console.Open)
@@ -152,6 +199,13 @@ namespace Tychaia
 
                 renderContext.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
             }
+        }
+        
+        private float? GetSurfaceY(IGameContext context, float x, float z)
+        {
+            var world = (TychaiaGameWorld)context.World;
+        
+            return this.m_TerrainSurfaceCalculator.GetSurfaceY(world.ChunkOctree, x, z);
         }
     }
 }

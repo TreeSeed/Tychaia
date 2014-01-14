@@ -29,11 +29,6 @@ namespace Tychaia.Client
             var @new = new ClientChunk(x, y, z);
             octree.Set(@new);
 
-            this.m_NetworkAPI.SendMessage(
-                "require chunk", 
-                InMemorySerializer.Serialize(new ChunkRequest { X = x, Y = y, Z = z }),
-                reliable: true);
-
             return @new;
         }
     }

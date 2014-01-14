@@ -7,6 +7,7 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Threading;
 using Protogame;
+using Tychaia.Globals;
 using Tychaia.Runtime;
 
 namespace Tychaia.Network
@@ -20,39 +21,24 @@ namespace Tychaia.Network
         private readonly ConcurrentQueue<ChunkRequest> m_RequestedChunks;
 
         private readonly TychaiaServer m_Server;
+        
+        private readonly IChunkSizePolicy m_ChunkSizePolicy;
 
         private Thread m_GenerationThread;
 
         public ServerChunkManager(
             TychaiaServer server, 
             IChunkOctreeFactory chunkOctreeFactory, 
-            IChunkGenerator chunkGenerator)
+            IChunkGenerator chunkGenerator,
+            IChunkSizePolicy chunkSizePolicy)
         {
             this.m_Server = server;
             this.m_ChunkOctreeFactory = chunkOctreeFactory;
             this.m_ChunkGenerator = chunkGenerator;
+            this.m_ChunkSizePolicy = chunkSizePolicy;
             this.m_RequestedChunks = new ConcurrentQueue<ChunkRequest>();
 
             this.m_ChunkGenerator.InputDisconnect();
-
-            this.m_Server.ListenForMessage(
-                "require chunk", 
-                (client, data) =>
-                {
-                    var request = InMemorySerializer.Deserialize<ChunkRequest>(data);
-
-                    if (this.Octree != null)
-                    {
-                        var serverChunk = this.Octree.Get(request.X, request.Y, request.Z);
-                        if (serverChunk != null && serverChunk.Cells != null)
-                        {
-                            this.AnnounceChunk(client, serverChunk);
-                            return;
-                        }
-                    }
-
-                    this.m_RequestedChunks.Enqueue(request);
-                });
         }
 
         public ChunkOctree<ServerChunk> Octree { get; private set; }
@@ -86,22 +72,24 @@ namespace Tychaia.Network
                 this.m_GenerationThread.Start();
             }
         }
-
-        private void AnnounceChunk(MxClient client, ServerChunk serverChunk)
+        
+        public void RequireChunk(long x, long y, long z)
         {
-            this.m_Server.SendMessage(
-                "chunk available", 
-                serverChunk.CompressedData,
-                client,
-                true);
-        }
+            if (this.Octree != null)
+            {
+                var serverChunk = this.Octree.Get(x, y, z);
+                if (serverChunk != null && serverChunk.Cells != null)
+                {
+                    return;
+                }
+            }
 
-        private void AnnounceChunk(ServerChunk serverChunk)
-        {
-            this.m_Server.SendMessage(
-                "chunk available",
-                serverChunk.CompressedData,
-                reliable: true);
+            this.m_RequestedChunks.Enqueue(new ChunkRequest
+            {
+                X = x,
+                Y = y,
+                Z = z
+            });
         }
 
         private void ThreadedUpdate()
@@ -112,7 +100,6 @@ namespace Tychaia.Network
 
             while (true)
             {
-                // TODO: Work out what chunks to generate ahead of time.
                 ChunkRequest request;
                 if (!this.m_RequestedChunks.TryDequeue(out request))
                 {
@@ -125,18 +112,11 @@ namespace Tychaia.Network
                 {
                     var chunk = new ServerChunk(request.X, request.Y, request.Z);
                     this.Octree.Set(chunk);
-                    this.m_ChunkGenerator.Generate(chunk, () => this.AnnounceChunk(chunk));
-                }
-                else
-                {
-                    // This might have been double-queued depending on timing.
-                    // We also need to check the Cells property because if it is null, then
-                    // the node is set in the octree but hasn't been announced yet (it is
-                    // still being generated).
-                    if (existing.Cells != null)
-                    {
-                        this.AnnounceChunk(existing);
-                    }
+                    this.m_ChunkGenerator.Generate(
+                        chunk,
+                        () => 
+                        {
+                        });
                 }
             }
         }
