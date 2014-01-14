@@ -24,8 +24,12 @@ namespace Tychaia.Runtime
 
         private readonly IGenerator m_Generator;
 
-        private readonly ThreadedTaskPipeline<ChunkGenerationRequest> m_Pipeline;
-        
+        private readonly ThreadedTaskPipeline<ChunkGenerationRequest> m_GeneratorPipeline;
+
+        private readonly ThreadedTaskPipeline<ChunkConversionRequest> m_ConverterPipeline;
+
+        private readonly ThreadedTaskPipeline<ChunkCompressionRequest> m_CompressorPipeline;
+
         private readonly IChunkCompressor m_ChunkCompressor;
         
         private readonly IChunkConverter m_ChunkConverter;
@@ -44,36 +48,114 @@ namespace Tychaia.Runtime
             this.m_ChunkCompressor = chunkCompressor;
             this.m_ChunkConverter = chunkConverter;
 
-            this.m_Pipeline = new ThreadedTaskPipeline<ChunkGenerationRequest>();
+            this.m_GeneratorPipeline = new ThreadedTaskPipeline<ChunkGenerationRequest>();
+            this.m_ConverterPipeline = new ThreadedTaskPipeline<ChunkConversionRequest>(false);
+            this.m_CompressorPipeline = new ThreadedTaskPipeline<ChunkCompressionRequest>(false);
+
             this.m_Generator = generatorResolver.GetGeneratorForGame();
             this.m_Generator.SetSeed(10000);
 
-            var thread = new Thread(this.Run) { IsBackground = true, Priority = ThreadPriority.Highest };
-            thread.Start();
+            new Thread(this.GeneratorRun)
+            {
+                IsBackground = true,
+                Priority = ThreadPriority.Highest
+            }.Start();
+
+            new Thread(this.ConverterRun)
+            {
+                IsBackground = true,
+                Priority = ThreadPriority.Highest
+            }.Start();
+
+            new Thread(this.CompressorRun)
+            {
+                IsBackground = true,
+                Priority = ThreadPriority.Highest
+            }.Start();
+        }
+
+        private void CompressorRun()
+        {
+            this.m_CompressorPipeline.OutputConnect();
+
+            while (true)
+            {
+                var request = this.m_CompressorPipeline.Take();
+                var chunk = request.Chunk;
+
+                var start = DateTime.Now;
+
+                chunk.CompressedData = this.m_ChunkCompressor.Compress(request.Converted);
+
+                Console.WriteLine(
+                    "Compressed chunk {0}, {1}, {2} in {3}",
+                    chunk.X,
+                    chunk.Y,
+                    chunk.Z,
+                    DateTime.Now - start);
+
+                if (request.Callback != null)
+                {
+                    request.Callback();
+                }
+            }
+        }
+
+        private void ConverterRun()
+        {
+            this.m_ConverterPipeline.OutputConnect();
+            this.m_CompressorPipeline.InputConnect();
+
+            while (true)
+            {
+                var request = this.m_ConverterPipeline.Take();
+
+                var start = DateTime.Now;
+                
+                var converted = this.m_ChunkConverter.ToChunk(request.Chunk);
+                
+                Console.WriteLine(
+                    "Converted chunk {0}, {1}, {2} in {3}",
+                    request.Chunk.X,
+                    request.Chunk.Y,
+                    request.Chunk.Z,
+                    DateTime.Now - start);
+
+                this.m_CompressorPipeline.Put(
+                    new ChunkCompressionRequest
+                    {
+                        Callback = request.Callback,
+                        Chunk = request.Chunk,
+                        Converted = converted
+                    });
+            }
+
+            // ReSharper disable once FunctionNeverReturns
         }
 
         public void Generate(IChunk chunk, Action callback)
         {
-            this.m_Pipeline.Put(new ChunkGenerationRequest { Callback = callback, Chunk = chunk });
+            this.m_GeneratorPipeline.Put(new ChunkGenerationRequest { Callback = callback, Chunk = chunk });
         }
 
         public void InputConnect()
         {
-            this.m_Pipeline.InputConnect();
+            this.m_GeneratorPipeline.InputConnect();
         }
 
         public void InputDisconnect()
         {
-            this.m_Pipeline.InputDisconnect();
+            this.m_GeneratorPipeline.InputDisconnect();
         }
 
-        private void Run()
+        private void GeneratorRun()
         {
-            this.m_Pipeline.OutputConnect();
+            this.m_GeneratorPipeline.OutputConnect();
+            this.m_ConverterPipeline.InputConnect();
 
             while (true)
             {
-                var request = this.m_Pipeline.Take();
+                var request = this.m_GeneratorPipeline.Take();
                 var chunk = request.Chunk;
                 int computations;
 
@@ -104,35 +186,32 @@ namespace Tychaia.Runtime
                     chunk.Y,
                     chunk.Z,
                     DateTime.Now - start);
-                start = DateTime.Now;
-                
-                var converted = this.m_ChunkConverter.ToChunk(chunk);
-                
-                Console.WriteLine(
-                    "Converted chunk {0}, {1}, {2} in {3}",
-                    chunk.X,
-                    chunk.Y,
-                    chunk.Z,
-                    DateTime.Now - start);
-                start = DateTime.Now;
 
-                chunk.CompressedData = this.m_ChunkCompressor.Compress(converted);
-
-                Console.WriteLine(
-                    "Compressed chunk {0}, {1}, {2} in {3}",
-                    chunk.X,
-                    chunk.Y,
-                    chunk.Z,
-                    DateTime.Now - start);
-                start = DateTime.Now;
-                
-                if (request.Callback != null)
-                {
-                    request.Callback();
-                }
+                this.m_ConverterPipeline.Put(
+                    new ChunkConversionRequest
+                    {
+                        Callback = request.Callback,
+                        Chunk = request.Chunk
+                    });
             }
 
             // ReSharper disable once FunctionNeverReturns
         }
+    }
+
+    internal class ChunkCompressionRequest
+    {
+        public Action Callback { get; set; }
+
+        public IChunk Chunk { get; set; }
+
+        public Chunk Converted { get; set; }
+    }
+
+    internal class ChunkConversionRequest
+    {
+        public Action Callback { get; set; }
+
+        public IChunk Chunk { get; set; }
     }
 }
