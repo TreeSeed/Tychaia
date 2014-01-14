@@ -109,7 +109,7 @@ namespace Tychaia
             this.m_InventoryUIEntity = gameUIFactory.CreateInventoryUIEntity();
             this.Entities = new List<IEntity> { this.m_ChunkManagerEntity, this.m_InventoryUIEntity };
 
-            // TODO: Map back to multiple player entities...
+            // TODO: Move this somewhere better.
             this.m_NetworkAPI.ListenForMessage(
                 "player update",
                 (client, data) =>
@@ -134,7 +134,26 @@ namespace Tychaia
                     player.Y = playerState.Y;
                     player.Z = playerState.Z;
                 });
+                
+            // TODO: Move this somewhere better.
+            this.m_NetworkAPI.ListenForMessage(
+                "player leave",
+                (client, data) =>
+                {
+                    var playerState = InMemorySerializer.Deserialize<PlayerServerEntity.PlayerServerState>(data);
 
+                    // Lookup the player entity for this unique client ID if we have one.
+                    var player =
+                        this.Entities.OfType<PlayerEntity>()
+                            .FirstOrDefault(x => x.RuntimeData.UniqueClientIdentifier == playerState.UniqueClientID);
+
+                    // If we have a player entity, remove it from the world.
+                    if (player != null)
+                    {
+                        this.Entities.Remove(player);
+                    }
+                });
+                
             // TODO: Move this somewhere better.
             this.m_NetworkAPI.ListenForMessage(
                 "chunk available",

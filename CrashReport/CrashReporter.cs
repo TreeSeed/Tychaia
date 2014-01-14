@@ -86,7 +86,7 @@ namespace CrashReport
                 });
 
             var uri = string.Empty;
-            KeyValuePair<string, object>? task = null;
+            dynamic task = null;
 
             foreach (var result in searchResult)
             {
@@ -96,10 +96,8 @@ namespace CrashReport
 
             if (task != null)
             {
-                dynamic realTask = task.Value.Value;
-                var id = realTask.id;
-                var ccPHIDs = realTask.ccPHIDs;
-                uri = realTask.uri;
+                var id = task.Value["id"].Value;
+                uri = task.Value["uri"].Value;
                 //// Add this client's ccPHID
 
                 // Update that task with users system information

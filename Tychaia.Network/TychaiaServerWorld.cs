@@ -57,6 +57,19 @@ namespace Tychaia.Network
             entities.Add(playerEntity);
         }
 
+        public void DisconnectPlayer(MxClient client)
+        {
+            var entities = this.GetListForClient(client);
+            
+            foreach (var player in entities.OfType<PlayerServerEntity>())
+            {
+                player.Leave();
+            }
+            
+            entities.Clear();
+            this.m_Entities.Remove(client);
+        }
+
         public void ChangePlayerName(MxClient client, string newName)
         {
             var entities = this.GetListForClient(client);

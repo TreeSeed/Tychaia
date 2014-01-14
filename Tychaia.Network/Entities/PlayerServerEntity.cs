@@ -194,6 +194,17 @@ namespace Tychaia.Network
                     }));
         }
 
+        public void Leave()
+        {
+            this.m_Server.SendMessage(
+                "player leave", 
+                InMemorySerializer.Serialize(
+                    new PlayerServerState
+                    {
+                        UniqueClientID = this.m_UniqueClientIdentifier
+                    }));
+        }
+
         [ProtoContract]
         public class PlayerServerState
         {

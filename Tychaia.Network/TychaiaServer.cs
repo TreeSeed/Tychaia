@@ -31,6 +31,7 @@ namespace Tychaia.Network
         {
             this.m_MxDispatcher = new MxDispatcher(realtimePort, reliablePort);
             this.m_MxDispatcher.MessageReceived += this.OnMessageReceived;
+            this.m_MxDispatcher.ClientDisconnected += this.OnClientDisconnected;
             this.m_MessageEvents = new Dictionary<string, Action<MxClient, byte[]>>();
             this.m_PlayerLookup = new Dictionary<MxClient, string>();
             this.m_UniqueIDLookup = new Dictionary<MxClient, int>();
@@ -153,6 +154,20 @@ namespace Tychaia.Network
             {
                 this.m_MessageEvents[message.Type](e.Client, message.Data);
             }
+        }
+        
+        private void OnClientDisconnected(object sender, MxClientEventArgs e)
+        {
+            // Check to make sure this client is joined.
+            if (!this.m_PlayerLookup.ContainsKey(e.Client))
+            {
+                return;
+            }
+            
+            // Remove the unique ID and player from the world.
+            this.m_PlayerLookup.Remove(e.Client);
+            this.m_UniqueIDLookup.Remove(e.Client);
+            this.m_World.DisconnectPlayer(e.Client);
         }
     }
 }
